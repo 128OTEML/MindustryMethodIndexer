@@ -63,7 +63,6 @@ public class Main {
             }
         }
 
-        // ── Resolve paths: CLI arg > env var > default relative path ──
         Path mindustry = Paths.get(
                 mindustryArg != null ? mindustryArg
                         : System.getenv().getOrDefault("MINDUSTRY_DIR", "Mindustry"));
@@ -74,9 +73,9 @@ public class Main {
                 outputArg != null ? outputArg
                         : System.getenv().getOrDefault("OUTPUT_DIR", "out"));
 
-        System.out.println("+----------------------+");
-        System.out.println("|   Method Indexer v9  |");
-        System.out.println("+----------------------+");
+        System.out.println("+------------------------+");
+        System.out.println("|   Method Indexer v10   |");
+        System.out.println("+------------------------+");
         System.out.println("  Mindustry: " + mindustry.toAbsolutePath()
                 + "  (exists=" + Files.exists(mindustry) + ")");
         System.out.println("  Arc:       " + arc.toAbsolutePath()
@@ -154,6 +153,8 @@ public class Main {
             System.err.println("  ! enhancer failed: " + e.getMessage());
             e.printStackTrace();
         }
+
+        writeReadme(output);
 
         long totalElapsed = System.currentTimeMillis() - t0;
         System.out.println();
@@ -254,7 +255,6 @@ public class Main {
             return null;
         }
 
-        // Record source root so Enhancer can locate source files for inlining.
         writeString(modOut.resolve("src-root.txt"), srcDir.toAbsolutePath().toString());
 
         ModuleResult r = new ModuleResult();
@@ -473,6 +473,73 @@ public class Main {
         }
     }
 
+    private static void writeReadme(Path output) {
+        String readme = """
+                # Mindustry Method Index
+
+                Auto-generated Java code index for Mindustry + Arc.
+                Updated by GitHub Actions when source changes.
+
+                ## Layout
+
+                - index.json                       master index (modules -> packages)
+                - README.txt                       this file
+
+                Per module (e.g. `mindustry-core/`, `arc-core/`, `arc-extensions-fx/`):
+                - index.json                       module directory (list of packages)
+                - sig/<pkg>.txt                    compact signatures per Java package
+                - calls/<pkg>.txt                  outgoing calls (method -> targets)
+                - callers/<pkg>.txt                incoming calls (target <- callers)
+                - json/<pkg>.json                  full structured data
+                - src-root.txt                     source root (internal, do not read)
+
+                Derived indexes under `_enhanced/`:
+                - summary.json                     global counts
+                - hotspots.txt                     top 200 methods by in-degree
+                - hotspots.json                    top 500, target + inDegree only
+                - hierarchy/<FQN>.txt              type hierarchy (parent -> direct children)
+                - iface/<FQN>.txt                  interface -> implementors
+                - deps/<pkg>.txt                   package-level dependency
+                - fields/<pkg>.txt                 field usage
+                - chains/<target>.txt              call chains (depth 1 and 2)
+                - inline/<pkg>.txt                 short method bodies (<=10 lines)
+
+                ## Naming conventions
+
+                - `<FQN>`: fully-qualified type name, e.g. `mindustry_gen_Posc`
+                  (dots replaced with underscores to form a safe file name)
+                - `<pkg>`: Java package name, e.g. `mindustry.world.blocks`
+                - `deps/` and `fields/` are keyed by JAVA PACKAGE, not module name.
+                  Example: to read dependencies of Mindustry core, open
+                  `_enhanced/deps/mindustry_core.txt` (the mindustry.core package),
+                  NOT any file named after the module.
+
+                ## How to read
+
+                - Type hierarchy:     `_enhanced/hierarchy/mindustry_gen_Posc.txt`
+                - Interface impls:    `_enhanced/iface/arc_Application.txt`
+                - Package deps:       `_enhanced/deps/mindustry_core.txt`
+                - Hotspots (top API): `_enhanced/hotspots.txt`
+                - Signatures:         `mindustry-core/sig/mindustry.world.blocks.txt`
+                - Who calls X:        `mindustry-core/callers/mindustry.world.txt`
+                - Short method bodies: `_enhanced/inline/arc_util.txt`
+
+                ## Module list
+
+                Mindustry: core, desktop, server, tools, annotations
+                Arc:       arc-core, extensions/*, backends/backend-sdl, backend-sdl3, backend-headless
+
+                Module output names use dashes: `mindustry-core`, `arc-core`,
+                `arc-extensions-freetype`, `arc-backends-sdl`, etc.
+                """;
+
+        try {
+            Files.writeString(output.resolve("README.txt"), readme);
+            System.out.println("  OK README.txt");
+        } catch (IOException e) {
+            System.err.println("  ! write README failed: " + e.getMessage());
+        }
+    }
     private static class ModuleResult {
         String name;
         String repo;

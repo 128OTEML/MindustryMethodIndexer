@@ -5,6 +5,14 @@ on:
     # Every 2 hours (minute 0). GitHub may add 5-15 min delay.
     - cron: '0 */2 * * *'
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - '.shas/**'
+      - 'out/**'
 
 permissions:
   contents: write    # required to push to index-data branch
@@ -40,6 +48,14 @@ jobs:
       - name: Detect changes
         id: detect
         run: |
+          # If triggered by push to the indexer repo itself, always rebuild.
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "Triggered by push to indexer repo. Force rebuild."
+            echo "changed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Otherwise (schedule / workflow_dispatch), compare source SHAs.
           if [ -n "${{ steps.prev.outputs.mind }}" ] && \
              [ "${{ steps.prev.outputs.mind }}" = "${{ steps.fetch.outputs.mind }}" ] && \
              [ "${{ steps.prev.outputs.arc }}" = "${{ steps.fetch.outputs.arc }}" ]; then
@@ -85,7 +101,9 @@ jobs:
 
       - name: Compile Mindustry core (generates gen/)
         working-directory: Mindustry
-        run: ./gradlew :core:compileJava --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew :core:compileJava --no-daemon
         env:
           JAVA_OPTS: "-Xmx4g"
 
@@ -98,12 +116,15 @@ jobs:
           JAVA_OPTS: "-Xmx4g"
 
       - name: Build indexer
-        run: ./gradlew build -x test --no-daemon
+        run: |
+          chmod +x gradlew
+          ./gradlew build -x test --no-daemon
         env:
           JAVA_OPTS: "-Xmx2g"
 
       - name: Run indexer
         run: |
+          chmod +x gradlew
           ./gradlew run --no-daemon \
             --args="--mindustry=$GITHUB_WORKSPACE/Mindustry --arc=$GITHUB_WORKSPACE/Arc --output=$GITHUB_WORKSPACE/out"
         env:
