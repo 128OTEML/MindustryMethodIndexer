@@ -1,0 +1,22 @@
+println "=== export-deps.init.gradle loaded ==="
+allprojects { proj ->
+    proj.afterEvaluate {
+        proj.tasks.register('exportAllDeps', Copy) {
+            def filesProvider = proj.providers.provider {
+                def allFiles = []
+                proj.configurations.findAll { it.canBeResolved }.each { cfg ->
+                    try {
+                        allFiles.addAll(cfg.resolve())
+                    } catch (Exception e) {
+                        proj.logger.warn("Skip config ${cfg.name}: ${e.message}")
+                    }
+                }
+                return allFiles
+            }
+            from filesProvider
+            into proj.layout.buildDirectory.dir("exported-deps").get().asFile
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+            outputs.upToDateWhen { false }
+        }
+    }
+}

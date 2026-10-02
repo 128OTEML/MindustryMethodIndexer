@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.28.2'
+    implementation 'com.github.javaparser:javaparser-core:3.28.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+}
+
+application {
+    mainClass = 'indexer.Main'
+    applicationDefaultJvmArgs = [
+            '-Dfile.encoding=UTF-8',
+            '-Xmx2g'  // Jackson + JavaParser 处理大项目时需要更多堆
+    ]
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}

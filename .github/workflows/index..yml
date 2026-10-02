@@ -1,0 +1,130 @@
+name: Build Method Index
+
+on:
+  schedule:
+    # Every 2 hours (minute 0). GitHub may add 5-15 min delay.
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write    # required to push to index-data branch
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.detect.outputs.changed }}
+      mind: ${{ steps.fetch.outputs.mind }}
+      arc: ${{ steps.fetch.outputs.arc }}
+    steps:
+      - name: Fetch latest SHAs
+        id: fetch
+        run: |
+          MIND=$(git ls-remote https://github.com/Anuken/Mindustry.git HEAD | cut -f1)
+          ARC=$(git ls-remote https://github.com/Anuken/Arc.git HEAD | cut -f1)
+          echo "mind=$MIND" >> $GITHUB_OUTPUT
+          echo "arc=$ARC" >> $GITHUB_OUTPUT
+          echo "Mindustry HEAD: $MIND"
+          echo "Arc HEAD:       $ARC"
+
+      - name: Fetch previous SHAs from index-data
+        id: prev
+        run: |
+          MIND=$(curl -sfL "https://raw.githubusercontent.com/${{ github.repository }}/index-data/.shas/mind" || echo "")
+          ARC=$(curl -sfL "https://raw.githubusercontent.com/${{ github.repository }}/index-data/.shas/arc" || echo "")
+          echo "mind=$MIND" >> $GITHUB_OUTPUT
+          echo "arc=$ARC" >> $GITHUB_OUTPUT
+          echo "Previous Mindustry: $MIND"
+          echo "Previous Arc:       $ARC"
+
+      - name: Detect changes
+        id: detect
+        run: |
+          if [ -n "${{ steps.prev.outputs.mind }}" ] && \
+             [ "${{ steps.prev.outputs.mind }}" = "${{ steps.fetch.outputs.mind }}" ] && \
+             [ "${{ steps.prev.outputs.arc }}" = "${{ steps.fetch.outputs.arc }}" ]; then
+            echo "No source change detected."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Source changed (or first run). Will rebuild."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout indexer
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+
+      - name: Clone Mindustry
+        run: git clone --depth=1 https://github.com/Anuken/Mindustry.git Mindustry
+
+      - name: Clone Arc
+        run: git clone --depth=1 https://github.com/Anuken/Arc.git Arc
+
+      - name: Export Mindustry deps
+        working-directory: Mindustry
+        run: |
+          chmod +x gradlew
+          ./gradlew -I $GITHUB_WORKSPACE/scripts/export-deps.init.gradle exportAllDeps --no-daemon
+        env:
+          JAVA_OPTS: "-Xmx4g"
+
+      - name: Compile Mindustry core (generates gen/)
+        working-directory: Mindustry
+        run: ./gradlew :core:compileJava --no-daemon
+        env:
+          JAVA_OPTS: "-Xmx4g"
+
+      - name: Export Arc deps
+        working-directory: Arc
+        run: |
+          chmod +x gradlew
+          ./gradlew -I $GITHUB_WORKSPACE/scripts/export-deps.init.gradle exportAllDeps --no-daemon
+        env:
+          JAVA_OPTS: "-Xmx4g"
+
+      - name: Build indexer
+        run: ./gradlew build -x test --no-daemon
+        env:
+          JAVA_OPTS: "-Xmx2g"
+
+      - name: Run indexer
+        run: |
+          ./gradlew run --no-daemon \
+            --args="--mindustry=$GITHUB_WORKSPACE/Mindustry --arc=$GITHUB_WORKSPACE/Arc --output=$GITHUB_WORKSPACE/out"
+        env:
+          JAVA_OPTS: "-Xmx6g"
+
+      - name: Push to index-data (force, keep only latest)
+        run: |
+          cd out
+          mkdir -p .shas
+          echo "${{ needs.check.outputs.mind }}" > .shas/mind
+          echo "${{ needs.check.outputs.arc }}" > .shas/arc
+
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "index: mindustry@${{ needs.check.outputs.mind }} arc@${{ needs.check.outputs.arc }}"
+          git branch -M index-data
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push -f origin index-data
+
+  noop:
+    needs: check
+    if: needs.check.outputs.changed == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "No source change. Skipping rebuild."
