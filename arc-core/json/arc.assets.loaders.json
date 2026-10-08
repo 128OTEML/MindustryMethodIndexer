@@ -1,0 +1,2047 @@
+[ {
+  "file" : "AssetLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class (abstract)",
+  "typeDesc" : "Abstract base class for asset loaders.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private FileHandleResolver resolver",
+    "desc" : "{@link FileHandleResolver} used to map from plain asset names to {@link Fi} instances *",
+    "overloads" : null,
+    "name" : "resolver",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public AssetLoader(FileHandleResolver resolver)",
+    "desc" : "Constructor, sets the {@link FileHandleResolver} to use to resolve the file associated with the asset name.",
+    "overloads" : null,
+    "name" : "AssetLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Fi resolve(String fileName)",
+    "desc" : "@param fileName file name to resolve",
+    "overloads" : null,
+    "name" : "resolve",
+    "returnType" : "Fi",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 29,
+    "calls" : [ "arc.assets.loaders.FileHandleResolver.resolve(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract Seq<AssetDescriptor> getDependencies(String fileName, Fi file, P parameter)",
+    "desc" : "Returns the assets this asset requires to be loaded first.",
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "P"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AsynchronousAssetLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class (abstract) extends arc.assets.loaders.AssetLoader",
+  "typeDesc" : "Base class for asynchronous {@link AssetLoader} instances.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public AsynchronousAssetLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "AsynchronousAssetLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public abstract void loadAsync(AssetManager manager, String fileName, Fi file, P parameter)",
+    "desc" : "Loads the non-OpenGL part of the asset and injects any dependencies of the asset into the AssetManager.",
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "P"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract T loadSync(AssetManager manager, String fileName, Fi file, P parameter)",
+    "desc" : "Loads the OpenGL part of the asset.",
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "T",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "P"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "CubemapLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Cubemap} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "CubemapLoaderInfo info",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "info",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public CubemapLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "CubemapLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, CubemapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "CubemapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "arc.graphics.CubemapData.isPrepared()", "arc.graphics.CubemapData.prepare()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Cubemap loadSync(AssetManager manager, String fileName, Fi file, CubemapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Cubemap",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "CubemapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 40,
+    "calls" : [ "arc.graphics.Cubemap.load(arc.graphics.CubemapData)", "arc.graphics.GLTexture.setFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter)", "arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap)", "arc.graphics.Cubemap.Cubemap(arc.graphics.CubemapData)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, CubemapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "CubemapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "CubemapLoaderInfo",
+    "simpleName" : "CubemapLoaderInfo",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "String filename",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "filename",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 62,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "CubemapData data",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "data",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 63,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Cubemap cubemap",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "cubemap",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 64,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "CubemapParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "CubemapParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public Format format",
+      "desc" : "the format of the final Texture.",
+      "overloads" : null,
+      "name" : "format",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 69,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Cubemap cubemap",
+      "desc" : "The texture to put the {@link TextureData} in, optional.",
+      "overloads" : null,
+      "name" : "cubemap",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 71,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public CubemapData cubemapData",
+      "desc" : "CubemapData for textures created on the fly, optional.",
+      "overloads" : null,
+      "name" : "cubemapData",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 73,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter minFilter",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "minFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 74,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter magFilter",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "magFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 75,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureWrap wrapU",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrapU",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 76,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureWrap wrapV",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrapV",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 77,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "CustomLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class (abstract) extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Runnable loaded",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loaded",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public CustomLoader()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "CustomLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Object loadSync(AssetManager manager, String fileName, Fi file, AssetLoaderParameters parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Object",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "AssetLoaderParameters"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "java.lang.Runnable.run()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, AssetLoaderParameters parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "AssetLoaderParameters"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "FileHandleResolver.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java interface",
+  "typeDesc" : "Interface for classes the can map a file name to a {@link Fi}.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "Fi resolve(String fileName)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resolve",
+    "returnType" : "Fi",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "FontLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Font} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "FontData data",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "data",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public FontLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "FontLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FontParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "FontParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.struct.Seq.add(T)", "arc.graphics.g2d.Font.FontData.getImagePaths()", "arc.graphics.g2d.Font.FontData.getImagePath(int)", "arc.assets.loaders.AssetLoader.resolve(java.lang.String)", "arc.struct.Seq.Seq()", "arc.graphics.g2d.Font.FontData.FontData(arc.files.Fi, boolean)", "arc.assets.AssetDescriptor.AssetDescriptor(java.lang.String, java.lang.Class<T>)", "arc.assets.loaders.TextureLoader.TextureParameter.TextureParameter()", "arc.assets.AssetDescriptor.AssetDescriptor(arc.files.Fi, java.lang.Class<T>, arc.assets.AssetLoaderParameters<T>)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, FontParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "FontParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Font loadSync(AssetManager manager, String fileName, Fi file, FontParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Font",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "FontParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 67,
+    "calls" : [ "arc.assets.AssetManager.get(java.lang.String, java.lang.Class<T>)", "arc.files.Fi.nameWithoutExtension()", "arc.files.Fi.sibling(java.lang.String)", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.graphics.g2d.Font.FontData.getImagePaths()", "arc.struct.Seq.add(T)", "arc.graphics.g2d.Font.FontData.getImagePath(int)", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "arc.graphics.g2d.Font.Font(arc.files.Fi, arc.graphics.g2d.TextureRegion)", "arc.struct.Seq.Seq(int)", "arc.graphics.g2d.TextureRegion.TextureRegion(arc.graphics.Texture)", "arc.graphics.g2d.Font.Font(arc.graphics.g2d.Font.FontData, arc.struct.Seq<arc.graphics.g2d.TextureRegion>, boolean)" ],
+    "callCount" : 12
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "FontParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "FontParameter",
+    "desc" : "Parameter to be passed to {@link AssetManager#load(String, Class, AssetLoaderParameters)} if additional configuration is",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean flip",
+      "desc" : "Flips the font vertically if {@code true}.",
+      "overloads" : null,
+      "name" : "flip",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 94,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean genMipMaps",
+      "desc" : "Generates mipmaps for the font if {@code true}.",
+      "overloads" : null,
+      "name" : "genMipMaps",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 97,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter minFilter",
+      "desc" : "The {@link TextureFilter} to use when scaling down the {@link Font}.",
+      "overloads" : null,
+      "name" : "minFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 100,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter magFilter",
+      "desc" : "The {@link TextureFilter} to use when scaling up the {@link Font}.",
+      "overloads" : null,
+      "name" : "magFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 103,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public FontData fontData",
+      "desc" : "optional {@link FontData} to be used instead of loading the {@link Texture} directly.",
+      "overloads" : null,
+      "name" : "fontData",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 106,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String atlasName",
+      "desc" : "The name of the {@link TextureAtlas} to load the {@link Font} itself from.",
+      "overloads" : null,
+      "name" : "atlasName",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 112,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "I18NBundleLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link I18NBundle} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "I18NBundle bundle",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bundle",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public I18NBundleLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "I18NBundleLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "I18NBundleParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "java.util.Locale.getDefault()", "arc.util.I18NBundle.createBundle(arc.files.Fi, java.util.Locale)", "arc.util.I18NBundle.createBundle(arc.files.Fi, java.util.Locale, java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public I18NBundle loadSync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "I18NBundle",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "I18NBundleParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, I18NBundleParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "I18NBundleParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "I18NBundleParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "I18NBundleParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public final Locale locale",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "locale",
+      "returnType" : null,
+      "modifiers" : [ "public", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 71,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public final String encoding",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "encoding",
+      "returnType" : null,
+      "modifiers" : [ "public", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 72,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public I18NBundleParameter() / public I18NBundleParameter(Locale locale) / public I18NBundleParameter(Locale locale, String encoding)",
+      "desc" : null,
+      "overloads" : [ "public I18NBundleParameter()", "public I18NBundleParameter(Locale locale)", "public I18NBundleParameter(Locale locale, String encoding)" ],
+      "name" : "I18NBundleParameter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 74,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "MusicLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Music} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Music music",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "music",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MusicLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MusicLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected Music getLoadedMusic()",
+    "desc" : "Returns the {@link Music} instance currently loaded by this",
+    "overloads" : null,
+    "name" : "getLoadedMusic",
+    "returnType" : "Music",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, MusicParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "MusicParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.audio.Music.load(arc.files.Fi)", "arc.util.Log.err(java.lang.Throwable)", "arc.audio.Audio.newMusic(arc.files.Fi)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Music loadSync(AssetManager manager, String fileName, Fi file, MusicParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Music",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "MusicParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, MusicParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "MusicParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "MusicParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "MusicParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public Music music",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "music",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 57,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public MusicParameter() / public MusicParameter(Music music) / public MusicParameter(LoadedCallback loadedCallback)",
+      "desc" : null,
+      "overloads" : [ "public MusicParameter()", "public MusicParameter(Music music)", "public MusicParameter(LoadedCallback loadedCallback)" ],
+      "name" : "MusicParameter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 59,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "PixmapLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Pixmap} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "Pixmap pixmap",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pixmap",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public PixmapLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "PixmapLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "PixmapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "arc.graphics.Pixmap.Pixmap(arc.files.Fi)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Pixmap loadSync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Pixmap",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "PixmapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, PixmapParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "PixmapParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "PixmapParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "PixmapParameter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "ShaderProgramLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Shader} instances loaded from text files.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private String vertexFileSuffix",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vertexFileSuffix",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private String fragmentFileSuffix",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fragmentFileSuffix",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ShaderProgramLoader(FileHandleResolver resolver) / public ShaderProgramLoader(FileHandleResolver resolver, String vertexFileSuffix, String fragmentFileSuffix)",
+    "desc" : null,
+    "overloads" : [ "public ShaderProgramLoader(FileHandleResolver resolver)", "public ShaderProgramLoader(FileHandleResolver resolver, String vertexFileSuffix, String fragmentFileSuffix)" ],
+    "name" : "ShaderProgramLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, ShaderProgramParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "ShaderProgramParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "ShaderProgramParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 42,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Shader loadSync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Shader",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "ShaderProgramParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ "java.lang.String.endsWith(java.lang.String)", "java.lang.String.substring(int, int)", "java.lang.String.length()", "arc.assets.loaders.AssetLoader.resolve(java.lang.String)", "arc.files.Fi.readString()", "arc.files.Fi.equals(java.lang.Object)", "arc.graphics.gl.Shader.isCompiled()", "arc.util.Log.err(java.lang.String, java.lang.Object...)", "arc.graphics.gl.Shader.getLog()", "arc.graphics.gl.Shader.Shader(java.lang.String, java.lang.String)" ],
+    "callCount" : 10
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "ShaderProgramParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "ShaderProgramParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public String vertexFile",
+      "desc" : "File name to be used for the vertex program instead of the default determined by the file name used to submit this asset",
+      "overloads" : null,
+      "name" : "vertexFile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 81,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String fragmentFile",
+      "desc" : "File name to be used for the fragment program instead of the default determined by the file name used to submit this",
+      "overloads" : null,
+      "name" : "fragmentFile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 86,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean logOnCompileFailure",
+      "desc" : "Whether to log (at the error level) the shader's log if it fails to compile.",
+      "overloads" : null,
+      "name" : "logOnCompileFailure",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 88,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String prependVertexCode",
+      "desc" : "Code that is always added to the vertex shader code.",
+      "overloads" : null,
+      "name" : "prependVertexCode",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 93,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String prependFragmentCode",
+      "desc" : "Code that is always added to the fragment shader code.",
+      "overloads" : null,
+      "name" : "prependFragmentCode",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 98,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "SoundLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} to load {@link Sound} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Sound sound",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sound",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SoundLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SoundLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected Sound getLoadedSound()",
+    "desc" : "Returns the {@link Sound} instance currently loaded by this",
+    "overloads" : null,
+    "name" : "getLoadedSound",
+    "returnType" : "Sound",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "SoundParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.audio.Sound.load(arc.files.Fi)", "arc.audio.Audio.newSound(arc.files.Fi)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Sound loadSync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Sound",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "SoundParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, SoundParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "SoundParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "SoundParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "SoundParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public Sound sound",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "sound",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 53,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public SoundParameter() / public SoundParameter(Sound sound) / public SoundParameter(LoadedCallback loadedCallback)",
+      "desc" : null,
+      "overloads" : [ "public SoundParameter()", "public SoundParameter(Sound sound)", "public SoundParameter(LoadedCallback loadedCallback)" ],
+      "name" : "SoundParameter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 55,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "SynchronousAssetLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class (abstract) extends arc.assets.loaders.AssetLoader",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SynchronousAssetLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SynchronousAssetLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public abstract T load(AssetManager assetManager, String fileName, Fi file, P parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "T",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "assetManager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "P"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TextureAtlasLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.SynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} to load {@link TextureAtlas} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "TextureAtlasData data",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "data",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TextureAtlasLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TextureAtlasLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public TextureAtlas load(AssetManager assetManager, String fileName, Fi file, TextureAtlasParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "TextureAtlas",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "assetManager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureAtlasParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.graphics.g2d.TextureAtlas.TextureAtlasData.getPages()", "arc.assets.AssetManager.get(java.lang.String, java.lang.Class<T>)", "arc.files.Fi.path()", "arc.graphics.g2d.TextureAtlas.TextureAtlas(arc.graphics.g2d.TextureAtlas.TextureAtlasData)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi atlasFile, TextureAtlasParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "atlasFile",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureAtlasParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "arc.files.Fi.parent()", "arc.graphics.g2d.TextureAtlas.TextureAtlasData.getPages()", "arc.struct.Seq.add(T)", "arc.graphics.g2d.TextureAtlas.TextureAtlasData.TextureAtlasData(arc.files.Fi, arc.files.Fi, boolean)", "arc.struct.Seq.Seq()", "arc.assets.loaders.TextureLoader.TextureParameter.TextureParameter()", "arc.assets.AssetDescriptor.AssetDescriptor(arc.files.Fi, java.lang.Class<T>, arc.assets.AssetLoaderParameters<T>)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "TextureAtlasParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "TextureAtlasParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean flip",
+      "desc" : "whether to flip the texture atlas vertically *",
+      "overloads" : null,
+      "name" : "flip",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 59,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public TextureAtlasParameter() / public TextureAtlasParameter(boolean flip) / public TextureAtlasParameter(LoadedCallback loadedCallback)",
+      "desc" : null,
+      "overloads" : [ "public TextureAtlasParameter()", "public TextureAtlasParameter(boolean flip)", "public TextureAtlasParameter(LoadedCallback loadedCallback)" ],
+      "name" : "TextureAtlasParameter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 61,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "TextureLoader.java",
+  "pkg" : "arc.assets.loaders",
+  "type" : "Java class extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : "{@link AssetLoader} for {@link Texture} instances.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "TextureLoaderInfo info",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "info",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TextureLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TextureLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ "arc.graphics.TextureData.load(arc.files.Fi, boolean)", "arc.graphics.TextureData.isPrepared()", "arc.graphics.TextureData.prepare()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Texture loadSync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "Texture",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "arc.graphics.Texture.load(arc.graphics.TextureData)", "arc.graphics.GLTexture.setFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter)", "arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap)", "arc.graphics.Texture.Texture(arc.graphics.TextureData)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "TextureLoaderInfo",
+    "simpleName" : "TextureLoaderInfo",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "String filename",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "filename",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 65,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "TextureData data",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "data",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 66,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Texture texture",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "texture",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 67,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "TextureParameter extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "TextureParameter",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean genMipMaps",
+      "desc" : "whether to generate mipmaps *",
+      "overloads" : null,
+      "name" : "genMipMaps",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 72,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Texture texture",
+      "desc" : "The texture to put the {@link TextureData} in, optional.",
+      "overloads" : null,
+      "name" : "texture",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 74,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureData textureData",
+      "desc" : "TextureData for textures created on the fly, optional.",
+      "overloads" : null,
+      "name" : "textureData",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 76,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter minFilter",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "minFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 77,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter magFilter",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "magFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 78,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureWrap wrapU",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrapU",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 79,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureWrap wrapV",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrapV",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 80,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public TextureParameter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "TextureParameter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 82,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+} ]

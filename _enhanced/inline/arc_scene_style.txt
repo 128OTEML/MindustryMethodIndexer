@@ -1,0 +1,233 @@
+// BaseDrawable.java : public void draw(float x, float y, float width, float height) / public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+    @Override
+    public void draw(float x, float y, float width, float height){
+    }
+
+// BaseDrawable.java : public float getLeftWidth()
+    @Override
+    public float getLeftWidth(){
+        return leftWidth;
+    }
+
+// BaseDrawable.java : public void setLeftWidth(float leftWidth)
+    @Override
+    public void setLeftWidth(float leftWidth){
+        this.leftWidth = leftWidth;
+    }
+
+// BaseDrawable.java : public float getRightWidth()
+    @Override
+    public float getRightWidth(){
+        return rightWidth;
+    }
+
+// BaseDrawable.java : public void setRightWidth(float rightWidth)
+    @Override
+    public void setRightWidth(float rightWidth){
+        this.rightWidth = rightWidth;
+    }
+
+// BaseDrawable.java : public float getTopHeight()
+    @Override
+    public float getTopHeight(){
+        return topHeight;
+    }
+
+// BaseDrawable.java : public void setTopHeight(float topHeight)
+    @Override
+    public void setTopHeight(float topHeight){
+        this.topHeight = topHeight;
+    }
+
+// BaseDrawable.java : public float getBottomHeight()
+    @Override
+    public float getBottomHeight(){
+        return bottomHeight;
+    }
+
+// BaseDrawable.java : public void setBottomHeight(float bottomHeight)
+    @Override
+    public void setBottomHeight(float bottomHeight){
+        this.bottomHeight = bottomHeight;
+    }
+
+// BaseDrawable.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return minWidth;
+    }
+
+// BaseDrawable.java : public void setMinWidth(float minWidth)
+    @Override
+    public void setMinWidth(float minWidth){
+        this.minWidth = minWidth;
+    }
+
+// BaseDrawable.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return minHeight;
+    }
+
+// BaseDrawable.java : public void setMinHeight(float minHeight)
+    @Override
+    public void setMinHeight(float minHeight){
+        this.minHeight = minHeight;
+    }
+
+// BaseDrawable.java : public String getName()
+    public String getName(){
+        return name;
+    }
+
+// BaseDrawable.java : public void setName(String name)
+    public void setName(String name){
+        this.name = name;
+    }
+
+// BaseDrawable.java : public String toString()
+    public String toString(){
+        if(name == null) return getClass().toString();
+        return name;
+    }
+
+// Drawable.java : default float imageSize()
+    default float imageSize(){
+        return getMinWidth();
+    }
+
+// NinePatchDrawable.java : public void draw(float x, float y, float width, float height) / public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+    @Override
+    public void draw(float x, float y, float width, float height){
+        patch.draw(x, y, width, height);
+    }
+
+// NinePatchDrawable.java : public NinePatch getPatch()
+    public NinePatch getPatch(){
+        return patch;
+    }
+
+// NinePatchDrawable.java : public void setPatch(NinePatch patch)
+    public void setPatch(NinePatch patch){
+        this.patch = patch;
+        setMinWidth(patch.getTotalWidth());
+        setMinHeight(patch.getTotalHeight());
+        setTopHeight(patch.getPadTop());
+        setRightWidth(patch.getPadRight());
+        setBottomHeight(patch.getPadBottom());
+        setLeftWidth(patch.getPadLeft());
+    }
+
+// NinePatchDrawable.java : public NinePatchDrawable tint(Color tint)
+    public NinePatchDrawable tint(Color tint){
+        NinePatchDrawable drawable = new NinePatchDrawable(this);
+        drawable.setPatch(new NinePatch(drawable.getPatch(), tint));
+        return drawable;
+    }
+
+// ScaledNinePatchDrawable.java : public void draw(float x, float y, float width, float height)
+    @Override
+    public void draw(float x, float y, float width, float height){
+        getPatch().draw(x, y, 0, 0, width / scale, height / scale, scale, scale, 0);
+    }
+
+// ScaledNinePatchDrawable.java : public void setPatch(NinePatch patch)
+    @Override
+    public void setPatch(NinePatch patch){
+        super.setPatch(patch);
+
+        setMinWidth(patch.getTotalWidth() * scale);
+        setMinHeight(patch.getTotalHeight() * scale);
+    }
+
+// ScaledNinePatchDrawable.java : public float getLeftWidth()
+    @Override
+    public float getLeftWidth(){
+        return patch.getPadLeft() * scale;
+    }
+
+// ScaledNinePatchDrawable.java : public float getRightWidth()
+    @Override
+    public float getRightWidth(){
+        return patch.getPadRight() * scale;
+    }
+
+// ScaledNinePatchDrawable.java : public float getTopHeight()
+    @Override
+    public float getTopHeight(){
+        return patch.getPadTop() * scale;
+    }
+
+// ScaledNinePatchDrawable.java : public float getBottomHeight()
+    @Override
+    public float getBottomHeight(){
+        return patch.getPadBottom() * scale;
+    }
+
+// TextureRegionDrawable.java : public float imageSize()
+    @Override
+    public float imageSize(){
+        return region.width;
+    }
+
+// TextureRegionDrawable.java : public void draw(float x, float y, float width, float height) / public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+    @Override
+    public void draw(float x, float y, float width, float height){
+        Draw.color(Tmp.c1.set(tint).mul(Draw.getColor()).toFloatBits());
+        Draw.rect(region, x + width/2f, y + height/2f, width, height);
+    }
+
+// TextureRegionDrawable.java : public TextureRegionDrawable set(TextureRegion region)
+    public TextureRegionDrawable set(TextureRegion region){
+        setRegion(region);
+        return this;
+    }
+
+// TextureRegionDrawable.java : public TextureRegion getRegion()
+    public TextureRegion getRegion(){
+        return region;
+    }
+
+// TextureRegionDrawable.java : public void setRegion(TextureRegion region)
+    public void setRegion(TextureRegion region){
+        this.region = region;
+        setMinWidth(Scl.scl(scale * region.width));
+        setMinHeight(Scl.scl(scale * region.height));
+    }
+
+// TextureRegionDrawable.java : public Drawable tint(float r, float g, float b, float a) / public Drawable tint(Color tint)
+    public Drawable tint(float r, float g, float b, float a){
+        return tint(Tmp.c1.set(r, g, b, a));
+    }
+
+// TiledDrawable.java : public void setRegion(TextureRegion region)
+    @Override
+    public void setRegion(TextureRegion region){
+        super.setRegion(region);
+        this.tileWidth = region.width;
+        this.tileHeight = region.height;
+    }
+
+// TiledDrawable.java : public void setTileSize(float w, float h)
+    public void setTileSize(float w, float h){
+        tileWidth = w;
+        tileHeight = h;
+    }
+
+// TiledDrawable.java : public Color getColor()
+    public Color getColor(){
+        return color;
+    }
+
+// TiledDrawable.java : public TiledDrawable tint(Color tint)
+    @Override
+    public TiledDrawable tint(Color tint){
+        TiledDrawable drawable = new TiledDrawable(this);
+        drawable.color.set(tint);
+        drawable.setLeftWidth(getLeftWidth());
+        drawable.setRightWidth(getRightWidth());
+        drawable.setTopHeight(getTopHeight());
+        drawable.setBottomHeight(getBottomHeight());
+        return drawable;
+    }
+

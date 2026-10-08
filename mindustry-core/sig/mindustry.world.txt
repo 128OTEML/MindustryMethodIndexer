@@ -1,0 +1,590 @@
+Block.java
+Java class extends mindustry.ctype.UnlockableContent implements mindustry.logic.Senseable
+fields:
+  public boolean hasItems  // If true, buildings have an ItemModule.
+  public boolean hasLiquids  // If true, buildings have a LiquidModule.
+  public boolean hasPower  // If true, buildings have a PowerModule.
+  public boolean outputsLiquid  // Flag for determining whether this block outputs liquid somewhere; used for connections.
+  public boolean consumesPower  // Used by certain power blocks (nodes) to flag as non-consuming of power.
+  public boolean outputsPower  // If true, this block is a generator that can produce power.
+  public boolean connectedPower  // If false, power nodes cannot connect to this block.
+  public boolean conductivePower  // If true, this block can conduct power like a cable.
+  public boolean outputsPayload  // If true, this block can output payloads; affects blending.
+  public boolean acceptsUnitPayloads  // If true, this block can input payloads.
+  public boolean acceptsPayload  // If true, payloads will attempt to move into this block.
+  public boolean acceptsItems  // Visual flag use for blending of certain transportation blocks.
+  public boolean alwaysAllowDeposit  // If true, this block won't be affected by the onlyDepositCore rule.
+  public boolean allowedInPayloads  // If false, this block cannot be placed in payloads.
+  public float depositCooldown  // Cooldown, in seconds, applied to player item depositing when any item is deposited to this block.
+  public boolean separateItemCapacity  // If true, all item capacities of this block are separate instead of pooled as one number.
+  public int itemCapacity  // maximum items this block can carry (usually, this is per-type of item)
+  public float liquidCapacity  // maximum total liquids this block can carry if hasLiquids = true.
+  public float liquidPressure  // higher numbers increase liquid output speed; TODO remove and replace with better liquids system
+  public boolean outputFacing  // If true, this block outputs to its facing direction, when applicable.
+  public boolean noSideBlend  // if true, this block does not accept input from the sides (used for armored conveyors)
+  public boolean displayFlow  // whether to display flow rate
+  public boolean inEditor  // whether this block is visible in the editor
+  public boolean editorConfigurable  // if true, {@link #buildEditorConfig(Table)} will be called for configuring this block in the editor.
+  public Object lastConfig  // the last configuration value applied to this block.
+  public boolean saveConfig  // whether to save the last config and apply it to newly placed blocks
+  public boolean copyConfig  // whether to allow copying the config through middle click
+  public boolean clearOnDoubleTap  // if true, double-tapping this configurable block clears configuration.
+  public boolean update  // whether this block has a tile entity that updates
+  public boolean destructible  // whether this block has health and can be destroyed.
+  public boolean unloadable  // whether unloaders work on this block
+  public boolean isDuct  // if true, this block acts a duct and will connect to armored ducts from the side.
+  public boolean allowResupply  // whether units can resupply by taking items from this block
+  public boolean solid  // whether this is solid
+  public boolean solidifes  // whether this block CAN be solid.
+  public boolean teamPassable  // if true, this counts as a non-solid block to this team.
+  public boolean underBullets  // if true, this block cannot be hit by bullets unless explicitly targeted.
+  public boolean rotate  // whether this is rotatable
+  public boolean rotateDraw  // if rotate is true and this is false, the region won't rotate when drawing
+  public boolean rotateDrawEditor  // if rotate is true and this is false, the region won't rotate when drawing in the editor
+  public float visualRotationOffset  // visual rotation offset used in broken plan rendering
+  public boolean lockRotation  // if rotate = false and this is true, rotation will be locked at 0 when placing (default); advanced use only
+  public boolean ignoreLineRotation  // if true, this block won't face the line drag direction
+  public boolean invertFlip  // if true, schematic flips with this block are inverted.
+  public int variants  // number of different variant regions to use
+  public boolean drawArrow  // whether to draw a rotation arrow - this does not apply to lines of blocks
+  public boolean drawTeamOverlay  // whether to draw the team corner by default
+  public boolean saveData  // for static blocks only: if true, tile data() is saved in world data.
+  public boolean breakable  // whether you can break this with rightclick
+  public boolean unitMoveBreakable  // if true, this block will be broken by certain units stepping/moving over it
+  public boolean rebuildable  // whether to add this block to brokenblocks
+  public boolean privileged  // if true, this logic-related block can only be used with privileged processors (or is one itself)
+  public boolean requiresWater  // whether this block can only be placed on water
+  public boolean placeableLiquid  // whether this block can be placed on any liquids, anywhere
+  public boolean placeablePlayer  // whether this block can be placed directly by the player via PlacementFragment
+  public boolean placeableOn  // whether this floor can be placed on.
+  public boolean insulated  // whether this block has insulating properties.
+  public boolean squareSprite  // whether the sprite is a full square.
+  public boolean absorbLasers  // whether this block absorbs laser attacks.
+  public boolean enableDrawStatus  // if false, the status is never drawn
+  public boolean drawDisabled  // whether to draw disabled status
+  public boolean autoResetEnabled  // whether to automatically reset enabled status after a logic block has not interacted for a while.
+  public boolean noUpdateDisabled  // if true, the block stops updating when disabled
+  public boolean updateInUnits  // if true, this block updates when it's a payload in a unit.
+  public boolean alwaysUpdateInUnits  // if true, this block updates in payloads in units regardless of the experimental game rule
+  public boolean canPickup  // @deprecated use allowedInPayloads instead
+  public boolean deconstructDropAllLiquid  // if false, only incinerable liquids are dropped when deconstructing; otherwise, all liquids are dropped.
+  public boolean useColor  // Whether to use this block's color in the minimap.
+  public Item itemDrop  // item that drops from this block, used for drills
+  public boolean playerUnmineable  // if true, this block cannot be mined by players.
+  public Attributes attributes  // Affinities for floors.
+  public float scaledHealth  // Health per square tile that this block occupies; essentially, this is multiplied by size * size.
+  public int health  // building health; -1 to use scaledHealth
+  public float armor  // damage absorption, similar to unit armor
+  public float baseExplosiveness  // base block explosiveness
+  public float explosivenessScale  // scaling of explosiveness based on items/liquids
+  public float flammabilityScale  // scaling of explosion flammability based on items/liquids
+  public float baseShake  // base value for screen shake upon destruction
+  public BulletType destroyBullet  // bullet that this block spawns when destroyed
+  public boolean destroyBulletSameTeam  // if true, destroyBullet is spawned on the block's team instead of Derelict team
+  public Liquid lightLiquid  // liquid used for lighting
+  public boolean drawCracks  // whether cracks are drawn when this block is damaged
+  public boolean createRubble  // whether rubble is created when this block is destroyed
+  public boolean floating  // whether this block can be placed on edges of liquids.
+  public int size  // multiblock size
+  public float offset  // multiblock offset
+  public int sizeOffset  // offset for iteration (internal use only)
+  public float clipSize  // Clipping size of this block.
+  public float lightClipSize  // Clipping size for lights only.
+  public float placeOverlapRange  // When placeRangeCheck is enabled, this is the range checked for enemy blocks.
+  public float crushDamageMultiplier  // Multiplier of damage dealt to this block by tanks.
+  public boolean crushFragile  // If true, this block is instantly destroyed by tanks with crushFragile set to true.
+  public int timers  // Max of timers used.
+  public CacheLayer cacheLayer  // Cache layer.
+  public boolean drawDynamic  // If true, draw() will be called on the building.
+  public boolean drawCached  // If enabled, drawCached() will be called on the building.
+  public BuildingCacheLayer buildingCacheLayer  // 
+  public boolean fillsTile  // Special flag; if false, floor will be drawn under this block even if it is cached.
+  public boolean forceDark  // If true, this block can be covered by darkness / fog even if synthetic.
+  public boolean alwaysReplace  // whether this block can be replaced in all cases
+  public boolean replaceable  // if false, this block can never be replaced.
+  public BlockGroup group  // The block group.
+  public EnumSet<BlockFlag> flags  // List of block flags.
+  public float priority  // Targeting priority of this block, as seen by enemies.
+  public int unitCapModifier  // How much this block affects the unit cap by.
+  public boolean configurable  // Whether the block can be tapped and selected to configure.
+  public Sound configureSound  // Sound played when this block is configured.
+  public boolean ignoreResizeConfig  // If true, this block does not have pointConfig with a transform called on map resize.
+  public boolean commandable  // If true, this building can be selected like a unit when commanding.
+  public boolean allowConfigInventory  // If true, the building inventory can be shown with the config.
+  public boolean diagonalConfigInventory  // If true, the building inventory will be placed diagonally on the top right.
+  public int selectionRows  // Defines how large selection menus, such as that of sorters, should be.
+  public boolean logicConfigurable  // If true, this block can be configured by logic.
+  public boolean delayLandingConfig  // If true, configuration is delayed when playing the landing block buildup animation.
+  public boolean consumesTap  // Whether this block consumes touchDown events when tapped.
+  public boolean drawLiquidLight  // Whether to draw the glow of the liquid for this block, if it has one.
+  public int envRequired  // Environmental flags that are *all* required for this block to function.
+  public int envEnabled  // The environment flags that this block can function in.
+  public int envDisabled  // The environment flags that this block *cannot* function in.
+  public boolean sync  // Whether to periodically sync this block across the network.
+  public boolean conveyorPlacement  // Whether this block uses conveyor-type placement mode.
+  public boolean allowDiagonal  // If false, diagonal placement (ctrl) for this block is not allowed.
+  public boolean swapDiagonalPlacement  // Whether to swap the diagonal placement modes.
+  public boolean allowRectanglePlacement  // Whether to allow rectangular placement, as opposed to a line.
+  public int schematicPriority  // Build queue priority in schematics.
+  public Color mapColor  // The color of this block when displayed on the minimap or map preview.
+  public boolean hasColor  // Whether this block has a minimap color.
+  public boolean targetable  // Whether units target this block.
+  public boolean attacks  // If true, this block attacks and is considered a turret in the indexer.
+  public boolean suppressable  // If true, this block is mending-related and can be suppressed with special units/missiles.
+  public boolean canOverdrive  // Whether the overdrive core has any effect on this block.
+  public Color outlineColor  // Outlined icon color.
+  public boolean outlineIcon  // Whether any icon region has an outline added.
+  public int outlineRadius  // Outline icon radius.
+  public int outlinedIcon  // Which of the icon regions gets the outline added.
+  public boolean hasShadow  // Whether this block has a shadow under it.
+  public boolean customShadow  // If true, a custom shadow (name-shadow) is drawn under this block.
+  public boolean placePitchChange  // Should the sound made when this block is built change in pitch.
+  public boolean breakPitchChange  // Should the sound made when this block is deconstructed change in pitch.
+  public Sound placeSound  // Sound made when this block is built.
+  public Sound breakSound  // Sound made when this block is deconstructed.
+  public Sound destroySound  // Sounds made when this block is destroyed.
+  public float destroySoundVolume  // Volume of destruction sound.
+  public float destroyPitchMin  // Range of destroy sound.
+  public float albedo  // How reflective this block is.
+  public Color lightColor  // Environmental passive light color.
+  public boolean emitLight  // If true, drawLight() will be called for this block.
+  public boolean obstructsLight  // If true, this block obstructs light emitted by other blocks.
+  public float lightRadius  // Radius of the light emitted by this block.
+  public int fogRadius  // How much fog this block uncovers, in tiles.
+  public Sound ambientSound  // The sound that this block makes while idle.
+  public float ambientSoundVolume  // Idle sound base volume.
+  public ItemStack requirements  // Cost of constructing this block.
+  public Category category  // Category in place menu.
+  public float buildTime  // Time to build this block in ticks.
+  public BuildVisibility buildVisibility  // Whether this block is visible and can currently be built.
+  public float buildCostMultiplier  // Multiplier for speed of building this block.
+  public float deconstructThreshold  // Build completion at which deconstruction finishes.
+  public boolean instantDeconstruct  // If true, this block deconstructs immediately.
+  public boolean instantBuild  // If true, this block constructs immediately.
+  public boolean ignoreBuildDarkness  // If true, this block can be placed even in "dark" areas.
+  public Effect placeEffect  // Effect for placing the block.
+  public Effect breakEffect  // Effect for breaking the block.
+  public Effect destroyEffect  // Effect for destroying the block.
+  public float researchCostMultiplier  // Multiplier for cost of research in tech tree.
+  public ObjectFloatMap<Item> researchCostMultipliers  // Cost multipliers per-item.
+  public ItemStack researchCost  // Override for research cost.
+  public Team forceTeam  // If set, all blocks will be forced to be this team.
+  public boolean instantTransfer  // Whether this block has instant transfer.
+  public int maxConsecutive  // Maximum number of instantTransfer consecutive blocks.
+  public boolean quickRotate  // Whether you can rotate this block after it is placed.
+  public boolean allowDerelictRepair  // If true, this derelict block can be repair by clicking it.
+  public Class<?> subclass  // Main subclass.
+  public float selectScroll  // Scroll position for certain blocks.
+  public Prov<Building> buildType  // Building that is created for this block.
+  public ObjectMap<Class<?>,Cons2> configurations  // Configuration handlers by type.
+  public boolean itemFilter  // Consumption filters.
+  public Consume consumers  // Array of consumers used by this block.
+  public boolean hasConsumers  // Set to true if this block has any consumers in its array.
+  public ConsumePower consPower  // The single power consumer, if applicable.
+  protected OrderedMap<String,Func<Building,Bar>> barMap  // Map of bars by name.
+  protected Seq<Consume> consumeBuilder  // List for building up consumption before init().
+  protected TextureRegion generatedIcons
+  public int regionRotated1  // Regions indexes from icons() that are rotated.
+  public TextureRegion region
+  public TextureRegion customShadowRegion
+  public TextureRegion teamRegion
+  public TextureRegion teamRegions
+  protected static final Seq<Tile> tempTiles
+  protected static final Seq<Building> tempBuilds
+  protected final int timerDump  // Dump timer ID.
+  public int dumpTime  // How often to try dumping items in ticks, e.g.
+ctors:
+  public Block(String name)
+methods:
+  public void drawBase(Tile tile)
+  public void drawBaseCached(Tile tile)
+  public void drawShadow(Tile tile)
+  public float percentSolid(int x, int y)
+  public void drawEnvironmentLight(Tile tile)
+  public void drawPlace(int x, int y, int rotation, boolean valid)  // Drawn when you are placing a block.
+  public void drawSideRegion(TextureRegion region, float x, float y, int rotation)  // Draws a region to overlay a specific side of this block.
+  public void drawPotentialLinks(int x, int y)
+  public float drawPlaceText(String text, int x, int y, boolean valid) / public float drawPlaceText(String text, int x, int y, Color color, boolean drawLine)
+  public void drawOverlay(float x, float y, int rotation)  // Drawn when placing and when hovering over.
+  public boolean displayShadow(Tile tile)
+  public float sumAttribute(Attribute attr, int x, int y)
+  public TextureRegion getDisplayIcon(Tile tile)
+  public String getDisplayName(Tile tile)
+  public int minimapColor(Tile tile)  // @return a custom minimap color for this or 0 to use default colors.
+  public Color getColor(Tile tile)
+  public boolean outputsItems()
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)  // @return whether this block can be placed on the specified tile.
+  public boolean canBreak(Tile tile)  // @return whether this block can be broken on the specified tile.
+  public boolean rotatedOutput(int x, int y) / public boolean rotatedOutput(int fromX, int fromY, Tile destination)
+  public boolean synthetic()
+  public boolean checkForceDark(Tile tile)
+  public boolean isDarkened(Tile tile)  // If true, the 'map edge' darkness will be applied to this block.
+  public void setStats()
+  public void addBar(String name, Func<T,Bar> sup)
+  public void removeBar(String name)
+  public Iterable<Func<Building,Bar>> listBars()
+  public void addLiquidBar(Liquid liq) / public void addLiquidBar(Func<T,Liquid> current)  // Adds a liquid bar that dynamically displays a liquid type.
+  public void setBars()
+  public void afterPatch()
+  public boolean consumesItem(Item item)
+  public boolean consumesLiquid(Liquid liq)
+  public boolean canReplace(Block other)
+  public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)  // @return a possible replacement for this block when placed in a line by the player.
+  public void changePlacementPath(Seq<Point2> points, int rotation, boolean diagonalOn) / public void changePlacementPath(Seq<Point2> points, int rotation)  // Mutates the given list of points used during line placement.
+  public void handlePlacementLine(Seq<BuildPlan> plans)  // Mutates the given list of plans used during line placement.
+  public boolean configSenseable()
+  public Object nextConfig()
+  public void onNewPlan(BuildPlan plan)  // Called when a new build plan is created in the player's queue.
+  public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid) / public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+  public void drawOtherPlayerPlan(BuildPlan plan, Eachable<BuildPlan> list, float alpha)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawDefaultPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)  // this is a different method so subclasses can call it even after overriding the base
+  public static BuildPlan findPlan(Eachable<BuildPlan> list, int x, int y, Boolf<BuildPlan> predicate) / public static BuildPlan findPlan(Eachable<BuildPlan> list, int x, int y, int size, Boolf<BuildPlan> predicate)
+  public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlanConfigCenter(BuildPlan plan, Object content, String region, boolean cross) / public void drawPlanConfigCenter(BuildPlan plan, Object content, String region)
+  public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list)
+  public float planConfigClipSize()
+  public Object pointConfig(Object config, Cons<Point2> transformer)  // Transforms the internal position of this config using the specified function, and return the result.
+  public void configClear(Cons<E> cons)  // Configure when a null value is passed.
+  public void config(Class<T> type, Cons2<E,T> config)  // Listen for a config by class type.
+  public boolean isAccessible()
+  public void nearbySide(int x, int y, int rotation, int index, Point2 out)  // sets {@param out} to the index-th side outside of this block, using the given rotation.
+  public Point2[] getEdges()
+  public Point2[] getInsideEdges()
+  public void iterateTaken(int x, int y, Intc2 placer)  // Iterate through ever grid position taken up by this block.
+  public TextureRegion[] makeIconRegions()  // @return special icons to outline and save with an -outline variant.
+  protected TextureRegion[] icons()
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+  public TextureRegion[] getGeneratedIcons()
+  public void resetGeneratedIcons()
+  public TextureRegion[] variantRegions()
+  public boolean hasBuilding()
+  public final Building newBuilding()
+  public void updateClipRadius(float radiusInWorldUnits)
+  public Rect bounds(int x, int y, Rect rect)
+  public boolean isMultiblock()
+  public boolean isVisible()
+  public boolean isPlaceable()
+  public boolean isBanned()
+  public boolean isOverPlacementLimit(Team team)
+  public boolean supportsEnv(int env)  // @return whether this block supports a specific environment.
+  public void buildEditorConfig(Table table)  // Called to set up configuration UI in the editor.
+  public void onPicked(Tile tile)  // Called when the block is picked (middle click).
+  public Object getConfig(Tile tile)  // @return the config value returned when this block is picked on a certain tile.
+  public void blockChanged(Tile tile)  // Called when this block is set on the specified tile.
+  public void placeBegan(Tile tile, Block previous) / public void placeBegan(Tile tile, Block previous, Unit builder)  // Called when building of this block begins.
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)  // Called when building of this block ends.
+  public void beforePlaceBegan(Tile tile, Block previous)  // Called right before building of this block begins.
+  public void editorPicked(Tile tile)  // Called when pick blocked in the editor.
+  public boolean isFloor()
+  public boolean isOverlay()
+  public Floor asFloor()
+  public boolean isAir()
+  public boolean canBeBuilt()
+  public boolean environmentBuildable()
+  public boolean isStatic()
+  public T findConsumer(Boolf<Consume> filter)
+  public boolean hasConsumer(Consume cons)
+  public void removeConsumer(Consume cons)
+  public void removeConsumers(Boolf<Consume> b)
+  public ConsumeLiquid consumeLiquid(Liquid liquid, float amount)
+  public ConsumeLiquids consumeLiquids(LiquidStack stacks)
+  public ConsumePower consumePower(float powerPerTick)  // Creates a consumer which directly uses power without buffering it.
+  public ConsumePower consumePowerCond(float usage, Boolf<T> cons)  // Creates a consumer which only consumes power when the condition is met.
+  public ConsumePower consumePowerDynamic(Floatf<T> usage) / public ConsumePower consumePowerDynamic(float displayed, Floatf<T> usage)  // Creates a consumer that consumes a dynamic amount of power.
+  public ConsumePower consumePowerBuffered(float powerCapacity)  // Creates a consumer which stores power.
+  public ConsumeItems consumeItem(Item item) / public ConsumeItems consumeItem(Item item, int amount)
+  public ConsumeItems consumeItems(ItemStack items)
+  public ConsumeCoolant consumeCoolant(float amount) / public ConsumeCoolant consumeCoolant(float amount, boolean allowLiquid, boolean allowGas)
+  public T consume(T consume)
+  public void setupRequirements(Category cat, ItemStack[] stacks) / public void setupRequirements(Category cat, BuildVisibility visible, ItemStack[] stacks)
+  public void requirements(Category cat, ItemStack[] stacks, boolean unlocked) / public void requirements(Category cat, ItemStack[] stacks) / public void requirements(Category cat, BuildVisibility visible, ItemStack[] stacks)  // Sets up requirements.
+  protected void initBuilding()
+  public ItemStack[] researchRequirements()
+  public void getDependencies(Cons<UnlockableContent> cons)
+  public ContentType getContentType()
+  public boolean logicVisible()
+  public void postInit()
+  public void init()  // Called after all blocks are created.
+  public void reinitializeConsumers()
+  public void checkContentArrayCapacity(int items, int liquids)
+  public void load()
+  public boolean isHidden()
+  public void createIcons(MultiPacker packer)
+  public int planRotation(int rot)
+  public void flipRotation(BuildPlan req, boolean x)
+  public void getPlanConfigs(Seq<UnlockableContent> options)  // Fills the specified array with the list of configuration options this block has.
+  public double sense(LAccess sensor) / public double sense(Content content)
+  public Object senseObject(LAccess sensor)
+
+Build.java
+Java class
+fields:
+  private static final IntSet tmp
+methods:
+  public static void beginBreak(Unit unit, Team team, int x, int y)
+  public static void beginPlace(Unit unit, Block result, Team team, int x, int y, int rotation, Object placeConfig)  // Places a ConstructBlock at this location.
+  public static boolean validPlace(Block type, Team team, int x, int y, int rotation) / public static boolean validPlace(Block type, Team team, int x, int y, int rotation, boolean checkVisible) / public static boolean validPlace(Block type, Team team, int x, int y, int rotation, boolean checkVisible, boolean checkCoreRadius)  // @return whether a tile can be placed at this location by this team.
+  public static boolean checkNoUnitOverlap(Block type, int x, int y)  // @return whether a tile can be placed at this location by this team.
+  public static boolean validPlaceIgnoreUnits(Block type, Team team, int x, int y, int rotation, boolean checkVisible, boolean checkCoreRadius)  // @return whether a tile can be placed at this location by this team.
+  public static Building getEnemyOverlap(Block block, Team team, int x, int y)
+  public static boolean contactsGround(int x, int y, Block block)
+  public static boolean contactsShallows(int x, int y, Block block)
+  public static boolean validBreak(Team team, int x, int y)  // @return whether the tile at this position is breakable by this team
+
+CachedTile.java
+Java class extends mindustry.world.Tile
+// A tile which does not trigger change events and whose entity types are cached.
+ctors:
+  public CachedTile()
+methods:
+  protected void preChanged()
+  protected void changeBuild(Team team, Prov<Building> entityprov, int rotation)
+
+ColorMapper.java
+Java class
+fields:
+  private static final IntMap<Block> color2block
+methods:
+  public static Block get(int color)
+  public static void load()
+
+DirectionalItemBuffer.java
+Java class
+fields:
+  public final long buffers
+  public final int indexes
+ctors:
+  public DirectionalItemBuffer(int capacity)
+methods:
+  public boolean accepts(int buffer)
+  public void accept(int buffer, Item item)
+  public Item poll(int buffer, float speed)
+  public void remove(int buffer)
+  public void write(Writes write)
+  public void read(Reads read) / public void read(Reads read, boolean legacy)
+inner-class: BufferItemStruct
+  fields:
+    short item
+    float time
+inner-class: BufferItemLegacyStruct
+  fields:
+    byte item
+    float time
+
+Edges.java
+Java class
+fields:
+  private static final int maxRadius
+  private static Point2 edges
+  private static Point2 edgeInside
+  private static Vec2 polygons
+methods:
+  public static Tile getFacingEdge(Building tile, Building other) / public static Tile getFacingEdge(Tile tile, Tile other) / public static Tile getFacingEdge(Block block, int tilex, int tiley, Tile other)
+  public static Vec2[] getPixelPolygon(float radius)
+  public static Point2[] getEdges(int size)
+  public static Point2[] getInsideEdges(int size)
+
+ItemBuffer.java
+Java class
+fields:
+  private long buffer
+  private int index
+ctors:
+  public ItemBuffer(int capacity)
+methods:
+  public boolean accepts()
+  public void accept(Item item, short data) / public void accept(Item item)
+  public Item poll(float speed)
+  public void remove()
+  public void write(Writes write)
+  public void read(Reads read)
+inner-class: TimeItemStruct
+  fields:
+    short data
+    short item
+    float time
+
+Tile.java
+Java class implements arc.math.geom.Position, arc.math.geom.QuadTree.QuadTreeObject, mindustry.ui.Displayable
+fields:
+  private static final TileChangeEvent tileChange
+  private static final TilePreChangeEvent preChange
+  private static final TileFloorChangeEvent floorChange
+  private static final TileOverlayChangeEvent overlayChange
+  private static final ObjectSet<Building> tileSet
+  private static final IntSet staleGraphs
+  public byte data  // Extra data for specific blocks.
+  public int extraData  // Even more data for blocks.
+  public Building build  // Tile entity, usually null.
+  public short x
+  protected Block block
+  protected Floor floor
+  protected Floor overlay
+  protected boolean changing
+ctors:
+  public Tile(int x, int y) / public Tile(int x, int y, Block floor, Block overlay, Block wall) / public Tile(int x, int y, int floor, int overlay, int wall)
+methods:
+  public int pos()  // Returns this tile's position as a packed point.
+  public int array()  // @return this tile's position, packed to the world width - for use in width*height arrays.
+  public byte relativeTo(Tile tile) / public byte relativeTo(int cx, int cy) / public static byte relativeTo(int x, int y, int cx, int cy) / public static int relativeTo(float x, float y, float cx, float cy)  // Return relative rotation to a coordinate.
+  public byte absoluteRelativeTo(int cx, int cy)
+  public float getFlammability()  // Returns the flammability of the tile.
+  public boolean inMapArea()
+  public float worldx()
+  public float worldy()
+  public float drawx()  // TODO: this method is misleading and buggy for non-center tiles
+  public float drawy()
+  public boolean isDarkened()
+  public Floor floor()
+  public Block block()
+  public Floor overlay()
+  public void updateBlockReference(Block block)  // Internal method for data patches - do not use!!
+  public T cblock()
+  public Team team()
+  public void setTeam(Team team) / public static void setTeam(Building build, Team team)  // Do not call unless you know what you are doing! This does not update the indexer!
+  public boolean isCenter()
+  public int centerX()
+  public int centerY()
+  public int getTeamID()
+  public void setBlock(Block type, Team team, int rotation) / public void setBlock(Block type, Team team, int rotation, Prov<Building> entityprov) / public void setBlock(Block type, Team team) / public void setBlock(Block type)
+  public void setFloor(Floor type) / public static void setFloor(Tile tile, Block floor, Block overlay)
+  public boolean isEditorTile()
+  public void setAir()  // Sets the block to air.
+  public void circle(int radius, Intc2 cons) / public void circle(int radius, Cons<Tile> cons)
+  public Color getFloorColor()
+  public void recacheWall()
+  public void recache()
+  public void remove()
+  public void removeNet()  // remove()-s this tile, except it's synced across the network
+  public void setNet(Block block) / public void setNet(Block block, Team team, int rotation)  // set()-s this tile, except it's synced across the network
+  public void setFloorNet(Block floor, Block overlay) / public void setFloorNet(Block floor)  // set()-s this tile, except it's synced across the network
+  public void setOverlayNet(Block overlay)  // set()-s this tile, except it's synced across the network
+  public short overlayID()
+  public short blockID()
+  public short floorID()
+  public void setOverlay(Block block) / public static void setOverlay(Tile tile, Block overlay)
+  public void setOverlayQuiet(Block block)  // Sets the overlay without a recache.
+  public void clearOverlay()
+  public boolean passable()
+  public boolean synthetic()  // Whether this block was placed by a player/unit.
+  public boolean solid()
+  public boolean breakable()
+  public boolean dangerous()  // @return whether the floor on this tile deals damage or can be drowned on.
+  public boolean isDeep()
+  public void getLinkedTiles(Cons<Tile> cons) / public Seq<Tile> getLinkedTiles(Seq<Tile> tmpArray)  // Iterates through the list of all tiles linked to this multiblock, or just itself if it's not a multiblock.
+  public Seq<Tile> getLinkedTilesAs(Block block, Seq<Tile> tmpArray) / public void getLinkedTilesAs(Block block, Cons<Tile> tmpArray)  // Returns the list of all tiles linked to this multiblock if it were this block.
+  public Rect getHitbox(Rect rect)
+  public Rect getBounds(Rect rect)
+  public void hitbox(Rect rect)
+  public Tile nearby(Point2 relative) / public Tile nearby(int dx, int dy) / public Tile nearby(int rotation)
+  public Building nearbyBuild(int rotation)
+  public boolean interactable(Team team)
+  public Item drop()
+  public Item wallDrop()
+  public boolean shouldSaveData()
+  public int staticDarkness()
+  public boolean legSolid()  // @return whether this tile is solid for legged units
+  public boolean adjacentTo(Tile tile)  // @return true if these tiles are right next to each other.
+  protected void preChanged()
+  protected void changeBuild(Team team, Prov<Building> entityprov, int rotation)
+  protected void changed()
+  protected void fireChanged()
+  protected void firePreChanged()
+  public long getPackedData()  // @return all extra tile data, packed into a single long for data transfer convenience.
+  public void setPackedData(long packed)  // Sets the packed data as obtained from {@link #getPackedData()}
+  public void display(Table table)
+  public boolean displayable()
+  public float getX()
+  public float getY()
+  public String toString()
+  public static void setTileBlocks(Block block, Team team, int[] positions)  // Positions are in 'packed position' format - left bits x, right bits y.
+  public static void setTileFloors(Block block, int[] positions)  // Positions are in 'packed position' format - left bits x, right bits y.
+  public static void setTileOverlays(Block block, int[] positions)  // Positions are in 'packed position' format - left bits x, right bits y.
+  public static void fillTileBlocks(int x, int y, int x2, int y2, Block block, Team team)  // Fills an area.
+  public static void fillTileFloors(int x, int y, int x2, int y2, Block block)  // Fills an area.
+  public static void fillTileOverlays(int x, int y, int x2, int y2, Block block)  // Fills an area.
+  public static void removeTile(Tile tile)
+  public static void setTile(Tile tile, Block block, Team team, int rotation)
+  public static void setTeams(int[] positions, Team team)
+  private static void reflowPower(Team team, Building build)
+  public static void buildDestroyed(Building build)
+  public static void buildHealthUpdate(IntSeq buildings)
+inner-class: PackedTileDataStruct
+  fields:
+    int extraData
+    byte data
+
+TileGen.java
+Java class
+fields:
+  public Block floor
+  public Block block
+  public Block overlay
+methods:
+  public void reset()
+
+Tiles.java
+Java class implements java.lang.Iterable
+// A tile container.
+fields:
+  public final int width
+  final Tile array
+  final Puddle puddles
+  final Fire fires
+  long tmpFloorState
+ctors:
+  public Tiles(int width, int height)
+methods:
+  public long getTmpFloorState(int pos)
+  public void setTmpFloorState(int pos, long value)
+  public long getTmpBlockState(int pos)
+  public void setTmpBlockState(int pos, long value)
+  public Puddle getPuddle(int pos)
+  public void setPuddle(int pos, Puddle p)
+  public Fire getFire(int pos)
+  public void setFire(int pos, Fire f)
+  public void each(Intc2 cons)
+  public void fill()  // fills this tile set with empty air tiles.
+  public void set(int x, int y, Tile tile)  // set a tile at a position; does not range-check.
+  public void seti(int i, Tile tile)  // set a tile at a raw array position; used for fast iteration / 1-D for-loops
+  public boolean in(int x, int y)  // @return whether these coordinates are in bounds
+  public Tile get(int x, int y)  // @return a tile at coordinates, or null if out of bounds
+  public Tile getn(int x, int y)  // @return a tile at coordinates; throws an exception if out of bounds
+  public Tile getc(int x, int y)  // @return a tile at coordinates, clamped.
+  public Tile geti(int idx)  // @return a tile at an iteration index [0, width * height]
+  public Tile getp(int pos)  // @return a tile at an int position (not equivalent to geti)
+  public void eachTile(Cons<Tile> cons)
+  public Iterator<Tile> iterator()
+inner-class: TileIterator implements java.util.Iterator
+  fields:
+    int index
+  ctors:
+    TileIterator()
+  methods:
+    public boolean hasNext()
+    public Tile next()
+
+WorldContext.java
+Java interface
+methods:
+  Tile tile(int index)  // Return a tile in the tile array.
+  void resize(int width, int height)  // Create the tile array.
+  Tile create(int x, int y, int floorID, int overlayID, int wallID)  // This should create a tile and put it into the tile array, then return it.
+  boolean isGenerating()  // Returns whether the world is already generating.
+  void begin()  // Begins generating.
+  void end()  // End generating, prepares tiles.
+  default void onReadBuilding()  // Called when a building is finished reading.
+  default void onReadTileData()  // Called when data finishes reading for a tile.
+  default Sector getSector()
+  default boolean isMap()  // @return whether the SaveLoadEvent fired after the end should be counted as a new map load.
+
+WorldParams.java
+Java class
+// Parameters for loading or generating a world.
+fields:
+  public int seedOffset  // For sectors: World generator seed offset.
+  public boolean saveInfo  // For sectors: Whether to save the info once the map is generated.
+  public int corePositionOverride  // Position in packed x/y format - not array format.
+

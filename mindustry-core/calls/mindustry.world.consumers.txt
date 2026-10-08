@@ -1,0 +1,312 @@
+boost
+  -> mindustry.world.consumers.Consume.optional(boolean, boolean)
+build
+  -> arc.func.Func.get(P)
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.Element.update(java.lang.Runnable)
+  -> mindustry.world.consumers.ConsumeItemDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)
+rebuild
+  -> arc.scene.Group.clear()
+  -> arc.func.Func.get(P)
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+trigger
+  -> arc.func.Func.get(P)
+  -> mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+efficiency
+  -> mindustry.gen.Building.consumeTriggerValid()
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.ItemStack[], float)
+  -> arc.func.Func.get(P)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.itemEffMultiplier(arc.func.Floatf<mindustry.type.Item>, float, arc.func.Boolf<mindustry.type.Item>, arc.struct.ObjectFloatMap<mindustry.type.Item>)
+update
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.gen.Building.delta()
+  -> arc.math.Mathf.clamp(float)
+  -> mindustry.gen.Building.damage(float)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> arc.Events.fire(java.lang.Enum<T>)
+apply
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> mindustry.core.ContentLoader.items()
+build
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> mindustry.core.ContentLoader.items()
+  -> arc.func.Boolf.get(T)
+  -> mindustry.ctype.UnlockableContent.unlockedNow()
+  -> mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> build.items.has
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.ui.MultiReqImage.MultiReqImage()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+trigger
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)
+efficiency
+  -> mindustry.gen.Building.consumeTriggerValid()
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+getConsumed
+  -> mindustry.core.ContentLoader.items()
+  -> mindustry.core.ContentLoader.item(int)
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.Item)
+  -> arc.func.Boolf.get(T)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.items(float, arc.func.Boolf<mindustry.type.Item>)
+efficiencyMultiplier
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.world.consumers.ConsumeItemFilter.itemEfficiencyMultiplier(mindustry.type.Item)
+ConsumeItemList
+  -> arc.struct.ObjectFloatMap.put(K, float)
+  -> arc.struct.ObjectFloatMap.containsKey(K)
+setMultipliers
+  -> arc.struct.ObjectFloatMap.put(K, float)
+efficiencyMultiplier
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+  -> arc.struct.ObjectFloatMap.get(K, float)
+build
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+trigger
+  -> mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+efficiency
+  -> mindustry.gen.Building.consumeTriggerValid()
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.ItemStack[], float)
+  -> arc.func.Floatf.get(T)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.items(mindustry.type.ItemStack...)
+apply
+  -> mindustry.world.consumers.ConsumeLiquidBase.apply(mindustry.world.Block)
+build
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Cell.top()
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)
+update
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.edelta()
+  -> arc.func.Floatf.get(T)
+efficiency
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.gen.Building.efficiencyScale()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.type.Liquid, float, boolean)
+apply
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> mindustry.core.ContentLoader.liquids()
+build
+  -> arc.struct.Seq.select(arc.func.Boolf<T>)
+  -> mindustry.core.ContentLoader.liquids()
+  -> mindustry.type.Liquid.isHidden()
+  -> arc.func.Boolf.get(T)
+  -> arc.struct.Seq.each(arc.func.Cons<? super T>)
+  -> mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)
+  -> mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.ui.MultiReqImage.MultiReqImage()
+  -> mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)
+update
+  -> mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.edelta()
+  -> arc.func.Floatf.get(T)
+efficiency
+  -> mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.gen.Building.edelta()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+efficiencyMultiplier
+  -> mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.world.consumers.ConsumeLiquidFilter.liquidEfficiencyMultiplier(mindustry.type.Liquid)
+getConsumed
+  -> arc.func.Boolf.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> mindustry.core.ContentLoader.liquids()
+  -> arc.struct.Seq.get(int)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.liquids(arc.func.Boolf<mindustry.type.Liquid>, float, boolean)
+consumes
+  -> arc.func.Boolf.get(T)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.liquidEffMultiplier(arc.func.Floatf<mindustry.type.Liquid>, float, arc.func.Boolf<mindustry.type.Liquid>)
+build
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)
+update
+  -> arc.func.Floatf.get(T)
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.edelta()
+efficiency
+  -> arc.func.Floatf.get(T)
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.gen.Building.efficiencyScale()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.liquids(float, boolean, mindustry.type.LiquidStack...)
+build
+  -> arc.func.Func.get(P)
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.Element.update(java.lang.Runnable)
+  -> mindustry.world.consumers.ConsumeLiquidsDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)
+rebuild
+  -> arc.scene.Group.clear()
+  -> arc.func.Func.get(P)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)
+update
+  -> arc.func.Floatf.get(T)
+  -> arc.func.Func.get(P)
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.edelta()
+efficiency
+  -> mindustry.gen.Building.edelta()
+  -> arc.func.Func.get(P)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+efficiency
+  -> arc.func.Floatf.get(T)
+  -> arc.func.Func.get(P)
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.gen.Building.getPayloads()
+  -> java.lang.Math.round(float)
+trigger
+  -> arc.func.Floatf.get(T)
+  -> arc.func.Func.get(P)
+  -> mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.gen.Building.getPayloads()
+  -> java.lang.Math.round(float)
+build
+  -> arc.func.Func.get(P)
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.Element.update(java.lang.Runnable)
+  -> mindustry.world.consumers.ConsumePayloadDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)
+rebuild
+  -> mindustry.gen.Building.getPayloads()
+  -> arc.func.Func.get(P)
+  -> arc.scene.Group.clear()
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+ConsumePayloadFilter
+  -> arc.struct.Seq.toArray(java.lang.Class)
+  -> arc.struct.Seq.select(arc.func.Boolf<T>)
+  -> arc.struct.Seq.add(arc.struct.Seq<? extends T>)
+  -> arc.struct.Seq.as()
+  -> arc.struct.Seq.copy()
+  -> mindustry.core.ContentLoader.blocks()
+  -> mindustry.core.ContentLoader.units()
+efficiency
+  -> mindustry.gen.Building.getPayloads()
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+trigger
+  -> mindustry.gen.Building.getPayloads()
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.content(arc.struct.Seq<mindustry.ctype.UnlockableContent>)
+  -> arc.struct.Seq.Seq(T[])
+build
+  -> mindustry.gen.Building.getPayloads()
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> mindustry.core.ContentLoader.blocks()
+  -> arc.func.Boolf.get(T)
+  -> mindustry.ctype.UnlockableContent.unlockedNow()
+  -> mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.ui.MultiReqImage.MultiReqImage()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+efficiency
+  -> arc.func.Floatf.get(T)
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.gen.Building.getPayloads()
+  -> java.lang.Math.round(float)
+trigger
+  -> arc.func.Floatf.get(T)
+  -> mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent, int)
+  -> mindustry.gen.Building.getPayloads()
+  -> java.lang.Math.round(float)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.meta.StatValues.stack(mindustry.type.PayloadStack)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Cell.padLeft(float)
+  -> arc.scene.ui.layout.Table.add(java.lang.CharSequence)
+build
+  -> mindustry.gen.Building.getPayloads()
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)
+  -> java.lang.Math.round(float)
+  -> arc.func.Floatf.get(T)
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+requestedPower
+  -> mindustry.gen.Building.shouldConsume()
+requestedPower
+  -> arc.func.Boolf.get(T)
+requestedPower
+  -> arc.func.Floatf.get(T)
+display
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)

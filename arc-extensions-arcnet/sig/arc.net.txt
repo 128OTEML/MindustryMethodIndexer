@@ -1,0 +1,348 @@
+ArcNet.java
+Java class
+fields:
+  public static Cons<Throwable> errorHandler
+methods:
+  public static void handleError(Throwable e)
+
+ArcNetException.java
+Java class extends java.lang.RuntimeException
+ctors:
+  public ArcNetException() / public ArcNetException(String message, Throwable cause) / public ArcNetException(String message) / public ArcNetException(Throwable cause)
+
+Client.java
+Java class extends arc.net.Connection implements arc.net.EndPoint
+// Represents a TCP and optionally a UDP connection to a {@link Server}.
+fields:
+  private final NetSerializer serialization
+  private Selector selector
+  private int emptySelects
+  private volatile boolean tcpRegistered
+  private Object tcpRegistrationLock
+  private Object udpRegistrationLock
+  private volatile boolean shutdown
+  private final Object updateLock
+  private Thread updateThread
+  private int connectTimeout
+  private InetAddress connectHost
+  private int connectTcpPort
+  private int connectUdpPort
+  private boolean isClosed
+  private final ExecutorService discoverExecutor
+  private Prov<DatagramPacket> discoveryPacket
+ctors:
+  public Client(int writeBufferSize, int objectBufferSize, NetSerializer serialization)  // @param writeBufferSize One buffer of this size is allocated.
+methods:
+  public void setDiscoveryPacket(Prov<DatagramPacket> discoveryPacket)
+  public void connect(int timeout, String host, int tcpPort) throws IOException / public void connect(int timeout, String host, int tcpPort, int udpPort) throws IOException / public void connect(int timeout, InetAddress host, int tcpPort) throws IOException / public void connect(int timeout, InetAddress host, int tcpPort, int udpPort) throws IOException  // Opens a TCP only client.
+  public void reconnect() throws IOException / public void reconnect(int timeout) throws IOException  // Calls {@link #connect(int, InetAddress, int, int) connect} with the
+  public void update(int timeout) throws IOException  // Reads or writes any pending data for this client.
+  void keepAlive()
+  public void handleNetException(ArcNetException ex)
+  public void run()
+  public void start()
+  public void stop()
+  public void close()
+  public void dispose() throws IOException  // Releases the resources used by this client, which may no longer be used.
+  public void setKeepAliveUDP(int keepAliveMillis)  // An empty object will be sent if the UDP connection is inactive more than
+  public Thread getUpdateThread()
+  public NetSerializer getSerialization()
+  private void broadcast(int udpPort, DatagramSocket socket) throws IOException
+  public void discoverHosts(int udpPort, String multicastGroup, int multicastPort, int timeoutMillis, Cons<DatagramPacket> handler, Runnable done)  // Broadcasts a UDP message on the LAN to discover any running servers.
+
+ClientDiscoveryHandler.java
+Java interface
+methods:
+  DatagramPacket newDatagramPacket()  // Implementations of this method should return a new {@link DatagramPacket}
+  void discoveredHost(DatagramPacket datagramPacket)  // Called when the {@link Client} discovers a host.
+  void finish()  // Called right before the {@link Client#discoverHost(int, int)} or
+
+Connection.java
+Java class
+// Represents a TCP and optionally a UDP connection between a {@link Client} and
+fields:
+  int id
+  private String name
+  EndPoint endPoint
+  TcpConnection tcp
+  UdpConnection udp
+  InetSocketAddress udpRemoteAddress
+  private NetListener listeners
+  private final Object listenerLock
+  private int lastPingID
+  private long lastPingSendTime
+  private int returnTripTime
+  volatile boolean isConnected
+  volatile ArcNetException lastProtocolError
+  private Object arbitraryData
+ctors:
+  protected Connection()
+methods:
+  void initialize(NetSerializer serialization, int writeBufferSize, int objectBufferSize)
+  public int getID()  // Returns the server assigned ID.
+  public boolean isConnected()  // Returns true if this connection is connected to the remote end.
+  public ArcNetException getLastProtocolError()  // Returns the last protocol error that occured on the connection.
+  public int sendTCP(Object object)  // Sends the object over the network using TCP.
+  public int sendTCPBuffer(ByteBuffer buffer)  // Sends a pre-serialized, length-prefixed buffer over TCP.
+  public int sendUDP(Object object)  // Sends the object over the network using UDP.
+  public int sendUDPBuffer(ByteBuffer buffer)  // Sends a pre-serialized buffer over UDP.
+  public void close(DcReason reason)
+  public void updateReturnTripTime()  // Requests the connection to communicate with the remote computer to
+  public int getReturnTripTime()  // Returns the last calculated TCP return trip time, or -1 if
+  public void setKeepAliveTCP(int keepAliveMillis)  // An empty object will be sent if the TCP connection has not sent an object
+  public void setTimeout(int timeoutMillis)  // If the specified amount of time passes without receiving an object over
+  public void addListener(NetListener listener)  // Adds a listener to the connection, after existing listeners.
+  public void removeListener(NetListener listener)
+  void notifyConnected()
+  void notifyDisconnected(DcReason reason)
+  void notifyIdle()
+  void notifyReceived(Object object)
+  public EndPoint getEndPoint()  // Returns the local {@link Client} or {@link Server} to which this
+  public InetSocketAddress getRemoteAddressTCP()  // Returns the IP address and port of the remote end of the TCP connection,
+  public InetSocketAddress getRemoteAddressUDP()  // Returns the IP address and port of the remote end of the UDP connection,
+  public void setName(String name)  // Sets the friendly name of this connection.
+  public int getTcpWriteBufferSize()  // Returns the number of bytes that are waiting to be written to the TCP
+  public boolean isIdle()  // @see #setIdleThreshold(float)
+  public void setIdleThreshold(float idleThreshold)  // If the percent of the TCP write buffer that is filled is less than the
+  public String toString()
+  void setConnected(boolean isConnected)
+  public Object getArbitraryData()
+  public void setArbitraryData(Object arbitraryData)
+
+DcReason.java
+(unknown)
+
+EndPoint.java
+Java interface extends java.lang.Runnable
+// Represents the local end point of a connection.
+methods:
+  void addListener(NetListener listener)  // Adds a listener to the endpoint.
+  void removeListener(NetListener listener)
+  void run()  // Continually updates this end point until {@link #stop()} is called.
+  void start()  // Starts a new thread that calls {@link #run()}.
+  void stop()  // Closes this end point and causes {@link #run()} to return.
+  void close()  // @see Client
+  void update(int timeout) throws IOException  // @see Client#update(int)
+  Thread getUpdateThread()  // Returns the last thread that called {@link #update(int)} for this end
+
+FrameworkMessage.java
+Java interface
+// Marker interface for internal messages.
+fields:
+  KeepAlive keepAlive
+  DiscoverHost discoverHost
+inner-class: RegisterTCP implements arc.net.FrameworkMessage
+// Internal message to give the client the server assigned connection ID.
+  fields:
+    public int connectionID
+inner-class: RegisterUDP implements arc.net.FrameworkMessage
+// Internal message to give the server the client's UDP port.
+  fields:
+    public int connectionID
+inner-class: KeepAlive implements arc.net.FrameworkMessage
+// Internal message to keep connections alive.
+inner-class: DiscoverHost implements arc.net.FrameworkMessage
+// Internal message to discover running servers.
+inner-class: Ping implements arc.net.FrameworkMessage
+// Internal message to determine round trip time.
+  fields:
+    public int id
+    public boolean isReply
+
+InputStreamSender.java
+Java class (abstract) extends arc.net.TcpIdleSender
+fields:
+  private final InputStream input
+  private final byte chunk
+ctors:
+  public InputStreamSender(InputStream input, int chunkSize)
+methods:
+  protected final Object next() / abstract protected Object next(byte[] chunk)
+
+NetListener.java
+Java interface
+// Used to be notified about connection events.
+methods:
+  default void connected(Connection connection)  // Called when the remote end has been connected.
+  default void disconnected(Connection connection, DcReason reason)  // Called when the remote end is no longer connected.
+  default void received(Connection connection, Object object)  // Called when an object has been received from the remote end of the
+  default void idle(Connection connection)  // Called when the connection is below the
+inner-class: QueuedListener implements arc.net.NetListener
+// Wraps a listener and queues notifications as {@link Runnable runnables}.
+  fields:
+    final NetListener listener
+  ctors:
+    public QueuedListener(NetListener listener)
+  methods:
+    public void connected(Connection connection)
+    public void disconnected(Connection connection, DcReason reason)
+    public void received(Connection connection, Object object)
+    public void idle(Connection connection)
+    abstract protected void queue(Runnable runnable)
+inner-class: ThreadedListener extends arc.net.NetListener.QueuedListener
+// Wraps a listener and processes notification events on a separate thread.
+  fields:
+    protected final ExecutorService threadPool
+  ctors:
+    public ThreadedListener(NetListener listener) / public ThreadedListener(NetListener listener, ExecutorService threadPool)  // Creates a single thread to process notification events.
+  methods:
+    public void queue(Runnable runnable)
+inner-class: LagListener extends arc.net.NetListener.QueuedListener
+// Delays the notification of the wrapped listener to simulate lag on
+  fields:
+    private final ScheduledExecutorService threadPool
+    private final int lagMillisMin
+    final LinkedList<Runnable> runnables
+  ctors:
+    public LagListener(int lagMillisMin, int lagMillisMax, NetListener listener)
+  methods:
+    public void queue(Runnable runnable)
+
+NetSerializer.java
+Java interface
+// Controls how objects are transmitted over the network.
+methods:
+  void write(ByteBuffer buffer, Object object)
+  Object read(ByteBuffer buffer)
+  default int getLengthLength()  // The fixed number of bytes that will be written by
+  default void writeLength(ByteBuffer buffer, int length)
+  default int readLength(ByteBuffer buffer)
+
+Server.java
+Java class implements arc.net.EndPoint
+// Manages TCP and optionally UDP connections from many {@linkplain Client
+fields:
+  private final NetSerializer serializer
+  private final int writeBufferSize
+  private final Selector selector
+  private int emptySelects
+  private ServerSocketChannel serverChannel
+  private UdpConnection udp
+  private Connection connections
+  private ConcurrentHashMap<InetSocketAddress,Connection> udpAddressToConnection
+  private IntMap<Connection> pendingConnections
+  NetListener listeners
+  private final Object listenerLock
+  private volatile boolean shutdown
+  private final Object updateLock
+  private Thread updateThread
+  private int multicastPort
+  protected InetAddress multicastGroup
+  protected DiscoveryReceiver discoveryReceiver
+  protected ServerDiscoveryHandler discoveryHandler
+  private ServerConnectFilter connectFilter
+  private final ByteBuffer bulkWriteBuffer
+  private final Object bulkWriteLock
+  private NetListener dispatchListener
+ctors:
+  public Server(int writeBufferSize, int objectBufferSize, NetSerializer serializer)  // @param writeBufferSize One buffer of this size is allocated for each connected
+methods:
+  public void setMulticast(String group, int multicastPort)
+  public void setDiscoveryHandler(ServerDiscoveryHandler newDiscoveryHandler)
+  public void setConnectFilter(ServerConnectFilter connectFilter)
+  public ServerConnectFilter getConnectFilter()
+  public void bind(int tcpPort) throws IOException / public void bind(int tcpPort, int udpPort) throws IOException / public void bind(InetSocketAddress tcpPort, InetSocketAddress udpPort) throws IOException  // Opens a TCP only server.
+  public void update(int timeout) throws IOException  // Accepts any new connections and reads or writes any pending data for the
+  public void run()
+  public void start()
+  public void stop()
+  private void acceptOperation(SocketChannel socketChannel)
+  private int generateId()
+  protected Connection newConnection()  // Allows the connections used by the server to be subclassed.
+  private void addConnection(Connection connection)
+  void removeConnection(Connection connection)
+  public void sendToAllTCP(Object object) / public void sendToAllTCP(Object object, Iterable<Connection> connections)  // Sends the object over TCP to every connection in the list, serializing it only once.
+  public void sendToAllExceptTCP(int connectionID, Object object)
+  public void sendToAllUDP(Object object) / public void sendToAllUDP(Object object, Iterable<Connection> connections)  // Sends the object over UDP to every connection in the list, serializing it only once.
+  public void sendToAllExceptUDP(int connectionID, Object object)
+  private ByteBuffer serializeTCP(Object object)  // Writes an object to the bulk-write buffer for TCP, including the length prefix.
+  private ByteBuffer serializeUDP(Object object)  // Writes an object to the bulk-write buffer.
+  public void addListener(NetListener listener)  // {@inheritDoc}
+  public void removeListener(NetListener listener)
+  public void close()  // Closes all open connections and the server port(s).
+  public void dispose() throws IOException  // Releases the resources used by this server, which may no longer be used.
+  public Thread getUpdateThread()
+  public Connection[] getConnections()  // Returns the current connections.
+inner-class: DiscoveryReceiver
+  fields:
+    MulticastSocket socket
+    Thread multicastThread
+    int multicastPort
+  ctors:
+    DiscoveryReceiver(int multicastPort)
+  methods:
+    void close()
+    void start()
+inner-interface: ServerConnectFilter
+  methods:
+    boolean accept(String address)
+
+ServerDiscoveryHandler.java
+Java interface
+methods:
+  void onDiscoverReceived(InetAddress address, ReponseHandler handler) throws IOException  // Called when the {@link Server} receives a {@link DiscoverHost} packet.
+inner-interface: ReponseHandler
+  methods:
+    void respond(ByteBuffer buffer) throws IOException
+
+TcpConnection.java
+Java class
+// @author Nathan Sweet <misc@n4te.com>
+fields:
+  SocketChannel socketChannel
+  int keepAliveMillis
+  final ByteBuffer readBuffer
+  int timeoutMillis
+  float idleThreshold
+  final NetSerializer serialization
+  private SelectionKey selectionKey
+  private volatile long lastWriteTime
+  private int currentObjectLength
+  private final Object writeLock
+ctors:
+  public TcpConnection(NetSerializer serialization, int writeBufferSize, int objectBufferSize)
+methods:
+  public SelectionKey accept(Selector selector, SocketChannel socketChannel) throws IOException
+  public void connect(Selector selector, SocketAddress remoteAddress, int timeout) throws IOException
+  public Object readObject() throws IOException
+  public void writeOperation() throws IOException
+  private boolean writeToSocket() throws IOException
+  public int send(Object object) throws IOException  // This method is thread safe.
+  public int sendBuffer(ByteBuffer buffer) throws IOException  // Writes a pre-serialized, length-prefixed buffer directly into this connection's write buffer.
+  public void close()
+  public boolean needsKeepAlive(long time)
+  public boolean isTimedOut(long time)
+
+TcpIdleSender.java
+Java class (abstract) implements arc.net.NetListener
+fields:
+  boolean started
+methods:
+  public void idle(Connection connection)
+  protected void start()  // Called once, before the first send.
+  abstract protected Object next()  // Returns the next object to send, or null if no more objects will be sent.
+
+UdpConnection.java
+Java class
+// @author Nathan Sweet <misc@n4te.com>
+fields:
+  InetSocketAddress connectedAddress
+  DatagramChannel datagramChannel
+  int keepAliveMillis
+  final ByteBuffer readBuffer
+  private final NetSerializer serialization
+  private SelectionKey selectionKey
+  private final Object writeLock
+  private long lastCommunicationTime
+ctors:
+  public UdpConnection(NetSerializer serialization, int bufferSize)
+methods:
+  public void bind(Selector selector, InetSocketAddress localPort) throws IOException
+  public void connect(Selector selector, InetSocketAddress remoteAddress) throws IOException
+  public InetSocketAddress readFromAddress() throws IOException
+  public Object readObject()
+  public int send(Object object, SocketAddress address) throws IOException  // Serializes the specified object.
+  public int sendBuffer(ByteBuffer buffer, SocketAddress address) throws IOException  // Directly sends an entire buffer to this address.
+  public void close()
+  public boolean needsKeepAlive(long time)
+

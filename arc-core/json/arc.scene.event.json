@@ -1,0 +1,2772 @@
+[ {
+  "file" : "ChangeListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class (abstract) implements arc.scene.event.EventListener",
+  "typeDesc" : "Listener for {@link ChangeEvent}.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent event)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.event.ChangeListener.changed(arc.scene.event.ChangeListener.ChangeEvent, arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "abstract public void changed(ChangeEvent event, Element actor)",
+    "desc" : "@param actor The event target, which is the actor that emitted the change event.",
+    "overloads" : null,
+    "name" : "changed",
+    "returnType" : "void",
+    "modifiers" : [ "abstract", "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "ChangeEvent"
+    }, {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "ChangeEvent extends arc.scene.event.SceneEvent",
+    "simpleName" : "ChangeEvent",
+    "desc" : "Fired when something in an actor has changed.",
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "ClickListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.InputListener",
+  "typeDesc" : "Detects mouse over, mouse or finger touch presses, and clicks on an element.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public static float visualPressedDuration",
+    "desc" : "Time in seconds {@link #isVisualPressed()} reports true after a press resulting in a click is released.",
+    "overloads" : null,
+    "name" : "visualPressedDuration",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static Runnable clicked",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clicked",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float tapSquareSize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapSquareSize",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int pressedPointer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pressedPointer",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected KeyCode pressedButton",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pressedButton",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected KeyCode button",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "button",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean pressed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pressed",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected long visualPressedTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visualPressedTime",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected long tapCountInterval",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapCountInterval",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int tapCount",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapCount",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected long lastTapTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTapTime",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean stop",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stop",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ClickListener() / public ClickListener(KeyCode button)",
+    "desc" : "Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks.",
+    "overloads" : [ "public ClickListener()", "public ClickListener(KeyCode button)" ],
+    "name" : "ClickListener",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "arc.util.Time.millis()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchDragged(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 52,
+    "calls" : [ "arc.scene.event.ClickListener.isOver(arc.scene.Element, float, float)", "arc.Input.keyDown(arc.input.KeyCode)", "arc.scene.event.ClickListener.invalidateTapSquare()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ "arc.scene.event.ClickListener.isOver(arc.scene.Element, float, float)", "arc.util.Time.nanos()", "java.lang.Runnable.run()", "arc.scene.event.ClickListener.clicked(arc.scene.event.InputEvent, float, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "enter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "fromActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 87,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void exit(InputEvent event, float x, float y, int pointer, Element toActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "exit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "toActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 93,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancel()",
+    "desc" : "If a touch down is being monitored, the drag and touch up events are ignored until the next touch up.",
+    "overloads" : null,
+    "name" : "cancel",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void clicked(InputEvent event, float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 106,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isOver(Element element, float x, float y) / public boolean isOver()",
+    "desc" : "Returns true if the specified position is over the specified element or within the tap square.",
+    "overloads" : [ "public boolean isOver(Element element, float x, float y)", "public boolean isOver()" ],
+    "name" : "isOver",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "element",
+      "type" : "Element"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ "arc.scene.Element.localToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.Scene.hit(float, float, boolean)", "arc.scene.Element.isDescendantOf(arc.scene.Element)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean inTapSquare(float x, float y) / public boolean inTapSquare()",
+    "desc" : "Returns true if a touch is within the tap square.",
+    "overloads" : [ "public boolean inTapSquare(float x, float y)", "public boolean inTapSquare()" ],
+    "name" : "inTapSquare",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 116,
+    "calls" : [ "java.lang.Math.abs(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void invalidateTapSquare()",
+    "desc" : "The tap square will not longer be used for the current touch.",
+    "overloads" : null,
+    "name" : "invalidateTapSquare",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 126,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isPressed()",
+    "desc" : "Returns true if a touch is over the element or within the tap square.",
+    "overloads" : null,
+    "name" : "isPressed",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 132,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isVisualPressed()",
+    "desc" : "Returns true if a touch is over the element or within the tap square or has been very recently.",
+    "overloads" : null,
+    "name" : "isVisualPressed",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 140,
+    "calls" : [ "arc.util.Time.millis()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTapSquareSize()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTapSquareSize",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 153,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapSquareSize(float halfTapSquareSize)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTapSquareSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "halfTapSquareSize",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 157,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapCountInterval(float tapCountInterval)",
+    "desc" : "@param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.",
+    "overloads" : null,
+    "name" : "setTapCountInterval",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tapCountInterval",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 162,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getTapCount()",
+    "desc" : "Returns the number of taps within the tap count interval for the most recent click event.",
+    "overloads" : null,
+    "name" : "getTapCount",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 167,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapCount(int tapCount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTapCount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tapCount",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 171,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTouchDownX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchDownX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 175,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTouchDownY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchDownY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 179,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public KeyCode getPressedButton()",
+    "desc" : "The button that initially pressed this button or -1 if the button is not pressed.",
+    "overloads" : null,
+    "name" : "getPressedButton",
+    "returnType" : "KeyCode",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 184,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getPressedPointer()",
+    "desc" : "The pointer that initially pressed this button or -1 if the button is not pressed.",
+    "overloads" : null,
+    "name" : "getPressedPointer",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 189,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public KeyCode getButton()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getButton",
+    "returnType" : "KeyCode",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 193,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setButton(KeyCode button)",
+    "desc" : "Sets the button to listen for, all other buttons are ignored.",
+    "overloads" : null,
+    "name" : "setButton",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 198,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "DragListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.InputListener",
+  "typeDesc" : "Detects mouse or finger touch drags on an element.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float tapSquareSize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapSquareSize",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int pressedPointer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pressedPointer",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int button",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "button",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean dragging",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dragging",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float deltaX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "deltaX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchDragged(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ "java.lang.Math.abs(float)", "arc.scene.event.DragListener.dragStart(arc.scene.event.InputEvent, float, float, int)", "arc.scene.event.DragListener.drag(arc.scene.event.InputEvent, float, float, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchUp(InputEvent event, float x, float y, int pointer, int button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ "arc.scene.event.DragListener.dragStop(arc.scene.event.InputEvent, float, float, int)", "arc.scene.event.DragListener.cancel()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void dragStart(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dragStart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drag(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drag",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void dragStop(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dragStop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancel()",
+    "desc" : "If a drag is in progress, no further drag methods will be called until a new drag is started.",
+    "overloads" : null,
+    "name" : "cancel",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDragging()",
+    "desc" : "Returns true if a touch has been dragged outside the tap square.",
+    "overloads" : null,
+    "name" : "isDragging",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 68,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTapSquareSize()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTapSquareSize",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapSquareSize(float halfTapSquareSize)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTapSquareSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "halfTapSquareSize",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 76,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTouchDownX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchDownX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 80,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTouchDownY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchDownY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getStageTouchDownX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStageTouchDownX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 88,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getStageTouchDownY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStageTouchDownY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 92,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getDeltaX()",
+    "desc" : "Returns the amount on the x axis that the touch has been dragged since the last drag event.",
+    "overloads" : null,
+    "name" : "getDeltaX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 97,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getDeltaY()",
+    "desc" : "Returns the amount on the y axis that the touch has been dragged since the last drag event.",
+    "overloads" : null,
+    "name" : "getDeltaY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getButton()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getButton",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 106,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setButton(int button)",
+    "desc" : "Sets the button to listen for, all other buttons are ignored.",
+    "overloads" : null,
+    "name" : "setButton",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "button",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 111,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "DragScrollListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.DragListener",
+  "typeDesc" : "Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "Interp interpolation",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "interpolation",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "float minSpeed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minSpeed",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "long startTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startTime",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private ScrollPane scroll",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scroll",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Task scrollUp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrollUp",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public DragScrollListener(ScrollPane scroll)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "DragScrollListener",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scroll",
+      "type" : "ScrollPane"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : [ "arc.scene.ui.ScrollPane.setScrollY(float)", "arc.scene.ui.ScrollPane.getScrollY()", "arc.scene.event.DragScrollListener.getScrollPixels()", "arc.util.Timer.Task.Task()" ],
+    "callCount" : 4
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setup(float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setup",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minSpeedPixels",
+      "type" : "float"
+    }, {
+      "name" : "maxSpeedPixels",
+      "type" : "float"
+    }, {
+      "name" : "tickSecs",
+      "type" : "float"
+    }, {
+      "name" : "rampSecs",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "float getScrollPixels()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getScrollPixels",
+    "returnType" : "float",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ "arc.math.Interp.apply(float, float, float)", "java.lang.Math.min(float, float)", "java.lang.System.currentTimeMillis()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void drag(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drag",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 47,
+    "calls" : [ "arc.scene.Element.getWidth()", "arc.scene.Element.getHeight()", "arc.util.Timer.Task.cancel()", "arc.util.Timer.Task.isScheduled()", "java.lang.System.currentTimeMillis()", "arc.util.Timer.schedule(arc.util.Timer.Task, float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void dragStop(InputEvent event, float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dragStop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 70,
+    "calls" : [ "arc.util.Timer.Task.cancel()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ElementGestureListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class implements arc.scene.event.EventListener",
+  "typeDesc" : "Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "static final Vec2 tmpCoords",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpCoords",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final GestureDetector detector",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "detector",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "InputEvent event",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "event",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Element actor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "actor",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ElementGestureListener() / public ElementGestureListener(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay)",
+    "desc" : "@see GestureDetector#GestureDetector(arc.input.GestureDetector.GestureListener)",
+    "overloads" : [ "public ElementGestureListener()", "public ElementGestureListener(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay)" ],
+    "name" : "ElementGestureListener",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : [ "arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.event.ElementGestureListener.tap(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)", "arc.scene.event.ElementGestureListener.longPress(arc.scene.Element, float, float)", "arc.scene.event.ElementGestureListener.Anonymous-983cd2ab-ec0a-486f-9e66-ed1ed1725181.stageToLocalAmount(arc.math.geom.Vec2)", "arc.scene.event.ElementGestureListener.fling(arc.scene.event.InputEvent, float, float, arc.input.KeyCode)", "arc.scene.event.ElementGestureListener.Anonymous-fac78aed-c134-43d8-b386-c831f531a926.stageToLocalAmount(arc.math.geom.Vec2)", "arc.scene.event.ElementGestureListener.pan(arc.scene.event.InputEvent, float, float, float, float)", "arc.scene.event.ElementGestureListener.zoom(arc.scene.event.InputEvent, float, float)", "arc.math.geom.Vec2.set(arc.math.geom.Vec2)", "arc.scene.event.ElementGestureListener.pinch(arc.scene.event.InputEvent, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2)", "arc.math.geom.Vec2.sub(arc.math.geom.Vec2)", "arc.input.GestureDetector.GestureDetector(float, float, float, float, arc.input.GestureDetector.GestureListener)", "arc.scene.event.ElementGestureListener.Anonymous-141eb688-5288-42be-b25f-d023405061ec.Anonymous-141eb688-5288-42be-b25f-d023405061ec()", "arc.math.geom.Vec2.Vec2()" ],
+    "callCount" : 15
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent e)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "e",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 87,
+    "calls" : [ "arc.input.GestureDetector.touchDown(float, float, int, arc.input.KeyCode)", "arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.event.ElementGestureListener.touchDown(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)", "arc.scene.event.InputEvent.isTouchFocusCancel()", "arc.input.GestureDetector.touchUp(float, float, int, arc.input.KeyCode)", "arc.scene.event.ElementGestureListener.touchUp(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)", "arc.input.GestureDetector.touchDragged(float, float, int)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 117,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 120,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void tap(InputEvent event, float x, float y, int count, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "count",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 123,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean longPress(Element actor, float x, float y)",
+    "desc" : "If true is returned, additional gestures will not be triggered.",
+    "overloads" : null,
+    "name" : "longPress",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 130,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void fling(InputEvent event, float velocityX, float velocityY, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fling",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "velocityX",
+      "type" : "float"
+    }, {
+      "name" : "velocityY",
+      "type" : "float"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 134,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void pan(InputEvent event, float x, float y, float deltaX, float deltaY)",
+    "desc" : "The delta is the difference in stage coordinates since the last pan.",
+    "overloads" : null,
+    "name" : "pan",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "deltaX",
+      "type" : "float"
+    }, {
+      "name" : "deltaY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 138,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void zoom(InputEvent event, float initialDistance, float distance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "zoom",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "initialDistance",
+      "type" : "float"
+    }, {
+      "name" : "distance",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 141,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void pinch(InputEvent event, Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pinch",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "initialPointer1",
+      "type" : "Vec2"
+    }, {
+      "name" : "initialPointer2",
+      "type" : "Vec2"
+    }, {
+      "name" : "pointer1",
+      "type" : "Vec2"
+    }, {
+      "name" : "pointer2",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 144,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public GestureDetector getGestureDetector()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getGestureDetector",
+    "returnType" : "GestureDetector",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 147,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getTouchDownTarget()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchDownTarget",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 151,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "EventListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java interface",
+  "typeDesc" : "Low level interface for receiving events.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "boolean handle(SceneEvent event)",
+    "desc" : "Try to handle the given event, if it is applicable.",
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "FocusListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class (abstract) implements arc.scene.event.EventListener",
+  "typeDesc" : "Listener for {@link FocusEvent}.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent event)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.event.FocusListener.keyboardFocusChanged(arc.scene.event.FocusListener.FocusEvent, arc.scene.Element, boolean)", "arc.scene.event.FocusListener.scrollFocusChanged(arc.scene.event.FocusListener.FocusEvent, arc.scene.Element, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void keyboardFocusChanged(FocusEvent event, Element element, boolean focused)",
+    "desc" : "@param element The event target, which is the element that emitted the focus event.",
+    "overloads" : null,
+    "name" : "keyboardFocusChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "FocusEvent"
+    }, {
+      "name" : "element",
+      "type" : "Element"
+    }, {
+      "name" : "focused",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void scrollFocusChanged(FocusEvent event, Element element, boolean focused)",
+    "desc" : "@param element The event target, which is the element that emitted the focus event.",
+    "overloads" : null,
+    "name" : "scrollFocusChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "FocusEvent"
+    }, {
+      "name" : "element",
+      "type" : "Element"
+    }, {
+      "name" : "focused",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "FocusEvent extends arc.scene.event.SceneEvent",
+    "simpleName" : "FocusEvent",
+    "desc" : "Fired when an element gains or loses keyboard or scroll focus.",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean focused",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "focused",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 38,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Type type",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "type",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 39,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Element relatedActor",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "relatedActor",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 40,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void reset()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 42,
+      "calls" : [ "arc.scene.event.SceneEvent.reset()" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "HandCursorListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.ClickListener",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Boolp enabled",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "enabled",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean checkEnabled",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkEnabled",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public HandCursorListener(Boolp enabled, boolean check) / public HandCursorListener()",
+    "desc" : null,
+    "overloads" : [ "public HandCursorListener(Boolp enabled, boolean check)", "public HandCursorListener()" ],
+    "name" : "HandCursorListener",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "enabled",
+      "type" : "Boolp"
+    }, {
+      "name" : "check",
+      "type" : "boolean"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "enter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "fromActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "arc.scene.event.ClickListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)", "arc.func.Boolp.get()", "arc.scene.event.HandCursorListener.isDisabled(arc.scene.Element)", "arc.Graphics.cursor(arc.Graphics.Cursor)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void exit(InputEvent event, float x, float y, int pointer, Element toActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "exit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "toActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 32,
+    "calls" : [ "arc.scene.event.ClickListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)", "arc.Graphics.restoreCursor()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "static boolean isDisabled(Element element)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDisabled",
+    "returnType" : "boolean",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "element",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ "arc.scene.utils.Disableable.isDisabled()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "IbeamCursorListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.ClickListener",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "enter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "fromActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 8,
+    "calls" : [ "arc.scene.event.ClickListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)", "arc.Graphics.cursor(arc.Graphics.Cursor)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void exit(InputEvent event, float x, float y, int pointer, Element toActor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "exit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "toActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ "arc.scene.event.ClickListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)", "arc.Graphics.restoreCursor()" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "InputEvent.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.SceneEvent",
+  "typeDesc" : "Event for actor input: touch, mouse, keyboard, and scroll.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public InputEventType type",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "type",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float stageX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stageX",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int pointer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float scrollAmountX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrollAmountX",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public KeyCode keyCode",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyCode",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public char character",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "character",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Element relatedActor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "relatedActor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "arc.scene.event.SceneEvent.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 toCoordinates(Element actor, Vec2 actorCoords)",
+    "desc" : "Sets actorCoords to this event's coordinates relative to the specified actor.",
+    "overloads" : null,
+    "name" : "toCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    }, {
+      "name" : "actorCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ "arc.math.geom.Vec2.set(float, float)", "arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isTouchFocusCancel()",
+    "desc" : "Returns true of this event is a touchUp triggered by {@link Scene#cancelTouchFocus()}.",
+    "overloads" : null,
+    "name" : "isTouchFocusCancel",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 38,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 42,
+    "calls" : [ "java.lang.Enum.toString()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "InputListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class implements arc.scene.event.EventListener",
+  "typeDesc" : "EventListener for low-level input events.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Vec2 tmpCoords",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpCoords",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent e)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "e",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.scene.event.InputListener.keyDown(arc.scene.event.InputEvent, arc.input.KeyCode)", "arc.scene.event.InputListener.keyUp(arc.scene.event.InputEvent, arc.input.KeyCode)", "arc.scene.event.InputListener.keyTyped(arc.scene.event.InputEvent, char)", "arc.scene.event.InputEvent.toCoordinates(arc.scene.Element, arc.math.geom.Vec2)", "arc.scene.event.InputListener.touchDown(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)", "arc.scene.event.InputListener.touchUp(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)", "arc.scene.event.InputListener.touchDragged(arc.scene.event.InputEvent, float, float, int)", "arc.scene.event.InputListener.mouseMoved(arc.scene.event.InputEvent, float, float)", "arc.scene.event.InputListener.scrolled(arc.scene.event.InputEvent, float, float, float, float)", "arc.scene.event.InputListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)", "arc.scene.event.InputListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : "Called when a mouse button or a finger touch goes down on the element.",
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)",
+    "desc" : "Called when a mouse button or a finger touch goes up anywhere, but only if touchDown previously returned true for the mouse",
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchDragged(InputEvent event, float x, float y, int pointer)",
+    "desc" : "Called when a mouse button or a finger touch is moved anywhere, but only if touchDown previously returned true for the mouse",
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 73,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean mouseMoved(InputEvent event, float x, float y)",
+    "desc" : "Called any time the mouse is moved when a button is not down.",
+    "overloads" : null,
+    "name" : "mouseMoved",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 81,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)",
+    "desc" : "Called any time the mouse cursor or a finger touch is moved over an element.",
+    "overloads" : null,
+    "name" : "enter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "fromActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void exit(InputEvent event, float x, float y, int pointer, Element toActor)",
+    "desc" : "Called any time the mouse cursor or a finger touch is moved out of an element.",
+    "overloads" : null,
+    "name" : "exit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "toActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY)",
+    "desc" : "Called when the mouse wheel has been scrolled.",
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 104,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyDown(InputEvent event, KeyCode keycode)",
+    "desc" : "Called when a key goes down.",
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 109,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyUp(InputEvent event, KeyCode keycode)",
+    "desc" : "Called when a key goes up.",
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyTyped(InputEvent event, char character)",
+    "desc" : "Called when a key is typed.",
+    "overloads" : null,
+    "name" : "keyTyped",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "InputEvent"
+    }, {
+      "name" : "character",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ResizeListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class implements arc.scene.event.EventListener",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent event)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 5,
+    "calls" : [ "arc.scene.event.ResizeListener.resized()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void resized()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resized",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SceneEvent.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class implements arc.util.pooling.Pool.Poolable",
+  "typeDesc" : "The base class for all events.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Element targetActor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "targetActor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Element listenerActor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listenerActor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean capture",
+    "desc" : "true means event occurred during the capture phase",
+    "overloads" : null,
+    "name" : "capture",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean bubbles",
+    "desc" : "true means propagate to target's parents",
+    "overloads" : null,
+    "name" : "bubbles",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean handled",
+    "desc" : "true means the event was handled (the stage will eat the input)",
+    "overloads" : null,
+    "name" : "handled",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean stopped",
+    "desc" : "true means event propagation was stopped",
+    "overloads" : null,
+    "name" : "stopped",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean cancelled",
+    "desc" : "true means propagation was stopped and any action that this event would cause should not happen",
+    "overloads" : null,
+    "name" : "cancelled",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void handle()",
+    "desc" : "Marks this event as handled.",
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancel()",
+    "desc" : "Marks this event cancelled.",
+    "overloads" : null,
+    "name" : "cancel",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void stop()",
+    "desc" : "Marks this event has being stopped.",
+    "overloads" : null,
+    "name" : "stop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SceneResizeEvent.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.SceneEvent",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Touchable.java",
+  "pkg" : "arc.scene.event",
+  "type" : null,
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "VisibilityEvent.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class extends arc.scene.event.SceneEvent",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private boolean hide",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hide",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 4,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public VisibilityEvent() / public VisibilityEvent(boolean hide)",
+    "desc" : null,
+    "overloads" : [ "public VisibilityEvent()", "public VisibilityEvent(boolean hide)" ],
+    "name" : "VisibilityEvent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean isHide()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isHide",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "VisibilityListener.java",
+  "pkg" : "arc.scene.event",
+  "type" : "Java class implements arc.scene.event.EventListener",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean handle(SceneEvent event)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 5,
+    "calls" : [ "arc.scene.event.VisibilityEvent.isHide()", "arc.scene.event.VisibilityListener.hidden()", "arc.scene.event.VisibilityListener.shown()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shown()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hidden()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hidden",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

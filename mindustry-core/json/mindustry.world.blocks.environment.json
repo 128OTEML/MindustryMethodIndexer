@@ -1,0 +1,4403 @@
+[ {
+  "file" : "AirBlock.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public AirBlock(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "AirBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "OverrideCallSuper", "Override" ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "OverrideCallSuper", "Override" ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isHidden()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isHidden",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] variantRegions()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "variantRegions",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 41,
+    "calls" : [ "arc.graphics.g2d.TextureAtlas.find(java.lang.String)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "CharacterOverlay.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.OverlayFloor",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final String chars",
+    "desc" : "This is a special reduced character set that fits in 6 bits! It is not ASCII!",
+    "overloads" : null,
+    "name" : "chars",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion letterRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "letterRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "color",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public CharacterOverlay(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "CharacterOverlay",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ "arc.graphics.g2d.Draw.color(arc.graphics.Color)", "mindustry.gen.CharOverlayData.character(byte)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.gen.CharOverlayData.rotation(byte)", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public Object getConfig(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 38,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlanRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "java.lang.Integer.byteValue()", "mindustry.gen.CharOverlayData.character(byte)", "arc.graphics.g2d.Draw.tint(arc.graphics.Color)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.entities.units.BuildPlan.drawx()", "mindustry.entities.units.BuildPlan.drawy()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void onPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ "mindustry.gen.CharOverlayData.rotation(byte)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void buildEditorConfig(Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildEditorConfig",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 64,
+    "calls" : [ "java.lang.String.charAt(int)", "mindustry.gen.CharOverlayData.character(byte)", "java.lang.Integer.byteValue()", "arc.scene.ui.layout.Cell.maxTextLength(int)", "arc.scene.ui.layout.Cell.valid(arc.scene.ui.TextField.TextFieldValidator)", "arc.scene.ui.layout.Table.field(java.lang.String, arc.func.Cons<java.lang.String>)", "java.lang.String.length()", "mindustry.world.blocks.environment.CharacterOverlay.charToData(char)", "java.lang.String.indexOf(int)", "java.lang.Character.toUpperCase(char)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 74,
+    "calls" : [ "java.lang.Integer.byteValue()", "mindustry.gen.CharOverlayData.get(byte, byte)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void editorPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "editorPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 83,
+    "calls" : [ "mindustry.gen.CharOverlayData.character(byte)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static byte charToData(char c)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "charToData",
+    "returnType" : "byte",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "c",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 88,
+    "calls" : [ "java.lang.String.indexOf(int)", "java.lang.Character.toUpperCase(char)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "CharOverlayDataStruct",
+    "simpleName" : "CharOverlayDataStruct",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "byte character",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "character",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 95,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "byte rotation",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "rotation",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 97,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Cliff.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float size",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "size",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion cliffs",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cliffs",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Cliff(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Cliff",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 22,
+    "calls" : [ "arc.graphics.g2d.Draw.color(arc.graphics.Color)", "arc.graphics.Color.mul(float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.world.Tile.floor()", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public int minimapColor(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minimapColor",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 29,
+    "calls" : [ "arc.graphics.Color.rgba()", "arc.graphics.Color.mul(float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.world.Tile.floor()" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ColoredFloor.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int flagIgnoreDifferentColor",
+    "desc" : "If the alpha value of the color is set to this value, different colors are ignored and no border is drawn.",
+    "overloads" : null,
+    "name" : "flagIgnoreDifferentColor",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int flagSmoothBlend",
+    "desc" : "If the alpha value of the color is set to this value, colors are interpolated across corners.",
+    "overloads" : null,
+    "name" : "flagSmoothBlend",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float verts",
+    "desc" : "4x (pos2 color uv2)",
+    "overloads" : null,
+    "name" : "verts",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color defaultColor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultColor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int defaultColorRgba",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultColorRgba",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ColoredFloor(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ColoredFloor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.init()", "arc.graphics.Color.rgba()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void buildEditorConfig(Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildEditorConfig",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 42,
+    "calls" : [ "mindustry.world.blocks.environment.ColoredFloor.showColorEdit(arc.scene.ui.layout.Table, mindustry.world.Block)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void showColorEdit(Table t, Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "showColorEdit",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "t",
+      "type" : "Table"
+    }, {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "arc.scene.ui.layout.Cell.row()", "arc.scene.ui.layout.Cell.pad(float)", "arc.scene.ui.layout.Cell.width(float)", "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Table.button(arc.func.Cons<arc.scene.ui.Button>, arc.scene.ui.Button.ButtonStyle, java.lang.Runnable)", "arc.scene.ui.layout.Table.margin(float)", "arc.scene.ui.layout.Table.left()", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Cell.margin(float)", "arc.scene.ui.layout.Table.table(arc.scene.style.Drawable, arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.Cell.grow()", "arc.scene.ui.layout.Cell.update(arc.func.Cons<T>)", "arc.scene.ui.layout.Table.image(arc.scene.style.Drawable)", "arc.graphics.Color.set(int)", "arc.scene.ui.layout.Table.add(java.lang.CharSequence)", "mindustry.ui.dialogs.ColorPicker.show(arc.graphics.Color, boolean, arc.func.Cons<arc.graphics.Color>)", "arc.graphics.Color.rgba8888()", "arc.graphics.Color.Color(int)" ],
+    "callCount" : 19
+  }, {
+    "kind" : "method",
+    "signature" : "public Object getConfig(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 70,
+    "calls" : [ "arc.graphics.g2d.Draw.color(int)", "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.Tile.floor()", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.world.blocks.environment.ColoredFloor.sample(mindustry.world.Block, int, int, int, int, int, int, int, int)", "arc.graphics.g2d.Draw.vert(arc.graphics.Texture, float[], int, int)", "mindustry.world.blocks.environment.Floor.drawBase(mindustry.world.Tile)", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "static float sample(Block target, int tx1, int ty1, int tx2, int ty2, int tx3, int ty3, int tx4, int ty4)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sample",
+    "returnType" : "float",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Block"
+    }, {
+      "name" : "tx1",
+      "type" : "int"
+    }, {
+      "name" : "ty1",
+      "type" : "int"
+    }, {
+      "name" : "tx2",
+      "type" : "int"
+    }, {
+      "name" : "ty2",
+      "type" : "int"
+    }, {
+      "name" : "tx3",
+      "type" : "int"
+    }, {
+      "name" : "ty3",
+      "type" : "int"
+    }, {
+      "name" : "tx4",
+      "type" : "int"
+    }, {
+      "name" : "ty4",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 120,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.floor()", "arc.graphics.Color.ri(int)", "arc.graphics.Color.gi(int)", "arc.graphics.Color.bi(int)", "arc.graphics.Color.toFloatBits(int, int, int, int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawOverlay(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawOverlay",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 160,
+    "calls" : [ "arc.graphics.g2d.Draw.color()", "mindustry.world.blocks.environment.Floor.drawOverlay(mindustry.world.Tile)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void floorChanged(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "floorChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 167,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 175,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void editorPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "editorPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 183,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlanRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 188,
+    "calls" : [ "arc.graphics.g2d.Draw.tint(arc.graphics.Color)", "arc.graphics.Color.set(int)", "mindustry.world.Block.drawDefaultPlanRegion(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkAutotileSame(Tile tile, Tile other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkAutotileSame",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "other",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 196,
+    "calls" : [ "mindustry.world.Tile.floor()", "mindustry.world.Tile.overlay()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public int minimapColor(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minimapColor",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 201,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ColoredWall.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.StaticWall",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int flagIgnoreDifferentColor",
+    "desc" : "If the alpha value of the color is set to this value, different colors are ignored and no border is drawn.",
+    "overloads" : null,
+    "name" : "flagIgnoreDifferentColor",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int flagApplyDarkness",
+    "desc" : "If the alpha value of the color is set to this value, the wall will have darkness applied, as other walls do.",
+    "overloads" : null,
+    "name" : "flagApplyDarkness",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color defaultColor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultColor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int defaultColorRgba",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultColorRgba",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ColoredWall(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ColoredWall",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ "mindustry.world.Block.init()", "arc.graphics.Color.rgba()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Object getConfig(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 33,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void buildEditorConfig(Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildEditorConfig",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 38,
+    "calls" : [ "mindustry.world.blocks.environment.ColoredFloor.showColorEdit(arc.scene.ui.layout.Table, mindustry.world.Block)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "arc.graphics.g2d.Draw.color(int)", "mindustry.world.blocks.environment.StaticWall.drawBase(mindustry.world.Tile)", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void blockChanged(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blockChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void editorPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "editorPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 67,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlanRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 72,
+    "calls" : [ "arc.graphics.g2d.Draw.tint(arc.graphics.Color)", "arc.graphics.Color.set(int)", "mindustry.world.Block.drawDefaultPlanRegion(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkAutotileSame(Tile tile, Tile other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkAutotileSame",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "other",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 80,
+    "calls" : [ "mindustry.world.Tile.block()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDarkened(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDarkened",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 85,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int minimapColor(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minimapColor",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 90,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "EmptyFloor.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : "Empty floor is *not* equivalent to air.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public EmptyFloor(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "EmptyFloor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.drawEdges(mindustry.world.Tile)", "mindustry.world.Tile.overlay()", "mindustry.world.blocks.environment.Floor.drawBase(mindustry.world.Tile)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Floor.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public String edge",
+    "desc" : "edge fallback, used mainly for ores",
+    "overloads" : null,
+    "name" : "edge",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float speedMultiplier",
+    "desc" : "Multiplies unit velocity by this when walked on.",
+    "overloads" : null,
+    "name" : "speedMultiplier",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float dragMultiplier",
+    "desc" : "Multiplies unit drag by this when walked on.",
+    "overloads" : null,
+    "name" : "dragMultiplier",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float damageTaken",
+    "desc" : "Damage taken per tick on this tile.",
+    "overloads" : null,
+    "name" : "damageTaken",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float drownTime",
+    "desc" : "How many ticks it takes to drown on this.",
+    "overloads" : null,
+    "name" : "drownTime",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Effect walkEffect",
+    "desc" : "Effect when walking on this floor.",
+    "overloads" : null,
+    "name" : "walkEffect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Sound walkSound",
+    "desc" : "Sound made when walking.",
+    "overloads" : null,
+    "name" : "walkSound",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float walkSoundVolume",
+    "desc" : "Volume of sound made when walking.",
+    "overloads" : null,
+    "name" : "walkSoundVolume",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Effect drownUpdateEffect",
+    "desc" : "Effect displayed when drowning on this floor.",
+    "overloads" : null,
+    "name" : "drownUpdateEffect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 42,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public StatusEffect status",
+    "desc" : "Status effect applied when walking on.",
+    "overloads" : null,
+    "name" : "status",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float statusDuration",
+    "desc" : "Intensity of applied status effect.",
+    "overloads" : null,
+    "name" : "statusDuration",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Liquid liquidDrop",
+    "desc" : "liquids that drop from this block, used for pumps.",
+    "overloads" : null,
+    "name" : "liquidDrop",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 48,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float liquidMultiplier",
+    "desc" : "Multiplier for pumped liquids, used for deep water.",
+    "overloads" : null,
+    "name" : "liquidMultiplier",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 50,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean isLiquid",
+    "desc" : "whether this block is liquid.",
+    "overloads" : null,
+    "name" : "isLiquid",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 52,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float overlayAlpha",
+    "desc" : "for liquid floors, this is the opacity of the overlay drawn on top.",
+    "overloads" : null,
+    "name" : "overlayAlpha",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 54,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean supportsOverlay",
+    "desc" : "whether this floor supports an overlay floor",
+    "overloads" : null,
+    "name" : "supportsOverlay",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 56,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean supportsBeingOverlaid",
+    "desc" : "if false, this floor can't be used as an overlay (liquid underlay), even if the floor it's placed on supports it",
+    "overloads" : null,
+    "name" : "supportsBeingOverlaid",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 58,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean shallow",
+    "desc" : "shallow water flag used for generation",
+    "overloads" : null,
+    "name" : "shallow",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 60,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block blendGroup",
+    "desc" : "Group of blocks that this block does not draw edges on.",
+    "overloads" : null,
+    "name" : "blendGroup",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 62,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean oreDefault",
+    "desc" : "Whether this ore generates in maps by default.",
+    "overloads" : null,
+    "name" : "oreDefault",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 64,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float oreScale",
+    "desc" : "Ore generation params.",
+    "overloads" : null,
+    "name" : "oreScale",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 66,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block wall",
+    "desc" : "Wall variant of this block.",
+    "overloads" : null,
+    "name" : "wall",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 68,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block decoration",
+    "desc" : "Decoration block.",
+    "overloads" : null,
+    "name" : "decoration",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 70,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean canShadow",
+    "desc" : "Whether units can draw shadows over this.",
+    "overloads" : null,
+    "name" : "canShadow",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 72,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean forceDrawLight",
+    "desc" : "If true, this floor ignores the obstructsLight flag of overlays.",
+    "overloads" : null,
+    "name" : "forceDrawLight",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 74,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean needsSurface",
+    "desc" : "Whether this overlay needs a surface to be on.",
+    "overloads" : null,
+    "name" : "needsSurface",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 76,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean allowCorePlacement",
+    "desc" : "If true, cores can be placed on this floor.",
+    "overloads" : null,
+    "name" : "allowCorePlacement",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 78,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean wallOre",
+    "desc" : "If true, this ore is allowed on walls.",
+    "overloads" : null,
+    "name" : "wallOre",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 80,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int blendId",
+    "desc" : "Actual ID used for blend groups.",
+    "overloads" : null,
+    "name" : "blendId",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 82,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int tilingVariants",
+    "desc" : "If >0, this floor is drawn as parts of a large texture.",
+    "overloads" : null,
+    "name" : "tilingVariants",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 84,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean autotile",
+    "desc" : "If true, this floor uses autotiling; variants are not supported.",
+    "overloads" : null,
+    "name" : "autotile",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 86,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int autotileMidVariants",
+    "desc" : "If >1, the middle region of the autotile has random variants.",
+    "overloads" : null,
+    "name" : "autotileMidVariants",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 88,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int autotileVariants",
+    "desc" : "Variants of the main autotile sprite.",
+    "overloads" : null,
+    "name" : "autotileVariants",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 90,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean drawEdgeIn",
+    "desc" : "If true (default), this floor will draw edges of other floors on itself.",
+    "overloads" : null,
+    "name" : "drawEdgeIn",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 92,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean drawEdgeOut",
+    "desc" : "If true (default), this floor will draw its edges onto other floors.",
+    "overloads" : null,
+    "name" : "drawEdgeOut",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 94,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion tilingRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tilingRegions",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 96,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion autotileRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "autotileRegions",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 97,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion autotileVariantRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "autotileVariantRegions",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 98,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int tilingSize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tilingSize",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 99,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion edges",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "edges",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 100,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Seq<Floor> blenders",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blenders",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 101,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Bits blended",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blended",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 102,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int dirs",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dirs",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 103,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion edgeRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "edgeRegion",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 104,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Floor(String name) / public Floor(String name, int variants)",
+    "desc" : null,
+    "overloads" : [ "public Floor(String name)", "public Floor(String name, int variants)" ],
+    "name" : "Floor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 106,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 121,
+    "calls" : [ "mindustry.world.Block.load()", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.graphics.g2d.TextureRegion.split(int, int)", "arc.util.Log.warn(java.lang.String, java.lang.Object...)", "mindustry.world.blocks.TileBitmask.load(java.lang.String)", "mindustry.world.blocks.TileBitmask.loadVariants(java.lang.String, int)", "arc.graphics.g2d.TextureAtlas.has(java.lang.String)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 186,
+    "calls" : [ "mindustry.world.Block.init()", "mindustry.core.ContentLoader.block(java.lang.String)", "java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion getDisplayIcon(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDisplayIcon",
+    "returnType" : "TextureRegion",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 214,
+    "calls" : [ "mindustry.world.Block.getDisplayIcon(mindustry.world.Tile)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String getDisplayName(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDisplayName",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 219,
+    "calls" : [ "mindustry.world.Block.getDisplayName(mindustry.world.Tile)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void createIcons(MultiPacker packer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createIcons",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "packer",
+      "type" : "MultiPacker"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 224,
+    "calls" : [ "mindustry.world.Block.createIcons(mindustry.graphics.MultiPacker)", "arc.graphics.g2d.TextureAtlas.has(java.lang.String)", "mindustry.graphics.MultiPacker.get(arc.graphics.g2d.TextureRegion)", "mindustry.world.blocks.environment.Floor.icons()", "arc.graphics.g2d.TextureAtlas.find(java.lang.String, java.lang.String)", "arc.graphics.Pixmap.set(int, int, int)", "arc.graphics.Color.muli(int, int)", "arc.graphics.g2d.PixmapRegion.get(int, int)", "mindustry.graphics.MultiPacker.add(mindustry.graphics.MultiPacker.PageType, java.lang.String, arc.graphics.Pixmap)", "arc.graphics.Pixmap.dispose()", "arc.graphics.Pixmap.Pixmap(int, int)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 248,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.drawMain(mindustry.world.Tile)", "mindustry.world.blocks.environment.Floor.drawEdges(mindustry.world.Tile)", "mindustry.world.blocks.environment.Floor.drawOverlay(mindustry.world.Tile)", "mindustry.world.Tile.overlay()", "mindustry.world.Tile.floor()", "arc.graphics.g2d.Draw.alpha(float)", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawMain(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawMain",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 264,
+    "calls" : [ "arc.math.Mathf.randomSeed(long, int, int)", "arc.math.geom.Point2.pack(int, int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.world.blocks.environment.Floor.variant(int, int, int)", "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.blocks.environment.Floor.checkAutotileSame(mindustry.world.Tile, mindustry.world.Tile)", "mindustry.world.blocks.environment.Floor.variant(int, int)", "arc.graphics.g2d.Draw.alpha(float)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkAutotileSame(Tile tile, Tile other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkAutotileSame",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "other",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 292,
+    "calls" : [ "mindustry.world.Tile.floor()", "mindustry.world.Tile.overlay()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public int variant(int x, int y) / public int variant(int x, int y, int max)",
+    "desc" : null,
+    "overloads" : [ "public int variant(int x, int y)", "public int variant(int x, int y, int max)" ],
+    "name" : "variant",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 296,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.variant(int, int, int)", "arc.math.Mathf.randomSeed(long, int, int)", "arc.math.geom.Point2.pack(int, int)", "java.lang.Math.max(int, int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawOverlay(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawOverlay",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 304,
+    "calls" : [ "mindustry.world.Tile.overlay()", "mindustry.world.blocks.environment.Floor.drawBase(mindustry.world.Tile)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 311,
+    "calls" : [ "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.graphics.g2d.TextureAtlas.has(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void floorChanged(Tile tile)",
+    "desc" : "Called when this floor is set on the specified tile.",
+    "overloads" : null,
+    "name" : "floorChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 317,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shouldIndex(Tile tile)",
+    "desc" : "@return whether to index this floor by flag",
+    "overloads" : null,
+    "name" : "shouldIndex",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 320,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean updateRender(Tile tile)",
+    "desc" : "@return true if this floor should be updated in the render loop, e.g.",
+    "overloads" : null,
+    "name" : "updateRender",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 326,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderUpdate(UpdateRenderState tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "UpdateRenderState"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 330,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasSurface()",
+    "desc" : "@return whether this floor has a valid surface on which to place things, e.g.",
+    "overloads" : null,
+    "name" : "hasSurface",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 335,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDeep()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDeep",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 339,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawNonLayer(Tile tile, CacheLayer layer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawNonLayer",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "layer",
+      "type" : "CacheLayer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 343,
+    "calls" : [ "java.util.Arrays.fill(int[], int)", "arc.struct.Seq.clear()", "arc.struct.Bits.clear()", "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.Tile.floor()", "mindustry.world.blocks.environment.Floor.edges(int, int)", "arc.struct.Bits.getAndSet(int)", "arc.struct.Seq.add(T)", "mindustry.world.Tile.floorID()", "mindustry.world.blocks.environment.Floor.drawBlended(mindustry.world.Tile, boolean)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "protected void drawEdges(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawEdges",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 363,
+    "calls" : [ "arc.struct.Seq.clear()", "arc.struct.Bits.clear()", "java.util.Arrays.fill(int[], int)", "mindustry.world.Tile.floor()", "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.Tile.overlay()", "mindustry.world.blocks.environment.Floor.doEdge(mindustry.world.Tile, mindustry.world.Tile, mindustry.world.blocks.environment.Floor)", "mindustry.world.blocks.environment.Floor.edges(int, int)", "arc.struct.Bits.getAndSet(int)", "arc.struct.Seq.add(T)", "mindustry.world.blocks.environment.Floor.drawBlended(mindustry.world.Tile, boolean)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "protected void drawBlended(Tile tile, boolean checkId)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBlended",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "checkId",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 388,
+    "calls" : [ "arc.struct.Seq.sort(arc.func.Floatf<? super T>)", "mindustry.world.Tile.floor()", "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.Tile.overlay()", "mindustry.world.blocks.environment.Floor.edge(int, int, int, int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public int realBlendId(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "realBlendId",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 409,
+    "calls" : [ "mindustry.world.Tile.floor()", "mindustry.world.Block.isAir()", "mindustry.world.Tile.overlay()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "protected TextureRegion[][] edges(int x, int y)",
+    "desc" : "Returns the edge array that should be used to draw at the specified tile position.",
+    "overloads" : null,
+    "name" : "edges",
+    "returnType" : "TextureRegion[][]",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 417,
+    "calls" : [ "mindustry.world.Block.asFloor()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "protected TextureRegion edge(int x, int y, int rx, int ry)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "edge",
+    "returnType" : "TextureRegion",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "rx",
+      "type" : "int"
+    }, {
+      "name" : "ry",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 421,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.edges(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "protected boolean doEdge(Tile tile, Tile otherTile, Floor other)",
+    "desc" : "@return whether the edges from {@param other} should be drawn onto this tile *",
+    "overloads" : null,
+    "name" : "doEdge",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "otherTile",
+      "type" : "Tile"
+    }, {
+      "name" : "other",
+      "type" : "Floor"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 426,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.realBlendId(mindustry.world.Tile)", "mindustry.world.blocks.environment.Floor.edges(int, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean damages()",
+    "desc" : "@return whether being on this floor can damage a unit",
+    "overloads" : null,
+    "name" : "damages",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 431,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "UpdateRenderState",
+    "simpleName" : "UpdateRenderState",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public Tile tile",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "tile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 436,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Floor floor",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "floor",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 437,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public float data",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "data",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 438,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public UpdateRenderState(Tile tile, Floor floor)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "UpdateRenderState",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "tile",
+        "type" : "Tile"
+      }, {
+        "name" : "floor",
+        "type" : "Floor"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 440,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "OreBlock.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.OverlayFloor",
+  "typeDesc" : "An overlay ore for a specific item type.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public OreBlock(String name, Item ore) / public OreBlock(Item ore) / public OreBlock(String name)",
+    "desc" : "For mod use only!",
+    "overloads" : [ "public OreBlock(String name, Item ore)", "public OreBlock(Item ore)", "public OreBlock(String name)" ],
+    "name" : "OreBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "ore",
+      "type" : "Item"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setup(Item ore)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setup",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "ore",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ "arc.util.I18NBundle.get(java.lang.String)", "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void createIcons(MultiPacker packer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createIcons",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "packer",
+      "type" : "MultiPacker"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override", "OverrideCallSuper" ],
+    "line" : 43,
+    "calls" : [ "arc.graphics.g2d.TextureAtlas.has(java.lang.String)", "mindustry.graphics.MultiPacker.get(java.lang.String)", "arc.graphics.g2d.PixmapRegion.crop()", "arc.graphics.Color.rgba8888(float, float, float, float)", "arc.graphics.g2d.PixmapRegion.getA(int, int)", "arc.graphics.Pixmap.setRaw(int, int, int)", "mindustry.graphics.MultiPacker.add(mindustry.graphics.MultiPacker.PageType, java.lang.String, arc.graphics.Pixmap)", "arc.graphics.Pixmap.dispose()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 75,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.init()", "mindustry.world.blocks.environment.OreBlock.setup(mindustry.type.Item)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public String getDisplayName(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDisplayName",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "OverlayFloor.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : "A type of floor that is overlaid on top of other floors.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public OverlayFloor(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "OverlayFloor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean canPlaceOn(Tile tile, Team team, int rotation)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canPlaceOn",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ "mindustry.world.Tile.block()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 6
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Prop.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float layer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Prop(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Prop",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "arc.graphics.g2d.Draw.z(float)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ "mindustry.world.Block.icons()", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoveOre.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.OverlayFloor",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public RemoveOre(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "RemoveOre",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlan",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    }, {
+      "name" : "valid",
+      "type" : "boolean"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.graphics.g2d.Draw.reset()", "arc.graphics.g2d.Draw.alpha(float)", "mindustry.world.Block.drawPlanRegion(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean canPlaceOn(Tile tile, Team team, int rotation)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canPlaceOn",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "mindustry.world.Tile.overlay()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean canReplace(Block other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canReplace",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ "mindustry.world.Tile.setOverlay(mindustry.world.Block)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoveWall.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public RemoveWall(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "RemoveWall",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlan",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    }, {
+      "name" : "valid",
+      "type" : "boolean"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "arc.graphics.g2d.Draw.reset()", "arc.graphics.g2d.Draw.alpha(float)", "mindustry.world.Block.drawPlanRegion(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean canPlaceOn(Tile tile, Team team, int rotation)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canPlaceOn",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 35,
+    "calls" : [ "mindustry.world.Tile.block()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean canReplace(Block other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canReplace",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 40,
+    "calls" : [ "mindustry.world.Block.synthetic()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 45,
+    "calls" : [ "mindustry.world.Tile.setBlock(mindustry.world.Block)", "mindustry.world.Tile.overlay()", "mindustry.world.Tile.setOverlay(mindustry.world.Block)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RuneOverlay.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.OverlayFloor",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int characters",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "characters",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int unicodeOffset",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unicodeOffset",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion letterRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "letterRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "color",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public RuneOverlay(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "RuneOverlay",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static String bytesToString(byte[] data)",
+    "desc" : "Encodes rune data bytes into a string that can be displayed in the font.",
+    "overloads" : null,
+    "name" : "bytesToString",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "data",
+      "type" : "byte[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 29,
+    "calls" : [ "java.lang.StringBuilder.append(char)", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static byte[] stringToBytes(String s)",
+    "desc" : "Converts a displayable string into rune data bytes.",
+    "overloads" : null,
+    "name" : "stringToBytes",
+    "returnType" : "byte[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "s",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 38,
+    "calls" : [ "java.lang.String.length()", "java.lang.String.charAt(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ "arc.graphics.g2d.Draw.color(arc.graphics.Color)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public Object getConfig(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlanRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 60,
+    "calls" : [ "java.lang.Integer.byteValue()", "arc.graphics.g2d.Draw.tint(arc.graphics.Color)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.entities.units.BuildPlan.drawx()", "mindustry.entities.units.BuildPlan.drawy()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void onPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 79,
+    "calls" : [ "mindustry.gen.CharOverlayData.rotation(byte)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void buildEditorConfig(Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildEditorConfig",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 84,
+    "calls" : [ "arc.scene.ui.layout.Cell.valid(arc.scene.ui.TextField.TextFieldValidator)", "arc.scene.ui.layout.Table.field(java.lang.String, arc.func.Cons<java.lang.String>)", "arc.util.Strings.parseInt(java.lang.String)", "arc.util.Strings.canParsePositiveInt(java.lang.String)", "arc.util.Strings.parseInt(java.lang.String, int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void placeEnded(Tile tile, Unit builder, int rotation, Object config)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeEnded",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "builder",
+      "type" : "Unit"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 91,
+    "calls" : [ "java.lang.Integer.byteValue()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void editorPicked(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "editorPicked",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 98,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SeaBush.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Prop",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TextureRegion botRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "botRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion centerRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "centerRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int lobesMin",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lobesMin",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float botAngle",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "botAngle",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float sclMin",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sclMin",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Rand rand",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rand",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SeaBush(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SeaBush",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.graphics.g2d.Draw.z(float)", "arc.math.Rand.setSeed(long)", "mindustry.world.Tile.pos()", "arc.math.Rand.random(float)", "arc.math.Rand.random(int, int)", "arc.math.Rand.range(float)", "arc.math.Mathf.sin(float, float, float)", "arc.math.Rand.random(float, float)", "arc.graphics.g2d.TextureRegion.scl()", "arc.math.Angles.angleDist(float, float)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float, float, float, float, float)", "mindustry.world.Tile.worldx()", "arc.math.Angles.trnsx(float, float)", "mindustry.world.Tile.worldy()", "arc.math.Angles.trnsy(float, float)", "arc.graphics.g2d.TextureRegion.found()", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)" ],
+    "callCount" : 17
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Seaweed.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Prop",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Seaweed(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Seaweed",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.math.Mathf.randomSeedRange(long, float)", "arc.math.Mathf.sin(float, float, float)", "arc.graphics.g2d.TextureRegion.scl()", "arc.graphics.g2d.Draw.rectv(arc.graphics.g2d.TextureRegion, float, float, float, float, float, arc.func.Cons<arc.math.geom.Vec2>)", "arc.math.geom.Vec2.add(float, float)", "arc.math.Mathf.cos(float, float, float)" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ShallowLiquid.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : "Blends water together with a standard floor.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Floor liquidBase",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidBase",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float liquidOpacity",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidOpacity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ShallowLiquid(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ShallowLiquid",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void set(Block liquid, Block floor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Block"
+    }, {
+      "name" : "floor",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ "mindustry.world.Block.asFloor()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void createIcons(MultiPacker packer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createIcons",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "packer",
+      "type" : "MultiPacker"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 33,
+    "calls" : [ "mindustry.graphics.MultiPacker.get(arc.graphics.g2d.TextureRegion)", "mindustry.world.Block.variantRegions()", "arc.graphics.g2d.PixmapRegion.crop()", "arc.graphics.Pixmap.setRaw(int, int, int)", "arc.graphics.Pixmap.blend(int, int)", "arc.graphics.g2d.PixmapRegion.getRaw(int, int)", "mindustry.graphics.MultiPacker.add(mindustry.graphics.MultiPacker.PageType, java.lang.String, arc.graphics.Pixmap)", "arc.graphics.Pixmap.dispose()" ],
+    "callCount" : 8
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SpawnBlock.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.OverlayFloor",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SpawnBlock(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SpawnBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "mindustry.world.blocks.environment.OverlayFloor.drawBase(mindustry.world.Tile)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "StaticProp.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Prop",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public StaticProp(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "StaticProp",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "StaticTree.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.StaticWall",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public StaticTree(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "StaticTree",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "arc.graphics.g2d.TextureRegion.set(arc.graphics.g2d.TextureRegion)", "mindustry.world.Tile.nearby(int)", "mindustry.world.Tile.block()", "arc.graphics.g2d.TextureRegion.setWidth(int)", "arc.graphics.g2d.TextureRegion.setY(int)", "arc.graphics.g2d.TextureRegion.getY()", "arc.graphics.g2d.TextureRegion.setX(int)", "arc.graphics.g2d.TextureRegion.getX()", "arc.graphics.g2d.TextureRegion.setHeight(int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.drawx()", "mindustry.world.Tile.drawy()" ],
+    "callCount" : 15
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "StaticWall.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Prop",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TextureRegion large",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "large",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion split",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "split",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean autotile",
+    "desc" : "If true, this wall uses autotiling; variants are not supported.",
+    "overloads" : null,
+    "name" : "autotile",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int autotileMidVariants",
+    "desc" : "If >1, the middle region of the autotile has random variants.",
+    "overloads" : null,
+    "name" : "autotileMidVariants",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TextureRegion autotileRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "autotileRegions",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public StaticWall(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "StaticWall",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "mindustry.world.Tile.nearby(arc.math.geom.Point2)", "mindustry.world.blocks.environment.StaticWall.checkAutotileSame(mindustry.world.Tile, mindustry.world.Tile)", "mindustry.world.blocks.environment.StaticWall.variant(int, int, int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.graphics.g2d.TextureAtlas.isFound(arc.graphics.g2d.TextureRegion)", "mindustry.world.blocks.environment.StaticWall.eq(int, int)", "arc.math.Mathf.randomSeed(long)", "arc.math.geom.Point2.pack(int, int)", "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "mindustry.world.Tile.overlay()", "mindustry.world.blocks.environment.Floor.drawBase(mindustry.world.Tile)" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "public int variant(int x, int y, int max)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "variant",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "max",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 75,
+    "calls" : [ "arc.math.Mathf.randomSeed(long, int, int)", "arc.math.geom.Point2.pack(int, int)", "java.lang.Math.max(int, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkAutotileSame(Tile tile, Tile other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkAutotileSame",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "other",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ "mindustry.world.Tile.block()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 83,
+    "calls" : [ "mindustry.world.Block.load()", "arc.graphics.g2d.TextureRegion.split(int, int)", "mindustry.world.blocks.TileBitmask.load(java.lang.String)", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean canReplace(Block other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "canReplace",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 108,
+    "calls" : [ "mindustry.world.Block.canReplace(mindustry.world.Block)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "boolean eq(int rx, int ry)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "eq",
+    "returnType" : "boolean",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "rx",
+      "type" : "int"
+    }, {
+      "name" : "ry",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 113,
+    "calls" : [ "mindustry.core.World.width()", "mindustry.core.World.height()", "mindustry.world.Tile.block()", "mindustry.core.World.tile(int, int)" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SteamVent.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : "can't use an overlay for this because it spans multiple tiles",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final Point2 offsets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "offsets",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block parent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Effect effect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "effect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color effectColor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "effectColor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float effectSpacing",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "effectSpacing",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SteamVent(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SteamVent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : [ "arc.struct.EnumSet.of(T...)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawMain(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawMain",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 49,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.drawMain(mindustry.world.Tile)", "mindustry.world.blocks.environment.SteamVent.checkAdjacent(mindustry.world.Tile)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean updateRender(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRender",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 60,
+    "calls" : [ "mindustry.world.blocks.environment.SteamVent.checkAdjacent(mindustry.world.Tile)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shouldIndex(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shouldIndex",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 65,
+    "calls" : [ "mindustry.world.blocks.environment.SteamVent.isCenterVent(mindustry.world.Tile)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isCenterVent(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isCenterVent",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 70,
+    "calls" : [ "mindustry.world.Tile.nearby(int, int)", "mindustry.world.Tile.floor()", "mindustry.world.blocks.environment.SteamVent.checkAdjacent(mindustry.world.Tile)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderUpdate(UpdateRenderState state)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "state",
+      "type" : "UpdateRenderState"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 75,
+    "calls" : [ "mindustry.world.Tile.nearby(int, int)", "mindustry.world.Tile.block()", "mindustry.entities.Effect.at(float, float, arc.graphics.Color)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkAdjacent(Tile tile)",
+    "desc" : "note that only the top right tile works for this; render order reasons.",
+    "overloads" : null,
+    "name" : "checkAdjacent",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.floor()" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TallBlock.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : "I don't know what else to call this.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float shadowOffset",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shadowOffset",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float layer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float shadowLayer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shadowLayer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float rotationRand",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rotationRand",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float shadowAlpha",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shadowAlpha",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TallBlock(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TallBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "mindustry.world.Block.init()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ "arc.math.Mathf.randomSeedRange(long, float)", "mindustry.world.Tile.pos()", "arc.graphics.g2d.Draw.z(float)", "arc.graphics.g2d.Draw.color(float, float, float, float)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "arc.math.Mathf.randomSeed(long, int, int)", "java.lang.Math.max(int, int)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.graphics.g2d.Draw.color()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawShadow(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawShadow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "mindustry.world.Block.icons()", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TiledFloor.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Floor",
+  "typeDesc" : "Renders floors in packed square tiles, sized to be as large as possible given the provided size constraints.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TextureRegion sizedRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sizedRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int maxSize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxSize",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TiledFloor(String name) / public TiledFloor(String name, int variants, int maxSize)",
+    "desc" : null,
+    "overloads" : [ "public TiledFloor(String name)", "public TiledFloor(String name, int variants, int maxSize)" ],
+    "name" : "TiledFloor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ "mindustry.world.blocks.environment.Floor.load()", "java.lang.Math.max(int, int)", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.graphics.g2d.TextureRegion.found()", "arc.graphics.g2d.TextureRegion.split(int, int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "long state(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "state",
+    "returnType" : "long",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ "mindustry.world.Tiles.getTmpFloorState(int)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void floorChanged(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "floorChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 52,
+    "calls" : [ "mindustry.core.World.isGenerating()", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledFloor.state(mindustry.world.Tile)", "mindustry.world.blocks.environment.TiledFloor.scan(mindustry.world.Tile)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "void scan(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scan",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 63,
+    "calls" : [ "mindustry.world.Tile.overlay()", "mindustry.world.Tile.nearby(int, int)", "mindustry.world.Tile.floor()", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledFloor.state(mindustry.world.Tile)", "java.lang.Math.max(int, int)", "java.lang.Math.min(int, int)", "mindustry.gen.TiledState.x(long)", "mindustry.gen.TiledState.y(long)", "arc.Application.post(java.lang.Runnable)", "mindustry.graphics.FloorRenderer.recacheTile(mindustry.world.Tile)", "mindustry.world.Tiles.setTmpFloorState(int, long)", "mindustry.world.Tile.array()", "mindustry.gen.TiledState.get(int, int, int, int)" ],
+    "callCount" : 14
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawMain(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawMain",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 105,
+    "calls" : [ "mindustry.world.blocks.environment.TiledFloor.state(mindustry.world.Tile)", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledFloor.scan(mindustry.world.Tile)", "arc.math.Mathf.clamp(int, int, int)", "mindustry.gen.TiledState.size(long)", "mindustry.gen.TiledState.x(long)", "mindustry.gen.TiledState.y(long)", "mindustry.world.blocks.environment.Floor.variant(int, int, int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "TiledStateStruct",
+    "simpleName" : "TiledStateStruct",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "int x",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "x",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 126,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int y",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "y",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 128,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int size",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "size",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 130,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int changes",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "changes",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 133,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "TiledWall.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.StaticWall",
+  "typeDesc" : "Renders walls in packed square tiles, sized to be as large as possible given the provided size constraints.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TextureRegion sizedRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sizedRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int maxSize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxSize",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TiledWall(String name) / public TiledWall(String name, int variants, int maxSize)",
+    "desc" : null,
+    "overloads" : [ "public TiledWall(String name)", "public TiledWall(String name, int variants, int maxSize)" ],
+    "name" : "TiledWall",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "mindustry.world.blocks.environment.StaticWall.load()", "java.lang.Math.max(int, int)", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.graphics.g2d.TextureRegion.found()", "arc.graphics.g2d.TextureRegion.split(int, int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "long state(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "state",
+    "returnType" : "long",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "mindustry.world.Tiles.getTmpBlockState(int)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void blockChanged(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blockChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "mindustry.core.World.isGenerating()", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledWall.state(mindustry.world.Tile)", "mindustry.world.blocks.environment.TiledWall.scan(mindustry.world.Tile)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "void scan(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scan",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 60,
+    "calls" : [ "mindustry.world.Tile.nearby(int, int)", "mindustry.world.Tile.block()", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledWall.state(mindustry.world.Tile)", "java.lang.Math.max(int, int)", "java.lang.Math.min(int, int)", "mindustry.gen.TiledState.x(long)", "mindustry.gen.TiledState.y(long)", "arc.Application.post(java.lang.Runnable)", "mindustry.graphics.FloorRenderer.recacheTile(mindustry.world.Tile)", "mindustry.world.Tiles.setTmpBlockState(int, long)", "mindustry.world.Tile.array()", "mindustry.gen.TiledState.get(int, int, int, int)" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 101,
+    "calls" : [ "mindustry.world.blocks.environment.TiledWall.state(mindustry.world.Tile)", "mindustry.gen.TiledState.changes(long)", "mindustry.world.blocks.environment.TiledWall.scan(mindustry.world.Tile)", "arc.math.Mathf.clamp(int, int, int)", "mindustry.gen.TiledState.size(long)", "mindustry.gen.TiledState.x(long)", "mindustry.gen.TiledState.y(long)", "mindustry.world.blocks.environment.StaticWall.variant(int, int, int)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TreeBlock.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float shadowOffset",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shadowOffset",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion shadow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shadow",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TreeBlock(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TreeBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "arc.math.Mathf.sin(float, float, float)", "arc.graphics.g2d.TextureRegion.scl()", "java.lang.Math.max(int, int)", "arc.graphics.g2d.TextureRegion.found()", "arc.graphics.g2d.Draw.z(float)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "arc.graphics.g2d.Draw.rectv(arc.graphics.g2d.TextureRegion, float, float, float, float, float, arc.func.Cons<arc.math.geom.Vec2>)", "arc.math.geom.Vec2.add(float, float)", "arc.math.Mathf.cos(float, float, float)" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawShadow(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawShadow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "WobbleProp.java",
+  "pkg" : "mindustry.world.blocks.environment",
+  "type" : "Java class extends mindustry.world.blocks.environment.Prop",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float wscl",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wscl",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public WobbleProp(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "WobbleProp",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void drawBase(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBase",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.math.Mathf.randomSeed(long, int, int)", "mindustry.world.Tile.pos()", "java.lang.Math.max(int, int)", "arc.graphics.g2d.Draw.rectv(arc.graphics.g2d.TextureRegion, float, float, float, float, float, arc.func.Cons<arc.math.geom.Vec2>)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.graphics.g2d.TextureRegion.scl()", "arc.math.geom.Vec2.add(float, float)", "arc.math.Mathf.sin(float, float, float)", "arc.math.Mathf.cos(float, float, float)" ],
+    "callCount" : 10
+  } ],
+  "inner" : [ ]
+} ]

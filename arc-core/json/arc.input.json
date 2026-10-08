@@ -1,0 +1,2590 @@
+[ {
+  "file" : "GestureDetector.java",
+  "pkg" : "arc.input",
+  "type" : "Java class implements arc.input.InputProcessor",
+  "typeDesc" : "{@link InputProcessor} implementation that detects gestures (tap, long press, fling, pan, zoom, pinch) and hands them to a",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "final GestureListener listener",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listener",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final VelocityTracker tracker",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tracker",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Vec2 pointer2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointer2",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Vec2 initialPointer1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialPointer1",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Vec2 initialPointer2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialPointer2",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean longPressFired",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "longPressFired",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Vec2 pointer1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointer1",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Task longPressTask",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "longPressTask",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float tapRectangleWidth",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapRectangleWidth",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float tapRectangleHeight",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapRectangleHeight",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long tapCountInterval",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapCountInterval",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float longPressSeconds",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "longPressSeconds",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long maxFlingDelay",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxFlingDelay",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean inTapRectangle",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "inTapRectangle",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int tapCount",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapCount",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long lastTapTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTapTime",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float lastTapX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTapX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int lastTapPointer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTapPointer",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private KeyCode lastTapButton",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTapButton",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean pinching",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pinching",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean panning",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "panning",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float tapRectangleCenterX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tapRectangleCenterX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long gestureStartTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "gestureStartTime",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public GestureDetector(GestureListener listener) / public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener) / public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener)",
+    "desc" : "Creates a new GestureDetector with default values: halfTapSquareSize=20, tapCountInterval=0.4f, longPressDuration=1.1f,",
+    "overloads" : [ "public GestureDetector(GestureListener listener)", "public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener)", "public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener)" ],
+    "name" : "GestureDetector",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "GestureListener"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public GestureListener getListener()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getListener",
+    "returnType" : "GestureListener",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 83,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(int x, int y, int pointer, KeyCode button) / public boolean touchDown(float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : [ "public boolean touchDown(int x, int y, int pointer, KeyCode button)", "public boolean touchDown(float x, float y, int pointer, KeyCode button)" ],
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 87,
+    "calls" : [ "arc.input.GestureDetector.touchDown(float, float, int, arc.input.KeyCode)", "arc.math.geom.Vec2.set(float, float)", "arc.Input.getCurrentEventTime()", "arc.input.GestureDetector.VelocityTracker.start(float, float, long)", "arc.Input.isTouched(int)", "arc.math.geom.Vec2.set(arc.math.geom.Vec2)", "arc.util.Timer.Task.cancel()", "arc.util.Timer.Task.isScheduled()", "arc.util.Timer.schedule(arc.util.Timer.Task, float)", "arc.input.GestureDetector.GestureListener.touchDown(float, float, int, arc.input.KeyCode)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDragged(int x, int y, int pointer) / public boolean touchDragged(float x, float y, int pointer)",
+    "desc" : null,
+    "overloads" : [ "public boolean touchDragged(int x, int y, int pointer)", "public boolean touchDragged(float x, float y, int pointer)" ],
+    "name" : "touchDragged",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 127,
+    "calls" : [ "arc.input.GestureDetector.touchDragged(float, float, int)", "arc.math.geom.Vec2.set(float, float)", "arc.input.GestureDetector.GestureListener.pinch(arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2)", "arc.input.GestureDetector.GestureListener.zoom(float, float)", "arc.math.geom.Vec2.dst(arc.math.geom.Vec2)", "arc.input.GestureDetector.VelocityTracker.update(float, float, long)", "arc.Input.getCurrentEventTime()", "arc.input.GestureDetector.isWithinTapRectangle(float, float, float, float)", "arc.util.Timer.Task.cancel()", "arc.input.GestureDetector.GestureListener.pan(float, float, float, float)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchUp(int x, int y, int pointer, KeyCode button) / public boolean touchUp(float x, float y, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : [ "public boolean touchUp(int x, int y, int pointer, KeyCode button)", "public boolean touchUp(float x, float y, int pointer, KeyCode button)" ],
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 168,
+    "calls" : [ "arc.input.GestureDetector.touchUp(float, float, int, arc.input.KeyCode)", "arc.input.GestureDetector.isWithinTapRectangle(float, float, float, float)", "arc.util.Timer.Task.cancel()", "arc.util.Time.nanos()", "arc.input.GestureDetector.GestureListener.tap(float, float, int, arc.input.KeyCode)", "arc.input.GestureDetector.GestureListener.pinchStop()", "arc.input.GestureDetector.VelocityTracker.start(float, float, long)", "arc.Input.getCurrentEventTime()", "arc.input.GestureDetector.GestureListener.panStop(float, float, int, arc.input.KeyCode)", "arc.input.GestureDetector.VelocityTracker.update(float, float, long)", "arc.input.GestureDetector.GestureListener.fling(float, float, arc.input.KeyCode)", "arc.input.GestureDetector.VelocityTracker.getVelocityX()", "arc.input.GestureDetector.VelocityTracker.getVelocityY()" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancel()",
+    "desc" : "No further gesture events will be triggered for the current touch, if any.",
+    "overloads" : null,
+    "name" : "cancel",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 231,
+    "calls" : [ "arc.util.Timer.Task.cancel()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isLongPressed() / public boolean isLongPressed(float duration)",
+    "desc" : "@return whether the user touched the screen long enough to trigger a long press event.",
+    "overloads" : [ "public boolean isLongPressed()", "public boolean isLongPressed(float duration)" ],
+    "name" : "isLongPressed",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 237,
+    "calls" : [ "arc.input.GestureDetector.isLongPressed(float)", "arc.util.Time.nanos()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isPanning()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isPanning",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 249,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 253,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private boolean isWithinTapRectangle(float x, float y, float centerX, float centerY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isWithinTapRectangle",
+    "returnType" : "boolean",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "centerX",
+      "type" : "float"
+    }, {
+      "name" : "centerY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 260,
+    "calls" : [ "java.lang.Math.abs(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void invalidateTapSquare()",
+    "desc" : "The tap square will not longer be used for the current touch.",
+    "overloads" : null,
+    "name" : "invalidateTapSquare",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 265,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapSquareSize(float halfTapSquareSize)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTapSquareSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "halfTapSquareSize",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 269,
+    "calls" : [ "arc.input.GestureDetector.setTapRectangleSize(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapRectangleSize(float halfTapRectangleWidth, float halfTapRectangleHeight)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTapRectangleSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "halfTapRectangleWidth",
+      "type" : "float"
+    }, {
+      "name" : "halfTapRectangleHeight",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 273,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTapCountInterval(float tapCountInterval)",
+    "desc" : "@param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.",
+    "overloads" : null,
+    "name" : "setTapCountInterval",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tapCountInterval",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 279,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setLongPressSeconds(float longPressSeconds)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setLongPressSeconds",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "longPressSeconds",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 283,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setMaxFlingDelay(long maxFlingDelay)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setMaxFlingDelay",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "maxFlingDelay",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 287,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "GestureListener",
+    "simpleName" : "GestureListener",
+    "desc" : "Register an instance of this class with a {@link GestureDetector} to receive gestures such as taps, long presses, flings,",
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "default boolean touchDown(float x, float y, int pointer, KeyCode button)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "touchDown",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "pointer",
+        "type" : "int"
+      }, {
+        "name" : "button",
+        "type" : "KeyCode"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 298,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean tap(float x, float y, int count, KeyCode button)",
+      "desc" : "Called when a tap occured.",
+      "overloads" : null,
+      "name" : "tap",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "count",
+        "type" : "int"
+      }, {
+        "name" : "button",
+        "type" : "KeyCode"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 308,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean longPress(float x, float y)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "longPress",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 312,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean fling(float velocityX, float velocityY, KeyCode button)",
+      "desc" : "Called when the user dragged a finger over the screen and lifted it.",
+      "overloads" : null,
+      "name" : "fling",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "velocityX",
+        "type" : "float"
+      }, {
+        "name" : "velocityY",
+        "type" : "float"
+      }, {
+        "name" : "button",
+        "type" : "KeyCode"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 322,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean pan(float x, float y, float deltaX, float deltaY)",
+      "desc" : "Called when the user drags a finger over the screen.",
+      "overloads" : null,
+      "name" : "pan",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "deltaX",
+        "type" : "float"
+      }, {
+        "name" : "deltaY",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 331,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean panStop(float x, float y, int pointer, KeyCode button)",
+      "desc" : "Called when no longer panning.",
+      "overloads" : null,
+      "name" : "panStop",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "pointer",
+        "type" : "int"
+      }, {
+        "name" : "button",
+        "type" : "KeyCode"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 336,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean zoom(float initialDistance, float distance)",
+      "desc" : "Called when the user performs a pinch zoom gesture.",
+      "overloads" : null,
+      "name" : "zoom",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "initialDistance",
+        "type" : "float"
+      }, {
+        "name" : "distance",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 346,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)",
+      "desc" : "Called when a user performs a pinch zoom gesture.",
+      "overloads" : null,
+      "name" : "pinch",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "initialPointer1",
+        "type" : "Vec2"
+      }, {
+        "name" : "initialPointer2",
+        "type" : "Vec2"
+      }, {
+        "name" : "pointer1",
+        "type" : "Vec2"
+      }, {
+        "name" : "pointer2",
+        "type" : "Vec2"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 354,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default void pinchStop()",
+      "desc" : "Called when no longer pinching.",
+      "overloads" : null,
+      "name" : "pinchStop",
+      "returnType" : "void",
+      "modifiers" : [ "default" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 359,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "VelocityTracker",
+    "simpleName" : "VelocityTracker",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "int sampleSize",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "sampleSize",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 364,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "float lastX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "lastX",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 365,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "float deltaX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "deltaX",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 366,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "long lastTime",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "lastTime",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 367,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int numSamples",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "numSamples",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 368,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "float meanX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "meanX",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 369,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "float meanY",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "meanY",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 370,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "long meanTime",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "meanTime",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 371,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void start(float x, float y, long timeStamp)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "start",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "timeStamp",
+        "type" : "long"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 373,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void update(float x, float y, long currTime)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "update",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "currTime",
+        "type" : "long"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 387,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public float getVelocityX()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getVelocityX",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 401,
+      "calls" : [ "arc.input.GestureDetector.VelocityTracker.getAverage(float[], int)", "arc.input.GestureDetector.VelocityTracker.getAverage(long[], int)" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "public float getVelocityY()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getVelocityY",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 408,
+      "calls" : [ "arc.input.GestureDetector.VelocityTracker.getAverage(float[], int)", "arc.input.GestureDetector.VelocityTracker.getAverage(long[], int)" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "private float getAverage(float[] values, int numSamples) / private long getAverage(long[] values, int numSamples)",
+      "desc" : null,
+      "overloads" : [ "private float getAverage(float[] values, int numSamples)", "private long getAverage(long[] values, int numSamples)" ],
+      "name" : "getAverage",
+      "returnType" : "float",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "values",
+        "type" : "float[]"
+      }, {
+        "name" : "numSamples",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 415,
+      "calls" : [ "java.lang.Math.min(int, int)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "private float getSum(float[] values, int numSamples)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getSum",
+      "returnType" : "float",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "values",
+        "type" : "float[]"
+      }, {
+        "name" : "numSamples",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 434,
+      "calls" : [ "java.lang.Math.min(int, int)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "InputEventQueue.java",
+  "pkg" : "arc.input",
+  "type" : "Java class implements arc.input.InputProcessor",
+  "typeDesc" : "Queues events that are later passed to the wrapped {@link InputProcessor}.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final int SKIP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SKIP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int KEY_DOWN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "KEY_DOWN",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int KEY_UP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "KEY_UP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int KEY_TYPED",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "KEY_TYPED",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int TOUCH_DOWN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TOUCH_DOWN",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int TOUCH_UP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TOUCH_UP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int TOUCH_DRAGGED",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "TOUCH_DRAGGED",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int MOUSE_MOVED",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MOUSE_MOVED",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int SCROLLED",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SCROLLED",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final IntSeq queue",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "queue",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final IntSeq processingQueue",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "processingQueue",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private InputProcessor processor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "processor",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long currentEventTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "currentEventTime",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public InputEventQueue() / public InputEventQueue(InputProcessor processor)",
+    "desc" : null,
+    "overloads" : [ "public InputEventQueue()", "public InputEventQueue(InputProcessor processor)" ],
+    "name" : "InputEventQueue",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public InputProcessor getProcessor()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getProcessor",
+    "returnType" : "InputProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setProcessor(InputProcessor processor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setProcessor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "processor",
+      "type" : "InputProcessor"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void drain()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drain",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.struct.IntSeq.clear()", "arc.struct.IntSeq.addAll(arc.struct.IntSeq)", "arc.input.InputProcessor.keyDown(arc.input.KeyCode)", "arc.input.KeyCode.byOrdinal(int)", "arc.input.InputProcessor.keyUp(arc.input.KeyCode)", "arc.input.InputProcessor.keyTyped(char)", "arc.input.InputProcessor.touchDown(int, int, int, arc.input.KeyCode)", "arc.input.InputProcessor.touchUp(int, int, int, arc.input.KeyCode)", "arc.input.InputProcessor.touchDragged(int, int, int)", "arc.input.InputProcessor.mouseMoved(int, int)", "arc.input.InputProcessor.scrolled(float, float)", "java.lang.RuntimeException.RuntimeException()" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "private synchronized int next(int nextType, int i)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "next",
+    "returnType" : "int",
+    "modifiers" : [ "private", "synchronized" ],
+    "parameters" : [ {
+      "name" : "nextType",
+      "type" : "int"
+    }, {
+      "name" : "i",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 89,
+    "calls" : [ "java.lang.RuntimeException.RuntimeException()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private void queueTime()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "queueTime",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 130,
+    "calls" : [ "arc.util.Time.nanos()", "arc.struct.IntSeq.add(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean keyDown(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 136,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()", "java.lang.Enum.ordinal()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean keyUp(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 144,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()", "java.lang.Enum.ordinal()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean keyTyped(char character)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyTyped",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "character",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 152,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 160,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()", "java.lang.Enum.ordinal()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 171,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()", "java.lang.Enum.ordinal()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean touchDragged(int screenX, int screenY, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 182,
+    "calls" : [ "arc.input.InputEventQueue.next(int, int)", "arc.struct.IntSeq.get(int)", "arc.struct.IntSeq.set(int, int)", "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean mouseMoved(int screenX, int screenY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mouseMoved",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 199,
+    "calls" : [ "arc.input.InputEventQueue.next(int, int)", "arc.struct.IntSeq.set(int, int)", "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public synchronized boolean scrolled(float amountX, float amountY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "synchronized" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 213,
+    "calls" : [ "arc.struct.IntSeq.add(int)", "arc.input.InputEventQueue.queueTime()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public long getCurrentEventTime()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCurrentEventTime",
+    "returnType" : "long",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "InputMultiplexer.java",
+  "pkg" : "arc.input",
+  "type" : "Java class implements arc.input.InputProcessor",
+  "typeDesc" : "An {@link InputProcessor} that delegates to an ordered list of other InputProcessors.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private SnapshotSeq<InputProcessor> processors",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "processors",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public InputMultiplexer() / public InputMultiplexer(InputProcessor processors)",
+    "desc" : null,
+    "overloads" : [ "public InputMultiplexer()", "public InputMultiplexer(InputProcessor processors)" ],
+    "name" : "InputMultiplexer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ "arc.struct.Seq.addAll(T...)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void addProcessor(int index, InputProcessor processor) / public void addProcessor(InputProcessor processor)",
+    "desc" : null,
+    "overloads" : [ "public void addProcessor(int index, InputProcessor processor)", "public void addProcessor(InputProcessor processor)" ],
+    "name" : "addProcessor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "processor",
+      "type" : "InputProcessor"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ "arc.struct.SnapshotSeq.insert(int, T)", "java.lang.NullPointerException.NullPointerException(java.lang.String)", "arc.struct.Seq.add(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void removeProcessor(int index) / public void removeProcessor(InputProcessor processor)",
+    "desc" : null,
+    "overloads" : [ "public void removeProcessor(int index)", "public void removeProcessor(InputProcessor processor)" ],
+    "name" : "removeProcessor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "arc.struct.SnapshotSeq.remove(int)", "arc.struct.SnapshotSeq.remove(T, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public int size()",
+    "desc" : "@return the number of processors in this multiplexer",
+    "overloads" : null,
+    "name" : "size",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ "arc.struct.SnapshotSeq.clear()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public SnapshotSeq<InputProcessor> getProcessors()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getProcessors",
+    "returnType" : "SnapshotSeq<InputProcessor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setProcessors(InputProcessor processors) / public void setProcessors(Seq<InputProcessor> processors)",
+    "desc" : null,
+    "overloads" : [ "public void setProcessors(InputProcessor processors)", "public void setProcessors(Seq<InputProcessor> processors)" ],
+    "name" : "setProcessors",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "processors",
+      "type" : "InputProcessor"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 51,
+    "calls" : [ "arc.struct.SnapshotSeq.clear()", "arc.struct.Seq.addAll(T...)", "arc.struct.Seq.addAll(arc.struct.Seq<? extends T>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyDown(KeyCode keycode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 61,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.keyDown(arc.input.KeyCode)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyUp(KeyCode keycode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 73,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.keyUp(arc.input.KeyCode)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyTyped(char character)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyTyped",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "character",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 85,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.keyTyped(char)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 97,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.touchDown(int, int, int, arc.input.KeyCode)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 109,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.touchUp(int, int, int, arc.input.KeyCode)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDragged(int screenX, int screenY, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 121,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.touchDragged(int, int, int)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean mouseMoved(int screenX, int screenY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mouseMoved",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 133,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.mouseMoved(int, int)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean scrolled(float amountX, float amountY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 145,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.input.InputProcessor.scrolled(float, float)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "InputProcessor.java",
+  "pkg" : "arc.input",
+  "type" : "Java interface",
+  "typeDesc" : "An InputProcessor is used to receive input events from the keyboard and the touch screen (mouse on the desktop).",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "default boolean keyDown(KeyCode keycode)",
+    "desc" : "Called when a key was pressed",
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean keyUp(KeyCode keycode)",
+    "desc" : "Called when a key was released",
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "keycode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean keyTyped(char character)",
+    "desc" : "Called when a key was typed",
+    "overloads" : null,
+    "name" : "keyTyped",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "character",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : "@param screenX The x coordinate, origin is in the upper left corner",
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : "@param pointer the pointer for the event.",
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean touchDragged(int screenX, int screenY, int pointer)",
+    "desc" : "Called when a finger or the mouse was dragged.",
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean mouseMoved(int screenX, int screenY)",
+    "desc" : "@return whether the input was processed",
+    "overloads" : null,
+    "name" : "mouseMoved",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean scrolled(float amountX, float amountY)",
+    "desc" : "Called when the mouse wheel was scrolled.",
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "KeyBind.java",
+  "pkg" : "arc.input",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final Seq<KeyBind> all",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "all",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final String name",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "name",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final KeybindValue defaultValue",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultValue",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final String category",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "category",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Axis value",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "value",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "protected KeyBind(String name, KeybindValue defaultValue, String category)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "KeyBind",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "defaultValue",
+      "type" : "KeybindValue"
+    }, {
+      "name" : "category",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : [ "arc.struct.Seq.add(T)", "arc.input.KeyBind.load()", "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)" ],
+    "callCount" : 3
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static KeyBind add(String name, KeybindValue defaultValue, String category) / public static KeyBind add(String name, KeybindValue defaultValue)",
+    "desc" : "Registers a new key binding.",
+    "overloads" : [ "public static KeyBind add(String name, KeybindValue defaultValue, String category)", "public static KeyBind add(String name, KeybindValue defaultValue)" ],
+    "name" : "add",
+    "returnType" : "KeyBind",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "defaultValue",
+      "type" : "KeybindValue"
+    }, {
+      "name" : "category",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ "arc.input.KeyBind.KeyBind(java.lang.String, arc.input.KeyBind.KeybindValue, java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void resetAll()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resetAll",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ "arc.input.KeyBind.resetToDefault()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void save()",
+    "desc" : "Saves this keybind to Settings.",
+    "overloads" : null,
+    "name" : "save",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ "arc.input.KeyBind.settingsKey()", "arc.Settings.put(java.lang.String, java.lang.Object)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : "Loads this keybind from settings.",
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ "arc.input.KeyBind.settingsKey()", "arc.Settings.getBool(java.lang.String, boolean)", "arc.Settings.getInt(java.lang.String, int)", "arc.input.KeyCode.byOrdinal(int)", "java.lang.Enum.ordinal()", "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)", "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode, arc.input.KeyCode)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void resetToDefault()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resetToDefault",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 85,
+    "calls" : [ "arc.input.KeyBind.settingsKey()", "arc.Settings.remove(java.lang.String)", "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)", "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode, arc.input.KeyCode)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void unset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 103,
+    "calls" : [ "arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDefault()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDefault",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 107,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isUnset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isUnset",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "String settingsKey()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "settingsKey",
+    "returnType" : "String",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 123,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "KeybindValue",
+    "simpleName" : "KeybindValue",
+    "desc" : "Represents an Axis or a KeyCode.",
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Axis implements arc.input.KeyBind.KeybindValue",
+    "simpleName" : "Axis",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public KeyCode min",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "min",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 131,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public KeyCode key",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "key",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 132,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Axis(KeyCode key) / public Axis(KeyCode min, KeyCode max)",
+      "desc" : "Cosntructor for axis-type keys only.",
+      "overloads" : [ "public Axis(KeyCode key)", "public Axis(KeyCode min, KeyCode max)" ],
+      "name" : "Axis",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "KeyCode"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 135,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public boolean equals(Object o)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "equals",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "o",
+        "type" : "Object"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 147,
+      "calls" : [ "java.lang.Object.getClass()" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "KeyCode.java",
+  "pkg" : "arc.input",
+  "type" : null,
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "KeyboardDevice.java",
+  "pkg" : "arc.input",
+  "type" : "Java class implements arc.input.InputProcessor",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final IntSet pressed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pressed",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final IntSet lastFramePressed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastFramePressed",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final IntSet justPressed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "justPressed",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final IntFloatMap axes",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "axes",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void postUpdate()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "postUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 11,
+    "calls" : [ "arc.struct.IntSet.clear()", "arc.struct.IntSet.addAll(arc.struct.IntSet)", "arc.struct.IntFloatMap.clear()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isPressed(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isPressed",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ "arc.struct.IntSet.contains(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isTapped(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isTapped",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "arc.struct.IntSet.contains(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isReleased(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isReleased",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 29,
+    "calls" : [ "arc.struct.IntSet.contains(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAxis(KeyCode keyCode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAxis",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "keyCode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 33,
+    "calls" : [ "arc.struct.IntFloatMap.get(int, float)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyDown(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 37,
+    "calls" : [ "arc.struct.IntSet.add(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyUp(KeyCode key)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 44,
+    "calls" : [ "arc.struct.IntSet.remove(int)", "java.lang.Enum.ordinal()", "arc.struct.IntSet.add(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "arc.input.KeyboardDevice.keyDown(arc.input.KeyCode)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 57,
+    "calls" : [ "arc.input.KeyboardDevice.keyUp(arc.input.KeyCode)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean scrolled(float amountX, float amountY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ "arc.struct.IntFloatMap.put(int, float)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+} ]

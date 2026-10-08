@@ -1,0 +1,312 @@
+JsonIO.java
+Java class
+fields:
+  public static final Json json
+methods:
+  public static void writeBytes(Object value, Class<?> elementType, DataOutputStream output)
+  public static T readBytes(Class<T> type, Class<?> elementType, DataInputStream input) throws IOException
+  public static String write(Object object)
+  public static T copy(T object, T dest) / public static T copy(T object)
+  public static T read(Class<T> type, String string) / public static T read(T base, String string)
+  public static String print(String in)
+  public static void classTag(String tag, Class<?> type)
+
+MapIO.java
+Java class
+// Reads and writes map files.
+fields:
+  private static final int pngHeader
+methods:
+  public static boolean isImage(Fi file)
+  public static Map createMap(Fi file, boolean custom) throws IOException
+  public static void writeMap(Fi file, Map map) throws IOException / public static void writeMap(Fi file, Map map, boolean embed) throws IOException  // @param embed if true, assets will be embedded in the map - this is needed for external export.
+  public static void loadMap(Map map) / public static void loadMap(Map map, WorldContext cons)
+  public static Pixmap generatePreview(Map map) throws IOException / public static Pixmap generatePreview(Tiles tiles)
+  private static void readPreviewContentHeader(DataInput stream) throws IOException
+  public static int colorFor(Block wall, Block floor, Block overlay, Team team)
+  public static Pixmap writeImage(Tiles tiles)
+  public static void readImage(Pixmap pixmap, Tiles tiles)
+
+SaveFileReader.java
+Java class (abstract)
+fields:
+  public static final ObjectMap<String,String> fallback
+  public static final ObjectMap<String,String> modContentNameMap
+  protected static final ReusableByteOutStream byteOutput
+  protected static final DataOutputStream dataBytes
+  protected static final Writes writes1
+  protected static final Reads chunkReads
+  protected static boolean chunkNested
+methods:
+  public static String mapFallback(String name)
+  public void readRegion(String name, DataInput stream, CounterInputStream counter, IORunner<DataInput> cons) throws IOException  // TODO: unify readRegion with readChunk, they do the same thing and both should have good error messages
+  public void writeRegion(String name, DataOutput stream, IORunner<DataOutput> cons) throws IOException
+  public void writeChunk(DataOutput output, IORunner<Writes> runner) throws IOException  // Write a chunk of input to the stream.
+  public int readChunk(DataInput input, IORunnerLength<DataInput> runner) throws IOException  // Reads a chunk of some length.
+  public int readChunkReads(DataInput input, IORunnerLength<Reads> runner) throws IOException  // Reads a chunk of some length.
+  public void skipChunk(DataInput input) throws IOException  // Skip a chunk completely, discarding the bytes.
+  public int readLegacyShortChunk(DataInput input, IORunnerLength<Reads> runner) throws IOException  // Reads a legacy chunk where the length is only 2 bytes.
+  public void skipLegacyShortChunk(DataInput input) throws IOException  // Skip a legacy chunk completely, discarding the bytes.
+  public void writeStringMap(DataOutput stream, ObjectMap<String,String> map) throws IOException
+  public StringMap readStringMap(DataInput stream) throws IOException
+  public abstract void read(DataInputStream stream, CounterInputStream counter, SaveReadState state) throws IOException
+  public abstract void write(DataOutputStream stream, SaveOptions options) throws IOException
+inner-interface: IORunner
+  methods:
+    void accept(T stream) throws IOException
+inner-interface: IORunnerLength
+  methods:
+    void accept(T stream, int length) throws IOException
+inner-interface: CustomChunk
+  methods:
+    void write(DataOutput stream) throws IOException
+    void read(DataInput stream) throws IOException / default void read(DataInput stream, int length) throws IOException
+    default boolean shouldWrite()  // @return whether this chunk is enabled at all
+    default boolean writeNet()  // @return whether this chunk should be written to connecting clients (default true)
+
+SaveIO.java
+Java class
+fields:
+  public static final byte header  // Save format header.
+  public static final IntMap<SaveVersion> versions
+  public static final Seq<SaveVersion> versionArray
+methods:
+  public static SaveVersion getSaveWriter() / public static SaveVersion getSaveWriter(int version)
+  public static void save(Fi file) / public static void save(Fi file, SaveOptions options)
+  public static DataInputStream getStream(Fi file)
+  public static DataInputStream getBackupStream(Fi file)
+  public static boolean isSaveValid(Fi file) / public static boolean isSaveValid(DataInputStream stream)
+  private static boolean isSaveFileValid(Fi file)
+  public static SaveMeta getMeta(Fi file) / public static SaveMeta getMeta(DataInputStream stream)
+  public static Fi fileFor(int slot)
+  public static Fi backupFileFor(Fi file)
+  public static void write(Fi file, SaveOptions options) / public static void write(Fi file) / public static void write(OutputStream os, SaveOptions options)
+  public static void load(String saveName) throws SaveException / public static void load(Fi file) throws SaveException / public static void load(Fi file, WorldContext context) throws SaveException / public static void load(InputStream is, WorldContext context) throws SaveException  // Loads from a deflated (!) input stream.
+  public static SaveVersion getVersion()
+  public static void readHeader(DataInput input) throws IOException
+inner-class: SaveException extends java.lang.RuntimeException
+  ctors:
+    public SaveException(Throwable throwable)
+
+SaveMeta.java
+Java class
+fields:
+  public int version
+  public int build
+  public long timestamp
+  public long timePlayed
+  public Map map
+  public int wave
+  public Rules rules
+  public StringMap tags
+  public String mods
+ctors:
+  public SaveMeta(int version, long timestamp, long timePlayed, int build, String map, int wave, Rules rules, StringMap tags)
+methods:
+  public boolean isMap()
+
+SaveOptions.java
+Java class
+fields:
+  public boolean embedAssets
+  public StringMap extraTags
+
+SavePreviewLoader.java
+Java class extends arc.assets.loaders.TextureLoader
+ctors:
+  public SavePreviewLoader()
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+
+SaveReadState.java
+Java class
+fields:
+  public final WorldContext context
+  public boolean preview  // true when generating a map preview
+  public String ruleString
+  public Seq<Building> allBuildings
+ctors:
+  public SaveReadState(WorldContext context)
+
+SaveVersion.java
+Java class (abstract) extends mindustry.io.SaveFileReader
+fields:
+  protected static OrderedMap<String,CustomChunk> customChunks
+  public final int version
+ctors:
+  public SaveVersion(int version)
+methods:
+  public static void addCustomChunk(String name, CustomChunk chunk)  // Registers a custom save chunk reader/writer by name.
+  public SaveMeta getMeta(DataInput stream) throws IOException
+  public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException
+  public void write(DataOutputStream stream, SaveOptions options) throws IOException
+  public void writeCustomChunks(DataOutput stream, boolean net) throws IOException
+  public void readCustomChunks(DataInput stream) throws IOException
+  public void writeMeta(DataOutput stream, StringMap tags) throws IOException
+  public void readMeta(DataInput stream, SaveReadState saveState) throws IOException
+  public void readRules(SaveReadState saveState)
+  public void writeMap(DataOutput stream) throws IOException
+  public void readMap(DataInput stream, SaveReadState state) throws IOException
+  public void writeTeamBlocks(DataOutput stream) throws IOException
+  public void writeWorldEntities(DataOutput stream) throws IOException / public void writeWorldEntities(DataOutput stream, Boolf<Unit> unitFilter) throws IOException
+  private void writeEntity(Entityc entity, DataOutput stream) throws IOException
+  public void writeEntityMapping(DataOutput stream) throws IOException
+  public void writeEntities(DataOutput stream) throws IOException
+  public void writeMarkers(DataOutput stream) throws IOException
+  public void readMarkers(DataInput stream) throws IOException
+  public void readTeamBlocks(DataInput stream) throws IOException
+  public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException
+  public Prov[] readEntityMapping(DataInput stream) throws IOException
+  public void readEntities(DataInput stream, SaveReadState state) throws IOException
+  public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException
+  public void writeDataPatches(DataOutput stream, boolean forceEmbed) throws IOException
+  public void readContentHeader(DataInput stream) throws IOException
+  public void writeContentHeader(DataOutput stream) throws IOException
+
+TypeIO.java
+Java class
+// Class for specifying read/write methods for code generation.
+fields:
+  public static final byte nullType  // Possible Types of written objects.
+  private static final int maxArraySize
+  static final WeaponMount noMounts  // this is irrelevant.
+  static final Ability noAbilities
+methods:
+  public static void writeObject(Writes write, Object object) / public static void writeObject(Writes write, double object)  // Write an object, prepending its {@code ObjectType}.
+  public static Object readObject(Reads read) / public static Object readObject(Reads read, boolean box, ContentMapper mapper) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays, byte type)
+  public static Object readObjectBoxed(Reads read, boolean box)  // Reads an object, but optionally boxes buildings.
+  public static Object readObjectSafe(Reads read)
+  public static void writeUiBuilder(Writes writes, NodeBuilder<?> node)
+  public static NodeBuilder<?> readUiBuilder(Reads reads)
+  public static void writeMenuResult(Writes writes, MenuResult result)
+  public static MenuResult readMenuResult(Reads read)
+  public static void writePayload(Writes writes, Payload payload)
+  public static Payload readPayload(Reads read)
+  public static void writeMounts(Writes writes, WeaponMount[] mounts)
+  public static WeaponMount[] readMounts(Reads read, WeaponMount[] mounts) / public static WeaponMount[] readMounts(Reads read)
+  public static Ability[] readAbilities(Reads read, Ability[] abilities) / public static Ability[] readAbilities(Reads read)
+  public static void writeAbilities(Writes write, Ability[] abilities)
+  public static void writeUnitContainer(Writes write, UnitSyncContainer cont)
+  public static UnitSyncContainer readUnitContainer(Reads read)
+  public static void writeUnit(Writes write, Unit unit)
+  public static Unit readUnit(Reads read)
+  public static void writeCommand(Writes write, UnitCommand command)
+  public static UnitCommand readCommand(Reads read)
+  public static void writeStance(Writes write, UnitStance stance)
+  public static UnitStance readStance(Reads read)
+  public static void writePosEntity(Writes write, Posc entity)
+  public static Posc readPosEntity(Reads read)
+  public static void writeEntity(Writes write, Entityc entity)
+  public static T readEntity(Reads read)
+  public static void writeBuilding(Writes write, Building tile)
+  public static Building readBuilding(Reads read)
+  public static void writeTile(Writes write, Tile tile)
+  public static Tile readTile(Reads read)
+  public static void writeBlock(Writes write, Block block)
+  public static Block readBlock(Reads read)
+  public static int getMaxPlans(Queue<BuildPlan> plans)  // @return the maximum acceptable amount of plans to send over the network
+  public static void writePlansQueueNet(Writes write, Queue<BuildPlan> plans)  // on the network, plans must be capped by size
+  public static Queue<BuildPlan> readPlansQueueNet(Reads read)
+  public static Queue<BuildPlan> readPlansQueue(Reads read)
+  public static void writePlan(Writes write, BuildPlan plan)
+  public static BuildPlan readPlan(Reads read)
+  public static void writePlans(Writes write, BuildPlan[] plans)
+  public static BuildPlan[] readPlans(Reads read)
+  public static void writeClientPlans(Writes write, ClientBuildPlans plans)
+  public static ClientBuildPlans readClientPlans(Reads read)
+  static Object readClientPlanConfig(Reads read)
+  static boolean validClientPlanConfig(Object o)  // for client plans, most configs aren't necessary (links are intentionally not displayed/sent)
+  public static void writeController(Writes write, UnitController control)
+  public static UnitController readController(Reads read, UnitController prev)
+  public static void writeKick(Writes write, KickReason reason)
+  public static KickReason readKick(Reads read)
+  public static void writeMarkerControl(Writes write, LMarkerControl reason)
+  public static LMarkerControl readMarkerControl(Reads read)
+  public static void writeRules(Writes write, Rules rules)
+  public static Rules readRules(Reads read)
+  public static void writeObjectives(Writes write, MapObjectives executor)
+  public static MapObjectives readObjectives(Reads read)
+  public static void writeObjectiveMarker(Writes write, ObjectiveMarker marker)
+  public static ObjectiveMarker readObjectiveMarker(Reads read)
+  public static void writeVecNullable(Writes write, Vec2 v)
+  public static Vec2 readVecNullable(Reads read)
+  public static void writeVec2(Writes write, Vec2 v)
+  public static Vec2 readVec2(Reads read, Vec2 base) / public static Vec2 readVec2(Reads read)
+  public static void writeStatus(Writes write, StatusEntry entry)
+  public static StatusEntry readStatus(Reads read)
+  public static void writeItems(Writes write, ItemStack stack)
+  public static ItemStack readItems(Reads read, ItemStack stack) / public static ItemStack readItems(Reads read)
+  public static void writeItemStacks(Writes write, ItemStack[] stacks)
+  public static ItemStack[] readItemStacks(Reads read)
+  public static void writeLiquidStacks(Writes write, LiquidStack[] stacks)
+  public static LiquidStack[] readLiquidStacks(Reads read)
+  public static void writeTeam(Writes write, Team team)
+  public static Team readTeam(Reads read)
+  public static void writeAction(Writes write, AdminAction reason)
+  public static AdminAction readAction(Reads read)
+  public static void writeUnitType(Writes write, UnitType effect)
+  public static UnitType readUnitType(Reads read)
+  public static void writeEffect(Writes write, Effect effect)
+  public static Effect readEffect(Reads read)
+  public static void writeColor(Writes write, Color color)
+  public static Color readColor(Reads read) / public static Color readColor(Reads read, Color color)
+  public static void writeIntSeq(Writes write, IntSeq seq)
+  public static IntSeq readIntSeq(Reads read)
+  public static void writeContent(Writes write, Content cont)
+  public static Content readContent(Reads read)
+  public static void writeLiquid(Writes write, Liquid liquid)
+  public static Liquid readLiquid(Reads read)
+  public static void writeBulletType(Writes write, BulletType type)
+  public static BulletType readBulletType(Reads read)
+  public static void writeItem(Writes write, Item item)
+  public static Item readItem(Reads read)
+  public static void writeSound(Writes write, Sound sound)  // note that only the standard sound constants in Sounds are supported; modded sounds are not.
+  public static Sound readSound(Reads read)
+  public static void writeWeather(Writes write, Weather item)
+  public static Weather readWeather(Reads read)
+  public static void writeString(Writes write, String string) / public static void writeString(ByteBuffer write, String string)
+  public static String readString(Reads read) / public static String readString(ByteBuffer read)
+  public static void writeBytes(Writes write, byte[] bytes)
+  public static byte[] readBytes(Reads read)
+  public static void writeInts(Writes write, int[] ints)
+  public static int[] readInts(Reads read)
+  public static void writeShorts(Writes write, short[] ints)
+  public static short[] readShorts(Reads read)
+  public static void writeTraceInfo(Writes write, TraceInfo trace)
+  public static TraceInfo readTraceInfo(Reads read)
+  public static void writeStrings(Writes write, String[] strings, int maxLen) / public static void writeStrings(Writes write, String[] strings)
+  public static String[] readStrings(Reads read)
+  public static void writeStringArray(Writes write, String[][] strings)
+  public static String[][] readStringArray(Reads read)
+  public static void writeStringData(DataOutput buffer, String string) throws IOException
+  public static String readStringData(DataInput buffer) throws IOException
+inner-class: ClientBuildPlans extends arc.struct.Seq
+// wrapper for custom sync code
+  ctors:
+    public ClientBuildPlans() / public ClientBuildPlans(int capacity)
+inner-interface: ContentMapper
+// Converter of an ID to a content instance.
+  methods:
+    Content get(ContentType type, int id)
+inner-interface: Boxed
+  methods:
+    T unbox()
+inner-class: BuildingBox implements mindustry.io.TypeIO.Boxed
+// Represents a building that has not been resolved yet.
+  fields:
+    public int pos
+  ctors:
+    public BuildingBox(int pos)
+  methods:
+    public Building unbox()
+    public String toString()
+inner-class: UnitBox implements mindustry.io.TypeIO.Boxed
+// Represents a unit that has not been resolved yet.
+  fields:
+    public int id
+  ctors:
+    public UnitBox(int id)
+  methods:
+    public Unit unbox()
+    public String toString()
+

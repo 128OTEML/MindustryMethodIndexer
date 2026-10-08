@@ -1,0 +1,2353 @@
+[ {
+  "file" : "GenericMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java interface extends arc.util.Disposable",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "void render(PlanetParams params, Mat3D projection, Mat3D transform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    }, {
+      "name" : "projection",
+      "type" : "Mat3D"
+    }, {
+      "name" : "transform",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 7,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "HexMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class extends mindustry.graphics.g3d.PlanetMesh",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public HexMesh(Planet planet, int divisions) / public HexMesh(Planet planet, HexMesher mesher, int divisions, Shader shader) / public HexMesh()",
+    "desc" : null,
+    "overloads" : [ "public HexMesh(Planet planet, int divisions)", "public HexMesh(Planet planet, HexMesher mesher, int divisions, Shader shader)", "public HexMesh()" ],
+    "name" : "HexMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.buildHex(mindustry.graphics.g3d.HexMesher, int, float, float)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void preRender(PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "preRender",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "mindustry.graphics.g3d.HexMesher.isEmissive()", "arc.math.geom.Vec3.nor()", "arc.math.geom.Vec3.rotate(arc.math.geom.Vec3, float)", "arc.math.geom.Vec3.sub(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "mindustry.type.Planet.getRotation()", "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "HexMesher.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java interface",
+  "typeDesc" : "Defines color and height for a planet mesh.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "default float getHeight(Vec3 position)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getHeight",
+    "returnType" : "float",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void getColor(Vec3 position, Color out)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getColor",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    }, {
+      "name" : "out",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void getEmissiveColor(Vec3 position, Color out)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getEmissiveColor",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    }, {
+      "name" : "out",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean isEmissive()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isEmissive",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean skip(Vec3 position)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "skip",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "HexSkyMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class extends mindustry.graphics.g3d.PlanetMesh",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "static Mat3D mat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mat",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float speed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "speed",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public HexSkyMesh(Planet planet, int seed, float speed, float radius, int divisions, Color color, int octaves, float persistence, float scl, float thresh) / public HexSkyMesh()",
+    "desc" : null,
+    "overloads" : [ "public HexSkyMesh(Planet planet, int seed, float speed, float radius, int divisions, Color color, int octaves, float persistence, float scl, float thresh)", "public HexSkyMesh()" ],
+    "name" : "HexSkyMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "speed",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "octaves",
+      "type" : "int"
+    }, {
+      "name" : "persistence",
+      "type" : "float"
+    }, {
+      "name" : "scl",
+      "type" : "float"
+    }, {
+      "name" : "thresh",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.buildHex(mindustry.graphics.g3d.HexMesher, int, float, float)", "arc.graphics.Color.set(arc.graphics.Color)", "arc.util.noise.Simplex.noise3d(int, double, double, double, double, double, double)", "mindustry.graphics.g3d.HexSkyMesh.Anonymous-132c8268-ebc4-4fa7-b9a9-c6214ecf4a5c.Anonymous-132c8268-ebc4-4fa7-b9a9-c6214ecf4a5c()" ],
+    "callCount" : 4
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float relRot()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "relRot",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void render(PlanetParams params, Mat3D projection, Mat3D transform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    }, {
+      "name" : "projection",
+      "type" : "Mat3D"
+    }, {
+      "name" : "transform",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 44,
+    "calls" : [ "arc.math.Mathf.zero(float, float)", "mindustry.graphics.g3d.HexSkyMesh.preRender(mindustry.graphics.g3d.PlanetParams)", "arc.graphics.gl.Shader.bind()", "arc.graphics.gl.Shader.setUniformMatrix4(java.lang.String, float[])", "arc.math.geom.Mat3D.rotate(arc.math.geom.Vec3, float)", "arc.math.geom.Mat3D.setToTranslation(arc.math.geom.Vec3)", "mindustry.type.Planet.getRotation()", "mindustry.graphics.g3d.HexSkyMesh.relRot()", "arc.graphics.gl.Shader.apply()", "arc.graphics.Mesh.render(arc.graphics.gl.Shader, int)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void preRender(PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "preRender",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 57,
+    "calls" : [ "arc.math.geom.Vec3.nor()", "arc.math.geom.Vec3.rotate(arc.math.geom.Vec3, float)", "arc.math.geom.Vec3.sub(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "mindustry.type.Planet.getRotation()", "mindustry.graphics.g3d.HexSkyMesh.relRot()", "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MatMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class implements mindustry.graphics.g3d.GenericMesh",
+  "typeDesc" : "A GenericMesh that wraps and applies an additional transform to a generic mesh.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Mat3D tmp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "GenericMesh mesh",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mesh",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Mat3D mat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mat",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MatMesh(GenericMesh mesh, Mat3D mat)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MatMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "mesh",
+      "type" : "GenericMesh"
+    }, {
+      "name" : "mat",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void render(PlanetParams params, Mat3D projection, Mat3D transform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    }, {
+      "name" : "projection",
+      "type" : "Mat3D"
+    }, {
+      "name" : "transform",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "mindustry.graphics.g3d.GenericMesh.render(mindustry.graphics.g3d.PlanetParams, arc.math.geom.Mat3D, arc.math.geom.Mat3D)", "arc.math.geom.Mat3D.mul(arc.math.geom.Mat3D)", "arc.math.geom.Mat3D.set(arc.math.geom.Mat3D)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 22,
+    "calls" : [ "arc.util.Disposable.dispose()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MeshBuilder.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final boolean packNormals",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packNormals",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static volatile float tmpHeights",
+    "desc" : "highest amount of corners in vanilla",
+    "overloads" : null,
+    "name" : "tmpHeights",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "volatile" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Mesh buildIcosphere(int divisions, float radius)",
+    "desc" : "Note that the resulting icosphere does not have normals or a color.",
+    "overloads" : null,
+    "name" : "buildIcosphere",
+    "returnType" : "Mesh",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "divisions",
+      "type" : "int"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ "arc.math.geom.Icosphere.create(int)", "mindustry.graphics.g3d.MeshBuilder.begin(int, int, boolean, boolean, boolean)", "java.nio.FloatBuffer.put(float[], int, int)", "arc.graphics.Mesh.getVerticesBuffer()", "java.nio.ShortBuffer.put(short[])", "arc.graphics.Mesh.getIndicesBuffer()", "mindustry.graphics.g3d.MeshBuilder.end(arc.graphics.Mesh)", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public static Mesh buildPlanetGrid(PlanetGrid grid, Color color, float scale)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildPlanetGrid",
+    "returnType" : "Mesh",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "grid",
+      "type" : "PlanetGrid"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.begin(int, int, boolean, boolean)", "arc.graphics.Color.toFloatBits()", "java.nio.FloatBuffer.put(float[])", "arc.graphics.Mesh.getVerticesBuffer()", "mindustry.graphics.g3d.MeshBuilder.end(arc.graphics.Mesh)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static Mesh buildHex(Color color, int divisions, float radius) / public static synchronized Mesh buildHex(HexMesher mesher, int divisions, float radius, float intensity)",
+    "desc" : "TODO: in principle this should not be synchronized, but I would rather not realloc tmpHeights every time, and it is unlikely that two planets will be reloading at the same time",
+    "overloads" : [ "public static Mesh buildHex(Color color, int divisions, float radius)", "public static synchronized Mesh buildHex(HexMesher mesher, int divisions, float radius, float intensity)" ],
+    "name" : "buildHex",
+    "returnType" : "Mesh",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 69,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.buildHex(mindustry.graphics.g3d.HexMesher, int, float, float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.graphics.g3d.MeshBuilder.Anonymous-5c75e3ba-0a0e-472a-a1d6-6395b3e54f4f.Anonymous-5c75e3ba-0a0e-472a-a1d6-6395b3e54f4f()", "mindustry.graphics.g3d.PlanetGrid.create(int)", "mindustry.graphics.g3d.HexMesher.isEmissive()", "mindustry.graphics.g3d.MeshBuilder.begin(int, int, boolean, boolean)", "mindustry.graphics.g3d.HexMesher.getHeight(arc.math.geom.Vec3)", "mindustry.graphics.g3d.HexMesher.skip(arc.math.geom.Vec3)", "mindustry.graphics.g3d.MeshBuilder.normal(float, float, float, float, float, float, float, float, float, arc.math.geom.Vec3)", "arc.graphics.Color.set(float, float, float, float)", "mindustry.graphics.g3d.HexMesher.getColor(arc.math.geom.Vec3, arc.graphics.Color)", "arc.graphics.Color.toFloatBits()", "mindustry.graphics.g3d.HexMesher.getEmissiveColor(arc.math.geom.Vec3, arc.graphics.Color)", "mindustry.graphics.g3d.MeshBuilder.vert(arc.graphics.Mesh, float[], float, float, float, arc.math.geom.Vec3, float, float)", "java.nio.ShortBuffer.put(short[], int, int)", "arc.graphics.Mesh.getIndicesBuffer()", "mindustry.graphics.g3d.MeshBuilder.verts(arc.graphics.Mesh, float[], arc.math.geom.Vec3, float, arc.math.geom.Vec3, float, arc.math.geom.Vec3, float, arc.math.geom.Vec3, float, float)", "mindustry.graphics.g3d.MeshBuilder.end(arc.graphics.Mesh)", "arc.math.geom.Vec3.Vec3()", "arc.graphics.Color.Color()" ],
+    "callCount" : 20
+  }, {
+    "kind" : "method",
+    "signature" : "private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive) / private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive, boolean color)",
+    "desc" : null,
+    "overloads" : [ "private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive)", "private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive, boolean color)" ],
+    "name" : "begin",
+    "returnType" : "Mesh",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "vertices",
+      "type" : "int"
+    }, {
+      "name" : "indices",
+      "type" : "int"
+    }, {
+      "name" : "normal",
+      "type" : "boolean"
+    }, {
+      "name" : "emissive",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 195,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.begin(int, int, boolean, boolean, boolean)", "arc.struct.Seq.with(T...)", "arc.struct.Seq.add(T)", "arc.struct.Seq.toArray(java.lang.Class)", "java.nio.FloatBuffer.limit(int)", "arc.graphics.Mesh.getVerticesBuffer()", "java.nio.Buffer.capacity()", "java.nio.FloatBuffer.position(int)", "java.nio.ShortBuffer.limit(int)", "arc.graphics.Mesh.getIndicesBuffer()", "java.nio.ShortBuffer.position(int)", "arc.graphics.VertexAttribute.VertexAttribute(int, int, boolean, java.lang.String)", "Mesh.<init>" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "private static Mesh end(Mesh mesh)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "end",
+    "returnType" : "Mesh",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "mesh",
+      "type" : "Mesh"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 230,
+    "calls" : [ "java.nio.FloatBuffer.limit(int)", "arc.graphics.Mesh.getVerticesBuffer()", "java.nio.Buffer.position()", "arc.graphics.Mesh.getNumIndices()", "java.nio.ShortBuffer.limit(int)", "arc.graphics.Mesh.getIndicesBuffer()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "private static Vec3 normal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 out) / private static void normal(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z, float v3x, float v3y, float v3z, Vec3 out)",
+    "desc" : null,
+    "overloads" : [ "private static Vec3 normal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 out)", "private static void normal(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z, float v3x, float v3y, float v3z, Vec3 out)" ],
+    "name" : "normal",
+    "returnType" : "Vec3",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "v1",
+      "type" : "Vec3"
+    }, {
+      "name" : "v2",
+      "type" : "Vec3"
+    }, {
+      "name" : "v3",
+      "type" : "Vec3"
+    }, {
+      "name" : "out",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 239,
+    "calls" : [ "arc.math.geom.Vec3.nor()", "arc.math.geom.Vec3.crs(float, float, float)", "arc.math.geom.Vec3.sub(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(float, float, float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "private static void verts(Mesh mesh, float[] floats, Vec3 a, float h1, Vec3 b, float h2, Vec3 c, float h3, Vec3 normal, float color, float emissive)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "verts",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "mesh",
+      "type" : "Mesh"
+    }, {
+      "name" : "floats",
+      "type" : "float[]"
+    }, {
+      "name" : "a",
+      "type" : "Vec3"
+    }, {
+      "name" : "h1",
+      "type" : "float"
+    }, {
+      "name" : "b",
+      "type" : "Vec3"
+    }, {
+      "name" : "h2",
+      "type" : "float"
+    }, {
+      "name" : "c",
+      "type" : "Vec3"
+    }, {
+      "name" : "h3",
+      "type" : "float"
+    }, {
+      "name" : "normal",
+      "type" : "Vec3"
+    }, {
+      "name" : "color",
+      "type" : "float"
+    }, {
+      "name" : "emissive",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 260,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.vert(arc.graphics.Mesh, float[], float, float, float, arc.math.geom.Vec3, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private static void vert(Mesh mesh, float[] floats, float x, float y, float z, Vec3 normal, float color, float emissive)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vert",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "mesh",
+      "type" : "Mesh"
+    }, {
+      "name" : "floats",
+      "type" : "float[]"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "normal",
+      "type" : "Vec3"
+    }, {
+      "name" : "color",
+      "type" : "float"
+    }, {
+      "name" : "emissive",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 266,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.packNormals(float, float, float)", "java.nio.FloatBuffer.put(float[])", "arc.graphics.Mesh.getVerticesBuffer()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private static float packNormals(float x, float y, float z)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packNormals",
+    "returnType" : "float",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 288,
+    "calls" : [ "java.lang.Float.intBitsToFloat(int)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MultiMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class implements mindustry.graphics.g3d.GenericMesh",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "GenericMesh meshes",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "meshes",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MultiMesh(GenericMesh meshes)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MultiMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "meshes",
+      "type" : "GenericMesh"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void render(PlanetParams params, Mat3D projection, Mat3D transform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    }, {
+      "name" : "projection",
+      "type" : "Mat3D"
+    }, {
+      "name" : "transform",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ "mindustry.graphics.g3d.GenericMesh.render(mindustry.graphics.g3d.PlanetParams, arc.math.geom.Mat3D, arc.math.geom.Mat3D)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ "arc.util.Disposable.dispose()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "NoiseMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class extends mindustry.graphics.g3d.HexMesh",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public NoiseMesh(Planet planet, int seed, int divisions, Color color, float radius, int octaves, float persistence, float scale, float mag) / public NoiseMesh(Planet planet, int seed, int divisions, float radius, int octaves, float persistence, float scale, float mag, Color color1, Color color2, int coct, float cper, float cscl, float cthresh)",
+    "desc" : "Two-color variant.",
+    "overloads" : [ "public NoiseMesh(Planet planet, int seed, int divisions, Color color, float radius, int octaves, float persistence, float scale, float mag)", "public NoiseMesh(Planet planet, int seed, int divisions, float radius, int octaves, float persistence, float scale, float mag, Color color1, Color color2, int coct, float cper, float cscl, float cthresh)" ],
+    "name" : "NoiseMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "octaves",
+      "type" : "int"
+    }, {
+      "name" : "persistence",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.buildHex(mindustry.graphics.g3d.HexMesher, int, float, float)", "arc.util.noise.Simplex.noise3d(int, double, double, double, double, double, double)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.graphics.g3d.NoiseMesh.Anonymous-0a27c0d1-8c8e-4a8f-bfa4-8a0200e7b108.Anonymous-0a27c0d1-8c8e-4a8f-bfa4-8a0200e7b108()", "mindustry.graphics.g3d.NoiseMesh.Anonymous-65531fbd-bcfa-4754-8387-d9afcba139f2.Anonymous-65531fbd-bcfa-4754-8387-d9afcba139f2()" ],
+    "callCount" : 5
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "PlanetGrid.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class",
+  "typeDesc" : "TODO clean this up somehow",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final PlanetGrid cache",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cache",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float x",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "x",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float z",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "z",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 iTiles",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "iTiles",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int iTilesP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "iTilesP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int size",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "size",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Ptile tiles",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tiles",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Corner corners",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "corners",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Edge edges",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "edges",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "protected PlanetGrid(int size)",
+    "desc" : "this is protected so if you want to make strange grids you should know what you're doing.",
+    "overloads" : null,
+    "name" : "PlanetGrid",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : [ "mindustry.graphics.g3d.PlanetGrid.tileCount(int)", "mindustry.graphics.g3d.PlanetGrid.cornerCount(int)", "mindustry.graphics.g3d.PlanetGrid.edgeCount(int)", "mindustry.graphics.g3d.PlanetGrid.Ptile.Ptile(int, int)", "mindustry.graphics.g3d.PlanetGrid.Corner.Corner(int)", "mindustry.graphics.g3d.PlanetGrid.Edge.Edge(int)" ],
+    "callCount" : 6
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static synchronized PlanetGrid create(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "create",
+    "returnType" : "PlanetGrid",
+    "modifiers" : [ "public", "static", "synchronized" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "mindustry.graphics.g3d.PlanetGrid.initialGrid()", "mindustry.graphics.g3d.PlanetGrid.subdividedGrid(mindustry.graphics.g3d.PlanetGrid)", "mindustry.graphics.g3d.PlanetGrid.create(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static PlanetGrid initialGrid()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialGrid",
+    "returnType" : "PlanetGrid",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ "mindustry.graphics.g3d.PlanetGrid.addCorner(int, mindustry.graphics.g3d.PlanetGrid, int, int, int)", "mindustry.graphics.g3d.PlanetGrid.pos(mindustry.graphics.g3d.PlanetGrid.Ptile, mindustry.graphics.g3d.PlanetGrid.Corner)", "mindustry.graphics.g3d.PlanetGrid.addEdge(int, mindustry.graphics.g3d.PlanetGrid, int, int)", "mindustry.graphics.g3d.PlanetGrid.PlanetGrid(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static PlanetGrid subdividedGrid(PlanetGrid prev)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "subdividedGrid",
+    "returnType" : "PlanetGrid",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "prev",
+      "type" : "PlanetGrid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ "mindustry.graphics.g3d.PlanetGrid.addCorner(int, mindustry.graphics.g3d.PlanetGrid, int, int, int)", "mindustry.graphics.g3d.PlanetGrid.pos(mindustry.graphics.g3d.PlanetGrid.Ptile, mindustry.graphics.g3d.PlanetGrid.Corner)", "mindustry.graphics.g3d.PlanetGrid.addEdge(int, mindustry.graphics.g3d.PlanetGrid, int, int)", "mindustry.graphics.g3d.PlanetGrid.PlanetGrid(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "static void addCorner(int id, PlanetGrid grid, int t1, int t2, int t3)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addCorner",
+    "returnType" : "void",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "grid",
+      "type" : "PlanetGrid"
+    }, {
+      "name" : "t1",
+      "type" : "int"
+    }, {
+      "name" : "t2",
+      "type" : "int"
+    }, {
+      "name" : "t3",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 166,
+    "calls" : [ "arc.math.geom.Vec3.nor()", "arc.math.geom.Vec3.add(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "mindustry.graphics.g3d.PlanetGrid.pos(mindustry.graphics.g3d.PlanetGrid.Ptile, mindustry.graphics.g3d.PlanetGrid.Ptile)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "static void addEdge(int id, PlanetGrid grid, int t1, int t2)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addEdge",
+    "returnType" : "void",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "grid",
+      "type" : "PlanetGrid"
+    }, {
+      "name" : "t1",
+      "type" : "int"
+    }, {
+      "name" : "t2",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 176,
+    "calls" : [ "mindustry.graphics.g3d.PlanetGrid.pos(mindustry.graphics.g3d.PlanetGrid.Ptile, mindustry.graphics.g3d.PlanetGrid.Ptile)", "mindustry.graphics.g3d.PlanetGrid.pos(mindustry.graphics.g3d.PlanetGrid.Corner, mindustry.graphics.g3d.PlanetGrid.Corner)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "static int pos(Ptile t, Ptile n) / static int pos(Ptile t, Corner c) / static int pos(Corner c, Corner n)",
+    "desc" : null,
+    "overloads" : [ "static int pos(Ptile t, Ptile n)", "static int pos(Ptile t, Corner c)", "static int pos(Corner c, Corner n)" ],
+    "name" : "pos",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "t",
+      "type" : "Ptile"
+    }, {
+      "name" : "n",
+      "type" : "Ptile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 190,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static int tileCount(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tileCount",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 211,
+    "calls" : [ "arc.math.Mathf.pow(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "static int cornerCount(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cornerCount",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 215,
+    "calls" : [ "arc.math.Mathf.pow(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "static int edgeCount(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "edgeCount",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 219,
+    "calls" : [ "arc.math.Mathf.pow(int, int)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Ptile",
+    "simpleName" : "Ptile",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "constant",
+      "signature" : "public static final Ptile empty",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "empty",
+      "returnType" : null,
+      "modifiers" : [ "public", "static", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 224,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int id",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 226,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int edgeCount",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "edgeCount",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 227,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Ptile tiles",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "tiles",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 229,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Corner corners",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "corners",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 230,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Edge edges",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "edges",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 231,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Vec3 v",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "v",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 233,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Ptile(int id, int edgeCount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Ptile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      }, {
+        "name" : "edgeCount",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 235,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 244,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Corner",
+    "simpleName" : "Corner",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public int id",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 254,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Ptile tiles",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "tiles",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 255,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Corner corners",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "corners",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 256,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Edge edges",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "edges",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 257,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Vec3 v",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "v",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 258,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Corner(int id)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Corner",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 260,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Edge",
+    "simpleName" : "Edge",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public int id",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 266,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Ptile tiles",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "tiles",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 267,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Corner corners",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "corners",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 268,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Edge(int id)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Edge",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 270,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "PlanetMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class (abstract) implements mindustry.graphics.g3d.GenericMesh",
+  "typeDesc" : "Defines a mesh that is rendered for a planet.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected Mesh mesh",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mesh",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Planet planet",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "planet",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Shader shader",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shader",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public PlanetMesh(Planet planet, Mesh mesh, Shader shader) / public PlanetMesh()",
+    "desc" : null,
+    "overloads" : [ "public PlanetMesh(Planet planet, Mesh mesh, Shader shader)", "public PlanetMesh()" ],
+    "name" : "PlanetMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "mesh",
+      "type" : "Mesh"
+    }, {
+      "name" : "shader",
+      "type" : "Shader"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void preRender(PlanetParams params)",
+    "desc" : "Should be overridden to set up any shader parameters such as planet position, normals, etc.",
+    "overloads" : null,
+    "name" : "preRender",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void render(PlanetParams params, Mat3D projection, Mat3D transform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    }, {
+      "name" : "projection",
+      "type" : "Mat3D"
+    }, {
+      "name" : "transform",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ "arc.util.Disposable.isDisposed()", "mindustry.graphics.g3d.PlanetMesh.preRender(mindustry.graphics.g3d.PlanetParams)", "arc.graphics.gl.Shader.bind()", "arc.graphics.gl.Shader.setUniformMatrix4(java.lang.String, float[])", "arc.graphics.gl.Shader.apply()", "arc.graphics.Mesh.render(arc.graphics.gl.Shader, int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "arc.graphics.Mesh.dispose()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "PlanetParams.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class",
+  "typeDesc" : "Parameters for rendering a solar system.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Vec3 camPos",
+    "desc" : "Camera direction relative to the planet.",
+    "overloads" : null,
+    "name" : "camPos",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Vec3 otherCamPos",
+    "desc" : "If not null, this is the position of the \"previous\" planet for smooth camera movement.",
+    "overloads" : null,
+    "name" : "otherCamPos",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float otherCamAlpha",
+    "desc" : "Interpolation value for otherCamPos.",
+    "overloads" : null,
+    "name" : "otherCamAlpha",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Vec3 camUp",
+    "desc" : "Camera up vector.",
+    "overloads" : null,
+    "name" : "camUp",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Vec3 camDir",
+    "desc" : "the unit length direction vector of the camera *",
+    "overloads" : null,
+    "name" : "camDir",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Planet planet",
+    "desc" : "Planet being looked at.",
+    "overloads" : null,
+    "name" : "planet",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float zoom",
+    "desc" : "Zoom relative to planet.",
+    "overloads" : null,
+    "name" : "zoom",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float uiAlpha",
+    "desc" : "Alpha of orbit rings and other UI elements.",
+    "overloads" : null,
+    "name" : "uiAlpha",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean drawUi",
+    "desc" : "If false, orbit and sector grid are not drawn.",
+    "overloads" : null,
+    "name" : "drawUi",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean drawSkybox",
+    "desc" : "If true, a space skybox is drawn.",
+    "overloads" : null,
+    "name" : "drawSkybox",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public transient PlanetInterfaceRenderer renderer",
+    "desc" : "Handles drawing details.",
+    "overloads" : null,
+    "name" : "renderer",
+    "returnType" : null,
+    "modifiers" : [ "public", "transient" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public transient int viewW",
+    "desc" : "Viewport size.",
+    "overloads" : null,
+    "name" : "viewW",
+    "returnType" : null,
+    "modifiers" : [ "public", "transient" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public transient boolean alwaysDrawAtmosphere",
+    "desc" : "If true, atmosphere will be drawn regardless of player options.",
+    "overloads" : null,
+    "name" : "alwaysDrawAtmosphere",
+    "returnType" : null,
+    "modifiers" : [ "public", "transient" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "PlanetRenderer.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class implements arc.util.Disposable",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final float outlineRad",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "outlineRad",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final Color outlineColor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "outlineColor",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Camera3D cam",
+    "desc" : "Camera used for rendering.",
+    "overloads" : null,
+    "name" : "cam",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final VertexBatch3D batch",
+    "desc" : "Raw vertex batch.",
+    "overloads" : null,
+    "name" : "batch",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final PlaneBatch3D projector",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "projector",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Mat3D mat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mat",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Bloom bloom",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bloom",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Mesh atmosphere",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "atmosphere",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final CubemapMesh skybox",
+    "desc" : "seed: 8kmfuix03fw",
+    "overloads" : null,
+    "name" : "skybox",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public PlanetRenderer()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "PlanetRenderer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : [ "arc.graphics.g3d.PlaneBatch3D.setScaling(float)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void render(PlanetParams params)",
+    "desc" : "Render the entire planet scene to the screen.",
+    "overloads" : null,
+    "name" : "render",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "arc.graphics.g2d.Draw.flush()", "arc.graphics.Gl.clear(int)", "arc.graphics.Gl.enable(int)", "arc.graphics.Gl.depthMask(boolean)", "arc.graphics.Gl.cullFace(int)", "arc.Graphics.getWidth()", "arc.Graphics.getHeight()", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "arc.graphics.g3d.Camera3D.resize(float, float)", "arc.math.geom.Vec3.setLength(float)", "arc.math.geom.Vec3.add(arc.math.geom.Vec3)", "arc.math.geom.Vec3.lerp(arc.math.geom.Vec3, float)", "arc.graphics.g3d.Camera3D.lookAt(arc.math.geom.Vec3)", "arc.graphics.g3d.Camera3D.update()", "arc.graphics.g3d.PlaneBatch3D.proj(arc.math.geom.Mat3D)", "arc.graphics.g3d.VertexBatch3D.proj(arc.math.geom.Mat3D)", "arc.Events.fire(java.lang.Enum<T>)", "arc.graphics.g2d.Bloom.resize(int, int)", "arc.graphics.g2d.Bloom.capture()", "arc.math.geom.Vec3.setZero()", "mindustry.graphics.CubemapMesh.render(arc.math.geom.Mat3D)", "mindustry.graphics.g3d.PlanetRenderer.renderPlanet(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)", "mindustry.graphics.g3d.PlanetRenderer.renderTransparent(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)", "arc.math.geom.Mat3D.mul(arc.math.geom.Mat3D)", "arc.graphics.g3d.VertexBatch3D.proj()", "mindustry.type.Planet.getTransform(arc.math.geom.Mat3D)", "mindustry.graphics.g3d.PlanetRenderer.PlanetInterfaceRenderer.renderOverProjections(mindustry.type.Planet)", "arc.graphics.g2d.Bloom.render()", "mindustry.graphics.g3d.PlanetRenderer.PlanetInterfaceRenderer.renderProjections(mindustry.type.Planet)", "arc.graphics.Gl.disable(int)" ],
+    "callCount" : 30
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderPlanet(Planet planet, PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderPlanet",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 132,
+    "calls" : [ "mindustry.type.Planet.visible()", "arc.graphics.g3d.Camera3D.update()", "arc.math.geom.Frustum.containsSphere(arc.math.geom.Vec3, float)", "mindustry.type.Planet.draw(mindustry.graphics.g3d.PlanetParams, arc.math.geom.Mat3D, arc.math.geom.Mat3D)", "mindustry.type.Planet.getTransform(arc.math.geom.Mat3D)", "mindustry.graphics.g3d.PlanetRenderer.renderPlanet(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderTransparent(Planet planet, PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderTransparent",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 147,
+    "calls" : [ "mindustry.type.Planet.visible()", "mindustry.type.Planet.drawClouds(mindustry.graphics.g3d.PlanetParams, arc.math.geom.Mat3D, arc.math.geom.Mat3D)", "mindustry.type.Planet.getTransform(arc.math.geom.Mat3D)", "mindustry.type.Planet.hasGrid()", "mindustry.graphics.g3d.PlanetRenderer.renderSectors(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)", "arc.math.geom.Frustum.containsSphere(arc.math.geom.Vec3, float)", "arc.Settings.getBool(java.lang.String)", "mindustry.type.Planet.drawAtmosphere(arc.graphics.Mesh, arc.graphics.g3d.Camera3D)", "mindustry.graphics.g3d.PlanetRenderer.renderTransparent(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)", "arc.graphics.g3d.VertexBatch3D.proj(arc.math.geom.Mat3D)", "mindustry.graphics.g3d.PlanetRenderer.renderOrbit(mindustry.type.Planet, mindustry.graphics.g3d.PlanetParams)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderOrbit(Planet planet, PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderOrbit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 171,
+    "calls" : [ "mindustry.type.Planet.visible()", "arc.math.Angles.circleVectors(int, float, arc.func.Floatc2)", "arc.graphics.g3d.VertexBatch3D.vertex(arc.math.geom.Vec3, arc.graphics.Color)", "arc.math.geom.Vec3.add(float, float, float)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "arc.graphics.Color.a(float)", "arc.graphics.Color.write(arc.graphics.Color)", "arc.graphics.g3d.VertexBatch3D.flush(int)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void renderSectors(Planet planet, PlanetParams params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderSectors",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "params",
+      "type" : "PlanetParams"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 181,
+    "calls" : [ "mindustry.type.Planet.renderSectors(arc.graphics.g3d.VertexBatch3D, arc.graphics.g3d.Camera3D, mindustry.graphics.g3d.PlanetParams)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawArcLine(Planet planet, Vec3 a, Vec3 b) / public void drawArcLine(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount, float stroke)",
+    "desc" : null,
+    "overloads" : [ "public void drawArcLine(Planet planet, Vec3 a, Vec3 b)", "public void drawArcLine(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount, float stroke)" ],
+    "name" : "drawArcLine",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "a",
+      "type" : "Vec3"
+    }, {
+      "name" : "b",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 186,
+    "calls" : [ "mindustry.graphics.g3d.PlanetRenderer.drawArcLine(mindustry.type.Planet, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color, arc.graphics.Color, float, float, int, float)", "arc.graphics.Color.a(float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.type.Planet.drawArcLine(arc.graphics.g3d.VertexBatch3D, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color, arc.graphics.Color, float, float, int, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawArc(Planet planet, Vec3 a, Vec3 b) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount)",
+    "desc" : null,
+    "overloads" : [ "public void drawArc(Planet planet, Vec3 a, Vec3 b)", "public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length)", "public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount)" ],
+    "name" : "drawArc",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "a",
+      "type" : "Vec3"
+    }, {
+      "name" : "b",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 190,
+    "calls" : [ "mindustry.graphics.g3d.PlanetRenderer.drawArc(mindustry.type.Planet, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color, arc.graphics.Color, float)", "mindustry.graphics.g3d.PlanetRenderer.drawArc(mindustry.type.Planet, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color, arc.graphics.Color, float, float, int)", "mindustry.type.Planet.drawArc(arc.graphics.g3d.VertexBatch3D, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color, arc.graphics.Color, float, float, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawBorders(Sector sector, Color base, float alpha)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawBorders",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    }, {
+      "name" : "base",
+      "type" : "Color"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 206,
+    "calls" : [ "mindustry.type.Planet.drawBorders(arc.graphics.g3d.VertexBatch3D, mindustry.type.Sector, arc.graphics.Color, float)", "arc.graphics.g3d.VertexBatch3D.getNumVertices()", "arc.graphics.g3d.VertexBatch3D.getMaxVertices()", "arc.graphics.g3d.VertexBatch3D.flush(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlane(Sector sector, Runnable run)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlane",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    }, {
+      "name" : "run",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 213,
+    "calls" : [ "arc.graphics.g2d.Draw.batch(arc.graphics.g2d.Batch, java.lang.Runnable)", "mindustry.graphics.g3d.PlanetRenderer.setPlane(mindustry.type.Sector)", "java.lang.Runnable.run()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPlane(Sector sector)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setPlane",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 220,
+    "calls" : [ "mindustry.type.Planet.setPlane(mindustry.type.Sector, arc.graphics.g3d.PlaneBatch3D)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void fill(Sector sector, Color color, float offset)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fill",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "offset",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 224,
+    "calls" : [ "mindustry.type.Planet.fill(arc.graphics.g3d.VertexBatch3D, mindustry.type.Sector, arc.graphics.Color, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawSelection(Sector sector, float alpha) / public void drawSelection(Sector sector, Color color, float stroke, float length)",
+    "desc" : null,
+    "overloads" : [ "public void drawSelection(Sector sector, float alpha)", "public void drawSelection(Sector sector, Color color, float stroke, float length)" ],
+    "name" : "drawSelection",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 228,
+    "calls" : [ "mindustry.graphics.g3d.PlanetRenderer.drawSelection(mindustry.type.Sector, arc.graphics.Color, float, float)", "arc.graphics.Color.a(float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.type.Planet.drawSelection(arc.graphics.g3d.VertexBatch3D, mindustry.type.Sector, arc.graphics.Color, float, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawSpecialSelection(Sector sector, Color color, float stroke, float length)",
+    "desc" : "Draws sector when selected.",
+    "overloads" : null,
+    "name" : "drawSpecialSelection",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sector",
+      "type" : "Sector"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "stroke",
+      "type" : "float"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 237,
+    "calls" : [ "mindustry.graphics.g3d.PlanetRenderer.drawSelection(mindustry.type.Sector, arc.graphics.Color, float, float)", "arc.math.geom.Vec3.scl(float)", "arc.math.geom.Vec3.add(arc.math.geom.Vec3)", "arc.math.geom.Vec3.setLength(float)", "arc.math.geom.Vec3.sub(arc.math.geom.Vec3)", "arc.math.geom.Vec3.set(arc.math.geom.Vec3)", "arc.math.geom.Vec3.dst(arc.math.geom.Vec3)", "arc.math.geom.Vec3.lerp(arc.math.geom.Vec3, float)", "arc.math.geom.Vec3.len()", "arc.graphics.g3d.VertexBatch3D.quad(arc.math.geom.Vec3, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.math.geom.Vec3, arc.graphics.Color)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 267,
+    "calls" : [ "mindustry.graphics.CubemapMesh.dispose()", "arc.graphics.g3d.VertexBatch3D.dispose()", "arc.graphics.g2d.Batch.dispose()", "arc.graphics.Mesh.dispose()", "arc.graphics.g2d.Bloom.dispose()" ],
+    "callCount" : 5
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "PlanetInterfaceRenderer",
+    "simpleName" : "PlanetInterfaceRenderer",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void renderSectors(Planet planet)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "renderSectors",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "planet",
+        "type" : "Planet"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 277,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void renderProjections(Planet planet)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "renderProjections",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "planet",
+        "type" : "Planet"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 278,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default void renderOverProjections(Planet planet)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "renderOverProjections",
+      "returnType" : "void",
+      "modifiers" : [ "default" ],
+      "parameters" : [ {
+        "name" : "planet",
+        "type" : "Planet"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 279,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "ShaderSphereMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class extends mindustry.graphics.g3d.PlanetMesh",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ShaderSphereMesh(Planet planet, Shader shader, int divisions)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ShaderSphereMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "shader",
+      "type" : "Shader"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ "mindustry.graphics.g3d.MeshBuilder.buildIcosphere(int, float)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "SunMesh.java",
+  "pkg" : "mindustry.graphics.g3d",
+  "type" : "Java class extends mindustry.graphics.g3d.HexMesh",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SunMesh(Planet planet, int divisions, double octaves, double persistence, double scl, double pow, double mag, float colorScale, Color colors)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SunMesh",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "planet",
+      "type" : "Planet"
+    }, {
+      "name" : "divisions",
+      "type" : "int"
+    }, {
+      "name" : "octaves",
+      "type" : "double"
+    }, {
+      "name" : "persistence",
+      "type" : "double"
+    }, {
+      "name" : "scl",
+      "type" : "double"
+    }, {
+      "name" : "pow",
+      "type" : "double"
+    }, {
+      "name" : "mag",
+      "type" : "double"
+    }, {
+      "name" : "colorScale",
+      "type" : "float"
+    }, {
+      "name" : "colors",
+      "type" : "Color"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ "java.lang.Math.pow(double, double)", "arc.util.noise.Simplex.noise3d(int, double, double, double, double, double, double)", "arc.graphics.Color.mul(float)", "arc.graphics.Color.set(arc.graphics.Color)", "arc.math.Mathf.clamp(int, int, int)", "mindustry.graphics.g3d.SunMesh.Anonymous-af994f4b-29e4-49bc-b5b3-b1f36c6a16d5.Anonymous-af994f4b-29e4-49bc-b5b3-b1f36c6a16d5()" ],
+    "callCount" : 6
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+} ]

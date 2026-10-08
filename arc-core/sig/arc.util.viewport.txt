@@ -1,0 +1,101 @@
+ExtendViewport.java
+Java class extends arc.util.viewport.Viewport
+// A viewport that keeps the world aspect ratio by extending the world in one direction.
+fields:
+  private float minWorldWidth
+  private float maxWorldWidth
+ctors:
+  public ExtendViewport(float minWorldWidth, float minWorldHeight) / public ExtendViewport(float minWorldWidth, float minWorldHeight, Camera camera) / public ExtendViewport(float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight) / public ExtendViewport(float minWorldWidth, float minWorldHeight, float maxWorldWidth, float maxWorldHeight, Camera camera)  // Creates a new viewport using a new {@link Camera} with no maximum world size.
+methods:
+  public void update(int screenWidth, int screenHeight, boolean centerCamera)
+  public float getMinWorldWidth()
+  public void setMinWorldWidth(float minWorldWidth)
+  public float getMinWorldHeight()
+  public void setMinWorldHeight(float minWorldHeight)
+  public float getMaxWorldWidth()
+  public void setMaxWorldWidth(float maxWorldWidth)
+  public float getMaxWorldHeight()
+  public void setMaxWorldHeight(float maxWorldHeight)
+
+FillViewport.java
+Java class extends arc.util.viewport.ScalingViewport
+// A ScalingViewport that uses {@link Scaling#fill} so it keeps the aspect ratio by scaling the world up to take the whole screen
+ctors:
+  public FillViewport(float worldWidth, float worldHeight) / public FillViewport(float worldWidth, float worldHeight, Camera camera)  // Creates a new viewport using a new {@link Camera}.
+
+FitViewport.java
+Java class extends arc.util.viewport.ScalingViewport
+// A ScalingViewport that uses {@link Scaling#fit} so it keeps the aspect ratio by scaling the world up to fit the screen, adding
+ctors:
+  public FitViewport(float worldWidth, float worldHeight) / public FitViewport(float worldWidth, float worldHeight, Camera camera)  // Creates a new viewport using a new {@link Camera}.
+
+ScalingViewport.java
+Java class extends arc.util.viewport.Viewport
+// A viewport that scales the world using {@link Scaling}.
+fields:
+  private Scaling scaling
+ctors:
+  public ScalingViewport(Scaling scaling, float worldWidth, float worldHeight) / public ScalingViewport(Scaling scaling, float worldWidth, float worldHeight, Camera camera)  // Creates a new viewport using a new {@link Camera}.
+methods:
+  public void update(int screenWidth, int screenHeight, boolean centerCamera)
+  public Scaling getScaling()
+  public void setScaling(Scaling scaling)
+
+ScreenViewport.java
+Java class extends arc.util.viewport.Viewport
+// A viewport where the world size is based on the size of the screen.
+fields:
+  private float unitsPerPixel
+ctors:
+  public ScreenViewport() / public ScreenViewport(Camera camera)  // Creates a new viewport using a new {@link Camera}.
+methods:
+  public void update(int screenWidth, int screenHeight, boolean centerCamera)
+  public float getUnitsPerPixel()
+  public void setUnitsPerPixel(float unitsPerPixel)  // Sets the number of pixels for each world unit.
+
+StretchViewport.java
+Java class extends arc.util.viewport.ScalingViewport
+// A ScalingViewport that uses {@link Scaling#stretch} so it does not keep the aspect ratio, the world is scaled to take the whole
+ctors:
+  public StretchViewport(float worldWidth, float worldHeight) / public StretchViewport(float worldWidth, float worldHeight, Camera camera)  // Creates a new viewport using a new {@link Camera}.
+
+Viewport.java
+Java class (abstract)
+// Manages a {@link Camera} and determines how world coordinates are mapped to and from the screen.
+fields:
+  private final Vec2 tmp
+  private Camera camera
+  private float worldWidth
+  private int screenX
+methods:
+  public void apply() / public void apply(boolean centerCamera)  // Calls {@link #apply(boolean)} with false.
+  public final void update(int screenWidth, int screenHeight) / public void update(int screenWidth, int screenHeight, boolean centerCamera)  // Calls {@link #update(int, int, boolean)} with false.
+  public Vec2 unproject(Vec2 screenCoords)  // Transforms the specified screen coordinate to world coordinates.
+  public Vec2 project(Vec2 worldCoords)  // Transforms the specified world coordinate to screen coordinates.
+  public void calculateScissors(Mat batchTransform, Rect area, Rect scissor)  // @see ScissorStack#calculateScissors(Camera, float, float, float, float, Mat, Rect, Rect)
+  public Vec2 toScreenCoordinates(Vec2 worldCoords, Mat transformMatrix)  // Transforms a point to real screen coordinates (as opposed to OpenGL ES window coordinates), where the origin is in the top
+  public Camera getCamera()
+  public void setCamera(Camera camera)
+  public float getWorldWidth()
+  public void setWorldWidth(float worldWidth)  // The virtual width of this viewport in world coordinates.
+  public float getWorldHeight()
+  public void setWorldHeight(float worldHeight)  // The virtual height of this viewport in world coordinates.
+  public void setWorldSize(float worldWidth, float worldHeight)
+  public int getScreenX()
+  public void setScreenX(int screenX)  // Sets the viewport's offset from the left edge of the screen.
+  public int getScreenY()
+  public void setScreenY(int screenY)  // Sets the viewport's offset from the bottom edge of the screen.
+  public int getScreenWidth()
+  public void setScreenWidth(int screenWidth)  // Sets the viewport's width in screen coordinates.
+  public int getScreenHeight()
+  public void setScreenHeight(int screenHeight)  // Sets the viewport's height in screen coordinates.
+  public void setScreenPosition(int screenX, int screenY)  // Sets the viewport's position in screen coordinates.
+  public void setScreenSize(int screenWidth, int screenHeight)  // Sets the viewport's size in screen coordinates.
+  public void setScreenBounds(int screenX, int screenY, int screenWidth, int screenHeight)  // Sets the viewport's bounds in screen coordinates.
+  public int getLeftGutterWidth()  // Returns the left gutter (black bar) width in screen coordinates.
+  public int getRightGutterX()  // Returns the right gutter (black bar) x in screen coordinates.
+  public int getRightGutterWidth()  // Returns the right gutter (black bar) width in screen coordinates.
+  public int getBottomGutterHeight()  // Returns the bottom gutter (black bar) height in screen coordinates.
+  public int getTopGutterY()  // Returns the top gutter (black bar) y in screen coordinates.
+  public int getTopGutterHeight()  // Returns the top gutter (black bar) height in screen coordinates.
+

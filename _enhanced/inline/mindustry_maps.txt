@@ -1,0 +1,406 @@
+// Map.java : public int getHighScore()
+    public int getHighScore(){
+        return Core.settings.getInt("hiscore" + file.nameWithoutExtension() + tags.get("steamid", ""), 0);
+    }
+
+// Map.java : public Texture safeTexture()
+    public Texture safeTexture(){
+        return texture == null ? Core.assets.get("sprites/error.png") : texture;
+    }
+
+// Map.java : public Fi previewFile()
+    public Fi previewFile(){
+        return Vars.mapPreviewDirectory.child((workshop ? file.parent().name() : file.nameWithoutExtension()) + "_v2.png");
+    }
+
+// Map.java : public Fi cacheFile()
+    public Fi cacheFile(){
+        return Vars.mapPreviewDirectory.child(workshop ? file.parent().name() + "-workshop-cache.dat" : file.nameWithoutExtension() + "-cache_v2.dat");
+    }
+
+// Map.java : public void setHighScore(int score)
+    public void setHighScore(int score){
+        Core.settings.put("hiscore" + file.nameWithoutExtension() + tags.get("steamid", ""), score);
+    }
+
+// Map.java : public Rules applyRules(Gamemode mode)
+    public Rules applyRules(Gamemode mode){
+        //mode specific defaults have been applied
+        Rules out = new Rules();
+        mode.apply(out);
+
+        //now apply map-specific overrides
+        return rules(out);
+    }
+
+// Map.java : public Rules rules() / public Rules rules(Rules base)
+    public Rules rules(){
+        return rules(new Rules());
+    }
+
+// Map.java : public Seq<GenerateFilter> filters()
+    public Seq<GenerateFilter> filters(){
+        if(tags.getInt("build", -1) < 83 && tags.getInt("build", -1) != -1 && tags.get("genfilters", "").isEmpty()){
+            return Seq.with();
+        }
+        return maps.readFilters(tags.get("genfilters", ""));
+    }
+
+// Map.java : public String name()
+    public String name(){
+        return tag("name");
+    }
+
+// Map.java : public String author()
+    public String author(){
+        return tag("author");
+    }
+
+// Map.java : public String description()
+    public String description(){
+        return tag("description");
+    }
+
+// Map.java : public String plainName()
+    public String plainName() {
+        return Strings.stripColors(name());
+    }
+
+// Map.java : public String plainAuthor()
+    public String plainAuthor(){
+        return Strings.stripColors(author());
+    }
+
+// Map.java : public String plainDescription()
+    public String plainDescription(){
+        return Strings.stripColors(description());
+    }
+
+// Map.java : public String tag(String name)
+    public String tag(String name){
+        return hasTag(name) ? tags.get(name) : Core.bundle.get("unknown", "unknown");
+    }
+
+// Map.java : public boolean hasTag(String name)
+    public boolean hasTag(String name){
+        return tags.containsKey(name) && !tags.get(name).trim().isEmpty();
+    }
+
+// Map.java : public String getSteamID()
+    @Override
+    public String getSteamID(){
+        return tags.get("steamid");
+    }
+
+// Map.java : public void removeSteamID()
+    @Override
+    public void removeSteamID(){
+        tags.remove("steamid");
+        editor.tags.remove("steamid");
+
+        try{
+            ui.editor.save();
+        }catch(Exception e){
+            Log.err(e);
+        }
+    }
+
+// Map.java : public String steamTitle()
+    @Override
+    public String steamTitle(){
+        return name();
+    }
+
+// Map.java : public String steamDescription()
+    @Override
+    public String steamDescription(){
+        return description();
+    }
+
+// Map.java : public String steamTag()
+    @Override
+    public String steamTag(){
+        return "map";
+    }
+
+// Map.java : public Fi createSteamFolder(String id)
+    @Override
+    public Fi createSteamFolder(String id){
+        Fi mapFile = tmpDirectory.child("map_" + id).child("map.msav");
+        file.copyTo(mapFile);
+        return mapFile.parent();
+    }
+
+// Map.java : public Fi createSteamPreview(String id)
+    @Override
+    public Fi createSteamPreview(String id){
+        //I have no idea what the hell I was even thinking with this preview stuff
+        return Vars.mapPreviewDirectory.child((workshop && file.parent().exists() && file.parent().extEquals(".png") ? file.parent().name() : file.nameWithoutExtension()) + "_v2.png");
+    }
+
+// Map.java : public Seq<String> extraTags()
+    @Override
+    public Seq<String> extraTags(){
+        Gamemode mode = Gamemode.attack.valid(this) ? Gamemode.attack : Gamemode.survival;
+        return Seq.with(mode.name());
+    }
+
+// Map.java : public boolean prePublish()
+    @Override
+    public boolean prePublish(){
+        tags.put("author", player.name);
+        editor.tags.put("author", player.name);
+
+        ui.editor.save();
+        return true;
+    }
+
+// Map.java : public int compareTo(Map map)
+    @Override
+    public int compareTo(Map map){
+        int work = -Boolean.compare(workshop, map.workshop);
+        if(work != 0) return work;
+        int type = -Boolean.compare(custom, map.custom);
+        if(type != 0) return type;
+        int modes = Boolean.compare(Gamemode.pvp.valid(this), Gamemode.pvp.valid(map));
+        if(modes != 0) return modes;
+
+        return Strings.stripColors(name()).compareTo(Strings.stripColors(map.name()));
+    }
+
+// Map.java : public String toString()
+    @Override
+    public String toString(){
+        return "Map{" +
+        "file='" + file + '\'' +
+        '}';
+    }
+
+// MapPreviewLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter){
+        try{
+            super.loadAsync(manager, fileName, file.sibling(file.nameWithoutExtension()), parameter);
+        }catch(Exception e){
+            Log.err(e);
+            MapPreviewParameter param = (MapPreviewParameter)parameter;
+            Vars.maps.queueNewPreview(param.map);
+        }
+    }
+
+// MapPreviewLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter){
+        return Seq.with(new AssetDescriptor<>("contentcreate", Content.class));
+    }
+
+// MapPreviewLoader.java : public static void checkPreviews()
+    public static void checkPreviews(){
+        if(check != null){
+            check.run();
+        }
+    }
+
+// Maps.java : public ShuffleMode getShuffleMode()
+    public ShuffleMode getShuffleMode(){
+        return shuffleMode;
+    }
+
+// Maps.java : public void setShuffleMode(ShuffleMode mode)
+    public void setShuffleMode(ShuffleMode mode){
+        this.shuffleMode = mode;
+    }
+
+// Maps.java : public void setMapProvider(MapProvider provider)
+    public void setMapProvider(MapProvider provider){
+        this.shuffler = provider;
+    }
+
+// Maps.java : public void setNextMapOverride(Map nextMapOverride)
+    public void setNextMapOverride(Map nextMapOverride){
+        this.nextMapOverride = nextMapOverride;
+    }
+
+// Maps.java : public Map getNextMap(Gamemode mode, Map previous)
+    public @Nullable Map getNextMap(Gamemode mode, @Nullable Map previous){
+        if(nextMapOverride != null){
+            Map next = nextMapOverride;
+            nextMapOverride = null;
+            return next;
+        }
+
+        if(shuffler != null) return shuffler.next(mode, previous);
+        return shuffleMode.next(mode, previous);
+    }
+
+// Maps.java : public Seq<Map> all()
+    public Seq<Map> all(){
+        return maps;
+    }
+
+// Maps.java : public Seq<Map> customMaps()
+    public Seq<Map> customMaps(){
+        return maps.select(m -> m.custom);
+    }
+
+// Maps.java : public Seq<Map> defaultMaps()
+    public Seq<Map> defaultMaps(){
+        return maps.select(m -> !m.custom && m.mod == null);
+    }
+
+// Maps.java : public Seq<Map> moddedMaps()
+    public Seq<Map> moddedMaps(){
+        return maps.select(m -> m.mod != null);
+    }
+
+// Maps.java : public Map byName(String name)
+    public Map byName(String name){
+        return maps.find(m -> m.name().equals(name));
+    }
+
+// Maps.java : public Map loadInternalMap(String name)
+    public Map loadInternalMap(String name){
+        Fi file = tree.get("maps/" + name + "." + mapExtension);
+
+        try{
+            return MapIO.createMap(file, false);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Maps.java : public void reload()
+    public void reload(){
+        for(Map map : maps){
+            if(map.texture != null){
+                map.texture.dispose();
+                map.texture = null;
+            }
+        }
+        maps.clear();
+        load();
+    }
+
+// Maps.java : public Map saveMap(ObjectMap<String,String> baseTags) / public Map saveMap(ObjectMap<String,String> baseTags, boolean embedAssets)
+    public Map saveMap(ObjectMap<String, String> baseTags){
+        return saveMap(baseTags, true);
+    }
+
+// Maps.java : public void removeMap(Map map)
+    public void removeMap(Map map){
+        if(map.texture != null){
+            map.texture.dispose();
+            map.texture = null;
+        }
+
+        maps.remove(map);
+        map.file.delete();
+    }
+
+// Maps.java : public void addDefaultOres(Seq<GenerateFilter> filters)
+    public void addDefaultOres(Seq<GenerateFilter> filters){
+        Seq<Block> ores = content.blocks().select(b -> b.isOverlay() && b.asFloor().oreDefault);
+        for(Block block : ores){
+            OreFilter filter = new OreFilter();
+            filter.threshold = block.asFloor().oreThreshold;
+            filter.scl = block.asFloor().oreScale;
+            filter.ore = block;
+            filters.add(filter);
+        }
+    }
+
+// Maps.java : public Seq<SpawnGroup> readWaves(String str)
+    public Seq<SpawnGroup> readWaves(String str){
+        return str == null ? null : str.equals("[]") ? new Seq<>() : Seq.with(JsonIO.json.fromJson(SpawnGroup[].class, str));
+    }
+
+// Maps.java : private void createAllPreviews()
+    private void createAllPreviews(){
+        Core.app.post(() -> {
+            for(Map map : previewList){
+                createNewPreview(map, e -> Core.app.post(() -> map.texture = Core.assets.get("sprites/error.png")));
+            }
+            previewList.clear();
+        });
+    }
+
+// Maps.java : public void queueNewPreview(Map map)
+    public void queueNewPreview(Map map){
+        Core.app.post(() -> previewList.add(map));
+    }
+
+// Maps.java : private void writeCache(Map map) throws IOException
+    private void writeCache(Map map) throws IOException{
+        try(DataOutputStream stream = new DataOutputStream(map.cacheFile().write(false, Streams.defaultBufferSize))){
+            stream.write(0);
+            stream.writeInt(map.spawns);
+            stream.write(map.teams.size);
+            IntSetIterator iter = map.teams.iterator();
+            while(iter.hasNext){
+                stream.write(iter.next());
+            }
+        }
+    }
+
+// Maps.java : private void readCache(Map map) throws IOException
+    private void readCache(Map map) throws IOException{
+        try(DataInputStream stream = new DataInputStream(map.cacheFile().read(Streams.defaultBufferSize))){
+            stream.read(); //version
+            map.spawns = stream.readInt();
+            int teamsize = stream.readByte();
+            for(int i = 0; i < teamsize; i++){
+                map.teams.add(stream.read());
+            }
+        }
+    }
+
+// Maps.java : private Map loadMap(Fi file, boolean custom) throws IOException
+    private Map loadMap(Fi file, boolean custom) throws IOException{
+        Map map = MapIO.createMap(file, custom);
+
+        if(map.name() == null){
+            throw new IOException("Map name cannot be empty! File: " + file);
+        }
+
+        maps.add(map);
+        maps.sort();
+        return map;
+    }
+
+// SectorDamage.java : static float cost(Tile tile)
+    static float cost(Tile tile){
+        return 1f +
+            (tile.block().isStatic() && tile.solid() ? 200f : 0f) +
+            (tile.build != null ? tile.build.health / (tile.build.block.size * tile.build.block.size) / 20f : 0f) +
+            (tile.floor().isLiquid ? 10f : 0f);
+    }
+
+// SectorSubmissions.java : public static String getSectorThread(Sector sector)
+    public static @Nullable String getSectorThread(Sector sector){
+        if(sector.generateEnemyBase){
+            var sub = threadMap.get(sector);
+            if(sub == null){
+                return null;
+            }
+            return sub.mapFileLink.isEmpty() ? sub.threadLink : sub.mapFileLink;
+        }
+        return null;
+    }
+
+// SectorSubmissions.java : static SectorPreset register(int id, String author, String mapFileLink, int difficulty)
+    static SectorPreset register(int id, String author, String mapFileLink, int difficulty){
+        return registerSector(id, author, mapFileLink, -1, difficulty);
+    }
+
+// SectorSubmissions.java : static SectorPreset registerSurvival(int id, String author, String mapFileLink, int captureWave, float difficulty)
+    static SectorPreset registerSurvival(int id, String author, String mapFileLink, int captureWave, float difficulty){
+        return registerSector(id, author, mapFileLink, captureWave, difficulty);
+    }
+
+// SectorSubmissions.java : static void registerThread(int id, String link)
+    static void registerThread(int id, String link){
+        var sub = new MapSubmission();
+        sub.threadLink = link;
+        threadMap.put(Planets.serpulo.sectors.get(id), sub);
+    }
+

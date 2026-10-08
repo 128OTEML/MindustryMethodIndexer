@@ -1,0 +1,93 @@
+AsyncCore.java
+Java class
+fields:
+  public final Seq<AsyncProcess> processes  // all processes to be executed each frame
+  private final Seq<Future<?>> futures  // futures to be awaited
+  private ExecutorService executor
+ctors:
+  public AsyncCore()
+methods:
+  public void begin()
+  public void end()
+  private void complete()
+
+AsyncProcess.java
+Java interface
+methods:
+  default void init()  // Sync.
+  default void reset()  // Sync.
+  default void begin()  // Sync.
+  default void process()  // Async.
+  default void end()  // Sync.
+  default boolean shouldProcess()
+
+AvoidanceProcess.java
+Java class implements mindustry.async.AsyncProcess
+fields:
+  static int wwidth  // cached world size
+  int buffer1
+  volatile boolean swap
+  IntSeq requests
+  int avoidance
+  boolean modified
+  boolean active
+methods:
+  public int[] getAvoidance()
+  public void init()
+  public void reset()
+  public void begin()
+  public void process()
+  public boolean shouldProcess()
+
+PhysicsProcess.java
+Java class implements mindustry.async.AsyncProcess
+fields:
+  static final int mobileIterations
+  public static final int layers
+  private PhysicsWorld physics  // one independent world per layer; layers never interact, so each can run on its own thread
+  private Seq<PhysicRef> refs
+  private Seq<Future<?>> futures
+  private Seq<PhysicRef> pendingAdds
+  private static volatile long maxPhysicsTime
+methods:
+  public void add(Unit unit)
+  public void begin()
+  public boolean shouldProcess()
+  public void reset()
+  public void init()
+inner-class: PhysicRef
+  fields:
+    public Unit entity
+    public PhysicsBody body
+    public float startX  // position before simulation start
+    public int lastLayer
+  ctors:
+    public PhysicRef(Unit entity, PhysicsBody body)
+inner-class: PhysicsWorld
+// world for simulating a single collision layer's physics, meant to run on its own thread
+  fields:
+    private static final float scl  // how much to soften movement by
+    private final QuadTree<PhysicsBody> tree
+    private final Seq<PhysicsBody> bodies
+    private final Seq<PhysicsBody> seq
+    private final Vec2 vec
+    private final Rand rand
+  ctors:
+    public PhysicsWorld(Rect bounds)
+  methods:
+    public void add(PhysicsBody body)
+    public void remove(PhysicsBody body)
+    public void update()
+  inner-class: PhysicsBody implements arc.math.geom.QuadTree.QuadTreeObject
+    fields:
+      public float x
+      public boolean collided
+    methods:
+      public void hitbox(Rect out)
+inner-class: PhysicsBody implements arc.math.geom.QuadTree.QuadTreeObject
+  fields:
+    public float x
+    public boolean collided
+  methods:
+    public void hitbox(Rect out)
+

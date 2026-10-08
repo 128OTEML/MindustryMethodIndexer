@@ -1,0 +1,112 @@
+// ShootAlternate.java : public void flip()
+    @Override
+    public void flip(){
+        mirror = !mirror;
+    }
+
+// ShootAlternate.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            float index = ((totalShots + i + barrelOffset) % barrels) - (barrels-1)/2f;
+            handler.shoot(index * spread * -Mathf.sign(mirror), 0, 0f, firstShotDelay + shotDelay * i);
+            if(barrelIncrementer != null) barrelIncrementer.run();
+        }
+    }
+
+// ShootBarrel.java : public void flip()
+    @Override
+    public void flip(){
+        barrels = barrels.clone();
+        for(int i = 0; i < barrels.length; i += 3){
+            barrels[i] *= -1;
+            barrels[i + 2] *= -1;
+        }
+    }
+
+// ShootBarrel.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            int index = ((i + totalShots + barrelOffset) % (barrels.length / 3)) * 3;
+            handler.shoot(barrels[index], barrels[index + 1], barrels[index + 2], firstShotDelay + shotDelay * i);
+            if(barrelIncrementer != null) barrelIncrementer.run();
+        }
+    }
+
+// ShootHelix.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            for(int sign : Mathf.signs){
+                handler.shoot(0, 0, 0, firstShotDelay + shotDelay * i,
+                    b -> b.moveRelative(0f, Mathf.sin(b.time + offset, scl, mag * sign)));
+            }
+        }
+    }
+
+// ShootMulti.java : public void flip()
+    @Override
+    public void flip(){
+        source = source.copy();
+        source.flip();
+        dest = dest.clone();
+        for(int i = 0; i < dest.length; i++){
+            dest[i] = dest[i].copy();
+            dest[i].flip();
+        }
+    }
+
+// ShootPattern.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer) / public void shoot(int totalShots, BulletHandler handler)
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        //the default implementation calls the "soft deprecated" variant for mod compatibility, so overrides from older mods can function properly
+        shoot(totalShots, handler);
+    }
+
+// ShootPattern.java : public void flip()
+    public void flip(){
+
+    }
+
+// ShootPattern.java : public ShootPattern copy()
+    public ShootPattern copy(){
+        try{
+            return (ShootPattern)clone();
+        }catch(CloneNotSupportedException absurd){
+            throw new RuntimeException("impending doom", absurd);
+        }
+    }
+
+// ShootSine.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            float angleOffset = Mathf.sin(i + totalShots, scl, mag);
+            handler.shoot(0, 0, angleOffset, firstShotDelay + shotDelay * i);
+        }
+    }
+
+// ShootSpread.java : public static ShootSpread circle(int points)
+    public static ShootSpread circle(int points){
+        return new ShootSpread(points, 360f / points);
+    }
+
+// ShootSpread.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            float angleOffset = i * spread - (shots - 1) * spread / 2f;
+            handler.shoot(0, 0, angleOffset, firstShotDelay + shotDelay * i);
+        }
+    }
+
+// ShootSummon.java : public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+    @Override
+    public void shoot(int totalShots, BulletHandler handler, @Nullable Runnable barrelIncrementer){
+        for(int i = 0; i < shots; i++){
+            Tmp.v1.trns(Mathf.random(360f), Mathf.random(radius));
+
+            handler.shoot(x + Tmp.v1.x, y + Tmp.v1.y, Mathf.range(spread), firstShotDelay + shotDelay * i);
+        }
+    }
+

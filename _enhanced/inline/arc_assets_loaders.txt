@@ -1,0 +1,141 @@
+// AssetLoader.java : public Fi resolve(String fileName)
+    public Fi resolve(String fileName){
+        return resolver.resolve(fileName);
+    }
+
+// CubemapLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, CubemapParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, CubemapParameter parameter){
+        return null;
+    }
+
+// CustomLoader.java : public Object loadSync(AssetManager manager, String fileName, Fi file, AssetLoaderParameters parameter)
+    @Override
+    public Object loadSync(AssetManager manager, String fileName, Fi file, AssetLoaderParameters parameter){
+        loaded.run();
+        return this;
+    }
+
+// CustomLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, AssetLoaderParameters parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, AssetLoaderParameters parameter){
+        return null;
+    }
+
+// FontLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, FontParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, FontParameter parameter){
+    }
+
+// I18NBundleLoader.java : public I18NBundle loadSync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter)
+    @Override
+    public I18NBundle loadSync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter){
+        I18NBundle bundle = this.bundle;
+        this.bundle = null;
+        return bundle;
+    }
+
+// I18NBundleLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, I18NBundleParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, I18NBundleParameter parameter){
+        return null;
+    }
+
+// MusicLoader.java : protected Music getLoadedMusic()
+    protected Music getLoadedMusic(){
+        return music;
+    }
+
+// MusicLoader.java : public Music loadSync(AssetManager manager, String fileName, Fi file, MusicParameter parameter)
+    @Override
+    public Music loadSync(AssetManager manager, String fileName, Fi file, MusicParameter parameter){
+        Music music = this.music;
+        this.music = null;
+        return music;
+    }
+
+// MusicLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, MusicParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, MusicParameter parameter){
+        return null;
+    }
+
+// PixmapLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter){
+        pixmap = null;
+        pixmap = new Pixmap(file);
+    }
+
+// PixmapLoader.java : public Pixmap loadSync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)
+    @Override
+    public Pixmap loadSync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter){
+        Pixmap pixmap = this.pixmap;
+        this.pixmap = null;
+        return pixmap;
+    }
+
+// PixmapLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, PixmapParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, PixmapParameter parameter){
+        return null;
+    }
+
+// ShaderProgramLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, ShaderProgramParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, ShaderProgramParameter parameter){
+        return null;
+    }
+
+// ShaderProgramLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter){
+    }
+
+// SoundLoader.java : protected Sound getLoadedSound()
+    protected Sound getLoadedSound(){
+        return sound;
+    }
+
+// SoundLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, SoundParameter parameter){
+        if(parameter != null && parameter.sound != null){
+            (sound = parameter.sound).load(file);
+        }else{
+            sound = Core.audio.newSound(file);
+        }
+    }
+
+// SoundLoader.java : public Sound loadSync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)
+    @Override
+    public Sound loadSync(AssetManager manager, String fileName, Fi file, SoundParameter parameter){
+        Sound sound = this.sound;
+        this.sound = null;
+        return sound;
+    }
+
+// SoundLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, SoundParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, SoundParameter parameter){
+        return null;
+    }
+
+// TextureAtlasLoader.java : public TextureAtlas load(AssetManager assetManager, String fileName, Fi file, TextureAtlasParameter parameter)
+    @Override
+    public TextureAtlas load(AssetManager assetManager, String fileName, Fi file, TextureAtlasParameter parameter){
+        for(AtlasPage page : data.getPages()){
+            page.texture = assetManager.get(page.textureFile.path(), Texture.class);
+        }
+
+        TextureAtlas atlas = new TextureAtlas(data);
+        data = null;
+        return atlas;
+    }
+
+// TextureLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter){
+        return null;
+    }
+

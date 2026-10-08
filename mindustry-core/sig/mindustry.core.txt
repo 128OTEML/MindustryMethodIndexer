@@ -1,0 +1,635 @@
+ContentLoader.java
+Java class
+// Loads all game content.
+fields:
+  private ObjectMap<String,MappableContent> contentNameMap
+  private Seq<Content> contentMap
+  private ObjectMap<String,MappableContent> nameMap
+  private MappableContent temporaryMapper
+  private LoadedMod currentMod
+  private Content lastAdded
+  private ObjectSet<Cons<Content>> initialization
+ctors:
+  public ContentLoader()
+methods:
+  public ContentLoader copy()
+  public void createBaseContent()  // Creates all base types.
+  public void createModContent()  // Creates mod content, if applicable.
+  public void logContent()  // Logs content statistics.
+  public void init()  // Calls Content#init() on everything.
+  public void load()  // Calls Content#loadIcon() and Content#load() on everything.
+  private void initialize(Cons<Content> callable)  // Initializes all content with the specified function.
+  public void loadColors()  // Loads block colors.
+  public Content getLastAdded()  // Get last piece of content created for error-handling purposes.
+  public void removeLast()  // Remove last content added in case of an exception.
+  public void handleContent(Content content)
+  public void setCurrentMod(LoadedMod mod)
+  public String transformName(String name)
+  public void handleMappableContent(MappableContent content)
+  public void setTemporaryMapper(MappableContent[][] temporaryMapper)
+  public MappableContent byName(String name)  // @return the last registered content with the specified name.
+  public Seq<Content>[] getContentMap()
+  public void each(Cons<Content> cons)
+  public T getByName(ContentType type, String name)
+  public T getByID(ContentType type, int id)
+  public Seq<T> getBy(ContentType type)
+  public ObjectMap<String,T> getNamesBy(ContentType type)
+  public void remove(Content content)  // Only use this for modded/data patcher content.
+  public Seq<Block> blocks()
+  public Block block(int id) / public Block block(String name)
+  public Seq<Item> items()
+  public Item item(int id) / public Item item(String name)
+  public Seq<Liquid> liquids()
+  public Liquid liquid(int id) / public Liquid liquid(String name)
+  public Seq<BulletType> bullets()
+  public BulletType bullet(int id)
+  public Seq<StatusEffect> statusEffects()
+  public StatusEffect statusEffect(String name)
+  public Seq<SectorPreset> sectors()
+  public SectorPreset sector(String name)
+  public Seq<UnitType> units()
+  public UnitType unit(int id) / public UnitType unit(String name)
+  public Seq<Planet> planets()
+  public Planet planet(String name)
+  public Seq<Weather> weathers()
+  public Weather weather(String name)
+  public Seq<UnitStance> unitStances()
+  public UnitStance unitStance(int id) / public UnitStance unitStance(String name)
+  public Seq<UnitCommand> unitCommands()
+  public UnitCommand unitCommand(int id) / public UnitCommand unitCommand(String name)
+
+Control.java
+Java class implements arc.ApplicationListener, arc.assets.Loadable
+// Control module.
+fields:
+  public Saves saves
+  public SoundControl sound
+  public InputHandler input
+  public AttackIndicators indicators
+  public CoreBuild lastDamagedCore  // TODO not sure where else to put this
+  private Interval timer
+  private boolean hiscore
+  private boolean wasPaused
+  private Seq<Building> toBePlaced
+  private Seq<Object[]> toBePlacedConfigs
+ctors:
+  public Control()
+methods:
+  private void forcePlaceAll()
+  private void configurePlaced()
+  private void placeLandBuild(Building build)
+  public void loadAsync()
+  public void loadSync()
+  public void checkAutoUnlocks()  // Automatically unlocks things with no requirements and no locked parents.
+  void createPlayer()
+  public void setInput(InputHandler newInput)
+  public void playMap(Map map, Rules rules) / public void playMap(Map map, Rules rules, boolean playtest)
+  public void playSector(Sector sector) / public void playSector(Sector origin, Sector sector) / void playSector(Sector origin, Sector sector, WorldReloader reloader)
+  public void playNewSector(Sector origin, Sector sector, WorldReloader reloader) / public void playNewSector(Sector origin, Sector sector, WorldReloader reloader, WorldParams params, Runnable beforePlay)
+  public boolean isHighScore()
+  public void dispose()
+  public void pause()
+  public void resume()
+  public void init()
+  public void update()
+
+FileTree.java
+Java class implements arc.assets.loaders.FileHandleResolver
+// Handles files in a modded context.
+fields:
+  private ObjectMap<String,Fi> files
+  private ObjectMap<String,Sound> loadedSounds
+  private ObjectMap<String,Music> loadedMusic
+methods:
+  public void addFile(String path, Fi f)
+  public Fi get(String path) / public Fi get(String path, boolean safe)  // Gets an asset file.
+  public void clear()  // Clears all mod files.
+  public Fi resolve(String fileName)
+  public Sound loadSound(String soundName)  // Loads a sound by name from the sounds/ folder.
+  public Music loadMusic(String musicName)  // Loads a music file by name from the music/ folder.
+  public static String getAudioPath(String name)
+
+GameState.java
+Java class
+fields:
+  public int wave  // Current wave number, can be anything in non-wave modes.
+  public float wavetime  // Wave countdown in ticks.
+  public double tick  // Logic tick.
+  public long updateId  // Continuously ticks up every non-paused update.
+  public boolean gameOver  // Whether the game is in game over state.
+  public boolean afterGameOver  // For the campaign, this is whether the map is in a "after game over" state.
+  public boolean won  // Whether the player's team won the match.
+  public int serverTps  // Server ticks/second.
+  public Map map  // Map that is currently being played on.
+  public Rules rules  // The current game rules.
+  public GameStats stats  // Statistics for this save/game.
+  public MapMarkers markers  // Markers not linked to objectives.
+  public MapLocales mapLocales  // Locale-specific string bundles of current map
+  public Attributes envAttrs  // Global attributes of the environment, calculated by weather.
+  public Teams teams  // Team data.
+  public DataManager data  // Handles JSON edits of game content.
+  public int enemies  // Number of enemies in the game; only used clientside in servers.
+  public Map playtestingMap  // Map being playtested (not edited!)
+  private State state  // Current game state.
+methods:
+  public Unit boss()
+  public void set(State astate)
+  public boolean hasSpawns()
+  public boolean isCampaign()  // Note that being in a campaign does not necessarily mean having a sector.
+  public boolean hasSector()
+  public Sector getSector()
+  public Planet getPlanet()
+  public boolean isEditor()
+  public boolean isPaused()
+  public boolean isPlaying()  // @return whether there is an unpaused game in progress.
+  public boolean isGame()  // @return whether the current state is *not* the menu.
+  public boolean isMenu()
+  public boolean is(State astate)
+  public State getState()
+
+Logic.java
+Java class implements arc.ApplicationListener
+// Logic module.
+ctors:
+  public Logic()
+methods:
+  private boolean checkCampaignStats()
+  private void checkOverlappingPlans(Team team, Tile tile)
+  public void play()  // Adds starting items, resets wave time, and sets state to playing.
+  public void reset()
+  public void skipWave()
+  public void runWave()
+  private void checkGameState()
+  protected void updateWeather()
+  public static void sectorCapture()
+  public static void updateGameOver(Team winner)
+  public static void gameOver(Team winner)
+  public static void researched(Content content)  // called when the remote server researches something
+  public void dispose()
+  protected void updateEntities()
+  public void update()
+  public boolean isWaitingWave()  // @return whether the wave timer is paused due to enemies
+
+NetClient.java
+Java class implements arc.ApplicationListener
+fields:
+  private static final long entitySnapshotTimeout
+  private static final float dataTimeout
+  private static final Timekeeper playerSyncTime
+  private static final Reads dataReads
+  private static final JsonValue tmpJsonMap
+  private long ping
+  private boolean connecting  // Whether the client is currently connecting.
+  private boolean quiet  // If true, no message will be shown on disconnect.
+  private boolean quietReset  // Whether to suppress disconnect events completely.
+  private float timeoutTime  // Counter for data timeout.
+  private long lastSnapshotTimestamp  // Timestamp for last UDP state snapshot received.
+  private int lastSent  // Last sent client snapshot ID.
+  private IntSet removed  // List of entities that were removed, and need not be added while syncing.
+  private ReusableByteInStream byteStream  // Byte stream for reading in snapshots.
+  private DataInputStream dataStream
+  private Reads dataStreamReads
+  private ObjectMap<String,Seq<Cons<String>>> customPacketHandlers  // Packet handlers for custom types of messages.
+  private ObjectMap<String,Seq<Cons<byte[]>>> customBinaryPacketHandlers  // Packet handlers for custom types of messages, in binary.
+  private static final ClientBuildPlans plansOut
+ctors:
+  public NetClient()
+methods:
+  public void addPacketHandler(String type, Cons<String> handler)
+  public Seq<Cons<String>> getPacketHandlers(String type)
+  public void addBinaryPacketHandler(String type, Cons<byte[]> handler)
+  public Seq<Cons<byte[]>> getBinaryPacketHandlers(String type)
+  public static void clientBinaryPacketReliable(String type, byte[] contents)
+  public static void clientBinaryPacketUnreliable(String type, byte[] contents)
+  public static void clientPacketReliable(String type, String contents)
+  public static void clientPacketUnreliable(String type, String contents)
+  public static void playMusic(String musicName, boolean interrupt)
+  public static void sound(Sound sound, float volume, float pitch, float pan)
+  public static void soundAt(Sound sound, float x, float y, float volume, float pitch)
+  public static void effect(Effect effect, float x, float y, float rotation, Color color) / public static void effect(Effect effect, float x, float y, float rotation, Color color, Object data)
+  public static void effectReliable(Effect effect, float x, float y, float rotation, Color color)
+  public static void sendMessage(String message, String unformatted, Player playersender) / public static void sendMessage(String message)  // equivalent to above method but there's no sender and no console log
+  public static void sendChatMessage(Player player, String message)  // called when a server receives a chat message from a player
+  public static void connect(String ip, int port)
+  public static void ping(Player player, long time)
+  public static void pingResponse(long time)
+  public static void traceInfo(Player player, TraceInfo info)
+  public static void kick(KickReason reason) / public static void kick(String reason)
+  public static void setRules(Rules rules)
+  public static void setRule(String rule, String jsonData)
+  public static void setObjectives(MapObjectives executor)  // NOTE: avoid using this, runs into packet/buffer size limitations
+  public static void clearObjectives()
+  public static void completeObjective(int index)
+  public static void worldDataBegin()
+  public static void setPosition(float x, float y)
+  public static void setCameraPosition(float x, float y)
+  public static void playerDisconnect(int playerid)
+  public static void readSyncEntity(DataInputStream input, Reads read) throws IOException
+  public static void entitySnapshot(short amount, byte[] data)
+  public static void hiddenSnapshot(IntSeq ids)
+  public static void blockSnapshot(short amount, byte[] data)
+  public static void stateSnapshot(float waveTime, int wave, int enemies, boolean paused, boolean gameOver, int timeData, byte tps, long rand0, long rand1, byte[] coreData)
+  public void update()
+  public void resetTimeout()  // Resets the world data timeout counter.
+  public boolean isConnecting()
+  public int getPing()
+  private void finishConnecting()
+  private void reset()
+  public void beginConnecting()
+  public void disconnectQuietly()  // Disconnects, resetting state to the menu.
+  public void disconnectNoReset()  // Disconnects, causing no further changes or reset.
+  public void setQuiet()  // When set, any disconnects will be ignored and no dialogs will be shown.
+  public void clearRemovedEntity(int id)
+  public void addRemovedEntity(int id)
+  public boolean isEntityUsed(int id)
+  void sync()
+  String getUsid(String ip)
+
+NetServer.java
+Java class implements arc.ApplicationListener
+fields:
+  private static final int maxSnapshotSize  // note that snapshots are compressed, so the max snapshot size here is above the typical UDP safe limit
+  private static final Timekeeper blockSyncTime
+  private static final FloatBuffer fbuffer
+  private static final Writes dataWrites
+  private static final IntSeq hiddenIds
+  private static final IntSeq healthSeq
+  private static final Vec2 vector
+  private static final ClientBuildPlans plansOut
+  private static final float correctDist  // If a player goes away of their server-side coordinates by this distance, they get teleported back.
+  public Administration admins
+  public CommandHandler clientCommands
+  public TeamAssigner assigner
+  public ChatFormatter chatFormatter  // Converts a message + NULLABLE player sender into a single string.
+  public InvalidCommandHandler invalidHandler  // Handles an incorrect command response.
+  private boolean closing
+  private IntSet buildHealthChanged  // private Interval timer = new Interval(10);
+  public VoteSession currentlyKicking  // Current kick session.
+  public static int kickDuration  // Duration of a kick in seconds.
+  public static float voteDuration  // Voting round duration in seconds.
+  public static int voteCooldown  // Cooldown between votes in seconds.
+  private ReusableByteOutStream writeBuffer
+  private Writes outputBuffer
+  private ReusableByteOutStream syncStream  // Stream for writing player sync data to.
+  private DataOutputStream dataStream  // Data stream for writing player sync data to.
+  private Writes dataStreamWrites
+  private ObjectMap<String,Seq<Cons2<Player,String>>> customPacketHandlers  // Packet handlers for custom types of messages.
+  private ObjectMap<String,Seq<Cons2<Player,byte[]>>> customBinaryPacketHandlers  // Packet handlers for custom types of messages - binary version.
+  private ObjectMap<String,Seq<Cons2<Player,Object>>> logicClientDataHandlers  // Packet handlers for logic client data
+  private Seq<Player> playersToSend  // Reused Seq<Player> for writing entity snapshots per team.
+  private Seq<NetConnection> tempConnections
+  public long snapshotSyncTime  // Used for entity snapshot timing.
+ctors:
+  public NetServer()
+methods:
+  public void sendWorldAndAssets(Player player)
+  public void init()
+  private void registerCommands()
+  public int votesRequired()
+  public Team assignTeam(Player current) / public Team assignTeam(Player current, Iterable<Player> players)
+  public void sendAssetRequirements(Player player)
+  public void sendWorldData(Player player)
+  public void sendTexture(NetConnection con, String name, byte[] pngData) / public void sendTexture(String name, byte[] pngData)  // Streams a texture to a single connected client.
+  public void removeTexture(NetConnection con, String name) / public void removeTexture(String name)  // Removes a texture previously sent with {@link #sendTexture(NetConnection, String, byte[])} from a single client.
+  public void addPacketHandler(String type, Cons2<Player,String> handler)
+  public Seq<Cons2<Player,String>> getPacketHandlers(String type)
+  public void addBinaryPacketHandler(String type, Cons2<Player,byte[]> handler)
+  public Seq<Cons2<Player,byte[]>> getBinaryPacketHandlers(String type)
+  public void addLogicDataHandler(String type, Cons2<Player,Object> handler)
+  public static void onDisconnect(Player player, String reason)
+  public static void requestDebugStatus(Player player)
+  public static void debugStatusClient(int value, int lastClientSnapshot)
+  public static void debugStatusClientUnreliable(int value, int lastClientSnapshot)
+  static void logClientStatus(boolean reliable, int value, int lastClientSnapshot)
+  public static void serverPacketReliable(Player player, String type, String contents)
+  public static void serverPacketUnreliable(Player player, String type, String contents)
+  public static void serverBinaryPacketReliable(Player player, String type, byte[] contents)
+  public static void serverBinaryPacketUnreliable(Player player, String type, byte[] contents)
+  public static void clientLogicDataReliable(Player player, String channel, Object value)
+  public static void clientLogicDataUnreliable(Player player, String channel, Object value)
+  private static boolean invalid(float f)
+  public static void syncBuilding(Building build)
+  public static void requestBlockSnapshot(Player player, int pos)
+  public static void clientPlanSnapshot(Player player, int groupId, ClientBuildPlans plans)  // sent from the client to the server in batches with the same incrementing groupId
+  public static void clientPlanSnapshotReceived(Player player, int groupId, ClientBuildPlans plans)  // sent from the server to the client in batches with the same incrementing groupId
+  public static void clientSnapshot(Player player, int snapshotID, int unitID, boolean dead, float x, float y, float pointerX, float pointerY, float rotation, float baseRotation, float xVelocity, float yVelocity, Tile mining, boolean boosting, boolean shooting, boolean chatting, boolean building, Block selectedBlock, int selectedRotation, Queue<BuildPlan> plans, float viewX, float viewY, float viewWidth, float viewHeight)
+  public static void adminRequest(Player player, Player other, AdminAction action, Object params)
+  public static void requestWorld(Player player)
+  public static void requestAssets(Player player, short[] ids)
+  public static void connectConfirm(Player player)
+  public boolean isWaitingForPlayers()
+  public void update()
+  public void buildHealthUpdate(Building build)  // Queues a building health update.
+  public void openServer()  // Should only be used on the headless backend.
+  public void kickAll(KickReason reason)
+  public void writeBlockSnapshots() throws IOException  // Sends a block snapshot to all players.
+  public void writeStateSnapshot() throws IOException
+  public void writeEntitySnapshotsAll() throws IOException  // Does not check isSyncHidden.
+  public void writeEntitySnapshotsTeam(Team team, Seq<Player> players) throws IOException  // Checks isSyncHidden for only one player per team.
+  protected void sendEntitySnapshots(Seq<NetConnection> connections, short amount, byte[] data)
+  public void writeCustomEntitySnapshot(Player player, Iterable<Syncc> entities) throws IOException  // Writes a custom snapshot containing player-local entities; this is for entities other players don't see.
+  protected void writeEntity(Syncc entity, DataOutputStream dataStream) throws IOException
+  public String fixName(String name)
+  public String checkColor(String str)
+  void sync()
+  static void clientPlanSnapshotSend(Player player, int groupId, ClientBuildPlans plans)
+inner-class: VoteSession
+  fields:
+    Player target
+    ObjectIntMap<String> voted
+    Timer.Task task
+    int votes
+  ctors:
+    public VoteSession(Player target)
+  methods:
+    void vote(Player player, int d)
+    boolean checkPass()
+inner-interface: TeamAssigner
+  methods:
+    Team assign(Player player, Iterable<Player> players)
+inner-interface: ChatFormatter
+  methods:
+    String format(Player player, String message)  // @return text to be placed before player name
+inner-interface: InvalidCommandHandler
+  methods:
+    String handle(Player player, CommandResponse response)
+
+PerfCounter.java
+(unknown)
+
+Platform.java
+Java interface
+methods:
+  default ClassLoader loadJar(Fi jar, ClassLoader parent) throws Exception  // Dynamically creates a class loader for a jar file.
+  default void updateLobby()  // Steam: Update lobby visibility.
+  default void inviteFriends()  // Steam: Show multiplayer friend invite dialog.
+  default void publish(Publishable pub)  // Steam: Share a map on the workshop.
+  default void viewListing(Publishable pub)  // Steam: View a listing on the workshop.
+  default void viewListingID(String mapid)  // Steam: View a listing on the workshop by an ID.
+  default Seq<Fi> getWorkshopContent(Class<? extends Publishable> type)  // Steam: Return external workshop maps to be loaded.
+  default void openWorkshop()  // Steam: Open workshop for maps.
+  default NetProvider getNet()  // Get the networking implementation.
+  default Scripts createScripts()  // Gets the scripting implementation.
+  default Context getScriptContext()
+  default void updateRPC()  // Update discord RPC.
+  default String getUUID()  // Must be a base64 string 8 bytes in length.
+  default void shareFile(Fi file)  // Only used for iOS: open the share menu for a map or save.
+  default void showFileChooser(FileChooserParams params)  // Do not call directly; use the builder pattern in {@link mindustry.ui.FileChooser}.
+  default void hide()  // Hide the app.
+  default void beginForceLandscape()  // Forces the app into landscape mode.
+  default void endForceLandscape()  // Stops forcing the app into landscape orientation.
+inner-interface: FileWriter
+  methods:
+    void write(Fi file) throws Throwable
+
+Renderer.java
+Java class implements arc.ApplicationListener
+fields:
+  public static float laserOpacity  // These are global variables, for headless access.
+  public final BlockRenderer blocks
+  public final FogRenderer fog
+  public final MinimapRenderer minimap
+  public final OverlayRenderer overlays
+  public final LightRenderer lights
+  public final Pixelator pixelator
+  public PlanetRenderer planets
+  public Bloom bloom
+  public FrameBuffer backgroundBuffer
+  public FrameBuffer effectBuffer
+  public boolean animateShields
+  public float weatherAlpha
+  public float minZoom  // minZoom = zooming out, maxZoom = zooming in, used by cutscenes
+  public float minZoomInGame  // minZoom = zooming out, maxZoom = zooming in, used by actual gameplay zoom and regulated by settings *
+  public Seq<EnvRenderer> envRenderers
+  public ObjectMap<String,Runnable> customBackgrounds
+  public TextureRegion bubbles
+  public TextureRegion fluidFrames
+  private LaunchAnimator launchAnimator  // currently landing core, null if there are no cores or it has finished landing.
+  private Color clearColor
+  public float targetscale
+  private boolean launching  // for landTime > 0: if true, core is currently *launching*, otherwise landing.
+  private Vec2 camShakeOffset
+  private int glErrors
+ctors:
+  public Renderer()
+methods:
+  public void shake(float intensity, float duration)
+  public void addEnvRenderer(int mask, Runnable render)
+  public void addCustomBackground(String name, Runnable render)
+  public void init()
+  public void loadFluidFrames()
+  public TextureRegion[][] getFluidFrames()
+  public void update()
+  public void updateAllDarkness()
+  public boolean isCutscene()  // @return whether a launch/land cutscene is playing.
+  public float landScale()
+  public void dispose()
+  public void resume()
+  void setupBloom()
+  public void toggleBloom(boolean enabled)
+  public void draw()
+  protected void drawBackground()
+  public void scaleCamera(float amount)
+  public void clampScale()
+  public float getDisplayScale()
+  public float minScale()
+  public float maxScale()
+  public float getScale()
+  public void setScale(float scl)
+  public boolean isLaunching()
+  public float getLandTime()
+  public float getLandTimeIn()
+  public void showLanding(LaunchAnimator landCore)
+  public void showLaunch(LaunchAnimator landCore)
+  public void takeMapScreenshot()
+inner-class: EnvRenderer
+  fields:
+    public final int env  // Environment bitmask; must match env exactly when and-ed.
+    public final Runnable renderer  // Rendering callback.
+  ctors:
+    public EnvRenderer(int env, Runnable renderer)
+
+UI.java
+Java class implements arc.ApplicationListener, arc.assets.Loadable
+fields:
+  private static final StringBuilder buffer
+  public static String billions
+  public static PixmapPacker packer
+  public MenuFragment menufrag
+  public HudFragment hudfrag
+  public ChatFragment chatfrag
+  public ConsoleFragment consolefrag
+  public MinimapFragment minimapfrag
+  public PlayerListFragment listfrag
+  public LoadingFragment loadfrag
+  public HintsFragment hints
+  public PerformanceFragment perffrag
+  public WidgetGroup menuGroup
+  public AboutDialog about
+  public GameOverDialog restart
+  public CustomGameDialog custom
+  public EditorMapsDialog maps
+  public LoadDialog load
+  public DiscordDialog discord
+  public JoinDialog join
+  public HostDialog host
+  public PausedDialog paused
+  public SettingsMenuDialog settings
+  public KeybindDialog controls
+  public MapEditorDialog editor
+  public LanguageDialog language
+  public BansDialog bans
+  public AdminsDialog admins
+  public TraceDialog traces
+  public DatabaseDialog database
+  public ContentInfoDialog content
+  public PlanetDialog planet
+  public ResearchDialog research
+  public SchematicsDialog schematics
+  public ModsDialog mods
+  public ColorPicker picker
+  public EffectsDialog effects
+  public LogicDialog logic
+  public FullTextDialog fullText
+  public CampaignCompleteDialog campaignComplete
+  public CampaignRulesDialog campaignRules
+  public Cursor drillCursor
+  private Element lastAnnouncement
+  private final ObjectMap<String,Table> popups  // Maps popups to ids so that they can be removed or updated by id.
+  private final IntMap<WorldLabel> labels  // Maps labels to ids so that they can be removed or updated by id.
+ctors:
+  public UI()
+methods:
+  public static void loadColors()
+  public void loadAsync()
+  public void loadSync()
+  public Seq<AssetDescriptor> getDependencies()
+  public void update()
+  public void init()
+  public void updateMargins()  // Updates scene margins based on safe insets and custom edge padding setting.
+  public void resize(int width, int height)
+  public TextureRegionDrawable getIcon(String name) / public TextureRegionDrawable getIcon(String name, String def)
+  public void loadAnd(Runnable call) / public void loadAnd(String text, Runnable call)
+  public void showTextInput(String titleText, String text, int textLength, String def, boolean numbers, Cons<String> confirmed, Runnable closed) / public void showTextInput(String titleText, String text, int textLength, String def, boolean numbers, boolean allowEmpty, Cons<String> confirmed, Runnable closed) / public void showTextInput(String title, String text, String def, Cons<String> confirmed) / public void showTextInput(String title, String text, int textLength, String def, Cons<String> confirmed) / public void showTextInput(String title, String text, int textLength, String def, boolean numeric, Cons<String> confirmed)
+  public void showInfoFade(String info) / public void showInfoFade(String info, float duration)
+  public void addDescTooltip(Element elem, String description)
+  public void showInfoToast(String info, float duration)  // Shows a fading label at the top of the screen.
+  public void showInfoPopup(String info, String id, float duration, int align, int top, int left, int bottom, int right)  // Shows a label at some position on the screen.
+  public void showLabel(String info, int id, float duration, float worldx, float worldy, int flags)  // Shows a label in the world.
+  public void showInfo(String info)
+  public void showInfoOnHidden(String info, Runnable listener)
+  public void showStartupInfo(String info)
+  public void showErrorMessage(String text)
+  public void showException(Throwable t) / public void showException(String text, Throwable exc)
+  public void showText(String titleText, String text) / public void showText(String titleText, String text, int align)
+  public void showInfoText(String titleText, String text)
+  public void showSmall(String titleText, String text)
+  public void showConfirm(String text, Runnable confirmed) / public void showConfirm(String title, String text, Runnable confirmed) / public void showConfirm(String title, String text, Boolp hide, Runnable confirmed)
+  public void showCustomConfirm(String title, String text, String yes, String no, Runnable confirmed, Runnable denied)
+  public boolean hasAnnouncement()
+  public void announce(String text) / public void announce(String text, float duration)  // Display text in the middle of the screen, then fade out.
+  public void showOkText(String title, String text, Runnable confirmed)
+  public static String formatIcons(String s)  // Finds all :name: in a string and replaces them with the icon, if such exists.
+  public static String formatTime(float ticks)  // Formats time with hours:minutes:seconds.
+  public static String formatAmount(long number)
+  public static int roundAmount(int number)
+
+Version.java
+Java class
+fields:
+  public static String type  // Build type.
+  public static String modifier  // Build modifier, e.g.
+  public static String commitHash  // Git commit hash (short)
+  public static String buildDate  // Date that this version was built.
+  public static int number  // Number specifying the major version, e.g.
+  public static int build  // Build number, e.g.
+  public static int revision  // Revision number.
+  public static boolean isSteam  // Whether the Steam version of the game is requested.
+  public static boolean enabled  // Whether version loading is enabled.
+methods:
+  public static void init()
+  public static boolean isAtLeast(String str) / public static boolean isAtLeast(int build, int revision, String str)  // @return whether the current game version is greater than the specified version string, e.g.
+  public static String buildString()
+  public static String combined()  // get menu version without colors
+
+World.java
+Java class
+fields:
+  public final Context context
+  public Tiles tiles
+  public int tileChanges  // The number of times tiles have changed in this session.
+  private boolean generating
+  private ObjectMap<Map,Runnable> customMapLoaders
+ctors:
+  public World()
+methods:
+  public void addMapLoader(Map map, Runnable loader)  // Adds a custom handler function for loading a custom map - usually a generated one.
+  public boolean isInvalidMap()
+  public boolean solid(int x, int y)
+  public boolean passable(int x, int y)
+  public boolean wallSolid(int x, int y)
+  public boolean wallSolidFull(int x, int y)
+  public boolean isAccessible(int x, int y)
+  public int width()
+  public int height()
+  public int unitWidth()
+  public int unitHeight()
+  public Floor floor(int x, int y)
+  public Floor floorWorld(float x, float y)
+  public Tile tile(int pos) / public Tile tile(int x, int y)
+  public Tile tileBuilding(int x, int y)
+  public Building build(int x, int y) / public Building build(int pos)
+  public Tile rawTile(int x, int y)
+  public Tile tileWorld(float x, float y)
+  public Building buildWorld(float x, float y) / public Building buildWorld(Position pos)
+  public static float conv(float coord)  // Convert from world to logic tile coordinates.
+  public static float unconv(float coord)  // Convert from tile to world coordinates.
+  public static int toTile(float coord)
+  public int packArray(int x, int y)
+  public void clearBuildings()
+  public Tiles resize(int width, int height)  // Resizes the tile array to the specified size and returns the resulting tile array.
+  public void beginMapLoad()  // Call to signify the beginning of map loading.
+  public void endMapLoad()  // Call to signify the end of map loading.
+  public Rect getQuadBounds(Rect in)
+  public void setGenerating(boolean gen)
+  public boolean isGenerating()
+  public void loadGenerator(int width, int height, Cons<Tiles> generator)
+  public void loadSector(Sector sector) / public void loadSector(Sector sector, WorldParams params)
+  private void setSectorRules(Sector sector, boolean saveInfo)
+  public boolean isInMapArea(int x, int y)  // @return whether the coordinates are inside the map's defined limit rect.
+  public Context filterContext(Map map)
+  public void loadMap(Map map) / public void loadMap(Map map, Rules checkRules)
+  public void addDarkness(Tiles tiles)
+  public byte getWallDarkness(Tile tile)
+  public void checkMapArea(int x, int y, int w, int h)
+  public float getDarkness(int x, int y)  // TODO optimize; this is very slow and called too often!
+  public static void raycastEachWorld(float x0, float y0, float x1, float y1, Raycaster cons)
+  public static void raycastEach(int x1, int y1, int x2, int y2, Raycaster cons)
+  public static void raycastEachNoDiagonalWorld(float x0, float y0, float x1, float y1, Raycaster cons)
+  public static void raycastEachNoDiagonal(int startX, int startY, int endX, int endY, Raycaster cons)
+  public static boolean raycast(int x1, int y1, int x2, int y2, Raycaster cons)
+  public WorldContext makeSectorContext(Sector sector)
+inner-class: Context implements mindustry.world.WorldContext
+  fields:
+    private Sector sector
+  ctors:
+    Context() / Context(Sector sector)
+  methods:
+    public Tile tile(int index)
+    public void resize(int width, int height)
+    public Tile create(int x, int y, int floorID, int overlayID, int wallID)
+    public boolean isGenerating()
+    public void begin()
+    public void end()
+    public Sector getSector()
+inner-class: FilterContext extends mindustry.core.World.Context
+// World context that applies filters after generation end.
+  fields:
+    final Map map
+  ctors:
+    public FilterContext(Map map)
+  methods:
+    public void end()
+    public boolean isMap()
+    public void applyFilters()
+

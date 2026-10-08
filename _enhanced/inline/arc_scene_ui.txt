@@ -1,0 +1,2193 @@
+// Button.java : public void act(float delta)
+    @Override
+    public void act(float delta){
+        super.act(delta);
+
+        if(disabledProvider != null){
+            setDisabled(disabledProvider.get());
+        }
+    }
+
+// Button.java : private void initialize()
+    private void initialize(){
+        this.touchable = Touchable.enabled;
+        addListener(clickListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                if(isDisabled()) return;
+                setChecked(!isChecked, true);
+            }
+        });
+        addListener(new HandCursorListener());
+    }
+
+// Button.java : public void toggle()
+    public void toggle(){
+        setChecked(!isChecked);
+    }
+
+// Button.java : public boolean isChecked()
+    public boolean isChecked(){
+        return isChecked;
+    }
+
+// Button.java : public boolean isPressed()
+    public boolean isPressed(){
+        return clickListener.isVisualPressed();
+    }
+
+// Button.java : public boolean isOver()
+    public boolean isOver(){
+        return clickListener.isOver();
+    }
+
+// Button.java : public ClickListener getClickListener()
+    public ClickListener getClickListener(){
+        return clickListener;
+    }
+
+// Button.java : public boolean isDisabled()
+    @Override
+    public boolean isDisabled(){
+        return isDisabled;
+    }
+
+// Button.java : public void setDisabled(Boolp prov) / public void setDisabled(boolean isDisabled)
+    public void setDisabled(Boolp prov){
+        this.disabledProvider = prov;
+    }
+
+// Button.java : public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)
+    public void setProgrammaticChangeEvents(boolean programmaticChangeEvents){
+        this.programmaticChangeEvents = programmaticChangeEvents;
+    }
+
+// Button.java : public ButtonStyle getStyle()
+    public ButtonStyle getStyle(){
+        return style;
+    }
+
+// Button.java : public ButtonGroup getButtonGroup()
+    public ButtonGroup getButtonGroup(){
+        return buttonGroup;
+    }
+
+// Button.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        float width = super.getPrefWidth();
+        if(style.up != null) width = Math.max(width, style.up.getMinWidth());
+        if(style.down != null) width = Math.max(width, style.down.getMinWidth());
+        if(style.checked != null) width = Math.max(width, style.checked.getMinWidth());
+        return width;
+    }
+
+// Button.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        float height = super.getPrefHeight();
+        if(style.up != null) height = Math.max(height, style.up.getMinHeight());
+        if(style.down != null) height = Math.max(height, style.down.getMinHeight());
+        if(style.checked != null) height = Math.max(height, style.checked.getMinHeight());
+        return height;
+    }
+
+// Button.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return getPrefWidth();
+    }
+
+// Button.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return getPrefHeight();
+    }
+
+// ButtonGroup.java : public void add(T button) / public void add(T buttons)
+    public void add(T button){
+        if(button == null) throw new IllegalArgumentException("button cannot be null.");
+        button.buttonGroup = null;
+        boolean shouldCheck = button.isChecked() || buttons.size < minCheckCount;
+        button.setChecked(false);
+        button.buttonGroup = this;
+        buttons.add(button);
+        button.setChecked(shouldCheck);
+    }
+
+// ButtonGroup.java : public void remove(T button) / public void remove(T buttons)
+    public void remove(T button){
+        if(button == null) throw new IllegalArgumentException("button cannot be null.");
+        button.buttonGroup = null;
+        buttons.remove(button, true);
+        checkedButtons.remove(button, true);
+    }
+
+// ButtonGroup.java : public void clear()
+    public void clear(){
+        buttons.clear();
+        checkedButtons.clear();
+    }
+
+// ButtonGroup.java : public void uncheckAll()
+    public void uncheckAll(){
+        int old = minCheckCount;
+        minCheckCount = 0;
+        for(int i = 0, n = buttons.size; i < n; i++){
+            T button = buttons.get(i);
+            button.setChecked(false);
+        }
+        minCheckCount = old;
+    }
+
+// ButtonGroup.java : public T getChecked()
+    public T getChecked(){
+        if(checkedButtons.size > 0) return checkedButtons.get(0);
+        return null;
+    }
+
+// ButtonGroup.java : public void setChecked(String text)
+    public void setChecked(String text){
+        if(text == null) throw new IllegalArgumentException("text cannot be null.");
+        for(int i = 0, n = buttons.size; i < n; i++){
+            T button = buttons.get(i);
+            if(button instanceof TextButton && text.contentEquals(((TextButton)button).getText())){
+                button.setChecked(true);
+                return;
+            }
+        }
+    }
+
+// ButtonGroup.java : public int getCheckedIndex()
+    public int getCheckedIndex(){
+        if(checkedButtons.size > 0) return buttons.indexOf(checkedButtons.get(0), true);
+        return -1;
+    }
+
+// ButtonGroup.java : public Seq<T> getAllChecked()
+    public Seq<T> getAllChecked(){
+        return checkedButtons;
+    }
+
+// ButtonGroup.java : public Seq<T> getButtons()
+    public Seq<T> getButtons(){
+        return buttons;
+    }
+
+// ButtonGroup.java : public void setMinCheckCount(int minCheckCount)
+    public void setMinCheckCount(int minCheckCount){
+        this.minCheckCount = minCheckCount;
+    }
+
+// ButtonGroup.java : public void setMaxCheckCount(int maxCheckCount)
+    public void setMaxCheckCount(int maxCheckCount){
+        if(maxCheckCount == 0) maxCheckCount = -1;
+        this.maxCheckCount = maxCheckCount;
+    }
+
+// ButtonGroup.java : public void setUncheckLast(boolean uncheckLast)
+    public void setUncheckLast(boolean uncheckLast){
+        this.uncheckLast = uncheckLast;
+    }
+
+// CheckBox.java : public CheckBoxStyle getStyle()
+    @Override
+    public CheckBoxStyle getStyle(){
+        return style;
+    }
+
+// CheckBox.java : public void setStyle(ButtonStyle style)
+    @Override
+    public void setStyle(ButtonStyle style){
+        if(!(style instanceof CheckBoxStyle)) throw new IllegalArgumentException("style must be a CheckBoxStyle.");
+        super.setStyle(style);
+        this.style = (CheckBoxStyle)style;
+    }
+
+// CheckBox.java : public Image getImage()
+    public Image getImage(){
+        return image;
+    }
+
+// CheckBox.java : public Cell getImageCell()
+    public Cell getImageCell(){
+        return imageCell;
+    }
+
+// ColorImage.java : public void draw()
+    @Override
+    public void draw(){
+        setColor(set);
+        super.draw();
+    }
+
+// Dialog.java : public DialogStyle getStyle()
+    public DialogStyle getStyle(){
+        return style;
+    }
+
+// Dialog.java : public void setStyle(DialogStyle style)
+    public void setStyle(DialogStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null.");
+        this.style = style;
+        setBackground(style.background);
+        //title.setStyle(new LabelStyle(style.titleFont, style.titleFontColor));
+        invalidateHierarchy();
+    }
+
+// Dialog.java : void keepWithinStage()
+    void keepWithinStage(){
+        if(!keepWithinStage) return;
+        keepInStage();
+    }
+
+// Dialog.java : protected void drawStageBackground(float x, float y, float width, float height)
+    protected void drawStageBackground(float x, float y, float width, float height){
+        Color color = this.color;
+        Draw.color(color.r, color.g, color.b, color.a * parentAlpha);
+        style.stageBackground.draw(x, y, width, height);
+    }
+
+// Dialog.java : public Element hit(float x, float y, boolean touchable)
+    @Override
+    public Element hit(float x, float y, boolean touchable){
+        Element hit = super.hit(x, y, touchable);
+        if(hit == null && isModal && (!touchable || this.touchable == Touchable.enabled)) return this;
+        return hit;
+    }
+
+// Dialog.java : public void centerWindow()
+    public void centerWindow(){
+        setPosition(Math.round(((Core.scene.getWidth() - scene.marginLeft - scene.marginRight) - getWidth()) / 2), Math.round(((Core.scene.getHeight() - scene.marginTop - scene.marginBottom) - getHeight()) / 2));
+    }
+
+// Dialog.java : public boolean isMovable()
+    public boolean isMovable(){
+        return isMovable;
+    }
+
+// Dialog.java : public void setMovable(boolean isMovable)
+    public void setMovable(boolean isMovable){
+        this.isMovable = isMovable;
+    }
+
+// Dialog.java : public boolean isModal()
+    public boolean isModal(){
+        return isModal;
+    }
+
+// Dialog.java : public void setModal(boolean isModal)
+    public void setModal(boolean isModal){
+        this.isModal = isModal;
+    }
+
+// Dialog.java : public void setKeepWithinStage(boolean keepWithinStage)
+    public void setKeepWithinStage(boolean keepWithinStage){
+        this.keepWithinStage = keepWithinStage;
+    }
+
+// Dialog.java : public boolean isCentered()
+    public boolean isCentered(){
+        return center;
+    }
+
+// Dialog.java : public void setCentered(boolean center)
+    public void setCentered(boolean center){
+        this.center = center;
+    }
+
+// Dialog.java : public boolean isResizable()
+    public boolean isResizable(){
+        return isResizable;
+    }
+
+// Dialog.java : public void setResizable(boolean isResizable)
+    public void setResizable(boolean isResizable){
+        this.isResizable = isResizable;
+    }
+
+// Dialog.java : public void setResizeBorder(int resizeBorder)
+    public void setResizeBorder(int resizeBorder){
+        this.resizeBorder = resizeBorder;
+    }
+
+// Dialog.java : public boolean isDragging()
+    public boolean isDragging(){
+        return dragging;
+    }
+
+// Dialog.java : public static void setHideAction(Prov<Action> prov)
+    public static void setHideAction(Prov<Action> prov){
+        defaultHideAction = prov;
+    }
+
+// Dialog.java : public static void setShowAction(Prov<Action> prov)
+    public static void setShowAction(Prov<Action> prov){
+        defaultShowAction = prov;
+    }
+
+// Dialog.java : protected void setScene(Scene stage)
+    @Override
+    protected void setScene(Scene stage){
+        if(stage == null)
+            addListener(focusListener);
+        else
+            removeListener(focusListener);
+        super.setScene(stage);
+    }
+
+// Dialog.java : public void shown(Runnable run)
+    public void shown(Runnable run){
+        addListener(new VisibilityListener(){
+            @Override
+            public boolean shown(){
+                run.run();
+                return false;
+            }
+        });
+    }
+
+// Dialog.java : public void hidden(Runnable run)
+    public void hidden(Runnable run){
+        addListener(new VisibilityListener(){
+            @Override
+            public boolean hidden(){
+                run.run();
+                return false;
+            }
+        });
+    }
+
+// Dialog.java : public void resizedShown(Runnable run)
+    public void resizedShown(Runnable run){
+        resized(run);
+        shown(run);
+    }
+
+// Dialog.java : public void resized(Runnable run) / public void resized(boolean invoke, Runnable run)
+    public void resized(Runnable run){
+        resized(false, run);
+    }
+
+// Dialog.java : public void addCloseButton()
+    public void addCloseButton(){
+        //no default implementation; should be implemented by subclasses
+    }
+
+// Dialog.java : public void closeOnBack() / public void closeOnBack(Runnable callback)
+    public void closeOnBack(){
+        closeOnBack(() -> {});
+    }
+
+// Dialog.java : public boolean isShown()
+    public boolean isShown(){
+        return getScene() != null;
+    }
+
+// Dialog.java : public void toggle()
+    public void toggle(){
+        if(isShown()){
+            hide();
+        }else{
+            show();
+        }
+    }
+
+// Image.java : public TextureRegion getRegion()
+    public TextureRegion getRegion(){
+        return ((TextureRegionDrawable)drawable).getRegion();
+    }
+
+// Image.java : public Drawable getDrawable()
+    public Drawable getDrawable(){
+        return drawable;
+    }
+
+// Image.java : public void setDrawable(TextureRegion region) / public void setDrawable(Drawable drawable)
+    public void setDrawable(TextureRegion region){
+        setDrawable(new TextureRegionDrawable(region));
+    }
+
+// Image.java : public Image setScaling(Scaling scaling)
+    public Image setScaling(Scaling scaling){
+        if(scaling == null) throw new IllegalArgumentException("scaling cannot be null.");
+        this.scaling = scaling;
+        invalidate();
+
+        return this;
+    }
+
+// Image.java : public void setAlign(int align)
+    public void setAlign(int align){
+        this.align = align;
+        invalidate();
+    }
+
+// Image.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return 0;
+    }
+
+// Image.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return 0;
+    }
+
+// Image.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(drawable != null) return drawable.getMinWidth();
+        return 0;
+    }
+
+// Image.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(drawable != null) return drawable.getMinHeight();
+        return 0;
+    }
+
+// Image.java : public float getImageX()
+    public float getImageX(){
+        return imageX;
+    }
+
+// Image.java : public float getImageY()
+    public float getImageY(){
+        return imageY;
+    }
+
+// Image.java : public float getImageWidth()
+    public float getImageWidth(){
+        return imageWidth;
+    }
+
+// Image.java : public float getImageHeight()
+    public float getImageHeight(){
+        return imageHeight;
+    }
+
+// ImageButton.java : public ImageButtonStyle getStyle()
+    @Override
+    public ImageButtonStyle getStyle(){
+        return style;
+    }
+
+// ImageButton.java : public void setStyle(ButtonStyle style)
+    @Override
+    public void setStyle(ButtonStyle style){
+        if(!(style instanceof ImageButtonStyle))
+            throw new IllegalArgumentException("style must be an ImageButtonStyle.");
+        super.setStyle(style);
+        this.style = (ImageButtonStyle)style;
+        if(image != null) updateImage();
+    }
+
+// ImageButton.java : public void replaceImage(Element element)
+    public void replaceImage(Element element){
+        getImageCell().setElement(element);
+        addChild(element);
+        image.remove();
+    }
+
+// ImageButton.java : public void draw()
+    @Override
+    public void draw(){
+        updateImage();
+        super.draw();
+    }
+
+// ImageButton.java : public Image getImage()
+    public Image getImage(){
+        return image;
+    }
+
+// ImageButton.java : public Cell getImageCell()
+    public Cell getImageCell(){
+        return getCell(image) == null ? getCells().first() : getCell(image);
+    }
+
+// ImageButton.java : public void resizeImage(float size)
+    public void resizeImage(float size){
+        getImageCell().size(size);
+    }
+
+// Label.java : public LabelStyle getStyle()
+    public LabelStyle getStyle(){
+        return style;
+    }
+
+// Label.java : public void setStyle(LabelStyle style)
+    public void setStyle(LabelStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null.");
+        if(style.font == null) throw new IllegalArgumentException("Missing LabelStyle font.");
+        this.style = style;
+        cache = style.font.newFontCache();
+        invalidateHierarchy();
+    }
+
+// Label.java : public void setText(Prov<CharSequence> sup) / public void setText(CharSequence newText)
+    public void setText(Prov<CharSequence> sup){
+        update(() -> setText(sup.get()));
+    }
+
+// Label.java : private void setTextInternal(CharSequence newText)
+    private void setTextInternal(CharSequence newText){
+        if(newText == null) newText = "";
+        if(textEquals(newText)) return;
+        text.setLength(0);
+        text.append(newText);
+        invalidateHierarchy();
+    }
+
+// Label.java : public boolean textEquals(CharSequence other)
+    public boolean textEquals(CharSequence other){
+        int length = text.length();
+        if(length != other.length()) return false;
+        for(int i = 0; i < length; i++)
+            if(text.charAt(i) != other.charAt(i)) return false;
+        return true;
+    }
+
+// Label.java : public StringBuilder getText()
+    public StringBuilder getText(){
+        return text;
+    }
+
+// Label.java : public void invalidate()
+    @Override
+    public void invalidate(){
+        super.invalidate();
+        prefSizeInvalid = true;
+    }
+
+// Label.java : private void scaleAndComputePrefSize()
+    private void scaleAndComputePrefSize(){
+        if(cache == null) return;
+        Font font = cache.getFont();
+        float oldScaleX = font.getScaleX();
+        float oldScaleY = font.getScaleY();
+        if(fontScaleChanged) font.getData().setScale(fontScaleX, fontScaleY);
+
+        computePrefSize();
+
+        if(fontScaleChanged) font.getData().setScale(oldScaleX, oldScaleY);
+    }
+
+// Label.java : private void computePrefSize()
+    private void computePrefSize(){
+        prefSizeInvalid = false;
+        GlyphLayout prefSizeLayout = Label.prefSizeLayout;
+        if(wrap && ellipsis == null){
+            float width = getWidth();
+            if(style.background != null) width -= style.background.getLeftWidth() + style.background.getRightWidth();
+            prefSizeLayout.setText(cache.getFont(), text, Color.white, width, Align.left, true);
+        }else
+            prefSizeLayout.setText(cache.getFont(), text, 0, text.length(), Color.white, width, lineAlign, wrap, ellipsis);
+        prefSize.set(prefSizeLayout.width, prefSizeLayout.height);
+    }
+
+// Label.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        //wrapped labels don't use their 'pref' width as their min width, as that would be the incorrect, unwrapped width
+        return wrap ? 0 : super.getMinWidth();
+    }
+
+// Label.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(style == null || (wrap && wrapFit)) return 0;
+        if(prefSizeInvalid) scaleAndComputePrefSize();
+        float width = prefSize.x;
+        Drawable background = style.background;
+        if(background != null) width += background.getLeftWidth() + background.getRightWidth();
+        return width;
+    }
+
+// Label.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(style == null) return 0;
+        if(prefSizeInvalid) scaleAndComputePrefSize();
+        float descentScaleCorrection = 1;
+        if(fontScaleChanged) descentScaleCorrection = fontScaleY / style.font.getScaleY();
+        float height = prefSize.y - style.font.getDescent() * descentScaleCorrection * 2;
+        Drawable background = style.background;
+        if(background != null) height += background.getTopHeight() + background.getBottomHeight();
+        return height;
+    }
+
+// Label.java : public GlyphLayout getGlyphLayout()
+    public GlyphLayout getGlyphLayout(){
+        return layout;
+    }
+
+// Label.java : public void setWrap(boolean wrap) / public void setWrap(boolean wrap, boolean wrapFit)
+    public void setWrap(boolean wrap){
+        setWrap(wrap, false);
+    }
+
+// Label.java : public int getLabelAlign()
+    public int getLabelAlign(){
+        return labelAlign;
+    }
+
+// Label.java : public int getLineAlign()
+    public int getLineAlign(){
+        return lineAlign;
+    }
+
+// Label.java : public void setAlignment(int alignment) / public void setAlignment(int labelAlign, int lineAlign)
+    public void setAlignment(int alignment){
+        setAlignment(alignment, alignment);
+    }
+
+// Label.java : public void setFontScale(float fontScale) / public void setFontScale(float fontScaleX, float fontScaleY)
+    public void setFontScale(float fontScale){
+        setFontScale(fontScale, fontScale);
+    }
+
+// Label.java : public float getFontScaleX()
+    public float getFontScaleX(){
+        return fontScaleX;
+    }
+
+// Label.java : public void setFontScaleX(float fontScaleX)
+    public void setFontScaleX(float fontScaleX){
+        setFontScale(fontScaleX, fontScaleY);
+    }
+
+// Label.java : public float getFontScaleY()
+    public float getFontScaleY(){
+        return fontScaleY;
+    }
+
+// Label.java : public void setFontScaleY(float fontScaleY)
+    public void setFontScaleY(float fontScaleY){
+        setFontScale(fontScaleX, fontScaleY);
+    }
+
+// Label.java : public void setEllipsis(String ellipsis) / public void setEllipsis(boolean ellipsis)
+    public void setEllipsis(String ellipsis){
+        this.ellipsis = ellipsis;
+    }
+
+// Label.java : public FontCache getFontCache()
+    public FontCache getFontCache(){
+        return cache;
+    }
+
+// Label.java : public String toString()
+    public String toString(){
+        return super.toString() + ": " + text;
+    }
+
+// ProgressBar.java : public ProgressBarStyle getStyle()
+    public ProgressBarStyle getStyle(){
+        return style;
+    }
+
+// ProgressBar.java : public void setStyle(ProgressBarStyle style)
+    public void setStyle(ProgressBarStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null.");
+        this.style = style;
+        invalidateHierarchy();
+    }
+
+// ProgressBar.java : public void act(float delta)
+    @Override
+    public void act(float delta){
+        super.act(delta);
+        if(animateTime > 0){
+            animateTime -= delta;
+            Scene stage = getScene();
+            if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
+        }
+    }
+
+// ProgressBar.java : public float getValue()
+    public float getValue(){
+        return value;
+    }
+
+// ProgressBar.java : public float getVisualValue()
+    public float getVisualValue(){
+        if(animateTime > 0)
+            return animateInterpolation.apply(animateFromValue, value, 1 - animateTime / animateDuration);
+        return value;
+    }
+
+// ProgressBar.java : public float getPercent()
+    public float getPercent(){
+        return (value - min) / (max - min);
+    }
+
+// ProgressBar.java : public float getVisualPercent()
+    public float getVisualPercent(){
+        return visualInterpolation.apply((getVisualValue() - min) / (max - min));
+    }
+
+// ProgressBar.java : protected Drawable getKnobDrawable()
+    protected Drawable getKnobDrawable(){
+        return (disabled && style.disabledKnob != null) ? style.disabledKnob : style.knob;
+    }
+
+// ProgressBar.java : protected float getKnobPosition()
+    protected float getKnobPosition(){
+        return this.position;
+    }
+
+// ProgressBar.java : public boolean setValue(float value) / public boolean setValue(float value, boolean fireChanged)
+    public boolean setValue(float value){
+        return setValue(value, true);
+    }
+
+// ProgressBar.java : protected float clamp(float value)
+    protected float clamp(float value){
+        return Mathf.clamp(value, min, max);
+    }
+
+// ProgressBar.java : public void setRange(float min, float max)
+    public void setRange(float min, float max){
+        if(min > max) throw new IllegalArgumentException("min must be <= max");
+        this.min = min;
+        this.max = max;
+        if(value < min)
+            setValue(min);
+        else if(value > max) setValue(max);
+    }
+
+// ProgressBar.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(vertical){
+            final Drawable knob = getKnobDrawable();
+            final Drawable bg = (disabled && style.disabledBackground != null) ? style.disabledBackground : style.background;
+            return Math.max(knob == null ? 0 : knob.getMinWidth(), bg.getMinWidth());
+        }else
+            return 140;
+    }
+
+// ProgressBar.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(vertical)
+            return 140;
+        else{
+            final Drawable knob = getKnobDrawable();
+            final Drawable bg = (disabled && style.disabledBackground != null) ? style.disabledBackground : style.background;
+            return Math.max(knob == null ? 0 : knob.getMinHeight(), bg == null ? 0 : bg.getMinHeight());
+        }
+    }
+
+// ProgressBar.java : public float getMinValue()
+    public float getMinValue(){
+        return this.min;
+    }
+
+// ProgressBar.java : public float getMaxValue()
+    public float getMaxValue(){
+        return this.max;
+    }
+
+// ProgressBar.java : public float getStepSize()
+    public float getStepSize(){
+        return this.stepSize;
+    }
+
+// ProgressBar.java : public void setStepSize(float stepSize)
+    public void setStepSize(float stepSize){
+        if(stepSize <= 0) throw new IllegalArgumentException("steps must be > 0: " + stepSize);
+        this.stepSize = stepSize;
+    }
+
+// ProgressBar.java : public void setAnimateDuration(float duration)
+    public void setAnimateDuration(float duration){
+        this.animateDuration = duration;
+    }
+
+// ProgressBar.java : public void setAnimateInterpolation(Interp animateInterpolation)
+    public void setAnimateInterpolation(Interp animateInterpolation){
+        if(animateInterpolation == null) throw new IllegalArgumentException("animateInterpolation cannot be null.");
+        this.animateInterpolation = animateInterpolation;
+    }
+
+// ProgressBar.java : public void setVisualInterpolation(Interp interpolation)
+    public void setVisualInterpolation(Interp interpolation){
+        this.visualInterpolation = interpolation;
+    }
+
+// ProgressBar.java : public void setRound(boolean round)
+    public void setRound(boolean round){
+        this.round = round;
+    }
+
+// ProgressBar.java : public boolean isDisabled()
+    @Override
+    public boolean isDisabled(){
+        return disabled;
+    }
+
+// ProgressBar.java : public void setDisabled(boolean disabled)
+    @Override
+    public void setDisabled(boolean disabled){
+        this.disabled = disabled;
+    }
+
+// ProgressBar.java : public boolean isVertical()
+    public boolean isVertical(){
+        return vertical;
+    }
+
+// ScrollPane.java : void resetFade()
+    void resetFade(){
+        fadeAlpha = fadeAlphaSeconds;
+        fadeDelay = fadeDelaySeconds;
+    }
+
+// ScrollPane.java : public void cancelTouchFocus()
+    public void cancelTouchFocus(){
+        Scene stage = getScene();
+        if(stage != null) stage.cancelTouchFocusExcept(flickScrollListener, this);
+    }
+
+// ScrollPane.java : public void cancel()
+    public void cancel(){
+        draggingPointer = -1;
+        touchScrollH = false;
+        touchScrollV = false;
+        flickScrollListener.getGestureDetector().cancel();
+    }
+
+// ScrollPane.java : void clamp()
+    void clamp(){
+        if(!clamp) return;
+        scrollX(overscrollX ? Mathf.clamp(amountX, -overscrollDistance, maxX + overscrollDistance)
+        : Mathf.clamp(amountX, 0, maxX));
+        scrollY(overscrollY ? Mathf.clamp(amountY, -overscrollDistance, maxY + overscrollDistance)
+        : Mathf.clamp(amountY, 0, maxY));
+    }
+
+// ScrollPane.java : public ScrollPaneStyle getStyle()
+    public ScrollPaneStyle getStyle(){
+        return style;
+    }
+
+// ScrollPane.java : public void setStyle(ScrollPaneStyle style)
+    public void setStyle(ScrollPaneStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null.");
+        this.style = style;
+        invalidateHierarchy();
+    }
+
+// ScrollPane.java : public void setClip(boolean clip)
+    public void setClip(boolean clip){
+        this.clip = clip;
+    }
+
+// ScrollPane.java : public void fling(float flingTime, float velocityX, float velocityY)
+    public void fling(float flingTime, float velocityX, float velocityY){
+        this.flingTimer = flingTime;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
+    }
+
+// ScrollPane.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return 0;
+    }
+
+// ScrollPane.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return 0;
+    }
+
+// ScrollPane.java : public Element getWidget()
+    public Element getWidget(){
+        return widget;
+    }
+
+// ScrollPane.java : public void setWidget(Element widget)
+    public void setWidget(Element widget){
+        if(widget == this) throw new IllegalArgumentException("widget cannot be the ScrollPane.");
+        if(this.widget != null) super.removeChild(this.widget);
+        this.widget = widget;
+        if(widget != null) super.addChild(widget);
+    }
+
+// ScrollPane.java : public boolean removeChild(Element actor) / public boolean removeChild(Element actor, boolean unfocus)
+    @Override
+    public boolean removeChild(Element actor){
+        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
+        if(actor != widget) return false;
+        setWidget(null);
+        return true;
+    }
+
+// ScrollPane.java : public Element hit(float x, float y, boolean touchable)
+    @Override
+    public Element hit(float x, float y, boolean touchable){
+        if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
+        if(scrollX && hScrollBounds.contains(x, y)) return this;
+        if(scrollY && vScrollBounds.contains(x, y)) return this;
+        return super.hit(x, y, touchable);
+    }
+
+// ScrollPane.java : protected void scrollX(float pixelsX)
+    protected void scrollX(float pixelsX){
+        this.amountX = pixelsX;
+    }
+
+// ScrollPane.java : protected void scrollY(float pixelsY)
+    protected void scrollY(float pixelsY){
+        this.amountY = pixelsY;
+    }
+
+// ScrollPane.java : protected void visualScrollX(float pixelsX)
+    protected void visualScrollX(float pixelsX){
+        this.visualAmountX = pixelsX;
+    }
+
+// ScrollPane.java : protected void visualScrollY(float pixelsY)
+    protected void visualScrollY(float pixelsY){
+        this.visualAmountY = pixelsY;
+    }
+
+// ScrollPane.java : protected float getMouseWheelX()
+    protected float getMouseWheelX(){
+        return Math.min(areaWidth, areaWidth * 0.9f / 4);
+    }
+
+// ScrollPane.java : protected float getMouseWheelY()
+    protected float getMouseWheelY(){
+        return Math.min(areaHeight, areaHeight * 0.9f / 4);
+    }
+
+// ScrollPane.java : public void setScrollXForce(float pixels)
+    public void setScrollXForce(float pixels){
+        visualAmountX = pixels;
+        amountX = pixels;
+    }
+
+// ScrollPane.java : public float getScrollX()
+    public float getScrollX(){
+        return amountX;
+    }
+
+// ScrollPane.java : public void setScrollYForce(float pixels)
+    public void setScrollYForce(float pixels){
+        visualAmountY = pixels;
+        amountY = pixels;
+    }
+
+// ScrollPane.java : public float getScrollY()
+    public float getScrollY(){
+        return amountY;
+    }
+
+// ScrollPane.java : public void updateVisualScroll()
+    public void updateVisualScroll(){
+        visualAmountX = amountX;
+        visualAmountY = amountY;
+    }
+
+// ScrollPane.java : public float getVisualScrollX()
+    public float getVisualScrollX(){
+        return !scrollX ? 0 : visualAmountX;
+    }
+
+// ScrollPane.java : public float getVisualScrollY()
+    public float getVisualScrollY(){
+        return !scrollY ? 0 : visualAmountY;
+    }
+
+// ScrollPane.java : public float getVisualScrollPercentX()
+    public float getVisualScrollPercentX(){
+        return Mathf.clamp(visualAmountX / maxX, 0, 1);
+    }
+
+// ScrollPane.java : public float getVisualScrollPercentY()
+    public float getVisualScrollPercentY(){
+        return Mathf.clamp(visualAmountY / maxY, 0, 1);
+    }
+
+// ScrollPane.java : public float getScrollPercentX()
+    public float getScrollPercentX(){
+        if(Float.isNaN(amountX / maxX)) return 1f;
+        return Mathf.clamp(amountX / maxX, 0, 1);
+    }
+
+// ScrollPane.java : public void setScrollPercentX(float percentX)
+    public void setScrollPercentX(float percentX){
+        scrollX(maxX * Mathf.clamp(percentX, 0, 1));
+    }
+
+// ScrollPane.java : public float getScrollPercentY()
+    public float getScrollPercentY(){
+        if(Float.isNaN(amountY / maxY)) return 1f;
+        return Mathf.clamp(amountY / maxY, 0, 1);
+    }
+
+// ScrollPane.java : public void setScrollPercentY(float percentY)
+    public void setScrollPercentY(float percentY){
+        scrollY(maxY * Mathf.clamp(percentY, 0, 1));
+    }
+
+// ScrollPane.java : public void setFlickScroll(boolean flickScroll)
+    public void setFlickScroll(boolean flickScroll){
+        if(this.flickScroll == flickScroll) return;
+        this.flickScroll = flickScroll;
+        if(flickScroll)
+            addListener(flickScrollListener);
+        else
+            removeListener(flickScrollListener);
+        invalidate();
+    }
+
+// ScrollPane.java : public void setFlickScrollTapSquareSize(float halfTapSquareSize)
+    public void setFlickScrollTapSquareSize(float halfTapSquareSize){
+        flickScrollListener.getGestureDetector().setTapSquareSize(halfTapSquareSize);
+    }
+
+// ScrollPane.java : public void scrollTo(float x, float y, float width, float height) / public void scrollTo(float x, float y, float width, float height, boolean centerHorizontal, boolean centerVertical)
+    public void scrollTo(float x, float y, float width, float height){
+        scrollTo(x, y, width, height, false, false);
+    }
+
+// ScrollPane.java : public float getMaxX()
+    public float getMaxX(){
+        return maxX;
+    }
+
+// ScrollPane.java : public float getMaxY()
+    public float getMaxY(){
+        return maxY;
+    }
+
+// ScrollPane.java : public float getScrollBarHeight()
+    public float getScrollBarHeight(){
+        if(!scrollX) return 0;
+        float height = 0;
+        if(style.hScrollKnob != null) height = style.hScrollKnob.getMinHeight();
+        if(style.hScroll != null) height = Math.max(height, style.hScroll.getMinHeight());
+        return height;
+    }
+
+// ScrollPane.java : public float getScrollBarWidth()
+    public float getScrollBarWidth(){
+        if(!scrollY) return 0;
+        float width = 0;
+        if(style.vScrollKnob != null) width = style.vScrollKnob.getMinWidth();
+        if(style.vScroll != null) width = Math.max(width, style.vScroll.getMinWidth());
+        return width;
+    }
+
+// ScrollPane.java : public float getScrollWidth()
+    public float getScrollWidth(){
+        return areaWidth;
+    }
+
+// ScrollPane.java : public float getScrollHeight()
+    public float getScrollHeight(){
+        return areaHeight;
+    }
+
+// ScrollPane.java : public boolean isScrollX()
+    public boolean isScrollX(){
+        return scrollX;
+    }
+
+// ScrollPane.java : public void setScrollX(float pixels)
+    public void setScrollX(float pixels){
+        scrollX(Mathf.clamp(pixels, 0, maxX));
+    }
+
+// ScrollPane.java : public boolean isScrollY()
+    public boolean isScrollY(){
+        return scrollY;
+    }
+
+// ScrollPane.java : public void setScrollY(float pixels)
+    public void setScrollY(float pixels){
+        scrollY(Mathf.clamp(pixels, 0, maxY));
+    }
+
+// ScrollPane.java : public void setScrollingDisabled(boolean x, boolean y)
+    public void setScrollingDisabled(boolean x, boolean y){
+        disableX = x;
+        disableY = y;
+    }
+
+// ScrollPane.java : public void setScrollingDisabledX(boolean x)
+    public void setScrollingDisabledX(boolean x){
+        disableX = x;
+    }
+
+// ScrollPane.java : public void setScrollingDisabledY(boolean y)
+    public void setScrollingDisabledY(boolean y){
+        disableY = y;
+    }
+
+// ScrollPane.java : public boolean isScrollingDisabledX()
+    public boolean isScrollingDisabledX(){
+        return disableX;
+    }
+
+// ScrollPane.java : public boolean isScrollingDisabledY()
+    public boolean isScrollingDisabledY(){
+        return disableY;
+    }
+
+// ScrollPane.java : public boolean isLeftEdge()
+    public boolean isLeftEdge(){
+        return !scrollX || amountX <= 0;
+    }
+
+// ScrollPane.java : public boolean isRightEdge()
+    public boolean isRightEdge(){
+        return !scrollX || amountX >= maxX;
+    }
+
+// ScrollPane.java : public boolean isTopEdge()
+    public boolean isTopEdge(){
+        return !scrollY || amountY <= 0;
+    }
+
+// ScrollPane.java : public boolean isBottomEdge()
+    public boolean isBottomEdge(){
+        return !scrollY || amountY >= maxY;
+    }
+
+// ScrollPane.java : public boolean isDragging()
+    public boolean isDragging(){
+        return draggingPointer != -1;
+    }
+
+// ScrollPane.java : public boolean isPanning()
+    public boolean isPanning(){
+        return flickScrollListener.getGestureDetector().isPanning();
+    }
+
+// ScrollPane.java : public boolean isFlinging()
+    public boolean isFlinging(){
+        return flingTimer > 0;
+    }
+
+// ScrollPane.java : public float getVelocityX()
+    public float getVelocityX(){
+        return velocityX;
+    }
+
+// ScrollPane.java : public void setVelocityX(float velocityX)
+    public void setVelocityX(float velocityX){
+        this.velocityX = velocityX;
+    }
+
+// ScrollPane.java : public float getVelocityY()
+    public float getVelocityY(){
+        return velocityY;
+    }
+
+// ScrollPane.java : public void setVelocityY(float velocityY)
+    public void setVelocityY(float velocityY){
+        this.velocityY = velocityY;
+    }
+
+// ScrollPane.java : public void setOverscroll(boolean overscrollX, boolean overscrollY)
+    public void setOverscroll(boolean overscrollX, boolean overscrollY){
+        this.overscrollX = overscrollX;
+        this.overscrollY = overscrollY;
+    }
+
+// ScrollPane.java : public void setupOverscroll(float distance, float speedMin, float speedMax)
+    public void setupOverscroll(float distance, float speedMin, float speedMax){
+        overscrollDistance = distance;
+        overscrollSpeedMin = speedMin;
+        overscrollSpeedMax = speedMax;
+    }
+
+// ScrollPane.java : public void setForceScroll(boolean x, boolean y)
+    public void setForceScroll(boolean x, boolean y){
+        forceScrollX = x;
+        forceScrollY = y;
+    }
+
+// ScrollPane.java : public boolean isForceScrollX()
+    public boolean isForceScrollX(){
+        return forceScrollX;
+    }
+
+// ScrollPane.java : public boolean isForceScrollY()
+    public boolean isForceScrollY(){
+        return forceScrollY;
+    }
+
+// ScrollPane.java : public void setFlingTime(float flingTime)
+    public void setFlingTime(float flingTime){
+        this.flingTime = flingTime;
+    }
+
+// ScrollPane.java : public void setClamp(boolean clamp)
+    public void setClamp(boolean clamp){
+        this.clamp = clamp;
+    }
+
+// ScrollPane.java : public void setScrollBarPositions(boolean bottom, boolean right)
+    public void setScrollBarPositions(boolean bottom, boolean right){
+        hScrollOnBottom = bottom;
+        vScrollOnRight = right;
+    }
+
+// ScrollPane.java : public void setFadeScrollBars(boolean fadeScrollBars)
+    public void setFadeScrollBars(boolean fadeScrollBars){
+        if(this.fadeScrollBars == fadeScrollBars) return;
+        this.fadeScrollBars = fadeScrollBars;
+        if(!fadeScrollBars) fadeAlpha = fadeAlphaSeconds;
+        invalidate();
+    }
+
+// ScrollPane.java : public void setupFadeScrollBars(float fadeAlphaSeconds, float fadeDelaySeconds)
+    public void setupFadeScrollBars(float fadeAlphaSeconds, float fadeDelaySeconds){
+        this.fadeAlphaSeconds = fadeAlphaSeconds;
+        this.fadeDelaySeconds = fadeDelaySeconds;
+    }
+
+// ScrollPane.java : public void setSmoothScrolling(boolean smoothScrolling)
+    public void setSmoothScrolling(boolean smoothScrolling){
+        this.smoothScrolling = smoothScrolling;
+    }
+
+// ScrollPane.java : public void setScrollbarsOnTop(boolean scrollbarsOnTop)
+    public void setScrollbarsOnTop(boolean scrollbarsOnTop){
+        this.scrollbarsOnTop = scrollbarsOnTop;
+        invalidate();
+    }
+
+// ScrollPane.java : public boolean getVariableSizeKnobs()
+    public boolean getVariableSizeKnobs(){
+        return variableSizeKnobs;
+    }
+
+// ScrollPane.java : public void setVariableSizeKnobs(boolean variableSizeKnobs)
+    public void setVariableSizeKnobs(boolean variableSizeKnobs){
+        this.variableSizeKnobs = variableSizeKnobs;
+    }
+
+// ScrollPane.java : public void setCancelTouchFocus(boolean cancelTouchFocus)
+    public void setCancelTouchFocus(boolean cancelTouchFocus){
+        this.cancelTouchFocus = cancelTouchFocus;
+    }
+
+// Slider.java : public SliderStyle getStyle()
+    @Override
+    public SliderStyle getStyle(){
+        return (SliderStyle)super.getStyle();
+    }
+
+// Slider.java : public void setStyle(SliderStyle style)
+    public void setStyle(SliderStyle style){
+        if(style == null) throw new NullPointerException("style cannot be null");
+        if(!(style instanceof SliderStyle)) throw new IllegalArgumentException("style must be a SliderStyle.");
+        super.setStyle(style);
+    }
+
+// Slider.java : protected Drawable getKnobDrawable()
+    @Override
+    protected Drawable getKnobDrawable(){
+        SliderStyle style = getStyle();
+        return (disabled && style.disabledKnob != null) ? style.disabledKnob
+        : (isDragging() && style.knobDown != null) ? style.knobDown
+        : ((mouseOver && style.knobOver != null) ? style.knobOver : style.knob);
+    }
+
+// Slider.java : public void moved(Floatc listener)
+    public void moved(Floatc listener){
+        changed(() -> listener.get(getValue()));
+    }
+
+// Slider.java : protected float snap(float value)
+    protected float snap(float value){
+        if(snapValues == null) return value;
+        for(int i = 0; i < snapValues.length; i++){
+            if(Math.abs(value - snapValues[i]) <= threshold) return snapValues[i];
+        }
+        return value;
+    }
+
+// Slider.java : public void setSnapToValues(float[] values, float threshold)
+    public void setSnapToValues(float[] values, float threshold){
+        this.snapValues = values;
+        this.threshold = threshold;
+    }
+
+// Slider.java : public boolean isDragging()
+    public boolean isDragging(){
+        return draggingPointer != -1;
+    }
+
+// Slider.java : public void setVisualInterpolationInverse(Interp interpolation)
+    public void setVisualInterpolationInverse(Interp interpolation){
+        this.visualInterpolationInverse = interpolation;
+    }
+
+// TextArea.java : protected void initialize()
+    @Override
+    protected void initialize(){
+        super.initialize();
+        writeEnters = true;
+        linesBreak = new IntSeq();
+        cursorLine = 0;
+        firstLineShowing = 0;
+        moveOffset = -1;
+        linesShowing = 0;
+    }
+
+// TextArea.java : public void setPrefRows(float prefRows)
+    public void setPrefRows(float prefRows){
+        this.prefRows = prefRows;
+    }
+
+// TextArea.java : public int getLines()
+    public int getLines(){
+        return linesBreak.size / 2 + (newLineAtEnd() ? 1 : 0);
+    }
+
+// TextArea.java : public boolean newLineAtEnd()
+    public boolean newLineAtEnd(){
+        return text.length() != 0
+        && (text.charAt(text.length() - 1) == '\r' || text.charAt(text.length() - 1) == '\n');
+    }
+
+// TextArea.java : void showCursor()
+    void showCursor(){
+        updateCurrentLine();
+        if(cursorLine != firstLineShowing){
+            int step = cursorLine >= firstLineShowing ? 1 : -1;
+            while(firstLineShowing > cursorLine || firstLineShowing + linesShowing - 1 < cursorLine){
+                firstLineShowing += step;
+            }
+        }
+    }
+
+// TextArea.java : private int calculateCurrentLineIndex(int cursor)
+    private int calculateCurrentLineIndex(int cursor){
+        int index = 0;
+        while(index < linesBreak.size && cursor > linesBreak.items[index]){
+            index++;
+        }
+        return index;
+    }
+
+// TextArea.java : protected void sizeChanged()
+    @Override
+    protected void sizeChanged(){
+        lastText = null; // Cause calculateOffsets to recalculate the line breaks.
+
+        // The number of lines showed must be updated whenever the height is updated
+        Font font = style.font;
+        Drawable background = style.background;
+        float availableHeight = getHeight() - (background == null ? 0 : background.getBottomHeight() + background.getTopHeight());
+        linesShowing = (int)Math.floor(availableHeight / font.getLineHeight());
+    }
+
+// TextArea.java : protected float getTextY(Font font, Drawable background)
+    @Override
+    protected float getTextY(Font font, Drawable background){
+        float textY = getHeight();
+        if(background != null){
+            textY = (int)(textY - background.getTopHeight());
+        }
+        return textY;
+    }
+
+// TextArea.java : protected void drawText(Font font, float x, float y)
+    @Override
+    protected void drawText(Font font, float x, float y){
+        boolean had = font.getData().markupEnabled;
+        font.getData().markupEnabled = false;
+        float offsetY = 0;
+        for(int i = firstLineShowing * 2; i < (firstLineShowing + linesShowing) * 2 && i < linesBreak.size; i += 2){
+            font.draw(displayText, x, y + offsetY, linesBreak.items[i], linesBreak.items[i + 1], 0, Align.left, false);
+            offsetY -= font.getLineHeight();
+        }
+        font.getData().markupEnabled = had;
+    }
+
+// TextArea.java : protected void drawCursor(Drawable cursorPatch, Font font, float x, float y)
+    @Override
+    protected void drawCursor(Drawable cursorPatch, Font font, float x, float y){
+        float textOffset = cursor >= glyphPositions.size || cursorLine * 2 >= linesBreak.size ? 0
+        : glyphPositions.get(cursor) - glyphPositions.get(linesBreak.items[cursorLine * 2]);
+        cursorPatch.draw(x + textOffset + fontOffset + font.getData().cursorX,
+        y - font.getDescent() / 2 - (cursorLine - firstLineShowing + 1) * font.getLineHeight(), cursorPatch.getMinWidth(),
+        font.getLineHeight());
+    }
+
+// TextArea.java : protected InputListener createInputListener()
+    @Override
+    protected InputListener createInputListener(){
+        return new TextAreaListener();
+    }
+
+// TextArea.java : public void setSelection(int selectionStart, int selectionEnd)
+    @Override
+    public void setSelection(int selectionStart, int selectionEnd){
+        super.setSelection(selectionStart, selectionEnd);
+        updateCurrentLine();
+    }
+
+// TextArea.java : protected boolean continueCursor(int index, int offset)
+    @Override
+    protected boolean continueCursor(int index, int offset){
+        int pos = calculateCurrentLineIndex(index + offset);
+        return super.continueCursor(index, offset) && (pos < 0 || pos >= linesBreak.size - 2 || (linesBreak.items[pos + 1] != index)
+        || (linesBreak.items[pos + 1] == linesBreak.items[pos + 2]));
+    }
+
+// TextArea.java : public int getCursorLine()
+    public int getCursorLine(){
+        return cursorLine;
+    }
+
+// TextArea.java : public int getFirstLineShowing()
+    public int getFirstLineShowing(){
+        return firstLineShowing;
+    }
+
+// TextArea.java : public int getLinesShowing()
+    public int getLinesShowing(){
+        return linesShowing;
+    }
+
+// TextArea.java : public float getCursorX()
+    public float getCursorX(){
+        return textOffset + fontOffset + style.font.getData().cursorX;
+    }
+
+// TextArea.java : public float getCursorY()
+    public float getCursorY(){
+        Font font = style.font;
+        return -(-font.getDescent() / 2 - (cursorLine - firstLineShowing + 1) * font.getLineHeight());
+    }
+
+// TextButton.java : public TextButtonStyle getStyle()
+    @Override
+    public TextButtonStyle getStyle(){
+        return style;
+    }
+
+// TextButton.java : public Label getLabel()
+    public Label getLabel(){
+        return label;
+    }
+
+// TextButton.java : public Cell<Label> getLabelCell()
+    public Cell<Label> getLabelCell(){
+        return getCell(label);
+    }
+
+// TextButton.java : public CharSequence getText()
+    public CharSequence getText(){
+        return label.getText();
+    }
+
+// TextButton.java : public void setText(String text)
+    public void setText(String text){
+        label.setText(text);
+    }
+
+// TextField.java : protected void initialize()
+    protected void initialize(){
+        addListener(inputListener = createInputListener());
+        addListener(new IbeamCursorListener());
+        addInputDialog();
+    }
+
+// TextField.java : protected InputListener createInputListener()
+    protected InputListener createInputListener(){
+        return new TextFieldClickListener();
+    }
+
+// TextField.java : protected boolean isWordCharacter(char c)
+    protected boolean isWordCharacter(char c){
+        return Character.isLetterOrDigit(c);
+    }
+
+// TextField.java : boolean withinMaxLength(int size)
+    boolean withinMaxLength(int size){
+        return maxLength <= 0 || size < maxLength;
+    }
+
+// TextField.java : public void removeInputDialog()
+    public void removeInputDialog(){
+        if(hasInputDialog && inputDialogListener != null){
+            removeListener(inputDialogListener);
+            hasInputDialog = false;
+        }
+    }
+
+// TextField.java : public int getMaxLength()
+    public int getMaxLength(){
+        return this.maxLength;
+    }
+
+// TextField.java : public void setMaxLength(int maxLength)
+    public void setMaxLength(int maxLength){
+        this.maxLength = maxLength;
+    }
+
+// TextField.java : public void clearText()
+    public void clearText(){
+        setText("");
+    }
+
+// TextField.java : public void setOnlyFontChars(boolean onlyFontChars)
+    public void setOnlyFontChars(boolean onlyFontChars){
+        this.onlyFontChars = onlyFontChars;
+    }
+
+// TextField.java : public TextFieldStyle getStyle()
+    public TextFieldStyle getStyle(){
+        return style;
+    }
+
+// TextField.java : public void setStyle(TextFieldStyle style)
+    public void setStyle(TextFieldStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null.");
+        this.style = style;
+        textHeight = style.font.getCapHeight() - style.font.getDescent() * 2;
+        invalidateHierarchy();
+    }
+
+// TextField.java : private Drawable getBackgroundDrawable()
+    private Drawable getBackgroundDrawable(){
+        Scene stage = getScene();
+        boolean focused = stage != null && stage.getKeyboardFocus() == this;
+        return (disabled && style.disabledBackground != null) ? style.disabledBackground
+        : (style.invalidBackground != null) && !isValid() ? style.invalidBackground
+        : ((focused && style.focusedBackground != null) ? style.focusedBackground : style.background);
+    }
+
+// TextField.java : public boolean isValid()
+    public boolean isValid(){
+        return validator == null || validator.valid(text);
+    }
+
+// TextField.java : protected void drawSelection(Drawable selection, Font font, float x, float y)
+    protected void drawSelection(Drawable selection, Font font, float x, float y){
+        selection.draw(x + textOffset + selectionX + fontOffset, y - textHeight - font.getDescent(), selectionWidth, textHeight);
+    }
+
+// TextField.java : protected void drawText(Font font, float x, float y)
+    protected void drawText(Font font, float x, float y){
+        boolean had = font.getData().markupEnabled;
+        font.getData().markupEnabled = false;
+        font.draw(displayText, x + textOffset, y, visibleTextStart, visibleTextEnd, 0, Align.left, false);
+        font.getData().markupEnabled = had;
+    }
+
+// TextField.java : protected void drawCursor(Drawable cursorPatch, Font font, float x, float y)
+    protected void drawCursor(Drawable cursorPatch, Font font, float x, float y){
+        cursorPatch.draw(
+        x + textOffset + glyphPositions.get(cursor) - glyphPositions.get(visibleTextStart) + fontOffset + font.getData().cursorX,
+        y - textHeight - font.getDescent(), cursorPatch.getMinWidth(), textHeight);
+    }
+
+// TextField.java : private void blink()
+    private void blink(){
+        if(!Core.graphics.isContinuousRendering()){
+            cursorOn = true;
+            return;
+        }
+        long time = Time.nanos();
+        if((time - lastBlink) / 1000000000.0f > blinkTime){
+            cursorOn = !cursorOn;
+            lastBlink = time;
+        }
+    }
+
+// TextField.java : public void copy()
+    public void copy(){
+        if(hasSelection && !passwordMode){
+            Core.app.setClipboardText(text.substring(Math.min(cursor, selectionStart), Math.max(cursor, selectionStart)));
+        }
+    }
+
+// TextField.java : public void cut() / void cut(boolean fireChangeEvent)
+    public void cut(){
+        cut(programmaticChangeEvents);
+    }
+
+// TextField.java : String insert(int position, CharSequence text, String to)
+    String insert(int position, CharSequence text, String to){
+        if(to.length() == 0) return text.toString();
+        return to.substring(0, position) + text + to.substring(position);
+    }
+
+// TextField.java : public InputListener getDefaultInputListener()
+    public InputListener getDefaultInputListener(){
+        return inputListener;
+    }
+
+// TextField.java : public void setTextFieldListener(TextFieldListener listener)
+    public void setTextFieldListener(TextFieldListener listener){
+        this.listener = listener;
+    }
+
+// TextField.java : public void typed(char ch, Runnable run) / public void typed(Cons<Character> cons)
+    public void typed(char ch, Runnable run){
+        setTextFieldListener((textField, c) -> {
+            if(c == ch){
+                run.run();
+            }
+        });
+    }
+
+// TextField.java : public TextFieldFilter getFilter()
+    public TextFieldFilter getFilter(){
+        return filter;
+    }
+
+// TextField.java : public void setFilter(TextFieldFilter filter)
+    public void setFilter(TextFieldFilter filter){
+        this.filter = filter;
+    }
+
+// TextField.java : public void setValidator(TextFieldValidator validator)
+    public void setValidator(TextFieldValidator validator){
+        this.validator = validator;
+    }
+
+// TextField.java : public TextFieldValidator getValidator()
+    public TextFieldValidator getValidator(){
+        return validator;
+    }
+
+// TextField.java : public void setFocusTraversal(boolean focusTraversal)
+    public void setFocusTraversal(boolean focusTraversal){
+        this.focusTraversal = focusTraversal;
+    }
+
+// TextField.java : public String getMessageText()
+    public String getMessageText(){
+        return messageText;
+    }
+
+// TextField.java : public void setMessageText(String messageText)
+    public void setMessageText(String messageText){
+        if(messageText != null && (messageText.startsWith("$") || messageText.startsWith("@")) && bundle != null && bundle.has(messageText.substring(1))){
+            this.messageText = bundle.get(messageText.substring(1));
+        }else{
+            this.messageText = messageText;
+        }
+    }
+
+// TextField.java : public void appendText(String str)
+    public void appendText(String str){
+        if(str == null) str = "";
+
+        clearSelection();
+        cursor = text.length();
+        paste(str, programmaticChangeEvents);
+    }
+
+// TextField.java : public String getText()
+    public String getText(){
+        return text;
+    }
+
+// TextField.java : public void setText(String str)
+    public void setText(String str){
+        if(str == null) str = "";
+        if(str.equals(text)) return;
+
+        clearSelection();
+        String oldText = text;
+        text = "";
+        paste(str, false);
+        if(programmaticChangeEvents) changeText(oldText, text);
+        cursor = 0;
+    }
+
+// TextField.java : boolean changeText(String oldText, String newText)
+    boolean changeText(String oldText, String newText){
+        if(newText.equals(oldText)) return false;
+        text = newText;
+        ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class, ChangeEvent::new);
+        boolean cancelled = fire(changeEvent);
+        text = cancelled ? oldText : newText;
+        Pools.free(changeEvent);
+        return !cancelled;
+    }
+
+// TextField.java : public boolean getProgrammaticChangeEvents()
+    public boolean getProgrammaticChangeEvents(){
+        return programmaticChangeEvents;
+    }
+
+// TextField.java : public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)
+    public void setProgrammaticChangeEvents(boolean programmaticChangeEvents){
+        this.programmaticChangeEvents = programmaticChangeEvents;
+    }
+
+// TextField.java : public int getSelectionStart()
+    public int getSelectionStart(){
+        return selectionStart;
+    }
+
+// TextField.java : public String getSelection()
+    public String getSelection(){
+        return hasSelection ? text.substring(Math.min(selectionStart, cursor), Math.max(selectionStart, cursor)) : "";
+    }
+
+// TextField.java : public void selectAll()
+    public void selectAll(){
+        setSelection(0, text.length());
+    }
+
+// TextField.java : public void clearSelection()
+    public void clearSelection(){
+        hasSelection = false;
+    }
+
+// TextField.java : public int getCursorPosition()
+    public int getCursorPosition(){
+        return cursor;
+    }
+
+// TextField.java : public void setCursorPosition(int cursorPosition)
+    public void setCursorPosition(int cursorPosition){
+        if(cursorPosition < 0) throw new IllegalArgumentException("cursorPosition must be >= 0");
+        clearSelection();
+        cursor = Math.min(cursorPosition, text.length());
+    }
+
+// TextField.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        return 150;
+    }
+
+// TextField.java : public void setAlignment(int alignment)
+    public void setAlignment(int alignment){
+        this.textHAlign = alignment;
+    }
+
+// TextField.java : public boolean isPasswordMode()
+    public boolean isPasswordMode(){
+        return passwordMode;
+    }
+
+// TextField.java : public void setPasswordMode(boolean passwordMode)
+    public void setPasswordMode(boolean passwordMode){
+        this.passwordMode = passwordMode;
+        updateDisplayText();
+    }
+
+// TextField.java : public void setPasswordCharacter(char passwordCharacter)
+    public void setPasswordCharacter(char passwordCharacter){
+        this.passwordCharacter = passwordCharacter;
+        if(passwordMode) updateDisplayText();
+    }
+
+// TextField.java : public void setBlinkTime(float blinkTime)
+    public void setBlinkTime(float blinkTime){
+        this.blinkTime = blinkTime;
+    }
+
+// TextField.java : public boolean isDisabled()
+    @Override
+    public boolean isDisabled(){
+        return disabled;
+    }
+
+// TextField.java : public void setDisabled(boolean disabled)
+    @Override
+    public void setDisabled(boolean disabled){
+        this.disabled = disabled;
+    }
+
+// TextField.java : protected void moveCursor(boolean forward, boolean jump)
+    protected void moveCursor(boolean forward, boolean jump){
+        int limit = forward ? text.length() : 0;
+        int charOffset = forward ? 0 : -1;
+        while((forward ? ++cursor < limit : --cursor > limit) && jump){
+            if(!continueCursor(cursor, charOffset)) break;
+        }
+    }
+
+// TextField.java : protected boolean continueCursor(int index, int offset)
+    protected boolean continueCursor(int index, int offset){
+        char c = text.charAt(index + offset);
+        return isWordCharacter(c);
+    }
+
+// Tooltip.java : public Tooltips getManager()
+    public Tooltips getManager(){
+        return manager;
+    }
+
+// Tooltip.java : public Table getContainer()
+    public Table getContainer(){
+        return container;
+    }
+
+// Tooltip.java : public void setInstant(boolean instant)
+    public void setInstant(boolean instant){
+        this.instant = instant;
+    }
+
+// Tooltip.java : public void setAlways(boolean always)
+    public void setAlways(boolean always){
+        this.always = always;
+    }
+
+// Tooltip.java : public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+    @Override
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
+        //hide tooltip on touch up on mobile, since
+        if(Core.app.isMobile() && allowMobile){
+            hide();
+        }
+    }
+
+// Tooltip.java : public boolean mouseMoved(InputEvent event, float x, float y)
+    @Override
+    public boolean mouseMoved(InputEvent event, float x, float y){
+        if(container.hasParent()) return false;
+        setContainerPosition(event.listenerActor, x, y);
+        return true;
+    }
+
+// Tooltip.java : public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+    @Override
+    public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+        if(Core.app.isMobile()) return;
+        if((pointer != -1 || Core.input.isTouched()) && !allowMobile) return;
+        Element element = event.listenerActor;
+        if(fromActor != null && fromActor.isDescendantOf(element)) return;
+
+        show(element, x, y);
+    }
+
+// Tooltip.java : public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+    @Override
+    public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
+        //on mobile, tooltips only hide once you stop holding.
+        if(allowMobile && Core.app.isMobile()) return;
+        if(toActor != null && toActor.isDescendantOf(event.listenerActor)) return;
+        hide();
+    }
+
+// Tooltip.java : public void show(Element element, float x, float y)
+    public void show(Element element, float x, float y){
+        setContainerPosition(element, x, y);
+        manager.enter(this);
+        container.pack();
+
+        if(show != null) show.run();
+    }
+
+// Tooltip.java : public void hide()
+    public void hide(){
+        manager.hide(this);
+    }
+
+// Touchpad.java : public TouchpadStyle getStyle()
+    public TouchpadStyle getStyle(){
+        return style;
+    }
+
+// Touchpad.java : public void setStyle(TouchpadStyle style)
+    public void setStyle(TouchpadStyle style){
+        if(style == null) throw new IllegalArgumentException("style cannot be null");
+        this.style = style;
+        invalidateHierarchy();
+    }
+
+// Touchpad.java : public Element hit(float x, float y, boolean touchable)
+    @Override
+    public Element hit(float x, float y, boolean touchable){
+        return touchBounds.contains(x, y) ? this : null;
+    }
+
+// Touchpad.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        return style.background != null ? style.background.getMinWidth() : 0;
+    }
+
+// Touchpad.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        return style.background != null ? style.background.getMinHeight() : 0;
+    }
+
+// Touchpad.java : public boolean isTouched()
+    public boolean isTouched(){
+        return touched;
+    }
+
+// Touchpad.java : public boolean getResetOnTouchUp()
+    public boolean getResetOnTouchUp(){
+        return resetOnTouchUp;
+    }
+
+// Touchpad.java : public void setResetOnTouchUp(boolean reset)
+    public void setResetOnTouchUp(boolean reset){
+        this.resetOnTouchUp = reset;
+    }
+
+// Touchpad.java : public void setDeadzone(float deadzoneRadius)
+    public void setDeadzone(float deadzoneRadius){
+        if(deadzoneRadius < 0) throw new IllegalArgumentException("deadzoneRadius must be > 0");
+        this.deadzoneRadius = deadzoneRadius;
+        invalidate();
+    }
+
+// Touchpad.java : public float getKnobX()
+    public float getKnobX(){
+        return knobPosition.x;
+    }
+
+// Touchpad.java : public float getKnobY()
+    public float getKnobY(){
+        return knobPosition.y;
+    }
+
+// Touchpad.java : public float getKnobPercentX()
+    public float getKnobPercentX(){
+        return knobPercent.x;
+    }
+
+// Touchpad.java : public float getKnobPercentY()
+    public float getKnobPercentY(){
+        return knobPercent.y;
+    }
+
+// TreeElement.java : static boolean findExpandedObjects(Seq<TreeElementNode> nodes, Seq<Object> objects) / public void findExpandedObjects(Seq objects)
+    static boolean findExpandedObjects(Seq<TreeElementNode> nodes, Seq<Object> objects){
+        boolean expanded = false;
+        for(int i = 0, n = nodes.size; i < n; i++){
+            TreeElementNode node = nodes.get(i);
+            if(node.expanded && !findExpandedObjects(node.children, objects)) objects.add(node.object);
+        }
+        return expanded;
+    }
+
+// TreeElement.java : static void collapseAll(Seq<TreeElementNode> nodes) / public void collapseAll()
+    static void collapseAll(Seq<TreeElementNode> nodes){
+        for(int i = 0, n = nodes.size; i < n; i++){
+            TreeElementNode node = nodes.get(i);
+            node.setExpanded(false);
+            collapseAll(node.children);
+        }
+    }
+
+// TreeElement.java : static void expandAll(Seq<TreeElementNode> nodes) / public void expandAll()
+    static void expandAll(Seq<TreeElementNode> nodes){
+        for(int i = 0, n = nodes.size; i < n; i++)
+            nodes.get(i).expandAll();
+    }
+
+// TreeElement.java : public void add(TreeElementNode node)
+    public void add(TreeElementNode node){
+        insert(rootNodes.size, node);
+    }
+
+// TreeElement.java : public void insert(int index, TreeElementNode node)
+    public void insert(int index, TreeElementNode node){
+        remove(node);
+        node.parent = null;
+        rootNodes.insert(index, node);
+        node.addToTree(this);
+        invalidateHierarchy();
+    }
+
+// TreeElement.java : public void remove(TreeElementNode node)
+    public void remove(TreeElementNode node){
+        if(node.parent != null){
+            node.parent.remove(node);
+            return;
+        }
+        rootNodes.remove(node, true);
+        node.removeFromTree(this);
+        invalidateHierarchy();
+    }
+
+// TreeElement.java : public void clearChildren()
+    @Override
+    public void clearChildren(){
+        super.clearChildren();
+        setOverNode(null);
+        rootNodes.clear();
+        selection.clear();
+    }
+
+// TreeElement.java : public Seq<TreeElementNode> getNodes()
+    public Seq<TreeElementNode> getNodes(){
+        return rootNodes;
+    }
+
+// TreeElement.java : public void invalidate()
+    @Override
+    public void invalidate(){
+        super.invalidate();
+        sizeInvalid = true;
+    }
+
+// TreeElement.java : private void computeSize() / private void computeSize(Seq<TreeElementNode> nodes, float indent)
+    private void computeSize(){
+        sizeInvalid = false;
+        prefWidth = style.plus.getMinWidth();
+        prefWidth = Math.max(prefWidth, style.minus.getMinWidth());
+        prefHeight = getHeight();
+        leftColumnWidth = 0;
+        computeSize(rootNodes, indentSpacing);
+        leftColumnWidth += iconSpacingLeft + padding;
+        prefWidth += leftColumnWidth + padding;
+        prefHeight = getHeight() - prefHeight;
+    }
+
+// TreeElement.java : public void layout() / private float layout(Seq<TreeElementNode> nodes, float indent, float y)
+    @Override
+    public void layout(){
+        if(sizeInvalid) computeSize();
+        layout(rootNodes, leftColumnWidth + indentSpacing + iconSpacingRight, getHeight() - ySpacing / 2);
+    }
+
+// TreeElement.java : public void draw() / private void draw(Seq<TreeElementNode> nodes, float indent)
+    @Override
+    public void draw(){
+        drawBackground();
+        Color color = this.color;
+        Draw.color(color.r, color.g, color.b, color.a * parentAlpha);
+        draw(rootNodes, leftColumnWidth);
+        super.draw(); // Draw elements.
+    }
+
+// TreeElement.java : protected void drawBackground()
+    protected void drawBackground(){
+        if(style.background != null){
+            Color color = this.color;
+            Draw.color(color.r, color.g, color.b, color.a * parentAlpha);
+            style.background.draw(x, y, getWidth(), getHeight());
+        }
+    }
+
+// TreeElement.java : public TreeElementNode getNodeAt(float y) / private float getNodeAt(Seq<TreeElementNode> nodes, float y, float rowY)
+    public TreeElementNode getNodeAt(float y){
+        foundNode = null;
+        getNodeAt(rootNodes, y, getHeight());
+        return foundNode;
+    }
+
+// TreeElement.java : void selectNodes(Seq<TreeElementNode> nodes, float low, float high)
+    void selectNodes(Seq<TreeElementNode> nodes, float low, float high){
+        for(int i = 0, n = nodes.size; i < n; i++){
+            TreeElementNode node = nodes.get(i);
+            if(node.element.y < low) break;
+            if(!node.isSelectable()) continue;
+            if(node.element.y <= high) selection.add(node);
+            if(node.expanded) selectNodes(node.children, low, high);
+        }
+    }
+
+// TreeElement.java : public Selection<TreeElementNode> getSelection()
+    public Selection<TreeElementNode> getSelection(){
+        return selection;
+    }
+
+// TreeElement.java : public TreeStyle getStyle()
+    public TreeStyle getStyle(){
+        return style;
+    }
+
+// TreeElement.java : public void setStyle(TreeStyle style)
+    public void setStyle(TreeStyle style){
+        this.style = style;
+        indentSpacing = Math.max(style.plus.getMinWidth(), style.minus.getMinWidth()) + iconSpacingLeft;
+    }
+
+// TreeElement.java : public Seq<TreeElementNode> getRootNodes()
+    public Seq<TreeElementNode> getRootNodes(){
+        return rootNodes;
+    }
+
+// TreeElement.java : public TreeElementNode getOverNode()
+    public TreeElementNode getOverNode(){
+        return overNode;
+    }
+
+// TreeElement.java : public void setOverNode(TreeElementNode overNode)
+    public void setOverNode(TreeElementNode overNode){
+        this.overNode = overNode;
+    }
+
+// TreeElement.java : public Object getOverObject()
+    public Object getOverObject(){
+        if(overNode == null) return null;
+        return overNode.getObject();
+    }
+
+// TreeElement.java : public void setPadding(float padding)
+    public void setPadding(float padding){
+        this.padding = padding;
+    }
+
+// TreeElement.java : public float getIndentSpacing()
+    public float getIndentSpacing(){
+        return indentSpacing;
+    }
+
+// TreeElement.java : public float getYSpacing()
+    public float getYSpacing(){
+        return ySpacing;
+    }
+
+// TreeElement.java : public void setYSpacing(float ySpacing)
+    public void setYSpacing(float ySpacing){
+        this.ySpacing = ySpacing;
+    }
+
+// TreeElement.java : public void setIconSpacing(float left, float right)
+    public void setIconSpacing(float left, float right){
+        this.iconSpacingLeft = left;
+        this.iconSpacingRight = right;
+    }
+
+// TreeElement.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(sizeInvalid) computeSize();
+        return prefWidth;
+    }
+
+// TreeElement.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(sizeInvalid) computeSize();
+        return prefHeight;
+    }
+
+// TreeElement.java : public void restoreExpandedObjects(Seq objects)
+    public void restoreExpandedObjects(Seq objects){
+        for(int i = 0, n = objects.size; i < n; i++){
+            TreeElementNode node = findNode(objects.get(i));
+            if(node != null){
+                node.setExpanded(true);
+                node.expandTo();
+            }
+        }
+    }
+
+// TreeElement.java : public ClickListener getClickListener()
+    public ClickListener getClickListener(){
+        return clickListener;
+    }
+

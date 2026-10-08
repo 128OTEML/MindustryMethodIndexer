@@ -1,0 +1,36 @@
+Pool.java
+Java class (abstract)
+// A pool of objects that can be reused to avoid allocation.
+fields:
+  public final int max  // The maximum number of objects that will be pooled.
+  private final Seq<T> freeObjects
+  public int peak  // The highest number of free objects.
+ctors:
+  public Pool() / public Pool(int initialCapacity) / public Pool(int initialCapacity, int max)  // Creates a pool with an initial capacity of 16 and no maximum.
+methods:
+  abstract protected T newObject()
+  public T obtain()  // Returns an object from this pool.
+  public void free(T object)  // Puts the specified object in the pool, making it eligible to be returned by {@link #obtain()}.
+  protected void reset(T object)  // Called when an object is freed to clear the state of the object for possible later reuse.
+  public void freeAll(Seq<T> objects)  // Puts the specified objects in the pool.
+  public void clear()  // Removes all free objects from this pool.
+  public int getFree()  // The number of objects available to be obtained.
+inner-interface: Poolable
+// Objects implementing this interface will have {@link #reset()} called when passed to {@link Pool#free(Object)}.
+  methods:
+    void reset()  // Resets the object for reuse.
+
+Pools.java
+Java class
+// Stores a map of {@link Pool}s by type for convenient static access.
+fields:
+  private static final ObjectMap<Class,Pool> typePools
+ctors:
+  private Pools()
+methods:
+  public static Pool<T> get(Class<T> type, Prov<T> supplier, int max) / public static Pool<T> get(Class<T> type, Prov<T> supplier)  // Returns a new or existing pool for the specified type, stored in a Class to {@link Pool} map.
+  public static void set(Class<T> type, Pool<T> pool)  // Sets an existing pool for the specified type, stored in a Class to {@link Pool} map.
+  public static synchronized T obtain(Class<T> type, Prov<T> supplier)  // Obtains an object from the {@link #get(Class, Prov) pool}.
+  public static synchronized void free(Object object)  // Frees an object from the {@link #get(Class, Prov) pool}.
+  public static void freeAll(Seq objects) / public static void freeAll(Seq objects, boolean samePool)  // Frees the specified objects from the {@link #get(Class, Prov) pool}.
+

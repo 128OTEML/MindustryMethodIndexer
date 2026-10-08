@@ -1,0 +1,53 @@
+// Pool.java : public T obtain()
+    public T obtain(){
+        return freeObjects.size == 0 ? newObject() : freeObjects.pop();
+    }
+
+// Pool.java : public void free(T object)
+    public void free(T object){
+        if(object == null) throw new IllegalArgumentException("object cannot be null.");
+        if(freeObjects.size < max){
+            freeObjects.add(object);
+            peak = Math.max(peak, freeObjects.size);
+        }
+        reset(object);
+    }
+
+// Pool.java : protected void reset(T object)
+    protected void reset(T object){
+        if(object instanceof Poolable) ((Poolable)object).reset();
+    }
+
+// Pool.java : public void clear()
+    public void clear(){
+        freeObjects.clear();
+    }
+
+// Pool.java : public int getFree()
+    public int getFree(){
+        return freeObjects.size;
+    }
+
+// Pools.java : public static void set(Class<T> type, Pool<T> pool)
+    public static <T> void set(Class<T> type, Pool<T> pool){
+        typePools.put(type, pool);
+    }
+
+// Pools.java : public static synchronized T obtain(Class<T> type, Prov<T> supplier)
+    public static synchronized <T> T obtain(Class<T> type, Prov<T> supplier){
+        return get(type, supplier).obtain();
+    }
+
+// Pools.java : public static synchronized void free(Object object)
+    public static synchronized void free(Object object){
+        if(object == null) throw new IllegalArgumentException("Object cannot be null.");
+        Pool pool = typePools.get(object.getClass());
+        if(pool == null) return; // Ignore freeing an object that was never retained.
+        pool.free(object);
+    }
+
+// Pools.java : public static void freeAll(Seq objects) / public static void freeAll(Seq objects, boolean samePool)
+    public static void freeAll(Seq objects){
+        freeAll(objects, false);
+    }
+

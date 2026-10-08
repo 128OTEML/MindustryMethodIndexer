@@ -1,0 +1,752 @@
+BaseTurret
+  -> arc.struct.EnumSet.of(T...)
+init
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.checkInitCoolant()
+  -> java.lang.Math.max(float, float)
+  -> java.lang.Math.max(int, int)
+  -> arc.math.Mathf.round(float)
+  -> mindustry.world.Block.init()
+reinitializeConsumers
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.checkInitCoolant()
+  -> mindustry.world.Block.reinitializeConsumers()
+checkInitCoolant
+  -> mindustry.world.Block.hasConsumer(mindustry.world.consumers.Consume)
+  -> mindustry.world.Block.consume(T)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.math.Mathf.ceil(float)
+  -> arc.util.I18NBundle.get(java.lang.String)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+BaseTurretBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.RotBlock::placed
+  -> mindustry.gen.Building.placed()
+BaseTurretBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.RotBlock::drawSelect
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild.range()
+BaseTurretBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.RotBlock::status
+  -> mindustry.gen.Building.status()
+ammo
+  -> arc.struct.ObjectMap.of(java.lang.Object...)
+setStats
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.setStats()
+  -> arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)
+  -> mindustry.world.meta.Stats.replace(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>)
+init
+  -> mindustry.world.Block.consume(T)
+  -> ammoTypes.containsKey
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.init()
+  -> mindustry.world.consumers.ConsumeLiquidFilter.ConsumeLiquidFilter(arc.func.Boolf<mindustry.type.Liquid>, float)
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::getAmmoContent
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> mindustry.world.modules.LiquidModule.current()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::getAmmoFraction
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::updateTile
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.updateTile()
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::senseObject
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.gen.Building.senseObject(mindustry.logic.LAccess)
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::canConsume
+  -> mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret.ContinuousLiquidTurretBuild.hasCorrectAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canConsume()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::shouldConsume
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.shouldConsume()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::useAmmo
+  -> mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret.ContinuousLiquidTurretBuild.peekAmmo()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::peekAmmo
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::hasAmmo
+  -> mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret.ContinuousLiquidTurretBuild.hasCorrectAmmo()
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::hasCorrectAmmo
+  -> arc.struct.Seq.any()
+  -> arc.struct.Seq.first()
+  -> mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret.ContinuousLiquidTurretBuild.peekAmmo()
+ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild::acceptLiquid
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> arc.struct.ObjectMap.containsKey(K)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+setStats
+  -> mindustry.world.blocks.defense.turrets.Turret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>)
+  -> arc.struct.ObjectMap.of(java.lang.Object...)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::estimateDps
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.hasAmmo()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::hasAmmo
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canConsume()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::getAmmoFraction
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::updateTile
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.updateTile()
+  -> arc.struct.Seq.removeAll(arc.func.Boolf<T>)
+  -> mindustry.gen.Bullet.isAdded()
+  -> arc.struct.Seq.any()
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.updateBullet(mindustry.world.blocks.defense.turrets.Turret.BulletEntry)
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::updateBullet
+  -> arc.math.Angles.trnsx(float, float, float)
+  -> arc.math.Angles.trnsy(float, float, float)
+  -> mindustry.gen.Bullet.rotation(float)
+  -> mindustry.gen.Bullet.set(float, float)
+  -> java.lang.Math.min(float, float)
+  -> arc.math.geom.Position.dst(arc.math.geom.Position)
+  -> arc.math.geom.Position.dst(float, float)
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> arc.math.geom.Vec2.add(float, float)
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> mindustry.gen.Bullet.damageMultiplier()
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.hasAmmo()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::updateShooting
+  -> arc.struct.Seq.any()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canConsume()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.shoot(mindustry.entities.bullet.BulletType)
+  -> mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild.peekAmmo()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::turnToTarget
+  -> arc.math.Angles.moveToward(float, float, float)
+  -> mindustry.gen.Building.delta()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::handleBullet
+  -> arc.struct.Seq.add(T)
+  -> arc.math.geom.Vec2.add(float, float)
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.BulletEntry.BulletEntry(mindustry.gen.Bullet, float, float, float, float)
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::shouldActiveSound
+  -> arc.struct.Seq.any()
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::write
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::read
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+ammo
+  -> arc.struct.OrderedMap.of(java.lang.Object...)
+limitRange
+  -> mindustry.world.blocks.defense.turrets.ItemTurret.limitRange(float)
+  -> arc.struct.ObjectMap.entries()
+  -> limitRange
+setStats
+  -> mindustry.world.blocks.defense.turrets.Turret.setStats()
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>, java.lang.String)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> java.lang.Math.max(int, int)
+setBars
+  -> mindustry.world.blocks.defense.turrets.Turret.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+init
+  -> mindustry.world.Block.consume(T)
+  -> ammoTypes.containsKey
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> mindustry.core.ContentLoader.items()
+  -> arc.func.Boolf.get(T)
+  -> mindustry.ctype.UnlockableContent.unlockedNow()
+  -> mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)
+  -> arc.struct.Seq.isEmpty()
+  -> arc.struct.Seq.peek()
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> mindustry.gen.Building.cheating()
+  -> arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.init()
+  -> mindustry.world.consumers.ConsumeItemFilter.ConsumeItemFilter(arc.func.Boolf<mindustry.type.Item>)
+  -> mindustry.ui.MultiReqImage.MultiReqImage()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+  -> Image.<init>
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::onProximityAdded
+  -> mindustry.gen.Building.onProximityAdded()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.gen.Building.cheating()
+  -> handleItem
+  -> arc.struct.ObjectMap.Keys.next()
+  -> arc.struct.ObjectMap.keys()
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::senseObject
+  -> ammo.peek
+  -> mindustry.gen.Building.senseObject(mindustry.logic.LAccess)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::getAmmoContent
+  -> arc.struct.Seq.peek()
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::acceptStack
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Math.min(int, int)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::handleStack
+  -> mindustry.world.blocks.defense.turrets.ItemTurret.ItemTurretBuild.handleItem(mindustry.gen.Building, mindustry.type.Item)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::handleItem
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.Seq.get(int)
+  -> arc.struct.Seq.swap(int, int)
+  -> arc.struct.Seq.add(T)
+  -> mindustry.world.blocks.defense.turrets.ItemTurret.ItemEntry.ItemEntry(mindustry.type.Item, int)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::acceptItem
+  -> arc.struct.ObjectMap.get(T)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::write
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.b(int)
+  -> arc.util.io.Writes.s(int)
+ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::read
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.read(arc.util.io.Reads, byte)
+  -> arc.struct.Seq.clear()
+  -> arc.util.io.Reads.ub()
+  -> mindustry.core.ContentLoader.item(int)
+  -> arc.util.io.Reads.s()
+  -> java.lang.Math.min(int, int)
+  -> arc.struct.ObjectMap.containsKey(K)
+  -> arc.struct.Seq.add(T)
+  -> mindustry.world.blocks.defense.turrets.ItemTurret.ItemEntry.ItemEntry(mindustry.type.Item, int)
+ItemEntry extends mindustry.world.blocks.defense.turrets.Turret.AmmoEntry::type
+  -> arc.struct.ObjectMap.get(T)
+setStats
+  -> mindustry.world.blocks.defense.turrets.PowerTurret.setStats()
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.boosters(float, float, float, boolean, arc.func.Boolf<mindustry.type.Liquid>)
+init
+  -> mindustry.world.blocks.defense.turrets.Turret.init()
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::shouldConsume
+  -> arc.struct.Seq.any()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.isActive()
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::placed
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild.placed()
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::updateTile
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.updateTile()
+  -> arc.struct.Seq.removeAll(arc.func.Boolf<T>)
+  -> mindustry.gen.Bullet.isAdded()
+  -> arc.struct.Seq.any()
+  -> arc.math.Angles.trnsx(float, float, float)
+  -> arc.math.Angles.trnsy(float, float, float)
+  -> mindustry.gen.Bullet.rotation(float)
+  -> mindustry.gen.Bullet.set(float, float)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.gen.Building.cheating()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> mindustry.gen.Building.delta()
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> mindustry.gen.Building.edelta()
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::progress
+  -> arc.math.Mathf.clamp(float)
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::updateShooting
+  -> arc.struct.Seq.any()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+  -> mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild.peekAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.shoot(mindustry.entities.bullet.BulletType)
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::turnToTarget
+  -> arc.math.Angles.moveToward(float, float, float)
+  -> mindustry.gen.Building.delta()
+  -> arc.struct.Seq.any()
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::handleBullet
+  -> arc.struct.Seq.add(T)
+  -> mindustry.world.blocks.defense.turrets.Turret.BulletEntry.BulletEntry(mindustry.gen.Bullet, float, float, float, float)
+LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild::shouldActiveSound
+  -> arc.struct.Seq.any()
+ammo
+  -> arc.struct.ObjectMap.of(java.lang.Object...)
+setStats
+  -> mindustry.world.blocks.defense.turrets.Turret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>, java.lang.String)
+init
+  -> mindustry.world.Block.consume(T)
+  -> ammoTypes.containsKey
+  -> arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.init()
+  -> mindustry.world.consumers.ConsumeLiquidFilter.ConsumeLiquidFilter(arc.func.Boolf<mindustry.type.Liquid>, float)
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::getAmmoContent
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> mindustry.world.modules.LiquidModule.current()
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::getAmmoFraction
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::senseObject
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.gen.Building.senseObject(mindustry.logic.LAccess)
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::findTarget
+  -> mindustry.type.Liquid.canExtinguish()
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.core.World.toTile(float)
+  -> mindustry.core.World.tile(int, int)
+  -> mindustry.entities.Fires.get(int, int)
+  -> arc.math.geom.Position.dst2(arc.math.geom.Position)
+  -> mindustry.entities.Fires.has(int, int)
+  -> mindustry.world.Tile.team()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.findTarget()
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::useAmmo
+  -> mindustry.gen.Building.cheating()
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::peekAmmo
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::hasAmmo
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::acceptLiquid
+  -> arc.struct.ObjectMap.get(T)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> arc.struct.ObjectMap.containsKey(K)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+ammo
+  -> arc.struct.ObjectMap.of(java.lang.Object...)
+limitRange
+  -> mindustry.world.blocks.defense.turrets.PayloadAmmoTurret.limitRange(float)
+  -> arc.struct.ObjectMap.entries()
+  -> arc.struct.ObjectMap.copy()
+setStats
+  -> mindustry.world.blocks.defense.turrets.Turret.setStats()
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>, boolean)
+init
+  -> mindustry.world.Block.consume(T)
+  -> ammoTypes.containsKey
+  -> mindustry.core.ContentLoader.blocks()
+  -> mindustry.world.blocks.defense.turrets.PayloadAmmoTurret.Anonymous-9d4ce2d8-7bf6-461d-85b7-216eee7d653c.displayContent(mindustry.gen.Building, mindustry.ui.MultiReqImage, mindustry.ctype.UnlockableContent)
+  -> mindustry.core.ContentLoader.units()
+  -> mindustry.world.blocks.defense.turrets.PayloadAmmoTurret.Anonymous-769150d9-1e47-46f5-814e-5e47e96bf56b.displayContent(mindustry.gen.Building, mindustry.ui.MultiReqImage, mindustry.ctype.UnlockableContent)
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.add(T)
+  -> arc.func.Boolf.get(T)
+  -> mindustry.ctype.UnlockableContent.unlockedNow()
+  -> mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)
+  -> mindustry.type.PayloadSeq.isEmpty()
+  -> mindustry.world.blocks.defense.turrets.PayloadAmmoTurret.PayloadTurretBuild.currentAmmo()
+  -> mindustry.type.PayloadSeq.any()
+  -> arc.struct.Seq.toArray(java.lang.Class)
+  -> arc.struct.ObjectMap.Keys.toSeq()
+  -> arc.struct.ObjectMap.keys()
+  -> mindustry.world.blocks.defense.turrets.Turret.init()
+  -> mindustry.world.consumers.ConsumePayloadFilter.ConsumePayloadFilter(arc.func.Boolf<mindustry.ctype.UnlockableContent>)
+  -> mindustry.ui.MultiReqImage.MultiReqImage()
+  -> mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)
+  -> arc.scene.ui.Image.Image(arc.graphics.g2d.TextureRegion)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::currentAmmo
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::acceptPayload
+  -> mindustry.type.PayloadSeq.total()
+  -> arc.struct.ObjectMap.containsKey(K)
+  -> mindustry.world.blocks.payloads.Payload.content()
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::handlePayload
+  -> mindustry.type.PayloadSeq.add(mindustry.ctype.UnlockableContent)
+  -> mindustry.world.blocks.payloads.Payload.content()
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::hasAmmo
+  -> mindustry.type.PayloadSeq.total()
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::useAmmo
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent)
+  -> mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent)
+  -> arc.struct.ObjectMap.get(T)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::peekAmmo
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent)
+  -> arc.struct.ObjectMap.get(T)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::getAmmoContent
+  -> mindustry.type.PayloadSeq.isEmpty()
+  -> mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::updateTile
+  -> mindustry.type.PayloadSeq.total()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.updateTile()
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::displayBars
+  -> mindustry.gen.Building.displayBars(arc.scene.ui.layout.Table)
+  -> arc.scene.ui.layout.Cell.growX()
+  -> arc.scene.ui.layout.Table.add(T)
+  -> arc.scene.ui.layout.Table.row()
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::write
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.write(arc.util.io.Writes)
+  -> mindustry.type.PayloadSeq.write(arc.util.io.Writes)
+PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::read
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.read(arc.util.io.Reads, byte)
+  -> mindustry.type.PayloadSeq.read(arc.util.io.Reads)
+  -> mindustry.type.PayloadSeq.removeAll(arc.func.Boolf<mindustry.ctype.UnlockableContent>)
+  -> arc.struct.ObjectMap.containsKey(K)
+setStats
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild::updateTile
+  -> mindustry.gen.Building.timer(int, float)
+  -> arc.struct.Seq.min(arc.func.Boolf<T>, arc.func.Floatf<T>)
+  -> mindustry.entities.EntityGroup.intersect(float, float, float, float)
+  -> mindustry.gen.Bullet.type()
+  -> arc.math.geom.Position.dst2(arc.math.geom.Position)
+  -> mindustry.gen.Bullet.isAdded()
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild.updateCooling()
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> arc.math.geom.Position.angleTo(arc.math.geom.Position)
+  -> arc.math.Angles.moveToward(float, float, float)
+  -> mindustry.gen.Building.edelta()
+  -> arc.math.Angles.within(float, float, float)
+  -> mindustry.game.Rules.blockDamage(mindustry.game.Team)
+  -> mindustry.gen.Bullet.damage()
+  -> mindustry.gen.Bullet.damage(float)
+  -> mindustry.gen.Bullet.remove()
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color, java.lang.Object)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)
+  -> mindustry.entities.Effect.at(float, float, arc.graphics.Color)
+  -> arc.audio.Sound.at(float, float, float)
+  -> arc.math.Mathf.random(float, float)
+  -> arc.math.geom.Vec2.Vec2()
+PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild::shouldConsume
+  -> mindustry.gen.Building.shouldConsume()
+PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.graphics.Drawf.shadow(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+setStats
+  -> mindustry.world.blocks.defense.turrets.Turret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.ammo(arc.struct.ObjectMap<T, mindustry.entities.bullet.BulletType>)
+  -> arc.struct.ObjectMap.of(java.lang.Object...)
+limitRange
+  -> mindustry.world.blocks.defense.turrets.Turret.limitRange(mindustry.entities.bullet.BulletType, float)
+PowerTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild::sense
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.sense(mindustry.logic.LAccess)
+setStats
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.setStats()
+  -> mindustry.world.meta.Stats.replace(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.boosters(float, float, float, boolean, arc.func.Boolf<mindustry.type.Liquid>)
+ReloadTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::updateCooling
+  -> mindustry.world.consumers.Consume.efficiency(mindustry.gen.Building)
+  -> mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)
+  -> mindustry.world.consumers.ConsumeLiquidBase.consumes(mindustry.type.Liquid)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.world.consumers.Consume.update(mindustry.gen.Building)
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild.ammoReloadMultiplier()
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+setStats
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, boolean)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, java.lang.String, java.lang.Object...)
+  -> mindustry.world.meta.StatValues.statusText(mindustry.type.StatusEffect, float, float)
+init
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.init()
+  -> mindustry.world.Block.updateClipRadius(float)
+TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::updateTile
+  -> mindustry.gen.Building.delta()
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.entities.Units.closestEnemy(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>)
+  -> mindustry.gen.Unitc.checkTarget(boolean, boolean)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> mindustry.gen.Unit.team()
+  -> mindustry.audio.SoundControl.loop(arc.audio.Sound, arc.math.geom.Position, float)
+  -> arc.math.geom.Position.angleTo(arc.math.geom.Position)
+  -> arc.math.Angles.moveToward(float, float, float)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> arc.math.Angles.within(float, float, float)
+  -> mindustry.gen.Healthc.damageContinuousPierce(float)
+  -> mindustry.game.Rules.blockDamage(mindustry.game.Team)
+  -> mindustry.gen.Statusc.apply(mindustry.type.StatusEffect, float)
+  -> mindustry.gen.Physicsc.impulseNet(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.limit(float)
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.geom.Position.dst(arc.math.geom.Position)
+TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::shouldConsume
+  -> mindustry.gen.Building.shouldConsume()
+TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.graphics.Drawf.shadow(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> mindustry.gen.Building.isPayload()
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.math.geom.Position.angleTo(float, float)
+  -> arc.graphics.g2d.Draw.mixcol(arc.graphics.Color, float)
+  -> arc.math.Mathf.absin(float, float)
+  -> mindustry.graphics.Drawf.laser(arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, float, float, float, float, float)
+  -> arc.math.Angles.trnsx(float, float)
+  -> arc.math.Angles.trnsy(float, float)
+  -> arc.graphics.g2d.Draw.mixcol()
+TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+setStats
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, boolean)
+setBars
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+init
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.init()
+  -> java.lang.Math.max(float, float)
+load
+  -> mindustry.world.Block.load()
+  -> mindustry.world.draw.DrawBlock.load(mindustry.world.Block)
+drawPlanRegion
+  -> mindustry.world.draw.DrawBlock.drawPlan(mindustry.world.Block, mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+icons
+  -> mindustry.world.draw.DrawBlock.finalIcons(mindustry.world.Block)
+getRegionsToOutline
+  -> mindustry.world.draw.DrawBlock.getRegionsToOutline(mindustry.world.Block, arc.struct.Seq<arc.graphics.g2d.TextureRegion>)
+drawPlace
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+placeEnded
+  -> mindustry.world.Block.placeEnded(mindustry.world.Tile, mindustry.gen.Unit, int, java.lang.Object)
+  -> mindustry.gen.Building.rotdeg()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::remove
+  -> mindustry.gen.Building.remove()
+  -> mindustry.audio.SoundLoop.stop()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::onDestroyed
+  -> mindustry.gen.Building.onDestroyed()
+  -> mindustry.audio.SoundLoop.stop()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::estimateDps
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> mindustry.entities.bullet.BulletType.estimateDPS()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::minRange
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::range
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::trackingRange
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.range()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::status
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild.status()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::control
+  -> mindustry.gen.Unitc.isPlayer()
+  -> arc.math.geom.Vec2.set(float, float)
+  -> mindustry.core.World.unconv(float)
+  -> arc.math.Mathf.zero(double)
+  -> mindustry.gen.Building.control(mindustry.logic.LAccess, double, double, double, double)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.targetPosition(mindustry.gen.Posc)
+  -> mindustry.gen.Building.control(mindustry.logic.LAccess, java.lang.Object, double, double, double)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::sense
+  -> mindustry.core.World.conv(float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.progress()
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::fogRadius
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::progress
+  -> arc.math.Mathf.clamp(float)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::unit
+  -> mindustry.gen.BlockUnitc.tile(mindustry.gen.Building)
+  -> mindustry.gen.BlockUnitc.team(mindustry.game.Team)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::controlled
+  -> mindustry.gen.Unitc.isPlayer()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::targetPosition
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> arc.math.geom.Vec2.setZero()
+  -> arc.math.geom.Vec2.scl(float)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> mindustry.gen.Hitboxc.deltaX()
+  -> mindustry.gen.Hitboxc.deltaY()
+  -> arc.math.geom.Vec2.set(arc.math.geom.Vec2)
+  -> mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, float, float, float)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.isZero()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::draw
+  -> mindustry.world.draw.DrawBlock.draw(mindustry.gen.Building)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::drawSelect
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild.drawSelect()
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.minRange()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::updateTile
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.validateTarget()
+  -> mindustry.gen.Unitc.controller()
+  -> mindustry.gen.Weaponsc.isShooting()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.logicControlled()
+  -> mindustry.gen.Unitc.isPlayer()
+  -> mindustry.gen.BlockUnitc.ammo(float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.getAmmoFraction()
+  -> mindustry.audio.SoundLoop.update(float, float, boolean, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.shouldActiveSound()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.activeSoundVolume()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canConsume()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.controlled()
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.gen.BlockUnitc.tile(mindustry.gen.Building)
+  -> mindustry.gen.Rotc.rotation(float)
+  -> mindustry.gen.BlockUnitc.team(mindustry.game.Team)
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> arc.math.Mathf.pow(float, float)
+  -> mindustry.gen.Building.calculateHeat(float[])
+  -> arc.math.Mathf.mod(int, int)
+  -> arc.math.Mathf.round(float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.handleReload()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> mindustry.game.FogControl.forceUpdate(mindustry.game.Team, mindustry.gen.Building)
+  -> java.lang.Float.isNaN(float)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.findTarget()
+  -> arc.math.geom.Vec2.set(float, float)
+  -> mindustry.gen.Weaponsc.aimX()
+  -> mindustry.gen.Weaponsc.aimY()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.targetPosition(mindustry.gen.Posc)
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.range()
+  -> mindustry.entities.Sized.hitSize()
+  -> mindustry.gen.Weaponsc.aimX(float)
+  -> mindustry.gen.Weaponsc.aimY(float)
+  -> arc.math.geom.Position.angleTo(arc.math.geom.Position)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.shouldTurn()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.turnToTarget(float)
+  -> arc.math.Angles.angleDist(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.updateShooting()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::handleLiquid
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> mindustry.gen.Building.handleLiquid(mindustry.gen.Building, mindustry.type.Liquid, float)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::canConsume
+  -> mindustry.gen.Building.canConsume()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::validateTarget
+  -> mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canHeal()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.controlled()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.logicControlled()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::canHeal
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> mindustry.entities.bullet.BulletType.heals()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::findEnemy
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> mindustry.entities.Units.bestEnemy(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, mindustry.entities.Units.Sortf)
+  -> mindustry.gen.Unit.dead()
+  -> mindustry.gen.Statusc.isGrounded()
+  -> arc.func.Boolf.get(T)
+  -> mindustry.entities.Units.bestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>, mindustry.entities.Units.Sortf)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::findTarget
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.trackingRange()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.range()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.findEnemy(float)
+  -> arc.math.Mathf.equal(float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canHeal()
+  -> mindustry.entities.Units.findAllyTile(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>)
+  -> mindustry.gen.Building.damaged()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::turnToTarget
+  -> arc.math.Angles.moveToward(float, float, float)
+  -> mindustry.gen.Building.delta()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::shouldTurn
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::updateEfficiencyMultiplier
+  -> java.lang.Math.min(float, float)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.gen.Building.cheating()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::useAmmo
+  -> mindustry.gen.Building.cheating()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> arc.struct.Seq.peek()
+  -> arc.struct.Seq.pop()
+  -> java.lang.Math.max(int, int)
+  -> mindustry.world.blocks.defense.turrets.Turret.AmmoEntry.type()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::peekAmmo
+  -> mindustry.world.blocks.defense.turrets.Turret.AmmoEntry.type()
+  -> arc.struct.Seq.peek()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::hasAmmo
+  -> arc.struct.Seq.peek()
+  -> arc.struct.Seq.get(int)
+  -> arc.struct.Seq.swap(int, int)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.canConsume()
+  -> mindustry.gen.Building.cheating()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::handleReload
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.updateReload()
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild.updateCooling()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::updateReload
+  -> mindustry.gen.Building.delta()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.ammoReloadMultiplier()
+  -> mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild.baseReloadSpeed()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::ammoReloadMultiplier
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::updateShooting
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.charging()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.peekAmmo()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.shoot(mindustry.entities.bullet.BulletType)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::shoot
+  -> arc.math.Angles.trnsx(float, float, float)
+  -> arc.math.Angles.trnsy(float, float, float)
+  -> arc.audio.Sound.at(float, float, float)
+  -> arc.math.Mathf.random(float, float)
+  -> mindustry.entities.Effect.at(float, float, float)
+  -> mindustry.entities.pattern.ShootPattern.shoot(int, mindustry.entities.pattern.ShootPattern.BulletHandler, java.lang.Runnable)
+  -> arc.util.Time.run(float, java.lang.Runnable)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.bullet(mindustry.entities.bullet.BulletType, float, float, float, mindustry.entities.Mover)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.useAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::bullet
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.hasAmmo()
+  -> arc.math.Mathf.range(float)
+  -> arc.math.Angles.trnsx(float, float, float)
+  -> arc.math.Angles.trnsy(float, float, float)
+  -> arc.math.Mathf.random(float)
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> arc.math.Mathf.dst(float, float, float, float)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.minRange()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.range()
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.handleBullet(mindustry.gen.Bullet, float, float, float)
+  -> mindustry.entities.bullet.BulletType.create(mindustry.gen.Entityc, mindustry.game.Team, float, float, float, float, float, float, java.lang.Object, mindustry.entities.Mover, float, float)
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)
+  -> arc.audio.Sound.at(float, float, float, float)
+  -> arc.math.Mathf.random(float, float)
+  -> mindustry.entities.Effect.at(float, float, float)
+  -> arc.math.Angles.trnsx(float, float)
+  -> arc.math.Angles.trnsy(float, float)
+  -> arc.math.Mathf.sign(float)
+  -> mindustry.entities.Effect.shake(float, float, arc.math.geom.Position)
+  -> mindustry.world.blocks.defense.turrets.Turret.TurretBuild.useAmmo()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock::readSync
+  -> mindustry.gen.Building.readAll(arc.util.io.Reads, byte)

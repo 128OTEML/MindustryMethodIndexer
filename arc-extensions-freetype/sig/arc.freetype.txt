@@ -1,0 +1,310 @@
+FreeType.java
+Java class
+fields:
+  public static int FT_PIXEL_MODE_NONE
+  public static int FT_PIXEL_MODE_MONO
+  public static int FT_PIXEL_MODE_GRAY
+  public static int FT_PIXEL_MODE_GRAY2
+  public static int FT_PIXEL_MODE_GRAY4
+  public static int FT_PIXEL_MODE_LCD
+  public static int FT_PIXEL_MODE_LCD_V
+  public static int FT_ENCODING_NONE
+  public static int FT_ENCODING_MS_SYMBOL
+  public static int FT_ENCODING_UNICODE
+  public static int FT_ENCODING_SJIS
+  public static int FT_ENCODING_GB2312
+  public static int FT_ENCODING_BIG5
+  public static int FT_ENCODING_WANSUNG
+  public static int FT_ENCODING_JOHAB
+  public static int FT_ENCODING_ADOBE_STANDARD
+  public static int FT_ENCODING_ADOBE_EXPERT
+  public static int FT_ENCODING_ADOBE_CUSTOM
+  public static int FT_ENCODING_ADOBE_LATIN_1
+  public static int FT_ENCODING_OLD_LATIN_2
+  public static int FT_ENCODING_APPLE_ROMAN
+  public static int FT_FACE_FLAG_SCALABLE
+  public static int FT_FACE_FLAG_FIXED_SIZES
+  public static int FT_FACE_FLAG_FIXED_WIDTH
+  public static int FT_FACE_FLAG_SFNT
+  public static int FT_FACE_FLAG_HORIZONTAL
+  public static int FT_FACE_FLAG_VERTICAL
+  public static int FT_FACE_FLAG_KERNING
+  public static int FT_FACE_FLAG_FAST_GLYPHS
+  public static int FT_FACE_FLAG_MULTIPLE_MASTERS
+  public static int FT_FACE_FLAG_GLYPH_NAMES
+  public static int FT_FACE_FLAG_EXTERNAL_STREAM
+  public static int FT_FACE_FLAG_HINTER
+  public static int FT_FACE_FLAG_CID_KEYED
+  public static int FT_FACE_FLAG_TRICKY
+  public static int FT_STYLE_FLAG_ITALIC
+  public static int FT_STYLE_FLAG_BOLD
+  public static int FT_LOAD_DEFAULT
+  public static int FT_LOAD_NO_SCALE
+  public static int FT_LOAD_NO_HINTING
+  public static int FT_LOAD_RENDER
+  public static int FT_LOAD_NO_BITMAP
+  public static int FT_LOAD_VERTICAL_LAYOUT
+  public static int FT_LOAD_FORCE_AUTOHINT
+  public static int FT_LOAD_CROP_BITMAP
+  public static int FT_LOAD_PEDANTIC
+  public static int FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH
+  public static int FT_LOAD_NO_RECURSE
+  public static int FT_LOAD_IGNORE_TRANSFORM
+  public static int FT_LOAD_MONOCHROME
+  public static int FT_LOAD_LINEAR_DESIGN
+  public static int FT_LOAD_NO_AUTOHINT
+  public static int FT_LOAD_TARGET_NORMAL
+  public static int FT_LOAD_TARGET_LIGHT
+  public static int FT_LOAD_TARGET_MONO
+  public static int FT_LOAD_TARGET_LCD
+  public static int FT_LOAD_TARGET_LCD_V
+  public static int FT_RENDER_MODE_NORMAL
+  public static int FT_RENDER_MODE_LIGHT
+  public static int FT_RENDER_MODE_MONO
+  public static int FT_RENDER_MODE_LCD
+  public static int FT_RENDER_MODE_LCD_V
+  public static int FT_RENDER_MODE_MAX
+  public static int FT_KERNING_DEFAULT
+  public static int FT_KERNING_UNFITTED
+  public static int FT_KERNING_UNSCALED
+  public static int FT_STROKER_LINECAP_BUTT
+  public static int FT_STROKER_LINECAP_ROUND
+  public static int FT_STROKER_LINECAP_SQUARE
+  public static int FT_STROKER_LINEJOIN_ROUND
+  public static int FT_STROKER_LINEJOIN_BEVEL
+  public static int FT_STROKER_LINEJOIN_MITER_VARIABLE
+  public static int FT_STROKER_LINEJOIN_MITER
+  public static int FT_STROKER_LINEJOIN_MITER_FIXED
+methods:
+  static native int getLastErrorCode()  // @return returns the last error code FreeType reported
+  private static int encode(char a, char b, char c, char d)
+  public static Library initFreeType()
+  private static native long initFreeTypeJni()
+  public static int toInt(int value)
+inner-class: Pointer
+  fields:
+    long address
+  ctors:
+    Pointer(long address)
+inner-class: Library extends arc.freetype.FreeType.Pointer implements arc.util.Disposable
+  fields:
+    LongMap<ByteBuffer> fontData
+  ctors:
+    Library(long address)
+  methods:
+    private static native void doneFreeType(long library)
+    private static native long newMemoryFace(long library, ByteBuffer data, int dataSize, int faceIndex) / public Face newMemoryFace(byte[] data, int dataSize, int faceIndex) / public Face newMemoryFace(ByteBuffer buffer, int faceIndex)
+    private static native long strokerNew(long library)
+    public void dispose()
+    public Face newFace(Fi font, int faceIndex)
+    public Stroker createStroker()
+inner-class: Face extends arc.freetype.FreeType.Pointer implements arc.util.Disposable
+  fields:
+    Library library
+  ctors:
+    public Face(long address, Library library)
+  methods:
+    private static native void doneFace(long face)
+    private static native int getFaceFlags(long face) / public int getFaceFlags()
+    private static native int getStyleFlags(long face) / public int getStyleFlags()
+    private static native int getNumGlyphs(long face) / public int getNumGlyphs()
+    private static native int getAscender(long face) / public int getAscender()
+    private static native int getDescender(long face) / public int getDescender()
+    private static native int getHeight(long face) / public int getHeight()
+    private static native int getMaxAdvanceWidth(long face) / public int getMaxAdvanceWidth()
+    private static native int getMaxAdvanceHeight(long face) / public int getMaxAdvanceHeight()
+    private static native int getUnderlinePosition(long face) / public int getUnderlinePosition()
+    private static native int getUnderlineThickness(long face) / public int getUnderlineThickness()
+    private static native boolean selectSize(long face, int strike_index) / public boolean selectSize(int strikeIndex)
+    private static native boolean setCharSize(long face, int charWidth, int charHeight, int horzResolution, int vertResolution) / public boolean setCharSize(int charWidth, int charHeight, int horzResolution, int vertResolution)
+    private static native boolean setPixelSizes(long face, int pixelWidth, int pixelHeight) / public boolean setPixelSizes(int pixelWidth, int pixelHeight)
+    private static native boolean loadGlyph(long face, int glyphIndex, int loadFlags) / public boolean loadGlyph(int glyphIndex, int loadFlags)
+    private static native boolean loadChar(long face, int charCode, int loadFlags) / public boolean loadChar(int charCode, int loadFlags)
+    private static native long getGlyph(long face) / public GlyphSlot getGlyph()
+    private static native long getSize(long face) / public Size getSize()
+    private static native boolean hasKerning(long face) / public boolean hasKerning()
+    private static native int getKerning(long face, int leftGlyph, int rightGlyph, int kernMode) / public int getKerning(int leftGlyph, int rightGlyph, int kernMode)
+    private static native int getCharIndex(long face, int charCode) / public int getCharIndex(int charCode)
+    public void dispose()
+inner-class: Size extends arc.freetype.FreeType.Pointer
+  ctors:
+    Size(long address)
+  methods:
+    private static native long getMetrics(long address) / public SizeMetrics getMetrics()
+inner-class: SizeMetrics extends arc.freetype.FreeType.Pointer
+  ctors:
+    SizeMetrics(long address)
+  methods:
+    private static native int getXppem(long metrics) / public int getXppem()
+    private static native int getYppem(long metrics) / public int getYppem()
+    private static native int getXscale(long metrics)
+    private static native int getYscale(long metrics) / public int getYscale()
+    private static native int getAscender(long metrics) / public int getAscender()
+    private static native int getDescender(long metrics) / public int getDescender()
+    private static native int getHeight(long metrics) / public int getHeight()
+    private static native int getMaxAdvance(long metrics) / public int getMaxAdvance()
+    public int getXScale()
+inner-class: GlyphSlot extends arc.freetype.FreeType.Pointer
+  ctors:
+    GlyphSlot(long address)
+  methods:
+    private static native long getMetrics(long slot) / public GlyphMetrics getMetrics()
+    private static native int getLinearHoriAdvance(long slot) / public int getLinearHoriAdvance()
+    private static native int getLinearVertAdvance(long slot) / public int getLinearVertAdvance()
+    private static native int getAdvanceX(long slot) / public int getAdvanceX()
+    private static native int getAdvanceY(long slot) / public int getAdvanceY()
+    private static native int getFormat(long slot) / public int getFormat()
+    private static native long getBitmap(long slot) / public Bitmap getBitmap()
+    private static native int getBitmapLeft(long slot) / public int getBitmapLeft()
+    private static native int getBitmapTop(long slot) / public int getBitmapTop()
+    private static native boolean renderGlyph(long slot, int renderMode) / public boolean renderGlyph(int renderMode)
+    private static native long getGlyph(long glyphSlot) / public Glyph getGlyph()
+inner-class: Glyph extends arc.freetype.FreeType.Pointer implements arc.util.Disposable
+  fields:
+    private boolean rendered
+  ctors:
+    Glyph(long address)
+  methods:
+    private static native void done(long glyph)
+    private static native long strokeBorder(long glyph, long stroker, boolean inside) / public void strokeBorder(Stroker stroker, boolean inside)
+    private static native long toBitmap(long glyph, int renderMode) / public void toBitmap(int renderMode)
+    private static native long getBitmap(long glyph) / public Bitmap getBitmap()
+    private static native int getLeft(long glyph) / public int getLeft()
+    private static native int getTop(long glyph) / public int getTop()
+    public void dispose()
+inner-class: Bitmap extends arc.freetype.FreeType.Pointer
+  ctors:
+    Bitmap(long address)
+  methods:
+    private static native int getRows(long bitmap) / public int getRows()
+    private static native int getWidth(long bitmap) / public int getWidth()
+    private static native int getPitch(long bitmap) / public int getPitch()
+    private static native ByteBuffer getBuffer(long bitmap) / public ByteBuffer getBuffer()
+    private static native int getNumGray(long bitmap) / public int getNumGray()
+    private static native int getPixelMode(long bitmap) / public int getPixelMode()
+    public Pixmap getPixmap(Color color, float gamma)  // @on
+inner-class: GlyphMetrics extends arc.freetype.FreeType.Pointer
+  ctors:
+    GlyphMetrics(long address)
+  methods:
+    private static native int getWidth(long metrics) / public int getWidth()
+    private static native int getHeight(long metrics) / public int getHeight()
+    private static native int getHoriBearingX(long metrics) / public int getHoriBearingX()
+    private static native int getHoriBearingY(long metrics) / public int getHoriBearingY()
+    private static native int getHoriAdvance(long metrics) / public int getHoriAdvance()
+    private static native int getVertBearingX(long metrics) / public int getVertBearingX()
+    private static native int getVertBearingY(long metrics) / public int getVertBearingY()
+    private static native int getVertAdvance(long metrics) / public int getVertAdvance()
+inner-class: Stroker extends arc.freetype.FreeType.Pointer implements arc.util.Disposable
+  ctors:
+    Stroker(long address)
+  methods:
+    private static native void set(long stroker, int radius, int lineCap, int lineJoin, int miterLimit) / public void set(int radius, int lineCap, int lineJoin, int miterLimit)
+    private static native void done(long stroker)
+    public void dispose()
+
+FreeTypeFontGenerator.java
+Java class implements arc.util.Disposable
+// Generates {@link Font} and {@link FontData} instances from TrueType, OTF, and other FreeType supported fonts.
+fields:
+  public static final String DEFAULT_CHARS
+  public static final int NO_MAXIMUM  // A hint to scale the texture as needed, without capping it at any maximum size
+  private static int maxTextureSize  // The maximum texture size allowed by generateData, when storing in a texture atlas.
+  final Library library
+  final Face face
+  final String name
+  boolean bitmapped
+ctors:
+  public FreeTypeFontGenerator(Fi fontFile) / public FreeTypeFontGenerator(Fi fontFile, int faceIndex)  // {@link #FreeTypeFontGenerator(Fi, int)}
+methods:
+  public static int getMaxTextureSize()  // Returns the maximum texture size that will be used by generateData() when creating a texture atlas for the glyphs.
+  public static void setMaxTextureSize(int texSize)  // Sets the maximum size that will be used when generating texture atlases for glyphs with <tt>generateData()</tt>.
+  private int getLoadingFlags(FreeTypeFontParameter parameter)
+  private boolean loadChar(int c) / private boolean loadChar(int c, int flags)
+  private boolean checkForBitmapFont()
+  public Font generateFont(FreeTypeFontParameter parameter) / public Font generateFont(FreeTypeFontParameter parameter, FreeTypeFontData data)  // Generates a new {@link Font}.
+  public int scaleForPixelHeight(int height)  // Uses ascender and descender of font to calculate real height that makes all glyphs to fit in given pixel size.
+  public int scaleForPixelWidth(int width, int numChars)  // Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel
+  public int scaleToFitSquare(int width, int height, int numChars)  // Uses max advance, ascender and descender of font to calculate real height that makes any n glyphs to fit in given pixel
+  public GlyphAndBitmap generateGlyphAndBitmap(int c, int size, boolean flip)  // Returns null if glyph was not found.
+  public FreeTypeFontData generateData(int size) / public FreeTypeFontData generateData(FreeTypeFontParameter parameter) / public FreeTypeFontData generateData(FreeTypeFontParameter parameter, FreeTypeFontData data)  // Generates a new {@link FontData} instance, expert usage only.
+  void setPixelSizes(int pixelWidth, int pixelHeight)
+  Glyph createGlyph(char c, FreeTypeFontData data, FreeTypeFontParameter parameter, Stroker stroker, float baseLine, PixmapPacker packer)  // @return null if glyph was not found.
+  public void dispose()  // Cleans up all resources of the generator.
+inner-class: FreeTypeFontData extends arc.graphics.g2d.Font.FontData implements arc.util.Disposable
+// {@link FontData} used for fonts generated via the {@link FreeTypeFontGenerator}.
+  fields:
+    public static boolean ignoreDirty  // Set to true to disable font caching.
+    Seq<TextureRegion> regions
+    FreeTypeFontGenerator generator  // Fields for incremental glyph generation.
+    FreeTypeFontParameter parameter
+    Stroker stroker
+    PixmapPacker packer
+    Seq<Glyph> glyphs
+    private boolean dirty
+    Seq<FontData> fallback
+    FontData override
+  methods:
+    public void setOverride(FontData override)  // Sets a font to override the glyphs of this one, if they are available.
+    public void addFallback(FontData data)
+    public Glyph getGlyph(char ch)
+    public void getGlyphs(GlyphRun run, CharSequence str, int start, int end, Glyph lastGlyph)
+    public void dispose()
+inner-class: FreeTypeFontParameter
+// Parameter container class that helps configure how {@link FreeTypeFontData} and {@link Font} instances are
+  fields:
+    public int size  // The size in pixels
+    public boolean mono  // If true, font smoothing is disabled.
+    public Hinting hinting  // Strength of hinting
+    public Color color  // Foreground color (required for non-black borders)
+    public float gamma  // Glyph gamma.
+    public int renderCount  // Number of times to render the glyph.
+    public float borderWidth  // Border width in pixels, 0 to disable
+    public Color borderColor  // Border color; only used if borderWidth > 0
+    public boolean borderStraight  // true for straight (mitered), false for rounded borders
+    public float borderGamma  // Values < 1 increase the border size.
+    public int shadowOffsetX  // Offset of text shadow on X axis in pixels, 0 to disable
+    public int shadowOffsetY  // Offset of text shadow on Y axis in pixels, 0 to disable
+    public Color shadowColor  // Shadow color; only used if shadowOffset > 0.
+    public int spaceX  // Pixels to add to glyph spacing when text is rendered.
+    public int padTop  // Pixels to add to the glyph in the texture.
+    public String characters  // The characters the font should contain.
+    public boolean kerning  // Whether the font should include kerning
+    public PixmapPacker packer  // The optional PixmapPacker to use for packing multiple fonts into a single texture.
+    public boolean flip  // Whether to flip the font vertically
+    public boolean genMipMaps  // Whether to generate mip maps for the resulting texture
+    public TextureFilter minFilter  // Minification filter
+    public TextureFilter magFilter  // Magnification filter
+    public boolean incremental  // When true, glyphs are rendered on the fly to the font's glyph page textures as they are needed.
+    public Seq<Prov<Font>> fallback  // Fallback fonts to use.
+inner-class: GlyphAndBitmap
+  fields:
+    public Glyph glyph
+    public Bitmap bitmap
+
+FreeTypeFontGeneratorLoader.java
+Java class extends arc.assets.loaders.SynchronousAssetLoader
+// Makes {@link FreeTypeFontGenerator} managable via {@link AssetManager}.
+ctors:
+  public FreeTypeFontGeneratorLoader(FileHandleResolver resolver)
+methods:
+  public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontGeneratorParameters parameter)
+inner-class: FreeTypeFontGeneratorParameters extends arc.assets.AssetLoaderParameters
+
+FreetypeFontLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// Creates {@link Font} instances from FreeType font files.
+ctors:
+  public FreetypeFontLoader(FileHandleResolver resolver)
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+  public Font loadSync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+inner-class: FreeTypeFontLoaderParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public String fontFileName  // the name of the TTF file to be used to load the font *
+    public FreeTypeFontParameter fontParameters  // the parameters used to generate the font, e.g.
+  ctors:
+    public FreeTypeFontLoaderParameter() / public FreeTypeFontLoaderParameter(String fontFileName, FreeTypeFontParameter fontParameters)
+

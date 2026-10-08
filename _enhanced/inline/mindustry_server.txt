@@ -1,0 +1,15 @@
+// ServerControl.java : JsonValue readRulesFile()
+    JsonValue readRulesFile(){
+        return JsonIO.json.fromJson(null, Jval.read(rulesFile.readString()).toString(Jformat.plain));
+    }
+
+// ServerControl.java : public void cancelPlayTask()
+    public void cancelPlayTask(){
+        if(lastTask != null) lastTask.cancel();
+    }
+
+// ServerControl.java : public void play(Runnable run) / public void play(boolean wait, Runnable run)
+    public void play(Runnable run){
+        play(true, run);
+    }
+

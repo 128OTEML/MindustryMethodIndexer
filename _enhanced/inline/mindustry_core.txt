@@ -1,0 +1,1578 @@
+// ContentLoader.java : public void createModContent()
+    public void createModContent(){
+        if(mods != null){
+            mods.loadContent();
+        }
+    }
+
+// ContentLoader.java : public void init()
+    public void init(){
+        initialize(Content::init);
+        initialize(Content::postInit);
+        if(logicVars != null) logicVars.init();
+        Events.fire(new ContentInitEvent());
+    }
+
+// ContentLoader.java : public void load()
+    public void load(){
+        initialize(Content::loadIcon);
+        initialize(Content::load);
+    }
+
+// ContentLoader.java : public Content getLastAdded()
+    public @Nullable Content getLastAdded(){
+        return lastAdded;
+    }
+
+// ContentLoader.java : public void removeLast()
+    public void removeLast(){
+        if(lastAdded != null && contentMap[lastAdded.getContentType().ordinal()].peek() == lastAdded){
+            contentMap[lastAdded.getContentType().ordinal()].pop();
+            if(lastAdded instanceof MappableContent c){
+                contentNameMap[lastAdded.getContentType().ordinal()].remove(c.name);
+            }
+        }
+    }
+
+// ContentLoader.java : public void handleContent(Content content)
+    public void handleContent(Content content){
+        this.lastAdded = content;
+        contentMap[content.getContentType().ordinal()].add(content);
+    }
+
+// ContentLoader.java : public void setCurrentMod(LoadedMod mod)
+    public void setCurrentMod(@Nullable LoadedMod mod){
+        this.currentMod = mod;
+    }
+
+// ContentLoader.java : public String transformName(String name)
+    public String transformName(String name){
+        return currentMod == null ? name : currentMod.name + "-" + name;
+    }
+
+// ContentLoader.java : public void setTemporaryMapper(MappableContent[][] temporaryMapper)
+    public void setTemporaryMapper(MappableContent[][] temporaryMapper){
+        this.temporaryMapper = temporaryMapper;
+    }
+
+// ContentLoader.java : public MappableContent byName(String name)
+    public @Nullable MappableContent byName(String name){
+        return nameMap.get(name);
+    }
+
+// ContentLoader.java : public Seq<Content>[] getContentMap()
+    public Seq<Content>[] getContentMap(){
+        return contentMap;
+    }
+
+// ContentLoader.java : public void each(Cons<Content> cons)
+    public void each(Cons<Content> cons){
+        for(Seq<Content> seq : contentMap){
+            seq.each(cons);
+        }
+    }
+
+// ContentLoader.java : public Seq<T> getBy(ContentType type)
+    public <T extends Content> Seq<T> getBy(ContentType type){
+        return (Seq<T>)contentMap[type.ordinal()];
+    }
+
+// ContentLoader.java : public ObjectMap<String,T> getNamesBy(ContentType type)
+    public <T extends Content> ObjectMap<String, T> getNamesBy(ContentType type){
+        return (ObjectMap<String, T>)contentNameMap[type.ordinal()];
+    }
+
+// ContentLoader.java : public void remove(Content content)
+    public void remove(@Nullable Content content){
+        if(content == null) return;
+        var type = content.getContentType();
+        getBy(type).remove(content);
+        if(content instanceof MappableContent m){
+            getNamesBy(type).remove(m.name);
+            if(nameMap.get(m.name) == m) nameMap.remove(m.name);
+        }
+
+        content.removeContent();
+    }
+
+// ContentLoader.java : public Seq<Block> blocks()
+    public Seq<Block> blocks(){
+        return getBy(ContentType.block);
+    }
+
+// ContentLoader.java : public Block block(int id) / public Block block(String name)
+    public Block block(int id){
+        return getByID(ContentType.block, id);
+    }
+
+// ContentLoader.java : public Seq<Item> items()
+    public Seq<Item> items(){
+        return getBy(ContentType.item);
+    }
+
+// ContentLoader.java : public Item item(int id) / public Item item(String name)
+    public Item item(int id){
+        return getByID(ContentType.item, id);
+    }
+
+// ContentLoader.java : public Seq<Liquid> liquids()
+    public Seq<Liquid> liquids(){
+        return getBy(ContentType.liquid);
+    }
+
+// ContentLoader.java : public Liquid liquid(int id) / public Liquid liquid(String name)
+    public Liquid liquid(int id){
+        return getByID(ContentType.liquid, id);
+    }
+
+// ContentLoader.java : public Seq<BulletType> bullets()
+    public Seq<BulletType> bullets(){
+        return getBy(ContentType.bullet);
+    }
+
+// ContentLoader.java : public BulletType bullet(int id)
+    public BulletType bullet(int id){
+        return getByID(ContentType.bullet, id);
+    }
+
+// ContentLoader.java : public Seq<StatusEffect> statusEffects()
+    public Seq<StatusEffect> statusEffects(){
+        return getBy(ContentType.status);
+    }
+
+// ContentLoader.java : public StatusEffect statusEffect(String name)
+    public StatusEffect statusEffect(String name){
+        return getByName(ContentType.status, name);
+    }
+
+// ContentLoader.java : public Seq<SectorPreset> sectors()
+    public Seq<SectorPreset> sectors(){
+        return getBy(ContentType.sector);
+    }
+
+// ContentLoader.java : public SectorPreset sector(String name)
+    public SectorPreset sector(String name){
+        return getByName(ContentType.sector, name);
+    }
+
+// ContentLoader.java : public Seq<UnitType> units()
+    public Seq<UnitType> units(){
+        return getBy(ContentType.unit);
+    }
+
+// ContentLoader.java : public UnitType unit(int id) / public UnitType unit(String name)
+    public UnitType unit(int id){
+        return getByID(ContentType.unit, id);
+    }
+
+// ContentLoader.java : public Seq<Planet> planets()
+    public Seq<Planet> planets(){
+        return getBy(ContentType.planet);
+    }
+
+// ContentLoader.java : public Planet planet(String name)
+    public Planet planet(String name){
+        return getByName(ContentType.planet, name);
+    }
+
+// ContentLoader.java : public Seq<Weather> weathers()
+    public Seq<Weather> weathers(){
+        return getBy(ContentType.weather);
+    }
+
+// ContentLoader.java : public Weather weather(String name)
+    public Weather weather(String name){
+        return getByName(ContentType.weather, name);
+    }
+
+// ContentLoader.java : public Seq<UnitStance> unitStances()
+    public Seq<UnitStance> unitStances(){
+        return getBy(ContentType.unitStance);
+    }
+
+// ContentLoader.java : public UnitStance unitStance(int id) / public UnitStance unitStance(String name)
+    public UnitStance unitStance(int id){
+        return getByID(ContentType.unitStance, id);
+    }
+
+// ContentLoader.java : public Seq<UnitCommand> unitCommands()
+    public Seq<UnitCommand> unitCommands(){
+        return getBy(ContentType.unitCommand);
+    }
+
+// ContentLoader.java : public UnitCommand unitCommand(int id) / public UnitCommand unitCommand(String name)
+    public UnitCommand unitCommand(int id){
+        return getByID(ContentType.unitCommand, id);
+    }
+
+// Control.java : private void forcePlaceAll()
+    private void forcePlaceAll(){
+        //force set buildings when a save is done or map is hosted, to prevent desyncs
+        for(var build : toBePlaced){
+            placeLandBuild(build);
+        }
+
+        configurePlaced();
+        toBePlaced.clear();
+    }
+
+// Control.java : private void configurePlaced()
+    private void configurePlaced(){
+        for(Object[] obj : toBePlacedConfigs){
+            Building build = (Building)obj[0];
+            Object config = obj[1];
+            build.configureAny(config);
+        }
+        toBePlacedConfigs.clear();
+    }
+
+// Control.java : private void placeLandBuild(Building build)
+    private void placeLandBuild(Building build){
+        build.tile.setBlock(build.block, build.team, build.rotation, () -> build);
+        build.dropped();
+
+        Fx.coreBuildBlock.at(build.x, build.y, 0f, build.block);
+        build.block.placeEffect.at(build.x, build.y, build.block.size);
+    }
+
+// Control.java : public void loadSync()
+    @Override
+    public void loadSync(){
+        createPlayer();
+    }
+
+// Control.java : public void checkAutoUnlocks()
+    public void checkAutoUnlocks(){
+        if(net.client()) return;
+
+        for(TechNode node : TechTree.all){
+            if(!node.content.unlocked() && (node.parent == null || node.parent.content.unlocked()) && node.requirements.length == 0 && !node.objectives.contains(o -> !o.complete())){
+                node.content.unlock();
+            }
+        }
+    }
+
+// Control.java : public void setInput(InputHandler newInput)
+    public void setInput(InputHandler newInput){
+        Block block = input.block;
+        boolean added = Core.input.getInputProcessors().contains(input);
+        input.remove();
+        this.input = newInput;
+        newInput.block = block;
+        if(added){
+            newInput.add();
+        }
+    }
+
+// Control.java : public void playMap(Map map, Rules rules) / public void playMap(Map map, Rules rules, boolean playtest)
+    public void playMap(Map map, Rules rules){
+        playMap(map, rules, false);
+    }
+
+// Control.java : public void playSector(Sector sector) / public void playSector(Sector origin, Sector sector) / void playSector(Sector origin, Sector sector, WorldReloader reloader)
+    public void playSector(Sector sector){
+        playSector(sector, sector);
+    }
+
+// Control.java : public void playNewSector(Sector origin, Sector sector, WorldReloader reloader) / public void playNewSector(Sector origin, Sector sector, WorldReloader reloader, WorldParams params, Runnable beforePlay)
+    public void playNewSector(@Nullable Sector origin, Sector sector, WorldReloader reloader){
+        playNewSector(origin, sector, reloader, new WorldParams(), null);
+    }
+
+// Control.java : public boolean isHighScore()
+    public boolean isHighScore(){
+        return hiscore;
+    }
+
+// Control.java : public void pause()
+    @Override
+    public void pause(){
+        if(settings.getBool("backgroundpause", true) && !net.active() && !state.rules.pauseDisabled){
+            backgroundPaused = true;
+            wasPaused = state.is(State.paused);
+            if(state.is(State.playing)) state.set(State.paused);
+        }
+    }
+
+// Control.java : public void resume()
+    @Override
+    public void resume(){
+        if(state.is(State.paused) && !wasPaused && settings.getBool("backgroundpause", true) && !net.active() && !state.rules.pauseDisabled){
+            state.set(State.playing);
+        }
+        backgroundPaused = false;
+    }
+
+// FileTree.java : public void addFile(String path, Fi f)
+    public void addFile(String path, Fi f){
+        files.put(path.replace('\\', '/'), f);
+    }
+
+// FileTree.java : public Fi get(String path) / public Fi get(String path, boolean safe)
+    public Fi get(String path){
+        return get(path, false);
+    }
+
+// FileTree.java : public void clear()
+    public void clear(){
+        files.clear();
+    }
+
+// FileTree.java : public Fi resolve(String fileName)
+    @Override
+    public Fi resolve(String fileName){
+        return get(fileName);
+    }
+
+// FileTree.java : public static String getAudioPath(String name)
+    public static @Nullable String getAudioPath(String name){
+        Fi ogg = Vars.tree.get(name + ".ogg"), mp3 = Vars.tree.get(name + ".mp3");
+        if(ogg.exists()) return name + ".ogg";
+        if(mp3.exists()) return name + ".mp3";
+
+        Log.warn("Audio file not found: @ (.mp3 or .ogg)", name);
+        return null;
+    }
+
+// GameState.java : public Unit boss()
+    @Nullable
+    public Unit boss(){
+        return teams.bosses.firstOpt();
+    }
+
+// GameState.java : public void set(State astate)
+    public void set(State astate){
+        //nothing to change.
+        if(state == astate) return;
+
+        Events.fire(new StateChangeEvent(state, astate));
+        state = astate;
+    }
+
+// GameState.java : public boolean hasSpawns()
+    public boolean hasSpawns(){
+        return rules.waves && ((rules.waveTeam.cores().size > 0 && rules.attackMode) || rules.spawns.size > 0);
+    }
+
+// GameState.java : public boolean isCampaign()
+    public boolean isCampaign(){
+        return rules.sector != null;
+    }
+
+// GameState.java : public boolean hasSector()
+    public boolean hasSector(){
+        return rules.sector != null;
+    }
+
+// GameState.java : public Sector getSector()
+    public @Nullable Sector getSector(){
+        return rules.sector;
+    }
+
+// GameState.java : public Planet getPlanet()
+    public @Nullable Planet getPlanet(){
+        return rules.sector != null ? rules.sector.planet : rules.planet;
+    }
+
+// GameState.java : public boolean isEditor()
+    public boolean isEditor(){
+        return rules.editor;
+    }
+
+// GameState.java : public boolean isPaused()
+    public boolean isPaused(){
+        return state == State.paused;
+    }
+
+// GameState.java : public boolean isPlaying()
+    public boolean isPlaying(){
+        return state == State.playing;
+    }
+
+// GameState.java : public boolean isGame()
+    public boolean isGame(){
+        return state != State.menu;
+    }
+
+// GameState.java : public boolean isMenu()
+    public boolean isMenu(){
+        return state == State.menu;
+    }
+
+// GameState.java : public boolean is(State astate)
+    public boolean is(State astate){
+        return state == astate;
+    }
+
+// GameState.java : public State getState()
+    public State getState(){
+        return state;
+    }
+
+// Logic.java : private boolean checkCampaignStats()
+    private boolean checkCampaignStats(){
+        return state.isCampaign() && !net.client();
+    }
+
+// Logic.java : public void skipWave()
+    public void skipWave(){
+        runWave();
+    }
+
+// Logic.java : public void runWave()
+    public void runWave(){
+        spawner.spawnEnemies();
+        state.wave++;
+        state.wavetime = state.rules.waveSpacing * (state.isCampaign() ? state.getPlanet().campaignRules.difficulty.waveTimeMultiplier : 1f);
+
+        Events.fire(new WaveEvent());
+    }
+
+// Logic.java : public static void updateGameOver(Team winner)
+    @Remote(called = Loc.both)
+    public static void updateGameOver(Team winner){
+        state.gameOver = true;
+        if(!headless){
+            state.won = player.team() == winner;
+        }
+    }
+
+// Logic.java : public static void gameOver(Team winner)
+    @Remote(called = Loc.both)
+    public static void gameOver(Team winner){
+        state.stats.wavesLasted = state.wave;
+        state.won = player.team() == winner;
+        Time.run(60f * 3f, () -> ui.restart.show(winner));
+        netClient.setQuiet();
+    }
+
+// Logic.java : public static void researched(Content content)
+    @Remote
+    public static void researched(Content content){
+        if(!(content instanceof UnlockableContent u)) return;
+
+        boolean was = u.unlockedNowHost();
+        state.rules.researched.add(u);
+
+        if(!was){
+            Events.fire(new UnlockEvent(u));
+        }
+    }
+
+// Logic.java : public void dispose()
+    @Override
+    public void dispose(){
+        //save the settings before quitting
+        if(netServer != null){
+            netServer.admins.forceSave();
+        }
+        Core.settings.manualSave();
+    }
+
+// Logic.java : public boolean isWaitingWave()
+    public boolean isWaitingWave(){
+        return (state.rules.waitEnemies || (state.wave >= state.rules.winWave && state.rules.winWave > 0)) && state.enemies > 0;
+    }
+
+// NetClient.java : public void addPacketHandler(String type, Cons<String> handler)
+    public void addPacketHandler(String type, Cons<String> handler){
+        customPacketHandlers.get(type, Seq::new).add(handler);
+    }
+
+// NetClient.java : public Seq<Cons<String>> getPacketHandlers(String type)
+    public Seq<Cons<String>> getPacketHandlers(String type){
+        return customPacketHandlers.get(type, Seq::new);
+    }
+
+// NetClient.java : public void addBinaryPacketHandler(String type, Cons<byte[]> handler)
+    public void addBinaryPacketHandler(String type, Cons<byte[]> handler){
+        customBinaryPacketHandlers.get(type, Seq::new).add(handler);
+    }
+
+// NetClient.java : public Seq<Cons<byte[]>> getBinaryPacketHandlers(String type)
+    public Seq<Cons<byte[]>> getBinaryPacketHandlers(String type){
+        return customBinaryPacketHandlers.get(type, Seq::new);
+    }
+
+// NetClient.java : public static void clientBinaryPacketReliable(String type, byte[] contents)
+    @Remote(targets = Loc.server, variants = Variant.both)
+    public static void clientBinaryPacketReliable(String type, byte[] contents){
+        var arr = netClient.customBinaryPacketHandlers.get(type);
+        if(arr != null){
+            for(var c : arr){
+                c.get(contents);
+            }
+        }
+    }
+
+// NetClient.java : public static void clientBinaryPacketUnreliable(String type, byte[] contents)
+    @Remote(targets = Loc.server, variants = Variant.both, unreliable = true)
+    public static void clientBinaryPacketUnreliable(String type, byte[] contents){
+        clientBinaryPacketReliable(type, contents);
+    }
+
+// NetClient.java : public static void clientPacketReliable(String type, String contents)
+    @Remote(targets = Loc.server, variants = Variant.both)
+    public static void clientPacketReliable(String type, String contents){
+        var arr = netClient.customPacketHandlers.get(type);
+        if(arr != null){
+            for(Cons<String> c : arr){
+                c.get(contents);
+            }
+        }
+    }
+
+// NetClient.java : public static void clientPacketUnreliable(String type, String contents)
+    @Remote(targets = Loc.server, variants = Variant.both, unreliable = true)
+    public static void clientPacketUnreliable(String type, String contents){
+        clientPacketReliable(type, contents);
+    }
+
+// NetClient.java : public static void playMusic(String musicName, boolean interrupt)
+    @Remote(variants = Variant.both)
+    public static void playMusic(String musicName, boolean interrupt){
+        if(musicName == null || headless) return;
+
+        //play null = stop music
+        Music music = SoundControl.findMusic(musicName);
+        control.sound.playMusic(music, interrupt);
+    }
+
+// NetClient.java : public static void sound(Sound sound, float volume, float pitch, float pan)
+    @Remote(variants = Variant.both, unreliable = true, called = Loc.server)
+    public static void sound(Sound sound, float volume, float pitch, float pan){
+        if(sound == null || headless) return;
+
+        sound.play(Mathf.clamp(volume, 0, 8f) * Core.audio.sfxVolume, Mathf.clamp(pitch, 0f, 20f), pan, false, false);
+    }
+
+// NetClient.java : public static void soundAt(Sound sound, float x, float y, float volume, float pitch)
+    @Remote(variants = Variant.both, unreliable = true, called = Loc.server)
+    public static void soundAt(Sound sound, float x, float y, float volume, float pitch){
+        if(sound == null || headless) return;
+
+        sound.at(x, y, Mathf.clamp(pitch, 0f, 20f), Mathf.clamp(volume, 0, 4f));
+    }
+
+// NetClient.java : public static void effect(Effect effect, float x, float y, float rotation, Color color) / public static void effect(Effect effect, float x, float y, float rotation, Color color, Object data)
+    @Remote(variants = Variant.both, unreliable = true)
+    public static void effect(Effect effect, float x, float y, float rotation, Color color){
+        if(effect == null) return;
+
+        effect.at(x, y, rotation, color);
+    }
+
+// NetClient.java : public static void effectReliable(Effect effect, float x, float y, float rotation, Color color)
+    @Remote(variants = Variant.both)
+    public static void effectReliable(Effect effect, float x, float y, float rotation, Color color){
+        effect(effect, x, y, rotation, color);
+    }
+
+// NetClient.java : public static void connect(String ip, int port)
+    @Remote(called = Loc.client, variants = Variant.one, priority = PacketPriority.high)
+    public static void connect(String ip, int port){
+        if(!steam && (ip.startsWith("steam:") || ip.startsWith("steamserver:"))) return;
+        netClient.disconnectQuietly();
+        logic.reset();
+
+        ui.join.connect(ip, port);
+    }
+
+// NetClient.java : public static void ping(Player player, long time)
+    @Remote(targets = Loc.client, priority = PacketPriority.high)
+    public static void ping(Player player, long time){
+        Call.pingResponse(player.con, time);
+    }
+
+// NetClient.java : public static void pingResponse(long time)
+    @Remote(variants = Variant.one)
+    public static void pingResponse(long time){
+        netClient.ping = Time.timeSinceMillis(time);
+    }
+
+// NetClient.java : public static void traceInfo(Player player, TraceInfo info)
+    @Remote(variants = Variant.one)
+    public static void traceInfo(Player player, TraceInfo info){
+        if(player != null){
+            ui.traces.show(player, info);
+        }
+    }
+
+// NetClient.java : public static void setRules(Rules rules)
+    @Remote(variants = Variant.both)
+    public static void setRules(Rules rules){
+        state.rules = rules;
+    }
+
+// NetClient.java : public static void setRule(String rule, String jsonData)
+    @Remote(variants = Variant.both)
+    public static void setRule(String rule, String jsonData){
+        try{
+            //readField searches for the specified value, so create a fake parent for it.
+            tmpJsonMap.child = null;
+            tmpJsonMap.addChild(rule, new JsonReader().parse(jsonData));
+            JsonIO.json.readField(state.rules, rule, tmpJsonMap);
+        }catch(Throwable error){
+            Log.err("Failed to read rule", error);
+        }
+    }
+
+// NetClient.java : public static void setObjectives(MapObjectives executor)
+    @Remote(variants = Variant.both)
+    public static void setObjectives(MapObjectives executor){
+        state.rules.objectives = executor;
+    }
+
+// NetClient.java : public static void clearObjectives()
+    @Remote(variants = Variant.both, called = Loc.server)
+    public static void clearObjectives(){
+        state.rules.objectives.clear();
+    }
+
+// NetClient.java : public static void completeObjective(int index)
+    @Remote(variants = Variant.both, called = Loc.server)
+    public static void completeObjective(int index){
+        var obj = state.rules.objectives.get(index);
+        if(obj != null){
+            obj.done();
+        }
+    }
+
+// NetClient.java : public static void setPosition(float x, float y)
+    @Remote(variants = Variant.one)
+    public static void setPosition(float x, float y){
+        if(player.dead()) return;
+        player.unit().set(x, y);
+        player.set(x, y);
+    }
+
+// NetClient.java : public static void setCameraPosition(float x, float y)
+    @Remote(variants = Variant.both, unreliable = true)
+    public static void setCameraPosition(float x, float y){
+        if(Core.camera != null){
+            Core.camera.position.set(x, y);
+        }
+    }
+
+// NetClient.java : public static void playerDisconnect(int playerid)
+    @Remote
+    public static void playerDisconnect(int playerid){
+        if(netClient != null){
+            netClient.addRemovedEntity(playerid);
+        }
+        Groups.player.removeByID(playerid);
+    }
+
+// NetClient.java : public static void hiddenSnapshot(IntSeq ids)
+    @Remote(variants = Variant.one, priority = PacketPriority.low, unreliable = true)
+    public static void hiddenSnapshot(IntSeq ids){
+        for(int i = 0; i < ids.size; i++){
+            int id = ids.items[i];
+            var entity = Groups.sync.getByID(id);
+            if(entity != null){
+                entity.handleSyncHidden();
+            }
+        }
+    }
+
+// NetClient.java : public void resetTimeout()
+    public void resetTimeout(){
+        timeoutTime = 0f;
+    }
+
+// NetClient.java : public boolean isConnecting()
+    public boolean isConnecting(){
+        return connecting;
+    }
+
+// NetClient.java : public int getPing()
+    public int getPing(){
+        return (int)ping;
+    }
+
+// NetClient.java : private void finishConnecting()
+    private void finishConnecting(){
+        state.set(State.playing);
+        connecting = false;
+        ui.join.hide();
+        net.setClientLoaded(true);
+        Core.app.post(Call::connectConfirm);
+        Time.runTask(40f, platform::updateRPC);
+        Core.app.post(ui.loadfrag::hide);
+        lastSnapshotTimestamp = Time.millis();
+    }
+
+// NetClient.java : public void beginConnecting()
+    public void beginConnecting(){
+        connecting = true;
+    }
+
+// NetClient.java : public void disconnectQuietly()
+    public void disconnectQuietly(){
+        quiet = true;
+        connecting = false;
+        net.disconnect();
+    }
+
+// NetClient.java : public void disconnectNoReset()
+    public void disconnectNoReset(){
+        quiet = quietReset = true;
+        net.disconnect();
+    }
+
+// NetClient.java : public void setQuiet()
+    public void setQuiet(){
+        quiet = true;
+    }
+
+// NetClient.java : public void clearRemovedEntity(int id)
+    public void clearRemovedEntity(int id){
+        removed.remove(id);
+    }
+
+// NetClient.java : public void addRemovedEntity(int id)
+    public void addRemovedEntity(int id){
+        removed.add(id);
+    }
+
+// NetClient.java : public boolean isEntityUsed(int id)
+    public boolean isEntityUsed(int id){
+        return removed.contains(id);
+    }
+
+// NetServer.java : public void sendWorldAndAssets(Player player)
+    public void sendWorldAndAssets(Player player){
+        if(state.data.hasExternalAssets()){
+            player.con.determiningAssets = true;
+            player.con.receivingAssets = false;
+            player.con.hasConnected = false;
+            sendAssetRequirements(player);
+        }else{
+            sendWorldData(player);
+        }
+    }
+
+// NetServer.java : public void init()
+    @Override
+    public void init(){
+        mods.eachClass(mod -> mod.registerClientCommands(clientCommands));
+    }
+
+// NetServer.java : public int votesRequired()
+    public int votesRequired(){
+        return 2 + (Groups.player.size() > 4 ? 1 : 0);
+    }
+
+// NetServer.java : public Team assignTeam(Player current) / public Team assignTeam(Player current, Iterable<Player> players)
+    public Team assignTeam(Player current){
+        return assigner.assign(current, Groups.player);
+    }
+
+// NetServer.java : public void sendAssetRequirements(Player player)
+    public void sendAssetRequirements(Player player){
+        var assets = state.data.getAllExternalAssets();
+        mainExecutor.submit(() -> {
+            var stream = new ByteArrayOutputStream();
+            NetworkIO.writeRequiredAssets(new FastDeflaterOutputStream(stream), assets);
+            player.con.sendStreamAsync(new AssetRequirementStream(), stream);
+        });
+    }
+
+// NetServer.java : public void sendWorldData(Player player)
+    public void sendWorldData(Player player){
+        var stream = new ByteArrayOutputStream();
+        NetworkIO.writeWorld(player, new FastDeflaterOutputStream(stream));
+        player.con.sendStream(new WorldStream(), stream);
+
+        debug("Packed @ of world data to @ (@ / @)", Strings.formatByteCount(stream.size()), player.name, player.con.address, player.uuid());
+    }
+
+// NetServer.java : public void sendTexture(NetConnection con, String name, byte[] pngData) / public void sendTexture(String name, byte[] pngData)
+    public void sendTexture(NetConnection con, String name, byte[] pngData){
+        var stream = new ByteArrayOutputStream();
+        NetworkIO.packTexture(stream, name, pngData);
+        con.sendStreamAsync(new TextureStream(), stream);
+    }
+
+// NetServer.java : public void removeTexture(NetConnection con, String name) / public void removeTexture(String name)
+    public void removeTexture(NetConnection con, String name){
+        sendTexture(con, name, Streams.emptyBytes);
+    }
+
+// NetServer.java : public void addPacketHandler(String type, Cons2<Player,String> handler)
+    public void addPacketHandler(String type, Cons2<Player, String> handler){
+        customPacketHandlers.get(type, Seq::new).add(handler);
+    }
+
+// NetServer.java : public Seq<Cons2<Player,String>> getPacketHandlers(String type)
+    public Seq<Cons2<Player, String>> getPacketHandlers(String type){
+        return customPacketHandlers.get(type, Seq::new);
+    }
+
+// NetServer.java : public void addBinaryPacketHandler(String type, Cons2<Player,byte[]> handler)
+    public void addBinaryPacketHandler(String type, Cons2<Player, byte[]> handler){
+        customBinaryPacketHandlers.get(type, Seq::new).add(handler);
+    }
+
+// NetServer.java : public Seq<Cons2<Player,byte[]>> getBinaryPacketHandlers(String type)
+    public Seq<Cons2<Player, byte[]>> getBinaryPacketHandlers(String type){
+        return customBinaryPacketHandlers.get(type, Seq::new);
+    }
+
+// NetServer.java : public void addLogicDataHandler(String type, Cons2<Player,Object> handler)
+    public void addLogicDataHandler(String type, Cons2<Player, Object> handler){
+        logicClientDataHandlers.get(type, Seq::new).add(handler);
+    }
+
+// NetServer.java : public static void requestDebugStatus(Player player)
+    @Remote(targets = Loc.client, variants = Variant.one)
+    public static void requestDebugStatus(Player player){
+        int flags =
+        (player.con.hasDisconnected ? 1 : 0) |
+        (player.con.hasConnected ? 2 : 0) |
+        (player.isAdded() ? 4 : 0) |
+        (player.con.hasBegunConnecting ? 8 : 0);
+
+        Call.debugStatusClient(player.con, flags, player.con.lastReceivedClientSnapshot);
+        Call.debugStatusClientUnreliable(player.con, flags, player.con.lastReceivedClientSnapshot);
+    }
+
+// NetServer.java : public static void debugStatusClient(int value, int lastClientSnapshot)
+    @Remote(variants = Variant.both, priority = PacketPriority.high)
+    public static void debugStatusClient(int value, int lastClientSnapshot){
+        logClientStatus(true, value, lastClientSnapshot);
+    }
+
+// NetServer.java : public static void debugStatusClientUnreliable(int value, int lastClientSnapshot)
+    @Remote(variants = Variant.both, priority = PacketPriority.high, unreliable = true)
+    public static void debugStatusClientUnreliable(int value, int lastClientSnapshot){
+        logClientStatus(false, value, lastClientSnapshot);
+    }
+
+// NetServer.java : static void logClientStatus(boolean reliable, int value, int lastClientSnapshot)
+    static void logClientStatus(boolean reliable, int value, int lastClientSnapshot){
+        Log.info("@ Debug status received. disconnected = @, connected = @, added = @, begunConnecting = @ lastClientSnapshot = @",
+        reliable ? "[RELIABLE]" : "[UNRELIABLE]",
+        (value & 1) != 0, (value & 2) != 0, (value & 4) != 0, (value & 8) != 0,
+        lastClientSnapshot
+        );
+    }
+
+// NetServer.java : public static void serverPacketReliable(Player player, String type, String contents)
+    @Remote(targets = Loc.client)
+    public static void serverPacketReliable(Player player, String type, String contents){
+        if(netServer.customPacketHandlers.containsKey(type)){
+            for(Cons2<Player, String> c : netServer.customPacketHandlers.get(type)){
+                c.get(player, contents);
+            }
+        }
+    }
+
+// NetServer.java : public static void serverPacketUnreliable(Player player, String type, String contents)
+    @Remote(targets = Loc.client, unreliable = true)
+    public static void serverPacketUnreliable(Player player, String type, String contents){
+        serverPacketReliable(player, type, contents);
+    }
+
+// NetServer.java : public static void serverBinaryPacketReliable(Player player, String type, byte[] contents)
+    @Remote(targets = Loc.client)
+    public static void serverBinaryPacketReliable(Player player, String type, byte[] contents){
+        if(netServer.customBinaryPacketHandlers.containsKey(type)){
+            for(var c : netServer.customBinaryPacketHandlers.get(type)){
+                c.get(player, contents);
+            }
+        }
+    }
+
+// NetServer.java : public static void serverBinaryPacketUnreliable(Player player, String type, byte[] contents)
+    @Remote(targets = Loc.client, unreliable = true)
+    public static void serverBinaryPacketUnreliable(Player player, String type, byte[] contents){
+        serverBinaryPacketReliable(player, type, contents);
+    }
+
+// NetServer.java : public static void clientLogicDataReliable(Player player, String channel, Object value)
+    @Remote(targets = Loc.client)
+    public static void clientLogicDataReliable(Player player, String channel, Object value){
+        Seq<Cons2<Player, Object>> handlers = netServer.logicClientDataHandlers.get(channel);
+        if(handlers != null){
+            for(Cons2<Player, Object> handler : handlers){
+                handler.get(player, value);
+            }
+        }
+    }
+
+// NetServer.java : public static void clientLogicDataUnreliable(Player player, String channel, Object value)
+    @Remote(targets = Loc.client, unreliable = true)
+    public static void clientLogicDataUnreliable(Player player, String channel, Object value){
+        clientLogicDataReliable(player, channel, value);
+    }
+
+// NetServer.java : private static boolean invalid(float f)
+    private static boolean invalid(float f){
+        return Float.isInfinite(f) || Float.isNaN(f);
+    }
+
+// NetServer.java : public static void syncBuilding(Building build)
+    public static void syncBuilding(Building build){
+        if(build == null) return;
+        netServer.syncStream.reset();
+        netServer.dataStreamWrites.i(build.pos());
+        netServer.dataStreamWrites.s(build.block.id);
+        build.writeSync(netServer.dataStreamWrites);
+
+        Call.blockSnapshot((short)1, netServer.syncStream.toByteArray());
+        netServer.syncStream.reset();
+    }
+
+// NetServer.java : public static void clientPlanSnapshot(Player player, int groupId, ClientBuildPlans plans)
+    @Remote(targets = Loc.client, unreliable = true, priority = PacketPriority.low)
+    public static void clientPlanSnapshot(Player player, int groupId, @Nullable ClientBuildPlans plans){
+        if(player == null) return;
+        player.handlePreviewPlans(groupId, plans);
+    }
+
+// NetServer.java : public static void clientPlanSnapshotReceived(Player player, int groupId, ClientBuildPlans plans)
+    @Remote(targets = Loc.server, unreliable = true, priority = PacketPriority.low, variants = Variant.one)
+    public static void clientPlanSnapshotReceived(Player player, int groupId, @Nullable ClientBuildPlans plans){
+        clientPlanSnapshot(player, groupId, plans);
+    }
+
+// NetServer.java : public static void requestWorld(Player player)
+    @Remote(targets = Loc.client, priority = PacketPriority.high)
+    public static void requestWorld(Player player){
+        if(!player.con.hasBegunConnecting || player.con.determiningAssets || !player.con.receivingAssets || player.con.hasConnected) return;
+
+        player.con.receivingAssets = false;
+        netServer.sendWorldData(player);
+    }
+
+// NetServer.java : public void buildHealthUpdate(Building build)
+    public void buildHealthUpdate(Building build){
+        buildHealthChanged.add(build.pos());
+    }
+
+// NetServer.java : public void kickAll(KickReason reason)
+    public void kickAll(KickReason reason){
+        for(NetConnection con : net.getConnections()){
+            con.kick(reason);
+        }
+    }
+
+// NetServer.java : protected void sendEntitySnapshots(Seq<NetConnection> connections, short amount, byte[] data)
+    protected void sendEntitySnapshots(Seq<NetConnection> connections, short amount, byte[] data){
+        var packet = new EntitySnapshotCallPacket();
+        packet.amount = amount;
+        packet.data = data;
+        net.send(packet, connections, false);
+    }
+
+// NetServer.java : protected void writeEntity(Syncc entity, DataOutputStream dataStream) throws IOException
+    protected void writeEntity(Syncc entity, DataOutputStream dataStream) throws IOException{
+        dataStream.writeInt(entity.id());
+        dataStream.writeByte(entity.classId() & 0xFF);
+        entity.beforeWrite();
+        entity.writeSync(dataStreamWrites);
+    }
+
+// NetServer.java : static void clientPlanSnapshotSend(Player player, int groupId, ClientBuildPlans plans)
+    static void clientPlanSnapshotSend(Player player, int groupId, ClientBuildPlans plans){
+
+        //only send to others of the same team
+        for(Player other : player.team().data().players){
+            if(other != player && !other.isLocal() && other.con != null && other.con.isConnected()){
+                Call.clientPlanSnapshotReceived(other.con, player, groupId, plans);
+            }
+        }
+    }
+
+// Platform.java : default void updateLobby()
+    default void updateLobby(){}
+
+// Platform.java : default void inviteFriends()
+    default void inviteFriends(){}
+
+// Platform.java : default void publish(Publishable pub)
+    default void publish(Publishable pub){}
+
+// Platform.java : default void viewListing(Publishable pub)
+    default void viewListing(Publishable pub){}
+
+// Platform.java : default void viewListingID(String mapid)
+    default void viewListingID(String mapid){}
+
+// Platform.java : default Seq<Fi> getWorkshopContent(Class<? extends Publishable> type)
+    default Seq<Fi> getWorkshopContent(Class<? extends Publishable> type){
+        return new Seq<>(0);
+    }
+
+// Platform.java : default void openWorkshop()
+    default void openWorkshop(){}
+
+// Platform.java : default NetProvider getNet()
+    default NetProvider getNet(){
+        return new ArcNetProvider();
+    }
+
+// Platform.java : default Scripts createScripts()
+    default Scripts createScripts(){
+        return new Scripts();
+    }
+
+// Platform.java : default Context getScriptContext()
+    default Context getScriptContext(){
+        Context context = Context.getCurrentContext();
+        if(context == null) context = Context.enter();
+        context.setOptimizationLevel(9);
+        return context;
+    }
+
+// Platform.java : default void updateRPC()
+    default void updateRPC(){
+    }
+
+// Platform.java : default String getUUID()
+    default String getUUID(){
+        String uuid = Core.settings.getString("uuid", "");
+        if(uuid.isEmpty()){
+            byte[] result = new byte[8];
+            new Rand().nextBytes(result);
+            uuid = new String(Base64Coder.encode(result));
+            Core.settings.put("uuid", uuid);
+            return uuid;
+        }
+        return uuid;
+    }
+
+// Platform.java : default void shareFile(Fi file)
+    default void shareFile(Fi file){
+    }
+
+// Platform.java : default void showFileChooser(FileChooserParams params)
+    default void showFileChooser(FileChooserParams params){
+        throw new IllegalArgumentException("Not implemented on this platform!");
+    }
+
+// Platform.java : default void hide()
+    default void hide(){
+    }
+
+// Platform.java : default void beginForceLandscape()
+    default void beginForceLandscape(){
+    }
+
+// Platform.java : default void endForceLandscape()
+    default void endForceLandscape(){
+    }
+
+// Renderer.java : public void shake(float intensity, float duration)
+    public void shake(float intensity, float duration){
+        shakeIntensity = Math.max(shakeIntensity, Mathf.clamp(intensity, 0, 100));
+        shakeTime = Math.max(shakeTime, duration);
+        shakeReduction = shakeIntensity / shakeTime;
+    }
+
+// Renderer.java : public void addEnvRenderer(int mask, Runnable render)
+    public void addEnvRenderer(int mask, Runnable render){
+        envRenderers.add(new EnvRenderer(mask, render));
+    }
+
+// Renderer.java : public void addCustomBackground(String name, Runnable render)
+    public void addCustomBackground(String name, Runnable render){
+        customBackgrounds.put(name, render);
+    }
+
+// Renderer.java : public TextureRegion[][] getFluidFrames()
+    public TextureRegion[][] getFluidFrames(){
+        if(fluidFrames == null || fluidFrames[0][0].texture.isDisposed()){
+            loadFluidFrames();
+        }
+        return fluidFrames;
+    }
+
+// Renderer.java : public void updateAllDarkness()
+    public void updateAllDarkness(){
+        blocks.updateDarkness();
+        minimap.updateAll();
+    }
+
+// Renderer.java : public boolean isCutscene()
+    public boolean isCutscene(){
+        return landTime > 0;
+    }
+
+// Renderer.java : public float landScale()
+    public float landScale(){
+        return landTime > 0 ? camerascale : 1f;
+    }
+
+// Renderer.java : public void dispose()
+    @Override
+    public void dispose(){
+        Events.fire(new DisposeEvent());
+    }
+
+// Renderer.java : public void resume()
+    @Override
+    public void resume(){
+        if(settings.getBool("bloom") && bloom != null){
+            bloom.resume();
+        }
+    }
+
+// Renderer.java : public void scaleCamera(float amount)
+    public void scaleCamera(float amount){
+        targetscale *= (amount / 4) + 1;
+        clampScale();
+    }
+
+// Renderer.java : public void clampScale()
+    public void clampScale(){
+        targetscale = Mathf.clamp(targetscale, minScale(), maxScale());
+    }
+
+// Renderer.java : public float getDisplayScale()
+    public float getDisplayScale(){
+        return camerascale;
+    }
+
+// Renderer.java : public float minScale()
+    public float minScale(){
+        return control.input.logicCutscene ? Scl.scl(minZoom) : Scl.scl(minZoomInGame);
+    }
+
+// Renderer.java : public float maxScale()
+    public float maxScale(){
+        return (float)(control.input.logicCutscene ? Mathf.round(Scl.scl(maxZoom)) : Mathf.round(Scl.scl(maxZoomInGame)));
+    }
+
+// Renderer.java : public float getScale()
+    public float getScale(){
+        return targetscale;
+    }
+
+// Renderer.java : public void setScale(float scl)
+    public void setScale(float scl){
+        targetscale = scl;
+        clampScale();
+    }
+
+// Renderer.java : public boolean isLaunching()
+    public boolean isLaunching(){
+        return launching;
+    }
+
+// Renderer.java : public float getLandTime()
+    public float getLandTime(){
+        return landTime;
+    }
+
+// Renderer.java : public float getLandTimeIn()
+    public float getLandTimeIn(){
+        if(launchAnimator == null) return 0f;
+        float fin = landTime / launchAnimator.launchDuration();
+        if(!launching) fin = 1f - fin;
+        return fin;
+    }
+
+// Renderer.java : public void showLanding(LaunchAnimator landCore)
+    public void showLanding(LaunchAnimator landCore){
+        this.launchAnimator = landCore;
+        launching = false;
+        landTime = landCore.launchDuration();
+
+        landCore.beginLaunch(false);
+        camerascale = landCore.zoomLaunch();
+    }
+
+// Renderer.java : public void showLaunch(LaunchAnimator landCore)
+    public void showLaunch(LaunchAnimator landCore){
+        control.input.config.hideConfig();
+        control.input.planConfig.hide();
+        control.input.inv.hide();
+
+        this.launchAnimator = landCore;
+        launching = true;
+        landTime = landCore.launchDuration();
+
+        landCore.beginLaunch(true);
+    }
+
+// UI.java : public static void loadColors()
+    public static void loadColors(){
+        Colors.put("accent", Pal.accent);
+        Colors.put("unlaunched", Color.valueOf("8982ed"));
+        Colors.put("highlight", Pal.accent.cpy().lerp(Color.white, 0.3f));
+        Colors.put("stat", Pal.stat);
+        Colors.put("negstat", Pal.negativeStat);
+    }
+
+// UI.java : public void loadAsync()
+    @Override
+    public void loadAsync(){
+
+    }
+
+// UI.java : public Seq<AssetDescriptor> getDependencies()
+    @Override
+    public Seq<AssetDescriptor> getDependencies(){
+        return Seq.with(new AssetDescriptor<>(Control.class), new AssetDescriptor<>("outline", Font.class), new AssetDescriptor<>("default", Font.class), new AssetDescriptor<>(Mods.class));
+    }
+
+// UI.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        if(Core.scene == null) return;
+
+        updateMargins();
+
+        Core.scene.resize(width, height);
+        Events.fire(new ResizeEvent());
+    }
+
+// UI.java : public TextureRegionDrawable getIcon(String name) / public TextureRegionDrawable getIcon(String name, String def)
+    public TextureRegionDrawable getIcon(String name){
+        if(Icon.icons.containsKey(name)) return Icon.icons.get(name);
+        return Core.atlas.getDrawable("error");
+    }
+
+// UI.java : public void loadAnd(Runnable call) / public void loadAnd(String text, Runnable call)
+    public void loadAnd(Runnable call){
+        loadAnd("@loading", call);
+    }
+
+// UI.java : public void showTextInput(String titleText, String text, int textLength, String def, boolean numbers, Cons<String> confirmed, Runnable closed) / public void showTextInput(String titleText, String text, int textLength, String def, boolean numbers, boolean allowEmpty, Cons<String> confirmed, Runnable closed) / public void showTextInput(String title, String text, String def, Cons<String> confirmed) / public void showTextInput(String title, String text, int textLength, String def, Cons<String> confirmed) / public void showTextInput(String title, String text, int textLength, String def, boolean numeric, Cons<String> confirmed)
+    public void showTextInput(String titleText, String text, int textLength, String def, boolean numbers, Cons<String> confirmed, Runnable closed) {
+        showTextInput(titleText, text, textLength, def, numbers, false, confirmed, closed);
+    }
+
+// UI.java : public void showInfoFade(String info) / public void showInfoFade(String info, float duration)
+    public void showInfoFade(String info){
+        showInfoFade(info,  7f);
+    }
+
+// UI.java : public void showInfo(String info)
+    public void showInfo(String info){
+        new Dialog(""){{
+            getCell(cont).growX();
+            cont.margin(15).add(info).width(400f).wrap().get().setAlignment(Align.center, Align.center);
+            buttons.button("@ok", this::hide).size(110, 50).pad(4);
+            keyDown(KeyCode.enter, this::hide);
+            closeOnBack();
+        }}.show();
+    }
+
+// UI.java : public void showInfoOnHidden(String info, Runnable listener)
+    public void showInfoOnHidden(String info, Runnable listener){
+        new Dialog(""){{
+            getCell(cont).growX();
+            cont.margin(15).add(info).width(400f).wrap().get().setAlignment(Align.center, Align.center);
+            buttons.button("@ok", this::hide).size(110, 50).pad(4);
+            hidden(listener);
+            closeOnBack();
+        }}.show();
+    }
+
+// UI.java : public void showStartupInfo(String info)
+    public void showStartupInfo(String info){
+        new Dialog(""){{
+            getCell(cont).growX();
+            cont.margin(15).add(info).width(400f).wrap().get().setAlignment(Align.left);
+            buttons.button("@ok", this::hide).size(110, 50).pad(4);
+            closeOnBack();
+        }}.show();
+    }
+
+// UI.java : public void showException(Throwable t) / public void showException(String text, Throwable exc)
+    public void showException(Throwable t){
+        showException("", t);
+    }
+
+// UI.java : public void showText(String titleText, String text) / public void showText(String titleText, String text, int align)
+    public void showText(String titleText, String text){
+        showText(titleText, text, Align.center);
+    }
+
+// UI.java : public void showInfoText(String titleText, String text)
+    public void showInfoText(String titleText, String text){
+        new Dialog(titleText){{
+            cont.margin(15).add(text).width(400f).wrap().left().get().setAlignment(Align.left, Align.left);
+            buttons.button("@ok", this::hide).size(110, 50).pad(4);
+            closeOnBack();
+        }}.show();
+    }
+
+// UI.java : public void showSmall(String titleText, String text)
+    public void showSmall(String titleText, String text){
+        new Dialog(titleText){{
+            cont.margin(10).add(text);
+            titleTable.row();
+            titleTable.image().color(Pal.accent).height(3f).growX().pad(2f);
+            buttons.button("@ok", this::hide).size(110, 50).pad(4);
+            closeOnBack();
+        }}.show();
+    }
+
+// UI.java : public void showConfirm(String text, Runnable confirmed) / public void showConfirm(String title, String text, Runnable confirmed) / public void showConfirm(String title, String text, Boolp hide, Runnable confirmed)
+    public void showConfirm(String text, Runnable confirmed){
+        showConfirm("@confirm", text, null, confirmed);
+    }
+
+// UI.java : public boolean hasAnnouncement()
+    public boolean hasAnnouncement(){
+        return lastAnnouncement != null && lastAnnouncement.parent != null;
+    }
+
+// UI.java : public void announce(String text) / public void announce(String text, float duration)
+    public void announce(String text){
+        announce(text, 3);
+    }
+
+// UI.java : public void showOkText(String title, String text, Runnable confirmed)
+    public void showOkText(String title, String text, Runnable confirmed){
+        BaseDialog dialog = new BaseDialog(title);
+        dialog.cont.add(text).width(500f).wrap().pad(4f).get().setAlignment(Align.center, Align.center);
+        dialog.buttons.defaults().size(200f, 54f).pad(2f);
+        dialog.setFillParent(false);
+        dialog.buttons.button("@ok", () -> {
+            dialog.hide();
+            confirmed.run();
+        });
+        dialog.show();
+    }
+
+// Version.java : public static boolean isAtLeast(String str) / public static boolean isAtLeast(int build, int revision, String str)
+    public static boolean isAtLeast(String str){
+        return isAtLeast(build, revision, str);
+    }
+
+// Version.java : public static String buildString()
+    public static String buildString(){
+        return build < 0 ? "custom" : build + (revision == 0 ? "" : "." + revision);
+    }
+
+// Version.java : public static String combined()
+    public static String combined(){
+        if(build == -1){
+            return "custom build";
+        }
+        return (type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision) + (commitHash.equals("unknown") ? "" : " (" + commitHash + ")");
+    }
+
+// World.java : public void addMapLoader(Map map, Runnable loader)
+    public void addMapLoader(Map map, Runnable loader){
+        customMapLoaders.put(map, loader);
+    }
+
+// World.java : public boolean isInvalidMap()
+    public boolean isInvalidMap(){
+        return invalidMap;
+    }
+
+// World.java : public boolean solid(int x, int y)
+    public boolean solid(int x, int y){
+        Tile tile = tile(x, y);
+
+        return tile == null || tile.solid();
+    }
+
+// World.java : public boolean passable(int x, int y)
+    public boolean passable(int x, int y){
+        Tile tile = tile(x, y);
+
+        return tile != null && tile.passable();
+    }
+
+// World.java : public boolean wallSolid(int x, int y)
+    public boolean wallSolid(int x, int y){
+        Tile tile = tile(x, y);
+        return tile == null || tile.block().solid;
+    }
+
+// World.java : public boolean wallSolidFull(int x, int y)
+    public boolean wallSolidFull(int x, int y){
+        Tile tile = tile(x, y);
+        return tile == null || (tile.block().solid && tile.block().fillsTile);
+    }
+
+// World.java : public boolean isAccessible(int x, int y)
+    public boolean isAccessible(int x, int y){
+        return !wallSolid(x, y - 1) || !wallSolid(x, y + 1) || !wallSolid(x - 1, y) || !wallSolid(x + 1, y);
+    }
+
+// World.java : public int width()
+    public int width(){
+        return tiles.width;
+    }
+
+// World.java : public int height()
+    public int height(){
+        return tiles.height;
+    }
+
+// World.java : public int unitWidth()
+    public int unitWidth(){
+        return width()*tilesize;
+    }
+
+// World.java : public int unitHeight()
+    public int unitHeight(){
+        return height()*tilesize;
+    }
+
+// World.java : public Floor floor(int x, int y)
+    public Floor floor(int x, int y){
+        Tile tile = tile(x, y);
+        return tile == null ? Blocks.air.asFloor() : tile.floor();
+    }
+
+// World.java : public Floor floorWorld(float x, float y)
+    public Floor floorWorld(float x, float y){
+        Tile tile = tileWorld(x, y);
+        return tile == null ? Blocks.air.asFloor() : tile.floor();
+    }
+
+// World.java : public Tile tile(int pos) / public Tile tile(int x, int y)
+    @Nullable
+    public Tile tile(int pos){
+        return tile(Point2.x(pos), Point2.y(pos));
+    }
+
+// World.java : public Tile tileBuilding(int x, int y)
+    @Nullable
+    public Tile tileBuilding(int x, int y){
+        Tile tile = tiles.get(x, y);
+        if(tile == null) return null;
+        if(tile.build != null){
+            return tile.build.tile;
+        }
+        return tile;
+    }
+
+// World.java : public Building build(int x, int y) / public Building build(int pos)
+    public @Nullable Building build(int x, int y){
+        Tile tile = tile(x, y);
+        if(tile == null) return null;
+        return tile.build;
+    }
+
+// World.java : public Tile rawTile(int x, int y)
+    public Tile rawTile(int x, int y){
+        return tiles.getn(x, y);
+    }
+
+// World.java : public Tile tileWorld(float x, float y)
+    public @Nullable Tile tileWorld(float x, float y){
+        return tile(Math.round(x / tilesize), Math.round(y / tilesize));
+    }
+
+// World.java : public Building buildWorld(float x, float y) / public Building buildWorld(Position pos)
+    public @Nullable Building buildWorld(float x, float y){
+        return build(Math.round(x / tilesize), Math.round(y / tilesize));
+    }
+
+// World.java : public static float conv(float coord)
+    public static float conv(float coord){
+        return coord / tilesize;
+    }
+
+// World.java : public static float unconv(float coord)
+    public static float unconv(float coord){
+        return coord * tilesize;
+    }
+
+// World.java : public static int toTile(float coord)
+    public static int toTile(float coord){
+        return Math.round(coord / tilesize);
+    }
+
+// World.java : public int packArray(int x, int y)
+    public int packArray(int x, int y){
+        return x + y * tiles.width;
+    }
+
+// World.java : public void clearBuildings()
+    public void clearBuildings(){
+        for(Tile tile : tiles){
+            if(tile != null && tile.build != null){
+                tile.build.remove();
+            }
+        }
+    }
+
+// World.java : public Tiles resize(int width, int height)
+    public Tiles resize(int width, int height){
+        clearBuildings();
+
+        if(tiles.width != width || tiles.height != height){
+            tiles = new Tiles(width, height);
+        }
+
+        return tiles;
+    }
+
+// World.java : public void beginMapLoad()
+    public void beginMapLoad(){
+        generating = true;
+        Events.fire(new WorldLoadBeginEvent());
+    }
+
+// World.java : public Rect getQuadBounds(Rect in)
+    public Rect getQuadBounds(Rect in){
+        return in.set(-finalWorldBounds, -finalWorldBounds, width() * tilesize + finalWorldBounds * 2, height() * tilesize + finalWorldBounds * 2);
+    }
+
+// World.java : public void setGenerating(boolean gen)
+    public void setGenerating(boolean gen){
+        this.generating = gen;
+    }
+
+// World.java : public boolean isGenerating()
+    public boolean isGenerating(){
+        return generating;
+    }
+
+// World.java : public void loadGenerator(int width, int height, Cons<Tiles> generator)
+    public void loadGenerator(int width, int height, Cons<Tiles> generator){
+        beginMapLoad();
+
+        resize(width, height);
+        generator.get(tiles);
+
+        endMapLoad();
+    }
+
+// World.java : public void loadSector(Sector sector) / public void loadSector(Sector sector, WorldParams params)
+    public void loadSector(Sector sector){
+        loadSector(sector, new WorldParams());
+    }
+
+// World.java : public boolean isInMapArea(int x, int y)
+    public boolean isInMapArea(int x, int y){
+        return tiles.in(x, y) && (!state.rules.limitMapArea || Rect.contains(state.rules.limitX, state.rules.limitY, state.rules.limitWidth, state.rules.limitHeight, x, y));
+    }
+
+// World.java : public Context filterContext(Map map)
+    public Context filterContext(Map map){
+        return new FilterContext(map);
+    }
+
+// World.java : public void loadMap(Map map) / public void loadMap(Map map, Rules checkRules)
+    public void loadMap(Map map){
+        loadMap(map, new Rules());
+    }
+
+// World.java : public static void raycastEachWorld(float x0, float y0, float x1, float y1, Raycaster cons)
+    public static void raycastEachWorld(float x0, float y0, float x1, float y1, Raycaster cons){
+        raycastEach(toTile(x0), toTile(y0), toTile(x1), toTile(y1), cons);
+    }
+
+// World.java : public static void raycastEachNoDiagonalWorld(float x0, float y0, float x1, float y1, Raycaster cons)
+    public static void raycastEachNoDiagonalWorld(float x0, float y0, float x1, float y1, Raycaster cons){
+        raycastEachNoDiagonal(toTile(x0), toTile(y0), toTile(x1), toTile(y1), cons);
+    }
+
+// World.java : public WorldContext makeSectorContext(Sector sector)
+    public WorldContext makeSectorContext(Sector sector){
+        return new Context(sector);
+    }
+

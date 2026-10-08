@@ -1,0 +1,629 @@
+// GlobalVars.java : public LVar waitVar()
+    public LVar waitVar(){
+        return varWait;
+    }
+
+// GlobalVars.java : public Seq<VarEntry> getEntries()
+    public Seq<VarEntry> getEntries(){
+        return varEntries;
+    }
+
+// GlobalVars.java : public Object lookupContent(ContentType type, int id)
+    public @Nullable Object lookupContent(ContentType type, int id){
+        //teams are a special case; they are not technically content, but can be looked up
+        if(type == ContentType.team){
+            return id >= 0 && id < 256 ? Team.all[id] : null;
+        }
+
+        var arr = logicIdToContent[type.ordinal()];
+        return arr != null && id >= 0 && id < arr.length ? arr[id] : null;
+    }
+
+// GlobalVars.java : public int lookupLogicId(UnlockableContent content)
+    public int lookupLogicId(UnlockableContent content){
+        var arr = contentIdToLogicId[content.getContentType().ordinal()];
+        return arr != null && content.id >= 0 && content.id < arr.length ? arr[content.id] : -1;
+    }
+
+// GlobalVars.java : public LVar get(String name) / public LVar get(String name, boolean privileged)
+    public @Nullable LVar get(String name){
+        return vars.get(name);
+    }
+
+// GlobalVars.java : public void set(String name, double value)
+    public void set(String name, double value){
+        get(name, true).numval = value;
+    }
+
+// GlobalVars.java : public LVar put(String name, Object value, boolean privileged) / public LVar put(String name, Object value, boolean privileged, boolean hidden) / public LVar put(String name, Object value)
+    public LVar put(String name, Object value, boolean privileged){
+        return put(name, value, privileged, true);
+    }
+
+// GlobalVars.java : public void remove(LVar lvar) / public void remove(String name)
+    public void remove(LVar lvar){
+        LVar match = vars.get(lvar.name);
+        if(match == lvar){
+            vars.remove(lvar.name);
+        }
+    }
+
+// GlobalVars.java : public LVar putEntry(String name, Object value) / public LVar putEntry(String name, Object value, boolean privileged)
+    public LVar putEntry(String name, Object value){
+        return put(name, value, false, false);
+    }
+
+// GlobalVars.java : public void putEntryOnly(String name)
+    public void putEntryOnly(String name){
+        varEntries.add(new VarEntry(name, "", "", false));
+    }
+
+// LAssembler.java : public static LAssembler assemble(String data, boolean privileged)
+    public static LAssembler assemble(String data, boolean privileged){
+        LAssembler asm = new LAssembler();
+        Seq<LStatement> st = read(data, privileged);
+
+        asm.privileged = privileged;
+
+        asm.instructions = st.map(l -> l.build(asm)).retainAll(l -> l != null).toArray(LInstruction.class);
+        return asm;
+    }
+
+// LAssembler.java : public static String write(Seq<LStatement> statements)
+    public static String write(Seq<LStatement> statements){
+        StringBuilder out = new StringBuilder();
+        for(LStatement s : statements){
+            s.write(out);
+            out.append("\n");
+        }
+
+        return out.toString();
+    }
+
+// LAssembler.java : public static Seq<LStatement> read(String text, boolean privileged)
+    public static Seq<LStatement> read(String text, boolean privileged){
+        //don't waste time parsing null/empty text
+        if(text == null || text.isEmpty()) return new Seq<>();
+        return new LParser(text, privileged).parse();
+    }
+
+// LAssembler.java : boolean isNumStart(char c)
+    boolean isNumStart(char c){
+        //note that 'e10' isn't a valid number; '%ffffff' is. Hex numbers start with '0x'.
+        return c >= '0' && c <= '9' || c == '.' || c == '-' || c == '+' || c == '%';
+    }
+
+// LAssembler.java : double parseColor(String symbol)
+    double parseColor(String symbol){
+        int
+        r = Strings.parseInt(symbol, 16, 0, 1, 3),
+        g = Strings.parseInt(symbol, 16, 0, 3, 5),
+        b = Strings.parseInt(symbol, 16, 0, 5, 7),
+        a = symbol.length() == 9 ? Strings.parseInt(symbol, 16, 0, 7, 9) : 255;
+
+        return Color.toDoubleBits(r, g, b, a);
+    }
+
+// LAssembler.java : double parseNamedColor(String symbol)
+    double parseNamedColor(String symbol){
+        Color color = Colors.get(symbol.substring(2, symbol.length() - 1));
+
+        return color == null ? Double.NaN : color.toDoubleBits();
+    }
+
+// LAssembler.java : public LVar putVar(String name)
+    public LVar putVar(String name){
+        if(vars.containsKey(name)){
+            return vars.get(name);
+        }else{
+            //variables are null objects by default
+            LVar var = new LVar(name);
+            var.isobj = true;
+            vars.put(name, var);
+            return var;
+        }
+    }
+
+// LAssembler.java : public LVar getVar(String name)
+    @Nullable
+    public LVar getVar(String name){
+        return vars.get(name);
+    }
+
+// LCanvas.java : public static boolean isCompact()
+    public static boolean isCompact(){
+        return Core.graphics.getWidth() < Scl.scl(900f) * 1.2f;
+    }
+
+// LCanvas.java : public static float getTargetWidth()
+    public static float getTargetWidth(){
+        return isCompact() ? 410f : Mathf.clamp(Core.graphics.getWidth() / Scl.scl(1f) * 0.95f - Scl.scl(80f), 400f, 1200f);
+    }
+
+// LCanvas.java : public void add(LStatement statement)
+    public void add(LStatement statement){
+        statements.addChild(new StatementElem(statement));
+    }
+
+// LCanvas.java : public void addAt(int at, LStatement statement)
+    public void addAt(int at, LStatement statement){
+        statements.addChildAt(at, new StatementElem(statement));
+    }
+
+// LCanvas.java : public String save()
+    public String save(){
+        Seq<LStatement> st = statements.getChildren().<StatementElem>as().map(s -> s.st);
+        st.each(LStatement::saveUI);
+
+        return LAssembler.write(st);
+    }
+
+// LCanvas.java : public void clearStatements()
+    public void clearStatements(){
+        statements.jumps.clear();
+        statements.clearChildren();
+    }
+
+// LCanvas.java : StatementElem checkHovered()
+    StatementElem checkHovered(){
+        Element e = Core.scene.getHoverElement();
+        if(e != null){
+            while(e != null && !(e instanceof StatementElem)){
+                e = e.parent;
+            }
+        }
+        if(e == null || isDescendantOf(e)) return null;
+        return (StatementElem)e;
+    }
+
+// LCategory.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("lcategory." + name);
+    }
+
+// LCategory.java : public String description()
+    public String description(){
+        return Core.bundle.get("lcategory." + name + ".description");
+    }
+
+// LCategory.java : public int compareTo(LCategory o)
+    @Override
+    public int compareTo(LCategory o){
+        return id - o.id;
+    }
+
+// LExecutor.java : public static void runLogicScript(String code) / public static void runLogicScript(String code, int maxInstructions, boolean loop)
+    public static void runLogicScript(@Nullable String code){
+        runLogicScript(code, 100_000, false);
+    }
+
+// LExecutor.java : boolean timeoutDone(Unit unit, float delay)
+    boolean timeoutDone(Unit unit, float delay){
+        return Time.time >= unitTimeouts.get(unit.id) + delay;
+    }
+
+// LExecutor.java : void updateTimeout(Unit unit)
+    void updateTimeout(Unit unit){
+        unitTimeouts.put(unit.id, Time.time);
+    }
+
+// LExecutor.java : public boolean initialized()
+    public boolean initialized(){
+        return instructions.length > 0;
+    }
+
+// LExecutor.java : public void runOnce()
+    public void runOnce(){
+        //reset to start
+        if(counter.numval >= instructions.length || counter.numval < 0){
+            counter.numval = 0;
+        }
+
+        if(counter.numval < instructions.length){
+            counter.isobj = false;
+            instructions[(int)(counter.numval++)].run(this);
+        }
+    }
+
+// LExecutor.java : public LVar optionalVar(String name) / public LVar optionalVar(int index)
+    public @Nullable LVar optionalVar(String name){
+        if(nameMap == null){
+            nameMap = new ObjectIntMap<>();
+            for(int i = 0; i < vars.length; i++){
+                nameMap.put(vars[i].name, i);
+            }
+        }
+        return optionalVar(nameMap.get(name, -1));
+    }
+
+// LExecutor.java : public static void setMapArea(int x, int y, int w, int h)
+    @Remote(called = Loc.server)
+    public static void setMapArea(int x, int y, int w, int h){
+        checkMapArea(x, y, w, h, true);
+    }
+
+// LExecutor.java : public static void setFlag(String flag, boolean add)
+    @Remote(called = Loc.server)
+    public static void setFlag(String flag, boolean add){
+        if(add){
+            state.rules.objectiveFlags.add(flag);
+        }else{
+            state.rules.objectiveFlags.remove(flag);
+        }
+    }
+
+// LExecutor.java : public static void createMarker(int id, ObjectiveMarker marker)
+    @Remote(called = Loc.server, variants = Variant.both, unreliable = true)
+    public static void createMarker(int id, ObjectiveMarker marker){
+        state.markers.add(id, marker);
+    }
+
+// LExecutor.java : public static void removeMarker(int id)
+    @Remote(called = Loc.server, variants = Variant.both, unreliable = true)
+    public static void removeMarker(int id){
+        state.markers.remove(id);
+    }
+
+// LExecutor.java : public static void updateMarker(int id, LMarkerControl control, double p1, double p2, double p3)
+    @Remote(called = Loc.server, variants = Variant.both, unreliable = true)
+    public static void updateMarker(int id, LMarkerControl control, double p1, double p2, double p3){
+        var marker = state.markers.get(id);
+        if(marker != null){
+            marker.control(control, p1, p2, p3);
+        }
+    }
+
+// LExecutor.java : public static void updateMarkerText(int id, LMarkerControl type, boolean fetch, String text)
+    @Remote(called = Loc.server, variants = Variant.both, unreliable = true)
+    public static void updateMarkerText(int id, LMarkerControl type, boolean fetch, String text){
+        var marker = state.markers.get(id);
+        if(marker != null){
+            if(type == LMarkerControl.flushText){
+                marker.setText(text, fetch);
+            }
+        }
+    }
+
+// LExecutor.java : public static void updateMarkerTexture(int id, Object texture)
+    @Remote(called = Loc.server, variants = Variant.both, unreliable = true)
+    public static void updateMarkerTexture(int id, Object texture){
+        var marker = state.markers.get(id);
+        if(marker != null){
+            marker.setTexture(texture);
+        }
+    }
+
+// LParser.java : void comment()
+    void comment(){
+        //read until \n or eof
+        while(pos < chars.length && chars[pos++] != '\n');
+    }
+
+// LParser.java : void error(String message)
+    void error(String message){
+        throw new RuntimeException("Invalid code. " + message);
+    }
+
+// LParser.java : static int utf16size(int c)
+    static int utf16size(int c){
+        //see ByteBufferOutput.writeUTF()
+        return c != 0 && c < 0x80 ? 1 : c < 0x800 ? 2 : 3;
+    }
+
+// LParser.java : String token()
+    String token(){
+        int from = pos;
+
+        while(pos < chars.length){
+            char c = chars[pos];
+            if(c == '\n' || c == ' ' || c == '#' || c == '\t' || c == ';' || c == '"') break;
+            pos ++;
+        }
+
+        return new String(chars, from, pos - from);
+    }
+
+// LParser.java : void checkRead()
+    void checkRead(){
+        if(tokens[0].equals("op")){
+            //legacy name change
+            tokens[1] = opNameChanges.get(tokens[1], tokens[1]);
+        }
+        if(tokens[0].equals("status")){
+            if(Vars.content.statusEffect(tokens[2]) != null){
+                tokens[2] = "@status-" + tokens[2];
+            }
+        }
+    }
+
+// LStatement.java : public LCategory category()
+    public LCategory category(){
+        return LCategory.unknown;
+    }
+
+// LStatement.java : public LStatement copy()
+    public LStatement copy(){
+        StringBuilder build = new StringBuilder();
+        write(build);
+        //assume privileged when copying, because there's no way privileged instructions can appear here anyway, and the instructions get validated on load anyway
+        Seq<LStatement> read = LAssembler.read(build.toString(), true);
+        return read.size == 0 ? null : read.first();
+    }
+
+// LStatement.java : public boolean useWrapping()
+    public boolean useWrapping(){
+        return true;
+    }
+
+// LStatement.java : public boolean hidden()
+    public boolean hidden(){
+        return false;
+    }
+
+// LStatement.java : public boolean privileged()
+    public boolean privileged(){
+        return false;
+    }
+
+// LStatement.java : public boolean nonPrivileged()
+    public boolean nonPrivileged(){
+        return false;
+    }
+
+// LStatement.java : protected void param(Cell<Label> label)
+    protected void param(Cell<Label> label){
+        String text = name() + "." + label.get().getText().toString().trim();
+        tooltip(label, text);
+    }
+
+// LStatement.java : private static boolean isHex(String value, int from)
+    private static boolean isHex(String value, int from){
+        for(int i = from; i < from + 4; i++){
+            if(Character.digit(value.charAt(i), 16) == -1) return false;
+        }
+        return true;
+    }
+
+// LStatement.java : protected static boolean logicLocalization()
+    protected static boolean logicLocalization(){
+        return Core.settings.getBool("logiclocalization", true);
+    }
+
+// LStatement.java : public static String bundle(String key) / protected static String bundle(Enum<?> value)
+    public static String bundle(String key){
+        if(!logicLocalization()) return key;
+        return Core.bundle.get("name.token." + key, key);
+    }
+
+// LStatement.java : protected static String selectTranslate(String text)
+    protected static String selectTranslate(String text){
+        if(text == null || text.isEmpty() || !logicLocalization()) return text;
+        return switch(text){
+            case "not", "and", "or", "b-and", "xor", "flip", "always" -> bundle(text);
+            default -> text;
+        };
+    }
+
+// LStatement.java : protected Cell<TextField> field(Table table, String value, Cons<String> setter)
+    protected Cell<TextField> field(Table table, String value, Cons<String> setter){
+        return table.field(value, Styles.nodeField, s -> setter.get(sanitize(s)))
+            .size(180f, 40f).pad(2f).color(table.color);
+    }
+
+// LStatement.java : protected Cell<TextField> fields(Table table, String desc, String value, Cons<String> setter) / protected Cell<TextField> fields(Table table, String value, Cons<String> setter) / protected Cell<TextField> fields(Table table, String desc, boolean nameAfterField, String value, Cons<String> setter)
+    protected Cell<TextField> fields(Table table, String desc, String value, Cons<String> setter){
+        return fields(table, desc, LCanvas.isCompact(), value, setter);
+    }
+
+// LStatement.java : protected void fieldAlignSelect(Table t, Prov<String> get, Cons<String> set, boolean hor, boolean ver)
+    protected void fieldAlignSelect(Table t, Prov<String> get, Cons<String> set, boolean hor, boolean ver) {
+        t.button(b -> {
+            b.image(Icon.pencilSmall);
+            b.clicked(() -> {
+                var current = get.get();
+                showAlignSelect(b, current.startsWith("@") ? nameToAlign.get(current.substring(1), -1) : -1, align -> set.get("@" + alignToName.get(align)), hor, ver);
+            });
+        }, Styles.logict, () -> {}).size(40f).color(t.color).left().padLeft(-10);
+    }
+
+// LStatement.java : protected static void showSelectTable(Button b, Cons2<Table,Runnable> hideCons) / protected static void showSelectTable(Button b, Cons2<Table,Runnable> hideCons, Runnable hideCallback)
+    protected static void showSelectTable(Button b, Cons2<Table, Runnable> hideCons){
+        showSelectTable(b, hideCons, () -> {});
+    }
+
+// LStatement.java : public void afterRead()
+    public void afterRead(){}
+
+// LStatement.java : public void write(StringBuilder builder)
+    public void write(StringBuilder builder){
+        LogicIO.write(this, builder);
+    }
+
+// LStatement.java : public void setupUI()
+    public void setupUI(){
+
+    }
+
+// LStatement.java : public void saveUI()
+    public void saveUI(){
+
+    }
+
+// LStatement.java : public String typeName()
+    public String typeName(){
+        return getClass().getSimpleName().replace("Statement", "");
+    }
+
+// LStatement.java : public String statementKey()
+    public String statementKey(){
+        return typeName().toLowerCase(Locale.ROOT);
+    }
+
+// LStatement.java : public String localizedName()
+    public String localizedName(){
+        if(logicLocalization()) return Core.bundle.get("instruction." + statementKey(), name());
+        return name();
+    }
+
+// LStatement.java : public String name()
+    public String name(){
+        return Strings.insertSpaces(getClass().getSimpleName().replace("Statement", ""));
+    }
+
+// LVar.java : public Building building()
+    public @Nullable Building building(){
+        return isobj && objval instanceof Building building ? building : null;
+    }
+
+// LVar.java : public Object obj()
+    public @Nullable Object obj(){
+        return isobj ? objval : null;
+    }
+
+// LVar.java : public Team team()
+    public @Nullable Team team(){
+        if(isobj){
+            return objval instanceof Team t ? t : null;
+        }else{
+            int t = (int)numval;
+            if(t < 0 || t >= Team.all.length) return null;
+            return Team.all[t];
+        }
+    }
+
+// LVar.java : public boolean bool()
+    public boolean bool(){
+        return isobj ? objval != null : Math.abs(numval) >= 0.00001;
+    }
+
+// LVar.java : public double num()
+    public double num(){
+        return isobj ? objval != null ? 1 : 0 : invalid(numval) ? 0 : numval;
+    }
+
+// LVar.java : public double numOrNan()
+    public double numOrNan(){
+        return isobj ? objval != null ? 1 : Double.NaN : invalid(numval) ? 0 : numval;
+    }
+
+// LVar.java : public float numf()
+    public float numf(){
+        return isobj ? objval != null ? 1 : 0 : invalid(numval) ? 0 : (float)numval;
+    }
+
+// LVar.java : public float numfWorld()
+    public float numfWorld(){
+        return World.unconv(numf());
+    }
+
+// LVar.java : public float numfOrNan()
+    public float numfOrNan(){
+        return isobj ? objval != null ? 1 : Float.NaN : invalid(numval) ? 0 : (float)numval;
+    }
+
+// LVar.java : public int numi()
+    public int numi(){
+        return (int)num();
+    }
+
+// LVar.java : public void setbool(boolean value)
+    public void setbool(boolean value){
+        setnum(value ? 1 : 0);
+    }
+
+// LVar.java : public void setnum(double value)
+    public void setnum(double value){
+        if(constant) return;
+        if(invalid(value)){
+            objval = null;
+            isobj = true;
+        }else{
+            numval = value;
+            objval = null;
+            isobj = false;
+        }
+    }
+
+// LVar.java : public void setobj(Object value)
+    public void setobj(Object value){
+        if(constant) return;
+        objval = value;
+        isobj = true;
+    }
+
+// LVar.java : public void setconst(Object value)
+    public void setconst(Object value){
+        objval = value;
+        isobj = true;
+    }
+
+// LVar.java : public void setlink(Object value)
+    public void setlink(Object value){
+        isobj = true;
+        if(value == null){
+            objval = null;
+            constant = false;   //convert a former linked block into a regular variable
+        }else{
+            objval = value;
+            constant = true;    //make this variable a linked block
+        }
+    }
+
+// LVar.java : public void set(LVar other)
+    public void set(LVar other){
+        isobj = other.isobj;
+        // Setting a non-numeric value to @counter must preserve its numeric field
+        if(isobj){
+            objval = other.objval;
+        }else{
+            numval = invalid(other.numval) ? 0 : other.numval;
+        }
+    }
+
+// LVar.java : public static boolean invalid(double d)
+    public static boolean invalid(double d){
+        return Double.isNaN(d) || Double.isInfinite(d);
+    }
+
+// LVar.java : public String toString()
+    @Override
+    public String toString(){
+        return name + ": " + (isobj ? objval : numval) + (constant ? " [const]" : "");
+    }
+
+// LogicDialog.java : public boolean shouldShowVariables()
+    public boolean shouldShowVariables(){
+        return executor != null && executor.vars.length > 0 && !state.isMenu();
+    }
+
+// LogicDialog.java : public void showAddDialog() / public void showAddDialog(int position)
+    public void showAddDialog(){
+        showAddDialog(-1);
+    }
+
+// LogicFx.java : public static Iterable<EffectEntry> entries()
+    public static Iterable<EffectEntry> entries(){
+        return map.orderedKeys().map(s -> map.get(s));
+    }
+
+// LogicFx.java : public static EffectEntry get(String name)
+    public static @Nullable EffectEntry get(String name){
+        return map.get(name);
+    }
+
+// LogicFx.java : public static void add(String name, EffectEntry entry)
+    public static void add(String name, EffectEntry entry){
+        entry.name = name;
+        map.put(name, entry);
+    }
+
+// LogicFx.java : public static String[] all()
+    public static String[] all(){
+        return map.orderedKeys().toArray(String.class);
+    }
+
+// Senseable.java : default Object senseObject(LAccess sensor)
+    default Object senseObject(LAccess sensor){
+        return noSensed;
+    }
+

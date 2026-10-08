@@ -1,0 +1,386 @@
+// Bar.java : public void reset(float value)
+    public void reset(float value){
+        this.value = lastValue = blink = value;
+    }
+
+// Bar.java : public void set(Prov<String> name, Floatp fraction, Color color)
+    public void set(Prov<String> name, Floatp fraction, Color color){
+        this.fraction = fraction;
+        this.lastValue = fraction.get();
+        this.blinkColor.set(color);
+        setColor(color);
+        update(() -> this.name = name.get());
+    }
+
+// Bar.java : public void snap()
+    public void snap(){
+        lastValue = value = fraction.get();
+    }
+
+// Bar.java : public Bar outline(Color color, float stroke)
+    public Bar outline(Color color, float stroke){
+        outlineColor.set(color);
+        outlineRadius = Scl.scl(stroke);
+        return this;
+    }
+
+// Bar.java : public void flash()
+    public void flash(){
+        blink = 1f;
+    }
+
+// Bar.java : public Bar blink(Color color)
+    public Bar blink(Color color){
+        blinkColor.set(color);
+        return this;
+    }
+
+// BorderImage.java : public BorderImage border(Color color)
+    public BorderImage border(Color color){
+        this.borderColor = color;
+        return this;
+    }
+
+// CoreItemsDisplay.java : public void resetUsed()
+    public void resetUsed(){
+        usedItems.clear();
+        background(null);
+    }
+
+// Displayable.java : default boolean displayable()
+    default boolean displayable(){
+        return true;
+    }
+
+// Elems.java : public static Button check(String text, Boolp checked, Boolc listener) / public static Button check(String text, boolean checked, Boolc listener) / public static Button check(String text, boolean currentChecked, Boolp checked, Boolc listener)
+    public static Button check(String text, Boolp checked, Boolc listener){
+        return check(text, checked != null && checked.get(), checked, listener);
+    }
+
+// FileChooser.java : public static FileChooserParams open(String extensions)
+    public static FileChooserParams open(String... extensions){
+        return new FileChooserParams().open(true).extensions(extensions);
+    }
+
+// FileChooser.java : public static FileChooserParams save(String extensions)
+    public static FileChooserParams save(String... extensions){
+        return new FileChooserParams().open(false).extensions(extensions);
+    }
+
+// FileChooser.java : public static FileChooserDialog createFallbackFileChooser(FileChooserParams params)
+    public static FileChooserDialog createFallbackFileChooser(FileChooserParams params){
+        return new FileChooserDialog(params.title, file -> Structs.contains(params.extensions, file::extEquals), params.open, file -> {
+            if(!params.open){
+                params.handleChooseResult(file.parent().child(file.nameWithoutExtension() + "." + params.extensions[0]));
+            }else{
+                params.handleChooseResult(file);
+            }
+        });
+    }
+
+// FileChooser.java : public static void showFallbackFileChooser(FileChooserParams params)
+    public static void showFallbackFileChooser(FileChooserParams params){
+        createFallbackFileChooser(params).show();
+    }
+
+// Fonts.java : public static int getUnicode(String content)
+    public static int getUnicode(String content){
+        return unicodeIcons.get(content, 0);
+    }
+
+// Fonts.java : public static String getUnicodeStr(String content)
+    public static String getUnicodeStr(String content){
+        return stringIcons.get(content, "");
+    }
+
+// Fonts.java : public static boolean hasUnicodeStr(String content)
+    public static boolean hasUnicodeStr(String content){
+        return stringIcons.containsKey(content);
+    }
+
+// Fonts.java : public static void loadSystemCursors()
+    public static void loadSystemCursors(){
+        SystemCursor.arrow.set(Core.graphics.newCursor("cursor", cursorScale()));
+        SystemCursor.hand.set(Core.graphics.newCursor("hand", cursorScale()));
+        SystemCursor.ibeam.set(Core.graphics.newCursor("ibeam", cursorScale()));
+
+        Core.graphics.restoreCursor();
+    }
+
+// Fonts.java : public static int cursorScale()
+    public static int cursorScale(){
+        return 1;
+    }
+
+// Fonts.java : public static String unicodeToName(int unicode)
+    public static @Nullable String unicodeToName(int unicode){
+        return unicodeToName.get(unicode, () -> Iconc.codeToName.get(unicode));
+    }
+
+// Fonts.java : public static TextureRegion getLargeIcon(String name)
+    public static TextureRegion getLargeIcon(String name){
+        return largeIcons.get(name, () -> {
+            var region = new TextureRegion();
+            int code = Iconc.codes.get(name, '\uF8D4');
+            var glyph = iconLarge.getData().getGlyph((char)code);
+            if(glyph == null) return Core.atlas.find(name);
+            region.set(iconLarge.getRegion().texture);
+            region.set(glyph.u, glyph.v2, glyph.u2, glyph.v);
+            return region;
+        });
+    }
+
+// Fonts.java : static FreeTypeFontParameter fontParameter()
+    static FreeTypeFontParameter fontParameter(){
+        return new FreeTypeFontParameter(){{
+            size = 18;
+            shadowColor = Color.darkGray;
+            shadowOffsetY = 2;
+            incremental = true;
+        }};
+    }
+
+// GridImage.java : public void setImageSize(int w, int h)
+    public void setImageSize(int w, int h){
+        this.imageWidth = w;
+        this.imageHeight = h;
+    }
+
+// IntFormat.java : public CharSequence get(int value) / public CharSequence get(int value1, int value2)
+    public CharSequence get(int value){
+        if(lastValue != value){
+            builder.setLength(0);
+            builder.append(Core.bundle.format(text, converter.get(value)));
+        }
+        lastValue = value;
+        return builder;
+    }
+
+// ItemsDisplay.java : public void rebuild(ItemSeq items) / public void rebuild(ItemSeq items, boolean[] shine)
+    public void rebuild(ItemSeq items){
+        rebuild(items, null);
+    }
+
+// Links.java : public static LinkEntry[] getLinks()
+    public static LinkEntry[] getLinks(){
+        if(links == null){
+            createLinks();
+        }
+
+        return links;
+    }
+
+// Menus.java : public static int registerMenu(MenuListener listener)
+    public static int registerMenu(MenuListener listener){
+        menuListeners.add(listener);
+        return menuListeners.size - 1;
+    }
+
+// Menus.java : public static int registerMenuBuilder(MenuBuilderListener listener)
+    public static int registerMenuBuilder(MenuBuilderListener listener){
+        menuBuilderListeners.add(listener);
+        return menuBuilderListeners.size - 1;
+    }
+
+// Menus.java : public static int registerTextInput(TextInputListener listener)
+    public static int registerTextInput(TextInputListener listener){
+        textInputListeners.add(listener);
+        return textInputListeners.size - 1;
+    }
+
+// Menus.java : public static void hideMenuBuilder(int menuId)
+    @Remote(variants = Variant.both)
+    public static void hideMenuBuilder(int menuId) {
+        if(!menuDialogs.containsKey(menuId)) return;
+        menuDialogs.remove(menuId).hide();
+    }
+
+// Menus.java : public static void menuBuilderChoose(Player player, int menuId, MenuResult results)
+    @Remote(targets = Loc.both, called = Loc.both)
+    public static void menuBuilderChoose(@Nullable Player player, int menuId, MenuResult results){
+        if(player != null){
+            Events.fire(new MenuBuilderOptionChooseEvent(player, menuId, results));
+
+            if(menuId >= 0 && menuId < menuBuilderListeners.size){
+                menuBuilderListeners.get(menuId).get(player, results);
+            }
+        }
+    }
+
+// Menus.java : public static void menu(int menuId, String title, String message, String[][] options)
+    @Remote(variants = Variant.both)
+    public static void menu(int menuId, String title, String message, String[][] options){
+        if(title == null) title = "";
+        if(message == null) message = "";
+        if(options == null) options = new String[0][0];
+
+        showMenu(title, message, options, (option) -> Call.menuChoose(player, menuId, option));
+    }
+
+// Menus.java : public static void followUpMenu(int menuId, String title, String message, String[][] options)
+    @Remote(variants = Variant.both)
+    public static void followUpMenu(int menuId, String title, String message, String[][] options){
+        if(title == null) title = "";
+        if(message == null) message = "";
+        if(options == null) options = new String[0][0];
+
+        showFollowUpMenu(menuId, title, message, options, (option) -> Call.menuChoose(player, menuId, option));
+    }
+
+// Menus.java : public static void hideFollowUpMenu(int menuId)
+    @Remote(variants = Variant.both)
+    public static void hideFollowUpMenu(int menuId) {
+        if(!followUpMenus.containsKey(menuId)) return;
+        followUpMenus.remove(menuId).hide();
+    }
+
+// Menus.java : static void showMenu(String title, String message, String[][] options, Intc callback)
+    static void showMenu(String title, String message, String[][] options, Intc callback){
+        Dialog dialog = newMenuDialog(title, message, options, (option, myself) -> {
+            callback.get(option);
+            myself.hide();
+        });
+        dialog.closeOnBack(() -> callback.get(-1));
+        dialog.show();
+    }
+
+// Menus.java : public static void menuChoose(Player player, int menuId, int option)
+    @Remote(targets = Loc.both, called = Loc.both)
+    public static void menuChoose(@Nullable Player player, int menuId, int option){
+        if(player != null){
+            Events.fire(new MenuOptionChooseEvent(player, menuId, option));
+            if(menuId >= 0 && menuId < menuListeners.size){
+                menuListeners.get(menuId).get(player, option);
+            }
+        }
+    }
+
+// Menus.java : public static void textInput(int textInputId, String title, String message, int textLength, String def, boolean numeric) / public static void textInput(int textInputId, String title, String message, int textLength, String def, boolean numeric, boolean allowEmpty)
+    @Remote(variants = Variant.both)
+    public static void textInput(int textInputId, String title, String message, int textLength, String def, boolean numeric){
+        textInput(textInputId, title, message, textLength, def, numeric, false);
+    }
+
+// Menus.java : public static void textInputResult(Player player, int textInputId, String text)
+    @Remote(targets = Loc.both, called = Loc.both)
+    public static void textInputResult(@Nullable Player player, int textInputId, @Nullable String text){
+        if(player != null){
+            Events.fire(new TextInputEvent(player, textInputId, text));
+            if(textInputId >= 0 && textInputId < textInputListeners.size){
+                textInputListeners.get(textInputId).get(player, text);
+            }
+        }
+    }
+
+// Menus.java : public static void setHudText(String message)
+    @Remote(variants = Variant.both, unreliable = true)
+    public static void setHudText(String message){
+        if(message == null) return;
+
+        ui.hudfrag.setHudText(message);
+    }
+
+// Menus.java : public static void hideHudText()
+    @Remote(variants = Variant.both)
+    public static void hideHudText(){
+        ui.hudfrag.toggleHudText(false);
+    }
+
+// Menus.java : public static void setHudTextReliable(String message)
+    @Remote(variants = Variant.both)
+    public static void setHudTextReliable(String message){
+        setHudText(message);
+    }
+
+// Menus.java : public static void announce(String message)
+    @Remote(variants = Variant.both)
+    public static void announce(String message){
+        if(message == null) return;
+
+        ui.announce(message);
+    }
+
+// Menus.java : public static void infoMessage(String message)
+    @Remote(variants = Variant.both)
+    public static void infoMessage(String message){
+        if(message == null) return;
+
+        ui.showText("", message);
+    }
+
+// Menus.java : public static void infoPopup(String message, String id, float duration, int align, int top, int left, int bottom, int right) / public static void infoPopup(String message, float duration, int align, int top, int left, int bottom, int right)
+    @Remote(variants = Variant.both, unreliable = true)
+    public static void infoPopup(@Nullable String message, @Nullable String id, float duration, int align, int top, int left, int bottom, int right){
+        ui.showInfoPopup(message, id, duration, align, top, left, bottom, right);
+    }
+
+// Menus.java : public static void infoPopupReliable(String message, String id, float duration, int align, int top, int left, int bottom, int right) / public static void infoPopupReliable(String message, float duration, int align, int top, int left, int bottom, int right)
+    @Remote(variants = Variant.both)
+    public static void infoPopupReliable(@Nullable String message, @Nullable String id, float duration, int align, int top, int left, int bottom, int right){
+        infoPopup(message, id, duration, align, top, left, bottom, right);
+    }
+
+// Menus.java : public static void label(String message, int id, float duration, float worldx, float worldy, int flags) / public static void label(String message, int id, float duration, float worldx, float worldy) / public static void label(String message, float duration, float worldx, float worldy)
+    @Remote(variants = Variant.both, unreliable = true)
+    public static void label(@Nullable String message, int id, float duration, float worldx, float worldy, int flags){
+        ui.showLabel(message, id, duration, worldx, worldy, flags);
+    }
+
+// Menus.java : public static void labelReliable(String message, int id, float duration, float worldx, float worldy, int flags) / public static void labelReliable(String message, int id, float duration, float worldx, float worldy) / public static void labelReliable(String message, float duration, float worldx, float worldy)
+    @Remote(variants = Variant.both)
+    public static void labelReliable(@Nullable String message, int id, float duration, float worldx, float worldy, int flags){
+        label(message, id, duration, worldx, worldy, flags);
+    }
+
+// Menus.java : public static void infoToast(String message, float duration)
+    @Remote(variants = Variant.both)
+    public static void infoToast(String message, float duration){
+        if(message == null) return;
+
+        ui.showInfoToast(message, duration);
+    }
+
+// Menus.java : public static void warningToast(int unicode, String text)
+    @Remote(variants = Variant.both)
+    public static void warningToast(int unicode, String text){
+        if(text == null || Fonts.icon.getData().getGlyph((char)unicode) == null) return;
+
+        ui.hudfrag.showToast(Fonts.getGlyph(Fonts.icon, (char)unicode), text);
+    }
+
+// Menus.java : public static void openURI(String uri)
+    @Remote(variants = Variant.both)
+    public static void openURI(String uri){
+        if(uri == null) return;
+
+        ui.showConfirm(Core.bundle.format("linkopen", uri), () -> Core.app.openURI(uri));
+    }
+
+// Menus.java : public static void copyToClipboard(String text)
+    @Remote(variants = Variant.both)
+    public static void copyToClipboard(String text){
+        if(text == null) return;
+
+        ui.showConfirm(Core.bundle.format("clipboardcopy", text), () -> Core.app.setClipboardText(text));
+    }
+
+// Menus.java : public static void removeWorldLabel(int id)
+    @Remote(variants = Variant.both)
+    public static void removeWorldLabel(int id){
+        var label = Groups.sync.getByID(id);
+        if(label instanceof WorldLabelc){
+            label.remove();
+        }
+    }
+
+// MultiReqImage.java : public void add(ReqImage display)
+    public void add(ReqImage display){
+        displays.add(display);
+        super.add(display);
+    }
+
+// ReqImage.java : public boolean valid()
+    public boolean valid(){
+        return valid.get();
+    }
+

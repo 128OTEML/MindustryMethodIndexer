@@ -1,0 +1,116 @@
+// ClientLauncher.java : public void add(ApplicationListener module)
+    @Override
+    public void add(ApplicationListener module){
+        super.add(module);
+
+        //autoload modules when necessary
+        if(module instanceof Loadable l){
+            assets.load(l);
+        }
+    }
+
+// ClientLauncher.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        if(assets == null) return;
+
+        if(!finished){
+            Draw.proj().setOrtho(0, 0, width, height);
+        }else{
+            super.resize(width, height);
+        }
+    }
+
+// ClientLauncher.java : public void exit()
+    @Override
+    public void exit(){
+        //on graceful exit, finish the launch normally.
+        Vars.finishLaunch();
+    }
+
+// ClientLauncher.java : public void init()
+    @Override
+    public void init(){
+        nextFrame = Time.nanos();
+        setup();
+    }
+
+// ClientLauncher.java : public void resume()
+    @Override
+    public void resume(){
+        if(finished){
+            super.resume();
+        }
+    }
+
+// ClientLauncher.java : public void pause()
+    @Override
+    public void pause(){
+        //when the user tabs out on mobile, the exit() event doesn't fire reliably - in that case, just assume they're about to kill the app
+        //this isn't 100% reliable but it should work for most cases
+        if(mobile){
+            Vars.finishLaunch();
+        }
+        if(finished){
+            super.pause();
+        }
+    }
+
+// ClientLauncher.java : public void fileDropped(Fi file)
+    @Override
+    public void fileDropped(Fi file){
+        if(OS.isIos || OS.isAndroid) return;
+
+        if(file.extEquals(saveExtension) || file.extEquals(schematicExtension)){
+            handleFileImport(file);
+        }
+    }
+
+// ClientLauncher.java : public static void runOnClientLoad(Runnable run)
+    public static void runOnClientLoad(Runnable run){
+        if(clientLoaded){
+            run.run();
+        }else{
+            Events.on(ClientLoadEvent.class, e -> run.run());
+        }
+    }
+
+// Vars.java : public void loadAsync()
+    @Override
+    public void loadAsync(){
+        loadSettings();
+        init();
+    }
+
+// Vars.java : public static void checkLaunch()
+    public static void checkLaunch(){
+        settings.setAppName(appName);
+        launchIDFile = settings.getDataDirectory().child("launchid.dat");
+
+        if(launchIDFile.exists()){
+            failedToLaunch = true;
+        }else{
+            failedToLaunch = false;
+            launchIDFile.writeString("go away");
+        }
+    }
+
+// Vars.java : public static void finishLaunch()
+    public static void finishLaunch(){
+        Core.settings.put("lastBuild", Version.build);
+        Core.settings.put("lastBuildString", Version.buildString());
+
+        if(launchIDFile != null){
+            launchIDFile.delete();
+        }
+    }
+
+// Vars.java : public static void loadFileLogger() / public static void loadFileLogger(Fi file)
+    public static void loadFileLogger(){
+        if(loadedFileLogger) return;
+
+        settings.setAppName(appName);
+
+        loadFileLogger(settings.getDataDirectory().child("last_log.txt"));
+    }
+

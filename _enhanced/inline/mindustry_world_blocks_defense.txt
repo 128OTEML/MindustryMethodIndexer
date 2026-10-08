@@ -1,0 +1,272 @@
+// AutoDoor.java : public static void autoDoorToggle(Tile tile, boolean open)
+    @Remote(called = Loc.server)
+    public static void autoDoorToggle(Tile tile, boolean open){
+        if(tile == null || !(tile.build instanceof AutoDoorBuild build)) return;
+        build.setOpen(open);
+    }
+
+// BaseShield.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        updateClipRadius(radius);
+    }
+
+// BaseShield.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, radius, player.team().color);
+    }
+
+// BuildTurret.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        super.afterPatch();
+        unitType.rotateSpeed = rotateSpeed;
+        unitType.buildBeamOffset = buildBeamOffset;
+        unitType.buildRange = range;
+        unitType.buildSpeed = buildSpeed;
+    }
+
+// BuildTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.addPercent(Stat.buildSpeed, buildSpeed);
+    }
+
+// BuildTurret.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
+    }
+
+// Door.java : public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        return plan.config == Boolean.TRUE ? openRegion : region;
+    }
+
+// ForceProjector.java : public void init()
+    @Override
+    public void init(){
+        updateClipRadius(radius + phaseRadiusBoost + 3f);
+        super.init();
+    }
+
+// ForceProjector.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        addBar("shield", (ForceBuild entity) -> new Bar("stat.shieldhealth", Pal.accent, () -> entity.broken ? 0f : 1f - entity.buildup / (shieldHealth + phaseShieldBoost * entity.phaseHeat)).blink(Color.white));
+    }
+
+// ForceProjector.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// MendProjector.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// MendProjector.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, baseColor);
+
+        indexer.eachBlock(player.team(), x * tilesize + offset, y * tilesize + offset, range, other -> true, other -> Drawf.selected(other, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f))));
+    }
+
+// OverdriveProjector.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// OverdriveProjector.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, baseColor);
+
+        indexer.eachBlock(player.team(), x * tilesize + offset, y * tilesize + offset, range, other -> other.block.canOverdrive, other -> Drawf.selected(other, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f))));
+    }
+
+// OverdriveProjector.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        addBar("boost", (OverdriveBuild entity) -> new Bar(() -> Core.bundle.format("bar.boost", Mathf.round(Math.max((entity.realBoost() * 100 - 100), 0))), () -> Pal.accent, () -> entity.realBoost() / (hasBoost ? speedBoost + speedBoostPhase : speedBoost)));
+    }
+
+// Radar.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
+    }
+
+// Radar.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, fogRadius * tilesize, Pal.accent);
+    }
+
+// RegenProjector.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawer.drawPlan(this, plan, list);
+    }
+
+// RegenProjector.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// RegenProjector.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// RegenProjector.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+        drawer.load(this);
+    }
+
+// ShieldWall.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.shieldHealth, shieldHealth);
+    }
+
+// ShieldWall.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        drawDynamic = true;
+    }
+
+// ShockMine.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.add(Stat.damage, table -> {
+            table.add((String)(Core.bundle.format("bullet.lightning", tendrils, Strings.autoFixed(damage, 2)).replace("[stat]", "[white]")));
+        });
+    } 
+
+// ShockwaveTower.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.damage, bulletDamage, StatUnit.none);
+        stats.add(Stat.range, range / tilesize, StatUnit.blocks);
+        stats.add(Stat.reload, 60f / reload, StatUnit.perSecond);
+    }
+
+// ShockwaveTower.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, waveColor);
+    }
+
+// TargetDummy.java : protected TextureRegion[] icons()
+    @Override
+    protected TextureRegion[] icons(){
+        return new TextureRegion[]{previewRegion};
+    }
+
+// TargetDummy.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        removeBar("health");
+
+        addBar("dps", (TargetDummyBuild entity) -> new Bar(
+            () -> entity.displayDPS(false),
+            () -> Pal.ammo,
+            () -> 1f - (entity.reset / entity.resetTime)
+        ));
+    }
+
+// TargetDummy.java : public void drawDefaultPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawDefaultPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        super.drawDefaultPlanRegion(plan, list);
+
+        Draw.rect(unitType.fullIcon, plan.drawx(), plan.drawy());
+    }
+
+// Thruster.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+    }
+
+// Thruster.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// Wall.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        if(chanceDeflect > 0f) stats.add(Stat.baseDeflectChance, chanceDeflect, StatUnit.none);
+        if(lightningChance > 0f){
+            stats.add(Stat.lightningChance, lightningChance * 100f, StatUnit.percent);
+            stats.add(Stat.lightningDamage, lightningDamage, StatUnit.none);
+        }
+    }
+
+// Wall.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        if(autotile){
+            autotileRegions = TileBitmask.load(name);
+        }
+    }
+
+// Wall.java : public void init()
+    @Override
+    public void init(){
+        if(size == 2 && destroySound == Sounds.unset) destroySound = Sounds.blockExplodeWall;
+        if(!flashHit){
+            drawDynamic = false;
+        }
+        drawCached = true;
+        super.init();
+    }
+
+// Wall.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(Core.atlas.has(name) ? name : name + "1")};
+    }
+

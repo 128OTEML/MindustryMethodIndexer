@@ -1,0 +1,58 @@
+ArcDns.java
+Java class (final)
+fields:
+  public static final int dnsResolverPort  // Default dns server port.
+  private static final Seq<InetSocketAddress> nameservers
+  private static final Seq<NameserverProvider> nameserverProviders
+methods:
+  public static Seq<NameserverProvider> getNameserverProviders()
+  public static void setNameserverProviders(Seq<NameserverProvider> providers)  // Set a new ordered list of resolver config providers.
+  public static Seq<InetSocketAddress> getNameservers()  // Returns all located servers
+  public static void refreshNameservers()
+  public static Seq<SRVRecord> getSrvRecords(String domain) / public static Seq<SRVRecord> getSrvRecords(String domain, InetSocketAddress nameserver) throws IOException  // Lookup the SRV record of a domain in the format {@code _service._protocol.name}
+
+JndiContextNameserverProvider.java
+Java class (final) implements arc.net.dns.NameserverProvider
+// Resolver config provider that tries to extract the system's DNS servers from the
+methods:
+  public Seq<InetSocketAddress> getNameservers()
+  public boolean isEnabled()
+inner-class: Inner implements arc.net.dns.NameserverProvider
+// loading a class fails if it refers to unknown classes (javax.naming is not available on some platforms), so put it in a separate inner class
+  methods:
+    public Seq<InetSocketAddress> getNameservers()
+
+NameserverProvider.java
+Java interface
+methods:
+  Seq<InetSocketAddress> getNameservers()  // Returns all located servers, which may be empty.
+  default boolean isEnabled()  // Determines if this provider is enabled.
+
+ResolvConfNameserverProvider.java
+Java class (final) implements arc.net.dns.NameserverProvider
+methods:
+  public Seq<InetSocketAddress> getNameservers()
+  private boolean tryParseResolveConf(String path, Seq<InetSocketAddress> out)
+  public boolean isEnabled()
+
+SRVRecord.java
+Java class (final) implements java.lang.Comparable
+fields:
+  public final long ttl
+  public final int priority
+  public final int weight
+  public final int port
+  public final String target
+ctors:
+  public SRVRecord(long ttl, int priority, int weight, int port, String target)
+methods:
+  public String toString()
+  public int compareTo(SRVRecord o)
+
+WellKnownNameserverProvider.java
+Java class (final) implements arc.net.dns.NameserverProvider
+fields:
+  private final Seq<InetSocketAddress> nameservers
+methods:
+  public Seq<InetSocketAddress> getNameservers()
+

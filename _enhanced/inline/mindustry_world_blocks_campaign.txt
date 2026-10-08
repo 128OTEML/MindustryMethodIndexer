@@ -1,0 +1,86 @@
+// Accelerator.java : public void init()
+    @Override
+    public void init(){
+        itemCapacity = 0;
+        capacities = new int[content.items().size];
+        for(ItemStack stack : launchBlock.requirements){
+            capacities[stack.item.id] = stack.amount;
+            itemCapacity += stack.amount;
+        }
+        consumeItems(launchBlock.requirements);
+        super.init();
+    }
+
+// Accelerator.java : public void checkContentArrayCapacity(int items, int liquids)
+    @Override
+    public void checkContentArrayCapacity(int items, int liquids){
+        super.checkContentArrayCapacity(items, liquids);
+        if(capacities.length != items) capacities = Arrays.copyOf(capacities, items);
+    }
+
+// Accelerator.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// LandingPad.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addLiquidBar(consumeLiquid);
+        //TODO: does cooldown even need to exist?
+        addBar("cooldown", (LandingPadBuild entity) -> new Bar("bar.cooldown", Pal.lightOrange, () -> entity.cooldown));
+    }
+
+// LandingPad.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.cooldownTime, (cooldownTime+arrivalDuration)/60f, StatUnit.seconds);
+    }
+
+// LandingPad.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return true;
+    }
+
+// LandingPad.java : public static void landingPadLanded(Tile tile)
+    @Remote(called = Loc.server)
+    public static void landingPadLanded(Tile tile){
+        if(tile == null || !(tile.build instanceof LandingPadBuild build)) return;
+        build.handleLanding();
+    }
+
+// LaunchPad.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.launchTime, launchTime / 60f, StatUnit.seconds);
+    }
+
+// LaunchPad.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("items", entity -> new Bar(() -> Core.bundle.format("bar.items", entity.items.total()), () -> Pal.items, () -> (float)entity.items.total() / itemCapacity));
+        addBar("progress", (LaunchPadBuild build) -> new Bar(() -> Core.bundle.get("bar.launchcooldown"), () -> Pal.ammo, () -> Mathf.clamp(build.launchCounter / launchTime)));
+    }
+
+// LaunchPad.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// LaunchPad.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{previewRegion};
+    }
+

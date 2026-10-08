@@ -1,0 +1,42 @@
+// HeadlessApplication.java : public Thread getMainThread()
+    @Override
+    public Thread getMainThread(){
+        return mainLoopThread;
+    }
+
+// HeadlessApplication.java : public ApplicationType getType()
+    @Override
+    public ApplicationType getType(){
+        return ApplicationType.headless;
+    }
+
+// HeadlessApplication.java : public String getClipboardText()
+    @Override
+    public String getClipboardText(){
+        return null;
+    }
+
+// HeadlessApplication.java : public void setClipboardText(String text)
+    @Override
+    public void setClipboardText(String text){
+
+    }
+
+// HeadlessApplication.java : public Seq<ApplicationListener> getListeners()
+    @Override
+    public Seq<ApplicationListener> getListeners(){
+        return listeners;
+    }
+
+// HeadlessApplication.java : public void post(Runnable runnable)
+    @Override
+    public void post(Runnable runnable){
+        runnables.post(runnable);
+    }
+
+// HeadlessApplication.java : public void exit()
+    @Override
+    public void exit(){
+        post(() -> running = false);
+    }
+

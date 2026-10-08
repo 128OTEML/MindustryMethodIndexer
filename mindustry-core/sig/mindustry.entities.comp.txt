@@ -1,0 +1,1134 @@
+BlockUnitComp.java
+Java class (abstract) implements mindustry.gen.Unitc
+fields:
+  Team team
+  transient Building tile
+  transient float ammo
+methods:
+  public void tile(Building tile)
+  public void add()
+  public void update()
+  public TextureRegion icon()
+  public float ammof()
+  public void killed()
+  public void damage(float v, boolean b)
+  public boolean dead()
+  public boolean isValid()
+  public boolean isAdded()
+  public void team(Team team)
+
+BuilderComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Statusc, mindustry.gen.Teamc, mindustry.gen.Rotc
+fields:
+  float x
+  UnitType type
+  Team team
+  Queue<BuildPlan> plans
+  boolean updateBuilding
+  private transient float buildCounter
+  private transient BuildPlan lastActive
+  private transient int lastSize
+  transient float buildAlpha
+methods:
+  public boolean canBuild()
+  public void update()
+  public void afterRead()
+  public void validatePlans()
+  public void updateBuildLogic()
+  void drawPlan(BuildPlan plan, float alpha)
+  void drawPlanTop(BuildPlan plan, float alpha)
+  boolean shouldSkip(BuildPlan plan, Building core)  // @return whether this plan should be skipped, in favor of the next one.
+  void removeBuild(int x, int y, boolean breaking)
+  boolean isBuilding()  // Return whether this builder's place queue contains items.
+  void clearBuilding()  // Clears the placement queue.
+  void addBuild(BuildPlan place) / void addBuild(BuildPlan place, boolean tail)  // Add another build plans to the tail of the queue, if it doesn't exist there yet.
+  boolean activelyBuilding()
+  BuildPlan buildPlan()  // @return  the build plan currently active, or the one at the top of the queue.
+  public void drawBuilding()
+  public void drawBuildingBeam(float px, float py)
+
+BuildingComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Teamc, mindustry.gen.Healthc, mindustry.gen.Buildingc, mindustry.gen.Timerc, arc.math.geom.QuadTree.QuadTreeObject, mindustry.ui.Displayable, mindustry.entities.Sized, mindustry.logic.Senseable, mindustry.logic.Controllable, mindustry.logic.Settable, mindustry.audio.AmbientSource
+fields:
+  static final float timeToSleep  // region vars and initialization
+  static final ObjectSet<Building> tmpTiles
+  static final Seq<Building> tempBuilds
+  static final BuildTeamChangeEvent teamChangeEvent
+  static final BuildDamageEvent bulletDamageEvent
+  static int sleepingEntities
+  float x
+  Team team
+  boolean dead
+  transient Tile tile
+  transient Block block
+  transient Seq<Building> proximity
+  transient int cdump
+  transient int rotation
+  transient String lastAccessed
+  transient float visualLiquid
+  transient long visibleFlags  // TODO Each bit corresponds to a team ID.
+  transient boolean wasVisible  // used only by the block renderer when fog is on (TODO replace with discovered check?)
+  transient boolean enabled
+  transient Building lastDisabler
+  PowerModule power
+  ItemModule items
+  LiquidModule liquids
+  transient float efficiency  // Base efficiency.
+  transient float optionalEfficiency  // Same as efficiency, but for optional consumers only.
+  transient float potentialEfficiency  // The efficiency this block *would* have if shouldConsume() returned true.
+  transient boolean shouldConsumePower  // Whether there are any consumers (aside from power) that have efficiency > 0.
+  transient float healSuppressionTime
+  transient float lastHealTime
+  transient Color suppressColor
+  private transient float lastDamageTime
+  private transient float timeScale
+  private transient float dumpAccum
+  private transient boolean sleeping
+  private transient float sleepTime
+  private transient boolean initialized
+  transient boolean wasDamaged  // used only by the indexer
+  transient short indexerBuildIndex
+methods:
+  public Building init(Tile tile, Team team, boolean shouldAdd, int rotation)  // Sets this tile entity data to this and adds it if necessary.
+  public Building create(Block block, Team team)  // Sets up all the necessary variables, but does not add this entity anywhere.
+  public void add()
+  public int tileX()
+  public int tileY()
+  public final void writeBase(Writes write)
+  public final void readBase(Reads read)
+  public int moduleBitmask()
+  public void writeAll(Writes write)
+  public void readAll(Reads read, byte revision)
+  public void writeSync(Writes write)
+  public void readSync(Reads read, byte revision)
+  public void write(Writes write)
+  public void read(Reads read, byte revision)
+  public boolean isDiscovered(Team viewer)
+  public void addPlan(boolean checkPrevious) / public void addPlan(boolean checkPrevious, boolean ignoreConditions)
+  public Tile findClosestEdge(Position to, Boolf<Tile> solid)
+  public void configure(Object value)  // Configure with the current, local player.
+  public void configureAny(Object value)  // Configure from a server.
+  public void deselect()  // Deselect this tile from configuration.
+  public boolean configTapped()  // Called clientside when the client taps a block to config.
+  public float calculateHeat(float[] sideHeat) / public float calculateHeat(float[] sideHeat, IntSet cameFrom)
+  public void applyBoost(float intensity, float duration)  // Sets the time scale of the building to the given intensity, unless it's above that value
+  public void applySlowdown(float intensity, float duration)  // Sets the time scale of the building to the given intensity, unless it's below that value
+  public void applyHealSuppression(float amount) / public void applyHealSuppression(float amount, Color suppressColor)
+  public boolean isHealSuppressed()
+  public void recentlyHealed()
+  public boolean wasRecentlyHealed(float duration)
+  public boolean wasRecentlyDamaged()
+  public void eachEdge(Cons<Tile> cons)
+  public Building nearby(int dx, int dy) / public Building nearby(int rotation)
+  public byte relativeTo(Tile tile) / public byte relativeTo(Building build) / public byte relativeTo(int cx, int cy)
+  public byte relativeToEdge(Tile other)
+  public Building front()  // Multiblock front.
+  public Building back()  // Multiblock back.
+  public Building left()  // Multiblock left.
+  public Building right()  // Multiblock right.
+  public float fogRadius()  // Any class that overrides this method and changes the value must call Vars.fogControl.forceUpdate(team).
+  public int pos()
+  public float rotdeg()
+  public float drawrot()  // @return preferred rotation of main texture region to be drawn
+  public Floor floor()
+  public boolean interactable(Team team)
+  public float timeScale()
+  public float warmup()  // @return the building's 'warmup', a smooth value from 0 to 1.
+  public float totalProgress()  // @return total time this block has been producing something; non-crafter blocks usually return Time.time.
+  public float progress()
+  public boolean allowUpdate()  // @return whether this block is allowed to update based on team/environment
+  public boolean inMapArea()
+  public BlockStatus status()
+  public void sleep()  // Call when nothing is happening to the entity.
+  public void noSleep()  // Call when this entity is updating.
+  public byte version()  // Returns the version of this Building IO code.
+  public boolean canControlSelect(Unit player)  // @return whether the player can select (but not actually control) this building.
+  public void onControlSelect(Unit player)  // Called when a player control-selects this building - not called for ControlBlock subclasses.
+  public void onCommand(Vec2 target)  // Called when this building receives a position command.
+  public Vec2 getCommandPosition()  // @return the position that this block points to for commands, or null.
+  public void handleUnitPayload(Unit unit, Cons<Payload> grabber)
+  public boolean canWithdraw()
+  public boolean canUnload()
+  public boolean canResupply()
+  public boolean payloadCheck(int conveyorRotation)
+  public void itemTaken(Item item)  // Called when an unloader takes an item.
+  public boolean allowDeposit()
+  public void dropped()  // Called when this block is dropped as a payload.
+  public void handleString(Object value)  // This is for logic blocks.
+  public void created()
+  public boolean shouldConsume()  // @return whether this block is currently "active" and should be consuming requirements.
+  public boolean productionValid()
+  public boolean consumeTriggerValid()  // @return whether this building is currently "burning" a trigger consumer (an item) - if true, valid() on those will return true.
+  public float getPowerProduction()
+  public int acceptStack(Item item, int amount, Teamc source)  // Returns the amount of items this block can accept.
+  public int getMaximumAccepted(Item item)
+  public int removeStack(Item item, int amount)  // Remove a stack from this inventory, and return the amount removed.
+  public void handleStack(Item item, int amount, Teamc source)  // Handle a stack input.
+  public void getStackOffset(Item item, Vec2 trns)  // Returns offset for stack placement.
+  public boolean acceptPayload(Building source, Payload payload)
+  public void handlePayload(Building source, Payload payload)
+  public boolean movePayload(Payload todump)  // Tries moving a payload forwards.
+  public boolean dumpPayload(Payload todump)  // Tries dumping a payload to any adjacent block.
+  public boolean canBeReplaced(Block other)
+  public void handleItem(Building source, Item item)
+  public boolean acceptItem(Building source, Item item)
+  public boolean acceptLiquid(Building source, Liquid liquid)
+  public void handleLiquid(Building source, Liquid liquid, float amount)
+  public void dumpLiquid(Liquid liquid) / public void dumpLiquid(Liquid liquid, float scaling) / public void dumpLiquid(Liquid liquid, float scaling, int outputDir)  // TODO entire liquid system is awful
+  public boolean canDumpLiquid(Building to, Liquid liquid)
+  public void transferLiquid(Building next, float amount, Liquid liquid)
+  public float moveLiquidForward(boolean leaks, Liquid liquid)
+  public float moveLiquid(Building next, Liquid liquid)
+  public Building getLiquidDestination(Building from, Liquid liquid)
+  public Payload getPayload()
+  public Payload takePayload()  // Tries to take the payload.
+  public PayloadSeq getPayloads()
+  public void offload(Item item)  // Tries to put this item into a nearby container, if there are no available
+  public boolean put(Item item)  // Tries to put this item into a nearby container.
+  public void produced(Item item) / public void produced(Item item, int amount)
+  public boolean dumpAccumulate() / public boolean dumpAccumulate(Item item)  // Dumps any item with an accumulator.
+  public boolean dump() / public boolean dump(Item todump)  // Try dumping any item near the building.
+  public void incrementDump(int prox)
+  public boolean canDump(Building to, Item item)  // Used for dumping items.
+  public boolean moveForward(Item item)  // Try offloading an item to a nearby container in its facing direction.
+  public void onProximityRemoved()  // Called shortly before this building is removed.
+  public void onProximityAdded()  // TODO ??? this is just onProximityUpdate ?
+  public void onProximityUpdate()  // Called when anything adjacent to this building is placed/removed, including itself.
+  public void updatePowerGraph()
+  public void powerGraphRemoved()
+  public boolean conductsTo(Building other)
+  public Seq<Building> getPowerConnections(Seq<Building> out)
+  public float getProgressIncrease(float baseTime)
+  public float getDisplayEfficiency()
+  public boolean shouldAmbientSound()  // @return whether this block should play its idle sound.
+  public void drawStatus()
+  public void drawCracks()
+  public void drawSelect()  // Draw the block overlay that is shown when a cursor is over the block.
+  public void drawItemSelection(UnlockableContent selection)
+  public void drawDisabled()
+  public void draw()  // Called only if {@link Block#drawDynamic} is true (on by default).
+  public void drawCached()  // Called only if {@link Block#drawCached} is true (off by default).
+  public void recache()
+  public void payloadDraw()
+  public void drawTeamTop()
+  public void drawLight()
+  public void drawLiquidLight(Liquid liquid, float amount)
+  public void drawTeam()
+  public boolean checkSuppression()  // @return whether a building has regen/healing suppressed; if so, spawns particles on it.
+  public void playerPlaced(Object config)  // Called after the block is placed by this client.
+  public void placed()  // Called after the block is placed by anyone.
+  public void onRepaired()  // Called when this block is derelict repaired.
+  public boolean isCommandable()
+  public boolean isPayload()  // @return whether this building is in a payload
+  public void overwrote(Seq<Building> previous)  // Called when a block is placed over some other blocks.
+  public void onRemoved()
+  public void unitOn(Unit unit)  // Called every frame a unit is on this.
+  public void unitOnAny(Unit unit)  // Called every frame a unit is on this.
+  public void unitRemoved(Unit unit)  // Called when a unit that spawned at this tile is removed.
+  public void puddleOn(Puddle puddle)  // Called when a puddle is on this building.
+  public void configured(Unit builder, Object value)  // Called when arbitrary configuration is applied to a tile.
+  public void updateLastAccess(Player player)
+  public void tapped()  // Called when the block is tapped by the local player.
+  public void afterDestroyed()  // Called *after* the tile has been removed.
+  public int explosionItemCap()  // @return the cap for item amount calculations, used when this block explodes.
+  public void splashLiquid(Liquid liquid, float amount)
+  public void onDeconstructed(Unit builder)  // Called when a block begins (not finishes!) deconstruction.
+  public void onDestroyed()  // Called when the block is destroyed.
+  public void playDestroySound()
+  public String getDisplayName()
+  public TextureRegion getDisplayIcon()
+  public ItemModule flowItems()  // @return the item module to use for flow rate calculations
+  public void display(Table table)
+  public void displayConsumption(Table table)
+  public void displayBars(Table table)
+  public void buildConfiguration(Table table)  // Called when this block is tapped to build a UI on the table.
+  public void updateTableAlign(Table table)  // Update table alignment after configuring.
+  public Cursor getCursor()  // Returns whether a hand cursor should be shown over this block.
+  public boolean onConfigureBuildTapped(Building other)  // Called when another tile is tapped while this building is selected.
+  public boolean onConfigureTapped(float x, float y)  // Called when a position is tapped while this building is selected.
+  public void onConfigureClosed()  // Called when this block's config menu is closed.
+  public boolean shouldShowConfigure(Player player)  // Returns whether this config menu should show when the specified player taps it.
+  public boolean shouldHideConfigure(Player player)  // Whether this configuration should be hidden now.
+  public void drawConfigure()
+  public boolean checkSolid()
+  public float handleDamage(float amount)
+  public boolean absorbLasers()
+  public boolean isInsulated()
+  public boolean collide(Bullet other)
+  public boolean collision(Bullet other)  // Handle a bullet collision.
+  public void damage(Team source, float damage) / public void damage(Bullet bullet, Team source, float damage) / public void damage(float damage)  // Used to handle damage from splash damage for certain types of blocks.
+  public void changeTeam(Team next) / public void changeTeam(Team next, boolean updatePower)  // Changes this building's team in a safe manner.
+  public boolean canPickup()
+  public void pickedUp()  // Called right before this building is picked up.
+  public void afterPickedUp()  // Called right after this building is picked up.
+  public void removeFromProximity()
+  public void updateProximity()
+  public void onNearbyBuildAdded(Building other)
+  public void consume()
+  public boolean canConsume()
+  public float delta()  // Scaled delta.
+  public float edelta()  // Efficiency * delta.
+  public void updateEfficiencyMultiplier()  // Called after efficiency is updated but before consumers are updated.
+  public float efficiencyScale()  // Calculate your own efficiency multiplier.
+  public void updateConsumption()
+  public void updatePayload(Unit unitHolder, Building buildingHolder)
+  public void updateTile()
+  public float ambientVolume()  // @return ambient sound volume scale.
+  public Object config()  // Tile configuration.
+  public boolean isValid()
+  public void heal() / public void heal(float amount)
+  public float hitSize()
+  public void kill()
+  public void healthChanged()
+  public double sense(LAccess sensor) / public double sense(Content content)
+  public Object senseObject(LAccess sensor)
+  public void control(LAccess type, double p1, double p2, double p3, double p4) / public void control(LAccess type, Object p1, double p2, double p3, double p4)
+  public void setProp(LAccess prop, double value) / public void setProp(LAccess prop, Object value) / public void setProp(UnlockableContent content, double value)
+  public boolean inFogTo(Team viewer)
+  public void killed()
+  public void checkAllowUpdate()
+  public void update()
+  public void updateFogVisibility()  // When a block is newly revealed outside of camera view range, it is updated on the minimap.
+  public float getAmbientVolume()
+  public Sound getAmbientSound()
+  public void hitbox(Rect out)
+  public String toString()
+
+BuildingTetherComp.java
+Java class (abstract) implements mindustry.gen.Unitc
+// A unit that depends on a building's existence; if that building is removed, it despawns.
+fields:
+  UnitType type
+  Team team
+  public Building building
+methods:
+  public void update()
+
+BulletComp.java
+Java class (abstract) implements mindustry.gen.Timedc, mindustry.gen.Damagec, mindustry.gen.Hitboxc, mindustry.gen.Teamc, mindustry.gen.Posc, mindustry.gen.Drawc, mindustry.gen.Shielderc, mindustry.gen.Ownerc, mindustry.gen.Bulletc, mindustry.gen.Timerc, mindustry.logic.Senseable, mindustry.logic.Settable
+fields:
+  Team team
+  Entityc owner
+  float x
+  IntSeq collided
+  BulletType type
+  Vec2 vel
+  Object data
+  float fdata
+  private float rotation
+  transient boolean keepAlive  // setting this variable to true prevents lifetime from decreasing for a frame.
+  transient boolean justSpawned
+  transient Entityc shooter  // Unlike the owner, the shooter is the original entity that created this bullet.
+  transient Tile aimTile
+  transient float aimX
+  transient float originX
+  transient float buildingDamageMultiplier
+  transient Mover mover
+  transient boolean absorbed
+  transient Trail trail
+  transient int frags
+  transient Posc stickyTarget
+  transient float stickyX
+methods:
+  public void getCollisions(Cons<QuadTree> consumer)
+  public boolean isLocal()  // bullets always considered local
+  public void add()
+  public void remove()
+  public float damageMultiplier()
+  public void absorb()
+  public boolean hasCollided(int id)
+  public float clipSize()
+  public boolean collides(Hitboxc other)
+  public void collision(Hitboxc other, float x, float y)
+  public void stickTo(Posc other)
+  public void update()
+  public void moveRelative(float x, float y)
+  public void turn(float x, float y)
+  public boolean checkUnderBuild(Building build, float x, float y)
+  public void tileRaycast(int x1, int y1, int x2, int y2)  // copy-paste of World#raycastEach, inlined for lambda capture performance.
+  public void draw()
+  public void initVel(float angle, float amount)
+  public void rotation(float angle) / public float rotation()  // Sets the bullet's rotation in degrees.
+  public double sense(LAccess sensor)
+  public void setProp(LAccess prop, double value) / public void setProp(UnlockableContent content, double value) / public void setProp(LAccess prop, Object value)
+
+ChildComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Rotc
+fields:
+  float x
+  Posc parent
+  boolean rotWithParent
+  float offsetX
+methods:
+  public void add()
+  public void update()
+
+CrawlComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Rotc, mindustry.gen.Hitboxc, mindustry.gen.Unitc
+fields:
+  float x
+  UnitType type
+  Team team
+  transient Floor lastDeepFloor
+  transient float lastCrawlSlowdown
+  transient float segmentRot
+methods:
+  public SolidPred solidity()
+  public float floorSpeedMultiplier()
+  public void add()
+  public Floor drownFloor()
+  public void update()
+
+DamageComp.java
+Java class (abstract)
+fields:
+  float damage
+
+DecalComp.java
+Java class (abstract) implements mindustry.gen.Drawc, mindustry.gen.Timedc, mindustry.gen.Rotc, mindustry.gen.Posc
+fields:
+  float x
+  Color color
+  TextureRegion region
+methods:
+  public void draw()
+  public float clipSize()
+
+DrawComp.java
+Java class (abstract) implements mindustry.gen.Posc
+methods:
+  float clipSize()
+  void draw()
+
+EffectStateComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Drawc, mindustry.gen.Timedc, mindustry.gen.Rotc, mindustry.gen.Childc
+fields:
+  float time
+  int id
+  Color color
+  Effect effect
+  Object data
+methods:
+  public void draw()
+  public float clipSize()
+
+ElevationMoveComp.java
+Java class (abstract) implements mindustry.gen.Velc, mindustry.gen.Posc, mindustry.gen.Hitboxc, mindustry.gen.Unitc
+fields:
+  float x
+methods:
+  public SolidPred solidity()
+
+EntityComp.java
+Java class (abstract)
+fields:
+  private transient boolean added
+  transient int id
+methods:
+  boolean isAdded()
+  void update()
+  void remove()
+  void add()
+  boolean isLocal()
+  boolean isRemote()
+  T self()  // Replaced with `this` after code generation.
+  T as()
+  abstract int classId()
+  abstract boolean serialize()
+  void read(Reads read)
+  void write(Writes write)
+  void beforeWrite()
+  void afterRead()
+  void afterReadAll()  // called after all entities have been read (useful for ID resolution)
+
+FireComp.java
+Java class (abstract) implements mindustry.gen.Timedc, mindustry.gen.Posc, mindustry.gen.Syncc, mindustry.gen.Drawc
+fields:
+  public static final int frames
+  private static final float spreadDelay
+  public static final TextureRegion regions
+  float time
+  Tile tile
+  private transient float puddleFlammability
+methods:
+  public void update()
+  public void draw()
+  public float clipSize()
+  public void remove()
+  public void afterRead()
+  public void afterSync()
+
+HealthComp.java
+Java class (abstract) implements mindustry.gen.Entityc, mindustry.gen.Posc
+fields:
+  static final float hitDuration
+  float health
+  transient float hitTime
+  transient float maxHealth
+  transient boolean dead
+methods:
+  boolean isValid()
+  float healthf()
+  public void update()
+  void killed()
+  void kill()
+  void heal() / void heal(float amount)  // Heals by a flat amount.
+  boolean damaged()
+  void damagePierce(float amount, boolean withEffect) / void damagePierce(float amount)  // Damage and pierce armor.
+  void damageArmorMult(float amount, float armorMult, boolean withEffect) / void damageArmorMult(float amount, float armorMult)  // Damage and multiply armor received.
+  void damage(float amount) / void damage(float amount, boolean withEffect)
+  void damageContinuous(float amount)
+  void damageContinuousPierce(float amount)
+  void damageContinuousArmorMult(float amount, float armorMult)
+  void clampHealth()
+  void healFract(float amount)  // Heals by a 0-1 fraction of max health.
+
+HitboxComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.entities.Sized, arc.math.geom.QuadTree.QuadTreeObject
+fields:
+  float x
+  transient float lastX
+methods:
+  public void update()
+  public void add()
+  public void afterRead()
+  public float hitSize()
+  void getCollisions(Cons<QuadTree> consumer)
+  void updateLastPosition()
+  void collision(Hitboxc other, float x, float y)
+  float deltaLen()
+  float deltaAngle()
+  boolean collides(Hitboxc other)
+  public void hitbox(Rect rect)
+  public void hitboxTile(Rect rect)
+
+ItemsComp.java
+Java class (abstract) implements mindustry.gen.Posc
+fields:
+  ItemStack stack
+  transient float itemTime
+methods:
+  abstract int itemCapacity()
+  public void update()
+  Item item()
+  void clearItem()
+  boolean acceptsItem(Item item)
+  boolean hasItem()
+  void addItem(Item item) / void addItem(Item item, int amount)
+  int maxAccepted(Item item)
+
+LaunchCoreComp.java
+Java class (abstract) implements mindustry.gen.Drawc, mindustry.gen.Timedc
+fields:
+  float x
+  transient Interval in
+  Block block
+methods:
+  public void draw()
+  float cx()
+  float cy()
+  public void update()
+
+LegsComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Rotc, mindustry.gen.Hitboxc, mindustry.gen.Unitc
+fields:
+  private static final Vec2 straightVec
+  float x
+  UnitType type
+  Team team
+  boolean disarmed
+  transient Leg legs
+  transient float totalLength
+  transient float moveSpace
+  transient float baseRotation
+  transient Floor lastDeepFloor
+  transient Vec2 curMoveOffset
+methods:
+  public SolidPred solidity()
+  public Floor drownFloor()
+  public void add()
+  public void unloaded()
+  public void destroy()
+  public void resetLegs() / public void resetLegs(float legLength)
+  public void update()
+  Vec2 legOffset(Vec2 out, int index)
+  float legAngle(int index)  // @return outwards facing angle of leg at the specified index.
+  float defaultLegAngle(int index)
+
+MechComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Hitboxc, mindustry.gen.Unitc, mindustry.gen.Mechc, mindustry.gen.ElevationMovec
+fields:
+  float x
+  UnitType type
+  float baseRotation
+  transient float walkTime
+  transient private boolean walked
+methods:
+  public void update()
+  public Floor drownFloor()
+  public float walkExtend(boolean scaled)
+  public void rotateMove(Vec2 vec)
+  public void moveAt(Vec2 vector, float acceleration)
+  public void approach(Vec2 vector)
+
+MinerComp.java
+Java class (abstract) implements mindustry.gen.Itemsc, mindustry.gen.Posc, mindustry.gen.Teamc, mindustry.gen.Rotc, mindustry.gen.Drawc
+fields:
+  float x
+  UnitType type
+  transient float mineTimer
+  Tile mineTile
+methods:
+  public boolean canMine(Item item) / public boolean canMine()
+  public boolean offloadImmediately()
+  boolean mining()
+  public Item getMineResult(Tile tile)
+  public boolean validMine(Tile tile, boolean checkDst) / public boolean validMine(Tile tile)
+  public void update()
+
+OwnerComp.java
+Java class
+fields:
+  Entityc owner
+
+PayloadComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Rotc, mindustry.gen.Hitboxc, mindustry.gen.Unitc
+// An entity that holds a payload.
+fields:
+  float x
+  Team team
+  UnitType type
+  Seq<Payload> payloads
+  private transient PowerGraph payloadPower
+methods:
+  public void update()
+  public void remove()
+  public void destroy()
+  float payloadUsed()
+  boolean canPickup(Unit unit) / boolean canPickup(Building build)
+  boolean canPickupPayload(Payload pay)
+  boolean hasPayload()
+  void addPayload(Payload load)
+  void pickup(Unit unit) / void pickup(Building tile)
+  boolean dropLastPayload()
+  boolean tryDropPayload(Payload payload)
+  boolean canDropPayload()
+  boolean dropUnit(UnitPayload payload)
+  boolean dropBlock(BuildPayload payload)  // @return whether the tile has been successfully placed.
+  void playPayloadDropSound(Payload payload)
+  void contentInfo(Table table, float itemSize, float width)
+
+PhysicsComp.java
+Java class (abstract) implements mindustry.gen.Velc, mindustry.gen.Hitboxc
+// Affected by physics.
+fields:
+  float hitSize
+  Vec2 vel
+  transient boolean hasPhysicsRef
+methods:
+  float mass()  // mass is simply the area of this object
+  void impulse(float x, float y) / void impulse(Vec2 v)
+  void impulseNet(Vec2 v)
+
+PlayerComp.java
+Java class (abstract) implements mindustry.entities.units.UnitController, mindustry.gen.Entityc, mindustry.gen.Syncc, mindustry.gen.Timerc, mindustry.gen.Drawc
+fields:
+  static final float deathDelay
+  static final float pingDuration
+  float x
+  Unit unit
+  transient NetConnection con
+  Team team
+  boolean typing
+  Block selectedBlock
+  int selectedRotation
+  float mouseX
+  UnitCommand lastCommand  // command the unit had before it was controlled.
+  boolean admin
+  String name
+  Color color
+  transient String locale
+  transient float deathTimer
+  transient String lastText
+  transient float textFadeTime
+  transient Ratekeeper itemDepositRate
+  transient float pingX
+  transient String pingText
+  transient private Unit lastReadUnit
+  transient private int wrongReadUnits
+  transient Unit justSwitchFrom
+  transient int lastPreviewPlanGroup
+  transient long lastPreviewPlanTimestamp
+  transient boolean receivingNewPlanGroup
+  transient Seq<BuildPlan> previewPlansCurrent
+  transient Seq<BuildPlan> previewPlansAssembling
+  transient QuadTree<BuildPlan> previewPlanTree
+  transient QueryEachable planEachable
+  transient boolean previewPlansDirty
+methods:
+  public Seq<BuildPlan> getPreviewPlans()
+  public void handlePreviewPlans(int groupId, Seq<BuildPlan> plans)
+  public boolean isBuilder()
+  public CoreBuild closestCore()
+  public CoreBuild core()
+  public CoreBuild bestCore()  // @return largest/closest core, with the largest cores getting priority
+  public TextureRegion icon()
+  public boolean displayAmmo()
+  public void reset()
+  public boolean isValidController()
+  public boolean isLogicControllable()
+  public float clipSize()
+  public void afterSync()
+  public void update()
+  public void checkSpawn()
+  public void remove()
+  public void team(Team team)
+  public void clearUnit()
+  public Unit unit() / public void unit(Unit unit)
+  boolean dead()
+  String ip()
+  String uuid()
+  String usid()
+  void kick(KickReason reason) / void kick(KickReason reason, long duration) / void kick(String reason) / void kick(String reason, long duration)
+  public void draw()
+  public boolean isPinging()
+  void drawPing()
+  void drawName()
+  String coloredName()  // @return name with a markup color prefix
+  String plainName()
+  void sendMessage(String text) / void sendMessage(String text, Player from) / void sendMessage(String text, Player from, String unformatted)
+  void sendUnformatted(String unformatted) / void sendUnformatted(Player from, String unformatted)
+  PlayerInfo getInfo()
+
+PosComp.java
+Java class (abstract) implements arc.math.geom.Position
+fields:
+  float x
+methods:
+  void set(float x, float y) / void set(Position pos)
+  void trns(float x, float y) / void trns(Position pos)
+  int tileX()
+  int tileY()
+  Floor floorOn()  // Returns air if this unit is on a non-air top block.
+  Block blockOn()
+  Building buildOn()
+  Tile tileOn()
+  boolean onSolid()
+  public float getX()
+  public float getY()
+
+PosTeamDef.java
+Java class
+// dummy target definition
+
+PowerGraphUpdaterComp.java
+Java class (abstract) implements mindustry.gen.Entityc
+fields:
+  public transient PowerGraph graph
+methods:
+  public void update()
+
+PuddleComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Puddlec, mindustry.gen.Drawc, mindustry.gen.Syncc
+fields:
+  private static final Rect rect
+  private static Puddle paramPuddle
+  private static Cons<Unit> unitCons
+  int id
+  float x
+  boolean added
+  transient float accepting
+  float amount
+  Tile tile
+  Liquid liquid
+methods:
+  public float getFlammability()
+  public void update()
+  public void draw()
+  public float clipSize()
+  public void remove()
+  public void afterRead()
+  public void afterSync()
+
+RotComp.java
+Java class (abstract) implements mindustry.gen.Entityc
+fields:
+  float rotation
+
+SegmentComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Rotc, mindustry.gen.Hitboxc, mindustry.gen.Unitc, mindustry.gen.Segmentc
+fields:
+  float x
+  UnitType type
+  Vec2 vel
+  transient Segmentc parentSegment
+  transient int segmentIndex
+  int parentId
+methods:
+  public boolean isHead()
+  public void addChild(Unit other)
+  public boolean ignoreSolids()
+  public void update()
+  public boolean playerControllable()
+  public boolean shouldUpdateController()
+  public boolean moving()
+  public int collisionLayer()
+  public boolean isCommandable()
+  public void afterSync()
+  public void afterReadAll()
+  public void beforeWrite()
+  public void checkParent()
+  public void updateSegment(Segmentc head, Segmentc parent, int index)
+
+ShieldComp.java
+Java class (abstract) implements mindustry.gen.Healthc, mindustry.gen.Posc
+fields:
+  float health
+  boolean dead
+  Team team
+  UnitType type
+  float shield  // Absorbs health damage.
+  transient float armor  // Subtracts an amount from damage.
+  transient float shieldAlpha  // Shield opacity.
+methods:
+  public void damage(float amount)
+  public void damagePierce(float amount, boolean withEffect)
+  public void damageArmorMult(float amount, float armorMult, boolean withEffect)
+  protected void rawDamage(float amount)
+  public void update()
+
+ShielderComp.java
+Java class (abstract) implements mindustry.gen.Damagec, mindustry.gen.Teamc, mindustry.gen.Posc
+methods:
+  void absorb()
+
+StatusComp.java
+Java class (abstract) implements mindustry.gen.Posc
+fields:
+  private Seq<StatusEntry> statuses
+  private transient Bits applied
+  transient float speedMultiplier  // note: armor is a special case; it is an override when >= 0, otherwise ignored
+  transient boolean disarmed
+  UnitType type
+  float maxHealth
+methods:
+  public void apply(StatusEffect effect) / public void apply(StatusEffect effect, float duration)  // Apply a status effect for 1 tick (for permanent effects) *
+  public float getDuration(StatusEffect effect)
+  public void setDuration(StatusEffect effect, float duration)
+  private void applyStatus(StatusEffect effect, float duration, boolean shorten)
+  public void clearStatuses()
+  public void unapply(StatusEffect effect)  // Removes a status effect.
+  public boolean isBoss()
+  public boolean isImmune(StatusEffect effect)
+  public Color statusColor()
+  public StatusEntry applyDynamicStatus()  // Applies a dynamic status effect, with stat multipliers that can be customized.
+  public void statusSpeed(float speed)  // Uses a dynamic status effect to override speed (in tiles/second).
+  public void statusDamageMultiplier(float damageMultiplier)  // Uses a dynamic status effect to change damage.
+  public void statusReloadMultiplier(float reloadMultiplier)  // Uses a dynamic status effect to change reload.
+  public void statusMaxHealth(float health)  // Uses a dynamic status effect to override max health.
+  public void statusBuildSpeed(float buildSpeed)  // Uses a dynamic status effect to override build speed.
+  public void statusDrag(float drag)  // Uses a dynamic status effect to override drag.
+  public void statusArmor(float armor)  // Uses a dynamic status effect to override armor.
+  public abstract boolean isGrounded()
+  public void update()
+  public Bits statusBits()
+  public void draw()
+  public boolean hasEffect(StatusEffect effect)
+
+SyncComp.java
+Java class (abstract) implements mindustry.gen.Entityc
+fields:
+  transient long lastUpdated
+methods:
+  void snapSync()  // all these method bodies are internally generated
+  void snapInterpolation()
+  void readSync(Reads read)
+  void writeSync(Writes write)
+  void readSyncManual(FloatBuffer buffer)
+  void writeSyncManual(FloatBuffer buffer)
+  void afterSync()
+  void interpolate()
+  boolean isSyncHidden(Team team)
+  void handleSyncHidden()
+  public void update()
+  public void remove()
+
+TankComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Hitboxc, mindustry.gen.Unitc, mindustry.gen.ElevationMovec
+fields:
+  float x
+  boolean disarmed
+  UnitType type
+  Team team
+  transient private float treadEffectTime
+  transient float treadTime
+  transient boolean walked
+  transient Floor lastDeepFloor
+methods:
+  public void update()
+  public float floorSpeedMultiplier()
+  public Floor drownFloor()
+  public void moveAt(Vec2 vector, float acceleration)
+  public void approach(Vec2 vector)
+
+TargetDummyComp.java
+Java class (abstract) implements mindustry.gen.Unitc, mindustry.gen.Healthc
+fields:
+  public Building building
+methods:
+  public void update()
+  public void rawDamage(float amount)
+  public boolean canLand()
+
+TeamComp.java
+Java class (abstract) implements mindustry.gen.Posc
+fields:
+  float x
+  Team team
+methods:
+  public boolean cheating()
+  boolean inFogTo(Team viewer)  // @return whether the center of this entity is visible to the viewing team.
+  public CoreBuild core()
+  public CoreBuild closestCore()
+  public CoreBuild closestEnemyCore()
+
+TimedComp.java
+Java class (abstract) implements mindustry.gen.Entityc, arc.math.Scaled
+fields:
+  float time
+methods:
+  public void update()  // called last so pooling and removal happens then.
+  public float fin()
+
+TimedKillComp.java
+Java class (abstract) implements mindustry.gen.Entityc, mindustry.gen.Healthc, arc.math.Scaled
+// basically just TimedComp but kills instead of removing.
+fields:
+  float time
+methods:
+  public void update()  // called last so pooling and removal happens then.
+  public float fin()
+
+TimerComp.java
+Java class (abstract)
+fields:
+  transient Interval timer
+methods:
+  public boolean timer(int index, float time)
+
+UnderwaterMoveComp.java
+Java class (abstract) implements mindustry.gen.WaterMovec
+fields:
+  UnitType type
+methods:
+  public void draw()
+  public int collisionLayer()
+  public boolean hittable()
+  public boolean targetable(Team targeter)
+
+UnitComp.java
+Java class (abstract) implements mindustry.gen.Healthc, mindustry.gen.Physicsc, mindustry.gen.Hitboxc, mindustry.gen.Statusc, mindustry.gen.Teamc, mindustry.gen.Itemsc, mindustry.gen.Rotc, mindustry.gen.Unitc, mindustry.gen.Weaponsc, mindustry.gen.Drawc, mindustry.gen.Syncc, mindustry.gen.Shieldc, mindustry.ui.Displayable, mindustry.logic.Ranged, mindustry.gen.Minerc, mindustry.gen.Builderc, mindustry.logic.Senseable, mindustry.logic.Settable
+fields:
+  private static final Vec2 tmp1
+  static final float warpDst
+  boolean dead
+  float x
+  Team team
+  int id
+  Tile mineTile
+  Vec2 vel
+  WeaponMount mounts
+  ItemStack stack
+  private UnitController controller
+  Ability abilities
+  UnitType type
+  boolean spawnedByCore
+  double flag
+  transient Trail trail
+  transient UnitType dockedType  // TODO could be better represented as a unit
+  transient String lastCommanded
+  transient float shadowAlpha
+  transient int lastFogPos
+  transient boolean hasTarget  // Only used in suicide units
+  private transient float resupplyTime
+  private transient boolean wasPlayer
+  private transient boolean wasHealed
+  float elevation
+  private transient boolean wasFlying
+  transient float drownTime
+  transient float splashTimer
+  transient Floor lastDrownFloor
+methods:
+  public boolean checkTarget(boolean targetAir, boolean targetGround)
+  public boolean isGrounded()
+  public boolean isFlying()
+  public boolean canDrown()
+  public Floor drownFloor()
+  public void wobble()
+  public void moveAt(Vec2 vector, float acceleration) / public void moveAt(Vec2 vector)
+  public float floorSpeedMultiplier()
+  public void unloaded()  // Called when this unit was unloaded from a factory or spawn point.
+  public void updateBoosting(boolean boost) / public void updateBoosting(boolean boost, boolean event)
+  public void movePref(Vec2 movement)  // Move based on preferred unit movement type.
+  public void approach(Vec2 vector)
+  public void rotateMove(Vec2 vec)
+  public void aimLook(Position pos) / public void aimLook(float x, float y)
+  public boolean isPathImpassable(int tileX, int tileY)
+  public float physicSize()  // @return approx.
+  public boolean canLand()  // @return whether there is solid, un-occupied ground under this unit.
+  public boolean inRange(Position other)
+  public boolean hasWeapons()
+  public float speed()  // @return speed with boost & floor multipliers factored in.
+  public float prefRotation()  // @return where the unit wants to look at.
+  public float ammof()
+  public boolean displayable()
+  public boolean isSyncHidden(Team team)
+  public void handleSyncHidden()
+  public boolean inFogTo(Team viewer)
+  public float range()
+  public float clipSize()
+  public double sense(LAccess sensor) / public double sense(Content content)
+  public Object senseObject(LAccess sensor)
+  public void setProp(LAccess prop, double value) / public void setProp(LAccess prop, Object value) / public void setProp(UnlockableContent content, double value)
+  public boolean canShoot()
+  public boolean isEnemy()
+  public boolean collides(Hitboxc other)
+  public void collision(Hitboxc other, float x, float y)
+  public int itemCapacity()
+  public float bounds()
+  public void controller(UnitController next) / public UnitController controller()
+  public void resetController()
+  public void set(UnitType def, UnitController controller)
+  public int collisionLayer()  // @return the collision layer to use for unit physics.
+  public void lookAt(float angle) / public void lookAt(Position pos) / public void lookAt(float x, float y)
+  public boolean isAI()
+  public boolean allowCommand()  // @return whether the unit *can* be commanded, even if its controller is not currently CommandAI.
+  public boolean isCommandable()  // @return whether the unit has a CommandAI controller
+  public boolean canTarget(Teamc other)
+  public CommandAI command()
+  public boolean isMissile()
+  public int count()
+  public int cap()
+  public void setType(UnitType type)
+  public boolean playerControllable()
+  public boolean targetable(Team targeter)
+  public boolean killable()
+  public boolean hittable()
+  public void afterSync()
+  public void afterRead()
+  public void afterReadAll()
+  public void add()
+  public void remove()
+  public void landed()
+  public void heal(float amount)
+  public void updateDrowning()
+  public void update()
+  public boolean shouldUpdateController()
+  public TextureRegion icon()  // @return a preview UI icon for this unit.
+  public void destroy()  // Actually destroys the unit, removing it and creating explosions.
+  public String getControllerName()  // @return name of direct or indirect player controller.
+  public void display(Table table)
+  public void draw()
+  public boolean isPlayer()
+  public Player getPlayer()
+  public void killed()
+  public void kill()
+  public String toString()
+
+UnitTetherComp.java
+Java class (abstract) implements mindustry.gen.Unitc
+// A unit that depends on a units's existence; if that unit is removed, it despawns.
+fields:
+  UnitType type
+  Team team
+  public transient Unit spawner  // spawner unit cannot be read directly for technical reasons.
+  public int spawnerUnitId
+methods:
+  public void afterRead()
+  public void afterSync()
+  public void update()
+
+VelComp.java
+Java class (abstract) implements mindustry.gen.Posc
+fields:
+  float x
+  Vec2 vel
+  transient float drag
+methods:
+  public void update()  // velocity needs to be called first, as it affects delta and lastPosition
+  SolidPred solidity()  // @return function to use for check solid state.
+  boolean ignoreSolids()
+  boolean canPass(int tileX, int tileY)  // @return whether this entity can move through a location
+  boolean canPassOn()  // @return whether this entity can exist on its current location
+  boolean moving()
+  void move(Vec2 v) / void move(float cx, float cy)
+  void velAddNet(Vec2 v) / void velAddNet(float vx, float vy)
+
+WaterCrawlComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Velc, mindustry.gen.Hitboxc, mindustry.gen.Unitc, mindustry.gen.Crawlc
+fields:
+  float x
+  UnitType type
+methods:
+  public SolidPred solidity()
+  public boolean onSolid()
+  public float floorSpeedMultiplier()
+  public boolean onLiquid()
+
+WaterMoveComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Velc, mindustry.gen.Hitboxc, mindustry.gen.Unitc
+fields:
+  float x
+  UnitType type
+  private transient Trail tleft
+  private transient Color trailColor
+methods:
+  public void update()
+  public void add()
+  public void draw()
+  public SolidPred solidity()
+  public boolean onSolid()
+  public float floorSpeedMultiplier()
+  public boolean onLiquid()
+
+WeaponsComp.java
+Java class (abstract) implements mindustry.gen.Teamc, mindustry.gen.Posc, mindustry.gen.Rotc, mindustry.gen.Velc, mindustry.gen.Statusc
+fields:
+  float x
+  boolean disarmed
+  UnitType type
+  WeaponMount mounts  // weapon mount array, never null
+  transient boolean isRotate
+  float aimX
+  boolean isShooting
+methods:
+  void setWeaponRotation(float rotation)
+  void setupWeapons(UnitType def)
+  void controlWeapons(boolean rotateShoot) / void controlWeapons(boolean rotate, boolean shoot)
+  void aim(Position pos) / void aim(float x, float y) / void aim(float x, float y, boolean clearTarget)  // Aim at something.
+  boolean canShoot()
+  public void remove()
+  public void update()  // Update shooting and rotation for this unit.
+
+WorldLabelComp.java
+Java class (abstract) implements mindustry.gen.Posc, mindustry.gen.Drawc, mindustry.gen.Syncc
+// Component/entity for labels in world space.
+fields:
+  int id
+  float x
+  boolean added
+  public static final byte flagBackground
+  public String text
+  public float fontSize
+  public byte flags  // Flags are packed into a byte for sync efficiency; see the flag static values.
+  public Posc parent  // If not null, this label gets set to the parent position with x, y used as offsets.
+  public transient float duration  // Duration in seconds.
+  public transient Runnable expired
+methods:
+  public float clipSize()
+  public void update()
+  public void draw()
+  public static void drawAt(String text, float x, float y, float layer, int flags, float fontSize, int align, int lineAlign)
+  public void show(Player player)  // Makes this label visible only to the specific player.
+  public void hide(Player player) / public void hide()  // Hides this player-specific label.
+

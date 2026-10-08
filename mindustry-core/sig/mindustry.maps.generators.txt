@@ -1,0 +1,103 @@
+BaseGenerator.java
+Java class
+fields:
+  private static final Vec2 axis
+  private static final int range
+  private static boolean insanity
+  private Tiles tiles
+  private Seq<Tile> cores
+methods:
+  public static Block getDifficultyWall(int size, float difficulty)
+  public void generate(Tiles tiles, Seq<Tile> cores, Tile spawn, Team team, Sector sector, float difficulty)
+  public void postGenerate()
+  void pass(Cons<Tile> cons)
+  public static boolean tryPlace(BasePart part, int x, int y, Team team, Rand rand) / public static boolean tryPlace(BasePart part, int x, int y, Team team, Rand random, Intc2 posc)  // Tries to place a base part at a certain location with a certain team.
+  static void set(Tile tile, Item item)
+  static boolean isTaken(Block block, int x, int y)
+  static boolean overlaps(int x, int y)
+
+BasicGenerator.java
+Java class (abstract) implements mindustry.maps.generators.WorldGenerator
+fields:
+  protected static final ShortSeq ints1
+  protected Rand rand
+  protected int width
+  protected Tiles tiles
+  protected Block floor  // for drawing
+  public Schematic defaultLoadout
+methods:
+  public void generate(Tiles tiles, WorldParams params) / protected void generate()
+  public void median(int radius) / public void median(int radius, double percentile) / public void median(int radius, double percentile, Block targetFloor)
+  public void ores(Seq<Block> ores)
+  public void ore(Block dest, Block src, float i, float thresh)
+  public void oreAround(Block ore, Block wall, int radius, float scl, float thresh)
+  public void wallOre(Block src, Block dest, float scl, float thresh)
+  public void cliffs()
+  public void terrain(Block dst, float scl, float mag, float cmag)
+  public void noise(Block floor, Block block, int octaves, float falloff, float scl, float threshold) / protected float noise(float x, float y, double scl, double mag) / protected abstract float noise(float x, float y, double octaves, double falloff, double scl, double mag) / protected float noise(float x, float y, double octaves, double falloff, double scl)
+  public void overlay(Block floor, Block block, float chance, int octaves, float falloff, float scl, float threshold)
+  public void tech() / public void tech(Block floor1, Block floor2, Block wall)
+  public void distort(float scl, float mag)
+  public void scatter(Block target, Block dst, float chance)
+  public void each(Intc2 r)
+  public void cells(int iterations) / public void cells(int iterations, int birthLimit, int deathLimit, int cradius)
+  public void pass(Intc2 r)
+  public boolean nearWall(int x, int y)
+  public boolean nearAir(int x, int y)
+  public void removeWall(int cx, int cy, int rad, Boolf<Block> pred)
+  public boolean near(int cx, int cy, int rad, Block block)
+  public void decoration(float chance)
+  public void blend(Block floor, Block around, float radius)
+  public void brush(Seq<Tile> path, int rad)
+  public void erase(int cx, int cy, int rad)
+  public Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, DistanceHeuristic dh)
+  public void trimDark()
+  public void inverseFloodFill(Tile start)
+
+BlankPlanetGenerator.java
+Java class extends mindustry.maps.generators.PlanetGenerator
+// A planet generator that provides no weather, height, color or bases.
+methods:
+  public void addWeather(Sector sector, Rules rules)
+  public void generate(Tiles tiles, Sector sec, WorldParams params)
+
+FileMapGenerator.java
+Java class implements mindustry.maps.generators.WorldGenerator
+fields:
+  public final Map map
+  public final SectorPreset preset
+ctors:
+  public FileMapGenerator(String mapName, SectorPreset preset) / public FileMapGenerator(Map map, SectorPreset preset) / public FileMapGenerator(SectorPreset preset)  // If you use this constructor, make sure to override generate()!
+methods:
+  public void generate(Tiles tiles, WorldParams params)
+
+PlanetGenerator.java
+Java class (abstract) extends mindustry.maps.generators.BasicGenerator implements mindustry.graphics.g3d.HexMesher
+fields:
+  protected static ItemSeq tmpItems
+  public int baseSeed
+  public int seed
+  protected Sector sector
+methods:
+  public void generateSector(Sector sector)
+  public void onSectorCaptured(Sector sector)
+  public void onSectorLost(Sector sector)
+  public void beforeSaveWrite(Sector sector)
+  public void getLockedText(Sector hovered, StringBuilder out)
+  public TextureRegion getLockedIcon(Sector hovered)
+  public boolean allowLanding(Sector sector)  // @return whether to allow landing on the specified procedural sector
+  public Sector findLaunchCandidate(Sector destination, Sector selected)
+  public boolean allowAcceleratorLanding(Sector sector)  // @return whether to allow landing on the specified procedural sector
+  public void addWeather(Sector sector, Rules rules)
+  protected void genTile(Vec3 position, TileGen tile)
+  protected float noise(float x, float y, double octaves, double falloff, double scl, double mag)
+  public float getSizeScl()  // @return the scaling factor for sector rects.
+  public int getSectorSize(Sector sector)
+  public void generate(Tiles tiles, Sector sec, WorldParams params)
+
+WorldGenerator.java
+Java interface
+methods:
+  void generate(Tiles tiles, WorldParams params)
+  default void postGenerate(Tiles tiles)  // Do not modify tiles here.
+

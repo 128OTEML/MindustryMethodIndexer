@@ -1,0 +1,119 @@
+// BlinkEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) color1 = Strings.parseColor(params[0], color1);
+        if(params.length > 1) color2 = Strings.parseColor(params[1], color2);
+        if(params.length > 2) frequency = Strings.parseFloat(params[2], 1f);
+        if(params.length > 3) threshold = Strings.parseFloat(params[3], 0.5f);
+    }
+
+// BlinkEffect.java : protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+    @Override
+    protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta){
+        // Calculate progress
+        float frequencyMod = (1f / frequency) * defaultFrequency;
+        float progress = calculateProgress(frequencyMod);
+
+        // Calculate color
+        if(glyph.color == null) glyph.color = new Color(Color.white);
+        glyph.color.set(progress <= threshold ? color1 : color2);
+    }
+
+// EaseEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) intensity = Strings.parseFloat(params[1], 1f);
+        if(params.length > 2) elastic = Boolean.parseBoolean(params[2]);
+    }
+
+// FadeEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) color1 = Strings.parseColor(params[0], color1);
+        if(params.length > 1) color2 = Strings.parseColor(params[1], color2);
+        if(params.length > 2) alpha1 = Strings.parseFloat(params[2], 0f);
+        if(params.length > 3) alpha2 = Strings.parseFloat(params[3], 1f);
+        if(params.length > 4) fadeDuration = Strings.parseFloat(params[4], 1f);
+    }
+
+// GradientEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) color1 = Strings.parseColor(params[0], color1);
+        if(params.length > 1) color2 = Strings.parseColor(params[1], color2);
+        if(params.length > 2) distance = Strings.parseFloat(params[2], 1f);
+        if(params.length > 3) frequency = Strings.parseFloat(params[3], 1f);
+    }
+
+// GradientEffect.java : protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+    @Override
+    protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta){
+        // Calculate progress
+        float distanceMod = (1f / distance) * (1f - defaultDistance);
+        float frequencyMod = (1f / frequency) * defaultFrequency;
+        float progress = calculateProgress(frequencyMod, distanceMod * localIndex, true);
+
+        // Calculate color
+        if(glyph.color == null) glyph.color = new Color(Color.white);
+        glyph.color.set(color1).lerp(color2, progress);
+    }
+
+// JumpEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) frequency = Strings.parseFloat(params[1], 1f);
+        if(params.length > 2) intensity = Strings.parseFloat(params[2], 1f);
+    }
+
+// RainbowEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) frequency = Strings.parseFloat(params[1], 1f);
+        if(params.length > 2) saturation = Strings.parseFloat(params[2], 1f);
+        if(params.length > 3) brightness = Strings.parseFloat(params[3], 1f);
+    }
+
+// ShakeEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) intensity = Strings.parseFloat(params[1], 1f);
+    }
+
+// SickEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) intensity = Strings.parseFloat(params[1], 1f);
+    }
+
+// WaveEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distance = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) frequency = Strings.parseFloat(params[1], 1f);
+        if(params.length > 2) intensity = Strings.parseFloat(params[2], 1f);
+    }
+
+// WindEffect.java : public void applyParams(String[] params)
+    @Override
+    public void applyParams(String[] params){
+        if(params.length > 0) distanceX = Strings.parseFloat(params[0], 1f);
+        if(params.length > 1) distanceY = Strings.parseFloat(params[1], 1f);
+        if(params.length > 2) spacing = Strings.parseFloat(params[2], 1f);
+        if(params.length > 3) intensity = Strings.parseFloat(params[3], 1f);
+    }
+
+// WindEffect.java : public void update(float delta)
+    @Override
+    public void update(float delta){
+        super.update(delta);
+
+        // Update noise cursor
+        noiseCursorX += 0.1f * intensity * defaultIntensity;
+        noiseCursorY += 0.1f * intensity * defaultIntensity;
+    }
+

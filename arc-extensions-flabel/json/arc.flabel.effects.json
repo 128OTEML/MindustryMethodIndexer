@@ -1,0 +1,1252 @@
+[ {
+  "file" : "BlinkEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Blinks the entire text in two different colors at once, without interpolation.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultFrequency",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultFrequency",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color1",
+    "desc" : "First color of the effect.",
+    "overloads" : null,
+    "name" : "color1",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color2",
+    "desc" : "Second color of the effect.",
+    "overloads" : null,
+    "name" : "color2",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float frequency",
+    "desc" : "How frequently the color pattern should move through the text.",
+    "overloads" : null,
+    "name" : "frequency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float threshold",
+    "desc" : "Point to switch colors.",
+    "overloads" : null,
+    "name" : "threshold",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "EaseEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Moves the text vertically easing it into the final position.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultDistance",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultDistance",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float defaultIntensity",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultIntensity",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How much of their height they should move",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How fast the glyphs should move",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean elastic",
+    "desc" : "Whether or not the glyphs have an elastic movement",
+    "overloads" : null,
+    "name" : "elastic",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private IntFloatMap timePassedByGlyphIndex",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timePassedByGlyphIndex",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "FadeEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Fades the text's color from between colors or alphas.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Color color1",
+    "desc" : "First color of the effect.",
+    "overloads" : null,
+    "name" : "color1",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Color color2",
+    "desc" : "Second color of the effect.",
+    "overloads" : null,
+    "name" : "color2",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float alpha1",
+    "desc" : "First alpha of the effect, in case a color isn't provided.",
+    "overloads" : null,
+    "name" : "alpha1",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float alpha2",
+    "desc" : "Second alpha of the effect, in case a color isn't provided.",
+    "overloads" : null,
+    "name" : "alpha2",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float fadeDuration",
+    "desc" : "Duration of the fade effect",
+    "overloads" : null,
+    "name" : "fadeDuration",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private IntFloatMap timePassedByGlyphIndex",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timePassedByGlyphIndex",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "GradientEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Tints the text in a gradient pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultDistance",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultDistance",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float defaultFrequency",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultFrequency",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color1",
+    "desc" : "First color of the gradient.",
+    "overloads" : null,
+    "name" : "color1",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color color2",
+    "desc" : "Second color of the gradient.",
+    "overloads" : null,
+    "name" : "color2",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How extensive the rainbow effect should be.",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float frequency",
+    "desc" : "How frequently the color pattern should move through the text.",
+    "overloads" : null,
+    "name" : "frequency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "JumpEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Makes the text jumps and falls as if there was gravity.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultFrequency",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultFrequency",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How much of their height they should move",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float frequency",
+    "desc" : "How frequently the wave pattern repeats",
+    "overloads" : null,
+    "name" : "frequency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How fast the glyphs should move",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RainbowEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Tints the text in a rainbow pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultDistance",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultDistance",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How extensive the rainbow effect should be.",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float frequency",
+    "desc" : "How frequently the color pattern should move through the text.",
+    "overloads" : null,
+    "name" : "frequency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float saturation",
+    "desc" : "Color saturation",
+    "overloads" : null,
+    "name" : "saturation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float brightness",
+    "desc" : "Color brightness",
+    "overloads" : null,
+    "name" : "brightness",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ShakeEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Shakes the text in a random pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultDistance",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultDistance",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final FloatSeq lastOffsets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastOffsets",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How far the glyphs should move",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How fast the glyphs should move",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SickEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Drips the text in a random pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultFrequency",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultFrequency",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How far the glyphs should move",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How fast the glyphs should move",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private IntSeq indices",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "indices",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "WaveEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Moves the text vertically in a sine wave pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultFrequency",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultFrequency",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distance",
+    "desc" : "How much of their height they should move",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float frequency",
+    "desc" : "How frequently the wave pattern repeats",
+    "overloads" : null,
+    "name" : "frequency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How fast the glyphs should move",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "WindEffect.java",
+  "pkg" : "arc.flabel.effects",
+  "type" : "Java class extends arc.flabel.FEffect",
+  "typeDesc" : "Moves the text in a wind pattern.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float defaultSpacing",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultSpacing",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float noiseCursorX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "noiseCursorX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float noiseCursorY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "noiseCursorY",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distanceX",
+    "desc" : "How much of their line height glyphs should move in the X axis",
+    "overloads" : null,
+    "name" : "distanceX",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float distanceY",
+    "desc" : "How much of their line height glyphs should move in the Y axis",
+    "overloads" : null,
+    "name" : "distanceY",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float spacing",
+    "desc" : "How much space there should be between waves",
+    "overloads" : null,
+    "name" : "spacing",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float intensity",
+    "desc" : "How strong the wind should be",
+    "overloads" : null,
+    "name" : "intensity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void applyParams(String[] params)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyParams",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "params",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onApply",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "label",
+      "type" : "FLabel"
+    }, {
+      "name" : "glyph",
+      "type" : "FGlyph"
+    }, {
+      "name" : "localIndex",
+      "type" : "int"
+    }, {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

@@ -1,0 +1,691 @@
+// AirBlock.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){}
+
+// AirBlock.java : public void load()
+    @OverrideCallSuper
+    @Override
+    public void load(){}
+
+// AirBlock.java : public void init()
+    @OverrideCallSuper
+    @Override
+    public void init(){
+        decoration = this;
+    }
+
+// AirBlock.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return true;
+    }
+
+// AirBlock.java : public TextureRegion[] variantRegions()
+    @Override
+    public TextureRegion[] variantRegions(){
+        if(variantRegions == null){
+            variantRegions = new TextureRegion[]{Core.atlas.find("clear")};
+        }
+        return variantRegions;
+    }
+
+// CharacterOverlay.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        Draw.color(color);
+        int letterChar = CharOverlayData.character(tile.overlayData);
+        Draw.rect(letterRegions[letterChar], tile.worldx(), tile.worldy(), CharOverlayData.rotation(tile.overlayData) * 90f);
+        Draw.color();
+    }
+
+// CharacterOverlay.java : public Object getConfig(Tile tile)
+    @Override
+    public Object getConfig(Tile tile){
+        return (int)tile.overlayData;
+    }
+
+// CharacterOverlay.java : public void onPicked(Tile tile)
+    @Override
+    public void onPicked(Tile tile){
+        Vars.control.input.rotation = CharOverlayData.rotation(tile.overlayData);
+    }
+
+// CharacterOverlay.java : public void buildEditorConfig(Table table)
+    @Override
+    public void buildEditorConfig(Table table){
+        char value = chars.charAt(lastConfig instanceof Integer i ? CharOverlayData.character(i.byteValue()) : 0);
+        table.field(value + "", val -> {
+            if(val.length() == 1){
+                lastConfig = (int)charToData(val.charAt(0));
+            }
+        }).valid(t -> t.length() == 1 && chars.indexOf(Character.toUpperCase(t.charAt(0))) != -1).maxTextLength(1);
+    }
+
+// CharacterOverlay.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+        byte data = 0;
+        if(config instanceof Integer i){
+            data = i.byteValue();
+        }
+        tile.overlayData = CharOverlayData.get(data, (byte)rotation);
+    }
+
+// CharacterOverlay.java : public void editorPicked(Tile tile)
+    @Override
+    public void editorPicked(Tile tile){
+        lastConfig = (int)CharOverlayData.character(tile.overlayData);
+    }
+
+// CharacterOverlay.java : public static byte charToData(char c)
+    public static byte charToData(char c){
+        int index = chars.indexOf(Character.toUpperCase(c));
+        return index == -1 ? 0 : (byte)index;
+    }
+
+// Cliff.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        Draw.color(Tmp.c1.set(tile.floor().mapColor).mul(1.6f));
+        Draw.rect(cliffs[tile.data & 0xff], tile.worldx(), tile.worldy());
+        Draw.color();
+    }
+
+// Cliff.java : public int minimapColor(Tile tile)
+    @Override
+    public int minimapColor(Tile tile){
+        return Tmp.c1.set(tile.floor().mapColor).mul(1.2f).rgba();
+    }
+
+// ColoredFloor.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        lastConfig = defaultColorRgba = defaultColor.rgba();
+    }
+
+// ColoredFloor.java : public void buildEditorConfig(Table table)
+    @Override
+    public void buildEditorConfig(Table table){
+        showColorEdit(table, this);
+    }
+
+// ColoredFloor.java : public Object getConfig(Tile tile)
+    @Override
+    public Object getConfig(Tile tile){
+        return tile.extraData;
+    }
+
+// ColoredFloor.java : public void drawOverlay(Tile tile)
+    @Override
+    public void drawOverlay(Tile tile){
+        //make sure color doesn't carry over
+        Draw.color();
+        super.drawOverlay(tile);
+    }
+
+// ColoredFloor.java : public void floorChanged(Tile tile)
+    @Override
+    public void floorChanged(Tile tile){
+        //reset to white
+        if(tile.extraData == 0){
+            tile.extraData = defaultColorRgba;
+        }
+    }
+
+// ColoredFloor.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+        //config is assumed to be an integer RGBA color
+        if(config instanceof Integer i){
+            tile.extraData = i;
+        }
+    }
+
+// ColoredFloor.java : public void editorPicked(Tile tile)
+    @Override
+    public void editorPicked(Tile tile){
+        lastConfig = tile.extraData;
+    }
+
+// ColoredFloor.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        if(plan.config instanceof Integer i){
+            Draw.tint(Tmp.c1.set(i | 0xff));
+        }
+        drawDefaultPlanRegion(plan, list);
+    }
+
+// ColoredFloor.java : public boolean checkAutotileSame(Tile tile, Tile other)
+    @Override
+    public boolean checkAutotileSame(Tile tile, @Nullable Tile other){
+        return other != null && (this == tile.floor() ? other.floor() : other.overlay()).blendGroup == blendGroup && ((tile.extraData & 0xff) == flagIgnoreDifferentColor || tile.extraData == other.extraData);
+    }
+
+// ColoredFloor.java : public int minimapColor(Tile tile)
+    @Override
+    public int minimapColor(Tile tile){
+        return tile.extraData | 0xff;
+    }
+
+// ColoredWall.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        lastConfig = defaultColorRgba = defaultColor.rgba();
+    }
+
+// ColoredWall.java : public Object getConfig(Tile tile)
+    @Override
+    public Object getConfig(Tile tile){
+        return tile.extraData;
+    }
+
+// ColoredWall.java : public void buildEditorConfig(Table table)
+    @Override
+    public void buildEditorConfig(Table table){
+        ColoredFloor.showColorEdit(table, this);
+    }
+
+// ColoredWall.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        //make sure to mask out the alpha channel - it's generally undesirable, and leads to invisible blocks when thtoe data is not initialized
+        Draw.color(tile.extraData | 0xff);
+        super.drawBase(tile);
+        Draw.color();
+    }
+
+// ColoredWall.java : public void blockChanged(Tile tile)
+    @Override
+    public void blockChanged(Tile tile){
+        //reset to white on first placement
+        if(tile.extraData == 0){
+            tile.extraData = defaultColorRgba;
+        }
+    }
+
+// ColoredWall.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+        //config is assumed to be an integer RGBA color
+        if(config instanceof Integer i){
+            tile.extraData = i;
+        }
+    }
+
+// ColoredWall.java : public void editorPicked(Tile tile)
+    @Override
+    public void editorPicked(Tile tile){
+        lastConfig = tile.extraData;
+    }
+
+// ColoredWall.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        if(plan.config instanceof Integer i){
+            Draw.tint(Tmp.c1.set(i | 0xff));
+        }
+        drawDefaultPlanRegion(plan, list);
+    }
+
+// ColoredWall.java : public boolean checkAutotileSame(Tile tile, Tile other)
+    @Override
+    public boolean checkAutotileSame(Tile tile, @Nullable Tile other){
+        return other != null && other.block() == this && ((tile.extraData == flagIgnoreDifferentColor) || tile.extraData == other.extraData);
+    }
+
+// ColoredWall.java : public boolean isDarkened(Tile tile)
+    @Override
+    public boolean isDarkened(Tile tile){
+        return (tile.extraData == flagApplyDarkness);
+    }
+
+// ColoredWall.java : public int minimapColor(Tile tile)
+    @Override
+    public int minimapColor(Tile tile){
+        return tile.extraData | 0xff;
+    }
+
+// EmptyFloor.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        //draws only edges, never itself
+        drawEdges(tile);
+
+        Floor floor = tile.overlay();
+        if(floor != Blocks.air && floor != this){
+            floor.drawBase(tile);
+        }
+    }
+
+// Floor.java : public TextureRegion getDisplayIcon(Tile tile)
+    @Override
+    public TextureRegion getDisplayIcon(Tile tile){
+        return liquidDrop == null ? super.getDisplayIcon(tile) : liquidDrop.uiIcon;
+    }
+
+// Floor.java : public String getDisplayName(Tile tile)
+    @Override
+    public String getDisplayName(Tile tile){
+        return liquidDrop == null ? super.getDisplayName(tile) : liquidDrop.localizedName;
+    }
+
+// Floor.java : public boolean checkAutotileSame(Tile tile, Tile other)
+    public boolean checkAutotileSame(Tile tile, @Nullable Tile other){
+        return other != null && (this == tile.floor() ? other.floor() : other.overlay()).blendGroup == blendGroup;
+    }
+
+// Floor.java : public int variant(int x, int y) / public int variant(int x, int y, int max)
+    public int variant(int x, int y){
+        return variant(x, y, variantRegions.length);
+    }
+
+// Floor.java : public void drawOverlay(Tile tile)
+    public void drawOverlay(Tile tile){
+        Floor floor = tile.overlay();
+        if(floor != Blocks.air && floor != this){
+            floor.drawBase(tile);
+        }
+    }
+
+// Floor.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(Core.atlas.has(name) ? name : name + "1")};
+    }
+
+// Floor.java : public void floorChanged(Tile tile)
+    public void floorChanged(Tile tile){}
+
+// Floor.java : public boolean shouldIndex(Tile tile)
+    public boolean shouldIndex(Tile tile){
+        return true;
+    }
+
+// Floor.java : public boolean updateRender(Tile tile)
+    public boolean updateRender(Tile tile){
+        return false;
+    }
+
+// Floor.java : public void renderUpdate(UpdateRenderState tile)
+    public void renderUpdate(UpdateRenderState tile){
+
+    }
+
+// Floor.java : public boolean hasSurface()
+    public boolean hasSurface(){
+        return !isLiquid && !solid;
+    }
+
+// Floor.java : public boolean isDeep()
+    public boolean isDeep(){
+        return drownTime > 0;
+    }
+
+// Floor.java : public int realBlendId(Tile tile)
+    public int realBlendId(Tile tile){
+        if(tile.floor().isLiquid && !tile.overlay().isAir() && !(tile.overlay() instanceof OreBlock)){
+            return -((tile.overlay().blendId) | (tile.floor().blendId << 15));
+        }
+        return blendId;
+    }
+
+// Floor.java : protected TextureRegion[][] edges(int x, int y)
+    protected TextureRegion[][] edges(int x, int y){
+        return blendGroup.asFloor().edges;
+    }
+
+// Floor.java : protected TextureRegion edge(int x, int y, int rx, int ry)
+    protected TextureRegion edge(int x, int y, int rx, int ry){
+        return edges(x, y)[rx][2 - ry];
+    }
+
+// Floor.java : protected boolean doEdge(Tile tile, Tile otherTile, Floor other)
+    protected boolean doEdge(Tile tile, Tile otherTile, Floor other){
+        return (other.realBlendId(otherTile) > realBlendId(tile) || edges(tile.x, tile.y) == null);
+    }
+
+// Floor.java : public boolean damages()
+    public boolean damages(){
+        return damageTaken > 0f || (status != null && status.damage > 0f);
+    }
+
+// OreBlock.java : public void setup(Item ore)
+    public void setup(Item ore){
+        this.localizedName = ore.localizedName + (wallOre ? " " + Core.bundle.get("wallore") : "");
+        this.itemDrop = ore;
+        this.mapColor.set(ore.color);
+    }
+
+// OreBlock.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        if(itemDrop != null){
+            setup(itemDrop);
+        }else{
+            throw new IllegalArgumentException(name + " must have an item drop!");
+        }
+    }
+
+// OreBlock.java : public String getDisplayName(Tile tile)
+    @Override
+    public String getDisplayName(Tile tile){
+        return itemDrop.localizedName;
+    }
+
+// OverlayFloor.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return !wallOre || tile.block().solid;
+    }
+
+// OverlayFloor.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], tile.worldx(), tile.worldy());
+    }
+
+// Prop.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        Draw.z(layer);
+        Draw.rect(variants > 0 ? variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))] : region, tile.worldx(), tile.worldy());
+    }
+
+// Prop.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return variants == 0 ? super.icons() : new TextureRegion[]{Core.atlas.find(name + "1")};
+    }
+
+// RemoveOre.java : public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+    @Override
+    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha){
+        Draw.reset();
+        Draw.alpha(alpha * (valid ? 1f : 0.2f));
+        float prevScale = Draw.scl;
+        Draw.scl *= plan.animScale;
+        drawPlanRegion(plan, list);
+        Draw.scl = prevScale;
+        Draw.reset();
+    }
+
+// RemoveOre.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return tile.overlay() != Blocks.air;
+    }
+
+// RemoveOre.java : public boolean canReplace(Block other)
+    @Override
+    public boolean canReplace(Block other){
+        return true;
+    }
+
+// RemoveOre.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, Object config){
+        tile.setOverlay(Blocks.air);
+    }
+
+// RemoveWall.java : public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+    @Override
+    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha){
+        Draw.reset();
+        Draw.alpha(alpha * (valid ? 1f : 0.2f));
+        float prevScale = Draw.scl;
+        Draw.scl *= plan.animScale;
+        drawPlanRegion(plan, list);
+        Draw.scl = prevScale;
+        Draw.reset();
+    }
+
+// RemoveWall.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return tile.block() != Blocks.air;
+    }
+
+// RemoveWall.java : public boolean canReplace(Block other)
+    @Override
+    public boolean canReplace(Block other){
+        return other != Blocks.air && !other.synthetic();
+    }
+
+// RemoveWall.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, Object config){
+        tile.setBlock(Blocks.air);
+        if(tile.overlay().wallOre){
+            tile.setOverlay(Blocks.air);
+        }
+    }
+
+// RuneOverlay.java : public static String bytesToString(byte[] data)
+    public static String bytesToString(byte[] data){
+        StringBuilder result = new StringBuilder();
+        for(byte b : data){
+            result.append((char)((b & 0xff) + unicodeOffset));
+        }
+        return result.toString();
+    }
+
+// RuneOverlay.java : public static byte[] stringToBytes(String s)
+    public static byte[] stringToBytes(String s){
+        byte[] bytes = new byte[s.length()];
+        for(int i = 0; i < s.length(); i++){
+            bytes[i] = (byte)(s.charAt(i) - unicodeOffset);
+        }
+        return bytes;
+    }
+
+// RuneOverlay.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        Draw.color(color);
+        if((tile.overlayData & 0xff) < characters){
+            Draw.rect(letterRegions[tile.overlayData & 0xff], tile.worldx(), tile.worldy());
+        }
+        Draw.color();
+    }
+
+// RuneOverlay.java : public Object getConfig(Tile tile)
+    @Override
+    public Object getConfig(Tile tile){
+        return (int)tile.overlayData;
+    }
+
+// RuneOverlay.java : public void onPicked(Tile tile)
+    @Override
+    public void onPicked(Tile tile){
+        Vars.control.input.rotation = CharOverlayData.rotation(tile.overlayData);
+    }
+
+// RuneOverlay.java : public void buildEditorConfig(Table table)
+    @Override
+    public void buildEditorConfig(Table table){
+        int value = lastConfig instanceof Integer i ? i : 0;
+        table.field(value + "", val -> lastConfig = Strings.parseInt(val))
+        .valid(t -> Strings.canParsePositiveInt(t) && Strings.parseInt(t, 999) < characters);
+    }
+
+// RuneOverlay.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+        if(config instanceof Integer i){
+            tile.overlayData = i.byteValue();
+        }
+    }
+
+// RuneOverlay.java : public void editorPicked(Tile tile)
+    @Override
+    public void editorPicked(Tile tile){
+        lastConfig = tile.overlayData;
+    }
+
+// ShallowLiquid.java : public void set(Block liquid, Block floor)
+    public void set(Block liquid, Block floor){
+        this.liquidBase = liquid.asFloor();
+        this.floorBase = floor.asFloor();
+
+        isLiquid = true;
+        variants = floorBase.variants;
+        status = liquidBase.status;
+        liquidDrop = liquidBase.liquidDrop;
+        cacheLayer = liquidBase.cacheLayer;
+        shallow = true;
+    }
+
+// SpawnBlock.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        if(tile instanceof EditorTile){
+            super.drawBase(tile);
+        }
+    }
+
+// StaticWall.java : public int variant(int x, int y, int max)
+    public int variant(int x, int y, int max){
+        return Mathf.randomSeed(Point2.pack(x, y), 0, Math.max(0, max - 1));
+    }
+
+// StaticWall.java : public boolean checkAutotileSame(Tile tile, Tile other)
+    public boolean checkAutotileSame(Tile tile, @Nullable Tile other){
+        return other != null && other.block() == this;
+    }
+
+// StaticWall.java : public boolean canReplace(Block other)
+    @Override
+    public boolean canReplace(Block other){
+        return other instanceof StaticWall || super.canReplace(other);
+    }
+
+// StaticWall.java : boolean eq(int rx, int ry)
+    boolean eq(int rx, int ry){
+        return rx < world.width() - 1 && ry < world.height() - 1
+            && world.tile(rx + 1, ry).block() == this
+            && world.tile(rx, ry + 1).block() == this
+            && world.tile(rx, ry).block() == this
+            && world.tile(rx + 1, ry + 1).block() == this;
+    }
+
+// SteamVent.java : public void drawMain(Tile tile)
+    @Override
+    public void drawMain(Tile tile){
+        if(parent instanceof Floor floor){
+            floor.drawMain(tile);
+        }
+
+        if(checkAdjacent(tile)){
+            Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], tile.worldx() - tilesize, tile.worldy() - tilesize);
+        }
+    }
+
+// SteamVent.java : public boolean updateRender(Tile tile)
+    @Override
+    public boolean updateRender(Tile tile){
+        return checkAdjacent(tile);
+    }
+
+// SteamVent.java : public boolean shouldIndex(Tile tile)
+    @Override
+    public boolean shouldIndex(Tile tile){
+        return isCenterVent(tile);
+    }
+
+// SteamVent.java : public boolean isCenterVent(Tile tile)
+    public boolean isCenterVent(Tile tile){
+        Tile topRight = tile.nearby(1, 1);
+        return topRight != null && topRight.floor() == tile.floor() && checkAdjacent(topRight);
+    }
+
+// SteamVent.java : public void renderUpdate(UpdateRenderState state)
+    @Override
+    public void renderUpdate(UpdateRenderState state){
+        if(state.tile.nearby(-1, -1) != null && state.tile.nearby(-1, -1).block() == Blocks.air && (state.data += Time.delta) >= effectSpacing){
+            effect.at(state.tile.x * tilesize - tilesize, state.tile.y * tilesize - tilesize, effectColor);
+            state.data = 0f;
+        }
+    }
+
+// SteamVent.java : public boolean checkAdjacent(Tile tile)
+    public boolean checkAdjacent(Tile tile){
+        for(var point : offsets){
+            Tile other = Vars.world.tile(tile.x + point.x, tile.y + point.y);
+            if(other == null || other.floor() != this){
+                return false;
+            }
+        }
+        return true;
+    }
+
+// TallBlock.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        hasShadow = true;
+    }
+
+// TallBlock.java : public void drawShadow(Tile tile)
+    @Override
+    public void drawShadow(Tile tile){
+
+    }
+
+// TallBlock.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return variants == 0 ? super.icons() : new TextureRegion[]{Core.atlas.find(name + "1")};
+    }
+
+// TiledFloor.java : long state(Tile tile)
+    long state(Tile tile){
+        return world.tiles.getTmpFloorState(tile.array());
+    }
+
+// TiledFloor.java : public void floorChanged(Tile tile)
+    @Override
+    public void floorChanged(Tile tile){
+        //TODO: none of this state needs to update on servers right now, but it could cause issues if blocks require a certain alignment
+        //either way, this wouldn't be called on map load on servers, so it's broken there
+        if(headless) return;
+
+        if(!world.isGenerating() && TiledState.changes(state(tile)) != world.floorChanges){
+            scan(tile);
+        }
+    }
+
+// TiledWall.java : long state(Tile tile)
+    long state(Tile tile){
+        return world.tiles.getTmpBlockState(tile.array());
+    }
+
+// TiledWall.java : public void blockChanged(Tile tile)
+    @Override
+    public void blockChanged(Tile tile){
+        if(headless) return;
+
+        if(!world.isGenerating() && TiledState.changes(state(tile)) != world.tileChanges){
+            scan(tile);
+        }
+    }
+
+// TreeBlock.java : public void drawShadow(Tile tile)
+    @Override
+    public void drawShadow(Tile tile){}
+
+// WobbleProp.java : public void drawBase(Tile tile)
+    @Override
+    public void drawBase(Tile tile){
+        var region = variants > 0 ? variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))] : this.region;
+
+        Draw.rectv(region, tile.worldx(), tile.worldy(), region.width * region.scl(), region.height * region.scl(), 0, vec -> vec.add(
+        Mathf.sin(vec.y*3 + Time.time, wscl, wmag) + Mathf.sin(vec.x*3 - Time.time, 70 * wtscl, 0.8f * wmag2),
+        Mathf.cos(vec.x*3 + Time.time + 8, wscl + 6f, wmag * 1.1f) + Mathf.sin(vec.y*3 - Time.time, 50 * wtscl, 0.2f * wmag2)
+        ));
+    }
+

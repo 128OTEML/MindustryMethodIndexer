@@ -1,0 +1,506 @@
+Astar.java
+Java class
+fields:
+  public static final DistanceHeuristic manhattan
+  private static final Seq<Tile> out
+  private static final PQueue<Tile> queue
+  private static float costs
+  private static byte rotations
+methods:
+  public static Seq<Tile> pathfind(Tile from, Tile to, TileHeuristic th, Boolf<Tile> passable) / public static Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, Boolf<Tile> passable) / public static Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, DistanceHeuristic dh, Boolf<Tile> passable)
+inner-interface: DistanceHeuristic
+  methods:
+    float cost(int x1, int y1, int x2, int y2)
+inner-interface: TileHeuristic
+  methods:
+    float cost(Tile tile) / default float cost(Tile from, Tile tile)
+
+BaseBuilderAI.java
+Java class
+fields:
+  private static final Vec2 axis
+  private static final int attempts
+  private static final float emptyChance
+  private static final int timerStep
+  private static final float placeIntervalMin
+  private static final int pathStep
+  private static final Seq<Tile> tmpTiles
+  private static int correct
+  private boolean foundPath
+  final TeamData data
+  final Interval timer
+  IntSet path
+  IntSet calcPath
+  Tile calcTile
+  boolean calculating
+  int calcCount
+  int totalCalcs
+ctors:
+  public BaseBuilderAI(TeamData data)
+methods:
+  public void update()
+  private Position randomPosition()  // @return a random position from which to seed building.
+  private boolean tryPlace(BasePart part, int x, int y)
+
+BaseRegistry.java
+Java class
+fields:
+  public Seq<BasePart> cores  // cores, sorted by tier
+  public Seq<BasePart> parts  // parts with no requirement
+  public ObjectMap<Content,Seq<BasePart>> reqParts
+  public ObjectMap<Item,OreBlock> ores
+  public ObjectMap<Item,Floor> oreFloors
+methods:
+  public Seq<BasePart> forResource(Content item)
+  public void load()
+inner-class: BasePart implements java.lang.Comparable
+  fields:
+    public final Schematic schematic
+    public int centerX  // offsets for drills
+    public Content required
+    public Block core
+    public float tier  // total build cost
+  ctors:
+    public BasePart(Schematic schematic)
+  methods:
+    public int compareTo(BasePart other)
+
+BlockIndexer.java
+Java class
+// Class used for indexing special target blocks for AI.
+fields:
+  private static final int quadrantSize  // Size of one quadrant.
+  private static final Rect rect
+  private static boolean returnBool
+  private int quadWidth
+  private IntSeq ores  // Stores all ore quadrants on the map.
+  private Seq<Building> damagedTiles  // Stores all damaged tile entities by team.
+  private Seq<Item> allPresentOres  // All ores present on the map - can be wall or floor.
+  private ObjectIntMap<Item> allOres  // All ores available on this map.
+  private Seq<Team> activeTeams  // Stores teams that are present here as tiles.
+  private Seq<Building> flagMap  // Maps teams to a map of flagged tiles by flag.
+  private boolean blocksPresent  // Counts whether a certain floor is present in the world upon load.
+  private Seq<Building> breturnArray  // Array used for returning and reusing.
+  private Seq<Tile> floorMap  // Maps block flag to a list of floor tiles that have it.
+ctors:
+  public BlockIndexer()
+methods:
+  public Seq<Item> getAllPresentOres()
+  private void updatePresentOres()
+  private void removeFloorIndex(Tile tile, Floor floor)
+  private void addFloorIndex(Tile tile, Floor floor)
+  public Seq<Tile> getFlaggedFloors(BlockFlag flag)
+  public void removeIndex(Tile tile)
+  public void addIndex(Tile base)
+  public boolean isBlockPresent(Block block)  // @return whether a certain block is anywhere on this map.
+  private void clearFlags()
+  private Seq<Building>[] getFlagged(Team team) / public Seq<Building> getFlagged(Team team, BlockFlag type)  // Get all allied blocks with a flag.
+  public boolean hasOre(Item item)  // @return whether this item is present on this map.
+  public boolean hasWallOre(Item item)  // @return whether this item is present on this map as a wall ore.
+  public Seq<Building> getDamaged(Team team)  // Returns all damaged tiles by team.
+  public Building findClosestFlag(float x, float y, Team team, BlockFlag flag)
+  public boolean eachBlock(Teamc team, float range, Boolf<Building> pred, Cons<Building> cons) / public boolean eachBlock(Team team, float wx, float wy, float range, Boolf<Building> pred, Cons<Building> cons) / public boolean eachBlock(Team team, Rect rect, Boolf<Building> pred, Cons<Building> cons)  // Does not work with null teams.
+  public Seq<Building> getEnemy(Team team, BlockFlag type)  // Get all enemy blocks with a flag.
+  public void notifyHealthChanged(Building build)
+  public void allBuildings(float x, float y, float range, Cons<Building> cons)
+  public Building findEnemyTile(Team team, float x, float y, float range, BuildingPriorityf priority, Boolf<Building> pred) / public Building findEnemyTile(Team team, float x, float y, float range, BuildingPriorityf priority, Boolf<Building> pred, Team source) / public Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred)
+  public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred) / public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred, boolean usePriority) / public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred, boolean usePriority, Team source)
+  public Tile findClosestOre(float xp, float yp, Item item) / public Tile findClosestOre(Unit unit, Item item)  // Find the closest ore block relative to a position.
+  public Tile findClosestWallOre(float xp, float yp, Item item) / public Tile findClosestWallOre(Unit unit, Item item)  // Find the closest ore wall relative to a position.
+  private void process(Tile tile)
+inner-class: TurretQuadtree extends arc.math.geom.QuadTree
+  ctors:
+    public TurretQuadtree(Rect bounds)
+  methods:
+    public void hitbox(Building build)
+    protected QuadTree<Building> newChild(Rect rect)
+
+ControlPathfinder.java
+Java class implements java.lang.Runnable
+// https://www.gameaipro.com/GameAIPro/GameAIPro_Chapter23_Crowd_Pathfinding_and_Steering_Using_Flow_Field_Tiles.pdf
+fields:
+  private static final int wallImpassableCap
+  private static final int solidCap
+  private static boolean initialized
+  public static boolean showDebug
+  public static final PathCost costGround
+  public static final int costIdGround
+  public static final Seq<PathCost> costTypes
+  private static final long maxUpdate
+  private static final int updateStepInterval
+  private static final int updateFPS
+  private static final int updateInterval
+  private static final PathfindResult pathResult
+  static final int clusterSize
+  static final int offsets
+  static final int moveDirs
+  static final int nextOffsets
+  final Cluster clusters  // (what about teams? different path costs?)
+  final int cwidth
+  final IntSet usedEdges  // temporarily used for resolving connections for intra-edges
+  final TaskQueue queue  // tasks to run on pathfinding thread
+  final ObjectMap<Unit,PathRequest> unitRequests  // individual requests based on unit - MAIN THREAD ONLY
+  final Seq<PathRequest> threadPathRequests
+  final LongMap<FieldCache> fields  // maps position in world in (x + y * width format) | path type | team (bitpacked to long with FieldIndex.get) to a cache of flow fields
+  final Seq<FieldCache> fieldList  // MAIN THREAD ONLY
+  final IntFloatMap innerCosts  // these are for inner edge A* (temporary!)
+  final PathfindQueue innerFrontier
+  final IntSet clustersToUpdate  // ONLY modify on pathfinding thread.
+  final IntSet clustersToInnerUpdate
+  final ObjectSet<PathRequest> invalidRequests  // PATHFINDING THREAD - requests that should be recomputed
+  Thread thread  // Current pathfinding thread
+  volatile boolean invalidated  // If true, this pathfinder is no longer relevant (stopped) and its errors can be ignored.
+ctors:
+  public ControlPathfinder()
+methods:
+  static void checkEvents()  // this method is not run in a static initializer because it must only happen after Pathfinder registers its events, which means it should happen in the ControlPathfinder constructor
+  public void updateTile(Tile tile)
+  public void updateSingleTile(Tile t)
+  void queueClusterUpdate(int cx, int cy)
+  void portalToVec(Cluster cluster, int cx, int cy, int direction, int portalIndex, Vec2 out)  // debugging only!
+  private void start()  // Starts or restarts the pathfinding thread.
+  private void stop()  // Stops the pathfinding thread.
+  Cluster getCluster(int team, int pathCost, int cx, int cy) / Cluster getCluster(int team, int pathCost, int clusterIndex)  // @return a cluster at coordinates; can be null if not cluster was created yet
+  Cluster getCreateCluster(int team, int pathCost, int cx, int cy) / Cluster getCreateCluster(int team, int pathCost, int clusterIndex)  // @return the cluster at specified coordinates; never null.
+  Cluster updateCluster(int team, int pathCost, int cx, int cy)
+  void updateInnerEdges(int team, int cost, int cx, int cy, Cluster cluster) / void updateInnerEdges(int team, PathCost cost, int cx, int cy, Cluster cluster)
+  private static float heuristic(int a, int b)  // distance heuristic: manhattan
+  private static int tcost(int team, PathCost cost, int tilePos)
+  private static float tileCost(int team, PathCost type, int a, int b)
+  float innerAstar(int team, PathCost cost, int minX, int minY, int maxX, int maxY, int startPos, int goalPos, int goalX1, int goalY1, int goalX2, int goalY2)  // @return -1 if no path was found
+  int makeNodeIndex(int cx, int cy, int dir, int portal)
+  private int findClosestNode(int team, int pathCost, int tileX, int tileY)  // @return MAX_VALUE if no node is found
+  private float clusterNodeHeuristic(int team, int pathCost, int nodeA, int nodeB)  // distance heuristic: manhattan
+  IntSeq clusterAstar(PathRequest request, int pathCost, int startNodeIndex, int endNodeIndex)
+  private void checkEdges(PathRequest request, int team, int pathCost, int current, int goal, int cx, int cy, LongSeq connections)
+  private void updateFields(FieldCache cache, long nsToRun)
+  private void addFlowCluster(FieldCache cache, int cluster, boolean addingFrontier) / private void addFlowCluster(FieldCache cache, int cx, int cy, boolean addingFrontier)
+  private void initializePathRequest(PathRequest request, int team, int costId, int unitX, int unitY, int goalX, int goalY)
+  private PathCost idToCost(int costId)
+  public static boolean isNearObstacle(Unit unit, int x1, int y1, int x2, int y2)
+  public boolean getPathPosition(Unit unit, Vec2 destination, Vec2 out, boolean[] noResultFound) / public boolean getPathPosition(Unit unit, Vec2 destination, Vec2 mainDestination, Vec2 out, boolean[] noResultFound) / public PathfindResult getPathPosition(Unit unit, Vec2 destination) / public PathfindResult getPathPosition(Unit unit, Vec2 destination, Vec2 mainDestination)
+  private void recalculatePath(ControlPathfinder.PathRequest request)
+  private int getCost(FieldCache cache, int x, int y, boolean requeue)
+  private static boolean raycast(int team, PathCost type, int x1, int y1, int x2, int y2)
+  public static int raycastFastAvoid(int team, PathCost type, int x1, int y1, int x2, int y2)  // @return 0 if nothing was hit, otherwise the packed coordinates.
+  private static boolean overlap(int initialCost, int team, PathCost type, int x, int y, float startX, float startY, float endX, float endY, float rectSize)
+  private static boolean raycastRect(int initialCost, float startX, float startY, float endX, float endY, int team, PathCost type, int x1, int y1, int x2, int y2, float rectSize)
+  private static boolean avoid(int team, PathCost type, int tilePos)
+  private static boolean passable(int team, PathCost cost, int pos)
+  private static boolean nearPassable(int initialCost, int team, PathCost cost, int pos)
+  private static boolean solid(int team, PathCost type, int x, int y) / private static boolean solid(int team, PathCost type, int tilePos, boolean checkWall)
+  private static int cost(int team, PathCost cost, int tilePos)
+  private void clusterChanged(int team, int pathCost, int cx, int cy)
+  private void updateClustersComplete(int clusterIndex)
+  private void updateClustersInner(int clusterIndex)
+  public void run()
+inner-class: PathRequest
+// path requests are per-unit
+  fields:
+    final Unit unit
+    final int destination
+    final IntSeq resultPath  // resulting path of nodes
+    IntFloatMap costs  // node index -> total cost
+    IntIntMap cameFrom  // node index (NodeIndex struct) -> node it came from TODO merge them, make properties of FieldCache?
+    PathfindQueue frontier  // frontier for A*
+    long lastUpdateId  // main thread only!
+    long lastRecomputeTime
+    volatile boolean notFound  // both threads
+    volatile boolean invalidated
+    volatile FieldCache oldCache  // old field assigned before everything was recomputed
+    boolean lastRaycastResult
+    int lastRaycastTile
+    int lastTile
+    Tile lastTargetTile
+  ctors:
+    PathRequest(Unit unit, int team, int costId, int destination)
+inner-class: FieldCache
+  fields:
+    final PathCost cost
+    final int costId
+    final int team
+    final int goalPos
+    final IntQueue frontier  // frontier for flow fields
+    final IntMap<int[]> fields  // maps cluster index to field weights; 0 means uninitialized
+    final long mapKey  // packed (goalPos | costId | team) long key to use in the global fields map
+    long lastUpdateId  // main thread only!
+  ctors:
+    FieldCache(PathCost cost, int costId, int team, int goalPos)
+inner-class: Cluster
+  fields:
+    IntSeq portals
+    LongSeq portalConnections  // maps rotation + index of portal to list of IntraEdge objects
+inner-class: PathfindResult
+  fields:
+    public boolean unreachable  // If true, the request cannot be satisfied.
+    public boolean move  // If true, the request is ready to execute.
+    public Tile next  // If move is true, this is the next tile to move on.
+    public Vec2 dest  // Destination vector.
+inner-class: FieldIndexStruct
+  fields:
+    int pos
+    int costId
+    int team
+inner-class: IntraEdgeStruct
+  fields:
+    int dir
+    int portal
+    float cost
+inner-class: NodeIndexStruct
+  fields:
+    int cluster
+    int dir
+    int portal
+
+ItemUnitStance.java
+Java class extends mindustry.ai.UnitStance
+fields:
+  private static ObjectMap<Item,ItemUnitStance> itemToStance
+  private static Seq<ItemUnitStance> all
+  public final Item item
+ctors:
+  public ItemUnitStance(Item item)
+methods:
+  public static ItemUnitStance getByItem(Item item)
+  public static Seq<ItemUnitStance> all()
+  public String localized()
+  public TextureRegionDrawable getIcon()
+
+PathfindQueue.java
+Java class
+// A priority queue.
+fields:
+  private static final double CAPACITY_RATIO_LOW
+  private static final double CAPACITY_RATIO_HI
+  public int queue  // Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and queue[2*(n+1)].
+  public float weights  // Weights of each object in the queue.
+  public int size  // The number of elements in the priority queue.
+ctors:
+  public PathfindQueue() / public PathfindQueue(int initialCapacity)
+methods:
+  public boolean empty()
+  public boolean add(int e, float weight)  // Inserts the specified element into this priority queue.
+  public int peek()  // Retrieves, but does not remove, the head of this queue.
+  public void clear()  // Removes all of the elements from this priority queue.
+  public int poll()  // Retrieves and removes the head of this queue, or returns {@code null} if this queue is empty.
+  private void siftUp(int k, int x, float weight)  // Inserts item x at position k, maintaining heap invariant by promoting x up the tree until it is greater than or equal to its
+  private void siftDown(int k, int x, float weight)  // Inserts item x at position k, maintaining heap invariant by demoting x down the tree repeatedly until it is less than or
+  private void growToSize(int minCapacity)  // Increases the capacity of the array.
+
+Pathfinder.java
+Java class implements java.lang.Runnable
+fields:
+  private static final long maxUpdate
+  private static final int neverRefresh
+  private static final int updateFPS
+  private static final int updateInterval
+  static int wwidth  // cached world size
+  static final int impassable
+  public static final int fieldCore
+  public static final Seq<Prov<Flowfield>> fieldTypes
+  public static final int costGround
+  public static final Seq<PathCost> costTypes
+  int tiles  // tile data, see PathTileStruct - kept as a separate array for threading reasons
+  Flowfield cache  // maps team, cost, type to flow field
+  Seq<Flowfield> threadList  // unordered array of path data for iteration only.
+  TaskQueue queue  // handles task scheduling on the update thread.
+  Thread thread  // Current pathfinding thread
+  IntSeq tmpArray
+  boolean needsRefresh
+  private long lastRefreshTime  // Last time flowfields were refreshed, for timestamp-based refresh interval.
+  private static final long refreshIntervalMs  // Minimum interval between flowfield refreshes in milliseconds.
+ctors:
+  public Pathfinder()
+methods:
+  private void clearCache()
+  public int packTile(Tile tile)  // Packs a tile into its internal representation.
+  public int get(int x, int y)
+  private void start()  // Starts or restarts the pathfinding thread.
+  private void stop()  // Stops the pathfinding thread.
+  public void updateTile(Tile tile)  // Update a tile in the internal pathfinding grid.
+  public void run()  // Thread implementation.
+  public Flowfield getField(Team team, int costType, int fieldType)
+  public Tile getTargetTile(Tile tile, Flowfield path) / public Tile getTargetTile(Tile tile, Flowfield path, boolean diagonals) / public Tile getTargetTile(Tile tile, Flowfield path, boolean diagonals, int avoidanceId)  // Gets next tile to travel to.
+  private void updateTargets(Flowfield path)  // Increments the search and sets up flow sources.
+  private void preloadPath(Flowfield path)
+  private void registerPath(Flowfield path)  // TODO wrong docs
+  private void updateFrontier(Flowfield path, long nsToRun)  // Update the frontier for a path.
+inner-class: EnemyCoreField extends mindustry.ai.Pathfinder.Flowfield
+  fields:
+    private final static BlockFlag randomTargets
+    private Rand rand
+  methods:
+    protected void getPositions(IntSeq out)
+inner-class: PositionTarget extends mindustry.ai.Pathfinder.Flowfield
+  fields:
+    public final Position position
+  ctors:
+    public PositionTarget(Position position)
+  methods:
+    public void getPositions(IntSeq out)
+inner-class: Flowfield
+// Data for a flow field to some set of destinations.
+  fields:
+    protected int refreshRate  // Refresh rate in milliseconds.
+    protected Team team  // Team this path is for.
+    protected PathCost cost  // Function for calculating path cost.
+    protected volatile boolean hasComplete  // Whether there are valid weights in the complete array.
+    protected boolean dirty  // If true, this flow field needs updating.
+    public int weights  // costs of getting to a specific tile
+    public short searches  // search IDs of each position - the highest, most recent search is prioritized and overwritten
+    public int completeWeights  // the last "complete" weights of this tilemap.
+    public final int resolution  // Scaling factor.
+    public final int width
+    final IntQueue frontier  // search frontier, these are Pos objects
+    final IntSeq targets  // all target positions; these positions have a cost of 0, and must be synchronized on!
+    int search  // current search ID
+    long lastUpdateTime  // last updated time
+    boolean initialized  // whether this flow field is ready to be used
+  ctors:
+    public Flowfield() / public Flowfield(int resolution)
+  methods:
+    void setup()
+    public int getCost(int[] tiles, int pos)
+    public boolean hasTargets()
+    public Tile getNextTile(Tile from, boolean diagonals) / public Tile getNextTile(Tile from) / public Tile getNextTile(Tile from, int unitAvoidanceId)  // @return the next tile to travel to for this flowfield.
+    public boolean hasCompleteWeights()
+    public void updateTargetPositions()
+    public boolean needsRefresh()  // @return whether this flow field should be refreshed after the current block update
+    protected boolean passable(int pos)
+    protected abstract void getPositions(IntSeq out)  // Gets targets to pathfind towards.
+inner-interface: PathCost
+  methods:
+    int getCost(int team, int tile)
+inner-class: PathTileStruct
+// Holds a copy of tile data for a specific tile position.
+  fields:
+    int health  // scaled block health
+    int team  // team of block, if applicable (0 by default)
+    boolean solid  // general solid state
+    boolean liquid  // whether this block is a liquid that boats can move on
+    boolean legSolid  // whether this block is solid for leg units that can move over some solid blocks
+    boolean nearLiquid  // whether this block is near liquids
+    boolean nearGround  // whether this block is near a solid floor tile
+    boolean nearSolid  // whether this block is near a solid object
+    boolean nearLegSolid  // whether this block is near a block that is solid for legged units
+    boolean deep  // whether this block is deep / drownable
+    boolean damages  // whether the floor damages
+    boolean allDeep  // whether all tiles nearby are deep
+    boolean nearDeep  // whether it is near deep water
+    boolean teamPassable  // block teamPassable is true
+
+RtsAI.java
+Java class
+fields:
+  static final Seq<Building> targets
+  static final Seq<Unit> squad
+  static final IntSet used
+  static final IntSet assignedTargets
+  static final float squadRadius
+  static final int timeUpdate
+  static final BlockFlag flags  // in order of priority??
+  static final ObjectFloatMap<Building> weights
+  static final boolean debug
+  final Interval timer
+  final TeamData data
+  final ObjectSet<Building> damagedSet
+  final Seq<Building> damaged
+ctors:
+  public RtsAI(TeamData data)
+methods:
+  public void update()
+  void checkBuilding()  // TODO atrocious implementation
+  void assignSquads()
+  boolean handleSquad(Seq<Unit> units, boolean noDefenders)
+  Building findTarget(float x, float y, int total, float dps, float health, boolean checkWeight, boolean air, boolean naval)
+  float estimateStats(float fromX, float fromY, float x, float y, float selfDps, float selfHealth, boolean air)  // TODO extremely slow especially with many squads.
+
+UnitCommand.java
+Java class extends mindustry.ctype.MappableContent
+// Defines a pattern of behavior that an RTS-controlled unit should follow.
+fields:
+  public static UnitCommand moveCommand
+  public final String icon  // Name of UI icon (from Icon class).
+  public final Func<Unit,AIController> controller  // Controller that this unit will use when this command is used.
+  public boolean switchToMove  // If true, this unit will automatically switch away to the move command when given a position.
+  public boolean drawTarget  // Whether to draw the movement/attack target.
+  public boolean resetTarget  // Whether to reset targets when switching to or from this command.
+  public boolean snapToBuilding  // Whether to snap the command destination to ally buildings.
+  public boolean exactArrival  // If true, the unit will arrive at this command's exact endpoint.
+  public boolean refreshOnSelect  // If true, this command refreshes the list of stances when selected TODO: do not use, this will likely be removed later!
+  public KeyBind keybind  // Key to press for this command.
+  public Seq<UnitStance> extraStances  // Extra stances that are available when this command is selected.
+ctors:
+  public UnitCommand(String name, String icon, Func<Unit,AIController> controller) / public UnitCommand(String name, String icon, KeyBind keybind, Func<Unit,AIController> controller)
+methods:
+  public String localized()
+  public TextureRegionDrawable getIcon()
+  public char getEmoji()
+  public ContentType getContentType()
+  public String toString()
+  public static void loadAll()
+
+UnitGroup.java
+Java class
+fields:
+  public Seq<Unit> units
+  public int collisionLayer
+  public volatile float positions
+  public volatile boolean valid
+methods:
+  public void calculateFormation(Vec2 dest, int collisionLayer)
+  public void updateRaycast(int index, Vec2 dest) / private void updateRaycast(int index, Vec2 dest, Vec2 v1)
+
+UnitStance.java
+Java class extends mindustry.ctype.MappableContent
+fields:
+  public static UnitStance stop
+  public String icon  // Name of UI icon (from Icon class).
+  public KeyBind keybind  // Key to press for this stance.
+  public Seq<UnitCommand> incompatibleCommands  // Commands that are mutually exclusive to this stance.
+  public Seq<UnitStance> incompatibleStances  // Stances that are mutually exclusive to this stance.
+  public boolean toggle  // If true, this stance can be toggled on or off.
+  public Bits incompatibleStanceBits  // Incompatible stances as a bitset for easier operations.
+ctors:
+  public UnitStance(String name, String icon, KeyBind keybind, boolean toggle) / public UnitStance(String name, String icon, KeyBind keybind)
+methods:
+  public void init()
+  public boolean isCompatible(UnitCommand other)
+  public String localized()
+  public TextureRegionDrawable getIcon()
+  public char getEmoji()
+  public ContentType getContentType()
+  public String toString()
+  public static void loadAll()
+  public static void loadAfterMods()
+
+WaveSpawner.java
+Java class
+fields:
+  private static final float margin
+  private int tmpCount
+  private Seq<Tile> spawns
+  private boolean spawning
+  private boolean any
+  private Tile firstSpawn
+ctors:
+  public WaveSpawner()
+methods:
+  public Tile getFirstSpawn()
+  public int countSpawns()
+  public Seq<Tile> getSpawns()
+  public boolean playerNear()  // @return true if the player is near a ground spawn point.
+  public void spawnEnemies()
+  public void spawnUnit(SpawnGroup group, float x, float y)
+  public void doShockwave(float x, float y)
+  public void eachGroundSpawn(Intc2 cons) / private void eachGroundSpawn(int filterPos, SpawnConsumer cons)
+  private void eachFlyerSpawn(int filterPos, Floatc2 cons)
+  public int countGroundSpawns()
+  public int countFlyerSpawns()
+  public boolean isSpawning()
+  public void reset()
+  public void spawnEffect(Unit unit) / public static void spawnEffect(float x, float y, float rotation, UnitType u)  // Applies the standard wave spawn effects to a unit - invincibility, unmoving.
+inner-interface: SpawnConsumer
+  methods:
+    void accept(float x, float y, boolean shockwave)
+

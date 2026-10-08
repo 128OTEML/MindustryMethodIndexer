@@ -1,0 +1,65 @@
+HeatBlock.java
+Java interface
+// Basic interface for any block that produces heat.
+methods:
+  float heat()
+  float heatFrac()  // @return heat as a fraction of max heat
+
+HeatConductor.java
+Java class extends mindustry.world.Block
+fields:
+  public float visualMaxHeat
+  public DrawBlock drawer
+  public boolean splitHeat
+ctors:
+  public HeatConductor(String name)
+methods:
+  public void setBars()
+  public void load()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+inner-class: HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer
+  fields:
+    public float heat
+    public float sideHeat
+    public IntSet cameFrom
+    public long lastHeatUpdate
+  methods:
+    public void draw()
+    public void drawLight()
+    public float[] sideHeat()
+    public float heatRequirement()
+    public void updateTile()
+    public void updateHeat()
+    public double sense(LAccess sensor)
+    public float warmup()
+    public float heat()
+    public float heatFrac()
+
+HeatConsumer.java
+Java interface
+methods:
+  float[] sideHeat()
+  float heatRequirement()
+
+HeatProducer.java
+Java class extends mindustry.world.blocks.production.GenericCrafter
+fields:
+  public float heatOutput
+  public float warmupRate
+ctors:
+  public HeatProducer(String name)
+methods:
+  public void setStats()
+  public void setBars()
+inner-class: HeatProducerBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatBlock
+  fields:
+    public float heat
+  methods:
+    public void updateTile()
+    public float heatFrac()
+    public float heat()
+    public double sense(LAccess sensor)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+

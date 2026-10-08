@@ -1,0 +1,46 @@
+// DiscordRPC.java : public static void send(RichPresence presence)
+    public static void send(RichPresence presence){
+        checkConnected(true);
+        pipe.send(PacketOp.frame,
+        Jval.newObject()
+        .put("cmd", "SET_ACTIVITY")
+        .put("args", Jval.newObject()
+        .put("pid", pid)
+        .put("activity", presence == null ? null : presence.toJson())));
+    }
+
+// DiscordRPC.java : public static void subscribe()
+    public static void subscribe(){
+        checkConnected(true);
+
+        for(String value : new String[]{"ACTIVITY_JOIN", "ACTIVITY_SPECTATE", "ACTIVITY_JOIN_REQUEST"}){
+            pipe.send(PacketOp.frame,
+            Jval.newObject()
+            .put("cmd", "SUBSCRIBE")
+            .put("evt", value));
+        }
+    }
+
+// DiscordRPC.java : public static PipeStatus getStatus()
+    public static PipeStatus getStatus(){
+        return pipe == null ? PipeStatus.uninitialized : pipe.status;
+    }
+
+// DiscordRPC.java : public static void close()
+    public static void close(){
+        if(getStatus() != PipeStatus.connected) return;
+
+        try{
+            pipe.close();
+        }catch(IOException ignored){
+        }
+    }
+
+// DiscordRPC.java : private static void checkConnected(boolean connected)
+    private static void checkConnected(boolean connected){
+        if(connected && getStatus() != PipeStatus.connected)
+            throw new IllegalStateException("IPCClient (ID: " + clientId + ") is not connected!");
+        if(!connected && getStatus() == PipeStatus.connected)
+            throw new IllegalStateException("IPCClient (ID: " + clientId + ") is already connected!");
+    }
+

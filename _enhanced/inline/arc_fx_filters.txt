@@ -1,0 +1,476 @@
+// BiasFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_bias", bias);
+    }
+
+// BloomFilter.java : public void rebind()
+    @Override
+    public void rebind(){
+        threshold.rebind();
+        combine.rebind();
+        buffer.rebind();
+    }
+
+// BloomFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        width /= scaling;
+        height /= scaling;
+
+        buffer.resize(width, height);
+        blur.resize(width, height);
+        threshold.resize(width, height);
+        combine.resize(width, height);
+    }
+
+// BloomFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        combine.dispose();
+        threshold.dispose();
+        blur.dispose();
+        buffer.dispose();
+    }
+
+// BlurFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        pingPongBuffer.dispose();
+        blur.dispose();
+        copy.dispose();
+    }
+
+// BlurFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        pingPongBuffer.resize(width, height);
+        blur.resize(width, height);
+        copy.resize(width, height);
+    }
+
+// BlurFilter.java : public void rebind()
+    @Override
+    public void rebind(){
+        pingPongBuffer.rebind();
+        blur.setParams();
+        copy.rebind();
+    }
+
+// ChromaticAberrationFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_maxDistortion", maxDistortion);
+    }
+
+// CombineFilter.java : public CombineFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2) / public CombineFilter setInput(Texture texture1, Texture texture2)
+    public CombineFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2){
+        this.inputTexture = buffer1.getTexture();
+        this.inputTexture2 = buffer2.getTexture();
+        return this;
+    }
+
+// CombineFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformi("u_texture1", u_texture1);
+        shader.setUniformf("u_src1Intensity", src1int);
+        shader.setUniformf("u_src2Intensity", src2int);
+        shader.setUniformf("u_src1Saturation", src1sat);
+        shader.setUniformf("u_src2Saturation", src2sat);
+    }
+
+// CombineFilter.java : protected void onBeforeRender()
+    @Override
+    protected void onBeforeRender(){
+        inputTexture.bind(u_texture0);
+        inputTexture2.bind(u_texture1);
+    }
+
+// Convolve1dFilter.java : public void setWeights(int length, float[] weights, float[] offsets)
+    public void setWeights(int length, float[] weights, float[] offsets){
+        this.weights = weights;
+        this.length = length;
+        this.offsets = offsets;
+    }
+
+// Convolve1dFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+        weights = null;
+        offsets = null;
+        length = 0;
+    }
+
+// Convolve1dFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniform1fv("SampleWeights", weights, 0, length);
+        shader.setUniform2fv("SampleOffsets", offsets, 0, length * 2);
+    }
+
+// Convolve2dFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        hor.dispose();
+        vert.dispose();
+    }
+
+// Convolve2dFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        hor.rebind();
+        vert.rebind();
+    }
+
+// CrtFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        this.viewportSize.set(width, height);
+        rebind();
+    }
+
+// CrtFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_resolution", sizeSource == SizeSource.SCREEN ? Tmp.v1.set(Core.graphics.getWidth(), Core.graphics.getHeight()) : viewportSize);
+    }
+
+// FilmGrainFilter.java : public void setSeed(float seed)
+    public void setSeed(float seed){
+        this.seed = seed;
+        rebind();
+    }
+
+// FilmGrainFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_seed", seed);
+    }
+
+// FilmGrainFilter.java : public void update()
+    @Override
+    public void update(){
+        this.time = (this.time + Time.delta /60f) % 1f;
+        seed = time;
+    }
+
+// FxaaFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        this.viewportInverse.set(1f / width, 1f / height);
+        rebind();
+    }
+
+// FxaaFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_viewportInverse", viewportInverse);
+        shader.setUniformf("u_fxaaReduceMin", fxaaReduceMin);
+        shader.setUniformf("u_fxaaReduceMul", fxaaReduceMul);
+        shader.setUniformf("u_fxaaSpanMax", fxaaSpanMax);
+    }
+
+// GaussianBlurFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        convolve.dispose();
+    }
+
+// GaussianBlurFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        this.invWidth = 1f / (float)width;
+        this.invHeight = 1f / (float)height;
+
+        convolve.resize(width, height);
+        computeBlurWeightings();
+    }
+
+// GaussianBlurFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        convolve.setParams();
+        computeBlurWeightings();
+    }
+
+// GaussianBlurFilter.java : public void render(PingPongBuffer buffer)
+    @Override
+    public void render(PingPongBuffer buffer){
+        for(int i = 0; i < this.passes; i++){
+            convolve.render(buffer);
+
+            if(i < this.passes - 1){
+                buffer.swap();
+            }
+        }
+    }
+
+// GaussianBlurFilter.java : public BlurType getType()
+    public BlurType getType(){
+        return type;
+    }
+
+// GaussianBlurFilter.java : public float getAmount()
+    public float getAmount(){
+        return amount;
+    }
+
+// GaussianBlurFilter.java : public void setAmount(float amount)
+    public void setAmount(float amount){
+        this.amount = amount;
+        computeBlurWeightings();
+    }
+
+// GaussianBlurFilter.java : public int getPasses()
+    public int getPasses(){
+        return passes;
+    }
+
+// GaussianBlurFilter.java : public void setPasses(int passes)
+    public void setPasses(int passes){
+        this.passes = passes;
+    }
+
+// HdrFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        // reimplement super to batch every parameter
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_exposure", exposure);
+        shader.setUniformf("u_gamma", gamma);
+    }
+
+// LensFlareFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        viewport.set(width, height);
+        rebind();
+    }
+
+// LensFlareFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_lightPosition", lightPosition);
+        shader.setUniformf("u_intensity", intensity);
+        shader.setUniformf("u_color", color.r, color.g, color.b);
+        shader.setUniformf("u_viewport", viewport);
+    }
+
+// LevelsFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_brightness", brightness);
+        shader.setUniformf("u_contrast", contrast);
+        shader.setUniformf("u_saturation", saturation);
+        shader.setUniformf("u_hue", hue);
+        shader.setUniformf("u_gamma", gamma);
+    }
+
+// MixFilter.java : public MixFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2) / public MixFilter setInput(Texture texture1, Texture texture2) / public MixFilter setInput(FrameBuffer input) / public MixFilter setInput(Texture input)
+    public MixFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2){
+        this.inputTexture = buffer1.getTexture();
+        this.inputTexture2 = buffer2.getTexture();
+        return this;
+    }
+
+// MixFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+
+    }
+
+// MixFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformi("u_texture1", u_texture1);
+        shader.setUniformf("u_mix", mix);
+    }
+
+// MixFilter.java : protected void onBeforeRender()
+    @Override
+    protected void onBeforeRender(){
+        inputTexture.bind(u_texture0);
+        inputTexture2.bind(u_texture1);
+    }
+
+// MotionBlurFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        copyFilter.resize(width, height);
+        localBuffer.resize(width, height);
+    }
+
+// MotionBlurFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+        copyFilter.dispose();
+        localBuffer.dispose();
+    }
+
+// MotionBlurFilter.java : public void rebind()
+    @Override
+    public void rebind(){
+        super.rebind();
+        copyFilter.rebind();
+        localBuffer.rebind();
+    }
+
+// MotionBlurFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        if(lastFrameTex != null){
+            shader.setUniformi("u_texture1", u_texture1);
+        }
+        shader.setUniformf("u_blurOpacity", this.blurOpacity);
+    }
+
+// MotionBlurFilter.java : protected void onBeforeRender()
+    @Override
+    protected void onBeforeRender(){
+        inputTexture.bind(u_texture0);
+        if(lastFrameTex != null){
+            lastFrameTex.bind(u_texture1);
+        }
+    }
+
+// MotionBlurFilter.java : public void render(FrameBuffer src, FrameBuffer dst)
+    @Override
+    public void render(FrameBuffer src, FrameBuffer dst){
+        FrameBuffer prevFrame = this.localBuffer.changeToNext();
+        setInput(src).setOutput(prevFrame).render();
+        lastFrameTex = prevFrame.getTexture();
+        copyFilter.setInput(prevFrame).setOutput(dst).render();
+    }
+
+// MultipassVfxFilter.java : public void resize(int width, int height)
+    public void resize(int width, int height){
+
+    }
+
+// NfaaFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        this.viewportInverse.set(1f / width, 1f / height);
+        rebind();
+    }
+
+// NfaaFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_viewportInverse", viewportInverse);
+    }
+
+// NoiseFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_amount", amount);
+        shader.setUniformf("u_speed", speed);
+        shader.setUniformf("u_time", time);
+    }
+
+// OldTvFilter.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        this.resolution.set(width, height);
+        rebind();
+    }
+
+// OldTvFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_resolution", resolution);
+        shader.setUniformf("u_time", time);
+    }
+
+// RadialBlurFilter.java : public float getOriginX()
+    public float getOriginX(){
+        return originX;
+    }
+
+// RadialBlurFilter.java : public float getOriginY()
+    public float getOriginY(){
+        return originY;
+    }
+
+// RadialBlurFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_blurDiv", this.strength / (float)passes);
+        shader.setUniformf("u_offsetX", originX);
+        shader.setUniformf("u_offsetY", originY);
+        shader.setUniformf("u_zoom", zoom);
+    }
+
+// RadialDistortionFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("distortion", distortion);
+        shader.setUniformf("zoom", zoom);
+    }
+
+// RippleFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_amount", amount);
+        shader.setUniformf("u_speed", speed);
+        shader.setUniformf("u_time", time);
+    }
+
+// ThresholdFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        //yet another person can't spell 'threshold' correctly
+        shader.setUniformf("treshold", gamma);
+        shader.setUniformf("tresholdInvTx", 1f / (1 - gamma));
+    }
+
+// VignettingFilter.java : public void setLut(Texture texture)
+    public void setLut(Texture texture){
+        lutTexture = texture;
+        lutEnabled = (lutTexture != null);
+
+        if(lutEnabled){
+            lutStep = 1f / (float)texture.height;
+            lutStepOffset = lutStep / 2f; // center texel
+        }
+    }
+
+// VignettingFilter.java : protected void onBeforeRender()
+    @Override
+    protected void onBeforeRender(){
+        inputTexture.bind(u_texture0);
+        if(lutEnabled){
+            lutTexture.bind(u_texture1);
+        }
+    }
+
+// ZoomFilter.java : public void setParams()
+    @Override
+    public void setParams(){
+        shader.setUniformi("u_texture0", u_texture0);
+        shader.setUniformf("u_offsetX", originX);
+        shader.setUniformf("u_offsetY", originY);
+        shader.setUniformf("u_zoom", zoom);
+    }
+

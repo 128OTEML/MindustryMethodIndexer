@@ -1,0 +1,786 @@
+// BlockRenderer.java : public void invalidateTile(Tile tile)
+    public void invalidateTile(Tile tile){
+        int avgx = (int)(camera.position.x / tilesize);
+        int avgy = (int)(camera.position.y / tilesize);
+        int rangex = (int)(camera.width / tilesize / 2) + 3;
+        int rangey = (int)(camera.height / tilesize / 2) + 3;
+
+        if(Math.abs(avgx - tile.x) <= rangex && Math.abs(avgy - tile.y) <= rangey){
+            lastCamY = lastCamX = -99; //invalidate camera position so blocks get updated
+        }
+    }
+
+// BlockRenderer.java : public FrameBuffer getShadowBuffer()
+    public FrameBuffer getShadowBuffer(){
+        return shadows;
+    }
+
+// BlockRenderer.java : public void removeFloorIndex(Tile tile)
+    public void removeFloorIndex(Tile tile){
+        if(indexFloor(tile)) floorTree.remove(tile);
+    }
+
+// BlockRenderer.java : public void addFloorIndex(Tile tile)
+    public void addFloorIndex(Tile tile){
+        if(indexFloor(tile)) floorTree.insert(tile);
+    }
+
+// BlockRenderer.java : public void removeOverlayIndex(Tile tile)
+    public void removeOverlayIndex(Tile tile){
+        if(indexOverlay(tile)) overlayTree.remove(tile);
+    }
+
+// BlockRenderer.java : public void addOverlayIndex(Tile tile)
+    public void addOverlayIndex(Tile tile){
+        if(indexOverlay(tile)) overlayTree.insert(tile);
+    }
+
+// BlockRenderer.java : boolean indexBlock(Tile tile)
+    boolean indexBlock(Tile tile){
+        var block = tile.block();
+        return tile.isCenter() && block != Blocks.air && block.cacheLayer == CacheLayer.normal;
+    }
+
+// BlockRenderer.java : boolean indexBlockCached(Tile tile)
+    boolean indexBlockCached(Tile tile){
+        return tile.isCenter() && tile.block().drawCached;
+    }
+
+// BlockRenderer.java : boolean indexOverlay(Tile tile)
+    boolean indexOverlay(Tile tile){
+        return !tile.block().obstructsLight && tile.overlay().emitLight && world.getDarkness(tile.x, tile.y) < 3;
+    }
+
+// BlockRenderer.java : boolean indexFloor(Tile tile)
+    boolean indexFloor(Tile tile){
+        return !tile.block().obstructsLight && tile.floor().emitLight && world.getDarkness(tile.x, tile.y) < 3;
+    }
+
+// BlockRenderer.java : void recordIndex(Tile tile)
+    void recordIndex(Tile tile){
+        if(indexBlock(tile)){
+            blockTree.insert(tile);
+            blockLightTree.insert(tile);
+        }
+
+        if(indexBlockCached(tile)) blockCachedTree.insert(tile);
+        if(indexOverlay(tile)) overlayTree.insert(tile);
+        if(indexFloor(tile)) floorTree.insert(tile);
+    }
+
+// BlockRenderer.java : public void checkChanges()
+    public void checkChanges(){
+        darkEvents.each(pos -> {
+            var tile = world.tile(pos);
+            if(tile != null && tile.block().fillsTile){
+                tile.data = world.getWallDarkness(tile);
+            }
+        });
+    }
+
+// BlockRenderer.java : public void processShadows() / public void processShadows(boolean ignoreBuildings, boolean ignoreTerrain)
+    public void processShadows(){
+        processShadows(false, false);
+    }
+
+// BlockRenderer.java : public void updateShadow(Building build)
+    public void updateShadow(Building build){
+        if(build.tile == null) return;
+        int size = build.block.size, of = build.block.sizeOffset, tx = build.tile.x, ty = build.tile.y;
+
+        for(int x = 0; x < size; x++){
+            for(int y = 0; y < size; y++){
+                shadowEvents.add(world.tile(x + tx + of, y + ty + of));
+            }
+        }
+    }
+
+// BlockRenderer.java : public void updateShadowTile(Tile tile)
+    public void updateShadowTile(Tile tile){
+        shadowEvents.add(tile);
+    }
+
+// CacheLayer.java : public static void add(CacheLayer layers) / public static void add(int index, CacheLayer layer)
+    public static void add(CacheLayer... layers){
+        for(var layer : layers){
+            //7 = 'normal' index
+            add(7, layer);
+        }
+    }
+
+// CacheLayer.java : public void begin()
+    public void begin(){
+
+    }
+
+// CacheLayer.java : public void end()
+    public void end(){
+
+    }
+
+// CubemapMesh.java : public void setCubemap(Cubemap map)
+    public void setCubemap(Cubemap map){
+        this.map = map;
+    }
+
+// CubemapMesh.java : public void render(Mat3D projection)
+    public void render(Mat3D projection){
+        map.bind();
+        shader.bind();
+        shader.setUniformi("u_cubemap", 0);
+        shader.setUniformMatrix4("u_proj", projection.val);
+        mesh.render(shader, Gl.triangles);
+    }
+
+// CubemapMesh.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+        map.dispose();
+    }
+
+// Drawf.java : public static void text(String text, float x, float y, Color color) / public static void text(String text, float x, float y, Color color, float scale) / public static void text(String text, float x, float y, Color color, float scale, int align) / public static void text(String text, float x, float y, float rotation, Color color, float scale, int align) / public static float text()
+    public static void text(String text, float x, float y, Color color){
+        text(text, x, y, 0f, color, 1f, Align.center);
+    }
+
+// Drawf.java : public static void checkBleed(Pixmap pixmap)
+    public static void checkBleed(Pixmap pixmap){
+        if(Core.settings.getBool("linear", true)){
+            Pixmaps.bleed(pixmap);
+        }
+    }
+
+// Drawf.java : public static void underwater(Runnable run)
+    public static void underwater(Runnable run){
+        renderer.blocks.floor.drawUnderwater(run);
+    }
+
+// Drawf.java : private static void point(float x, float y, float baseX, float baseY, float rotation)
+    private static void point(float x, float y, float baseX, float baseY, float rotation){
+        //TODO test exact and non-exact
+        Tmp.v1.set(x, y).rotateRadExact(rotation * Mathf.degRad);
+        points.add(Tmp.v1.x + baseX, Tmp.v1.y + baseY);
+    }
+
+// Drawf.java : public static void additive(TextureRegion region, Color color, float x, float y) / public static void additive(TextureRegion region, Color color, float x, float y, float rotation) / public static void additive(TextureRegion region, Color color, float x, float y, float rotation, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float width, float height, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float rotation, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float rotation, float layer, float originX, float originY)
+    public static void additive(TextureRegion region, Color color, float x, float y){
+        additive(region, color, x, y, 0f, Layer.blockAdditive);
+    }
+
+// Drawf.java : public static void limitLine(Position start, Position dest, float len1, float len2, Color color) / public static void limitLine(Position start, Position dest, float len1, float len2)
+    public static void limitLine(Position start, Position dest, float len1, float len2, Color color){
+        if(start.within(dest, len1 + len2)){
+            return;
+        }
+        Tmp.v1.set(dest).sub(start).setLength(len1);
+        Tmp.v2.set(Tmp.v1).scl(-1f).setLength(len2);
+
+        Drawf.line(color, start.getX() + Tmp.v1.x, start.getY() + Tmp.v1.y, dest.getX() + Tmp.v2.x, dest.getY() + Tmp.v2.y);
+    }
+
+// Drawf.java : public static void dashLineDst(Color color, float x, float y, float x2, float y2)
+    public static void dashLineDst(Color color, float x, float y, float x2, float y2){
+        dashLine(color, x, y, x2, y2, (int)(Mathf.dst(x, y, x2, y2) / tilesize * 1.6f));
+    }
+
+// Drawf.java : public static void dashLine(Color color, float x, float y, float x2, float y2) / public static void dashLine(Color color, float x, float y, float x2, float y2, int segments)
+    public static void dashLine(Color color, float x, float y, float x2, float y2){
+        dashLine(color, x, y, x2, y2, (int)(Math.max(Math.abs(x - x2), Math.abs(y - y2)) / tilesize * 2));
+    }
+
+// Drawf.java : public static void line(Color color, float x, float y, float x2, float y2)
+    public static void line(Color color, float x, float y, float x2, float y2){
+        Lines.stroke(3f);
+        Draw.color(Pal.gray, color.a);
+        Lines.line(x, y, x2, y2);
+        Lines.stroke(1f, color);
+        Lines.line(x, y, x2, y2);
+        Draw.reset();
+    }
+
+// Drawf.java : public static void dashLineBasic(float x, float y, float x2, float y2)
+    public static void dashLineBasic(float x, float y, float x2, float y2){
+        Lines.dashLine(x, y, x2, y2, (int)(Math.max(Math.abs(x - x2), Math.abs(y - y2)) / tilesize * 2));
+    }
+
+// Drawf.java : public static void dashSquare(Color color, float x, float y, float size)
+    public static void dashSquare(Color color, float x, float y, float size){
+        dashRect(color, x - size/2f, y - size/2f, size, size);
+    }
+
+// Drawf.java : public static void dashRect(Color color, Rect rect) / public static void dashRect(Color color, float x, float y, float width, float height)
+    public static void dashRect(Color color, Rect rect){
+        dashRect(color, rect.x, rect.y, rect.width, rect.height);
+    }
+
+// Drawf.java : public static void dashSquareBasic(float x, float y, float size)
+    public static void dashSquareBasic(float x, float y, float size){
+        dashRectBasic(x - size/2f, y - size/2f, size, size);
+    }
+
+// Drawf.java : public static void dashRectBasic(float x, float y, float width, float height)
+    public static void dashRectBasic(float x, float y, float width, float height){
+        dashLineBasic(x, y, x + width, y);
+        dashLineBasic(x + width, y, x + width, y + height);
+        dashLineBasic(x + width, y + height, x, y + height);
+        dashLineBasic( x, y + height, x, y);
+    }
+
+// Drawf.java : public static void target(float x, float y, float rad, Color color) / public static void target(float x, float y, float rad, float alpha, Color color)
+    public static void target(float x, float y, float rad, Color color){
+        target(x, y, rad, 1, color);
+    }
+
+// Drawf.java : public static void light(float x, float y, float radius, Color color, float opacity) / public static void light(Position pos, float radius, Color color, float opacity) / public static void light(float x, float y, TextureRegion region, Color color, float opacity) / public static void light(float x, float y, TextureRegion region, float rotation, Color color, float opacity) / public static void light(float x, float y, float x2, float y2) / public static void light(float x, float y, float x2, float y2, float stroke, Color tint, float alpha)
+    public static void light(float x, float y, float radius, Color color, float opacity){
+        if(renderer == null) return;
+        renderer.lights.add(x, y, radius, color, opacity);
+    }
+
+// Drawf.java : public static void selected(Building tile, Color color) / public static void selected(Tile tile, Color color) / public static void selected(int x, int y, Block block, Color color)
+    public static void selected(Building tile, Color color){
+        selected(tile.tile, color);
+    }
+
+// Drawf.java : public static void shadow(float x, float y, float rad) / public static void shadow(float x, float y, float rad, float alpha) / public static void shadow(TextureRegion region, float x, float y, float rotation) / public static void shadow(TextureRegion region, float x, float y) / public static void shadow(TextureRegion region, float x, float y, float width, float height, float rotation)
+    public static void shadow(float x, float y, float rad){
+        shadow(x, y, rad, 1f);
+    }
+
+// Drawf.java : public static void squareShadow(float x, float y, float rad, float alpha)
+    public static void squareShadow(float x, float y, float rad, float alpha){
+        Draw.color(0, 0, 0, 0.4f * alpha);
+        Draw.rect("square-shadow", x, y, rad * Draw.xscl, rad * Draw.yscl);
+        Draw.color();
+    }
+
+// Drawf.java : public static void liquid(TextureRegion region, float x, float y, float alpha, Color color, float rotation) / public static void liquid(TextureRegion region, float x, float y, float alpha, Color color)
+    public static void liquid(TextureRegion region, float x, float y, float alpha, Color color, float rotation){
+        if(alpha < 1f/255f) return;
+        Draw.color(color, alpha * color.a);
+        Draw.rect(region, x, y, rotation);
+        Draw.color();
+    }
+
+// Drawf.java : public static void dashCircle(float x, float y, float rad, Color color)
+    public static void dashCircle(float x, float y, float rad, Color color){
+        Lines.stroke(3f, Pal.gray);
+        Lines.dashCircle(x, y, rad);
+        Lines.stroke(1f, color);
+        Lines.dashCircle(x, y, rad);
+        Draw.reset();
+    }
+
+// Drawf.java : public static void circles(float x, float y, float rad) / public static void circles(float x, float y, float rad, Color color)
+    public static void circles(float x, float y, float rad){
+        circles(x, y, rad, Pal.accent);
+    }
+
+// Drawf.java : public static void select(float x, float y, float radius, Color color)
+    public static void select(float x, float y, float radius, Color color){
+        Lines.stroke(3f, Pal.gray);
+        Lines.square(x, y, radius + 1f);
+        Lines.stroke(1f, color);
+        Lines.square(x, y, radius);
+        Draw.reset();
+    }
+
+// Drawf.java : public static void square(float x, float y, float radius, float rotation, Color color) / public static void square(float x, float y, float radius, float rotation, Color color, Color bgColor) / public static void square(float x, float y, float radius, float rotation, Color color, Color bgColor, float scaling) / public static void square(float x, float y, float radius, float rotation) / public static void square(float x, float y, float radius, Color color) / public static void square(float x, float y, float radius)
+    public static void square(float x, float y, float radius, float rotation, Color color){
+        square(x, y, radius, rotation, color, Pal.gray.write(Tmp.c3).a(color.a));
+    }
+
+// Drawf.java : public static void cross(float x, float y, float radius, Color color)
+    public static void cross(float x, float y, float radius, Color color){
+        Lines.stroke(3f, Pal.gray.write(Tmp.c3).a(color.a));
+        Lines.lineAngleCenter(x, y, 45f, radius + 1f);
+        Lines.lineAngleCenter(x, y, 135f, radius + 1f);
+        Lines.stroke(1f, color);
+        Lines.lineAngleCenter(x, y, 45f, radius + 1f);
+        Lines.lineAngleCenter(x, y, 135f, radius + 1f);
+        Draw.reset();
+    }
+
+// Drawf.java : public static void poly(float x, float y, int sides, float radius, float rotation, Color color)
+    public static void poly(float x, float y, int sides, float radius, float rotation, Color color){
+        Lines.stroke(3f, Pal.gray);
+        Lines.poly(x, y, sides, radius + 1f, rotation);
+        Lines.stroke(1f, color);
+        Lines.poly(x, y, sides, radius + 1f, rotation);
+        Draw.reset();
+    }
+
+// Drawf.java : public static void fillPoly(float x, float y, int sides, float radius, float rotation, Color color) / public static void fillPoly(float x, float y, int sides, float radius, float rotation, Color color, Color bgColor, float scl)
+    public static void fillPoly(float x, float y, int sides, float radius, float rotation, Color color){
+        fillPoly(x, y, sides, radius, rotation, color, Pal.gray, 1f);
+    }
+
+// Drawf.java : public static void arrow(float x, float y, float x2, float y2, float length, float radius) / public static void arrow(float x, float y, float x2, float y2, float length, float radius, Color color)
+    public static void arrow(float x, float y, float x2, float y2, float length, float radius){
+        arrow(x, y, x2, y2, length, radius, Pal.accent);
+    }
+
+// Drawf.java : public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2) / public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2, float scale) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale, boolean light) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale, boolean light, boolean useLod)
+    public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2){
+        laser(line, edge, edge, x, y, x2, y2, 1f);
+    }
+
+// Drawf.java : public static void construct(Building t, UnlockableContent content, float rotation, float progress, float alpha, float time) / public static void construct(float x, float y, TextureRegion region, float rotation, float progress, float alpha, float time) / public static void construct(float x, float y, TextureRegion region, Color color, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, Color color, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, Color color, float rotation, float progress, float alpha, float time, float size)
+    public static void construct(Building t, UnlockableContent content, float rotation, float progress, float alpha, float time){
+        construct(t, content.fullIcon, rotation, progress, alpha, time);
+    }
+
+// Drawf.java : public static void spinSprite(TextureRegion region, float x, float y, float r)
+    public static void spinSprite(TextureRegion region, float x, float y, float r){
+        float a = Draw.getColorAlpha();
+        r = Mathf.mod(r, 90f);
+        Draw.rect(region, x, y, r);
+        Draw.alpha(r / 90f*a);
+        Draw.rect(region, x, y, r - 90f);
+        Draw.alpha(a);
+    }
+
+// FloorRenderer.java : public float[] getVertexBuffer()
+    public float[] getVertexBuffer(){
+        return vertices;
+    }
+
+// FloorRenderer.java : public void recacheTile(Tile tile) / public void recacheTile(int x, int y)
+    public void recacheTile(Tile tile){
+        recacheTile(tile.x, tile.y);
+    }
+
+// FloorRenderer.java : public void drawFloor() / public void drawFloor(boolean processChanges, boolean cacheIgnoreWalls)
+    public void drawFloor(){
+        drawFloor(true, false);
+    }
+
+// FloorRenderer.java : public void drawUnderwater(Runnable run)
+    public void drawUnderwater(Runnable run){
+        underwaterDraw.add(run);
+    }
+
+// FloorRenderer.java : public void drawLayer(CacheLayer layer) / public void drawLayer(CacheLayer layer, boolean checkChanges)
+    public void drawLayer(CacheLayer layer){
+        drawLayer(layer, false);
+    }
+
+// FloorRenderer.java : public void reload() / public void reload(boolean ignoreWalls)
+    public void reload(){
+        reload(false);
+    }
+
+// FogRenderer.java : public void handleEvent(long event)
+    public void handleEvent(long event){
+        events.add(event);
+    }
+
+// FogRenderer.java : public Texture getStaticTexture()
+    public Texture getStaticTexture(){
+        return staticFog.getTexture();
+    }
+
+// FogRenderer.java : public Texture getDynamicTexture()
+    public Texture getDynamicTexture(){
+        return dynamicFog.getTexture();
+    }
+
+// FogRenderer.java : void poly(float x, float y, float rad)
+    void poly(float x, float y, float rad){
+        Fill.poly(x, y, 20, rad);
+    }
+
+// FogRenderer.java : void renderEvent(long e)
+    void renderEvent(long e){
+        Tile tile = world.tile(FogEvent.x(e), FogEvent.y(e));
+        float o = 0f;
+        //visual offset for uneven blocks; this is not reflected on the CPU, but it doesn't really matter
+        if(tile != null && tile.block().size % 2 == 0 && tile.isCenter()){
+            o = 0.5f;
+        }
+        Fill.poly(FogEvent.x(e) + 0.5f + o, FogEvent.y(e) + 0.5f + o, 20, FogEvent.radius(e) + 0.3f);
+    }
+
+// InverseKinematics.java : public static boolean solve(float lengthA, float lengthB, Vec2 end, boolean side, Vec2 result) / public static boolean solve(float lengthA, float lengthB, Vec2 end, Vec2 attractor, Vec2 result)
+    public static boolean solve(float lengthA, float lengthB, Vec2 end, boolean side, Vec2 result){
+        at1.set(end).rotate(side ? 1 : -1).setLength(lengthA + lengthB).add(end.x / 2f, end.y / 2f);
+        return solve(lengthA, lengthB, end, at1, result);
+    }
+
+// LightRenderer.java : public void add(Runnable run) / public void add(float x, float y, float radius, Color color, float opacity) / public void add(float x, float y, TextureRegion region, Color color, float opacity) / public void add(float x, float y, TextureRegion region, float rotation, Color color, float opacity)
+    public void add(Runnable run){
+        if(!enabled()) return;
+
+        lights.add(run);
+    }
+
+// LightRenderer.java : public boolean enabled()
+    public boolean enabled(){
+        return state.rules.lighting && state.rules.ambientLight.a > 0.0001f && renderer.drawLight;
+    }
+
+// LoadRenderer.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+        fx.dispose();
+        bloom.dispose();
+    }
+
+// MenuRenderer.java : public void dispose()
+    @Override
+    public void dispose(){
+        batch.dispose();
+        shadows.dispose();
+    }
+
+// MinimapRenderer.java : public Pixmap getPixmap()
+    public Pixmap getPixmap(){
+        return pixmap;
+    }
+
+// MinimapRenderer.java : public Texture getTexture()
+    public @Nullable Texture getTexture(){
+        return texture;
+    }
+
+// MinimapRenderer.java : public void zoomBy(float amount)
+    public void zoomBy(float amount){
+        zoom += amount;
+        setZoom(zoom);
+    }
+
+// MinimapRenderer.java : public void setZoom(float amount)
+    public void setZoom(float amount){
+        zoom = Mathf.clamp(amount, 1f, Math.min(world.width(), world.height()) / baseSize / 2f);
+    }
+
+// MinimapRenderer.java : public float getZoom()
+    public float getZoom(){
+        return zoom;
+    }
+
+// MinimapRenderer.java : public void reset()
+    public void reset(){
+        updates.clear();
+        if(pixmap != null){
+            pixmap.dispose();
+            texture.dispose();
+        }
+        setZoom(4f);
+        pixmap = new Pixmap(world.width(), world.height());
+        texture = new Texture(pixmap);
+        region = new TextureRegion(texture);
+    }
+
+// MinimapRenderer.java : public void updateAll()
+    public void updateAll(){
+        if(pixmap.isDisposed() || texture.isDisposed()) return;
+        for(Tile tile : world.tiles){
+            pixmap.set(tile.x, pixmap.height - 1 - tile.y, colorFor(tile));
+        }
+        texture.draw(pixmap);
+    }
+
+// MinimapRenderer.java : public void updatePixel(Tile tile)
+    public void updatePixel(Tile tile){
+        updates.add(tile.pos());
+    }
+
+// MinimapRenderer.java : public void updateUnitArray()
+    public void updateUnitArray(){
+        float sz = baseSize * zoom;
+        float dx = (Core.camera.position.x / tilesize);
+        float dy = (Core.camera.position.y / tilesize);
+        dx = Mathf.clamp(dx, sz, world.width() - sz);
+        dy = Mathf.clamp(dy, sz, world.height() - sz);
+
+        units.clear();
+        Units.nearby((dx - sz) * tilesize, (dy - sz) * tilesize, sz * 2 * tilesize, sz * 2 * tilesize, units::add);
+    }
+
+// MinimapRenderer.java : private Block realBlock(Tile tile)
+    private Block realBlock(Tile tile){
+        //TODO doesn't work properly until player goes and looks at block
+        return tile.build == null ? tile.block() : state.rules.fog && !tile.build.wasVisible ? Blocks.air : tile.block();
+    }
+
+// MinimapRenderer.java : public void drawLabel(float x, float y, String text, Color color, float scaleFactor) / public void drawLabel(float x, float y, String text, Color color, float scaleFactor, boolean bg)
+    public void drawLabel(float x, float y, String text, Color color, float scaleFactor){
+        drawLabel(x, y, text, color ,scaleFactor, true);
+    }
+
+// MultiPacker.java : public PixmapRegion get(TextureRegion region) / public PixmapRegion get(String region)
+    public PixmapRegion get(TextureRegion region){
+        return Core.atlas.getPixmap(region);
+    }
+
+// MultiPacker.java : public PixmapRegion getPacked(String name)
+    public @Nullable PixmapRegion getPacked(String name){
+        for(var packer : packers){
+            var region = packer.getRegion(name);
+            if(region != null){
+                return region;
+            }
+        }
+        return null;
+    }
+
+// MultiPacker.java : public boolean registerOutlined(String named)
+    public boolean registerOutlined(String named){
+        return outlined.add(named);
+    }
+
+// MultiPacker.java : public boolean isOutlined(String name)
+    public boolean isOutlined(String name){
+        return outlined.contains(name);
+    }
+
+// MultiPacker.java : public boolean has(String name) / public boolean has(PageType type, String name)
+    public boolean has(String name){
+        for(var page : PageType.all){
+            if(packers[page.ordinal()].getRect(name) != null){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// MultiPacker.java : public void add(PageType type, String name, PixmapRegion region) / public void add(PageType type, String name, PixmapRegion region, int[] splits, int[] pads) / public void add(PageType type, String name, Pixmap pix)
+    public void add(PageType type, String name, PixmapRegion region){
+        add(type, name, region, null, null);
+    }
+
+// MultiPacker.java : public TextureAtlas flush(TextureFilter filter, TextureAtlas atlas)
+    public TextureAtlas flush(TextureFilter filter, TextureAtlas atlas){
+        for(PixmapPacker p : packers){
+            p.updateTextureAtlas(atlas, filter, filter, false, false);
+        }
+        return atlas;
+    }
+
+// MultiPacker.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(packers == null) return;
+        for(int i = 0; i < PageType.all.length; i ++){
+            var packer = packers[i];
+            //the UI packer's image is later used when merging with the font, don't dispose it
+            if(i != PageType.ui.ordinal()){
+                packer.forceDispose();
+            }
+        }
+    }
+
+// NvGpuInfo.java : public static int getMaxMemoryKB()
+    public static int getMaxMemoryKB(){
+        return hasMemoryInfo() ? Gl.getInt(GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX) : 0;
+    }
+
+// NvGpuInfo.java : public static int getAvailableMemoryKB()
+    public static int getAvailableMemoryKB(){
+        return hasMemoryInfo() ? Gl.getInt(GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX) : 0;
+    }
+
+// NvGpuInfo.java : public static boolean hasMemoryInfo()
+    public static boolean hasMemoryInfo(){
+        if(!initialized){
+            supported = Core.graphics.supportsExtension("GL_NVX_gpu_memory_info");
+            initialized = true;
+        }
+        return supported;
+    }
+
+// OverlayRenderer.java : public void checkApplySelection(Unit u)
+    public void checkApplySelection(Unit u){
+        if(unitFade > 0.001f && lastSelect == u){
+            Color prev = Draw.getMixColor();
+            Draw.mixcol(prev.a > 0.001f ? prev.lerp(Pal.accent, unitFade) : Pal.accent, Math.max(unitFade, prev.a));
+        }
+    }
+
+// ParticleRenderer.java : public int count()
+    public int count(){
+        return count;
+    }
+
+// ParticleRenderer.java : public void updateAndRender()
+    public void updateAndRender(){
+        if(!Vars.state.isPaused()){
+            update();
+        }
+
+        render();
+    }
+
+// ParticleRenderer.java : void updateAsync()
+    void updateAsync(){
+        count = update(data, count, Time.delta);
+        buildVertices();
+    }
+
+// ParticleRenderer.java : public void render()
+    public void render(){
+        if(shader == null) makeShader();
+
+        Gl.enable(Gl.programPointSize);
+
+        shader.bind();
+        shader.setUniformMatrix4("u_mat", Core.camera.mat);
+        shader.setUniformf("u_scaling", Core.graphics.getWidth() / Core.camera.width);
+
+        mesh.render(shader, Gl.points);
+    }
+
+// ParticleRenderer.java : void uploadMeshData(Mesh mesh)
+    void uploadMeshData(Mesh mesh){
+        var buffer = mesh.getVerticesBuffer();
+
+        buffer.position(0);
+        buffer.limit(vertexBufferLength);
+        buffer.put(vertexBuffer, 0, vertexBufferLength);
+        buffer.position(0);
+    }
+
+// Pixelator.java : public void register()
+    public void register(){
+        Draw.draw(Layer.end, () -> {
+            buffer.end();
+
+            Blending.disabled.apply();
+            buffer.blit(Shaders.screenspace);
+
+            Core.camera.position.set(px, py);
+            renderer.setScale(pre);
+        });
+    }
+
+// Pixelator.java : public boolean enabled()
+    public boolean enabled(){
+        return renderer.pixelate;
+    }
+
+// Pixelator.java : public void dispose()
+    @Override
+    public void dispose(){
+        buffer.dispose();
+    }
+
+// Shaders.java : public static Fi getShaderFi(String file)
+    public static Fi getShaderFi(String file){
+        return tree.get("shaders/" + file);
+    }
+
+// Trail.java : public Trail copy()
+    public Trail copy(){
+        Trail out = new Trail(length);
+        out.points.addAll(points);
+        out.lastX = lastX;
+        out.lastY = lastY;
+        out.lastAngle = lastAngle;
+        return out;
+    }
+
+// Trail.java : public float width()
+    public float width(){
+        return lastW;
+    }
+
+// Trail.java : public void clear()
+    public void clear(){
+        points.clear();
+    }
+
+// Trail.java : public int size()
+    public int size(){
+        return points.size/3;
+    }
+
+// Trail.java : public void drawCap(Color color, float width)
+    public void drawCap(Color color, float width){
+        if(points.size > 0){
+            Draw.color(color);
+            float[] items = points.items;
+            int i = points.size - 3;
+            float x1 = items[i], y1 = items[i + 1], w1 = items[i + 2], w = w1 * width / (points.size/3) * i/3f * 2f;
+            if(w1 <= 0.001f) return;
+            Draw.rect("hcircle", x1, y1, w, w, -Mathf.radDeg * lastAngle + 180f);
+            Draw.reset();
+        }
+    }
+
+// Trail.java : public void shorten()
+    public void shorten(){
+        int count = (int)(counter += Time.delta);
+        counter -= count;
+
+       if(count > 0 && points.size > 0){
+           points.removeRange(0, Math.min(count * 3 - 1, points.size - 1));
+       }
+    }
+
+// Trail.java : public void update(float x, float y) / public void update(float x, float y, float width)
+    public void update(float x, float y){
+        update(x, y, 1f);
+    }
+
+// Voronoi.java : public static Seq<GraphEdge> generate(Vec2[] values, float minX, float maxX, float minY, float maxY)
+    public static Seq<GraphEdge> generate(Vec2[] values, float minX, float maxX, float minY, float maxY){
+        return new Voronoi().generateVoronoi(values, minX, maxX, minY, maxY);
+    }
+
+// Voronoi.java : private Site next()
+    private Site next(){
+        return siteidx < nsites ? sites[siteidx ++] : null;
+    }
+
+// Voronoi.java : private Halfedge newHe(Edge e, int pm)
+    private Halfedge newHe(Edge e, int pm){
+        Halfedge answer = new Halfedge();
+        answer.ELedge = e;
+        answer.ELpm = pm;
+        answer.PQnext = null;
+        answer.vertex = null;
+        return answer;
+    }
+
+// Voronoi.java : private Site leftReg(Halfedge he)
+    private Site leftReg(Halfedge he){
+        if(he.ELedge == null){
+            return bottomsite;
+        }
+        return he.ELpm == LE ? he.ELedge.reg[LE] : he.ELedge.reg[RE];
+    }
+
+// Voronoi.java : private void insert(Halfedge lb, Halfedge newHe)
+    private void insert(Halfedge lb, Halfedge newHe){
+        newHe.ELleft = lb;
+        newHe.ELright = lb.ELright;
+        lb.ELright.ELleft = newHe;
+        lb.ELright = newHe;
+    }
+
+// Voronoi.java : private void delete(Halfedge he)
+    private void delete(Halfedge he){
+        he.ELleft.ELright = he.ELright;
+        he.ELright.ELleft = he.ELleft;
+        he.deleted = true;
+    }
+
+// Voronoi.java : private void endpoint(Edge e, int lr, Site s)
+    private void endpoint(Edge e, int lr, Site s){
+        e.ep[lr] = s;
+        if(e.ep[RE - lr] == null){
+            return;
+        }
+        clipLine(e);
+    }
+
+// Voronoi.java : private Site rightreg(Halfedge he)
+    private Site rightreg(Halfedge he){
+        if(he.ELedge == null) return bottomsite;
+
+        return (he.ELpm == LE ? he.ELedge.reg[RE] : he.ELedge.reg[LE]);
+    }
+

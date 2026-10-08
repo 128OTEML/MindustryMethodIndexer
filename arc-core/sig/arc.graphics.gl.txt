@@ -1,0 +1,586 @@
+FacedCubemapData.java
+Java class implements arc.graphics.CubemapData
+// A FacedCubemapData holds a cubemap data definition based on a {@link TextureData} per face.
+fields:
+  protected final TextureData data
+ctors:
+  public FacedCubemapData() / public FacedCubemapData(Fi positiveX, Fi negativeX, Fi positiveY, Fi negativeY, Fi positiveZ, Fi negativeZ) / public FacedCubemapData(Fi positiveX, Fi negativeX, Fi positiveY, Fi negativeY, Fi positiveZ, Fi negativeZ, boolean useMipMaps) / public FacedCubemapData(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ, Pixmap negativeZ) / public FacedCubemapData(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ, Pixmap negativeZ, boolean useMipMaps) / public FacedCubemapData(int width, int height, int depth, Format format) / public FacedCubemapData(TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY, TextureData positiveZ, TextureData negativeZ)  // Construct an empty Cubemap.
+methods:
+  public void load(CubemapSide side, Fi file) / public void load(CubemapSide side, Pixmap pixmap)  // Loads the texture specified using the {@link Fi} and sets it to specified side, overwriting any previous data set to
+  public boolean isComplete()  // @return True if all sides of this cubemap are set, false otherwise.
+  public TextureData getTextureData(CubemapSide side)  // @return The {@link TextureData} for the specified side, can be null if the cubemap is incomplete.
+  public int getWidth()
+  public int getHeight()
+  public boolean isPrepared()
+  public void prepare()
+  public void consumeCubemapData()
+
+FileTextureArrayData.java
+Java class implements arc.graphics.TextureArrayData
+// @author Tomski *
+fields:
+  boolean useMipMaps
+  private TextureData textureDatas
+  private boolean prepared
+  private int depth
+ctors:
+  public FileTextureArrayData(boolean useMipMaps, Fi[] files)
+methods:
+  public boolean isPrepared()
+  public void prepare()
+  public void consumeTextureArrayData()
+  public int getWidth()
+  public int getHeight()
+  public int getDepth()
+  public int getInternalFormat()
+  public int getGLType()
+
+FileTextureData.java
+Java class implements arc.graphics.TextureData
+fields:
+  final Fi file
+  int width
+  int height
+  Pixmap pixmap
+  boolean useMipMaps
+  boolean isPrepared
+ctors:
+  public FileTextureData(Fi file, Pixmap preloadedPixmap, boolean useMipMaps)
+methods:
+  public boolean isPrepared()
+  public void prepare()
+  public Pixmap consumePixmap()
+  public boolean disposePixmap()
+  public int getWidth()
+  public int getHeight()
+  public Format getFormat()
+  public boolean useMipMaps()
+  public Fi getFileHandle()
+  public boolean isCustom()
+  public void consumeCustomData(int target)
+  public String toString()
+
+FloatFrameBuffer.java
+Java class extends arc.graphics.gl.FrameBuffer
+// This is a {@link FrameBuffer} variant backed by a float texture.
+ctors:
+  FloatFrameBuffer() / protected FloatFrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder) / public FloatFrameBuffer(int width, int height, boolean hasDepth)  // Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+methods:
+  protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)
+  public void resize(int width, int height)
+  protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)
+
+FloatTextureData.java
+Java class implements arc.graphics.TextureData
+// A {@link TextureData} implementation which should be used to create float textures.
+fields:
+  int width
+  int height
+  int internalFormat
+  int format
+  int type
+  boolean isGpuOnly
+  boolean isPrepared
+  FloatBuffer buffer
+ctors:
+  public FloatTextureData(int w, int h, int internalFormat, int format, int type, boolean isGpuOnly)
+methods:
+  public boolean isCustom()
+  public boolean isPrepared()
+  public void prepare()
+  public void consumeCustomData(int target)
+  public Pixmap consumePixmap()
+  public boolean disposePixmap()
+  public int getWidth()
+  public int getHeight()
+  public Format getFormat()
+  public boolean useMipMaps()
+  public FloatBuffer getBuffer()
+
+FrameBuffer.java
+Java class extends arc.graphics.gl.GLFrameBuffer
+// <p>
+fields:
+  private Format format
+ctors:
+  protected FrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<Texture>> bufferBuilder) / public FrameBuffer() / public FrameBuffer(int width, int height) / public FrameBuffer(Pixmap.Format format, int width, int height) / public FrameBuffer(Pixmap.Format format, int width, int height, boolean hasDepth) / public FrameBuffer(int width, int height, boolean hasDepth) / public FrameBuffer(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)  // Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+methods:
+  protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)
+  public void blit(Shader shader)  // Blits this buffer onto the screen using the specified shader.
+  public boolean resizeCheck(int width, int height)
+  public void resize(int width, int height)  // Note that this does nothing if the width and height are the same.
+  public static void unbind()  // See {@link GLFrameBuffer#unbind()}
+  protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)
+  protected void disposeTexture(Texture colorTexture)
+  protected void attachTexture(int attachment, Texture texture)
+
+FrameBufferCubemap.java
+Java class extends arc.graphics.gl.GLFrameBuffer
+// <p>
+ctors:
+  protected FrameBufferCubemap(GLFrameBufferBuilder<? extends GLFrameBuffer<Cubemap>> bufferBuilder) / public FrameBufferCubemap(Pixmap.Format format, int width, int height, boolean hasDepth) / public FrameBufferCubemap(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)  // Creates a GLFrameBuffer from the specifications provided by bufferBuilder
+methods:
+  protected Cubemap createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)
+  protected void disposeTexture(Cubemap colorTexture)
+  protected void attachTexture(int attachment, Cubemap texture)
+  public void eachSide(Cons<CubemapSide> cons)  // Should be called in between a call to {@link #begin()} and {@link #end()}.
+  public void bindSide(CubemapSide side)  // Bind the side, making it active to render on.
+
+GLFrameBuffer.java
+Java class (abstract) implements arc.util.Disposable
+// <p>
+fields:
+  protected final static int GL_DEPTH24_STENCIL8_OES
+  protected static GLFrameBuffer<?> currentBoundFramebuffer  // the currently bound framebuffer; null for the default one.
+  protected static int defaultFramebufferHandle  // the default framebuffer handle, a.k.a screen.
+  protected static int bufferNesting  // # of nested buffers right now
+  protected static boolean defaultFramebufferHandleInitialized  // true if we have polled for the default handle already.
+  protected Seq<T> textureAttachments  // the color buffer texture *
+  protected GLFrameBuffer<?> lastBoundFramebuffer  // the framebuffer that was bound before this one began (null to indicate that nothing was bound) *
+  protected int framebufferHandle  // the framebuffer handle *
+  protected int depthbufferHandle  // the depthbuffer render object handle *
+  protected int stencilbufferHandle  // the stencilbuffer render object handle *
+  protected int depthStencilPackedBufferHandle  // the depth stencil packed render buffer object handle *
+  protected boolean hasDepthStencilPackedBuffer  // if has depth stencil packed buffer *
+  protected boolean isMRT  // if multiple texture attachments are present *
+  protected GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder
+ctors:
+  GLFrameBuffer() / protected GLFrameBuffer(GLFrameBufferBuilder<? extends GLFrameBuffer<T>> bufferBuilder)  // Creates a GLFrameBuffer from the specifications provided by bufferBuilder *
+methods:
+  public static int getBufferNesting()
+  public static void unbind()  // Unbinds the framebuffer, all drawing will be performed to the normal framebuffer from here on.
+  public T getTexture()  // Convenience method to return the first Texture attachment present in the fbo *
+  public Seq<T> getTextureAttachments()  // Return the Texture attachments attached to the fbo *
+  protected abstract T createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)  // Override this method in a derived class to set up the backing texture as you like.
+  protected abstract void disposeTexture(T colorTexture)  // Override this method in a derived class to dispose the backing texture as you like.
+  protected abstract void attachTexture(int attachment, T texture)  // Override this method in a derived class to attach the backing texture to the GL framebuffer object.
+  protected void build()
+  private void checkValidBuilder()
+  public void dispose()  // Releases all resources associated with the FrameBuffer.
+  public void bind()  // Makes the frame buffer current so everything gets drawn to it.
+  public boolean isBound()
+  public void begin(Color clearColor) / public void begin()  // Flushes the batch, begins this buffer and clears the screen.
+  public void beginBind()  // Begins the buffer without setting the viewport or flushing the batch.
+  protected void setFrameBufferViewport()  // Sets viewport to the dimensions of framebuffer.
+  public void end()  // Unbinds the framebuffer, all drawing will be performed to the normal framebuffer from here on.
+  public void endBind()  // Stop binding.
+  public int getFramebufferHandle()  // @return The OpenGL handle of the framebuffer (see {@link GL20#glGenFramebuffer()})
+  public int getDepthBufferHandle()  // @return The OpenGL handle of the (optional) depth buffer (see {@link GL20#glGenRenderbuffer()}).
+  public int getStencilBufferHandle()  // @return The OpenGL handle of the (optional) stencil buffer (see {@link GL20#glGenRenderbuffer()}).
+  protected int getDepthStencilPackedBuffer()  // @return The OpenGL handle of the packed depth & stencil buffer (GL_DEPTH24_STENCIL8_OES) or 0 if not used.
+  public int getHeight()  // @return the height of the framebuffer in pixels
+  public int getWidth()  // @return the width of the framebuffer in pixels
+inner-class: FrameBufferTextureAttachmentSpec
+  fields:
+    int internalFormat
+    boolean isFloat
+    boolean isDepth
+    boolean isStencil
+  ctors:
+    public FrameBufferTextureAttachmentSpec(int internalformat, int format, int type)
+  methods:
+    public boolean isColorTexture()
+inner-class: FrameBufferRenderBufferAttachmentSpec
+  fields:
+    int internalFormat
+  ctors:
+    public FrameBufferRenderBufferAttachmentSpec(int internalFormat)
+inner-class: GLFrameBufferBuilder
+  fields:
+    protected int width
+    protected Seq<FrameBufferTextureAttachmentSpec> textureAttachmentSpecs
+    protected FrameBufferRenderBufferAttachmentSpec stencilRenderBufferSpec
+    protected FrameBufferRenderBufferAttachmentSpec depthRenderBufferSpec
+    protected FrameBufferRenderBufferAttachmentSpec packedStencilDepthRenderBufferSpec
+    protected boolean hasStencilRenderBuffer
+    protected boolean hasDepthRenderBuffer
+    protected boolean hasPackedStencilDepthRenderBuffer
+  ctors:
+    public GLFrameBufferBuilder(int width, int height)
+  methods:
+    public GLFrameBufferBuilder<U> addColorTextureAttachment(int internalFormat, int format, int type)
+    public GLFrameBufferBuilder<U> addBasicColorTextureAttachment(Pixmap.Format format)
+    public GLFrameBufferBuilder<U> addFloatAttachment(int internalFormat, int format, int type, boolean gpuOnly)
+    public GLFrameBufferBuilder<U> addDepthTextureAttachment(int internalFormat, int type)
+    public GLFrameBufferBuilder<U> addStencilTextureAttachment(int internalFormat, int type)
+    public GLFrameBufferBuilder<U> addDepthRenderBuffer(int internalFormat)
+    public GLFrameBufferBuilder<U> addStencilRenderBuffer(int internalFormat)
+    public GLFrameBufferBuilder<U> addStencilDepthPackedRenderBuffer(int internalFormat)
+    public GLFrameBufferBuilder<U> addBasicDepthRenderBuffer()
+    public GLFrameBufferBuilder<U> addBasicStencilRenderBuffer()
+    public GLFrameBufferBuilder<U> addBasicStencilDepthPackedRenderBuffer()
+    public abstract U build()
+inner-class: FrameBufferBuilder extends arc.graphics.gl.GLFrameBuffer.GLFrameBufferBuilder
+  ctors:
+    public FrameBufferBuilder(int width, int height)
+  methods:
+    public FrameBuffer build()
+inner-class: FloatFrameBufferBuilder extends arc.graphics.gl.GLFrameBuffer.GLFrameBufferBuilder
+  ctors:
+    public FloatFrameBufferBuilder(int width, int height)
+  methods:
+    public FloatFrameBuffer build()
+inner-class: FrameBufferCubemapBuilder extends arc.graphics.gl.GLFrameBuffer.GLFrameBufferBuilder
+  ctors:
+    public FrameBufferCubemapBuilder(int width, int height)
+  methods:
+    public FrameBufferCubemap build()
+
+GLOnlyTextureData.java
+Java class implements arc.graphics.TextureData
+// A {@link TextureData} implementation which should be used to create gl only textures.
+fields:
+  int width  // width and height
+  int height
+  boolean isPrepared
+  int mipLevel  // properties of opengl texture
+  int internalFormat
+  int format
+  int type
+ctors:
+  public GLOnlyTextureData(int width, int height, int mipMapLevel, int internalFormat, int format, int type)  // @param internalFormat Specifies the internal format of the texture.
+methods:
+  public boolean isCustom()
+  public boolean isPrepared()
+  public void prepare()
+  public void consumeCustomData(int target)
+  public Pixmap consumePixmap()
+  public boolean disposePixmap()
+  public int getWidth()
+  public int getHeight()
+  public Format getFormat()
+  public boolean useMipMaps()
+
+GLVersion.java
+Java class
+fields:
+  public final String vendorString
+  public final String rendererString
+  public final String versionString
+  public final GlType type
+  public int majorVersion
+  public int minorVersion
+  public int releaseVersion
+ctors:
+  public GLVersion(Application.ApplicationType appType, String versionString, String vendorString, String rendererString)
+methods:
+  private void extractVersion(String patternString, String versionString)
+  private int parseInt(String v, int defaultValue)  // Forgiving parsing of gl major, minor and release versions as some manufacturers don't adhere to spec *
+  public boolean atLeast(int testMajorVersion, int testMinorVersion)  // Checks to see if the current GL connection version is higher, or equal to the provided test versions.
+  public String getDebugVersionString()  // @return a string with the current GL connection data
+  public String toString()
+
+HdpiMode.java
+(unknown)
+
+HdpiUtils.java
+Java class
+// To deal with HDPI monitors properly, use the glViewport and glScissor functions of this class instead of directly calling
+fields:
+  private static HdpiMode mode
+methods:
+  public static void setMode(HdpiMode mode)  // Allows applications to override HDPI coordinate conversion for glViewport and glScissor calls.
+  public static void glScissor(int x, int y, int width, int height)  // Calls {@link GL20#glScissor(int, int, int, int)}, expecting the coordinates and sizes given in logical coordinates and
+  public static void glViewport(int x, int y, int width, int height)  // Calls {@link GL20#glViewport(int, int, int, int)}, expecting the coordinates and sizes given in logical coordinates and
+  public static int toLogicalX(int backBufferX)  // Converts an x-coordinate given in backbuffer coordinates to
+  public static int toLogicalY(int backBufferY)  // Convers an y-coordinate given in backbuffer coordinates to
+  public static int toBackBufferX(int logicalX)  // Converts an x-coordinate given in logical screen coordinates to
+  public static int toBackBufferY(int logicalY)  // Convers an y-coordinate given in backbuffer coordinates to
+
+IndexArray.java
+Java class implements arc.graphics.gl.IndexData
+fields:
+  final ShortBuffer buffer
+  final ByteBuffer byteBuffer
+  private final boolean empty  // used to work around bug: https://android-review.googlesource.com/#/c/73175/
+ctors:
+  public IndexArray(int maxIndices)  // Creates a new IndexArray to be used with vertex arrays.
+methods:
+  public int size()  // @return the number of indices currently stored in this buffer
+  public int max()  // @return the maximum number of indices this IndexArray can store.
+  public void set(short[] indices, int offset, int count) / public void set(ShortBuffer indices)  // <p>
+  public void update(int targetOffset, short[] indices, int offset, int count)
+  public ShortBuffer buffer()  // <p>
+  public void bind()  // Binds this IndexArray for rendering with glDrawElements.
+  public void unbind()  // Unbinds this IndexArray.
+  public void dispose()  // Disposes this IndexArray and all its associated OpenGL resources.
+
+IndexBufferObject.java
+Java class implements arc.graphics.gl.IndexData
+// <p>
+fields:
+  final ShortBuffer buffer
+  final ByteBuffer byteBuffer
+  final boolean isDirect
+  final int usage
+  final boolean empty  // used to work around bug: https://android-review.googlesource.com/#/c/73175/
+  int bufferHandle
+  boolean dirty
+  boolean bound
+  boolean created
+ctors:
+  public IndexBufferObject(int maxIndices) / public IndexBufferObject(boolean isStatic, int maxIndices)  // Creates a new static IndexBufferObject to be used with vertex arrays.
+methods:
+  public int size()  // @return the number of indices currently stored in this buffer
+  public int max()  // @return the maximum number of indices this IndexBufferObject can store.
+  public void set(short[] indices, int offset, int count) / public void set(ShortBuffer indices)  // <p>
+  public void update(int targetOffset, short[] indices, int offset, int count)
+  public ShortBuffer buffer()  // <p>
+  public void bind()  // Binds this IndexBufferObject for rendering with glDrawElements.
+  public void unbind()  // Unbinds this IndexBufferObject.
+  public void dispose()  // Disposes this IndexBufferObject and all its associated OpenGL resources.
+
+IndexBufferObjectSubData.java
+Java class implements arc.graphics.gl.IndexData
+// <p>
+fields:
+  final ShortBuffer buffer
+  final ByteBuffer byteBuffer
+  final boolean isDirect
+  final int usage
+  int bufferHandle
+  boolean isDirty
+  boolean isBound
+ctors:
+  public IndexBufferObjectSubData(boolean isStatic, int maxIndices) / public IndexBufferObjectSubData(int maxIndices)  // Creates a new IndexBufferObject.
+methods:
+  private int createBufferObject()
+  public int size()  // @return the number of indices currently stored in this buffer
+  public int max()  // @return the maximum number of indices this IndexBufferObject can store.
+  public void set(short[] indices, int offset, int count) / public void set(ShortBuffer indices)  // <p>
+  public void update(int targetOffset, short[] indices, int offset, int count)
+  public ShortBuffer buffer()  // <p>
+  public void bind()  // Binds this IndexBufferObject for rendering with glDrawElements.
+  public void unbind()  // Unbinds this IndexBufferObject.
+  public void dispose()  // Disposes this IndexBufferObject and all its associated OpenGL resources.
+
+IndexData.java
+Java interface extends arc.util.Disposable
+// An IndexData instance holds index data.
+methods:
+  int size()  // @return the number of indices currently stored in this buffer
+  int max()  // @return the maximum number of indices this IndexBufferObject can store.
+  void set(short[] indices, int offset, int count) / void set(ShortBuffer indices)  // <p>
+  void update(int targetOffset, short[] indices, int offset, int count)  // Update (a portion of) the indices.
+  ShortBuffer buffer()  // <p>
+  void bind()  // Binds this IndexBufferObject for rendering with glDrawElements.
+  void unbind()  // Unbinds this IndexBufferObject.
+  void dispose()  // Disposes this IndexData and all its associated OpenGL resources.
+
+MipMapTextureData.java
+Java class implements arc.graphics.TextureData
+// This class will load each contained TextureData to the chosen mipmap level.
+fields:
+  TextureData mips
+ctors:
+  public MipMapTextureData(TextureData mipMapData)  // @param mipMapData must be != null and its length must be >= 1
+methods:
+  public boolean isCustom()
+  public boolean isPrepared()
+  public void prepare()
+  public Pixmap consumePixmap()
+  public boolean disposePixmap()
+  public void consumeCustomData(int target)
+  public int getWidth()
+  public int getHeight()
+  public Format getFormat()
+  public boolean useMipMaps()
+
+PixmapTextureData.java
+Java class implements arc.graphics.TextureData
+fields:
+  final Pixmap pixmap
+  final boolean useMipMaps
+  final boolean disposePixmap
+ctors:
+  public PixmapTextureData(Pixmap pixmap, boolean useMipMaps, boolean disposePixmap)
+methods:
+  public boolean disposePixmap()
+  public Pixmap consumePixmap()
+  public int getWidth()
+  public int getHeight()
+  public Format getFormat()
+  public boolean useMipMaps()
+  public boolean isCustom()
+  public void consumeCustomData(int target)
+  public boolean isPrepared()
+  public void prepare()
+
+Shader.java
+Java class implements arc.util.Disposable
+// <p>
+fields:
+  public static final String positionAttribute  // default name for position attributes *
+  public static final String normalAttribute  // default name for normal attributes *
+  public static final String colorAttribute  // default name for color attributes *
+  public static final String mixColorAttribute  // default name for mix color attributes *
+  public static final String texcoordAttribute  // default name for texcoords attributes, append texture unit number *
+  public static boolean pedantic  // flag indicating whether attributes & uniforms must be present at all times *
+  public static String prependVertexCode  // code that is always added to the vertex shader code.
+  public static String prependFragmentCode  // code that is always added to every fragment shader code.
+  private final ObjectIntMap<String> uniforms  // uniform lookup *
+  private final ObjectIntMap<String> uniformTypes  // uniform types *
+  private final ObjectIntMap<String> uniformSizes  // uniform sizes *
+  private final ObjectIntMap<String> attributes  // attribute lookup *
+  private final ObjectIntMap<String> attributeTypes  // attribute types *
+  private final ObjectIntMap<String> attributeSizes  // attribute sizes *
+  private final String vertexShaderSource  // vertex shader source *
+  private final String fragmentShaderSource  // fragment shader source *
+  IntBuffer params
+  IntBuffer type
+  private String log  // the log *
+  private boolean isCompiled  // whether this program compiled successfully *
+  private String uniformNames  // uniform names *
+  private String attributeNames  // attribute names *
+  private int program  // program handle *
+  private int vertexShaderHandle  // vertex shader handle *
+  private int fragmentShaderHandle  // fragment shader handle *
+  private boolean disposed
+  private static final float val
+ctors:
+  public Shader(String vertexShader, String fragmentShader) / public Shader(Fi vertexShader, Fi fragmentShader)  // Constructs a new Shader and immediately compiles it.
+methods:
+  public void apply()  // Applies all relevant uniforms, if applicable.
+  protected String preprocess(String source, boolean fragment)
+  private void compileShaders(String vertexShader, String fragmentShader)  // Loads and compiles the shaders, creates a new program and links the shaders.
+  private int loadShader(int type, String source)
+  protected int createProgram()
+  private int linkProgram(int program)
+  public String getLog()  // @return the log info for the shader compilation and program linking stage.
+  public boolean isCompiled()  // @return whether this Shader compiled successfully.
+  private int fetchAttributeLocation(String name)
+  private int fetchUniformLocation(String name) / public int fetchUniformLocation(String name, boolean pedantic)
+  public void setUniformi(String name, int value) / public void setUniformi(int location, int value) / public void setUniformi(String name, int value1, int value2) / public void setUniformi(int location, int value1, int value2) / public void setUniformi(String name, int value1, int value2, int value3) / public void setUniformi(int location, int value1, int value2, int value3) / public void setUniformi(String name, int value1, int value2, int value3, int value4) / public void setUniformi(int location, int value1, int value2, int value3, int value4)  // Sets the uniform with the given name.
+  public void setUniformf(String name, float value) / public void setUniformf(int location, float value) / public void setUniformf(String name, float value1, float value2) / public void setUniformf(int location, float value1, float value2) / public void setUniformf(String name, float value1, float value2, float value3) / public void setUniformf(int location, float value1, float value2, float value3) / public void setUniformf(String name, float value1, float value2, float value3, float value4) / public void setUniformf(int location, float value1, float value2, float value3, float value4) / public void setUniformf(String name, Vec2 values) / public void setUniformf(int location, Vec2 values) / public void setUniformf(String name, Vec3 values) / public void setUniformf(int location, Vec3 values) / public void setUniformf(String name, Color values) / public void setUniformf(int location, Color values)  // Sets the uniform with the given name.
+  public void setUniform1fv(String name, float[] values, int offset, int length) / public void setUniform1fv(int location, float[] values, int offset, int length)
+  public void setUniform2fv(String name, float[] values, int offset, int length) / public void setUniform2fv(int location, float[] values, int offset, int length)
+  public void setUniform3fv(String name, float[] values, int offset, int length) / public void setUniform3fv(int location, float[] values, int offset, int length)
+  public void setUniform4fv(String name, float[] values, int offset, int length) / public void setUniform4fv(int location, float[] values, int offset, int length)
+  public void setUniformMatrix(String name, Mat matrix) / public void setUniformMatrix(String name, Mat matrix, boolean transpose) / public void setUniformMatrix(int location, Mat matrix) / public void setUniformMatrix(int location, Mat matrix, boolean transpose)  // Sets the uniform matrix with the given name.
+  public void setUniformMatrix4(String name, float[] val) / public void setUniformMatrix4(String name, Mat mat) / public void setUniformMatrix4(String name, Mat mat, float near, float far)
+  public void setUniformMatrix3fv(String name, FloatBuffer buffer, int count, boolean transpose)  // Sets an array of uniform matrices with the given name.
+  public void setUniformMatrix4fv(String name, FloatBuffer buffer, int count, boolean transpose) / public void setUniformMatrix4fv(int location, float[] values, int offset, int length) / public void setUniformMatrix4fv(String name, float[] values, int offset, int length)  // Sets an array of uniform matrices with the given name.
+  public void bind()  // Makes OpenGL ES 2.0 use this vertex and fragment shader pair.
+  public void dispose()  // Disposes all resources associated with this shader.
+  public boolean isDisposed()
+  public void disableVertexAttribute(String name)  // Disables the vertex attribute with the given name
+  private void fetchUniforms()
+  private void fetchAttributes()
+  public boolean hasAttribute(String name)  // @param name the name of the attribute
+  public int getAttributeType(String name)  // @param name the name of the attribute
+  public int getAttributeLocation(String name)  // @param name the name of the attribute
+  public int getAttributeSize(String name)  // @param name the name of the attribute
+  public boolean hasUniform(String name)  // @param name the name of the uniform
+  public int getUniformType(String name)  // @param name the name of the uniform
+  public int getUniformLocation(String name)  // @param name the name of the uniform
+  public int getUniformSize(String name)  // @param name the name of the uniform
+  public String[] getAttributes()  // @return the attributes
+  public String[] getUniforms()  // @return the uniforms
+  public String getVertexShaderSource()  // @return the source of the vertex shader
+  public String getFragmentShaderSource()  // @return the source of the fragment shader
+  public static float[] copyTransform(Mat matrix) / public static float[] copyTransform(Mat matrix, float near, float far)  // mistakes were made
+
+SpriteIndices.java
+Java class
+fields:
+  private static final int maxIndices
+  private static IndexData indexData
+methods:
+  public static IndexData get()  // @return a globally shared IndexData instance for drawing sprites in the same pattern as SpriteBatch/SpriteCache does.
+
+VertexArray.java
+Java class implements arc.graphics.gl.VertexData
+// <p>
+fields:
+  final Mesh mesh
+  final FloatBuffer buffer
+  final ByteBuffer byteBuffer
+  boolean isBound
+ctors:
+  public VertexArray(int numVertices, Mesh mesh)  // Constructs a new interleaved VertexArray
+methods:
+  public void render(IndexData indices, int primitiveType, int offset, int count)
+  public void dispose()
+  public FloatBuffer buffer()
+  public int size()
+  public int max()
+  public void set(float[] vertices, int offset, int count)
+  public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+  public void bind(Shader shader)
+  public void unbind(Shader shader)
+
+VertexBufferObject.java
+Java class implements arc.graphics.gl.VertexData
+// <p>
+fields:
+  boolean dirty
+  boolean bound
+  boolean created
+  private Mesh mesh
+  private FloatBuffer buffer
+  private ByteBuffer byteBuffer
+  private boolean ownsBuffer
+  private int bufferHandle
+  private int usage
+ctors:
+  public VertexBufferObject(boolean isStatic, int numVertices, Mesh mesh)  // Constructs a new interleaved VertexBufferObject.
+methods:
+  public int size()
+  public int max()
+  public FloatBuffer buffer()
+  protected void setBuffer(Buffer data, boolean ownsBuffer)  // Low level method to reset the buffer and attributes to the specified values.
+  private void upload()
+  private void bufferChanged()
+  public void set(float[] vertices, int offset, int count)
+  public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+  public void bind() / public void bind(Shader shader)  // Binds the buffer and updates data if necessary.
+  public void unbind(Shader shader)
+  public void dispose()  // Disposes of all resources this VertexBufferObject uses.
+
+VertexBufferObjectWithVAO.java
+Java class implements arc.graphics.gl.VertexData
+// <p>
+fields:
+  final static IntBuffer tmpHandle
+  final Mesh mesh
+  final FloatBuffer buffer
+  final ByteBuffer byteBuffer
+  final boolean isStatic
+  final int usage
+  int bufferHandle
+  boolean isDirty
+  boolean isBound
+  int vaoHandle
+  IntSeq cachedLocations
+  boolean created
+ctors:
+  public VertexBufferObjectWithVAO(boolean isStatic, int numVertices, Mesh mesh)  // Constructs a new interleaved VertexBufferObjectWithVAO.
+methods:
+  public int size()
+  public int max()
+  public FloatBuffer buffer()
+  private void upload()
+  private void bufferChanged()
+  public void set(float[] vertices, int offset, int count)
+  public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+  public void bind(Shader shader)
+  private void bindAttributes(Shader shader)
+  private void unbindAttributes(Shader shader)
+  private void bindData()
+  public void unbind(Shader shader)
+  public void dispose()  // Disposes of all resources this VertexBufferObject uses.
+  private void deleteVAO()
+
+VertexData.java
+Java interface extends arc.util.Disposable
+// A VertexData instance holds vertices for rendering with OpenGL.
+methods:
+  default void render(IndexData indices, int primitiveType, int offset, int count)
+  int size()  // @return the number of vertices this VertexData stores
+  int max()  // @return the number of vertices this VertexData can store
+  void set(float[] vertices, int offset, int count)  // Sets the vertices of this VertexData, discarding the old vertex data.
+  void update(int targetOffset, float[] vertices, int sourceOffset, int count)  // Update (a portion of) the vertices.
+  FloatBuffer buffer()  // Returns the underlying FloatBuffer and marks it as dirty, causing the buffer contents to be uploaded on the next call to
+  void bind(Shader shader)  // Binds this VertexData for rendering via glDrawArrays or glDrawElements.
+  void unbind(Shader shader)  // Unbinds this VertexData.
+

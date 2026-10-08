@@ -1,0 +1,118 @@
+handle
+  -> arc.scene.event.ChangeListener.changed(arc.scene.event.ChangeListener.ChangeEvent, arc.scene.Element)
+touchDown
+  -> arc.util.Time.millis()
+touchDragged
+  -> arc.scene.event.ClickListener.isOver(arc.scene.Element, float, float)
+  -> arc.Input.keyDown(arc.input.KeyCode)
+  -> arc.scene.event.ClickListener.invalidateTapSquare()
+touchUp
+  -> arc.scene.event.ClickListener.isOver(arc.scene.Element, float, float)
+  -> arc.util.Time.nanos()
+  -> java.lang.Runnable.run()
+  -> arc.scene.event.ClickListener.clicked(arc.scene.event.InputEvent, float, float)
+isOver
+  -> arc.scene.Element.localToStageCoordinates(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.scene.Scene.hit(float, float, boolean)
+  -> arc.scene.Element.isDescendantOf(arc.scene.Element)
+inTapSquare
+  -> java.lang.Math.abs(float)
+isVisualPressed
+  -> arc.util.Time.millis()
+touchDragged
+  -> java.lang.Math.abs(float)
+  -> arc.scene.event.DragListener.dragStart(arc.scene.event.InputEvent, float, float, int)
+  -> arc.scene.event.DragListener.drag(arc.scene.event.InputEvent, float, float, int)
+touchUp
+  -> arc.scene.event.DragListener.dragStop(arc.scene.event.InputEvent, float, float, int)
+  -> arc.scene.event.DragListener.cancel()
+DragScrollListener
+  -> arc.scene.ui.ScrollPane.setScrollY(float)
+  -> arc.scene.ui.ScrollPane.getScrollY()
+  -> arc.scene.event.DragScrollListener.getScrollPixels()
+  -> arc.util.Timer.Task.Task()
+getScrollPixels
+  -> arc.math.Interp.apply(float, float, float)
+  -> java.lang.Math.min(float, float)
+  -> java.lang.System.currentTimeMillis()
+drag
+  -> arc.scene.Element.getWidth()
+  -> arc.scene.Element.getHeight()
+  -> arc.util.Timer.Task.cancel()
+  -> arc.util.Timer.Task.isScheduled()
+  -> java.lang.System.currentTimeMillis()
+  -> arc.util.Timer.schedule(arc.util.Timer.Task, float, float)
+dragStop
+  -> arc.util.Timer.Task.cancel()
+ElementGestureListener
+  -> arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.scene.event.ElementGestureListener.tap(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)
+  -> arc.scene.event.ElementGestureListener.longPress(arc.scene.Element, float, float)
+  -> arc.scene.event.ElementGestureListener.Anonymous-983cd2ab-ec0a-486f-9e66-ed1ed1725181.stageToLocalAmount(arc.math.geom.Vec2)
+  -> arc.scene.event.ElementGestureListener.fling(arc.scene.event.InputEvent, float, float, arc.input.KeyCode)
+  -> arc.scene.event.ElementGestureListener.Anonymous-fac78aed-c134-43d8-b386-c831f531a926.stageToLocalAmount(arc.math.geom.Vec2)
+  -> arc.scene.event.ElementGestureListener.pan(arc.scene.event.InputEvent, float, float, float, float)
+  -> arc.scene.event.ElementGestureListener.zoom(arc.scene.event.InputEvent, float, float)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Vec2)
+  -> arc.scene.event.ElementGestureListener.pinch(arc.scene.event.InputEvent, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Vec2)
+  -> arc.input.GestureDetector.GestureDetector(float, float, float, float, arc.input.GestureDetector.GestureListener)
+  -> arc.scene.event.ElementGestureListener.Anonymous-141eb688-5288-42be-b25f-d023405061ec.Anonymous-141eb688-5288-42be-b25f-d023405061ec()
+  -> arc.math.geom.Vec2.Vec2()
+handle
+  -> arc.input.GestureDetector.touchDown(float, float, int, arc.input.KeyCode)
+  -> arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.scene.event.ElementGestureListener.touchDown(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)
+  -> arc.scene.event.InputEvent.isTouchFocusCancel()
+  -> arc.input.GestureDetector.touchUp(float, float, int, arc.input.KeyCode)
+  -> arc.scene.event.ElementGestureListener.touchUp(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)
+  -> arc.input.GestureDetector.touchDragged(float, float, int)
+handle
+  -> arc.scene.event.FocusListener.keyboardFocusChanged(arc.scene.event.FocusListener.FocusEvent, arc.scene.Element, boolean)
+  -> arc.scene.event.FocusListener.scrollFocusChanged(arc.scene.event.FocusListener.FocusEvent, arc.scene.Element, boolean)
+FocusEvent extends arc.scene.event.SceneEvent::reset
+  -> arc.scene.event.SceneEvent.reset()
+enter
+  -> arc.scene.event.ClickListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+  -> arc.func.Boolp.get()
+  -> arc.scene.event.HandCursorListener.isDisabled(arc.scene.Element)
+  -> arc.Graphics.cursor(arc.Graphics.Cursor)
+exit
+  -> arc.scene.event.ClickListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+  -> arc.Graphics.restoreCursor()
+isDisabled
+  -> arc.scene.utils.Disableable.isDisabled()
+enter
+  -> arc.scene.event.ClickListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+  -> arc.Graphics.cursor(arc.Graphics.Cursor)
+exit
+  -> arc.scene.event.ClickListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+  -> arc.Graphics.restoreCursor()
+reset
+  -> arc.scene.event.SceneEvent.reset()
+toCoordinates
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)
+toString
+  -> java.lang.Enum.toString()
+handle
+  -> arc.scene.event.InputListener.keyDown(arc.scene.event.InputEvent, arc.input.KeyCode)
+  -> arc.scene.event.InputListener.keyUp(arc.scene.event.InputEvent, arc.input.KeyCode)
+  -> arc.scene.event.InputListener.keyTyped(arc.scene.event.InputEvent, char)
+  -> arc.scene.event.InputEvent.toCoordinates(arc.scene.Element, arc.math.geom.Vec2)
+  -> arc.scene.event.InputListener.touchDown(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)
+  -> arc.scene.event.InputListener.touchUp(arc.scene.event.InputEvent, float, float, int, arc.input.KeyCode)
+  -> arc.scene.event.InputListener.touchDragged(arc.scene.event.InputEvent, float, float, int)
+  -> arc.scene.event.InputListener.mouseMoved(arc.scene.event.InputEvent, float, float)
+  -> arc.scene.event.InputListener.scrolled(arc.scene.event.InputEvent, float, float, float, float)
+  -> arc.scene.event.InputListener.enter(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+  -> arc.scene.event.InputListener.exit(arc.scene.event.InputEvent, float, float, int, arc.scene.Element)
+handle
+  -> arc.scene.event.ResizeListener.resized()
+handle
+  -> arc.scene.event.VisibilityEvent.isHide()
+  -> arc.scene.event.VisibilityListener.hidden()
+  -> arc.scene.event.VisibilityListener.shown()

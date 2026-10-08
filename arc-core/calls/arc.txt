@@ -1,0 +1,336 @@
+addListener
+  -> arc.Application.getListeners()
+  -> arc.struct.Seq.add(T)
+removeListener
+  -> arc.Application.post(java.lang.Runnable)
+  -> arc.Application.getListeners()
+  -> arc.struct.Seq.remove(T)
+defaultUpdate
+  -> arc.Settings.autosave()
+  -> arc.util.Time.updateGlobal()
+isDesktop
+  -> arc.Application.getType()
+isHeadless
+  -> arc.Application.getType()
+isAndroid
+  -> arc.Application.getType()
+isIOS
+  -> arc.Application.getType()
+isMobile
+  -> arc.Application.isAndroid()
+  -> arc.Application.isIOS()
+isWeb
+  -> arc.Application.getType()
+getJavaHeap
+  -> java.lang.Runtime.totalMemory()
+  -> java.lang.Runtime.getRuntime()
+  -> java.lang.Runtime.freeMemory()
+isOnMainThread
+  -> arc.Application.getMainThread()
+  -> java.lang.Thread.currentThread()
+dispose
+  -> arc.Settings.autosave()
+  -> arc.audio.Audio.dispose()
+add
+  -> java.lang.System.arraycopy(java.lang.Object, int, java.lang.Object, int, int)
+init
+  -> arc.ApplicationCore.setup()
+  -> arc.ApplicationListener.init()
+resize
+  -> arc.ApplicationListener.resize(int, int)
+update
+  -> arc.ApplicationListener.update()
+pause
+  -> arc.ApplicationListener.pause()
+resume
+  -> arc.ApplicationListener.resume()
+dispose
+  -> arc.ApplicationListener.dispose()
+fileDropped
+  -> arc.ApplicationListener.fileDropped(arc.files.Fi)
+on
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.ObjectMap.get(K, arc.func.Prov<V>)
+  -> arc.struct.Seq.Seq(java.lang.Class<?>)
+run
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.ObjectMap.get(K, arc.func.Prov<V>)
+  -> java.lang.Runnable.run()
+  -> arc.struct.Seq.Seq(java.lang.Class<?>)
+remove
+  -> arc.struct.Seq.remove(T)
+  -> arc.struct.ObjectMap.get(K, arc.func.Prov<V>)
+  -> arc.struct.Seq.Seq(java.lang.Class<?>)
+fire
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.func.Cons.get(T)
+  -> arc.Events.fire(java.lang.Class<?>, T)
+  -> java.lang.Object.getClass()
+clear
+  -> arc.struct.ObjectMap.clear()
+classpath
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+internal
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+external
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+absolute
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+local
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+cache
+  -> arc.files.Fi.child(java.lang.String)
+  -> arc.Files.get(java.lang.String, arc.Files.FileType)
+  -> arc.Files.getCachePath()
+getCachePath
+  -> arc.files.Fi.absolutePath()
+  -> arc.Files.local(java.lang.String)
+supportsInstancing
+  -> arc.Graphics.isGL30Available()
+  -> arc.graphics.gl.GLVersion.atLeast(int, int)
+  -> arc.Graphics.getGLVersion()
+clear
+  -> arc.graphics.Gl.clearColor(float, float, float, float)
+  -> arc.graphics.Gl.clear(int)
+  -> arc.Graphics.clear(float, float, float, float)
+isPortrait
+  -> arc.Graphics.getWidth()
+  -> arc.Graphics.getHeight()
+getAspect
+  -> arc.Graphics.getWidth()
+  -> arc.Graphics.getHeight()
+isHidden
+  -> arc.Graphics.getWidth()
+  -> arc.Graphics.getHeight()
+newCursor
+  -> arc.graphics.Pixmap.outline(arc.graphics.Color, int)
+  -> arc.graphics.Pixmaps.scale(arc.graphics.Pixmap, float)
+  -> arc.math.Mathf.isPowerOfTwo(int)
+  -> arc.graphics.Pixmaps.resize(arc.graphics.Pixmap, int, int)
+  -> arc.math.Mathf.nextPowerOfTwo(int)
+  -> arc.graphics.Pixmap.dispose()
+  -> arc.Graphics.newCursor(arc.graphics.Pixmap, int, int)
+  -> arc.Graphics.newCursor(java.lang.String)
+  -> arc.Files.internal(java.lang.String)
+  -> arc.graphics.Pixmaps.scale(arc.graphics.Pixmap, float, float)
+  -> arc.graphics.Pixmap.Pixmap(arc.files.Fi)
+  -> arc.Graphics.newCursor(arc.graphics.Pixmap, int, arc.graphics.Color, int)
+restoreCursor
+  -> arc.Graphics.cursor(arc.Graphics.Cursor)
+cursor
+  -> arc.Graphics.setCursor(arc.Graphics.Cursor)
+  -> arc.Graphics.setSystemCursor(arc.Graphics.Cursor.SystemCursor)
+dispose
+  -> arc.Graphics.Cursor.SystemCursor.values()
+  -> arc.Graphics.Cursor.SystemCursor.dispose()
+mouseWorld
+  -> arc.graphics.Camera.unproject(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.Input.mouse()
+mouseScreen
+  -> arc.graphics.Camera.project(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.set(float, float)
+mouseWorldX
+  -> arc.graphics.Camera.unproject(arc.math.geom.Vec2)
+  -> arc.Input.mouse()
+mouseWorldY
+  -> arc.graphics.Camera.unproject(arc.math.geom.Vec2)
+  -> arc.Input.mouse()
+mouse
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.Input.mouseX()
+  -> arc.Input.mouseY()
+getTouches
+  -> arc.Input.isTouched(int)
+getPressure
+  -> arc.Input.getPressure(int)
+  -> arc.Input.isTouched(int)
+shift
+  -> arc.Input.keyDown(arc.input.KeyCode)
+ctrl
+  -> arc.Input.keyDown(arc.input.KeyCode)
+alt
+  -> arc.Input.keyDown(arc.input.KeyCode)
+keyDown
+  -> arc.input.KeyboardDevice.isPressed(arc.input.KeyCode)
+keyTap
+  -> arc.input.KeyboardDevice.isTapped(arc.input.KeyCode)
+keyRelease
+  -> arc.input.KeyboardDevice.isReleased(arc.input.KeyCode)
+axis
+  -> arc.input.KeyboardDevice.getAxis(arc.input.KeyCode)
+  -> arc.input.KeyboardDevice.isPressed(arc.input.KeyCode)
+axisTap
+  -> arc.input.KeyboardDevice.getAxis(arc.input.KeyCode)
+  -> arc.input.KeyboardDevice.isTapped(arc.input.KeyCode)
+setCatch
+  -> arc.struct.IntSet.add(int)
+  -> java.lang.Enum.ordinal()
+  -> arc.struct.IntSet.remove(int)
+isCatch
+  -> arc.struct.IntSet.contains(int)
+  -> java.lang.Enum.ordinal()
+addProcessor
+  -> arc.input.InputMultiplexer.addProcessor(arc.input.InputProcessor)
+removeProcessor
+  -> arc.input.InputMultiplexer.removeProcessor(arc.input.InputProcessor)
+getInputProcessors
+  -> arc.input.InputMultiplexer.getProcessors()
+load
+  -> arc.Settings.loadValues()
+  -> arc.util.Log.err(java.lang.String, java.lang.Throwable)
+  -> arc.func.Cons.get(T)
+forceSave
+  -> arc.Settings.saveValues()
+  -> arc.util.Log.err(java.lang.String, java.lang.Throwable)
+  -> arc.func.Cons.get(T)
+manualSave
+  -> arc.Settings.forceSave()
+autosave
+  -> arc.Settings.forceSave()
+loadValues
+  -> arc.files.Fi.exists()
+  -> arc.Settings.getSettingsFile()
+  -> arc.Settings.getBackupSettingsFile()
+  -> arc.Settings.loadValues(arc.files.Fi)
+  -> arc.files.Fi.copyTo(arc.files.Fi)
+  -> arc.util.Log.err(java.lang.String, java.lang.Throwable)
+  -> arc.struct.Seq.add(T)
+  -> arc.files.Fi.seq()
+  -> arc.Settings.getBackupFolder()
+  -> arc.struct.Seq.sort(java.util.Comparator<? super T>)
+  -> arc.util.Structs.comparingLong(arc.func.Longf<? super T>)
+  -> arc.files.Fi.lastModified()
+  -> arc.util.Log.info(java.lang.Object)
+  -> arc.files.Fi.readBytes(byte[], int, int)
+  -> arc.files.Fi.read(int)
+  -> java.io.DataInputStream.readInt()
+  -> java.io.DataInputStream.readUTF()
+  -> java.io.DataInputStream.readByte()
+  -> java.util.HashMap.put(K, V)
+  -> java.io.DataInputStream.readBoolean()
+  -> java.io.DataInputStream.readLong()
+  -> java.io.DataInputStream.readFloat()
+  -> java.io.DataInputStream.readFully(byte[])
+  -> java.io.FilterInputStream.read()
+  -> java.io.DataInputStream.DataInputStream(java.io.InputStream)
+  -> java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)
+  -> java.io.IOException.IOException(java.lang.String)
+saveValues
+  -> arc.Settings.getSettingsFile()
+  -> arc.files.Fi.write(boolean, int)
+  -> java.io.DataOutputStream.writeInt(int)
+  -> java.util.HashMap.size()
+  -> java.util.HashMap.entrySet()
+  -> java.io.DataOutputStream.writeUTF(java.lang.String)
+  -> java.util.Map.Entry.getKey()
+  -> java.util.Map.Entry.getValue()
+  -> java.io.DataOutputStream.writeByte(int)
+  -> java.io.DataOutputStream.writeBoolean(boolean)
+  -> java.io.DataOutputStream.writeLong(long)
+  -> java.io.DataOutputStream.writeFloat(float)
+  -> java.io.FilterOutputStream.write(byte[])
+  -> arc.files.Fi.delete()
+  -> arc.util.Time.timeSinceMillis(long)
+  -> arc.util.Time.millis()
+  -> java.util.concurrent.ExecutorService.submit(java.lang.Runnable)
+  -> arc.Settings.getBackupFolder()
+  -> arc.files.Fi.seq()
+  -> arc.struct.Seq.sort(java.util.Comparator<? super T>)
+  -> arc.util.Structs.comparingLong(arc.func.Longf<? super T>)
+  -> arc.files.Fi.lastModified()
+  -> arc.files.Fi.copyTo(arc.files.Fi)
+  -> arc.files.Fi.child(java.lang.String)
+  -> java.lang.System.currentTimeMillis()
+  -> arc.struct.Seq.pop()
+  -> java.io.DataOutputStream.DataOutputStream(java.io.OutputStream)
+  -> arc.util.io.FastDeflaterOutputStream.FastDeflaterOutputStream(java.io.OutputStream)
+  -> java.lang.RuntimeException.RuntimeException(java.lang.String, java.lang.Throwable)
+getSettingsFile
+  -> arc.files.Fi.child(java.lang.String)
+  -> arc.Settings.getDataDirectory()
+getBackupFolder
+  -> arc.files.Fi.child(java.lang.String)
+  -> arc.Settings.getDataDirectory()
+getBackupSettingsFile
+  -> arc.files.Fi.child(java.lang.String)
+  -> arc.Settings.getDataDirectory()
+getDataDirectory
+  -> arc.Files.absolute(java.lang.String)
+  -> arc.util.OS.getAppDataDirectoryString(java.lang.String)
+defaults
+  -> arc.struct.ObjectMap.put(K, V)
+clear
+  -> java.util.HashMap.clear()
+getDefault
+  -> arc.struct.ObjectMap.get(T)
+has
+  -> java.util.HashMap.containsKey(java.lang.Object)
+get
+  -> java.util.HashMap.containsKey(java.lang.Object)
+  -> java.util.HashMap.get(java.lang.Object)
+putJson
+  -> arc.Settings.putJson(java.lang.String, java.lang.Class<?>, java.lang.Object)
+  -> java.io.ByteArrayOutputStream.reset()
+  -> arc.util.serialization.Json.setWriter(arc.util.serialization.BaseJsonWriter)
+  -> arc.util.serialization.Json.writeValue(java.lang.Object, java.lang.Class, java.lang.Class)
+  -> java.lang.Object.getClass()
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+  -> java.io.ByteArrayOutputStream.toByteArray()
+  -> arc.util.serialization.UBJsonWriter.UBJsonWriter(java.io.OutputStream)
+getJson
+  -> arc.Settings.has(java.lang.String)
+  -> arc.func.Prov.get()
+  -> arc.util.io.ReusableByteInStream.setBytes(byte[])
+  -> arc.Settings.getBytes(java.lang.String)
+  -> arc.util.serialization.Json.readValue(java.lang.Class<T>, java.lang.Class, arc.util.serialization.JsonValue)
+  -> arc.util.serialization.UBJsonReader.parse(java.io.InputStream)
+  -> arc.util.Log.err(java.lang.String, java.lang.Throwable)
+  -> arc.Settings.getJson(java.lang.String, java.lang.Class<T>, java.lang.Class, arc.func.Prov<T>)
+getFloat
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getFloat(java.lang.String, float)
+  -> arc.struct.ObjectMap.get(K, V)
+getLong
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getLong(java.lang.String, long)
+getInt
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getInt(java.lang.String, int)
+  -> arc.struct.ObjectMap.get(K, V)
+getBool
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getBool(java.lang.String, boolean)
+  -> arc.struct.ObjectMap.get(K, V)
+getBytes
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getBytes(java.lang.String, byte[])
+  -> arc.struct.ObjectMap.get(T)
+getString
+  -> arc.Settings.get(java.lang.String, java.lang.Object)
+  -> arc.Settings.getString(java.lang.String, java.lang.String)
+  -> arc.struct.ObjectMap.get(T)
+getBoolOnce
+  -> arc.Settings.getBool(java.lang.String, boolean)
+  -> java.lang.Runnable.run()
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+putAll
+  -> arc.struct.ObjectMap.entries()
+  -> put
+toggle
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+  -> arc.Settings.getBool(java.lang.String)
+putInt
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+putFloat
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+put
+  -> java.util.HashMap.put(K, V)
+  -> java.lang.Object.getClass()
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+remove
+  -> java.util.HashMap.remove(java.lang.Object)
+keys
+  -> java.util.HashMap.keySet()
+keySize
+  -> java.util.HashMap.size()

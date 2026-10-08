@@ -1,0 +1,335 @@
+BlockConfigFragment.java
+Java class
+fields:
+  Table table
+  Building selected
+methods:
+  public void build(Group parent)
+  public void forceHide()
+  public boolean isShown()
+  public Building getSelected()
+  public void showConfig(Building tile)
+  public boolean hasConfigMouse()
+  public void hideConfig()
+
+BlockInventoryFragment.java
+Java class
+fields:
+  private static final float holdWithdraw
+  private static final float holdShrink
+  Table table
+  Building build
+  float holdTime
+  boolean holding
+  float shrinkHoldTimes
+  Item lastItem
+methods:
+  public void build(Group parent)
+  public void showFor(Building t)
+  public void hide()
+  private void takeItem(int requested)
+  private void rebuild(boolean actions)
+  private String round(float f)
+  private void updateTablePosition()
+  private Element itemImage(TextureRegion region, Prov<CharSequence> text)
+
+ChatFragment.java
+Java class extends arc.scene.ui.layout.Table
+fields:
+  private static final int messagesShown
+  private Seq<String> messages
+  private float fadetime
+  private boolean shown
+  private TextField chatfield
+  private Label fieldlabel
+  private ChatMode mode
+  private Font font
+  private GlyphLayout layout
+  private float offsetx
+  private Color shadowColor
+  private float textspacing
+  private Seq<String> history
+  private int historyPos
+  private int scrollPos
+  private boolean lastFrameHadFocus
+ctors:
+  public ChatFragment()
+methods:
+  public void build(Group parent)
+  public void clearMessages()
+  private void setup()
+  private void handleType(char c)  // no mobile support.
+  protected void rect(float x, float y, float w, float h)
+  public void draw()
+  private void checkPing(String message)  // ping format: "x,y [text]"
+  private void sendMessage()
+  public void toggle()
+  public void hide()
+  public void updateChat()
+  public void nextMode()
+  public void clearChatInput()
+  public void updateCursor()
+  public boolean shown()
+  public void addMessage(String message)
+
+ConsoleFragment.java
+Java class extends arc.scene.ui.layout.Table
+fields:
+  private static final int messagesShown
+  private Seq<String> messages
+  private boolean open
+  private TextField chatfield
+  private Label fieldlabel
+  private Font font
+  private GlyphLayout layout
+  private float offsetx
+  private Color shadowColor
+  private float textspacing
+  private Seq<String> history
+  private int historyPos
+  private int scrollPos
+ctors:
+  public ConsoleFragment()
+methods:
+  public void build(Group parent)
+  public void clearMessages()
+  private void setup()
+  protected void rect(float x, float y, float w, float h)
+  public void draw()
+  private void sendMessage()
+  public String injectConsoleVariables()
+  public void toggleMobile()
+  public void close()
+  public void toggle()
+  public void hide()
+  public void updateChat()
+  public void clearChatInput()
+  public boolean open()
+  public boolean shown()
+  public void addMessage(String message)
+
+FadeInFragment.java
+Java class
+// Fades in a black overlay.
+fields:
+  private static final float duration
+  float time
+methods:
+  public void build(Group parent)
+
+HintsFragment.java
+Java class
+fields:
+  private static final Boolp isTutorial
+  private static final float foutTime
+  public Seq<Hint> hints  // All hints to be displayed in the game.
+  Hint current
+  Group group
+  ObjectSet<String> events
+  ObjectSet<Block> placedBlocks
+  Table last
+methods:
+  public void build(Group parent)
+  void checkNext()
+  void display(Hint hint)
+  void complete()  // Completes and hides the current hint.
+  void hide()  // Hides the current hint, but does not complete it.
+  public boolean shown()
+  static boolean isSerpulo()
+inner-interface: Hint
+// Hint interface for defining any sort of message appearing at the left.
+  fields:
+    int visibleDesktop
+  methods:
+    String name()  // Hint name for preference storage.
+    String text()  // Displayed text.
+    boolean complete()  // @return true if hint objective is complete
+    boolean show()  // @return whether the hint is ready to be shown
+    int order()  // @return order integer, determines priority
+    boolean valid()  // @return whether this hint should be processed, used for platform splits
+    default void finish()  // finishes the hint - it should not be shown again
+    default boolean finished()  // @return whether the hint is finished - if true, it should not be shown again
+
+HudFragment.java
+Java class
+fields:
+  private static final float dsize
+  public PlacementFragment blockfrag
+  public CoreItemsDisplay coreItems
+  public boolean shown
+  private ImageButton flip
+  private String hudText
+  private boolean showHudText
+  private Table lastUnlockTable
+  private Table lastUnlockLayout
+  private long lastToast
+  private float pauseDisableDur
+  private Seq<Block> blocksOut
+  private Table hudLabel
+  private float coreAttackTime
+  private static ObjectSet<String> favoriteBlocks
+  private static String lastFavorited
+methods:
+  private void addBlockSelection(Table cont)
+  private static void loadFavorites()
+  private static void saveFavorites()
+  private static boolean isFavorite(Block block)
+  private static void toggleFavorite(Block block)
+  private void rebuildBlockSelection(Table blockSelection, String searchText)
+  public void build(Group parent)
+  public static void setPlayerTeamEditor(Player player, Team team)
+  public void setHudText(String text)
+  public void toggleHudText(boolean shown)
+  private void scheduleToast(Runnable run)
+  public boolean hasToast()
+  public void showToast(String text) / public void showToast(Drawable icon, String text) / public void showToast(Drawable icon, float size, String text)
+  public void showPauseDisabled()
+  public void showUnlock(UnlockableContent content)  // Show unlock notification for a new recipe.
+  private void toggleMenus()
+  private Table makeStatusTable()
+  private void addInfoTable(Table table)
+  private boolean canSkipWave()
+  public boolean shown()
+
+LoadingFragment.java
+Java class
+fields:
+  private Table table
+  private TextButton button
+  private Bar bar
+  private Label nameLabel
+  private Runnable cancelListener
+  private float progValue
+methods:
+  public void build(Group parent)
+  public void toFront()
+  public void setProgress(Floatp progress) / public void setProgress(float progress)
+  public void snapProgress()
+  public void showProgressBar()
+  public boolean showingProgress()
+  public void setButton(Runnable listener)
+  public void setText(String text) / public void setText(String text, Color color)
+  public void show() / public void show(String text)
+  public boolean shown()
+  public void hide()
+
+MenuFragment.java
+Java class
+fields:
+  private Table container
+  private Button currentMenu
+  private MenuRenderer renderer
+  private Seq<MenuButton> customButtons
+  public Seq<MenuButton> desktopButtons
+methods:
+  public void build(Group parent)
+  private void buildMobile()
+  private void buildDesktop()
+  private void checkPlay(Runnable run)
+  private void fadeInMenu()
+  private void fadeOutMenu()
+  private void buttons(Table t, MenuButton buttons)
+  public void addButton(String text, Drawable icon, Runnable callback) / public void addButton(String text, Runnable callback) / public void addButton(MenuButton button)  // Adds a custom button to the menu.
+inner-class: MenuButton
+// Represents a menu button definition.
+  fields:
+    public final Drawable icon
+    public final String text
+    public final Runnable runnable  // Runnable ran when the button is clicked.
+    public final Seq<MenuButton> submenu  // Submenu shown when this button is clicked.
+  ctors:
+    public MenuButton(String text, Drawable icon, Runnable runnable) / public MenuButton(String text, Drawable icon, Runnable runnable, MenuButton submenu) / MenuButton(String text, Drawable icon, MenuButton submenu)  // Constructs a simple menu button, which behaves the same way on desktop and mobile.
+
+MinimapFragment.java
+Java class
+fields:
+  private boolean shown
+  float panx
+  private float baseSize
+  public Element elem
+methods:
+  protected Rect getRectBounds()
+  public void build(Group parent)
+  public void panTo(float relativeX, float relativeY)
+  public Vec2 convert(float relativeX, float relativeY)
+  public boolean shown()
+  public void hide()
+  public void toggle()
+
+PerformanceFragment.java
+Java class
+fields:
+  private static final ObjectMap<PerfCounter,Color> counterToColor
+methods:
+  private static Color color(PerfCounter counter)
+  public void build(Group parent)
+inner-class: PerfBar extends arc.scene.Element
+  methods:
+    public void draw()
+
+PlacementFragment.java
+Java class
+fields:
+  final int rowWidth
+  public Category currentCategory
+  Seq<Block> returnArray
+  Seq<Category> returnCatArray
+  boolean categoryEmpty
+  ObjectMap<Category,Block> selectedBlocks
+  ObjectFloatMap<Category> scrollPositions
+  Block menuHoverBlock
+  Displayable hover
+  Building lastFlowBuild
+  Object lastDisplayState
+  Team lastTeam
+  boolean wasHovered
+  Table blockTable
+  Stack mainStack
+  ScrollPane blockPane
+  Runnable rebuildCommand
+  boolean blockSelectEnd
+  int blockSelectSeq
+  long blockSelectSeqMillis
+  KeyBind blockSelect
+ctors:
+  public PlacementFragment()
+methods:
+  public Displayable hover()
+  public void rebuild()
+  boolean updatePick(InputHandler input)
+  boolean gridUpdate(InputHandler input)
+  public void build(Group parent)
+  String getUnplaceableReason(Block block)
+  Seq<Category> getCategories()
+  Seq<Block> getByCategory(Category cat)
+  Seq<Block> getUnlockedByCategory(Category cat)
+  Block getSelectedBlock(Category cat)
+  boolean unlocked(Block block)
+  boolean hasInfoBox()
+  public Displayable hovered()  // @return the thing being hovered over.
+
+PlanConfigFragment.java
+Java class
+// Displays the configuration UI for build plans before they have been placed.
+fields:
+  Table table
+  BuildPlan selected
+methods:
+  public void build(Group parent)
+  public void showConfig(BuildPlan plan)
+  public void forceHide()
+  public void hide()
+
+PlayerListFragment.java
+Java class
+fields:
+  public Table content
+  private boolean visible
+  private Interval timer
+  private TextField search
+  private Seq<Player> players
+methods:
+  public void build(Group parent)
+  public void rebuild()
+  public void toggle()
+

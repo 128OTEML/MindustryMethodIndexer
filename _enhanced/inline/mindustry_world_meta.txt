@@ -1,0 +1,270 @@
+// Attribute.java : public float env()
+    public float env(){
+        if(Vars.state == null) return 0;
+        return Vars.state.envAttrs.get(this);
+    }
+
+// Attribute.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// Attribute.java : public static Attribute get(String name)
+    public static Attribute get(String name){
+        return map.getThrow(name, () -> new IllegalArgumentException("Unknown Attribute type: " + name));
+    }
+
+// Attribute.java : public static Attribute getOrNull(String name)
+    public static @Nullable Attribute getOrNull(String name){
+        return map.get(name);
+    }
+
+// Attribute.java : public static boolean exists(String name)
+    public static boolean exists(String name){
+        return map.containsKey(name);
+    }
+
+// Attribute.java : public static Attribute add(String name)
+    public static Attribute add(String name){
+        Attribute a = new Attribute(all.length, name);
+        Attribute[] prev = all;
+        all = new Attribute[all.length + 1];
+        System.arraycopy(prev, 0, all, 0, a.id);
+        all[a.id] = a;
+        map.put(name, a);
+        return a;
+    }
+
+// BuildVisibility.java : public boolean visible()
+    public boolean visible(){
+        return visible.get();
+    }
+
+// Stat.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("stat." + name.toLowerCase(Locale.ROOT));
+    }
+
+// Stat.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// Stat.java : public int compareTo(Stat o)
+    @Override
+    public int compareTo(Stat o){
+        return id - o.id;
+    }
+
+// StatCat.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("category." + name);
+    }
+
+// StatCat.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// StatCat.java : public int compareTo(StatCat o)
+    @Override
+    public int compareTo(StatCat o){
+        return id - o.id;
+    }
+
+// StatUnit.java : public String localized()
+    public String localized(){
+        if(this == none) return "";
+        return Core.bundle.get("unit." + name.toLowerCase(Locale.ROOT));
+    }
+
+// StatValues.java : public static StatValue string(String value, Object args)
+    public static StatValue string(String value, Object... args){
+        String result = Strings.format(value, args);
+        return table -> table.add(result);
+    }
+
+// StatValues.java : public static StatValue bool(boolean value)
+    public static StatValue bool(boolean value){
+        return table ->  table.add(!value ? "@no" : "@yes");
+    }
+
+// StatValues.java : public static String fixValue(float value)
+    public static String fixValue(float value){
+        return Strings.autoFixed(value, 3);
+    }
+
+// StatValues.java : public static StatValue squared(float value, StatUnit unit)
+    public static StatValue squared(float value, StatUnit unit){
+        return table -> {
+            String fixed = fixValue(value);
+            table.add(fixed + "x" + fixed);
+            table.add((unit.space ? " " : "") + unit.localized());
+        };
+    }
+
+// StatValues.java : public static StatValue liquid(Liquid liquid, float amount, boolean perSecond)
+    public static StatValue liquid(Liquid liquid, float amount, boolean perSecond){
+        return table -> table.add(displayLiquid(liquid, amount, perSecond)).left();
+    }
+
+// StatValues.java : public static StatValue items(ItemStack stacks) / public static StatValue items(boolean displayName, ItemStack stacks) / public static StatValue items(float timePeriod, ItemStack stacks) / public static StatValue items(Boolf<Item> filter) / public static StatValue items(float timePeriod, Boolf<Item> filter)
+    public static StatValue items(ItemStack... stacks){
+        return items(true, stacks);
+    }
+
+// StatValues.java : public static String statusText(StatusEffect status, float duration, float chance)
+    public static String statusText(StatusEffect status, float duration, float chance){
+        return (chance < 1f ? Core.bundle.format("stat.chance", Strings.autoFixed(chance * 100f, 4)) : "") +
+        (status.hasEmoji() ? status.emoji() + " " : "") +
+        "[stat]" + status.localizedName +
+        (status.reactive ? "" :
+        "[lightgray] ~ [stat]" + Strings.autoFixed(duration / 60f, 1) +
+        "[lightgray] " + Core.bundle.get("unit.seconds"));
+    }
+
+// StatValues.java : private static Stack stack(TextureRegion region, int amount, UnlockableContent content, boolean tooltip) / private static Stack stack(TextureRegion region, float amount, UnlockableContent content, boolean tooltip) / private static Stack stack(TextureRegion region, int amount, UnlockableContent content) / public static Stack stack(ItemStack stack) / public static Stack stack(UnlockableContent item, int amount) / public static Stack stack(UnlockableContent item, int amount, boolean tooltip) / public static Stack stack(UnlockableContent item, float amount, boolean tooltip) / public static Stack stack(Item item) / public static Stack stack(PayloadStack stack)
+    private static Stack stack(TextureRegion region, int amount, @Nullable UnlockableContent content, boolean tooltip){
+        return stack(region, (float)amount, content, tooltip);
+    }
+
+// StatValues.java : public static Table displayItem(Item item) / public static Table displayItem(Item item, int amount, boolean showName) / public static Table displayItem(Item item, int amount) / public static Table displayItem(Item item, int amount, float timePeriod, boolean showName) / public static Table displayItem(Item item, float amount, float timePeriod, boolean showName)
+    public static Table displayItem(Item item){
+        return displayItem(item, 0);
+    }
+
+// StatValues.java : public static Table displayItemPercent(Item item, int percent, boolean showName)
+    public static Table displayItemPercent(Item item, int percent, boolean showName){
+        Table t = new Table();
+        t.add(stack(item, 0, !showName));
+        t.add((showName ? item.localizedName + "\n" : "") + "[lightgray]" +  percent + "%").padLeft(2).padRight(5).style(Styles.outlineLabel);
+        return t;
+    }
+
+// StatValues.java : public static StatValue content(UnlockableContent content) / public static StatValue content(Seq<UnlockableContent> list) / public static StatValue content(Seq<T> list, Boolf<T> check) / public static StatValue content(Seq<T> list, Boolf<T> check, String noneText)
+    public static StatValue content(UnlockableContent content){
+        return table -> {
+            table.add(new Image(content.uiIcon)).size(iconSmall).padRight(3);
+            table.add(content.localizedName).padRight(3);
+        };
+    }
+
+// StatValues.java : public static StatValue blockEfficiency(Block floor, float multiplier, boolean startZero)
+    public static StatValue blockEfficiency(Block floor, float multiplier, boolean startZero){
+        return table -> table.stack(
+            new Image(floor.uiIcon).setScaling(Scaling.fit),
+            new Table(t -> t.top().right().add((multiplier < 0 ? "[scarlet]" : startZero ? "[accent]" : "[accent]+") + (int)((multiplier) * 100) + "%").style(Styles.outlineLabel))
+        ).maxSize(64f);
+    }
+
+// StatValues.java : public static StatValue blocks(Attribute attr, boolean floating, float scale, boolean startZero) / public static StatValue blocks(Attribute attr, boolean floating, float scale1, float scale2, Seq<ItemStack> outputs, float timePeriod, boolean startZero) / public static StatValue blocks(Attribute attr, boolean floating, float scale, boolean startZero, boolean checkFloors) / public static StatValue blocks(Attribute attr, boolean floating, float scaleEff, float scaleAmount, Seq<ItemStack> outputs, float timePeriod, boolean startZero, boolean checkFloors) / public static StatValue blocks(Boolf<Block> pred) / public static StatValue blocks(Seq<Block> list)
+    public static StatValue blocks(Attribute attr, boolean floating, float scale, boolean startZero){
+        return blocks(attr, floating, scale, startZero, true);
+    }
+
+// StatValues.java : public static StatValue statusEffects(Seq<StatusEffect> list)
+    public static StatValue statusEffects(Seq<StatusEffect> list){
+        return content(list.as(), t -> true, "@none");
+    }
+
+// StatValues.java : public static StatValue itemEffMultiplier(Floatf<Item> efficiency, float timePeriod, Boolf<Item> filter) / public static StatValue itemEffMultiplier(Floatf<Item> efficiency, float timePeriod, Boolf<Item> filter, ObjectFloatMap<Item> itemDurationMultipliers)
+    public static StatValue itemEffMultiplier(Floatf<Item> efficiency, float timePeriod, Boolf<Item> filter){
+        return itemEffMultiplier(efficiency, timePeriod, filter, null);
+    }
+
+// StatValues.java : public static StatValue ammo(ObjectMap<T,BulletType> map) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean showUnit) / public static StatValue ammo(ObjectMap<T,BulletType> map, String blockName) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean showUnit, String blockName) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean nested, boolean showUnit) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean nested, boolean showUnit, String blockName)
+    public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType> map){
+        return ammo(map, false, false, null);
+    }
+
+// StatValues.java : private static Cell<?> tableInfo(Table table, String key)
+    private static Cell<?> tableInfo(Table table, String key){
+        if(!Core.bundle.has(key)) return null;
+        return table.table(t -> {
+            if(!Vars.headless) t.image(Icon.info.getRegion()).size(20).color(Color.lightGray).scaling(Scaling.fit).padRight(8).padLeft(12);
+            t.add("[lightgray]" + Core.bundle.get(key)).padBottom(10f);
+        });
+    }
+
+// StatValues.java : private static Cell<?> note(Table table, String text)
+    private static Cell<?> note(Table table, String text){
+        table.row();
+        return table.table(t -> {
+            if(!Vars.headless) t.image(Icon.arrowNoteSmall.getRegion()).size(15).color(Pal.stat).scaling(Scaling.fit).padRight(6).padLeft(12);
+            t.add(text);
+        });
+    }
+
+// StatValues.java : private static Cell<?> sep(Table table, String text)
+    private static Cell<?> sep(Table table, String text){
+        table.row();
+        return table.add(text);
+    }
+
+// StatValues.java : private static String ammoStat(float val)
+    private static String ammoStat(float val){
+        return (val > 0 ? "[stat]+" : "[negstat]") + Strings.autoFixed(val, 1);
+    }
+
+// StatValues.java : private static String multStat(float val)
+    private static String multStat(float val){
+        return (val >= 1 ? "[stat]" : "[negstat]") + Strings.autoFixed(val, 2);
+    }
+
+// StatValues.java : private static TextureRegion icon(UnlockableContent t)
+    private static TextureRegion icon(UnlockableContent t){
+        return t.uiIcon;
+    }
+
+// Stats.java : public void add(Stat stat, float value, StatUnit unit) / public void add(Stat stat, float value) / public void add(Stat stat, boolean value) / public void add(Stat stat, Item item) / public void add(Stat stat, ItemStack item) / public void add(Stat stat, Liquid liquid, float amount, boolean perSecond) / public void add(Stat stat, Attribute attr) / public void add(Stat stat, Attribute attr, float scale) / public void add(Stat stat, Attribute attr, boolean floating) / public void add(Stat stat, Attribute attr, boolean floating, float scale, boolean startZero) / public void add(Stat stat, Attribute attr, boolean floating, float scale1, float scale2, Seq<ItemStack> outputs, float timePeriod, boolean startZero) / public void add(Stat stat, String format, Object args) / public void add(Stat stat, StatValue value)
+    public void add(Stat stat, float value, StatUnit unit){
+        add(stat, StatValues.number(value, unit));
+    }
+
+// Stats.java : public void addPercent(Stat stat, float value)
+    public void addPercent(Stat stat, float value){
+        add(stat, StatValues.number((int)(value * 100), StatUnit.percent));
+    }
+
+// Stats.java : public void addMultModifier(Stat stat, float value)
+    public void addMultModifier(Stat stat, float value){
+        add(stat, StatValues.multiplierModifier(value));
+    }
+
+// Stats.java : public void addPercentModifier(Stat stat, float value)
+    public void addPercentModifier(Stat stat, float value){
+        add(stat, StatValues.percentModifier(value));
+    }
+
+// Stats.java : public void replace(Stat stat, StatValue value)
+    public void replace(Stat stat, StatValue value){
+        remove(stat);
+        add(stat, value);
+    }
+
+// Stats.java : public void remove(Stat stat)
+    public void remove(Stat stat){
+        if(map == null) map = new OrderedMap<>();
+
+        if(!map.containsKey(stat.category)){
+            return;
+        }
+
+        map.get(stat.category).remove(stat);
+
+        dirty = true;
+    }
+
+// Stats.java : public void statInfo(Cell<?> cell, Stat stat)
+    public void statInfo(Cell<?> cell, Stat stat){
+        if(cell == null || stat == null) return;
+
+        String key = "stat." + stat.name.toLowerCase(Locale.ROOT);
+        if(Core.bundle.has(key + ".info")){
+            cell.tooltip("@" + key + ".info");
+        }
+    }
+

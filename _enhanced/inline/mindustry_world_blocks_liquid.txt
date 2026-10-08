@@ -1,0 +1,90 @@
+// ArmoredConduit.java : public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    @Override
+    public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
+        return (otherblock.outputsLiquid && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
+            (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasLiquids) || otherblock instanceof LiquidJunction;
+    }
+
+// Conduit.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        if(junctionReplacement == null) junctionReplacement = Blocks.liquidJunction;
+        if(bridgeReplacement == null || !(bridgeReplacement instanceof ItemBridge)) bridgeReplacement = Blocks.bridgeConduit;
+    }
+
+// Conduit.java : public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)
+    @Override
+    public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans){
+        if(junctionReplacement == null) return this;
+
+        Boolf<Point2> cont = p -> plans.contains(o -> o.x == req.x + p.x && o.y == req.y + p.y && (req.block instanceof Conduit || req.block instanceof LiquidJunction));
+        return cont.get(Geometry.d4(req.rotation)) &&
+            cont.get(Geometry.d4(req.rotation - 2)) &&
+            req.tile() != null &&
+            req.tile().block() instanceof Conduit &&
+            Mathf.mod(req.build().rotation - req.rotation, 2) == 1 ? junctionReplacement : this;
+    }
+
+// Conduit.java : public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    @Override
+    public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
+        return otherblock.hasLiquids && (otherblock.outputsLiquid || (lookingAt(tile, rotation, otherx, othery, otherblock))) && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
+    }
+
+// Conduit.java : public void handlePlacementLine(Seq<BuildPlan> plans)
+    @Override
+    public void handlePlacementLine(Seq<BuildPlan> plans){
+        if(bridgeReplacement == null) return;
+
+        if(rotBridgeReplacement instanceof DirectionBridge duct){
+            Placement.calculateBridges(plans, duct, true, b -> b instanceof Conduit);
+        }else{
+            Placement.calculateBridges(plans, (ItemBridge)bridgeReplacement, true, b -> b instanceof Conduit);
+        }
+    }
+
+// Conduit.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find("conduit-bottom"), topRegions[0]};
+    }
+
+// LiquidBlock.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{bottomRegion, topRegion};
+    }
+
+// LiquidBlock.java : public static void drawTiledFrames(int size, float x, float y, float padding, Liquid liquid, float alpha) / public static void drawTiledFrames(int size, float x, float y, float padLeft, float padRight, float padTop, float padBottom, Liquid liquid, float alpha)
+    public static void drawTiledFrames(int size, float x, float y, float padding, Liquid liquid, float alpha){
+        drawTiledFrames(size, x, y, padding, padding, padding, padding, liquid, alpha);
+    }
+
+// LiquidJunction.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.remove(Stat.liquidCapacity);
+    }
+
+// LiquidJunction.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        removeBar("liquid");
+    }
+
+// LiquidJunction.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region};
+    }
+
+// LiquidRouter.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{bottomRegion, region};
+    }
+

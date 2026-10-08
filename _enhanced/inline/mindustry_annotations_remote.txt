@@ -1,0 +1,29 @@
+// CallGenerator.java : private static String getCheckString(Loc loc)
+    private static String getCheckString(Loc loc){
+        return
+            loc.isClient && loc.isServer ? "mindustry.Vars.net.server() || mindustry.Vars.net.client()" :
+            loc.isClient ? "mindustry.Vars.net.client()" :
+            loc.isServer ? "mindustry.Vars.net.server()" : "false";
+    }
+
+// MethodEntry.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        return targetMethod.hashCode();
+    }
+
+// SerializerResolver.java : public static String locate(ExecutableElement elem, TypeMirror mirror, boolean write)
+    public static String locate(ExecutableElement elem, TypeMirror mirror, boolean write){
+        //generic type
+        if((mirror.toString().equals("T") && Seq.with(elem.getTypeParameters().get(0).getBounds()).contains(SerializerResolver::isEntity)) ||
+            isEntity(mirror)){
+            return write ? "mindustry.io.TypeIO.writeEntity" : "mindustry.io.TypeIO.readEntity";
+        }
+        return null;
+    }
+
+// SerializerResolver.java : private static boolean isEntity(TypeMirror mirror)
+    private static boolean isEntity(TypeMirror mirror){
+        return !mirror.toString().contains(".") || mirror.toString().startsWith("mindustry.gen.") && !mirror.toString().startsWith("byte");
+    }
+

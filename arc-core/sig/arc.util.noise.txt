@@ -1,0 +1,97 @@
+Noise.java
+Java class (final)
+// Perlin noise implementation.
+fields:
+  private static int seed
+  private static final int P
+  private static final int B
+  private static final int M
+  private static final int NP
+  private static final int N
+  private static int p
+  private static double g2
+  private static double g1
+  private static double points
+methods:
+  private static double lerp(double t, double a, double b)
+  private static double s_curve(double t)
+  public static double rawNoise(double x) / public static double rawNoise(double x, double y) / static double rawNoise(double x, double y, double z)
+  public static double snoise(float x, float y, float scale, float mag, float exp) / public static float snoise(float x, float y, float scale, float mag)
+  public static float snoise3(float x, float y, float z, float scale, float mag)
+  public static float nnoise(float x, float y, float scale, float mag)
+  public static float noise(float x, float y, float scale, float mag) / public static float noise(float x, float y, float scale, float mag, float xp)
+  public static float fnoise(float x, float y, float scale, float mag)
+  private static double[] G(int i)
+  public static void setSeed(int s)
+  private static void init()
+  private static void normalize2(double[] v)
+
+Ridged.java
+Java class
+// Ridged perlin noise implementation.
+fields:
+  static final int X_NOISE_GEN
+  static final int Y_NOISE_GEN
+  static final int Z_NOISE_GEN
+  static final int SEED_NOISE_GEN
+  static final int SHIFT_NOISE_GEN
+  static final int quality
+ctors:
+  private Ridged()
+methods:
+  public static float noise2d(int seed, double x, double y, double frequency) / public static float noise2d(int seed, double x, double y, int octaves, double frequency) / public static float noise2d(int seed, double x, double y, int octaves, double persistence, double frequency)
+  public static float noise3d(int seed, double x, double y, double z, float frequency) / public static float noise3d(int seed, double x, double y, double z, int octaves, float frequency)
+  static double range(double n)
+  static double gradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz, int seed)
+  static double gradientNoise(double fx, double fy, int ix, int iy, int seed)
+  static double lerp(double n0, double n1, double a)
+  static double scurve3(double a)
+  static double scurve5(double a)
+
+Simplex.java
+Java class
+// - should use float instead of double, nobody needs this sort of precision
+fields:
+  static final int grad3
+  static final int grad4
+  static final int simplex
+ctors:
+  private Simplex()  // static only
+methods:
+  public static float noise2d(int seed, double octaves, double persistence, double scale, double x, double y)  // The higher the persistence [0-1], the more of each succeeding octave will be added.
+  public static float noise3d(int seed, double octaves, double persistence, double scale, double x, double y, double z)  // The higher the persistence [0-1], the more of each succeeding octave will be added.
+  public static float noise4d(double octaves, double persistence, double scale, double x, double y, double z, double w)  // The higher the persistence [0-1], the more of each succeeding octave will be added.
+  public static double raw2d(int seed, double x, double y)  // 2D raw Simplex noise
+  public static double raw3d(int seed, double x, double y, double z)  // 3D raw Simplex noise
+  public static double raw4d(double x, double y, double z, double w)  // 4D raw Simplex noise
+  public static double rawTiled(double x, double y, double x1, double y1, double w, double h, double scl)
+  static int perm(int seed, int x)  // thanks to TEttinger on Discord for the negative coordinate discontinuity fix
+  static int fastfloor(double x)
+  static double dot(int[] g, double x, double y) / static double dot(int[] g, double x, double y, double z) / static double dot(int[] g, double x, double y, double z, double w)
+
+VectorTable.java
+Java class
+fields:
+  static double randomVectors
+
+VoronoiNoise.java
+Java class
+fields:
+  private static final double SQRT_2  // for speed, we can approximate the sqrt term in the distance funtions
+  private static final double SQRT_3
+  private boolean useDistance  // You can either use the feature point height (for biomes or solid pillars), or the distance to the feature point
+  private long seed
+  private boolean useManhattan
+  private Rand rnd
+ctors:
+  public VoronoiNoise(long seed, boolean useManhattan)
+methods:
+  public static double valueNoise2D(int x, int z, long seed)  // To avoid having to store the feature points, we use a hash function
+  public static double valueNoise3D(int x, int y, int z, long seed)
+  private double getDistance(double xDist, double zDist) / private double getDistance(double xDist, double yDist, double zDist)
+  public boolean isUseDistance()
+  public void setUseDistance(boolean useDistance)
+  public long getSeed()
+  public void setSeed(long seed)
+  public double noise(double x, double z, double frequency) / public double noise(double x, double y, double z, double frequency)
+

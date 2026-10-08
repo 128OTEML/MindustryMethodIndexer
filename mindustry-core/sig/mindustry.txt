@@ -1,0 +1,166 @@
+ClientLauncher.java
+Java class (abstract) extends arc.ApplicationCore implements mindustry.core.Platform
+fields:
+  private static final int loadingFPS
+  private long nextFrame
+  private long beginTime
+  private long lastTargetFps
+  private boolean finished
+  private LoadRenderer loader
+methods:
+  public void setup()
+  public void add(ApplicationListener module)
+  public void resize(int width, int height)
+  public void update()
+  public void exit()
+  public void init()
+  public void resume()
+  public void pause()
+  public void fileDropped(Fi file)
+  public static void runOnClientLoad(Runnable run)
+  public static void handleFileImport(Fi file)  // Can be called from any thread.
+
+Vars.java
+Java class implements arc.assets.Loadable
+fields:
+  public static boolean failedToLaunch  // Whether the game failed to launch last time.
+  public static boolean loadLocales  // Whether to load locales.
+  public static boolean loadedLogger  // Whether the logger is loaded.
+  public static String steamPlayerName  // Name of current Steam player.
+  public static final int minModGameVersion  // Min game version for all mods.
+  public static final int minJavaModGameVersion  // Min game version for java mods specifically - this is higher, as Java mods have more breaking changes.
+  public static boolean showSectorSubmissions  // If true, a button to view sector submission threads is shown.
+  public static boolean forceBeServers  // If true, the BE server list is always used.
+  public static boolean skipModCode  // If true, mod code and scripts do not run.
+  public static final ContentType defaultContentIcons  // Default accessible content types used for player-selectable icons.
+  public static final int defaultEnv  // Default rule environment.
+  public static final int darkRadius  // Wall darkness radius.
+  public static final int maxLoadoutSchematicPad  // Maximum extra padding around deployment schematics.
+  public static final String schematicBaseStart  // All schematic base64 starts with this string.
+  public static final int bufferSize  // IO buffer size.
+  public static final Charset charset  // global charset, since Android doesn't support the Charsets class
+  public static final String appName  // main application name, capitalized
+  public static final String ghApi  // Github API URL.
+  public static final String discordURL  // URL for discord invite.
+  public static final String modGuideURL  // Link to the wiki's modding guide.
+  public static final String patchesGuideURL  // Link to the wiki's patch guide.
+  public static final String serverJsonBeURLs  // URLs to the JSON file containing all the BE servers.
+  public static final String serverJsonURLs  // URLs to the JSON file containing all the stable servers.
+  public static final String modJsonURLs  // URLs to the JSON files containing the list of mods.
+  public static final String steamBansURLs  // URLs to the JSON file containing players banned from Steam.
+  public static final String reportIssueURL  // URL of the github issue report template.
+  public static final Seq<ServerGroup> defaultServers  // list of built-in servers.
+  public static final Seq<ServerGroup> cachedServers  // cached server list - only used if defaultServers have not been fetched
+  public static final int maxGlErrors  // maximum openGL errors logged
+  public static final int maxBlockSize  // maximum size of any block, do not change unless you know what you're doing
+  public static final float mineTransferRange  // maximum distance between mine and core that supports automatic transferring
+  public static final int maxPlayerPreviewPlans  // maximum number of preview plans for remote players
+  public static final int maxTextLength  // max chat message length
+  public static final int maxPingTextLength  // max length of ping marker text
+  public static final int maxNameLength  // max player name length in bytes
+  public static final float itemSize  // displayed item size when ingame.
+  public static final float finalWorldBounds  // units outside this bound will die instantly
+  public static final float buildingRange  // default range for building
+  public static final float unitCollisionRadiusScale  // scaling for unit circle collider radius, based on hitbox size
+  public static final float itemTransferRange  // range for moving items
+  public static final float logicItemTransferRange  // range for moving items for logic units
+  public static final float turnDuration  // duration of time between turns in ticks
+  public static final float baseInvasionChance  // chance of an invasion per turn, 1 = 100%
+  public static final float invasionGracePeriod  // how many minutes have to pass before invasions in a *captured* sector start
+  public static final float minArmorDamage  // min armor fraction damage; e.g.
+  public static final int tilesize  // size of tiles in units
+  public static final float tilePayload  // size of one tile payload (^2)
+  public static final float iconXLarge  // icon sizes for UI
+  public static float macNotchHeight  // macbook screen notch height
+  public static boolean updateEditorOnChange  // for map generator dialog
+  public static final Color playerColors  // all choosable player colors in join/host dialog
+  public static final String accessibleIcons  // Icons available to the user for customization in certain dialogs.
+  public static final int maxTcpSize  // maximum TCP packet size
+  public static final int port  // default server port
+  public static final int multicastPort  // multicast discovery port.
+  public static final int maxModSubtitleLength  // Maximum char length of mod subtitles in browser/viewer.
+  public static final String multicastGroup  // multicast group for discovery.
+  public static float maxDeltaClient  // Maximum delta time.
+  public static boolean clientLoaded  // whether the graphical game client has loaded
+  public static boolean hadSerpuloRemaps  // whether the serpulo campaign sectors were remapped (older save)
+  public static int maxTextureSize  // max GL texture size
+  public static int maxSchematicSize  // Maximum schematic size.
+  public static boolean showSectorLandInfo  // Whether to show sector info upon landing.
+  public static boolean checkScreenshotMemory  // Whether to check for memory use before taking screenshots.
+  public static boolean confirmExit  // Whether to prompt the user to confirm exiting.
+  public static boolean disableUI  // if true, UI is not drawn
+  public static boolean disableSave  // if true, most autosaving is disabled.
+  public static boolean testMobile  // if true, game is set up in mobile mode, even on desktop.
+  public static boolean mobile  // whether the game is running on a mobile device
+  public static boolean ios  // whether the game is running on an iOS device
+  public static boolean android  // whether the game is running on an Android device
+  public static boolean headless  // whether the game is running on a headless server
+  public static boolean steam  // whether steam is enabled for this game
+  public static boolean clearSectors  // whether to clear sector saves when landing
+  public static boolean enableLight  // whether any light rendering is enabled
+  public static boolean enableDarkness  // Whether to draw shadows of blocks at map edges and static blocks.
+  public static boolean debugDrawAvoidance  // Whether to draw avoidance fields.
+  public static boolean loadedServerCache  // Whether the on-disk server file cache has been loaded.
+  public static boolean fetchedServers  // Whether the server list has been fetched from Github.
+  public static Fi dataDirectory  // application data directory, equivalent to {@link Settings#getDataDirectory()}
+  public static Fi screenshotDirectory  // data subdirectory used for screenshots
+  public static Fi customMapDirectory  // data subdirectory used for custom maps
+  public static Fi mapPreviewDirectory  // data subdirectory used for custom map previews
+  public static Fi assetCacheDirectory  // directory for extracted assets
+  public static Fi tmpDirectory  // tmp subdirectory for map conversion
+  public static Fi saveDirectory  // data subdirectory used for saves
+  public static Fi modDirectory  // data subdirectory used for mods
+  public static Fi schematicDirectory  // data subdirectory used for schematics
+  public static Fi bebuildDirectory  // data subdirectory used for bleeding edge build versions
+  public static Fi launchIDFile  // file used to store launch ID
+  public static Fi serverCacheFile  // local cache of server list
+  public static Map emptyMap  // empty map, indicates no current map
+  public static Tile emptyTile  // empty tile for payloads
+  public static final String mapExtension  // map file extension
+  public static final String saveExtension  // save file extension
+  public static final String schematicExtension  // schematic file extension
+  public static String javaPath  // path to the java executable
+  public static Locale locales  // list of all locales that can be switched to
+  public static ExecutorService mainExecutor  // the main executor will only have at most [cores] number of threads active
+  public static FileTree tree
+  public static Net net
+  public static ContentLoader content
+  public static GameState state
+  public static EntityCollisions collisions
+  public static Waves waves
+  public static Platform platform
+  public static Mods mods
+  public static Schematics schematics
+  public static BeControl becontrol
+  public static AsyncCore asyncCore
+  public static BaseRegistry bases
+  public static GlobalVars logicVars
+  public static MapEditor editor
+  public static AvoidanceProcess avoidance
+  public static PhysicsProcess unitPhysics
+  public static DataAssetCache assetCache
+  public static GameService service
+  public static Universe universe
+  public static World world
+  public static Maps maps
+  public static WaveSpawner spawner
+  public static BlockIndexer indexer
+  public static Pathfinder pathfinder
+  public static ControlPathfinder controlPath
+  public static FogControl fogControl
+  public static Control control
+  public static Logic logic
+  public static Renderer renderer
+  public static UI ui
+  public static NetServer netServer
+  public static NetClient netClient
+  public static Player player
+methods:
+  public void loadAsync()
+  public static void init()
+  public static void checkLaunch()  // Checks if a launch failure occurred.
+  public static void finishLaunch()  // Cleans up after a successful launch.
+  public static void loadLogger()
+  public static void loadFileLogger() / public static void loadFileLogger(Fi file)
+  public static void loadSettings()
+

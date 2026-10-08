@@ -1,0 +1,176 @@
+// SNet.java : public boolean isSteamClient()
+    public boolean isSteamClient(){
+        return currentServer != null;
+    }
+
+// SNet.java : void stopNetThread()
+    void stopNetThread(){
+        if(readThread != null){
+            running = false;
+            readThread.interrupt();
+            readThread = null;
+        }
+    }
+
+// SNet.java : void startNetThread()
+    void startNetThread(){
+        stopNetThread();
+
+        running = true;
+        readThread = new Thread(this::readLoop, "steam-net-read");
+        readThread.setDaemon(true);
+        readThread.start();
+    }
+
+// SNet.java : public void discoverServers(Cons<Host> callback, Runnable done)
+    @Override
+    public void discoverServers(Cons<Host> callback, Runnable done){
+        smat.addRequestLobbyListResultCountFilter(32);
+        smat.addRequestLobbyListDistanceFilter(LobbyDistanceFilter.Worldwide);
+        smat.requestLobbyList();
+        lobbyCallback = callback;
+
+        //after the steam lobby is done discovering, look for local network servers.
+        lobbyDoneCallback = () -> provider.discoverServers(callback, done);
+    }
+
+// SNet.java : public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)
+    @Override
+    public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed){
+        provider.pingHost(address, port, valid, failed);
+    }
+
+// SNet.java : public void hostServer(int port) throws IOException
+    @Override
+    public void hostServer(int port) throws IOException{
+        provider.hostServer(port);
+        listenSocket = snet.createListenSocketP2P(0);
+        smat.createLobby(Core.settings.getBool("steampublichost2") ? LobbyType.Public : LobbyType.FriendsOnly, Core.settings.getInt("playerlimit"));
+        startNetThread();
+    }
+
+// SNet.java : public void updateLobby()
+    public void updateLobby(){
+        if(currentLobby != null && net.server()){
+            smat.setLobbyType(currentLobby, Core.settings.getBool("steampublichost2") ? LobbyType.Public : LobbyType.FriendsOnly);
+            smat.setLobbyMemberLimit(currentLobby, Core.settings.getInt("playerlimit"));
+        }
+    }
+
+// SNet.java : void updateWave()
+    void updateWave(){
+        if(currentLobby != null && net.server()){
+            smat.setLobbyData(currentLobby, "mapname", state.map.name());
+            smat.setLobbyData(currentLobby, "wave", state.wave + "");
+            smat.setLobbyData(currentLobby, "gamemode", state.rules.mode().name() + "");
+        }
+    }
+
+// SNet.java : void updateBans(String changed)
+    void updateBans(String changed){
+        if(changed != null && !changed.startsWith("steam:")) return; //hacky way to ignore non-steam ids
+        smat.setLobbyData(currentLobby, "banned", netServer.admins.bannedIPs.select(ip -> ip.contains("steam:")).reduce(new StringBuilder(), (ip, str) -> str.append(ip.substring(6)).append(',')).toString()); //list of handles split by commas
+    }
+
+// SNet.java : public Iterable<? extends NetConnection> getConnections()
+    @Override
+    public Iterable<? extends NetConnection> getConnections(){
+        //merge provider connections
+        CopyOnWriteArrayList<NetConnection> connectionsOut = new CopyOnWriteArrayList<>(connections);
+        for(NetConnection c : provider.getConnections()) connectionsOut.add(c);
+        return connectionsOut;
+    }
+
+// SNet.java : void disconnectSteamUser(SteamID steamid)
+    void disconnectSteamUser(SteamID steamid){
+        int sid = steamid.getAccountID();
+        SteamConnection con = steamConnections.get(sid);
+
+        if(con != null){
+            snet.closeConnection(con.connection, 0, false);
+            net.handleServerReceived(con, new Disconnect());
+            steamConnections.remove(sid);
+            connections.remove(con);
+        }
+    }
+
+// SNet.java : public void onLobbyInvite(SteamID steamIDUser, SteamID steamIDLobby, long gameID)
+    @Override
+    public void onLobbyInvite(SteamID steamIDUser, SteamID steamIDLobby, long gameID){
+        Log.info("onLobbyInvite @ @ @", steamIDLobby.getAccountID(), steamIDUser.getAccountID(), gameID);
+    }
+
+// SNet.java : public void showFriendInvites()
+    public void showFriendInvites(){
+        if(currentLobby != null){
+            friends.activateGameOverlayInviteDialog(currentLobby);
+            Log.info("Activating overlay dialog");
+        }
+    }
+
+// SStats.java : public void onUpdate()
+    public void onUpdate(){
+        this.updated = true;
+    }
+
+// SStats.java : public void onUserStatsStored(long gameID, SteamResult result)
+    @Override
+    public void onUserStatsStored(long gameID, SteamResult result){
+        Log.info("Stored stats: @", result);
+
+        if(result == SteamResult.OK){
+            updated = false;
+        }
+    }
+
+// SWorkshop.java : public Seq<Fi> getWorkshopFiles(Class<? extends Publishable> type)
+    public Seq<Fi> getWorkshopFiles(Class<? extends Publishable> type){
+        return workshopFiles.get(type, () -> new Seq<>(0));
+    }
+
+// SWorkshop.java : void viewListingID(SteamPublishedFileID id)
+    void viewListingID(SteamPublishedFileID id){
+        SVars.net.friends.activateGameOverlayToWebPage("steam://url/CommunityFilePage/" + id.handle());
+    }
+
+// SWorkshop.java : void query(SteamUGCQuery query, Cons2<Seq<SteamUGCDetails>,SteamResult> handler)
+    void query(SteamUGCQuery query, Cons2<Seq<SteamUGCDetails>, SteamResult> handler){
+        Log.info("POST QUERY " + query);
+        detailHandlers.put(query, handler);
+        ugc.sendQueryUGCRequest(query);
+    }
+
+// SWorkshop.java : public void onSubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)
+    @Override
+    public void onSubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result){
+        ItemInstallInfo info = new ItemInstallInfo();
+        ugc.getItemInstallInfo(publishedFileID, info);
+        Log.info("Item subscribed from @", info.getFolder());
+        Achievement.downloadMapWorkshop.complete();
+    }
+
+// SWorkshop.java : public void onUnsubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)
+    @Override
+    public void onUnsubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result){
+        ItemInstallInfo info = new ItemInstallInfo();
+        ugc.getItemInstallInfo(publishedFileID, info);
+        Log.info("Item unsubscribed from @", info.getFolder());
+    }
+
+// SWorkshop.java : public void onDownloadItemResult(int appID, SteamPublishedFileID publishedFileID, SteamResult result)
+    @Override
+    public void onDownloadItemResult(int appID, SteamPublishedFileID publishedFileID, SteamResult result){
+        Achievement.downloadMapWorkshop.complete();
+        ItemInstallInfo info = new ItemInstallInfo();
+        ugc.getItemInstallInfo(publishedFileID, info);
+        Log.info("Item downloaded to @", info.getFolder());
+    }
+
+// SWorkshop.java : public void onDeleteItem(SteamPublishedFileID publishedFileID, SteamResult result)
+    @Override
+    public void onDeleteItem(SteamPublishedFileID publishedFileID, SteamResult result){
+        ItemInstallInfo info = new ItemInstallInfo();
+        ugc.getItemInstallInfo(publishedFileID, info);
+        Log.info("Item removed from @", info.getFolder());
+    }
+

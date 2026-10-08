@@ -1,0 +1,220 @@
+// MapGroupLayer.java : public void invalidateRenderOffset()
+    @Override
+    public void invalidateRenderOffset(){
+        super.invalidateRenderOffset();
+        for(int i = 0; i < layers.size; i++){
+            MapLayer child = layers.get(i);
+            child.invalidateRenderOffset();
+        }
+    }
+
+// MapLayer.java : public float getOffsetX()
+    public float getOffsetX(){
+        return offsetX;
+    }
+
+// MapLayer.java : public void setOffsetX(float offsetX)
+    public void setOffsetX(float offsetX){
+        this.offsetX = offsetX;
+        invalidateRenderOffset();
+    }
+
+// MapLayer.java : public float getOffsetY()
+    public float getOffsetY(){
+        return offsetY;
+    }
+
+// MapLayer.java : public void setOffsetY(float offsetY)
+    public void setOffsetY(float offsetY){
+        this.offsetY = offsetY;
+        invalidateRenderOffset();
+    }
+
+// MapLayer.java : public float getRenderOffsetX()
+    public float getRenderOffsetX(){
+        if(renderOffsetDirty) calculateRenderOffsets();
+        return renderOffsetX;
+    }
+
+// MapLayer.java : public float getRenderOffsetY()
+    public float getRenderOffsetY(){
+        if(renderOffsetDirty) calculateRenderOffsets();
+        return renderOffsetY;
+    }
+
+// MapLayer.java : public void invalidateRenderOffset()
+    public void invalidateRenderOffset(){
+        renderOffsetDirty = true;
+    }
+
+// MapLayer.java : public MapLayer getParent()
+    public MapLayer getParent(){
+        return parent;
+    }
+
+// MapLayer.java : public void setParent(MapLayer parent)
+    public void setParent(MapLayer parent){
+        if(parent == this) throw new ArcRuntimeException("Can't set self as the parent");
+        this.parent = parent;
+    }
+
+// MapLayer.java : protected void calculateRenderOffsets()
+    protected void calculateRenderOffsets(){
+        if(parent != null){
+            parent.calculateRenderOffsets();
+            renderOffsetX = parent.getRenderOffsetX() + offsetX;
+            renderOffsetY = parent.getRenderOffsetY() + offsetY;
+        }else{
+            renderOffsetX = offsetX;
+            renderOffsetY = offsetY;
+        }
+        renderOffsetDirty = false;
+    }
+
+// MapProperties.java : public boolean containsKey(String key)
+    public boolean containsKey(String key){
+        return properties.containsKey(key);
+    }
+
+// MapProperties.java : public T get(String key) / public T get(String key, T defaultValue)
+    @SuppressWarnings("unchecked")
+    public <T> T get(String key){
+        return (T)properties.get(key);
+    }
+
+// MapProperties.java : public void put(String key, Object value)
+    public void put(String key, Object value){
+        properties.put(key, value);
+    }
+
+// MapProperties.java : public void putAll(MapProperties properties)
+    public void putAll(MapProperties properties){
+        this.properties.putAll(properties.properties);
+    }
+
+// MapProperties.java : public void remove(String key)
+    public void remove(String key){
+        properties.remove(key);
+    }
+
+// MapProperties.java : public void clear()
+    public void clear(){
+        properties.clear();
+    }
+
+// MapProperties.java : public Iterator<String> getKeys()
+    public Iterator<String> getKeys(){
+        return properties.keys();
+    }
+
+// MapProperties.java : public Iterator<Object> getValues()
+    public Iterator<Object> getValues(){
+        return properties.values();
+    }
+
+// MapTile.java : public MapProperties getProperties()
+    public MapProperties getProperties(){
+        if(properties == null){
+            properties = new MapProperties();
+        }
+        return properties;
+    }
+
+// MapTile.java : public Seq<MapObject> getObjects()
+    public Seq<MapObject> getObjects(){
+        if(objects == null){
+            objects = new Seq<>();
+        }
+        return objects;
+    }
+
+// TileLayer.java : public Cell getCell(int x, int y)
+    public Cell getCell(int x, int y){
+        if(x < 0 || x >= width || y < 0 || y >= height) return null;
+        return cells[x][y];
+    }
+
+// TileLayer.java : public void setCell(int x, int y, Cell cell)
+    public void setCell(int x, int y, Cell cell){
+        if(x < 0 || x >= width || y < 0 || y >= height) return;
+        cells[x][y] = cell;
+    }
+
+// TileLayer.java : public MapTile getTile(int x, int y)
+    public MapTile getTile(int x, int y){
+        return getCell(x, y) == null ? null : getCell(x, y).tile;
+    }
+
+// TileSet.java : public MapProperties getProperties()
+    public MapProperties getProperties(){
+        return properties;
+    }
+
+// TileSet.java : public MapTile get(int id)
+    public MapTile get(int id){
+        return tiles.get(id);
+    }
+
+// TileSet.java : public Iterator<MapTile> iterator()
+    @Override
+    public Iterator<MapTile> iterator(){
+        return tiles.values().iterator();
+    }
+
+// TileSet.java : public void put(int id, MapTile tile)
+    public void put(int id, MapTile tile){
+        tiles.put(id, tile);
+    }
+
+// TileSet.java : public void remove(int id)
+    public void remove(int id){
+        tiles.remove(id);
+    }
+
+// TileSet.java : public int size()
+    public int size(){
+        return tiles.size;
+    }
+
+// TileSets.java : public TileSet getTileSet(int index) / public TileSet getTileSet(String name)
+    public TileSet getTileSet(int index){
+        return tilesets.get(index);
+    }
+
+// TileSets.java : public void addTileSet(TileSet tileset)
+    public void addTileSet(TileSet tileset){
+        tilesets.add(tileset);
+    }
+
+// TileSets.java : public void removeTileSet(int index) / public void removeTileSet(TileSet tileset)
+    public void removeTileSet(int index){
+        tilesets.remove(index);
+    }
+
+// TileSets.java : public Iterator<TileSet> iterator()
+    @Override
+    public Iterator<TileSet> iterator(){
+        return tilesets.iterator();
+    }
+
+// TiledMap.java : public void setOwnedResources(Seq<? extends Disposable> resources)
+    public void setOwnedResources(Seq<? extends Disposable> resources){
+        this.ownedResources = resources;
+    }
+
+// TiledMap.java : public T getLayer(String name)
+    @SuppressWarnings("unchecked")
+    public <T extends MapLayer> T getLayer(String name){
+        return (T)layers.find(l -> name.equals(l.name));
+    }
+
+// TiledMap.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(ownedResources != null){
+            for(Disposable resource : ownedResources){
+                resource.dispose();
+            }
+        }
+    }
+

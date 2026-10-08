@@ -1,0 +1,131 @@
+SNet.java
+Java class implements steamworks.SteamNetworkingSocketsCallback, steamworks.SteamMatchmakingCallback, steamworks.SteamFriendsCallback, mindustry.net.Net.NetProvider
+fields:
+  public final SteamNetworkingSockets snet
+  public final SteamMatchmaking smat
+  public final SteamFriends friends
+  final NetProvider provider
+  final PacketSerializer serializer
+  final ByteBuffer clientWriteBuffer
+  final ByteBuffer netReadBuffer
+  final ByteBuffer netReadBufferCopy
+  Thread readThread
+  volatile boolean running
+  final CopyOnWriteArrayList<SteamConnection> connections
+  final IntMap<SteamConnection> steamConnections  // maps steam ID -> valid net connection
+  Socket listenSocket
+  volatile Connection clientConnection  // our connection to the server, when we are the client
+  SteamID currentLobby
+  Cons<Host> lobbyCallback
+  Runnable lobbyDoneCallback
+ctors:
+  public SNet(NetProvider provider)
+methods:
+  public boolean isSteamClient()
+  void stopNetThread()
+  void startNetThread()
+  void readLoop()
+  boolean pollConnection(Connection connection, SteamConnection con) throws Exception  // Drains all currently-pending messages on one connection.
+  public void connectClient(String ip, int port, Runnable success) throws IOException
+  public void sendClient(Object object, boolean reliable)
+  public void disconnectClient()
+  public void discoverServers(Cons<Host> callback, Runnable done)
+  public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)
+  public void hostServer(int port) throws IOException
+  public void updateLobby()
+  void updateWave()
+  void updateBans(String changed)  // Updates the ban list so that lobbies don't appear for banned players.
+  public void closeServer()
+  public Iterable<? extends NetConnection> getConnections()
+  void disconnectSteamUser(SteamID steamid)  // Closes out and unregisters a connected steam user, if one is registered under this ID.
+  public void onLobbyInvite(SteamID steamIDUser, SteamID steamIDLobby, long gameID)
+  public void onLobbyEnter(SteamID steamIDLobby, int chatPermissions, boolean blocked, ChatRoomEnterResponse response)
+  public void onLobbyChatUpdate(SteamID lobby, SteamID who, SteamID changer, ChatMemberStateChange change)
+  public void onLobbyMatchList(int matches)
+  public void onLobbyCreated(SteamResult result, SteamID steamID)
+  public void showFriendInvites()
+  public void onConnectionStatusChanged(Connection connection, SteamID remote, ConnectionState state, ConnectionState prevState)
+  public void onGameLobbyJoinRequested(SteamID lobby, SteamID steamIDFriend)
+inner-class: SteamConnection extends mindustry.net.NetConnection
+  fields:
+    final ByteBuffer writeBuffer
+    final SteamID sid
+    final Connection connection
+    private final ArrayDeque<QueuedMessage> outgoing  // outgoing queue of not-yet-accepted messages, in send order
+    private static final int maxQueuedBytes  // 50mb (for large data asset maps)
+    private int queuedBytes
+  ctors:
+    public SteamConnection(SteamID sid, Connection connection)
+  methods:
+    public void pollWrites()  // Called in an external thread at around 60fps per client connection.
+    public void send(Object object, boolean reliable)  // Can be called on any thread.
+    public boolean isConnected()
+    protected void kickDisconnect()
+    public void close()
+    private void handleError(Exception e)
+  inner-class: QueuedMessage
+    fields:
+      final ByteBuffer buffer
+      final int flags
+    ctors:
+      QueuedMessage(ByteBuffer buffer, int flags)
+inner-class: QueuedMessage
+  fields:
+    final ByteBuffer buffer
+    final int flags
+  ctors:
+    QueuedMessage(ByteBuffer buffer, int flags)
+
+SStats.java
+Java class implements steamworks.SteamUserStatsCallback
+fields:
+  public final SteamUserStats stats
+  private boolean updated
+  private int statSavePeriod  // in minutes
+ctors:
+  public SStats()
+methods:
+  public void onUpdate()
+  public void onUserStatsStored(long gameID, SteamResult result)
+
+SUser.java
+Java class implements steamworks.SteamUserCallback
+fields:
+  public final SteamUser user
+
+SVars.java
+Java class
+fields:
+  public final static int steamID
+  public static SNet net
+  public static SStats stats
+  public static SWorkshop workshop
+  public static SUser user
+
+SWorkshop.java
+Java class implements steamworks.SteamUGCCallback
+fields:
+  public final SteamUGC ugc
+  private ObjectMap<Class<? extends Publishable>,Seq<Fi>> workshopFiles
+  private ObjectMap<SteamUGCQuery,Cons2<Seq<SteamUGCDetails>,SteamResult>> detailHandlers
+  private Seq<Cons<SteamPublishedFileID>> itemHandlers
+  private ObjectMap<SteamPublishedFileID,Runnable> updatedHandlers
+ctors:
+  public SWorkshop()
+methods:
+  public Seq<Fi> getWorkshopFiles(Class<? extends Publishable> type)
+  public void publish(Publishable p)  // Publish a new item and submit an update for it.
+  public void viewListing(Publishable p)  // Fetches info for an item, checking to make sure that it exists.
+  void viewListingID(SteamPublishedFileID id)
+  void update(Publishable p, SteamPublishedFileID id, String changelog, boolean updateDescription)
+  void showPublish(Cons<SteamPublishedFileID> published)
+  void query(SteamUGCQuery query, Cons2<Seq<SteamUGCDetails>,SteamResult> handler)
+  void updateItem(SteamPublishedFileID publishedFileID, Cons<SteamUGCUpdateHandle> tagger, Runnable updated)
+  public void onUGCQueryCompleted(SteamUGCQuery query, int numResultsReturned, int totalMatchingResults, boolean isCachedData, SteamResult result)
+  public void onSubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)
+  public void onUnsubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)
+  public void onCreateItem(SteamPublishedFileID publishedFileID, boolean needsToAcceptWLA, SteamResult result)
+  public void onSubmitItemUpdate(SteamPublishedFileID publishedFileID, boolean needsToAcceptWLA, SteamResult result)
+  public void onDownloadItemResult(int appID, SteamPublishedFileID publishedFileID, SteamResult result)
+  public void onDeleteItem(SteamPublishedFileID publishedFileID, SteamResult result)
+

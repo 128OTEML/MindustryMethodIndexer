@@ -1,0 +1,515 @@
+// Astar.java : public static Seq<Tile> pathfind(Tile from, Tile to, TileHeuristic th, Boolf<Tile> passable) / public static Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, Boolf<Tile> passable) / public static Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, DistanceHeuristic dh, Boolf<Tile> passable)
+    public static Seq<Tile> pathfind(Tile from, Tile to, TileHeuristic th, Boolf<Tile> passable){
+        return pathfind(from.x, from.y, to.x, to.y, th, manhattan, passable);
+    }
+
+// BaseBuilderAI.java : private Position randomPosition()
+    private Position randomPosition(){
+        if(data.hasCore()){
+            return data.cores.random();
+        }else if(data.team == state.rules.waveTeam){
+            return spawner.getSpawns().random();
+        }
+        return null;
+    }
+
+// BaseRegistry.java : public Seq<BasePart> forResource(Content item)
+    public Seq<BasePart> forResource(Content item){
+        return reqParts.get(item, Seq::new);
+    }
+
+// BlockIndexer.java : public Seq<Item> getAllPresentOres()
+    public Seq<Item> getAllPresentOres(){
+        return allPresentOres;
+    }
+
+// BlockIndexer.java : private void updatePresentOres()
+    private void updatePresentOres(){
+        allPresentOres.clear();
+        for(Item item : content.items()){
+            if(hasOre(item) || hasWallOre(item)){
+                allPresentOres.add(item);
+            }
+        }
+    }
+
+// BlockIndexer.java : private void removeFloorIndex(Tile tile, Floor floor)
+    private void removeFloorIndex(Tile tile, Floor floor){
+        if(floor.flags.size == 0 || floorMap == null) return;
+
+        for(var flag : floor.flags.array){
+            getFlaggedFloors(flag).remove(tile);
+        }
+    }
+
+// BlockIndexer.java : private void addFloorIndex(Tile tile, Floor floor)
+    private void addFloorIndex(Tile tile, Floor floor){
+        if(floor.flags.size == 0 || !floor.shouldIndex(tile) || floorMap == null) return;
+
+        for(var flag : floor.flags.array){
+            getFlaggedFloors(flag).add(tile);
+        }
+    }
+
+// BlockIndexer.java : public Seq<Tile> getFlaggedFloors(BlockFlag flag)
+    public Seq<Tile> getFlaggedFloors(BlockFlag flag){
+        if(floorMap[flag.ordinal()] == null){
+            floorMap[flag.ordinal()] = new Seq<>(false);
+        }
+        return floorMap[flag.ordinal()];
+    }
+
+// BlockIndexer.java : public boolean isBlockPresent(Block block)
+    public boolean isBlockPresent(Block block){
+        return blocksPresent != null && block.id < blocksPresent.length && blocksPresent[block.id];
+    }
+
+// BlockIndexer.java : private void clearFlags()
+    private void clearFlags(){
+        for(int i = 0; i < flagMap.length; i++){
+            for(int j = 0; j < BlockFlag.all.length; j++){
+                flagMap[i][j] = new Seq();
+            }
+        }
+    }
+
+// BlockIndexer.java : private Seq<Building>[] getFlagged(Team team) / public Seq<Building> getFlagged(Team team, BlockFlag type)
+    private Seq<Building>[] getFlagged(Team team){
+        return flagMap[team.id];
+    }
+
+// BlockIndexer.java : public boolean hasOre(Item item)
+    public boolean hasOre(Item item){
+        return allOres.get(item) > 0;
+    }
+
+// BlockIndexer.java : public boolean hasWallOre(Item item)
+    public boolean hasWallOre(Item item){
+        return allWallOres.get(item) > 0;
+    }
+
+// BlockIndexer.java : public Seq<Building> getDamaged(Team team)
+    public Seq<Building> getDamaged(Team team){
+        if(damagedTiles[team.id] == null){
+            return damagedTiles[team.id] = new Seq<>(false);
+        }
+
+        var tiles = damagedTiles[team.id];
+        tiles.removeAll(b -> !b.damaged());
+
+        return tiles;
+    }
+
+// BlockIndexer.java : public Building findClosestFlag(float x, float y, Team team, BlockFlag flag)
+    @Nullable
+    public Building findClosestFlag(float x, float y, Team team, BlockFlag flag){
+        return Geometry.findClosest(x, y, getFlagged(team, flag));
+    }
+
+// BlockIndexer.java : public boolean eachBlock(Teamc team, float range, Boolf<Building> pred, Cons<Building> cons) / public boolean eachBlock(Team team, float wx, float wy, float range, Boolf<Building> pred, Cons<Building> cons) / public boolean eachBlock(Team team, Rect rect, Boolf<Building> pred, Cons<Building> cons)
+    public boolean eachBlock(Teamc team, float range, Boolf<Building> pred, Cons<Building> cons){
+        return eachBlock(team.team(), team.getX(), team.getY(), range, pred, cons);
+    }
+
+// BlockIndexer.java : public Building findEnemyTile(Team team, float x, float y, float range, BuildingPriorityf priority, Boolf<Building> pred) / public Building findEnemyTile(Team team, float x, float y, float range, BuildingPriorityf priority, Boolf<Building> pred, Team source) / public Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred)
+    public Building findEnemyTile(Team team, float x, float y, float range, BuildingPriorityf priority, Boolf<Building> pred){
+        return findEnemyTile(team, x, y, range, priority, pred, null);
+    }
+
+// BlockIndexer.java : public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred) / public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred, boolean usePriority) / public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred, boolean usePriority, Team source)
+    public Building findTile(Team team, float x, float y, float range, Boolf<Building> pred){
+        return findTile(team, x, y, range, pred, false);
+    }
+
+// ControlPathfinder.java : public void updateTile(Tile tile)
+    public void updateTile(Tile tile){
+        tile.getLinkedTiles(this::updateSingleTile);
+    }
+
+// ControlPathfinder.java : void queueClusterUpdate(int cx, int cy)
+    void queueClusterUpdate(int cx, int cy){
+        if(cx >= 0 && cy >= 0 && cx < cwidth && cy < cheight){
+            queue.post(() -> clustersToUpdate.add(cx + cy * cwidth));
+        }
+    }
+
+// ControlPathfinder.java : private void start()
+    private void start(){
+        if(net.client() || thread != null) return;
+
+        thread = new Thread(this, "Control Pathfinder");
+        thread.setPriority(Thread.MIN_PRIORITY);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+// ControlPathfinder.java : private void stop()
+    private void stop(){
+        if(thread != null){
+            thread.interrupt();
+            thread = null;
+        }
+        invalidated = true;
+        queue.clear();
+    }
+
+// ControlPathfinder.java : Cluster getCluster(int team, int pathCost, int cx, int cy) / Cluster getCluster(int team, int pathCost, int clusterIndex)
+    @Nullable Cluster getCluster(int team, int pathCost, int cx, int cy){
+        return getCluster(team, pathCost, cx + cy * cwidth);
+    }
+
+// ControlPathfinder.java : Cluster getCreateCluster(int team, int pathCost, int cx, int cy) / Cluster getCreateCluster(int team, int pathCost, int clusterIndex)
+    Cluster getCreateCluster(int team, int pathCost, int cx, int cy){
+        return getCreateCluster(team, pathCost, cx + cy * cwidth);
+    }
+
+// ControlPathfinder.java : void updateInnerEdges(int team, int cost, int cx, int cy, Cluster cluster) / void updateInnerEdges(int team, PathCost cost, int cx, int cy, Cluster cluster)
+    void updateInnerEdges(int team, int cost, int cx, int cy, Cluster cluster){
+        updateInnerEdges(team, idToCost(cost), cx, cy, cluster);
+    }
+
+// ControlPathfinder.java : private static float heuristic(int a, int b)
+    private static float heuristic(int a, int b){
+        int x = a % wwidth, x2 = b % wwidth, y = a / wwidth, y2 = b / wwidth;
+        return Math.abs(x - x2) + Math.abs(y - y2);
+    }
+
+// ControlPathfinder.java : private static int tcost(int team, PathCost cost, int tilePos)
+    private static int tcost(int team, PathCost cost, int tilePos){
+        return cost.getCost(team, pathfinder.tiles[tilePos]);
+    }
+
+// ControlPathfinder.java : private static float tileCost(int team, PathCost type, int a, int b)
+    private static float tileCost(int team, PathCost type, int a, int b){
+        //currently flat cost
+        return cost(team, type, b);
+    }
+
+// ControlPathfinder.java : private void addFlowCluster(FieldCache cache, int cluster, boolean addingFrontier) / private void addFlowCluster(FieldCache cache, int cx, int cy, boolean addingFrontier)
+    private void addFlowCluster(FieldCache cache, int cluster, boolean addingFrontier){
+        addFlowCluster(cache, cluster % cwidth, cluster / cwidth, addingFrontier);
+    }
+
+// ControlPathfinder.java : private PathCost idToCost(int costId)
+    private PathCost idToCost(int costId){
+        return ControlPathfinder.costTypes.get(costId);
+    }
+
+// ControlPathfinder.java : public static boolean isNearObstacle(Unit unit, int x1, int y1, int x2, int y2)
+    public static boolean isNearObstacle(Unit unit, int x1, int y1, int x2, int y2){
+        return raycast(unit.team().id, unit.type.pathCost, x1, y1, x2, y2);
+    }
+
+// ControlPathfinder.java : public boolean getPathPosition(Unit unit, Vec2 destination, Vec2 out, boolean[] noResultFound) / public boolean getPathPosition(Unit unit, Vec2 destination, Vec2 mainDestination, Vec2 out, boolean[] noResultFound) / public PathfindResult getPathPosition(Unit unit, Vec2 destination) / public PathfindResult getPathPosition(Unit unit, Vec2 destination, Vec2 mainDestination)
+    @Deprecated
+    public boolean getPathPosition(Unit unit, Vec2 destination, Vec2 out, @Nullable boolean[] noResultFound){
+        var result = getPathPosition(unit, destination, destination);
+        out.set(result.dest);
+        if(noResultFound != null) noResultFound[0] = result.unreachable;
+        return result.move;
+    }
+
+// ControlPathfinder.java : private void recalculatePath(ControlPathfinder.PathRequest request)
+    private void recalculatePath(ControlPathfinder.PathRequest request){
+        initializePathRequest(request, request.team, request.costId, request.unit.tileX(), request.unit.tileY(), request.destination % wwidth, request.destination / wwidth);
+    }
+
+// ControlPathfinder.java : private static boolean overlap(int initialCost, int team, PathCost type, int x, int y, float startX, float startY, float endX, float endY, float rectSize)
+    private static boolean overlap(int initialCost, int team, PathCost type, int x, int y, float startX, float startY, float endX, float endY, float rectSize){
+        if(x < 0 || y < 0 || x >= wwidth || y >= wheight) return false;
+        if(!nearPassable(initialCost, team, type, x + y * wwidth)){
+            return Intersector.intersectSegmentRectangleFast(startX, startY, endX, endY, x * tilesize - rectSize/2f, y * tilesize - rectSize/2f, rectSize, rectSize);
+        }
+        return false;
+    }
+
+// ControlPathfinder.java : private static boolean avoid(int team, PathCost type, int tilePos)
+    private static boolean avoid(int team, PathCost type, int tilePos){
+        int cost = cost(team, type, tilePos);
+        return cost == impassable || cost >= 2;
+    }
+
+// ControlPathfinder.java : private static boolean passable(int team, PathCost cost, int pos)
+    private static boolean passable(int team, PathCost cost, int pos){
+        int amount = cost.getCost(team, pathfinder.tiles[pos]);
+        return amount != impassable && amount < solidCap;
+    }
+
+// ControlPathfinder.java : private static boolean nearPassable(int initialCost, int team, PathCost cost, int pos)
+    private static boolean nearPassable(int initialCost, int team, PathCost cost, int pos){
+        int amount = cost.getCost(team, pathfinder.tiles[pos]);
+        return amount != impassable && amount < Math.min(Math.max(50, initialCost + 1), solidCap);
+    }
+
+// ControlPathfinder.java : private static boolean solid(int team, PathCost type, int x, int y) / private static boolean solid(int team, PathCost type, int tilePos, boolean checkWall)
+    private static boolean solid(int team, PathCost type, int x, int y){
+        return x < 0 || y < 0 || x >= wwidth || y >= wheight || solid(team, type, x + y * wwidth, true);
+    }
+
+// ControlPathfinder.java : private static int cost(int team, PathCost cost, int tilePos)
+    private static int cost(int team, PathCost cost, int tilePos){
+        if(state.rules.limitMapArea && !Team.get(team).isAI()){
+            int x = tilePos % wwidth, y = tilePos / wwidth;
+            if(x < state.rules.limitX || y < state.rules.limitY || x > state.rules.limitX + state.rules.limitWidth || y > state.rules.limitY + state.rules.limitHeight){
+                return impassable;
+            }
+        }
+        return cost.getCost(team, pathfinder.tiles[tilePos]);
+    }
+
+// ItemUnitStance.java : public static ItemUnitStance getByItem(Item item)
+    public static @Nullable ItemUnitStance getByItem(Item item){
+        return item == null ? null : itemToStance.get(item);
+    }
+
+// ItemUnitStance.java : public static Seq<ItemUnitStance> all()
+    public static Seq<ItemUnitStance> all(){
+        return all;
+    }
+
+// ItemUnitStance.java : public String localized()
+    @Override
+    public String localized(){
+        return Core.bundle.format("stance.mine", item.localizedName);
+    }
+
+// ItemUnitStance.java : public TextureRegionDrawable getIcon()
+    @Override
+    public TextureRegionDrawable getIcon(){
+        return new TextureRegionDrawable(item.uiIcon);
+    }
+
+// PathfindQueue.java : public boolean empty()
+    public boolean empty(){
+        return size == 0;
+    }
+
+// PathfindQueue.java : public int peek()
+    public int peek(){
+        return size == 0 ? 0 : queue[0];
+    }
+
+// PathfindQueue.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// PathfindQueue.java : public int poll()
+    public int poll(){
+        if(size == 0) return 0;
+        int s = --size;
+        int result = queue[0];
+        int x = queue[s];
+        if(s != 0) siftDown(0, x, weights[s]);
+        return result;
+    }
+
+// Pathfinder.java : private void clearCache()
+    private void clearCache(){
+        cache = new Flowfield[256][maxCosts][maxFields];
+    }
+
+// Pathfinder.java : public int get(int x, int y)
+    public int get(int x, int y){
+        return tiles[x + y * wwidth];
+    }
+
+// Pathfinder.java : private void start()
+    private void start(){
+        stop();
+        if(net.client()) return;
+
+        thread = new Thread(this, "Pathfinder");
+        thread.setPriority(Thread.MIN_PRIORITY);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+// Pathfinder.java : private void stop()
+    private void stop(){
+        if(thread != null){
+            thread.interrupt();
+            thread = null;
+        }
+        queue.clear();
+        needsRefresh = false;
+    }
+
+// Pathfinder.java : public Tile getTargetTile(Tile tile, Flowfield path) / public Tile getTargetTile(Tile tile, Flowfield path, boolean diagonals) / public Tile getTargetTile(Tile tile, Flowfield path, boolean diagonals, int avoidanceId)
+    public @Nullable Tile getTargetTile(Tile tile, Flowfield path){
+        return getTargetTile(tile, path, true);
+    }
+
+// Pathfinder.java : private void preloadPath(Flowfield path)
+    private void preloadPath(Flowfield path){
+        path.updateTargetPositions();
+        registerPath(path);
+        updateFrontier(path, -1);
+    }
+
+// RtsAI.java : public void update()
+    public void update(){
+
+        if(timer.get(timeUpdate, 60f * 2f)){
+            assignSquads();
+            checkBuilding();
+        }
+    }
+
+// UnitCommand.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("command." + name);
+    }
+
+// UnitCommand.java : public TextureRegionDrawable getIcon()
+    public TextureRegionDrawable getIcon(){
+        return Icon.icons.get(icon, Icon.cancel);
+    }
+
+// UnitCommand.java : public char getEmoji()
+    public char getEmoji() {
+        return (char)Iconc.codes.get(icon, Iconc.cancel);
+    }
+
+// UnitCommand.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.unitCommand;
+    }
+
+// UnitCommand.java : public String toString()
+    @Override
+    public String toString(){
+        return "UnitCommand:" + name;
+    }
+
+// UnitGroup.java : public void updateRaycast(int index, Vec2 dest) / private void updateRaycast(int index, Vec2 dest, Vec2 v1)
+    public void updateRaycast(int index, Vec2 dest){
+        updateRaycast(index, dest, Tmp.v1);
+    }
+
+// UnitStance.java : public boolean isCompatible(UnitCommand other)
+    public boolean isCompatible(@Nullable UnitCommand other){
+        return other == null || !incompatibleCommandBits.get(other.id);
+    }
+
+// UnitStance.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("stance." + name);
+    }
+
+// UnitStance.java : public TextureRegionDrawable getIcon()
+    public TextureRegionDrawable getIcon(){
+        return Icon.icons.get(icon, Icon.cancel);
+    }
+
+// UnitStance.java : public char getEmoji()
+    public char getEmoji() {
+        return (char)Iconc.codes.get(icon, Iconc.cancel);
+    }
+
+// UnitStance.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.unitStance;
+    }
+
+// UnitStance.java : public String toString()
+    @Override
+    public String toString(){
+        return "UnitStance:" + name;
+    }
+
+// UnitStance.java : public static void loadAfterMods()
+    public static void loadAfterMods(){
+        //load stances for mod items
+        for(Item item : Vars.content.items()){
+            if(ItemUnitStance.getByItem(item) == null){
+                new ItemUnitStance(item);
+            }
+        }
+    }
+
+// WaveSpawner.java : public Tile getFirstSpawn()
+    @Nullable
+    public Tile getFirstSpawn(){
+        firstSpawn = null;
+        eachGroundSpawn((cx, cy) -> {
+            firstSpawn = world.tile(cx, cy);
+        });
+        return firstSpawn;
+    }
+
+// WaveSpawner.java : public int countSpawns()
+    public int countSpawns(){
+        return spawns.size;
+    }
+
+// WaveSpawner.java : public Seq<Tile> getSpawns()
+    public Seq<Tile> getSpawns(){
+        return spawns;
+    }
+
+// WaveSpawner.java : public boolean playerNear()
+    public boolean playerNear(){
+        return state.hasSpawns() && !player.dead() && spawns.contains(g -> Mathf.dst(g.x * tilesize, g.y * tilesize, player.x, player.y) < state.rules.dropZoneRadius && player.team() != state.rules.waveTeam);
+    }
+
+// WaveSpawner.java : public void spawnUnit(SpawnGroup group, float x, float y)
+    public void spawnUnit(SpawnGroup group, float x, float y){
+        group.createUnit(group.team == null ? state.rules.waveTeam : group.team, x, y,
+            Angles.angle(x, y, world.width()/2f * tilesize, world.height()/2f * tilesize), state.wave - 1, this::spawnEffect);
+    }
+
+// WaveSpawner.java : public void doShockwave(float x, float y)
+    public void doShockwave(float x, float y){
+        Fx.spawnShockwave.at(x, y, state.rules.dropZoneRadius);
+        Damage.damage(state.rules.waveTeam, x, y, state.rules.dropZoneRadius, 99999999f, true);
+    }
+
+// WaveSpawner.java : public void eachGroundSpawn(Intc2 cons) / private void eachGroundSpawn(int filterPos, SpawnConsumer cons)
+    public void eachGroundSpawn(Intc2 cons){
+        eachGroundSpawn(-1, (x, y, shock) -> cons.get(World.toTile(x), World.toTile(y)));
+    }
+
+// WaveSpawner.java : public int countGroundSpawns()
+    public int countGroundSpawns(){
+        tmpCount = 0;
+        eachGroundSpawn((x, y) -> tmpCount ++);
+        return tmpCount;
+    }
+
+// WaveSpawner.java : public int countFlyerSpawns()
+    public int countFlyerSpawns(){
+        tmpCount = 0;
+        eachFlyerSpawn(-1, (x, y) -> tmpCount ++);
+        return tmpCount;
+    }
+
+// WaveSpawner.java : public boolean isSpawning()
+    public boolean isSpawning(){
+        return spawning && !net.client();
+    }
+
+// WaveSpawner.java : public void reset()
+    public void reset(){
+        spawning = false;
+        spawns.clear();
+
+        for(Tile tile : world.tiles){
+            if(tile.overlay() == Blocks.spawn){
+                spawns.add(tile);
+            }
+        }
+    }
+
+// WaveSpawner.java : public void spawnEffect(Unit unit) / public static void spawnEffect(float x, float y, float rotation, UnitType u)
+    public void spawnEffect(Unit unit){
+        unit.apply(StatusEffects.unmoving, 30f);
+        unit.apply(StatusEffects.invincible, 60f);
+        unit.unloaded();
+
+        Events.fire(new UnitSpawnEvent(unit));
+        Call.spawnEffect(unit.x, unit.y, unit.rotation, unit.type);
+    }
+

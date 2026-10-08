@@ -1,0 +1,249 @@
+// ExtendViewport.java : public float getMinWorldWidth()
+    public float getMinWorldWidth(){
+        return minWorldWidth;
+    }
+
+// ExtendViewport.java : public void setMinWorldWidth(float minWorldWidth)
+    public void setMinWorldWidth(float minWorldWidth){
+        this.minWorldWidth = minWorldWidth;
+    }
+
+// ExtendViewport.java : public float getMinWorldHeight()
+    public float getMinWorldHeight(){
+        return minWorldHeight;
+    }
+
+// ExtendViewport.java : public void setMinWorldHeight(float minWorldHeight)
+    public void setMinWorldHeight(float minWorldHeight){
+        this.minWorldHeight = minWorldHeight;
+    }
+
+// ExtendViewport.java : public float getMaxWorldWidth()
+    public float getMaxWorldWidth(){
+        return maxWorldWidth;
+    }
+
+// ExtendViewport.java : public void setMaxWorldWidth(float maxWorldWidth)
+    public void setMaxWorldWidth(float maxWorldWidth){
+        this.maxWorldWidth = maxWorldWidth;
+    }
+
+// ExtendViewport.java : public float getMaxWorldHeight()
+    public float getMaxWorldHeight(){
+        return maxWorldHeight;
+    }
+
+// ExtendViewport.java : public void setMaxWorldHeight(float maxWorldHeight)
+    public void setMaxWorldHeight(float maxWorldHeight){
+        this.maxWorldHeight = maxWorldHeight;
+    }
+
+// ScalingViewport.java : public void update(int screenWidth, int screenHeight, boolean centerCamera)
+    @Override
+    public void update(int screenWidth, int screenHeight, boolean centerCamera){
+        Vec2 scaled = scaling.apply(getWorldWidth(), getWorldHeight(), screenWidth, screenHeight);
+        int viewportWidth = Math.round(scaled.x);
+        int viewportHeight = Math.round(scaled.y);
+
+        // Center.
+        setScreenBounds((screenWidth - viewportWidth) / 2, (screenHeight - viewportHeight) / 2, viewportWidth, viewportHeight);
+
+        apply(centerCamera);
+    }
+
+// ScalingViewport.java : public Scaling getScaling()
+    public Scaling getScaling(){
+        return scaling;
+    }
+
+// ScalingViewport.java : public void setScaling(Scaling scaling)
+    public void setScaling(Scaling scaling){
+        this.scaling = scaling;
+    }
+
+// ScreenViewport.java : public void update(int screenWidth, int screenHeight, boolean centerCamera)
+    @Override
+    public void update(int screenWidth, int screenHeight, boolean centerCamera){
+        setScreenBounds(0, 0, screenWidth, screenHeight);
+        setWorldSize(screenWidth * unitsPerPixel, screenHeight * unitsPerPixel);
+        apply(centerCamera);
+    }
+
+// ScreenViewport.java : public float getUnitsPerPixel()
+    public float getUnitsPerPixel(){
+        return unitsPerPixel;
+    }
+
+// ScreenViewport.java : public void setUnitsPerPixel(float unitsPerPixel)
+    public void setUnitsPerPixel(float unitsPerPixel){
+        this.unitsPerPixel = unitsPerPixel;
+    }
+
+// Viewport.java : public void apply() / public void apply(boolean centerCamera)
+    public void apply(){
+        apply(false);
+    }
+
+// Viewport.java : public final void update(int screenWidth, int screenHeight) / public void update(int screenWidth, int screenHeight, boolean centerCamera)
+    public final void update(int screenWidth, int screenHeight){
+        update(screenWidth, screenHeight, false);
+    }
+
+// Viewport.java : public Vec2 unproject(Vec2 screenCoords)
+    public Vec2 unproject(Vec2 screenCoords){
+        tmp.set(screenCoords.x, screenCoords.y);
+        camera.unproject(tmp, screenX, screenY, screenWidth, screenHeight);
+        screenCoords.set(tmp.x, tmp.y);
+        return screenCoords;
+    }
+
+// Viewport.java : public Vec2 project(Vec2 worldCoords)
+    public Vec2 project(Vec2 worldCoords){
+        tmp.set(worldCoords.x, worldCoords.y);
+        camera.project(tmp, screenX, screenY, screenWidth, screenHeight);
+        worldCoords.set(tmp.x, tmp.y);
+        return worldCoords;
+    }
+
+// Viewport.java : public void calculateScissors(Mat batchTransform, Rect area, Rect scissor)
+    public void calculateScissors(Mat batchTransform, Rect area, Rect scissor){
+        ScissorStack.calculateScissors(camera, screenX, screenY, screenWidth, screenHeight, batchTransform, area, scissor);
+    }
+
+// Viewport.java : public Vec2 toScreenCoordinates(Vec2 worldCoords, Mat transformMatrix)
+    public Vec2 toScreenCoordinates(Vec2 worldCoords, Mat transformMatrix){
+        tmp.set(worldCoords.x, worldCoords.y);
+        tmp.mul(transformMatrix);
+        camera.project(tmp);
+        tmp.y = Core.graphics.getHeight() - tmp.y;
+        worldCoords.x = tmp.x;
+        worldCoords.y = tmp.y;
+        return worldCoords;
+    }
+
+// Viewport.java : public Camera getCamera()
+    public Camera getCamera(){
+        return camera;
+    }
+
+// Viewport.java : public void setCamera(Camera camera)
+    public void setCamera(Camera camera){
+        this.camera = camera;
+    }
+
+// Viewport.java : public float getWorldWidth()
+    public float getWorldWidth(){
+        return worldWidth;
+    }
+
+// Viewport.java : public void setWorldWidth(float worldWidth)
+    public void setWorldWidth(float worldWidth){
+        this.worldWidth = worldWidth;
+    }
+
+// Viewport.java : public float getWorldHeight()
+    public float getWorldHeight(){
+        return worldHeight;
+    }
+
+// Viewport.java : public void setWorldHeight(float worldHeight)
+    public void setWorldHeight(float worldHeight){
+        this.worldHeight = worldHeight;
+    }
+
+// Viewport.java : public void setWorldSize(float worldWidth, float worldHeight)
+    public void setWorldSize(float worldWidth, float worldHeight){
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
+    }
+
+// Viewport.java : public int getScreenX()
+    public int getScreenX(){
+        return screenX;
+    }
+
+// Viewport.java : public void setScreenX(int screenX)
+    public void setScreenX(int screenX){
+        this.screenX = screenX;
+    }
+
+// Viewport.java : public int getScreenY()
+    public int getScreenY(){
+        return screenY;
+    }
+
+// Viewport.java : public void setScreenY(int screenY)
+    public void setScreenY(int screenY){
+        this.screenY = screenY;
+    }
+
+// Viewport.java : public int getScreenWidth()
+    public int getScreenWidth(){
+        return screenWidth;
+    }
+
+// Viewport.java : public void setScreenWidth(int screenWidth)
+    public void setScreenWidth(int screenWidth){
+        this.screenWidth = screenWidth;
+    }
+
+// Viewport.java : public int getScreenHeight()
+    public int getScreenHeight(){
+        return screenHeight;
+    }
+
+// Viewport.java : public void setScreenHeight(int screenHeight)
+    public void setScreenHeight(int screenHeight){
+        this.screenHeight = screenHeight;
+    }
+
+// Viewport.java : public void setScreenPosition(int screenX, int screenY)
+    public void setScreenPosition(int screenX, int screenY){
+        this.screenX = screenX;
+        this.screenY = screenY;
+    }
+
+// Viewport.java : public void setScreenSize(int screenWidth, int screenHeight)
+    public void setScreenSize(int screenWidth, int screenHeight){
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
+// Viewport.java : public void setScreenBounds(int screenX, int screenY, int screenWidth, int screenHeight)
+    public void setScreenBounds(int screenX, int screenY, int screenWidth, int screenHeight){
+        this.screenX = screenX;
+        this.screenY = screenY;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+    }
+
+// Viewport.java : public int getLeftGutterWidth()
+    public int getLeftGutterWidth(){
+        return screenX;
+    }
+
+// Viewport.java : public int getRightGutterX()
+    public int getRightGutterX(){
+        return screenX + screenWidth;
+    }
+
+// Viewport.java : public int getRightGutterWidth()
+    public int getRightGutterWidth(){
+        return Core.graphics.getWidth() - (screenX + screenWidth);
+    }
+
+// Viewport.java : public int getBottomGutterHeight()
+    public int getBottomGutterHeight(){
+        return screenY;
+    }
+
+// Viewport.java : public int getTopGutterY()
+    public int getTopGutterY(){
+        return screenY + screenHeight;
+    }
+
+// Viewport.java : public int getTopGutterHeight()
+    public int getTopGutterHeight(){
+        return Core.graphics.getHeight() - (screenY + screenHeight);
+    }
+

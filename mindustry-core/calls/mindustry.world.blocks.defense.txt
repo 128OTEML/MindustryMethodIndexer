@@ -1,0 +1,880 @@
+autoDoorToggle
+  -> mindustry.world.blocks.defense.AutoDoor.AutoDoorBuild.setOpen(boolean)
+AutoDoorBuild extends mindustry.gen.Building::AutoDoorBuild
+  -> arc.util.Interval.reset(int, float)
+  -> arc.math.Mathf.random(float)
+AutoDoorBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.net.Net.client()
+  -> arc.struct.Seq.clear()
+  -> arc.math.geom.QuadTree.intersect(arc.math.geom.Rect, arc.struct.Seq<T>)
+  -> mindustry.game.Teams.TeamData.tree()
+  -> mindustry.game.Team.data()
+  -> arc.math.geom.Rect.setCenter(float, float)
+  -> arc.math.geom.Rect.setSize(float)
+  -> arc.struct.Seq.contains(arc.func.Boolf<T>)
+  -> mindustry.gen.Call.autoDoorToggle(mindustry.world.Tile, boolean)
+AutoDoorBuild extends mindustry.gen.Building::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+AutoDoorBuild extends mindustry.gen.Building::setOpen
+  -> mindustry.ai.Pathfinder.updateTile(mindustry.world.Tile)
+  -> mindustry.entities.Effect.at(arc.math.geom.Position, float)
+  -> arc.audio.Sound.at(arc.math.geom.Position)
+  -> mindustry.gen.Building.recache()
+AutoDoorBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+AutoDoorBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.bool(boolean)
+AutoDoorBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.bool()
+init
+  -> mindustry.world.Block.init()
+  -> mindustry.world.Block.updateClipRadius(float)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.gen.Player.team()
+BaseShieldBuild extends mindustry.gen.Building::updateTile
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.world.blocks.defense.BaseShield.BaseShieldBuild.radius()
+  -> mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Cons<? super T>)
+  -> mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, float, float, float, arc.func.Cons<mindustry.gen.Unit>)
+BaseShieldBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.gen.Building.drawSelect()
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+BaseShieldBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> mindustry.world.blocks.defense.BaseShield.BaseShieldBuild.drawShield()
+BaseShieldBuild extends mindustry.gen.Building::drawShield
+  -> mindustry.world.blocks.defense.BaseShield.BaseShieldBuild.radius()
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.graphics.g2d.Fill.poly(float, float, int, float)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.graphics.g2d.Lines.poly(float, float, int, float)
+  -> arc.graphics.g2d.Draw.reset()
+BaseShieldBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+  -> arc.util.io.Writes.bool(boolean)
+BaseShieldBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads)
+  -> arc.util.io.Reads.f()
+  -> arc.util.io.Reads.bool()
+init
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.init()
+  -> mindustry.type.UnitType.UnitType(java.lang.String)
+afterPatch
+  -> mindustry.world.Block.afterPatch()
+setStats
+  -> mindustry.world.blocks.defense.turrets.BaseTurret.setStats()
+  -> mindustry.world.meta.Stats.addPercent(mindustry.world.meta.Stat, float)
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::buildRotation
+  -> mindustry.gen.Rotc.rotation()
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::unit
+  -> mindustry.gen.BlockUnitc.tile(mindustry.gen.Building)
+  -> mindustry.gen.BlockUnitc.team(mindustry.game.Team)
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::updateTile
+  -> mindustry.gen.BlockUnitc.tile(mindustry.gen.Building)
+  -> mindustry.gen.BlockUnitc.team(mindustry.game.Team)
+  -> mindustry.gen.Rotc.rotation()
+  -> mindustry.gen.Builderc.activelyBuilding()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> arc.math.geom.Position.angleTo(arc.math.geom.Position)
+  -> mindustry.gen.Builderc.buildPlan()
+  -> mindustry.gen.Building.checkSuppression()
+  -> mindustry.gen.Statusc.buildSpeedMultiplier(float)
+  -> mindustry.gen.Statusc.speedMultiplier(float)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.world.blocks.ControlBlock.isControlled()
+  -> mindustry.gen.Builderc.updateBuilding(boolean)
+  -> mindustry.gen.Healthc.isValid()
+  -> arc.struct.Queue.clear()
+  -> mindustry.gen.Builderc.plans()
+  -> arc.struct.Queue.addFirst(T)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.game.Team.data()
+  -> arc.struct.Queue.get(int)
+  -> arc.math.geom.Position.within(float, float, float)
+  -> mindustry.world.Build.validPlace(mindustry.world.Block, mindustry.game.Team, int, int, int)
+  -> mindustry.gen.Teamc.team()
+  -> mindustry.game.Team.rules()
+  -> mindustry.world.modules.ItemModule.has(mindustry.type.ItemStack[], float)
+  -> mindustry.game.Team.items()
+  -> mindustry.gen.Builderc.addBuild(mindustry.entities.units.BuildPlan)
+  -> arc.struct.Queue.addLast(T)
+  -> arc.struct.Queue.removeIndex(int)
+  -> mindustry.entities.Units.nearby(mindustry.game.Team, float, float, float, arc.func.Cons<mindustry.gen.Unit>)
+  -> mindustry.gen.Builderc.canBuild()
+  -> mindustry.core.World.build(int, int)
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> arc.util.Interval.get(int, float)
+  -> mindustry.gen.Player.isBuilder()
+  -> mindustry.gen.Player.unit()
+  -> mindustry.entities.units.BuildPlan.samePos(mindustry.entities.units.BuildPlan)
+  -> arc.struct.Queue.removeFirst()
+  -> arc.struct.Queue.remove(arc.func.Boolf<T>)
+  -> mindustry.entities.units.BuildPlan.tile()
+  -> mindustry.world.Build.validBreak(mindustry.game.Team, int, int)
+  -> mindustry.entities.units.BuildPlan.build()
+  -> mindustry.gen.Builderc.updateBuildLogic()
+  -> mindustry.entities.units.BuildPlan.BuildPlan(int, int, int, mindustry.world.Block, java.lang.Object)
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::shouldConsume
+  -> mindustry.gen.Builderc.plans()
+  -> mindustry.gen.Building.isHealSuppressed()
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.color()
+  -> arc.graphics.g2d.Draw.z(float)
+  -> mindustry.graphics.Drawf.shadow(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> arc.graphics.g2d.TextureRegion.found()
+  -> mindustry.graphics.Drawf.additive(arc.graphics.g2d.TextureRegion, arc.graphics.Color, float, float, float, float, float)
+  -> mindustry.gen.Builderc.drawBuilding()
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+  -> mindustry.io.TypeIO.writePlans(arc.util.io.Writes, mindustry.entities.units.BuildPlan[])
+  -> arc.struct.Queue.toArray(java.lang.Class<T>)
+  -> mindustry.gen.Builderc.plans()
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+  -> mindustry.gen.Rotc.rotation(float)
+  -> arc.struct.Queue.clear()
+  -> mindustry.gen.Builderc.plans()
+  -> mindustry.io.TypeIO.readPlans(arc.util.io.Reads)
+  -> arc.struct.Queue.add(T)
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::sense
+  -> mindustry.gen.Unitc.sense(mindustry.logic.LAccess)
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock::senseObject
+  -> mindustry.gen.Unitc.senseObject(mindustry.logic.LAccess)
+  -> mindustry.gen.Building.senseObject(mindustry.logic.LAccess)
+Door
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+  -> mindustry.core.World.isGenerating()
+  -> arc.audio.Sound.at(arc.math.geom.Position)
+  -> mindustry.world.blocks.defense.Door.DoorBuild.effect()
+  -> arc.struct.Queue.clear()
+  -> arc.struct.Queue.add(T)
+  -> arc.struct.Seq.isEmpty()
+  -> mindustry.entities.Units.anyEntities(mindustry.world.Tile)
+  -> mindustry.gen.Building.recache()
+  -> mindustry.ai.Pathfinder.updateTile(mindustry.world.Tile)
+DoorBuild extends mindustry.gen.Building::onProximityAdded
+  -> mindustry.gen.Building.onProximityAdded()
+  -> mindustry.world.blocks.defense.Door.DoorBuild.updateChained()
+DoorBuild extends mindustry.gen.Building::onProximityRemoved
+  -> mindustry.gen.Building.onProximityRemoved()
+  -> mindustry.world.blocks.defense.Door.DoorBuild.updateChained()
+DoorBuild extends mindustry.gen.Building::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+DoorBuild extends mindustry.gen.Building::control
+  -> arc.math.Mathf.zero(double)
+  -> mindustry.net.Net.client()
+  -> mindustry.entities.Units.anyEntities(mindustry.world.Tile)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.world.blocks.defense.Door.DoorBuild.origin()
+  -> mindustry.gen.Building.configureAny(java.lang.Object)
+DoorBuild extends mindustry.gen.Building::origin
+  -> arc.struct.Seq.isEmpty()
+  -> arc.struct.Seq.first()
+DoorBuild extends mindustry.gen.Building::effect
+  -> mindustry.entities.Effect.at(arc.math.geom.Position, float)
+DoorBuild extends mindustry.gen.Building::updateChained
+  -> arc.struct.Queue.clear()
+  -> arc.struct.Queue.add(T)
+  -> arc.struct.Queue.isEmpty()
+  -> arc.struct.Queue.removeLast()
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.Queue.addFirst(T)
+  -> arc.struct.Seq.Seq()
+DoorBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+DoorBuild extends mindustry.gen.Building::getCursor
+  -> mindustry.gen.Building.interactable(mindustry.game.Team)
+  -> mindustry.gen.Player.team()
+DoorBuild extends mindustry.gen.Building::tapped
+  -> mindustry.entities.Units.anyEntities(mindustry.world.Tile)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.world.blocks.defense.Door.DoorBuild.origin()
+  -> mindustry.gen.Building.configure(java.lang.Object)
+DoorBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.bool(boolean)
+DoorBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.bool()
+ForceProjector
+  -> arc.struct.EnumSet.of(T...)
+  -> mindustry.world.consumers.Consume.update(boolean)
+  -> mindustry.world.consumers.Consume.boost()
+  -> mindustry.world.Block.consume(T)
+  -> mindustry.world.consumers.ConsumeCoolant.ConsumeCoolant(float)
+init
+  -> mindustry.world.Block.updateClipRadius(float)
+  -> mindustry.world.Block.init()
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.ui.Bar.blink(arc.graphics.Color)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.itemBoosters(java.lang.String, float, float, float, mindustry.type.ItemStack[])
+  -> mindustry.world.meta.StatUnit.localized()
+  -> arc.scene.ui.layout.Table.row()
+  -> arc.scene.ui.layout.Cell.colspan(int)
+  -> arc.scene.ui.layout.Cell.growX()
+  -> arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> mindustry.core.ContentLoader.liquids()
+  -> mindustry.world.Block.consumesLiquid(mindustry.type.Liquid)
+  -> arc.scene.ui.layout.Cell.row()
+  -> arc.scene.ui.layout.Cell.pad(float)
+  -> arc.scene.ui.layout.Table.table(arc.scene.style.Drawable, arc.func.Cons<arc.scene.ui.layout.Table>)
+  -> arc.scene.ui.layout.Cell.with(arc.func.Cons<T>)
+  -> arc.scene.ui.layout.Cell.scaling(arc.util.Scaling)
+  -> arc.scene.ui.layout.Cell.left()
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.image(arc.graphics.g2d.TextureRegion)
+  -> mindustry.world.meta.StatValues.withTooltip(T, mindustry.ctype.UnlockableContent, boolean)
+  -> arc.scene.ui.layout.Table.add(java.lang.CharSequence)
+  -> arc.scene.ui.layout.Cell.color(arc.graphics.Color)
+  -> arc.util.Strings.autoFixed(float, int)
+  -> arc.scene.ui.layout.Cell.padRight(float)
+  -> arc.scene.ui.layout.Cell.grow()
+  -> arc.scene.ui.layout.Cell.right()
+  -> arc.scene.ui.layout.Table.defaults()
+  -> arc.scene.ui.layout.Table.right()
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.scene.ui.layout.Table.getColumns()
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Lines.poly(float, float, int, float, float)
+  -> mindustry.gen.Player.team()
+  -> arc.graphics.g2d.Draw.color()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::setProp
+  -> java.lang.Math.max(float, float)
+  -> mindustry.gen.Building.setProp(mindustry.logic.LAccess, double)
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::range
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::shouldAmbientSound
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::onRemoved
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)
+  -> mindustry.gen.Building.onRemoved()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::pickedUp
+  -> mindustry.gen.Building.pickedUp()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::updateTile
+  -> mindustry.world.consumers.Consume.efficiency(mindustry.gen.Building)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> arc.math.Mathf.num(boolean)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.gen.Building.consume()
+  -> arc.math.Mathf.chanceDelta(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> mindustry.world.consumers.Consume.update(mindustry.gen.Building)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> mindustry.gen.Building.delta()
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color, java.lang.Object)
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+  -> arc.audio.Sound.at(float, float)
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.deflectBullets()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::deflectBullets
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+  -> mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Cons<? super T>)
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::absorbExplosion
+  -> arc.math.geom.Intersector.isInRegularPolygon(int, float, float, float, float, float, float)
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+  -> mindustry.entities.Effect.at(float, float)
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::sense
+  -> java.lang.Math.max(float, float)
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.blend(arc.graphics.Blending)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.blend()
+  -> arc.graphics.g2d.Draw.reset()
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.drawShield()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::drawShield
+  -> mindustry.world.blocks.defense.ForceProjector.ForceBuild.realRadius()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Fill.poly(float, float, int, float, float)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.graphics.g2d.Lines.poly(float, float, int, float, float)
+  -> arc.graphics.g2d.Draw.reset()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::overwrote
+  -> arc.struct.Seq.first()
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.bool(boolean)
+  -> arc.util.io.Writes.f(float)
+ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.bool()
+  -> arc.util.io.Reads.f()
+MendProjector
+  -> arc.struct.EnumSet.of(T...)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.itemBoosters(java.lang.String, float, float, float, mindustry.type.ItemStack[])
+  -> mindustry.world.meta.StatUnit.localized()
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Player.team()
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::updateTile
+  -> mindustry.gen.Building.checkSuppression()
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.gen.Building.delta()
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.gen.Building.consume()
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.gen.Teamc, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Building.damaged()
+  -> mindustry.gen.Building.isHealSuppressed()
+  -> mindustry.gen.Building.heal(float)
+  -> mindustry.gen.Building.maxHealth()
+  -> mindustry.gen.Building.recentlyHealed()
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color, java.lang.Object)
+  -> arc.audio.Sound.at(arc.math.geom.Position, float, float)
+  -> arc.math.Mathf.range(float)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::sense
+  -> arc.math.Mathf.clamp(float)
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::drawSelect
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.gen.Teamc, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::drawCached
+  -> mindustry.gen.Building.draw()
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::draw
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.math.Mathf.absin(float, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Lines.square(float, float, float)
+  -> java.lang.Math.min(float, float)
+  -> arc.graphics.g2d.Draw.reset()
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::drawLight
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Player.team()
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, java.lang.String, java.lang.Object...)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.itemBoosters(java.lang.String, float, float, float, mindustry.type.ItemStack[])
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.math.Mathf.round(float)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.blocks.defense.OverdriveProjector.OverdriveBuild.realBoost()
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::drawLight
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::updateTile
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.gen.Teamc, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Building.applyBoost(float, float)
+  -> mindustry.world.blocks.defense.OverdriveProjector.OverdriveBuild.realBoost()
+  -> mindustry.gen.Building.delta()
+  -> mindustry.gen.Building.consume()
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::drawSelect
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.gen.Teamc, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.math.Mathf.absin(float, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> java.lang.Math.max(float, float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.graphics.g2d.Lines.beginLine()
+  -> arc.graphics.g2d.Lines.linePoint(float, float)
+  -> arc.math.geom.Geometry.d4(int)
+  -> arc.graphics.g2d.Lines.endLine(boolean)
+  -> arc.graphics.g2d.Draw.reset()
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+Radar
+  -> arc.struct.EnumSet.of(T...)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+RadarBuild extends mindustry.gen.Building::updateTile
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> java.lang.Math.abs(float)
+  -> mindustry.world.blocks.defense.Radar.RadarBuild.fogRadius()
+  -> mindustry.game.FogControl.forceUpdate(mindustry.game.Team, mindustry.gen.Building)
+  -> mindustry.gen.Building.edelta()
+  -> arc.math.Mathf.clamp(float)
+RadarBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+  -> mindustry.world.blocks.defense.Radar.RadarBuild.fogRadius()
+RadarBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> mindustry.graphics.Drawf.additive(arc.graphics.g2d.TextureRegion, arc.graphics.Color, float, float, float, float, float)
+  -> arc.math.Mathf.absin(float, float)
+RadarBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+RadarBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+RegenProjector
+  -> arc.struct.EnumSet.of(T...)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashSquare(arc.graphics.Color, float, float, float)
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.game.Team, arc.math.geom.Rect, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Player.team()
+  -> arc.math.geom.Rect.setCentered(float, float, float)
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+drawPlanRegion
+  -> mindustry.world.draw.DrawBlock.drawPlan(mindustry.world.Block, mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+icons
+  -> mindustry.world.draw.DrawBlock.finalIcons(mindustry.world.Block)
+load
+  -> mindustry.world.Block.load()
+  -> mindustry.world.draw.DrawBlock.load(mindustry.world.Block)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.itemBoosters(java.lang.String, float, float, float, mindustry.type.ItemStack[])
+  -> mindustry.world.meta.StatUnit.localized()
+RegenProjectorBuild extends mindustry.gen.Building::updateTargets
+  -> arc.struct.Seq.clear()
+  -> arc.struct.IntSet.clear()
+  -> mindustry.ai.BlockIndexer.eachBlock(mindustry.game.Team, arc.math.geom.Rect, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)
+  -> arc.math.geom.Rect.setCentered(float, float, float)
+RegenProjectorBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.world.blocks.defense.RegenProjector.RegenProjectorBuild.updateTargets()
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> mindustry.gen.Building.checkSuppression()
+  -> arc.struct.Seq.contains(arc.func.Boolf<T>)
+  -> mindustry.gen.Building.damaged()
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.gen.Building.consume()
+  -> arc.math.Mathf.lerp(float, float, float)
+  -> mindustry.gen.Building.isHealSuppressed()
+  -> mindustry.gen.Building.pos()
+  -> arc.struct.IntFloatMap.get(int)
+  -> arc.struct.IntFloatMap.put(int, float)
+  -> java.lang.Math.min(float, float)
+  -> java.lang.Math.max(float, float)
+  -> arc.math.Mathf.chanceDelta(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> arc.struct.IntFloatMap.entries()
+  -> world.build
+  -> build.heal
+  -> build.recentlyHealed
+  -> arc.struct.IntFloatMap.clear()
+RegenProjectorBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.gen.Building.drawSelect()
+  -> mindustry.graphics.Drawf.dashSquare(arc.graphics.Color, float, float, float)
+  -> mindustry.graphics.Drawf.selected(mindustry.gen.Building, arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+RegenProjectorBuild extends mindustry.gen.Building::draw
+  -> mindustry.world.draw.DrawBlock.draw(mindustry.gen.Building)
+RegenProjectorBuild extends mindustry.gen.Building::drawLight
+  -> mindustry.gen.Building.drawLight()
+  -> mindustry.world.draw.DrawBlock.drawLight(mindustry.gen.Building)
+setStats
+  -> mindustry.world.blocks.defense.Wall.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float)
+init
+  -> mindustry.world.blocks.defense.Wall.init()
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::draw
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.graphics.g2d.Fill.square(float, float, float)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.graphics.g2d.Lines.poly(float, float, int, float, float)
+  -> arc.graphics.g2d.Draw.reset()
+  -> mindustry.graphics.Drawf.additive(arc.graphics.g2d.TextureRegion, arc.graphics.Color, float, float, float, float, float)
+  -> arc.math.Mathf.absin(float, float)
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::updateTile
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> mindustry.gen.Building.edelta()
+  -> java.lang.Math.max(float, float)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.world.blocks.defense.ShieldWall.ShieldWallBuild.broken()
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::broken
+  -> mindustry.gen.Building.canConsume()
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::damage
+  -> mindustry.world.blocks.defense.ShieldWall.ShieldWallBuild.broken()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.gen.Building.damage(float)
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> arc.scene.ui.layout.Table.add(java.lang.CharSequence)
+  -> java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.util.Strings.autoFixed(float, int)
+ShockMineBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.color()
+ShockMineBuild extends mindustry.gen.Building::unitOn
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.world.blocks.defense.ShockMine.ShockMineBuild.triggered()
+  -> mindustry.gen.Building.damage(float)
+ShockMineBuild extends mindustry.gen.Building::triggered
+  -> mindustry.entities.Lightning.create(mindustry.entities.bullet.BulletType, mindustry.game.Team, arc.graphics.Color, float, float, float, float, int)
+  -> arc.math.Mathf.random(float)
+  -> mindustry.entities.bullet.BulletType.create(mindustry.gen.Teamc, float, float, float)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+ShockwaveTowerBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.gen.Building.timer(int, float)
+  -> arc.struct.Seq.clear()
+  -> mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Cons<? super T>)
+  -> arc.math.geom.Position.within(float, float, float)
+  -> arc.struct.Seq.add(T)
+  -> mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)
+  -> arc.audio.Sound.at(float, float, float, float)
+  -> arc.math.Mathf.range(float)
+  -> mindustry.entities.Effect.shake(float, float, arc.math.geom.Position)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.gen.Bullet.remove()
+  -> mindustry.entities.Effect.at(float, float, arc.graphics.Color)
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> arc.math.Mathf.clamp(float)
+ShockwaveTowerBuild extends mindustry.gen.Building::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+ShockwaveTowerBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> mindustry.graphics.Drawf.additive(arc.graphics.g2d.TextureRegion, arc.graphics.Color, float, float, float, float, float)
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.math.Mathf.pow(float, float)
+  -> arc.graphics.g2d.Fill.poly(float, float, int, float, float)
+  -> arc.graphics.g2d.Draw.color()
+ShockwaveTowerBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+TargetDummy
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+  -> mindustry.game.Team.get(int)
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.dummyTeam()
+  -> arc.math.Mathf.clamp(int, int, int)
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> java.lang.Float.intBitsToFloat(int)
+  -> java.lang.Float.isNaN(float)
+  -> java.lang.Float.isInfinite(float)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.removeBar(java.lang.String)
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.displayDPS(boolean)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+drawDefaultPlanRegion
+  -> mindustry.world.Block.drawDefaultPlanRegion(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.entities.units.BuildPlan.drawx()
+  -> mindustry.entities.units.BuildPlan.drawy()
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::updateTile
+  -> mindustry.gen.Entityc.isAdded()
+  -> mindustry.entities.EntityGroup.getByID(int)
+  -> mindustry.net.Net.client()
+  -> mindustry.type.UnitType.create(mindustry.game.Team)
+  -> mindustry.gen.TargetDummyUnit.building(mindustry.gen.Building)
+  -> mindustry.gen.Posc.set(float, float)
+  -> mindustry.gen.Entityc.add()
+  -> mindustry.gen.Call.unitTetherBlockSpawned(mindustry.world.Tile, int)
+  -> mindustry.gen.Unitc.updateBoosting(boolean)
+  -> mindustry.gen.Unit.armor(float)
+  -> mindustry.gen.Unit.team(mindustry.game.Team)
+  -> arc.math.geom.Vec2.limit(float)
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.geom.Position.dst(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.add(arc.math.geom.Vec2)
+  -> mindustry.gen.Entityc.isRemote()
+  -> mindustry.gen.Velc.move(arc.math.geom.Vec2)
+  -> mindustry.gen.Velc.moving()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> arc.math.geom.Vec2.angle()
+  -> mindustry.gen.Unit.vel()
+  -> mindustry.gen.Building.timer(int, float)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::spawned
+  -> mindustry.entities.Effect.at(float, float)
+  -> mindustry.net.Net.client()
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.TextureRegion.found()
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> mindustry.graphics.Drawf.laser(arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, float, float, float, float)
+  -> arc.graphics.g2d.Draw.color()
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.displayDPS(boolean)
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.displayTotal()
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.displayHits()
+  -> mindustry.graphics.Drawf.text(java.lang.String, float, float, arc.graphics.Color, float)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::drawSelect
+  -> mindustry.graphics.Drawf.square(float, float, float, float, arc.graphics.Color)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::displayDPS
+  -> Core.bundle.format
+  -> arc.math.Mathf.round(float)
+  -> arc.util.Strings.autoFixed(float, int)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::displayTotal
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.math.Mathf.round(float)
+  -> arc.util.Strings.autoFixed(float, int)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::displayHits
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::buildConfiguration
+  -> table.table(t -> {
+    t.background(Styles.black6);
+    t.defaults().left();
+    t.check(Core.bundle.get("rules.enemyteam"), unitTeam != team, b -> configureInt(0, Mathf.num(b))).colspan(3).row();
+    t.check(Core.bundle.get("stat.flying"), boosting, b -> configureInt(1, Mathf.num(b))).colspan(3).row();
+    t.add(Core.bundle.get("stat.armor"));
+    t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft(8f).colspan(2).row();
+    t.add(Core.bundle.get("stat.resettime"));
+    t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid(Strings::canParsePositiveFloat).padLeft(8f).growX();
+    t.add(StatUnit.seconds.localized()).padLeft(8).row();
+    t.add(Core.bundle.get("stat.hitsize"));
+    t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid(val -> {
+        float parsed = Strings.parseFloat(val, Float.MAX_VALUE);
+        return parsed >= 0.1f && parsed <= maxDummySize;
+    }).padLeft(8f).growX();
+    t.add(StatUnit.blocks.localized()).padLeft(8f);
+}).top().grow().margin
+  -> table.table(t -> {
+    t.background(Styles.black6);
+    t.defaults().left();
+    t.check(Core.bundle.get("rules.enemyteam"), unitTeam != team, b -> configureInt(0, Mathf.num(b))).colspan(3).row();
+    t.check(Core.bundle.get("stat.flying"), boosting, b -> configureInt(1, Mathf.num(b))).colspan(3).row();
+    t.add(Core.bundle.get("stat.armor"));
+    t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft(8f).colspan(2).row();
+    t.add(Core.bundle.get("stat.resettime"));
+    t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid(Strings::canParsePositiveFloat).padLeft(8f).growX();
+    t.add(StatUnit.seconds.localized()).padLeft(8).row();
+    t.add(Core.bundle.get("stat.hitsize"));
+    t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid(val -> {
+        float parsed = Strings.parseFloat(val, Float.MAX_VALUE);
+        return parsed >= 0.1f && parsed <= maxDummySize;
+    }).padLeft(8f).growX();
+    t.add(StatUnit.blocks.localized()).padLeft(8f);
+}).top().grow
+  -> table.table(t -> {
+    t.background(Styles.black6);
+    t.defaults().left();
+    t.check(Core.bundle.get("rules.enemyteam"), unitTeam != team, b -> configureInt(0, Mathf.num(b))).colspan(3).row();
+    t.check(Core.bundle.get("stat.flying"), boosting, b -> configureInt(1, Mathf.num(b))).colspan(3).row();
+    t.add(Core.bundle.get("stat.armor"));
+    t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft(8f).colspan(2).row();
+    t.add(Core.bundle.get("stat.resettime"));
+    t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid(Strings::canParsePositiveFloat).padLeft(8f).growX();
+    t.add(StatUnit.seconds.localized()).padLeft(8).row();
+    t.add(Core.bundle.get("stat.hitsize"));
+    t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid(val -> {
+        float parsed = Strings.parseFloat(val, Float.MAX_VALUE);
+        return parsed >= 0.1f && parsed <= maxDummySize;
+    }).padLeft(8f).growX();
+    t.add(StatUnit.blocks.localized()).padLeft(8f);
+}).top
+  -> table.table
+  -> t.background
+  -> t.defaults().left
+  -> t.defaults
+  -> t.check(Core.bundle.get("rules.enemyteam"), unitTeam != team, b -> configureInt(0, Mathf.num(b))).colspan(3).row
+  -> t.check(Core.bundle.get("rules.enemyteam"), unitTeam != team, b -> configureInt(0, Mathf.num(b))).colspan
+  -> t.check
+  -> arc.util.I18NBundle.get(java.lang.String)
+  -> configureInt
+  -> Mathf.num
+  -> t.check(Core.bundle.get("stat.flying"), boosting, b -> configureInt(1, Mathf.num(b))).colspan(3).row
+  -> t.check(Core.bundle.get("stat.flying"), boosting, b -> configureInt(1, Mathf.num(b))).colspan
+  -> t.add
+  -> t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft(8f).colspan(2).row
+  -> t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft(8f).colspan
+  -> t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width(200f).padLeft
+  -> t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid(val -> Strings.parseInt(val, Integer.MAX_VALUE) < 100_000).width
+  -> t.field("" + (int) unitArmor, TextFieldFilter.digitsOnly, s -> configureInt(2, Strings.parseInt(s))).valid
+  -> t.field
+  -> Strings.parseInt
+  -> t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid(Strings::canParsePositiveFloat).padLeft(8f).growX
+  -> t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid(Strings::canParsePositiveFloat).padLeft
+  -> t.field(Strings.autoFixed(resetTime / 60f, 2), TextFieldFilter.floatsOnly, s -> configureInt(3, (int) (Strings.parseFloat(s) * 60f))).valid
+  -> arc.util.Strings.autoFixed(float, int)
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.configureInt(int, int)
+  -> Strings.parseFloat
+  -> t.add(StatUnit.seconds.localized()).padLeft(8).row
+  -> t.add(StatUnit.seconds.localized()).padLeft
+  -> mindustry.world.meta.StatUnit.localized()
+  -> t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid(val -> {
+    float parsed = Strings.parseFloat(val, Float.MAX_VALUE);
+    return parsed >= 0.1f && parsed <= maxDummySize;
+}).padLeft(8f).growX
+  -> t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid(val -> {
+    float parsed = Strings.parseFloat(val, Float.MAX_VALUE);
+    return parsed >= 0.1f && parsed <= maxDummySize;
+}).padLeft
+  -> t.field("" + (dummySize / tilesize), TextFieldFilter.floatsOnly, s -> configureInt(4, Float.floatToIntBits(Strings.parseFloat(s) * tilesize))).valid
+  -> Float.floatToIntBits
+  -> t.add(StatUnit.blocks.localized()).padLeft
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::configureInt
+  -> mindustry.world.blocks.defense.TargetDummy.TargetDummyBuild.config()
+  -> mindustry.gen.Building.configure(java.lang.Object)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::config
+  -> arc.math.Mathf.num(boolean)
+  -> java.lang.Float.floatToIntBits(float)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.i(int)
+  -> arc.util.io.Writes.bool(boolean)
+  -> arc.util.io.Writes.f(float)
+TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.i()
+  -> arc.util.io.Reads.bool()
+  -> arc.util.io.Reads.f()
+  -> mindustry.game.Team.get(int)
+drawPlanRegion
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.entities.units.BuildPlan.drawx()
+  -> mindustry.entities.units.BuildPlan.drawy()
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+ThrusterBuild extends mindustry.world.blocks.defense.Wall.WallBuild::drawCached
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> mindustry.gen.Building.rotdeg()
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+load
+  -> mindustry.world.Block.load()
+  -> mindustry.world.blocks.TileBitmask.load(java.lang.String)
+init
+  -> mindustry.world.Block.init()
+icons
+  -> arc.graphics.g2d.TextureAtlas.find(java.lang.String)
+  -> arc.graphics.g2d.TextureAtlas.has(java.lang.String)
+WallBuild extends mindustry.gen.Building::updateAutotileBits
+  -> mindustry.world.Tile.nearby(int, int)
+  -> mindustry.gen.Building.recache()
+WallBuild extends mindustry.gen.Building::updateOtherBits
+  -> mindustry.world.Tile.nearby(int, int)
+  -> mindustry.world.Tile.isCenter()
+  -> mindustry.world.blocks.defense.Wall.WallBuild.updateAutotileBits()
+WallBuild extends mindustry.gen.Building::onProximityUpdate
+  -> mindustry.gen.Building.onProximityUpdate()
+  -> mindustry.world.blocks.defense.Wall.WallBuild.updateAutotileBits()
+WallBuild extends mindustry.gen.Building::onProximityRemoved
+  -> mindustry.gen.Building.onProximityRemoved()
+  -> mindustry.world.blocks.defense.Wall.WallBuild.updateOtherBits()
+WallBuild extends mindustry.gen.Building::onProximityAdded
+  -> mindustry.gen.Building.onProximityAdded()
+  -> mindustry.core.World.isGenerating()
+  -> mindustry.world.blocks.defense.Wall.WallBuild.updateOtherBits()
+WallBuild extends mindustry.gen.Building::drawCached
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.gen.Building.draw()
+WallBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.graphics.g2d.Draw.blend(arc.graphics.Blending)
+  -> arc.graphics.g2d.Fill.rect(float, float, float, float)
+  -> arc.graphics.g2d.Draw.blend()
+  -> arc.graphics.g2d.Draw.reset()
+  -> mindustry.core.GameState.isPaused()
+  -> arc.math.Mathf.clamp(float)
+WallBuild extends mindustry.gen.Building::collision
+  -> mindustry.gen.Building.collision(mindustry.gen.Bullet)
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.entities.Lightning.create(mindustry.game.Team, arc.graphics.Color, float, float, float, float, int)
+  -> mindustry.gen.Bullet.rotation()
+  -> arc.audio.Sound.at(arc.math.geom.Position, float)
+  -> arc.math.Mathf.random(float, float)
+  -> arc.math.geom.Vec2.len()
+  -> mindustry.gen.Bullet.damage()
+  -> mindustry.gen.Bullet.trns(float, float)
+  -> java.lang.Math.abs(float)

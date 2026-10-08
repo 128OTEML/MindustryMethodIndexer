@@ -1,0 +1,3962 @@
+[ {
+  "file" : "Action.java",
+  "pkg" : "arc.scene",
+  "type" : "Java class (abstract) implements arc.util.pooling.Pool.Poolable",
+  "typeDesc" : "Actions attach to an {@link Element} and perform some task, often over time.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected Element actor",
+    "desc" : "The actor this action is attached to, or null if it is not attached.",
+    "overloads" : null,
+    "name" : "actor",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Element target",
+    "desc" : "The actor this action targets, or null if a target has not been set.",
+    "overloads" : null,
+    "name" : "target",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Pool<Action> pool",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pool",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "abstract public boolean act(float delta)",
+    "desc" : "Updates the action based on time.",
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "abstract", "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : "Sets the state of the action so it can be run again.",
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 29,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getActor()",
+    "desc" : "@return null if the action is not attached to an actor.",
+    "overloads" : null,
+    "name" : "getActor",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 33,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setActor(Element actor)",
+    "desc" : "Sets the actor this action is attached to.",
+    "overloads" : null,
+    "name" : "setActor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "arc.scene.Action.setTarget(arc.scene.Element)", "arc.util.pooling.Pool.free(T)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getTarget()",
+    "desc" : "@return null if the action has no target.",
+    "overloads" : null,
+    "name" : "getTarget",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTarget(Element target)",
+    "desc" : "Sets the actor this action will manipulate.",
+    "overloads" : null,
+    "name" : "setTarget",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 70,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : "Resets the optional state of this action to as if it were newly created, allowing the action to be pooled and reused.",
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 82,
+    "calls" : [ "arc.scene.Action.restart()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Pool<Action> getPool()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getPool",
+    "returnType" : "Pool<Action>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 90,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPool(Pool pool)",
+    "desc" : "Sets the pool that the action will be returned to when removed from the actor.",
+    "overloads" : null,
+    "name" : "setPool",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pool",
+      "type" : "Pool"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 99,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 104,
+    "calls" : [ "java.lang.String.split(java.lang.String)", "java.lang.Object.toString()", "java.lang.String.lastIndexOf(int)", "java.lang.String.substring(int)", "java.lang.String.endsWith(java.lang.String)", "java.lang.String.substring(int, int)", "java.lang.String.length()" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Element.java",
+  "pkg" : "arc.scene",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Color color",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "color",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float originX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "originX",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public String name",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "name",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean fillParent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fillParent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Vec2 translation",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "translation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean visible",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visible",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Object userObject",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "userObject",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Touchable touchable",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchable",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Group parent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Boolp visibility",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visibility",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Prov<Touchable> touchablility",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchablility",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean cullable",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cullable",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final DelayedRemovalSeq<EventListener> listeners",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listeners",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<Action> actions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "actions",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float x",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "x",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float width",
+    "desc" : "DO NOT modify without calling sizeChanged.",
+    "overloads" : null,
+    "name" : "width",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float parentAlpha",
+    "desc" : "Alpha value of the parent.",
+    "overloads" : null,
+    "name" : "parentAlpha",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 42,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Scene stage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stage",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean needsLayout",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "needsLayout",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 45,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean layoutEnabled",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layoutEnabled",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Runnable update",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 47,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void draw()",
+    "desc" : "Draws the element.",
+    "overloads" : null,
+    "name" : "draw",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "arc.scene.Element.validate()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void act(float delta)",
+    "desc" : "Updates the actor based on time.",
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 60,
+    "calls" : [ "arc.scene.Scene.getActionsRequestRendering()", "arc.Graphics.requestRendering()", "arc.struct.Seq.get(int)", "arc.scene.Action.act(float)", "arc.struct.Seq.indexOf(T, boolean)", "arc.struct.Seq.remove(int)", "arc.scene.Action.setActor(arc.scene.Element)", "arc.func.Prov.get()", "java.lang.Runnable.run()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateVisibility()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateVisibility",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ "arc.func.Boolp.get()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasMouse()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasMouse",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ "arc.scene.Scene.hit(float, float, boolean)", "arc.Input.mouseX()", "arc.Input.mouseY()", "arc.scene.Element.isDescendantOf(arc.scene.Element)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasKeyboard()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasKeyboard",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ "arc.scene.Scene.getKeyboardFocus()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasScroll()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasScroll",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ "arc.scene.Scene.getScrollFocus()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void requestKeyboard()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "requestKeyboard",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 99,
+    "calls" : [ "arc.scene.Scene.setKeyboardFocus(arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void requestScroll()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "requestScroll",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 103,
+    "calls" : [ "arc.scene.Scene.setScrollFocus(arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean fire(SceneEvent event)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fire",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 107,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.Seq.add(T)", "arc.scene.Element.notify(arc.scene.event.SceneEvent, boolean)", "arc.struct.Seq.clear()", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean notify(SceneEvent event, boolean capture)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "notify",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "event",
+      "type" : "SceneEvent"
+    }, {
+      "name" : "capture",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 150,
+    "calls" : [ "arc.struct.DelayedRemovalSeq.begin()", "arc.struct.Seq.get(int)", "arc.scene.event.EventListener.handle(arc.scene.event.SceneEvent)", "arc.scene.event.SceneEvent.handle()", "arc.scene.Scene.addTouchFocus(arc.scene.event.EventListener, arc.scene.Element, arc.scene.Element, int, arc.input.KeyCode)", "arc.scene.Element.getScene()", "arc.struct.DelayedRemovalSeq.end()", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public Element hit(float x, float y, boolean touchable)",
+    "desc" : "Returns the deepest actor that contains the specified point and is {@link #getTouchable() touchable} and",
+    "overloads" : null,
+    "name" : "hit",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "touchable",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 190,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean remove()",
+    "desc" : "Removes this actor from its parent, if it has a parent.",
+    "overloads" : null,
+    "name" : "remove",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 200,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void dragged(Floatc2 cons)",
+    "desc" : "Adds a listener which listens for drag (touch down and move) events.",
+    "overloads" : null,
+    "name" : "dragged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "Floatc2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 207,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "arc.Application.isMobile()", "arc.func.Floatc2.get(float, float)", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void scrolled(Floatc cons)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "Floatc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 231,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "arc.func.Floatc.get(float)", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean addListener(EventListener listener)",
+    "desc" : "Add a listener to receive events that {@link #hit(float, float, boolean) hit} this actor.",
+    "overloads" : null,
+    "name" : "addListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 246,
+    "calls" : [ "arc.struct.Seq.contains(T, boolean)", "arc.struct.Seq.add(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean removeListener(EventListener listener)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removeListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 255,
+    "calls" : [ "arc.struct.DelayedRemovalSeq.remove(T, boolean)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<EventListener> getListeners()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getListeners",
+    "returnType" : "Seq<EventListener>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 260,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean addCaptureListener(EventListener listener)",
+    "desc" : "Adds a listener that is only notified during the capture phase.",
+    "overloads" : null,
+    "name" : "addCaptureListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 268,
+    "calls" : [ "arc.struct.Seq.contains(T, boolean)", "arc.struct.Seq.add(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean removeCaptureListener(EventListener listener)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removeCaptureListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 274,
+    "calls" : [ "arc.struct.DelayedRemovalSeq.remove(T, boolean)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<EventListener> getCaptureListeners()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCaptureListeners",
+    "returnType" : "Seq<EventListener>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 279,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void addAction(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 283,
+    "calls" : [ "arc.scene.Action.setActor(arc.scene.Element)", "arc.struct.Seq.add(T)", "arc.scene.Scene.getActionsRequestRendering()", "arc.Graphics.requestRendering()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void actions(Action actions)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "actions",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actions",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 290,
+    "calls" : [ "arc.scene.Element.addAction(arc.scene.Action)", "arc.scene.actions.Actions.sequence(arc.scene.Action...)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void removeAction(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removeAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 294,
+    "calls" : [ "arc.struct.Seq.remove(T, boolean)", "arc.scene.Action.setActor(arc.scene.Element)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<Action> getActions()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getActions",
+    "returnType" : "Seq<Action>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 298,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasActions()",
+    "desc" : "Returns true if the actor has one or more actions.",
+    "overloads" : null,
+    "name" : "hasActions",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 303,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void clearActions()",
+    "desc" : "Removes all actions on this actor.",
+    "overloads" : null,
+    "name" : "clearActions",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 308,
+    "calls" : [ "arc.scene.Action.setActor(arc.scene.Element)", "arc.struct.Seq.get(int)", "arc.struct.Seq.clear()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void clearListeners()",
+    "desc" : "Removes all listeners on this actor.",
+    "overloads" : null,
+    "name" : "clearListeners",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 315,
+    "calls" : [ "arc.struct.DelayedRemovalSeq.clear()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : "Removes all actions and listeners on this actor.",
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 321,
+    "calls" : [ "arc.scene.Element.clearActions()", "arc.scene.Element.clearListeners()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Scene getScene()",
+    "desc" : "Returns the stage that this actor is currently in, or null if not in a stage.",
+    "overloads" : null,
+    "name" : "getScene",
+    "returnType" : "Scene",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 327,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void setScene(Scene stage)",
+    "desc" : "Called by the framework when this actor or any parent is added to a group that is in the stage.",
+    "overloads" : null,
+    "name" : "setScene",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "stage",
+      "type" : "Scene"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 335,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDescendantOf(Boolf<Element> actor) / public boolean isDescendantOf(Element actor)",
+    "desc" : "Returns true if this actor is the same as or is the descendant of the specified actor.",
+    "overloads" : [ "public boolean isDescendantOf(Boolf<Element> actor)", "public boolean isDescendantOf(Element actor)" ],
+    "name" : "isDescendantOf",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Boolf<Element>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 339,
+    "calls" : [ "arc.func.Boolf.get(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isAscendantOf(Element actor)",
+    "desc" : "Returns true if this actor is the same as or is the ascendant of the specified actor.",
+    "overloads" : null,
+    "name" : "isAscendantOf",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 360,
+    "calls" : [ "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasParent()",
+    "desc" : "Returns true if the actor's parent is not null.",
+    "overloads" : null,
+    "name" : "hasParent",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 370,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isTouchable()",
+    "desc" : "Returns true if input events are processed by this actor.",
+    "overloads" : null,
+    "name" : "isTouchable",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 375,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getX(int alignment)",
+    "desc" : "Returns the X position of the specified {@link Align alignment}.",
+    "overloads" : null,
+    "name" : "getX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "alignment",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 380,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getY(int alignment)",
+    "desc" : "Returns the Y position of the specified {@link Align alignment}.",
+    "overloads" : null,
+    "name" : "getY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "alignment",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 390,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)",
+    "desc" : "Sets the position of the actor's bottom left corner.",
+    "overloads" : [ "public void setPosition(float x, float y)", "public void setPosition(float x, float y, int alignment)" ],
+    "name" : "setPosition",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 400,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void moveBy(float x, float y)",
+    "desc" : "Add x and y to current position",
+    "overloads" : null,
+    "name" : "moveBy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 429,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 436,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setWidth(float width)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setWidth",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 440,
+    "calls" : [ "arc.scene.Element.sizeChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 447,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setHeight(float height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setHeight",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 451,
+    "calls" : [ "arc.scene.Element.sizeChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTop()",
+    "desc" : "Returns y plus height.",
+    "overloads" : null,
+    "name" : "getTop",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 459,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getRight()",
+    "desc" : "Returns x plus width.",
+    "overloads" : null,
+    "name" : "getRight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 464,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void sizeChanged()",
+    "desc" : "Called when the actor's size has been changed.",
+    "overloads" : null,
+    "name" : "sizeChanged",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 469,
+    "calls" : [ "arc.scene.Element.invalidate()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "protected void rotationChanged()",
+    "desc" : "Called when the actor's rotation has been changed.",
+    "overloads" : null,
+    "name" : "rotationChanged",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 474,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setSize(float size) / public void setSize(float width, float height)",
+    "desc" : "Sets the width and height.",
+    "overloads" : [ "public void setSize(float size)", "public void setSize(float width, float height)" ],
+    "name" : "setSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 477,
+    "calls" : [ "arc.scene.Element.setSize(float, float)", "arc.scene.Element.sizeChanged()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void sizeBy(float size) / public void sizeBy(float width, float height)",
+    "desc" : "Adds the specified size to the current size.",
+    "overloads" : [ "public void sizeBy(float size)", "public void sizeBy(float width, float height)" ],
+    "name" : "sizeBy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 491,
+    "calls" : [ "arc.scene.Element.sizeChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setBounds(float x, float y, float width, float height)",
+    "desc" : "Set bounds the x, y, width, and height.",
+    "overloads" : null,
+    "name" : "setBounds",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 509,
+    "calls" : [ "arc.scene.Element.sizeChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setOrigin(float originX, float originY) / public void setOrigin(int alignment)",
+    "desc" : "Sets the origin position which is relative to the actor's bottom left corner.",
+    "overloads" : [ "public void setOrigin(float originX, float originY)", "public void setOrigin(int alignment)" ],
+    "name" : "setOrigin",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "originX",
+      "type" : "float"
+    }, {
+      "name" : "originY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 522,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setScale(float scaleXY) / public void setScale(float scaleX, float scaleY)",
+    "desc" : "Sets the scale for both X and Y",
+    "overloads" : [ "public void setScale(float scaleXY)", "public void setScale(float scaleX, float scaleY)" ],
+    "name" : "setScale",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scaleXY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 545,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void scaleBy(float scale) / public void scaleBy(float scaleX, float scaleY)",
+    "desc" : "Adds the specified scale to the current scale.",
+    "overloads" : [ "public void scaleBy(float scale)", "public void scaleBy(float scaleX, float scaleY)" ],
+    "name" : "scaleBy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 557,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getRotation()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getRotation",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 568,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setRotation(float degrees)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setRotation",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "degrees",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 572,
+    "calls" : [ "arc.scene.Element.rotationChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setRotationOrigin(float degrees, int align)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setRotationOrigin",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "degrees",
+      "type" : "float"
+    }, {
+      "name" : "align",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 579,
+    "calls" : [ "arc.scene.Element.setOrigin(int)", "arc.scene.Element.rotationChanged()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void rotateBy(float amountInDegrees)",
+    "desc" : "Adds the specified rotation to the current rotation.",
+    "overloads" : null,
+    "name" : "rotateBy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amountInDegrees",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 588,
+    "calls" : [ "arc.scene.Element.rotationChanged()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setColor(float r, float g, float b, float a) / public void setColor(Color color)",
+    "desc" : null,
+    "overloads" : [ "public void setColor(float r, float g, float b, float a)", "public void setColor(Color color)" ],
+    "name" : "setColor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "float"
+    }, {
+      "name" : "g",
+      "type" : "float"
+    }, {
+      "name" : "b",
+      "type" : "float"
+    }, {
+      "name" : "a",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 595,
+    "calls" : [ "arc.graphics.Color.set(float, float, float, float)", "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void toFront()",
+    "desc" : "Changes the z-order for this actor so it is in front of all siblings.",
+    "overloads" : null,
+    "name" : "toFront",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 604,
+    "calls" : [ "arc.scene.Element.setZIndex(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void toBack()",
+    "desc" : "Changes the z-order for this actor so it is in back of all siblings.",
+    "overloads" : null,
+    "name" : "toBack",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 609,
+    "calls" : [ "arc.scene.Element.setZIndex(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int getZIndex()",
+    "desc" : "Returns the z-index of this actor.",
+    "overloads" : null,
+    "name" : "getZIndex",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 617,
+    "calls" : [ "arc.struct.Seq.indexOf(T, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setZIndex(int index)",
+    "desc" : "Sets the z-index of this actor.",
+    "overloads" : null,
+    "name" : "setZIndex",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 628,
+    "calls" : [ "java.lang.Math.min(int, int)", "arc.struct.Seq.get(int)", "arc.struct.Seq.remove(T, boolean)", "arc.struct.Seq.insert(int, T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean clipBegin() / public boolean clipBegin(float x, float y, float width, float height)",
+    "desc" : "Calls {@link #clipBegin(float, float, float, float)} to clip this actor's bounds.",
+    "overloads" : [ "public boolean clipBegin()", "public boolean clipBegin(float x, float y, float width, float height)" ],
+    "name" : "clipBegin",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 641,
+    "calls" : [ "arc.scene.Element.clipBegin(float, float, float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Scene.calculateScissors(arc.math.geom.Rect, arc.math.geom.Rect)", "arc.graphics.g2d.ScissorStack.push(arc.math.geom.Rect)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void clipEnd()",
+    "desc" : "Ends clipping begun by {@link #clipBegin(float, float, float, float)}.",
+    "overloads" : null,
+    "name" : "clipEnd",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 668,
+    "calls" : [ "arc.util.pooling.Pools.free(java.lang.Object)", "arc.graphics.g2d.ScissorStack.pop()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 screenToLocalCoordinates(Vec2 screenCoords)",
+    "desc" : "Transforms the specified point in screen coordinates to the actor's local coordinate system.",
+    "overloads" : null,
+    "name" : "screenToLocalCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 673,
+    "calls" : [ "arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)", "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 stageToLocalCoordinates(Vec2 stageCoords)",
+    "desc" : "Transforms the specified point in the stage's coordinates to the actor's local coordinate system.",
+    "overloads" : null,
+    "name" : "stageToLocalCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stageCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 680,
+    "calls" : [ "arc.scene.Element.stageToLocalCoordinates(arc.math.geom.Vec2)", "arc.scene.Element.parentToLocalCoordinates(arc.math.geom.Vec2)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 localToStageCoordinates(Vec2 localCoords)",
+    "desc" : "Transforms the specified point in the actor's coordinates to be in the stage's coordinates.",
+    "overloads" : null,
+    "name" : "localToStageCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "localCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 689,
+    "calls" : [ "arc.scene.Element.localToAscendantCoordinates(arc.scene.Element, arc.math.geom.Vec2)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 localToParentCoordinates(Vec2 localCoords)",
+    "desc" : "Transforms the specified point in the actor's coordinates to be in the parent's coordinates.",
+    "overloads" : null,
+    "name" : "localToParentCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "localCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 694,
+    "calls" : [ "java.lang.Math.cos(double)", "java.lang.Math.sin(double)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 localToAscendantCoordinates(Element ascendant, Vec2 localCoords)",
+    "desc" : "Converts coordinates for this actor to those of a parent actor.",
+    "overloads" : null,
+    "name" : "localToAscendantCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "ascendant",
+      "type" : "Element"
+    }, {
+      "name" : "localCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 724,
+    "calls" : [ "arc.scene.Element.localToParentCoordinates(arc.math.geom.Vec2)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 parentToLocalCoordinates(Vec2 parentCoords)",
+    "desc" : "Converts the coordinates given in the parent's coordinate system to this actor's coordinate system.",
+    "overloads" : null,
+    "name" : "parentToLocalCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "parentCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 735,
+    "calls" : [ "java.lang.Math.cos(double)", "java.lang.Math.sin(double)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float getMinWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getMinWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 764,
+    "calls" : [ "arc.scene.Element.getPrefWidth()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getMinHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getMinHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 768,
+    "calls" : [ "arc.scene.Element.getPrefHeight()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getPrefWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getPrefWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 772,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getPrefHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getPrefHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 776,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getMaxWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getMaxWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 780,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getMaxHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getMaxHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 784,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setLayoutEnabled(boolean enabled)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setLayoutEnabled",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "enabled",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 788,
+    "calls" : [ "arc.scene.Element.invalidateHierarchy()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void validate()",
+    "desc" : "Ensures the actor has been laid out.",
+    "overloads" : null,
+    "name" : "validate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 796,
+    "calls" : [ "arc.scene.Element.setSize(float, float)", "arc.scene.Element.getWidth()", "arc.scene.Element.getHeight()", "arc.scene.Element.layout()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean needsLayout()",
+    "desc" : "Returns true if the widget's layout has been {@link #invalidate() invalidated}.",
+    "overloads" : null,
+    "name" : "needsLayout",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 810,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void invalidate()",
+    "desc" : "Invalidates this actor's layout, causing {@link #layout()} to happen the next time {@link #validate()} is called.",
+    "overloads" : null,
+    "name" : "invalidate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 817,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void invalidateHierarchy()",
+    "desc" : "Invalidates this actor and its ascendants, calling {@link #invalidate()} on each.",
+    "overloads" : null,
+    "name" : "invalidateHierarchy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 824,
+    "calls" : [ "arc.scene.Element.invalidate()", "arc.scene.Element.invalidateHierarchy()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void pack()",
+    "desc" : "Sizes this actor to its preferred width and height, then calls {@link #validate()}.",
+    "overloads" : null,
+    "name" : "pack",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 837,
+    "calls" : [ "arc.scene.Element.setSize(float, float)", "arc.scene.Element.getPrefWidth()", "arc.scene.Element.getPrefHeight()", "arc.scene.Element.validate()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFillParent(boolean fillParent)",
+    "desc" : "If true, this actor will be sized to the parent in {@link #validate()}.",
+    "overloads" : null,
+    "name" : "setFillParent",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fillParent",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 845,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void layout()",
+    "desc" : "Computes and caches any information needed for drawing and, if this actor has children, positions and sizes each child,",
+    "overloads" : null,
+    "name" : "layout",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 852,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void keepInStage()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keepInStage",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 854,
+    "calls" : [ "arc.scene.Scene.getCamera()", "arc.scene.Scene.getWidth()", "arc.scene.Scene.getHeight()", "arc.scene.Element.getX(int)", "arc.scene.Element.setPosition(float, float, int)", "arc.scene.Element.getY(int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTranslation(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTranslation",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 869,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void keyDown(KeyCode key, Runnable l) / public void keyDown(Cons<KeyCode> cons)",
+    "desc" : "Adds a keydown input listener.",
+    "overloads" : [ "public void keyDown(KeyCode key, Runnable l)", "public void keyDown(Cons<KeyCode> cons)" ],
+    "name" : "keyDown",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "KeyCode"
+    }, {
+      "name" : "l",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 874,
+    "calls" : [ "arc.scene.Element.keyDown(arc.func.Cons<arc.input.KeyCode>)", "java.lang.Runnable.run()", "arc.scene.Element.addListener(arc.scene.event.EventListener)", "arc.func.Cons.get(T)", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void fireClick()",
+    "desc" : "Fakes a click event on all ClickListeners.",
+    "overloads" : null,
+    "name" : "fireClick",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 893,
+    "calls" : [ "arc.scene.Element.getListeners()", "arc.scene.event.ClickListener.clicked(arc.scene.event.InputEvent, float, float)", "arc.scene.event.InputEvent.InputEvent()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public ClickListener clicked(Runnable r) / public ClickListener clicked(KeyCode button, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Cons<ClickListener> runner)",
+    "desc" : "Adds a click listener.",
+    "overloads" : [ "public ClickListener clicked(Runnable r)", "public ClickListener clicked(KeyCode button, Runnable r)", "public ClickListener clicked(Cons<ClickListener> tweaker, Runnable r)", "public ClickListener clicked(Cons<ClickListener> tweaker, Cons<ClickListener> runner)" ],
+    "name" : "clicked",
+    "returnType" : "ClickListener",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 902,
+    "calls" : [ "arc.scene.Element.clicked(arc.input.KeyCode, java.lang.Runnable)", "arc.scene.Element.clicked(arc.func.Cons<arc.scene.event.ClickListener>, java.lang.Runnable)", "arc.scene.event.ClickListener.setButton(arc.input.KeyCode)", "arc.scene.Element.clicked(arc.func.Cons<arc.scene.event.ClickListener>, arc.func.Cons<arc.scene.event.ClickListener>)", "java.lang.Runnable.run()", "arc.scene.Element.addListener(arc.scene.event.EventListener)", "arc.scene.utils.Disableable.isDisabled()", "arc.func.Cons.get(T)", "arc.scene.event.ClickListener.ClickListener()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public InputListener tapped(Runnable r)",
+    "desc" : "Adds a touch listener.",
+    "overloads" : null,
+    "name" : "tapped",
+    "returnType" : "InputListener",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 930,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "java.lang.Runnable.run()", "arc.scene.event.SceneEvent.stop()", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void hovered(Runnable r)",
+    "desc" : "Adds a hover/mouse enter listener.",
+    "overloads" : null,
+    "name" : "hovered",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 946,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "java.lang.Runnable.run()", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void exited(Runnable r)",
+    "desc" : "Adds a hover/mouse exit listener.",
+    "overloads" : null,
+    "name" : "exited",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 956,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "java.lang.Runnable.run()", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void released(Runnable r)",
+    "desc" : "Adds a mouse up listener.",
+    "overloads" : null,
+    "name" : "released",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 966,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "java.lang.Runnable.run()", "arc.scene.event.InputListener.InputListener()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void change()",
+    "desc" : "Fires a change event on all listeners.",
+    "overloads" : null,
+    "name" : "change",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 978,
+    "calls" : [ "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.scene.event.ChangeListener.ChangeEvent.ChangeEvent()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void changed(Runnable r)",
+    "desc" : "Adds a click listener.",
+    "overloads" : null,
+    "name" : "changed",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 983,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)", "arc.scene.utils.Disableable.isDisabled()", "java.lang.Runnable.run()", "arc.scene.event.ChangeListener.ChangeListener()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Element update(Runnable r)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "r",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 993,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Element visible(Boolp vis)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visible",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vis",
+      "type" : "Boolp"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 998,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchable(Prov<Touchable> touch)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchable",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "touch",
+      "type" : "Prov<Touchable>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1003,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 1007,
+    "calls" : [ "java.lang.String.split(java.lang.String)", "java.lang.Object.toString()", "java.lang.String.lastIndexOf(int)", "java.lang.String.substring(int)" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Group.java",
+  "pkg" : "arc.scene",
+  "type" : "Java class (abstract) extends arc.scene.Element implements arc.scene.utils.Cullable",
+  "typeDesc" : "2D scene graph node that may contain other actors.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Vec2 tmp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected final SnapshotSeq<Element> children",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "children",
+    "returnType" : null,
+    "modifiers" : [ "protected", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Affine2 worldTransform",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "worldTransform",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Mat computedTransform",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "computedTransform",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Mat oldTransform",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "oldTransform",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean transform",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "transform",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Rect cullingArea",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cullingArea",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 35,
+    "calls" : [ "arc.scene.Element.act(float)", "arc.struct.SnapshotSeq.begin()", "arc.scene.Element.updateVisibility()", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void draw()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "draw",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 48,
+    "calls" : [ "arc.scene.Group.applyTransform(arc.math.Mat)", "arc.scene.Group.computeTransform()", "arc.scene.Group.drawChildren()", "arc.scene.Group.resetTransform()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "protected void drawChildren()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawChildren",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ "arc.struct.SnapshotSeq.begin()", "arc.scene.Element.draw()", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "protected Mat computeTransform()",
+    "desc" : "Returns the transform for this group's coordinate system.",
+    "overloads" : null,
+    "name" : "computeTransform",
+    "returnType" : "Mat",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 137,
+    "calls" : [ "arc.math.Affine2.setToTrnRotScl(float, float, float, float, float)", "arc.math.Affine2.translate(float, float)", "arc.math.Affine2.preMul(arc.math.Affine2)", "arc.math.Mat.set(arc.math.Affine2)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "protected void applyTransform(Mat transform)",
+    "desc" : "Set the batch's transformation matrix, often with the result of {@link #computeTransform()}.",
+    "overloads" : null,
+    "name" : "applyTransform",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "transform",
+      "type" : "Mat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 159,
+    "calls" : [ "arc.math.Mat.set(arc.math.Mat)", "arc.graphics.g2d.Draw.trans()", "arc.graphics.g2d.Draw.trans(arc.math.Mat)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "protected void resetTransform()",
+    "desc" : "Restores the batch transform to what it was before {@link #applyTransform(Mat)}.",
+    "overloads" : null,
+    "name" : "resetTransform",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 168,
+    "calls" : [ "arc.graphics.g2d.Draw.trans(arc.math.Mat)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Rect getCullingArea()",
+    "desc" : "@return May be null.",
+    "overloads" : null,
+    "name" : "getCullingArea",
+    "returnType" : "Rect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 176,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setCullingArea(Rect cullingArea)",
+    "desc" : "Children completely outside of this rectangle will not be drawn.",
+    "overloads" : null,
+    "name" : "setCullingArea",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cullingArea",
+      "type" : "Rect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 185,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Element hit(float x, float y, boolean touchable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hit",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "touchable",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 190,
+    "calls" : [ "arc.math.geom.Rect.overlaps(float, float, float, float)", "arc.scene.Element.parentToLocalCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.Element.hit(float, float, boolean)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "protected void childrenChanged()",
+    "desc" : "Called when actors are added to or removed from the group.",
+    "overloads" : null,
+    "name" : "childrenChanged",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 207,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void forEach(Cons<Element> cons)",
+    "desc" : "Recursively iterates through every child of this group.",
+    "overloads" : null,
+    "name" : "forEach",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "Cons<Element>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 211,
+    "calls" : [ "arc.scene.Group.getChildren()", "arc.func.Cons.get(T)", "arc.scene.Group.forEach(arc.func.Cons<arc.scene.Element>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Element fill(DrawRect rect) / public void fill(Cons<Table> cons) / public void fill(Drawable background, Cons<Table> cons)",
+    "desc" : "Adds and returns a table.",
+    "overloads" : [ "public Element fill(DrawRect rect)", "public void fill(Cons<Table> cons)", "public void fill(Drawable background, Cons<Table> cons)" ],
+    "name" : "fill",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rect",
+      "type" : "DrawRect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 220,
+    "calls" : [ "arc.scene.ui.layout.Table.DrawRect.draw(float, float, float, float)", "arc.scene.Element.setFillParent(boolean)", "arc.scene.Group.addChild(arc.scene.Element)", "arc.scene.Element.Element()", "arc.scene.Group.fill(arc.scene.style.Drawable, arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.WidgetGroup.setFillParent(boolean)", "arc.func.Cons.get(T)", "arc.scene.ui.layout.Table.Table()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void addChild(Element actor)",
+    "desc" : "Adds an actor as a child of this group, removing it from its previous parent.",
+    "overloads" : null,
+    "name" : "addChild",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 251,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)", "arc.struct.Seq.add(T)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.scene.Element.getScene()", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void addChildAt(int index, Element actor)",
+    "desc" : "Adds an actor as a child of this group at a specific index, removing it from its previous parent.",
+    "overloads" : null,
+    "name" : "addChildAt",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 267,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)", "arc.struct.Seq.add(T)", "arc.struct.SnapshotSeq.insert(int, T)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.scene.Element.getScene()", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void addChildBefore(Element actorBefore, Element actor)",
+    "desc" : "Adds an actor as a child of this group immediately before another child actor, removing it from its previous parent.",
+    "overloads" : null,
+    "name" : "addChildBefore",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actorBefore",
+      "type" : "Element"
+    }, {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 285,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)", "arc.struct.Seq.indexOf(T, boolean)", "arc.struct.SnapshotSeq.insert(int, T)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.scene.Element.getScene()", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void addChildAfter(Element actorAfter, Element actor)",
+    "desc" : "Adds an actor as a child of this group immediately after another child actor, removing it from its previous parent.",
+    "overloads" : null,
+    "name" : "addChildAfter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actorAfter",
+      "type" : "Element"
+    }, {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 301,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)", "arc.struct.Seq.indexOf(T, boolean)", "arc.struct.Seq.add(T)", "arc.struct.SnapshotSeq.insert(int, T)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.scene.Element.getScene()", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean removeChild(Element actor) / public boolean removeChild(Element actor, boolean unfocus)",
+    "desc" : "Removes an actor from this group and unfocuses it.",
+    "overloads" : [ "public boolean removeChild(Element actor)", "public boolean removeChild(Element actor, boolean unfocus)" ],
+    "name" : "removeChild",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 317,
+    "calls" : [ "arc.scene.Group.removeChild(arc.scene.Element, boolean)", "arc.struct.SnapshotSeq.remove(T, boolean)", "arc.scene.Element.getScene()", "arc.scene.Scene.unfocus(arc.scene.Element)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void clearChildren()",
+    "desc" : "Removes all actors from this group.",
+    "overloads" : null,
+    "name" : "clearChildren",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 341,
+    "calls" : [ "arc.scene.Element.getScene()", "arc.struct.SnapshotSeq.begin()", "arc.scene.Scene.unfocus(arc.scene.Element)", "arc.scene.Element.setScene(arc.scene.Scene)", "arc.struct.SnapshotSeq.end()", "arc.struct.SnapshotSeq.clear()", "arc.scene.Group.childrenChanged()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : "Removes all children, actions, and listeners from this group.",
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 356,
+    "calls" : [ "arc.scene.Element.clear()", "arc.scene.Group.clearChildren()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public T find(String name) / public T find(Boolf<Element> pred)",
+    "desc" : "Returns the first actor found with the specified name.",
+    "overloads" : [ "public T find(String name)", "public T find(Boolf<Element> pred)" ],
+    "name" : "find",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 366,
+    "calls" : [ "java.lang.String.equals(java.lang.Object)", "arc.struct.Seq.get(int)", "arc.scene.Group.find(java.lang.String)", "arc.func.Boolf.get(T)", "arc.scene.Group.find(arc.func.Boolf<arc.scene.Element>)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public T findVisible(String name)",
+    "desc" : "Finds only visible elements.",
+    "overloads" : null,
+    "name" : "findVisible",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 382,
+    "calls" : [ "java.lang.String.equals(java.lang.Object)", "arc.struct.Seq.get(int)", "arc.scene.Group.findVisible(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "protected void setScene(Scene stage)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setScene",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "stage",
+      "type" : "Scene"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 414,
+    "calls" : [ "arc.scene.Element.setScene(arc.scene.Scene)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean swapActor(int first, int second) / public boolean swapActor(Element first, Element second)",
+    "desc" : "Swaps two actors by index.",
+    "overloads" : [ "public boolean swapActor(int first, int second)", "public boolean swapActor(Element first, Element second)" ],
+    "name" : "swapActor",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "first",
+      "type" : "int"
+    }, {
+      "name" : "second",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 423,
+    "calls" : [ "arc.struct.SnapshotSeq.swap(int, int)", "arc.struct.Seq.indexOf(T, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public SnapshotSeq<Element> getChildren()",
+    "desc" : "Returns an ordered list of child actors in this group.",
+    "overloads" : null,
+    "name" : "getChildren",
+    "returnType" : "SnapshotSeq<Element>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 441,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasChildren()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasChildren",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 445,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isTransform()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isTransform",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 449,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTransform(boolean transform)",
+    "desc" : "When true (the default), the Batch is transformed so children are drawn in their parent's coordinate system.",
+    "overloads" : null,
+    "name" : "setTransform",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "transform",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 460,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 localToDescendantCoordinates(Element descendant, Vec2 localCoords)",
+    "desc" : "Converts coordinates for this group to those of a descendant actor.",
+    "overloads" : null,
+    "name" : "localToDescendantCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "descendant",
+      "type" : "Element"
+    }, {
+      "name" : "localCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 465,
+    "calls" : [ "arc.scene.Group.localToDescendantCoordinates(arc.scene.Element, arc.math.geom.Vec2)", "arc.scene.Element.parentToLocalCoordinates(arc.math.geom.Vec2)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString() / void toString(StringBuilder buffer, int indent)",
+    "desc" : "Returns a description of the actor hierarchy, recursively.",
+    "overloads" : [ "public String toString()", "void toString(StringBuilder buffer, int indent)" ],
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 476,
+    "calls" : [ "arc.scene.Group.toString(java.lang.StringBuilder, int)", "java.lang.AbstractStringBuilder.setLength(int)", "java.lang.AbstractStringBuilder.length()", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder(int)", "java.lang.StringBuilder.append(java.lang.String)", "arc.scene.Element.toString()", "java.lang.StringBuilder.append(char)", "arc.struct.SnapshotSeq.begin()", "java.lang.StringBuilder.append(java.lang.Object)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Scene.java",
+  "pkg" : "arc.scene",
+  "type" : "Java class implements arc.input.InputProcessor",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Group root",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "root",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float marginLeft",
+    "desc" : "Margins for fill layouts.",
+    "overloads" : null,
+    "name" : "marginLeft",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final ObjectMap<Class,Object> styleDefaults",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "styleDefaults",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Vec2 tempCoords",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tempCoords",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Element pointerOverActors",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointerOverActors",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final boolean pointerTouched",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointerTouched",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final int pointerScreenX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointerScreenX",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final int pointerScreenY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pointerScreenY",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final SnapshotSeq<TouchFocus> touchFocuses",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchFocuses",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Viewport viewport",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "viewport",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int mouseScreenX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mouseScreenX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Element mouseOverElement",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mouseOverElement",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Element keyboardFocus",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "keyboardFocus",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean actionsRequestRendering",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "actionsRequestRendering",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Scene() / public Scene(Viewport viewport)",
+    "desc" : null,
+    "overloads" : [ "public Scene()", "public Scene(Viewport viewport)" ],
+    "name" : "Scene",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : [ "arc.graphics.g2d.ScissorStack.calculateScissors(arc.graphics.Camera, float, float, float, float, arc.math.Mat, arc.math.geom.Rect, arc.math.geom.Rect)", "arc.util.viewport.Viewport.getCamera()", "arc.util.viewport.Viewport.getScreenX()", "arc.util.viewport.Viewport.getScreenY()", "arc.util.viewport.Viewport.getScreenWidth()", "arc.util.viewport.Viewport.getScreenHeight()", "arc.scene.Scene.getHeight()", "arc.scene.Scene.getWidth()", "arc.scene.Group.setScene(arc.scene.Scene)", "arc.util.viewport.Viewport.update(int, int, boolean)", "arc.Graphics.getWidth()", "arc.Graphics.getHeight()", "arc.util.viewport.ScreenViewport.ScreenViewport()", "arc.scene.Group.Group()" ],
+    "callCount" : 14
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public T getStyle(Class<T> type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStyle",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 74,
+    "calls" : [ "arc.struct.ObjectMap.getThrow(K, arc.func.Prov<? extends java.lang.RuntimeException>)", "java.lang.Class.getSimpleName()", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasStyle(Class<T> type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasStyle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ "arc.struct.ObjectMap.containsKey(K)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void addStyle(Class<T> type, T style)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addStyle",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "style",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 83,
+    "calls" : [ "arc.struct.ObjectMap.put(K, V)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void registerStyles(Class<?> type) / public void registerStyles(Object obj)",
+    "desc" : null,
+    "overloads" : [ "public void registerStyles(Class<?> type)", "public void registerStyles(Object obj)" ],
+    "name" : "registerStyles",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ "arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)", "arc.struct.Seq.with(T...)", "java.lang.Class.getFields()", "java.lang.String.startsWith(java.lang.String)", "java.lang.reflect.Field.getName()", "addStyle", "f.getType", "arc.util.Reflect.get(java.lang.reflect.Field)", "java.lang.Object.getClass()", "arc.util.Reflect.get(java.lang.Object, java.lang.String)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getHoverElement()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getHoverElement",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 96,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasField()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasField",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ "arc.scene.Scene.getKeyboardFocus()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasMouse() / public boolean hasMouse(float mousex, float mousey)",
+    "desc" : null,
+    "overloads" : [ "public boolean hasMouse()", "public boolean hasMouse(float mousex, float mousey)" ],
+    "name" : "hasMouse",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 104,
+    "calls" : [ "arc.scene.Scene.getHoverElement()", "arc.scene.Scene.hit(float, float, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasDialog()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasDialog",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 112,
+    "calls" : [ "arc.scene.Scene.getScrollFocus()", "arc.scene.Scene.getKeyboardFocus()", "arc.scene.Element.isDescendantOf(arc.func.Boolf<arc.scene.Element>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasKeyboard()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasKeyboard",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 116,
+    "calls" : [ "arc.scene.Scene.getKeyboardFocus()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasScroll()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasScroll",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 120,
+    "calls" : [ "arc.scene.Scene.getScrollFocus()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Dialog getDialog()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDialog",
+    "returnType" : "Dialog",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 124,
+    "calls" : [ "arc.scene.Scene.getKeyboardFocus()", "arc.scene.Scene.getScrollFocus()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void draw()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "draw",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 133,
+    "calls" : [ "arc.util.viewport.Viewport.getCamera()", "arc.graphics.Camera.update()", "arc.graphics.g2d.Draw.proj(arc.graphics.Camera)", "arc.scene.Group.draw()", "arc.graphics.g2d.Draw.flush()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void act() / public void act(float delta)",
+    "desc" : "Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}.",
+    "overloads" : [ "public void act()", "public void act(float delta)" ],
+    "name" : "act",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 146,
+    "calls" : [ "arc.scene.Scene.act(float)", "arc.Graphics.getDeltaTime()", "arc.scene.Scene.getHeight()", "arc.scene.Scene.getWidth()", "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)", "arc.scene.Scene.fireEnterAndExit(arc.scene.Element, int, int, int)", "arc.Application.isDesktop()", "arc.Application.isWeb()", "arc.scene.Scene.hit(float, float, boolean)", "arc.scene.Element.getScene()", "arc.scene.Group.act(float)" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "public Element find(String name) / public Element find(Boolf<Element> pred)",
+    "desc" : null,
+    "overloads" : [ "public Element find(String name)", "public Element find(Boolf<Element> pred)" ],
+    "name" : "find",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 208,
+    "calls" : [ "arc.scene.Group.find(java.lang.String)", "arc.scene.Group.find(arc.func.Boolf<arc.scene.Element>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Element findVisible(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findVisible",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 212,
+    "calls" : [ "arc.scene.Group.findVisible(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Table table() / public Table table(Cons<Table> cons) / public Table table(Drawable style, Cons<Table> cons)",
+    "desc" : "Adds and returns a table.",
+    "overloads" : [ "public Table table()", "public Table table(Cons<Table> cons)", "public Table table(Drawable style, Cons<Table> cons)" ],
+    "name" : "table",
+    "returnType" : "Table",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 221,
+    "calls" : [ "arc.scene.ui.layout.WidgetGroup.setFillParent(boolean)", "arc.scene.Scene.add(arc.scene.Element)", "arc.scene.ui.layout.Table.Table()", "arc.func.Cons.get(T)", "arc.scene.ui.layout.Table.Table(arc.scene.style.Drawable)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "private Element fireEnterAndExit(Element overLast, int screenX, int screenY, int pointer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fireEnterAndExit",
+    "returnType" : "Element",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "overLast",
+      "type" : "Element"
+    }, {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 246,
+    "calls" : [ "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.Scene.hit(float, float, boolean)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : "Applies a touch down event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the",
+    "overloads" : null,
+    "name" : "touchDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 281,
+    "calls" : [ "arc.scene.Scene.isInsideViewport(int, int)", "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Scene.hit(float, float, boolean)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchDragged(int screenX, int screenY, int pointer)",
+    "desc" : "Applies a touch moved event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the",
+    "overloads" : null,
+    "name" : "touchDragged",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 314,
+    "calls" : [ "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.SnapshotSeq.begin()", "arc.struct.Seq.contains(T, boolean)", "arc.scene.event.EventListener.handle(arc.scene.event.SceneEvent)", "arc.struct.SnapshotSeq.end()", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)",
+    "desc" : "Applies a touch up event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the event.",
+    "overloads" : null,
+    "name" : "touchUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 352,
+    "calls" : [ "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.SnapshotSeq.begin()", "arc.struct.SnapshotSeq.remove(T, boolean)", "arc.scene.event.EventListener.handle(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)", "arc.struct.SnapshotSeq.end()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean mouseMoved(int screenX, int screenY)",
+    "desc" : "Applies a mouse moved event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the",
+    "overloads" : null,
+    "name" : "mouseMoved",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 391,
+    "calls" : [ "arc.scene.Scene.isInsideViewport(int, int)", "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Scene.hit(float, float, boolean)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean scrolled(float amountX, float amountY)",
+    "desc" : "Applies a mouse scroll event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the",
+    "overloads" : null,
+    "name" : "scrolled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 418,
+    "calls" : [ "arc.scene.Scene.screenToStageCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyDown(KeyCode keyCode)",
+    "desc" : "Applies a key down event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns",
+    "overloads" : null,
+    "name" : "keyDown",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "keyCode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 440,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyUp(KeyCode keyCode)",
+    "desc" : "Applies a key up event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns true",
+    "overloads" : null,
+    "name" : "keyUp",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "keyCode",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 456,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keyTyped(char character)",
+    "desc" : "Applies a key typed event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns",
+    "overloads" : null,
+    "name" : "keyTyped",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "character",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 472,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)",
+    "desc" : "Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button.",
+    "overloads" : null,
+    "name" : "addTouchFocus",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    }, {
+      "name" : "listenerActor",
+      "type" : "Element"
+    }, {
+      "name" : "target",
+      "type" : "Element"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 485,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.Seq.add(T)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)",
+    "desc" : "Removes the listener from being notified for all touchDragged and touchUp events for the specified pointer and button.",
+    "overloads" : null,
+    "name" : "removeTouchFocus",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    }, {
+      "name" : "listenerActor",
+      "type" : "Element"
+    }, {
+      "name" : "target",
+      "type" : "Element"
+    }, {
+      "name" : "pointer",
+      "type" : "int"
+    }, {
+      "name" : "button",
+      "type" : "KeyCode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 499,
+    "calls" : [ "arc.struct.Seq.get(int)", "arc.struct.SnapshotSeq.remove(int)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancelTouchFocus(Element actor) / public void cancelTouchFocus()",
+    "desc" : "Cancels touch focus for the specified actor.",
+    "overloads" : [ "public void cancelTouchFocus(Element actor)", "public void cancelTouchFocus()" ],
+    "name" : "cancelTouchFocus",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 515,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.SnapshotSeq.begin()", "arc.struct.SnapshotSeq.remove(T, boolean)", "arc.scene.event.EventListener.handle(arc.scene.event.SceneEvent)", "arc.struct.SnapshotSeq.end()", "arc.util.pooling.Pools.free(java.lang.Object)", "arc.scene.Scene.cancelTouchFocusExcept(arc.scene.event.EventListener, arc.scene.Element)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void cancelTouchFocusExcept(EventListener exceptListener, Element exceptActor)",
+    "desc" : "Cancels touch focus for all listeners except the specified listener.",
+    "overloads" : null,
+    "name" : "cancelTouchFocusExcept",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "exceptListener",
+      "type" : "EventListener"
+    }, {
+      "name" : "exceptActor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 555,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.struct.SnapshotSeq.begin()", "arc.struct.SnapshotSeq.remove(T, boolean)", "arc.scene.event.EventListener.handle(arc.scene.event.SceneEvent)", "arc.struct.SnapshotSeq.end()", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void add(Element actor)",
+    "desc" : "Adds an actor to the root of the stage.",
+    "overloads" : null,
+    "name" : "add",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 585,
+    "calls" : [ "arc.scene.Group.addChild(arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void addAction(Action action)",
+    "desc" : "Adds an action to the root of the stage.",
+    "overloads" : null,
+    "name" : "addAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 593,
+    "calls" : [ "arc.scene.Element.addAction(arc.scene.Action)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<Element> getElements()",
+    "desc" : "Returns the root's child actors.",
+    "overloads" : null,
+    "name" : "getElements",
+    "returnType" : "Seq<Element>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 601,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean addListener(EventListener listener)",
+    "desc" : "Adds a listener to the root.",
+    "overloads" : null,
+    "name" : "addListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 609,
+    "calls" : [ "arc.scene.Element.addListener(arc.scene.event.EventListener)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean removeListener(EventListener listener)",
+    "desc" : "Removes a listener from the root.",
+    "overloads" : null,
+    "name" : "removeListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 617,
+    "calls" : [ "arc.scene.Element.removeListener(arc.scene.event.EventListener)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean addCaptureListener(EventListener listener)",
+    "desc" : "Adds a capture listener to the root.",
+    "overloads" : null,
+    "name" : "addCaptureListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 625,
+    "calls" : [ "arc.scene.Element.addCaptureListener(arc.scene.event.EventListener)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean removeCaptureListener(EventListener listener)",
+    "desc" : "Removes a listener from the root.",
+    "overloads" : null,
+    "name" : "removeCaptureListener",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 633,
+    "calls" : [ "arc.scene.Element.removeCaptureListener(arc.scene.event.EventListener)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : "Removes the root's children, actions, and listeners.",
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 638,
+    "calls" : [ "arc.scene.Scene.unfocusAll()", "arc.scene.Group.clear()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void unfocusAll()",
+    "desc" : "Removes the touch, keyboard, and scroll focused actors.",
+    "overloads" : null,
+    "name" : "unfocusAll",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 644,
+    "calls" : [ "arc.scene.Scene.setScrollFocus(arc.scene.Element)", "arc.scene.Scene.setKeyboardFocus(arc.scene.Element)", "arc.scene.Scene.cancelTouchFocus()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void unfocus(Element actor)",
+    "desc" : "Removes the touch, keyboard, and scroll focus for the specified actor and any descendants.",
+    "overloads" : null,
+    "name" : "unfocus",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 651,
+    "calls" : [ "arc.scene.Scene.cancelTouchFocus(arc.scene.Element)", "arc.scene.Element.isDescendantOf(arc.scene.Element)", "arc.scene.Scene.setScrollFocus(arc.scene.Element)", "arc.scene.Scene.setKeyboardFocus(arc.scene.Element)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean setKeyboardFocus(Element actor)",
+    "desc" : "Sets the actor that will receive key events.",
+    "overloads" : null,
+    "name" : "setKeyboardFocus",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 662,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.scene.Scene.setKeyboardFocus(arc.scene.Element)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getKeyboardFocus()",
+    "desc" : "Gets the actor that will receive key events.",
+    "overloads" : null,
+    "name" : "getKeyboardFocus",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 692,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean setScrollFocus(Element actor)",
+    "desc" : "Sets the actor that will receive scroll events.",
+    "overloads" : null,
+    "name" : "setScrollFocus",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 701,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Element.fire(arc.scene.event.SceneEvent)", "arc.scene.Scene.setScrollFocus(arc.scene.Element)", "arc.util.pooling.Pools.free(java.lang.Object)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public Element getScrollFocus()",
+    "desc" : "Gets the actor that will receive scroll events.",
+    "overloads" : null,
+    "name" : "getScrollFocus",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 730,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Viewport getViewport()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getViewport",
+    "returnType" : "Viewport",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 734,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setViewport(Viewport viewport)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setViewport",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "viewport",
+      "type" : "Viewport"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 738,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getWidth()",
+    "desc" : "The viewport's world width.",
+    "overloads" : null,
+    "name" : "getWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 743,
+    "calls" : [ "arc.util.viewport.Viewport.getWorldWidth()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getHeight()",
+    "desc" : "The viewport's world height.",
+    "overloads" : null,
+    "name" : "getHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 748,
+    "calls" : [ "arc.util.viewport.Viewport.getWorldHeight()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Camera getCamera()",
+    "desc" : "The viewport's camera.",
+    "overloads" : null,
+    "name" : "getCamera",
+    "returnType" : "Camera",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 753,
+    "calls" : [ "arc.util.viewport.Viewport.getCamera()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Element hit(float stageX, float stageY, boolean touchable)",
+    "desc" : "Returns the {@link Element} at the specified location in stage coordinates.",
+    "overloads" : null,
+    "name" : "hit",
+    "returnType" : "Element",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stageX",
+      "type" : "float"
+    }, {
+      "name" : "stageY",
+      "type" : "float"
+    }, {
+      "name" : "touchable",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 764,
+    "calls" : [ "arc.scene.Element.parentToLocalCoordinates(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(float, float)", "arc.scene.Group.hit(float, float, boolean)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 screenToStageCoordinates(Vec2 screenCoords)",
+    "desc" : "Transforms the screen coordinates to stage coordinates.",
+    "overloads" : null,
+    "name" : "screenToStageCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "screenCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 773,
+    "calls" : [ "arc.util.viewport.Viewport.unproject(arc.math.geom.Vec2)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 stageToScreenCoordinates(Vec2 stageCoords)",
+    "desc" : "Transforms the stage coordinates to screen coordinates.",
+    "overloads" : null,
+    "name" : "stageToScreenCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stageCoords",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 782,
+    "calls" : [ "arc.util.viewport.Viewport.project(arc.math.geom.Vec2)", "arc.util.viewport.Viewport.getScreenHeight()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 toScreenCoordinates(Vec2 coords, Mat transformMatrix)",
+    "desc" : "Transforms the coordinates to screen coordinates.",
+    "overloads" : null,
+    "name" : "toScreenCoordinates",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "coords",
+      "type" : "Vec2"
+    }, {
+      "name" : "transformMatrix",
+      "type" : "Mat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 793,
+    "calls" : [ "arc.util.viewport.Viewport.toScreenCoordinates(arc.math.geom.Vec2, arc.math.Mat)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void calculateScissors(Rect localRect, Rect scissorRect)",
+    "desc" : "Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.",
+    "overloads" : null,
+    "name" : "calculateScissors",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "localRect",
+      "type" : "Rect"
+    }, {
+      "name" : "scissorRect",
+      "type" : "Rect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 798,
+    "calls" : [ "arc.graphics.g2d.Draw.trans()", "arc.util.viewport.Viewport.calculateScissors(arc.math.Mat, arc.math.geom.Rect, arc.math.geom.Rect)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean getActionsRequestRendering()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getActionsRequestRendering",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 803,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setActionsRequestRendering(boolean actionsRequestRendering)",
+    "desc" : "If true, any actions executed during a call to {@link #act()}) will result in a call to {@link Graphics#requestRendering()}",
+    "overloads" : null,
+    "name" : "setActionsRequestRendering",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actionsRequestRendering",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 812,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected boolean isInsideViewport(int screenX, int screenY)",
+    "desc" : "Check if screen coordinates are inside the viewport's screen area.",
+    "overloads" : null,
+    "name" : "isInsideViewport",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "screenX",
+      "type" : "int"
+    }, {
+      "name" : "screenY",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 817,
+    "calls" : [ "arc.util.viewport.Viewport.getScreenX()", "arc.util.viewport.Viewport.getScreenWidth()", "arc.util.viewport.Viewport.getScreenY()", "arc.util.viewport.Viewport.getScreenHeight()", "arc.Graphics.getHeight()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void resize(int width, int height)",
+    "desc" : "Updates the viewport.",
+    "overloads" : null,
+    "name" : "resize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "int"
+    }, {
+      "name" : "height",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 827,
+    "calls" : [ "arc.util.viewport.Viewport.update(int, int, boolean)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "TouchFocus implements arc.util.pooling.Pool.Poolable",
+    "simpleName" : "TouchFocus",
+    "desc" : "Internal class for managing touch focus.",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "EventListener listener",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "listener",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 836,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Element listenerActor",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "listenerActor",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 837,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int pointer",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pointer",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 838,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "KeyCode button",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "button",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 839,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void reset()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 841,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+} ]

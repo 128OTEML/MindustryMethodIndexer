@@ -1,0 +1,1649 @@
+[ {
+  "file" : "SNet.java",
+  "pkg" : "mindustry.desktop.steam",
+  "type" : "Java class implements steamworks.SteamNetworkingSocketsCallback, steamworks.SteamMatchmakingCallback, steamworks.SteamFriendsCallback, mindustry.net.Net.NetProvider",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final SteamNetworkingSockets snet",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "snet",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final SteamMatchmaking smat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "smat",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final SteamFriends friends",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "friends",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final NetProvider provider",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "provider",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final PacketSerializer serializer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "serializer",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final ByteBuffer clientWriteBuffer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clientWriteBuffer",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final ByteBuffer netReadBuffer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "netReadBuffer",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final ByteBuffer netReadBufferCopy",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "netReadBufferCopy",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Thread readThread",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readThread",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "volatile boolean running",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "running",
+    "returnType" : null,
+    "modifiers" : [ "volatile" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final CopyOnWriteArrayList<SteamConnection> connections",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "connections",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "final IntMap<SteamConnection> steamConnections",
+    "desc" : "maps steam ID -> valid net connection",
+    "overloads" : null,
+    "name" : "steamConnections",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Socket listenSocket",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listenSocket",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "volatile Connection clientConnection",
+    "desc" : "our connection to the server, when we are the client",
+    "overloads" : null,
+    "name" : "clientConnection",
+    "returnType" : null,
+    "modifiers" : [ "volatile" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "SteamID currentLobby",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "currentLobby",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Cons<Host> lobbyCallback",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lobbyCallback",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 47,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Runnable lobbyDoneCallback",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lobbyDoneCallback",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 48,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SNet(NetProvider provider)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SNet",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "provider",
+      "type" : "NetProvider"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 50,
+    "calls" : [ "arc.Events.on(java.lang.Class<T>, arc.func.Cons<T>)", "mindustry.desktop.steam.SNet.updateWave()", "arc.Events.run(java.lang.Object, java.lang.Runnable)", "updateBans", "netServer.admins.unbanPlayerIP", "mindustry.desktop.steam.SNet.updateBans(java.lang.String)" ],
+    "callCount" : 6
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean isSteamClient()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isSteamClient",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 64,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "void stopNetThread()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stopNetThread",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 68,
+    "calls" : [ "java.lang.Thread.interrupt()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "void startNetThread()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startNetThread",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 76,
+    "calls" : [ "mindustry.desktop.steam.SNet.stopNetThread()", "java.lang.Thread.setDaemon(boolean)", "java.lang.Thread.start()", "java.lang.Thread.Thread(java.lang.Runnable, java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "void readLoop()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readLoop",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 85,
+    "calls" : [ "mindustry.net.Net.server()", "mindustry.desktop.steam.SNet.pollConnection(steamworks.SteamNetworkingSockets.Connection, mindustry.desktop.steam.SNet.SteamConnection)", "arc.Application.post(java.lang.Runnable)", "arc.util.Log.err(java.lang.Throwable)", "mindustry.net.Net.showError(java.lang.Throwable)", "java.lang.Thread.sleep(long)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "boolean pollConnection(Connection connection, SteamConnection con) throws Exception",
+    "desc" : "Drains all currently-pending messages on one connection.",
+    "overloads" : null,
+    "name" : "pollConnection",
+    "returnType" : "boolean",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "connection",
+      "type" : "Connection"
+    }, {
+      "name" : "con",
+      "type" : "SteamConnection"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 123,
+    "calls" : [ "steamworks.SteamNetworkingSockets.receiveMessageOnConnection(steamworks.SteamNetworkingSockets.Connection, java.nio.ByteBuffer)", "java.nio.ByteBuffer.clear()", "java.nio.ByteBuffer.limit(int)", "java.nio.ByteBuffer.position(int)", "java.nio.ByteBuffer.put(int, java.nio.ByteBuffer, int, int)", "mindustry.net.ArcNetProvider.PacketSerializer.read(java.nio.ByteBuffer)", "arc.Application.post(java.lang.Runnable)", "mindustry.net.Net.server()", "mindustry.net.Net.handleServerReceived(mindustry.net.NetConnection, mindustry.net.Packet)", "arc.util.Log.err(java.lang.Throwable)", "mindustry.net.Net.handleClientReceived(mindustry.net.Packet)", "mindustry.net.Net.handleException(java.lang.Throwable)", "mindustry.desktop.steam.SNet.SteamConnection.pollWrites()" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public void connectClient(String ip, int port, Runnable success) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "connectClient",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "ip",
+      "type" : "String"
+    }, {
+      "name" : "port",
+      "type" : "int"
+    }, {
+      "name" : "success",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 161,
+    "calls" : [ "java.lang.String.startsWith(java.lang.String)", "java.lang.String.substring(int)", "java.lang.String.length()", "steamworks.SteamID.createFromNativeHandle(long)", "java.lang.Long.parseLong(java.lang.String)", "steamworks.SteamMatchmaking.joinLobby(steamworks.SteamID)", "steamworks.SteamID.isValid()", "arc.Application.post(java.lang.Runnable)", "steamworks.SteamNetworkingSockets.connectP2P(steamworks.SteamID, int)", "mindustry.ui.fragments.LoadingFragment.show(java.lang.String)", "mindustry.ui.fragments.LoadingFragment.setButton(java.lang.Runnable)", "mindustry.ui.fragments.LoadingFragment.hide()", "mindustry.core.NetClient.disconnectQuietly()", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()", "mindustry.net.Net.NetProvider.connectClient(java.lang.String, int, java.lang.Runnable)", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 17
+  }, {
+    "kind" : "method",
+    "signature" : "public void sendClient(Object object, boolean reliable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sendClient",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "Object"
+    }, {
+      "name" : "reliable",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 205,
+    "calls" : [ "mindustry.desktop.steam.SNet.isSteamClient()", "arc.util.Log.info(java.lang.Object)", "java.nio.ByteBuffer.limit(int)", "java.nio.Buffer.capacity()", "java.nio.ByteBuffer.position(int)", "mindustry.net.ArcNetProvider.PacketSerializer.write(java.nio.ByteBuffer, java.lang.Object)", "java.nio.Buffer.position()", "java.nio.ByteBuffer.flip()", "steamworks.SteamNetworkingSockets.sendMessageToConnection(steamworks.SteamNetworkingSockets.Connection, java.nio.ByteBuffer, int)", "mindustry.net.Net.showError(java.lang.Throwable)", "mindustry.net.Net.NetProvider.sendClient(java.lang.Object, boolean)", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public void disconnectClient()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "disconnectClient",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 233,
+    "calls" : [ "mindustry.desktop.steam.SNet.stopNetThread()", "mindustry.desktop.steam.SNet.isSteamClient()", "steamworks.SteamMatchmaking.leaveLobby(steamworks.SteamID)", "steamworks.SteamNetworkingSockets.closeConnection(steamworks.SteamNetworkingSockets.Connection, int, boolean)", "mindustry.net.Net.handleClientReceived(mindustry.net.Packet)", "mindustry.net.Net.NetProvider.disconnectClient()", "mindustry.net.Packets.Disconnect.Disconnect()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void discoverServers(Cons<Host> callback, Runnable done)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "discoverServers",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "callback",
+      "type" : "Cons<Host>"
+    }, {
+      "name" : "done",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 249,
+    "calls" : [ "steamworks.SteamMatchmaking.addRequestLobbyListResultCountFilter(int)", "steamworks.SteamMatchmaking.addRequestLobbyListDistanceFilter(steamworks.SteamMatchmaking.LobbyDistanceFilter)", "steamworks.SteamMatchmaking.requestLobbyList()", "mindustry.net.Net.NetProvider.discoverServers(arc.func.Cons<mindustry.net.Host>, java.lang.Runnable)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pingHost",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "address",
+      "type" : "String"
+    }, {
+      "name" : "port",
+      "type" : "int"
+    }, {
+      "name" : "valid",
+      "type" : "Cons<Host>"
+    }, {
+      "name" : "failed",
+      "type" : "Cons<Exception>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 260,
+    "calls" : [ "mindustry.net.Net.NetProvider.pingHost(java.lang.String, int, arc.func.Cons<mindustry.net.Host>, arc.func.Cons<java.lang.Exception>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void hostServer(int port) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hostServer",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "port",
+      "type" : "int"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 265,
+    "calls" : [ "mindustry.net.Net.NetProvider.hostServer(int)", "steamworks.SteamNetworkingSockets.createListenSocketP2P(int)", "steamworks.SteamMatchmaking.createLobby(steamworks.SteamMatchmaking.LobbyType, int)", "arc.Settings.getBool(java.lang.String)", "arc.Settings.getInt(java.lang.String)", "mindustry.desktop.steam.SNet.startNetThread()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateLobby()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateLobby",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 273,
+    "calls" : [ "mindustry.net.Net.server()", "steamworks.SteamMatchmaking.setLobbyType(steamworks.SteamID, steamworks.SteamMatchmaking.LobbyType)", "arc.Settings.getBool(java.lang.String)", "steamworks.SteamMatchmaking.setLobbyMemberLimit(steamworks.SteamID, int)", "arc.Settings.getInt(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "void updateWave()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateWave",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 280,
+    "calls" : [ "mindustry.net.Net.server()", "steamworks.SteamMatchmaking.setLobbyData(steamworks.SteamID, java.lang.String, java.lang.String)", "mindustry.maps.Map.name()", "java.lang.Enum.name()", "mindustry.game.Rules.mode()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "void updateBans(String changed)",
+    "desc" : "Updates the ban list so that lobbies don't appear for banned players.",
+    "overloads" : null,
+    "name" : "updateBans",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "changed",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 289,
+    "calls" : [ "java.lang.String.startsWith(java.lang.String)", "steamworks.SteamMatchmaking.setLobbyData(steamworks.SteamID, java.lang.String, java.lang.String)", "java.lang.StringBuilder.toString()", "arc.struct.Seq.reduce(R, arc.func.Func2<T, R, R>)", "arc.struct.Seq.select(arc.func.Boolf<T>)", "java.lang.String.contains(java.lang.CharSequence)", "java.lang.StringBuilder.append(char)", "java.lang.String.substring(int)", "java.lang.StringBuilder.StringBuilder()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void closeServer()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "closeServer",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 294,
+    "calls" : [ "mindustry.net.Net.NetProvider.closeServer()", "mindustry.desktop.steam.SNet.stopNetThread()", "steamworks.SteamMatchmaking.leaveLobby(steamworks.SteamID)", "arc.struct.IntMap.values()", "mindustry.desktop.steam.SNet.SteamConnection.close()", "steamworks.SteamNetworkingSockets.closeListenSocket(steamworks.SteamNetworkingSockets.Socket)", "arc.struct.IntMap.clear()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public Iterable<? extends NetConnection> getConnections()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConnections",
+    "returnType" : "Iterable<? extends NetConnection>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 315,
+    "calls" : [ "mindustry.net.Net.NetProvider.getConnections()", "java.util.concurrent.CopyOnWriteArrayList.add(E)", "java.util.concurrent.CopyOnWriteArrayList.CopyOnWriteArrayList(java.util.Collection<? extends E>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "void disconnectSteamUser(SteamID steamid)",
+    "desc" : "Closes out and unregisters a connected steam user, if one is registered under this ID.",
+    "overloads" : null,
+    "name" : "disconnectSteamUser",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "steamid",
+      "type" : "SteamID"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 324,
+    "calls" : [ "steamworks.SteamID.getAccountID()", "arc.struct.IntMap.get(int)", "steamworks.SteamNetworkingSockets.closeConnection(steamworks.SteamNetworkingSockets.Connection, int, boolean)", "mindustry.net.Net.handleServerReceived(mindustry.net.NetConnection, mindustry.net.Packet)", "arc.struct.IntMap.remove(int)", "java.util.concurrent.CopyOnWriteArrayList.remove(java.lang.Object)", "mindustry.net.Packets.Disconnect.Disconnect()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void onLobbyInvite(SteamID steamIDUser, SteamID steamIDLobby, long gameID)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onLobbyInvite",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "steamIDUser",
+      "type" : "SteamID"
+    }, {
+      "name" : "steamIDLobby",
+      "type" : "SteamID"
+    }, {
+      "name" : "gameID",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 336,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void onLobbyEnter(SteamID steamIDLobby, int chatPermissions, boolean blocked, ChatRoomEnterResponse response)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onLobbyEnter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "steamIDLobby",
+      "type" : "SteamID"
+    }, {
+      "name" : "chatPermissions",
+      "type" : "int"
+    }, {
+      "name" : "blocked",
+      "type" : "boolean"
+    }, {
+      "name" : "response",
+      "type" : "ChatRoomEnterResponse"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 341,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()", "mindustry.ui.fragments.LoadingFragment.hide()", "mindustry.core.UI.showErrorMessage(java.lang.String)", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "java.lang.Enum.toString()", "arc.util.Strings.parseInt(java.lang.String, int)", "steamworks.SteamMatchmaking.getLobbyData(steamworks.SteamID, java.lang.String)", "java.lang.String.equals(java.lang.Object)", "mindustry.core.UI.showInfo(java.lang.String)", "steamworks.SteamMatchmaking.leaveLobby(steamworks.SteamID)", "steamworks.SteamNetworkingSockets.closeConnection(steamworks.SteamNetworkingSockets.Connection, int, boolean)", "mindustry.editor.MapEditorDialog.hide()", "arc.Application.post(java.lang.Runnable)", "mindustry.core.Logic.reset()", "mindustry.net.Net.reset()", "steamworks.SteamMatchmaking.getLobbyOwner(steamworks.SteamID)", "steamworks.SteamFriends.getFriendPersonaName(steamworks.SteamID)", "steamworks.SteamNetworkingSockets.connectP2P(steamworks.SteamID, int)" ],
+    "callCount" : 19
+  }, {
+    "kind" : "method",
+    "signature" : "public void onLobbyChatUpdate(SteamID lobby, SteamID who, SteamID changer, ChatMemberStateChange change)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onLobbyChatUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "lobby",
+      "type" : "SteamID"
+    }, {
+      "name" : "who",
+      "type" : "SteamID"
+    }, {
+      "name" : "changer",
+      "type" : "SteamID"
+    }, {
+      "name" : "change",
+      "type" : "ChatMemberStateChange"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 385,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()", "mindustry.net.Net.server()", "mindustry.net.SteamAdmin.isAdmin(java.lang.String)", "mindustry.net.SteamAdmin.fetch(boolean)", "mindustry.net.Net.client()", "steamworks.SteamNativeHandle.equals(java.lang.Object)", "mindustry.net.Net.disconnect()", "arc.util.Log.info(java.lang.Object)", "mindustry.desktop.steam.SNet.disconnectSteamUser(steamworks.SteamID)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void onLobbyMatchList(int matches)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onLobbyMatchList",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matches",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 403,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamMatchmaking.getLobbyByIndex(int)", "java.lang.String.equals(java.lang.Object)", "steamworks.SteamMatchmaking.getLobbyData(steamworks.SteamID, java.lang.String)", "java.lang.String.isEmpty()", "arc.util.Strings.parseInt(java.lang.String, int)", "java.lang.String.length()", "arc.util.Structs.contains(T[], T)", "java.lang.String.split(java.lang.String)", "steamworks.SteamID.getAccountID()", "steamworks.SteamUser.getSteamID()", "steamworks.SteamNativeHandle.handle()", "steamworks.SteamMatchmaking.getNumLobbyMembers(steamworks.SteamID)", "mindustry.game.Gamemode.valueOf(java.lang.String)", "steamworks.SteamMatchmaking.getLobbyMemberLimit(steamworks.SteamID)", "arc.struct.Seq.add(T)", "arc.util.Log.err(java.lang.Throwable)", "hosts.sort", "arc.util.Structs.comparingInt(arc.func.Intf<? super T>)", "arc.struct.Seq.each(arc.func.Cons<? super T>)", "java.lang.Runnable.run()", "arc.struct.Seq.Seq()", "mindustry.net.Host.Host(int, java.lang.String, java.lang.String, java.lang.String, int, int, int, java.lang.String, mindustry.game.Gamemode, int, java.lang.String, java.lang.String)" ],
+    "callCount" : 23
+  }, {
+    "kind" : "method",
+    "signature" : "public void onLobbyCreated(SteamResult result, SteamID steamID)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onLobbyCreated",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "result",
+      "type" : "SteamResult"
+    }, {
+      "name" : "steamID",
+      "type" : "SteamID"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 448,
+    "calls" : [ "mindustry.net.Net.server()", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()", "steamworks.SteamMatchmaking.setLobbyData(steamworks.SteamID, java.lang.String, java.lang.String)", "mindustry.maps.Map.name()", "java.lang.Enum.name()", "mindustry.game.Rules.mode()", "mindustry.desktop.steam.SNet.updateBans(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void showFriendInvites()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "showFriendInvites",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 469,
+    "calls" : [ "steamworks.SteamFriends.activateGameOverlayInviteDialog(steamworks.SteamID)", "arc.util.Log.info(java.lang.Object)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void onConnectionStatusChanged(Connection connection, SteamID remote, ConnectionState state, ConnectionState prevState)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onConnectionStatusChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "connection",
+      "type" : "Connection"
+    }, {
+      "name" : "remote",
+      "type" : "SteamID"
+    }, {
+      "name" : "state",
+      "type" : "ConnectionState"
+    }, {
+      "name" : "prevState",
+      "type" : "ConnectionState"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 476,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamID.getAccountID()", "mindustry.net.Net.server()", "steamworks.SteamNetworkingSockets.setConnectionConfigValue(steamworks.SteamNetworkingSockets.Connection, int, int)", "steamworks.SteamNetworkingSockets.acceptConnection(steamworks.SteamNetworkingSockets.Connection)", "arc.util.Log.err(java.lang.String, java.lang.Object...)", "steamworks.SteamNetworkingSockets.closeConnection(steamworks.SteamNetworkingSockets.Connection, int, boolean)", "arc.struct.IntMap.get(int)", "arc.struct.IntMap.remove(int)", "java.util.concurrent.CopyOnWriteArrayList.remove(java.lang.Object)", "arc.struct.IntMap.put(int, V)", "java.util.concurrent.CopyOnWriteArrayList.add(E)", "mindustry.net.Net.handleServerReceived(mindustry.net.NetConnection, mindustry.net.Packet)", "mindustry.desktop.steam.SNet.disconnectSteamUser(steamworks.SteamID)", "mindustry.desktop.steam.SNet.startNetThread()", "java.lang.Runnable.run()", "mindustry.net.Net.setClientConnected()", "mindustry.net.Net.handleClientReceived(mindustry.net.Packet)", "arc.Application.post(java.lang.Runnable)", "mindustry.ui.fragments.LoadingFragment.hide()", "mindustry.core.UI.showErrorMessage(java.lang.String)", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "java.lang.Enum.name()", "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "mindustry.desktop.steam.SNet.SteamConnection.SteamConnection(steamworks.SteamID, steamworks.SteamNetworkingSockets.Connection)", "mindustry.net.Packets.Connect.Connect()", "mindustry.net.Packets.Disconnect.Disconnect()" ],
+    "callCount" : 27
+  }, {
+    "kind" : "method",
+    "signature" : "public void onGameLobbyJoinRequested(SteamID lobby, SteamID steamIDFriend)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onGameLobbyJoinRequested",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "lobby",
+      "type" : "SteamID"
+    }, {
+      "name" : "steamIDFriend",
+      "type" : "SteamID"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 550,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamMatchmaking.joinLobby(steamworks.SteamID)", "mindustry.ui.fragments.LoadingFragment.show(java.lang.String)", "mindustry.ui.fragments.LoadingFragment.setButton(java.lang.Runnable)", "mindustry.ui.fragments.LoadingFragment.hide()", "mindustry.core.NetClient.disconnectQuietly()" ],
+    "callCount" : 6
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "SteamConnection extends mindustry.net.NetConnection",
+    "simpleName" : "SteamConnection",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final ByteBuffer writeBuffer",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "writeBuffer",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 564,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final SteamID sid",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "sid",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 565,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final Connection connection",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "connection",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 566,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private final ArrayDeque<QueuedMessage> outgoing",
+      "desc" : "outgoing queue of not-yet-accepted messages, in send order",
+      "overloads" : null,
+      "name" : "outgoing",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 569,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "constant",
+      "signature" : "private static final int maxQueuedBytes",
+      "desc" : "50mb (for large data asset maps)",
+      "overloads" : null,
+      "name" : "maxQueuedBytes",
+      "returnType" : null,
+      "modifiers" : [ "private", "static", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 570,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private int queuedBytes",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "queuedBytes",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 571,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public SteamConnection(SteamID sid, Connection connection)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "SteamConnection",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "sid",
+        "type" : "SteamID"
+      }, {
+        "name" : "connection",
+        "type" : "Connection"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 573,
+      "calls" : [ "steamworks.SteamID.getAccountID()", "arc.util.Log.info(java.lang.String, java.lang.Object...)" ],
+      "callCount" : 2
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void pollWrites()",
+      "desc" : "Called in an external thread at around 60fps per client connection.",
+      "overloads" : null,
+      "name" : "pollWrites",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 581,
+      "calls" : [ "java.util.ArrayDeque.peek()", "steamworks.SteamNetworkingSockets.sendMessageToConnection(steamworks.SteamNetworkingSockets.Connection, java.nio.ByteBuffer, int)", "mindustry.desktop.steam.SNet.SteamConnection.handleError(java.lang.Exception)", "java.util.ArrayDeque.poll()", "java.nio.Buffer.capacity()", "java.util.ArrayDeque.clear()", "java.io.IOException.IOException(java.lang.String)" ],
+      "callCount" : 7
+    }, {
+      "kind" : "method",
+      "signature" : "public void send(Object object, boolean reliable)",
+      "desc" : "Can be called on any thread.",
+      "overloads" : null,
+      "name" : "send",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "object",
+        "type" : "Object"
+      }, {
+        "name" : "reliable",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 615,
+      "calls" : [ "java.nio.ByteBuffer.limit(int)", "java.nio.Buffer.capacity()", "java.nio.ByteBuffer.position(int)", "mindustry.net.ArcNetProvider.PacketSerializer.write(java.nio.ByteBuffer, java.lang.Object)", "java.nio.Buffer.position()", "java.nio.ByteBuffer.flip()", "java.nio.ByteBuffer.allocateDirect(int)", "java.nio.ByteBuffer.put(java.nio.ByteBuffer)", "java.util.ArrayDeque.add(E)", "mindustry.desktop.steam.SNet.SteamConnection.handleError(java.lang.Exception)", "java.io.IOException.IOException(java.lang.String)", "mindustry.desktop.steam.SNet.SteamConnection.QueuedMessage.QueuedMessage(java.nio.ByteBuffer, int)" ],
+      "callCount" : 12
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean isConnected()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "isConnected",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 648,
+      "calls" : [ "steamworks.SteamNetworkingSockets.Connection.isValid()" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "protected void kickDisconnect()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "kickDisconnect",
+      "returnType" : "void",
+      "modifiers" : [ "protected" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 653,
+      "calls" : [ "arc.util.Time.runTask(float, java.lang.Runnable)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public void close()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "close",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 659,
+      "calls" : [ "mindustry.desktop.steam.SNet.disconnectSteamUser(steamworks.SteamID)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "private void handleError(Exception e)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "handleError",
+      "returnType" : "void",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "e",
+        "type" : "Exception"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 664,
+      "calls" : [ "arc.Application.post(java.lang.Runnable)", "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "mindustry.desktop.steam.SNet.SteamConnection.close()", "arc.struct.IntMap.get(int)", "steamworks.SteamID.getAccountID()", "arc.struct.IntMap.remove(int)" ],
+      "callCount" : 6
+    } ],
+    "inner" : [ {
+      "kind" : "inner-class",
+      "signature" : "QueuedMessage",
+      "simpleName" : "QueuedMessage",
+      "desc" : null,
+      "fields" : [ {
+        "kind" : "field",
+        "signature" : "final ByteBuffer buffer",
+        "desc" : null,
+        "overloads" : null,
+        "name" : "buffer",
+        "returnType" : null,
+        "modifiers" : [ "final" ],
+        "parameters" : null,
+        "throwsList" : null,
+        "annotations" : null,
+        "line" : 676,
+        "calls" : null,
+        "callCount" : 0
+      }, {
+        "kind" : "field",
+        "signature" : "final int flags",
+        "desc" : null,
+        "overloads" : null,
+        "name" : "flags",
+        "returnType" : null,
+        "modifiers" : [ "final" ],
+        "parameters" : null,
+        "throwsList" : null,
+        "annotations" : null,
+        "line" : 677,
+        "calls" : null,
+        "callCount" : 0
+      } ],
+      "constructors" : [ {
+        "kind" : "ctor",
+        "signature" : "QueuedMessage(ByteBuffer buffer, int flags)",
+        "desc" : null,
+        "overloads" : null,
+        "name" : "QueuedMessage",
+        "returnType" : null,
+        "modifiers" : [ ],
+        "parameters" : [ {
+          "name" : "buffer",
+          "type" : "ByteBuffer"
+        }, {
+          "name" : "flags",
+          "type" : "int"
+        } ],
+        "throwsList" : null,
+        "annotations" : null,
+        "line" : 679,
+        "calls" : [ ],
+        "callCount" : 0
+      } ],
+      "methods" : [ ],
+      "inner" : [ ]
+    } ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "QueuedMessage",
+    "simpleName" : "QueuedMessage",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final ByteBuffer buffer",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "buffer",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 676,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final int flags",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "flags",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 677,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "QueuedMessage(ByteBuffer buffer, int flags)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "QueuedMessage",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "buffer",
+        "type" : "ByteBuffer"
+      }, {
+        "name" : "flags",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 679,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "SStats.java",
+  "pkg" : "mindustry.desktop.steam",
+  "type" : "Java class implements steamworks.SteamUserStatsCallback",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final SteamUserStats stats",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stats",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean updated",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updated",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int statSavePeriod",
+    "desc" : "in minutes",
+    "overloads" : null,
+    "name" : "statSavePeriod",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SStats()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SStats",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ "mindustry.service.GameService.init()", "arc.Events.on(java.lang.Class<T>, arc.func.Cons<T>)", "arc.util.Timer.schedule(java.lang.Runnable, float, float)", "steamworks.SteamUserStats.storeStats()" ],
+    "callCount" : 4
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void onUpdate()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void onUserStatsStored(long gameID, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onUserStatsStored",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "gameID",
+      "type" : "long"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 32,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SUser.java",
+  "pkg" : "mindustry.desktop.steam",
+  "type" : "Java class implements steamworks.SteamUserCallback",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final SteamUser user",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "user",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "SVars.java",
+  "pkg" : "mindustry.desktop.steam",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public final static int steamID",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "steamID",
+    "returnType" : null,
+    "modifiers" : [ "public", "final", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 4,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static SNet net",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "net",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static SStats stats",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stats",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static SWorkshop workshop",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "workshop",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static SUser user",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "user",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "SWorkshop.java",
+  "pkg" : "mindustry.desktop.steam",
+  "type" : "Java class implements steamworks.SteamUGCCallback",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final SteamUGC ugc",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ugc",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private ObjectMap<Class<? extends Publishable>,Seq<Fi>> workshopFiles",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "workshopFiles",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private ObjectMap<SteamUGCQuery,Cons2<Seq<SteamUGCDetails>,SteamResult>> detailHandlers",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "detailHandlers",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Seq<Cons<SteamPublishedFileID>> itemHandlers",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemHandlers",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private ObjectMap<SteamPublishedFileID,Runnable> updatedHandlers",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updatedHandlers",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SWorkshop()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SWorkshop",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : [ "steamworks.SteamUGC.getNumSubscribedItems()", "steamworks.SteamUGC.getSubscribedItems(steamworks.SteamPublishedFileID[])", "arc.struct.Seq.select(arc.func.Boolf<T>)", "arc.struct.Seq.map(arc.func.Func<T, R>)", "arc.struct.Seq.with(T...)", "steamworks.SteamUGC.getItemInstallInfo(steamworks.SteamPublishedFileID, steamworks.SteamUGC.ItemInstallInfo)", "steamworks.SteamUGC.ItemInstallInfo.getFolder()", "arc.files.Fi.list()", "arc.struct.ObjectMap.put(K, V)", "java.lang.String.equals(java.lang.Object)", "arc.files.Fi.extension()", "arc.files.Fi.exists()", "arc.files.Fi.child(java.lang.String)", "arc.struct.Seq.isEmpty()", "arc.struct.ObjectMap.get(T)", "mindustry.service.Achievement.complete()", "arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "java.lang.Class.getSimpleName()", "steamworks.SteamUGC.ItemInstallInfo.SteamUGC$ItemInstallInfo()", "arc.files.Fi.Fi(java.lang.String)" ],
+    "callCount" : 21
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<Fi> getWorkshopFiles(Class<? extends Publishable> type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getWorkshopFiles",
+    "returnType" : "Seq<Fi>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<? extends Publishable>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ "arc.struct.ObjectMap.get(K, arc.func.Prov<V>)", "arc.struct.Seq.Seq(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void publish(Publishable p)",
+    "desc" : "Publish a new item and submit an update for it.",
+    "overloads" : null,
+    "name" : "publish",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "p",
+      "type" : "Publishable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 60,
+    "calls" : [ "arc.util.Log.info(java.lang.Object)", "mindustry.type.Publishable.steamTitle()", "mindustry.type.Publishable.hasSteamID()", "mindustry.desktop.steam.SWorkshop.viewListing(mindustry.type.Publishable)", "mindustry.type.Publishable.prePublish()", "mindustry.desktop.steam.SWorkshop.showPublish(arc.func.Cons<steamworks.SteamPublishedFileID>)", "mindustry.desktop.steam.SWorkshop.update(mindustry.type.Publishable, steamworks.SteamPublishedFileID, java.lang.String, boolean)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void viewListing(Publishable p)",
+    "desc" : "Fetches info for an item, checking to make sure that it exists.",
+    "overloads" : null,
+    "name" : "viewListing",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "p",
+      "type" : "Publishable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ "mindustry.type.Publishable.getSteamID()", "arc.util.Strings.parseLong(java.lang.String, long)", "arc.util.Log.info(java.lang.Object)", "mindustry.ui.fragments.LoadingFragment.show()", "mindustry.desktop.steam.SWorkshop.query(steamworks.SteamUGCQuery, arc.func.Cons2<arc.struct.Seq<steamworks.SteamUGCDetails>, steamworks.SteamResult>)", "steamworks.SteamUGC.createQueryUGCDetailsRequest(steamworks.SteamPublishedFileID)", "mindustry.ui.fragments.LoadingFragment.hide()", "arc.struct.Seq.first()", "steamworks.SteamUGCDetails.getResult()", "steamworks.SteamNativeHandle.equals(java.lang.Object)", "steamworks.SteamUGCDetails.getOwnerID()", "steamworks.SteamUser.getSteamID()", "arc.scene.ui.layout.WidgetGroup.setFillParent(boolean)", "arc.scene.ui.layout.Cell.pad(float)", "arc.scene.ui.layout.Table.add(java.lang.CharSequence)", "mindustry.ui.dialogs.BaseDialog.addCloseButton()", "arc.scene.ui.layout.Cell.size(float, float)", "arc.scene.ui.layout.Table.button(java.lang.String, arc.scene.style.Drawable, java.lang.Runnable)", "mindustry.desktop.steam.SWorkshop.viewListingID(steamworks.SteamPublishedFileID)", "arc.scene.ui.Dialog.hide()", "arc.scene.ui.Dialog.show()", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Table.margin(float)", "arc.scene.ui.layout.Table.row()", "arc.scene.ui.layout.Cell.get()", "arc.scene.ui.layout.Table.area(java.lang.String, arc.func.Cons<java.lang.String>)", "arc.scene.ui.TextField.setMaxLength(int)", "arc.scene.ui.layout.Table.check(java.lang.String, arc.func.Boolc)", "arc.scene.ui.layout.Table.defaults()", "arc.scene.ui.layout.Table.button(java.lang.String, java.lang.Runnable)", "mindustry.type.Publishable.prePublish()", "mindustry.ui.fragments.LoadingFragment.show(java.lang.String)", "mindustry.desktop.steam.SWorkshop.update(mindustry.type.Publishable, steamworks.SteamPublishedFileID, java.lang.String, boolean)", "java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)", "arc.scene.ui.TextField.getText()", "steamworks.SteamFriends.activateGameOverlayToWebPage(java.lang.String)", "steamworks.SteamNativeHandle.handle()", "steamworks.SteamUGCDetails.getPublishedFileID()", "mindustry.type.Publishable.removeSteamID()", "mindustry.core.UI.showErrorMessage(java.lang.String)", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "java.lang.Enum.name()", "steamworks.SteamPublishedFileID.SteamPublishedFileID(long)", "mindustry.ui.dialogs.BaseDialog.BaseDialog(java.lang.String)" ],
+    "callCount" : 44
+  }, {
+    "kind" : "method",
+    "signature" : "void viewListingID(SteamPublishedFileID id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "viewListingID",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "SteamPublishedFileID"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 149,
+    "calls" : [ "steamworks.SteamFriends.activateGameOverlayToWebPage(java.lang.String)", "steamworks.SteamNativeHandle.handle()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "void update(Publishable p, SteamPublishedFileID id, String changelog, boolean updateDescription)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "p",
+      "type" : "Publishable"
+    }, {
+      "name" : "id",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "changelog",
+      "type" : "String"
+    }, {
+      "name" : "updateDescription",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 153,
+    "calls" : [ "arc.util.Log.info(java.lang.String, java.lang.Object...)", "mindustry.type.Publishable.steamTitle()", "steamworks.SteamNativeHandle.handle()", "mindustry.desktop.steam.SWorkshop.updateItem(steamworks.SteamPublishedFileID, arc.func.Cons<steamworks.SteamUGCUpdateHandle>, java.lang.Runnable)", "steamworks.SteamUGC.setItemTitle(steamworks.SteamUGCUpdateHandle, java.lang.String)", "mindustry.type.Publishable.steamDescription()", "steamworks.SteamUGC.setItemDescription(steamworks.SteamUGCUpdateHandle, java.lang.String)", "mindustry.type.Publishable.extraTags()", "arc.struct.Seq.add(T)", "mindustry.type.Publishable.steamTag()", "ugc.setItemTags", "arc.struct.Seq.toArray(java.lang.Class)", "arc.files.Fi.absolutePath()", "mindustry.type.Publishable.createSteamPreview(java.lang.String)", "steamworks.SteamUGC.setItemPreview(steamworks.SteamUGCUpdateHandle, java.lang.String)", "arc.files.Fi.exists()", "arc.files.Fi.get(java.lang.String)", "steamworks.SteamUGC.setItemContent(steamworks.SteamUGCUpdateHandle, java.lang.String)", "mindustry.type.Publishable.createSteamFolder(java.lang.String)", "steamworks.SteamUGC.setItemVisibility(steamworks.SteamUGCUpdateHandle, steamworks.SteamRemoteStorage.PublishedFileVisibility)", "steamworks.SteamUGC.submitItemUpdate(steamworks.SteamUGCUpdateHandle, java.lang.String)", "mindustry.service.Achievement.complete()", "mindustry.type.Publishable.addSteamID(java.lang.String)" ],
+    "callCount" : 23
+  }, {
+    "kind" : "method",
+    "signature" : "void showPublish(Cons<SteamPublishedFileID> published)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "showPublish",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "published",
+      "type" : "Cons<SteamPublishedFileID>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 185,
+    "calls" : [ "arc.scene.ui.layout.WidgetGroup.setFillParent(boolean)", "arc.scene.ui.layout.Cell.wrap()", "arc.scene.ui.layout.Cell.width(float)", "arc.scene.ui.layout.Table.add(java.lang.CharSequence)", "mindustry.ui.dialogs.BaseDialog.addCloseButton()", "arc.scene.ui.layout.Cell.size(float, float)", "arc.scene.ui.layout.Table.button(java.lang.String, arc.scene.style.Drawable, java.lang.Runnable)", "steamworks.SteamFriends.activateGameOverlayToWebPage(java.lang.String)", "arc.util.Log.info(java.lang.Object)", "arc.struct.Seq.add(T)", "steamworks.SteamUGC.createItem(int, steamworks.SteamRemoteStorage.WorkshopFileType)", "mindustry.ui.fragments.LoadingFragment.show(java.lang.String)", "arc.scene.ui.Dialog.hide()", "arc.scene.ui.Dialog.show()", "mindustry.ui.dialogs.BaseDialog.BaseDialog(java.lang.String)" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "void query(SteamUGCQuery query, Cons2<Seq<SteamUGCDetails>,SteamResult> handler)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "query",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "query",
+      "type" : "SteamUGCQuery"
+    }, {
+      "name" : "handler",
+      "type" : "Cons2<Seq<SteamUGCDetails>,SteamResult>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 204,
+    "calls" : [ "arc.util.Log.info(java.lang.Object)", "arc.struct.ObjectMap.put(K, V)", "steamworks.SteamUGC.sendQueryUGCRequest(steamworks.SteamUGCQuery)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "void updateItem(SteamPublishedFileID publishedFileID, Cons<SteamUGCUpdateHandle> tagger, Runnable updated)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateItem",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "tagger",
+      "type" : "Cons<SteamUGCUpdateHandle>"
+    }, {
+      "name" : "updated",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 210,
+    "calls" : [ "steamworks.SteamUGC.startItemUpdate(int, steamworks.SteamPublishedFileID)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamNativeHandle.handle()", "arc.func.Cons.get(T)", "arc.util.Log.info(java.lang.Object)", "mindustry.ui.fragments.LoadingFragment.setProgress(arc.func.Floatp)", "steamworks.SteamUGC.getItemUpdateProgress(steamworks.SteamUGCUpdateHandle, steamworks.SteamUGC.ItemUpdateInfo)", "mindustry.ui.fragments.LoadingFragment.setText(java.lang.String, arc.graphics.Color)", "java.lang.String.toLowerCase()", "java.lang.Enum.name()", "java.lang.Enum.ordinal()", "steamworks.SteamUGC.ItemUpdateStatus.values()", "arc.struct.ObjectMap.put(K, V)", "mindustry.ui.fragments.LoadingFragment.hide()", "arc.util.Log.err(java.lang.Throwable)", "steamworks.SteamUGC.ItemUpdateInfo.SteamUGC$ItemUpdateInfo()" ],
+    "callCount" : 16
+  }, {
+    "kind" : "method",
+    "signature" : "public void onUGCQueryCompleted(SteamUGCQuery query, int numResultsReturned, int totalMatchingResults, boolean isCachedData, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onUGCQueryCompleted",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "query",
+      "type" : "SteamUGCQuery"
+    }, {
+      "name" : "numResultsReturned",
+      "type" : "int"
+    }, {
+      "name" : "totalMatchingResults",
+      "type" : "int"
+    }, {
+      "name" : "isCachedData",
+      "type" : "boolean"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 237,
+    "calls" : [ "arc.util.Log.info(java.lang.Object)", "arc.struct.ObjectMap.containsKey(K)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "arc.struct.Seq.add(T)", "steamworks.SteamUGC.getQueryUGCResult(steamworks.SteamUGCQuery, int, steamworks.SteamUGCDetails)", "arc.struct.Seq.get(int)", "arc.func.Cons2.get(T, N)", "arc.struct.ObjectMap.remove(K)", "arc.struct.Seq.Seq()", "steamworks.SteamUGCDetails.SteamUGCDetails()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void onSubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onSubscribeItem",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 262,
+    "calls" : [ "steamworks.SteamUGC.getItemInstallInfo(steamworks.SteamPublishedFileID, steamworks.SteamUGC.ItemInstallInfo)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamUGC.ItemInstallInfo.getFolder()", "mindustry.service.Achievement.complete()", "steamworks.SteamUGC.ItemInstallInfo.SteamUGC$ItemInstallInfo()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void onUnsubscribeItem(SteamPublishedFileID publishedFileID, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onUnsubscribeItem",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 270,
+    "calls" : [ "steamworks.SteamUGC.getItemInstallInfo(steamworks.SteamPublishedFileID, steamworks.SteamUGC.ItemInstallInfo)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamUGC.ItemInstallInfo.getFolder()", "steamworks.SteamUGC.ItemInstallInfo.SteamUGC$ItemInstallInfo()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void onCreateItem(SteamPublishedFileID publishedFileID, boolean needsToAcceptWLA, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onCreateItem",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "needsToAcceptWLA",
+      "type" : "boolean"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 277,
+    "calls" : [ "arc.util.Log.info(java.lang.Object)", "arc.struct.Seq.isEmpty()", "arc.func.Cons.get(T)", "arc.struct.Seq.first()", "mindustry.core.UI.showErrorMessage(java.lang.String)", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "java.lang.Enum.name()", "arc.struct.Seq.remove(int)", "arc.util.Log.err(java.lang.String, java.lang.Object...)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void onSubmitItemUpdate(SteamPublishedFileID publishedFileID, boolean needsToAcceptWLA, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onSubmitItemUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "needsToAcceptWLA",
+      "type" : "boolean"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 294,
+    "calls" : [ "mindustry.ui.fragments.LoadingFragment.hide()", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamNativeHandle.handle()", "steamworks.SteamFriends.activateGameOverlayToWebPage(java.lang.String)", "arc.struct.ObjectMap.containsKey(K)", "java.lang.Runnable.run()", "arc.struct.ObjectMap.get(T)", "mindustry.core.UI.showErrorMessage(java.lang.String)", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "java.lang.Enum.name()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void onDownloadItemResult(int appID, SteamPublishedFileID publishedFileID, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onDownloadItemResult",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "appID",
+      "type" : "int"
+    }, {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 313,
+    "calls" : [ "mindustry.service.Achievement.complete()", "steamworks.SteamUGC.getItemInstallInfo(steamworks.SteamPublishedFileID, steamworks.SteamUGC.ItemInstallInfo)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamUGC.ItemInstallInfo.getFolder()", "steamworks.SteamUGC.ItemInstallInfo.SteamUGC$ItemInstallInfo()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void onDeleteItem(SteamPublishedFileID publishedFileID, SteamResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "onDeleteItem",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "publishedFileID",
+      "type" : "SteamPublishedFileID"
+    }, {
+      "name" : "result",
+      "type" : "SteamResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 321,
+    "calls" : [ "steamworks.SteamUGC.getItemInstallInfo(steamworks.SteamPublishedFileID, steamworks.SteamUGC.ItemInstallInfo)", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "steamworks.SteamUGC.ItemInstallInfo.getFolder()", "steamworks.SteamUGC.ItemInstallInfo.SteamUGC$ItemInstallInfo()" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+} ]

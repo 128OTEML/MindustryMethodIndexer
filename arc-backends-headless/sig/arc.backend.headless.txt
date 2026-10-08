@@ -1,0 +1,24 @@
+HeadlessApplication.java
+Java class implements arc.Application
+// a headless implementation of an application primarily intended to be used in servers
+fields:
+  protected final MockGraphics graphics
+  protected final Seq<ApplicationListener> listeners
+  protected final TaskQueue runnables
+  protected final Cons<Throwable> exceptionHandler
+  protected long renderInterval
+  protected Thread mainLoopThread
+  protected boolean running
+ctors:
+  public HeadlessApplication(ApplicationListener listener) / public HeadlessApplication(ApplicationListener listener, Cons<Throwable> exceptionHandler) / public HeadlessApplication(ApplicationListener listener, float renderIntervalSec, Cons<Throwable> exceptionHandler)
+methods:
+  protected void initialize()
+  void mainLoop()
+  public Thread getMainThread()
+  public ApplicationType getType()
+  public String getClipboardText()
+  public void setClipboardText(String text)
+  public Seq<ApplicationListener> getListeners()
+  public void post(Runnable runnable)
+  public void exit()
+

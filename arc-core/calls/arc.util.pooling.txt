@@ -1,0 +1,43 @@
+Pool
+  -> arc.struct.Seq.Seq(boolean, int)
+obtain
+  -> arc.util.pooling.Pool.newObject()
+  -> arc.struct.Seq.pop()
+free
+  -> arc.struct.Seq.add(T)
+  -> java.lang.Math.max(int, int)
+  -> arc.util.pooling.Pool.reset(T)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+reset
+  -> arc.util.pooling.Pool.Poolable.reset()
+freeAll
+  -> arc.struct.Seq.get(int)
+  -> arc.struct.Seq.add(T)
+  -> arc.util.pooling.Pool.reset(T)
+  -> java.lang.Math.max(int, int)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+clear
+  -> arc.struct.Seq.clear()
+get
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.func.Prov.get()
+  -> arc.struct.ObjectMap.put(K, V)
+  -> arc.util.pooling.Pool.Pool(int, int)
+  -> arc.util.pooling.Pools.get(java.lang.Class<T>, arc.func.Prov<T>, int)
+set
+  -> arc.struct.ObjectMap.put(K, V)
+obtain
+  -> arc.util.pooling.Pool.obtain()
+  -> arc.util.pooling.Pools.get(java.lang.Class<T>, arc.func.Prov<T>)
+free
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Object.getClass()
+  -> arc.util.pooling.Pool.free(T)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+freeAll
+  -> arc.util.pooling.Pools.freeAll(arc.struct.Seq, boolean)
+  -> arc.struct.Seq.get(int)
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Object.getClass()
+  -> arc.util.pooling.Pool.free(T)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)

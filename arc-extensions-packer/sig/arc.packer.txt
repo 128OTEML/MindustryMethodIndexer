@@ -1,0 +1,274 @@
+FileProcessor.java
+Java class
+// Collects files recursively, filtering by file name.
+fields:
+  FilenameFilter inputFilter
+  Comparator<File> comparator
+  Seq<Pattern> inputRegex
+  String outputSuffix
+  Seq<Entry> outputFiles
+  boolean recursive
+  boolean flattenOutput
+  Comparator<Entry> entryComparator
+ctors:
+  public FileProcessor() / public FileProcessor(FileProcessor processor)  // Copy constructor.
+methods:
+  public FileProcessor setInputFilter(FilenameFilter inputFilter)
+  public FileProcessor setComparator(Comparator<File> comparator)  // Sets the comparator for {@link #processDir(Entry, Seq)}.
+  public FileProcessor addInputSuffix(String suffixes)  // Adds a case insensitive suffix for matching input files.
+  public FileProcessor addInputRegex(String regexes)
+  public FileProcessor setOutputSuffix(String outputSuffix)  // Sets the suffix for output files, replacing the extension of the input file.
+  public FileProcessor setFlattenOutput(boolean flattenOutput)
+  public FileProcessor setRecursive(boolean recursive)  // Default is true.
+  public Seq<Entry> process(String inputFileOrDir, String outputRoot) throws Exception / public Seq<Entry> process(File inputFileOrDir, File outputRoot) throws Exception / public Seq<Entry> process(File[] files, File outputRoot) throws Exception / private void process(File[] files, File outputRoot, File outputDir, LinkedHashMap<File,Seq<Entry>> dirToEntries, int depth)  // @param outputRoot May be null.
+  protected void processFile(Entry entry) throws Exception  // Called with each input file.
+  protected void processDir(Entry entryDir, Seq<Entry> files) throws Exception  // Called for each input directory.
+  protected void addProcessedFile(Entry entry)  // This method should be called by {@link #processFile(Entry)} or {@link #processDir(Entry, Seq)} if the return value of
+inner-class: Entry
+// @author Nathan Sweet
+  fields:
+    public File inputFile
+    public File outputDir  // May be null.
+    public File outputFile
+    public int depth
+  ctors:
+    public Entry() / public Entry(File inputFile, File outputFile)
+  methods:
+    public String toString()
+
+GridPacker.java
+Java class implements arc.packer.TexturePacker.Packer
+// @author Nathan Sweet
+fields:
+  private final Settings settings
+ctors:
+  public GridPacker(Settings settings)
+methods:
+  public Seq<Page> pack(Seq<Rect> inputRects)
+  private Page packPage(Seq<Rect> inputRects, int cellWidth, int cellHeight, int maxWidth, int maxHeight)
+
+ImageProcessor.java
+Java class
+fields:
+  private static final Pixmap emptyImage
+  private final Settings settings
+  private final HashMap<String,Rect> crcs
+  private final Seq<Rect> rects
+  private float scale
+  private boolean resampling
+ctors:
+  public ImageProcessor(Settings settings)
+methods:
+  public void addImage(File file, String rootPath) / public Rect addImage(Pixmap image, String name)  // @param rootPath Used to strip the root directory prefix from image file names, can be null.
+  public void setScale(float scale)
+  public void setResampling(boolean resampling)
+  public Seq<Rect> getImages()
+  public void clear()
+  Rect processImage(Pixmap image, String name)  // Returns a rect for the image describing the texture region to be packed, or null if the image should not be packed.
+  private Rect stripWhitespace(Pixmap source, String name)  // Strips whitespace and returns the rect, or null if the image should be ignored.
+  private int[] getSplits(Pixmap image, String name)  // Returns the splits, or null if the image had no splits or the splits were only a single region.
+  private int[] getPads(Pixmap image, String name, int[] splits)  // Returns the pads, or null if the image had no pads or the pads match the splits.
+  private static int getSplitPoint(Pixmap image, String name, int startX, int startY, boolean startPoint, boolean xAxis)  // Hunts for the start or end of a sequence of split pixels.
+  private static String hash(Pixmap image) / private static void hash(MessageDigest digest, int value)
+
+MaxRectsPacker.java
+Java class implements arc.packer.TexturePacker.Packer
+// Packs pages of images using the maximal rectangles bin packing algorithm by Jukka Jylänki.
+fields:
+  final Settings settings
+  private final FreeRectChoiceHeuristic methods
+  private final MaxRects maxRects
+  private final Sort sort
+  private final Comparator<Rect> rectComparator
+ctors:
+  public MaxRectsPacker(Settings settings)
+methods:
+  public Seq<Page> pack(Seq<Rect> inputRects)
+  private Page packPage(Seq<Rect> inputRects)
+  private Page packAtSize(boolean fully, int width, int height, Seq<Rect> inputRects)  // @param fully If true, the only results that pack all rects will be considered.
+  private Page getBest(Page result1, Page result2)
+inner-class: BinarySearch
+  fields:
+    final boolean pot
+    final int min
+    int low
+  ctors:
+    public BinarySearch(int min, int max, int fuzziness, boolean pot, boolean mod4)
+  methods:
+    public int reset()
+    public int next(boolean result)
+inner-class: MaxRects
+// Maximal rectangles bin packing algorithm.
+  fields:
+    private int binWidth
+    private final Seq<Rect> usedRectangles
+    private final Seq<Rect> freeRectangles
+    private final Seq<Rect> rectanglesToCheckWhenPruning
+  methods:
+    public void init(int width, int height)
+    public Rect insert(Rect rect, FreeRectChoiceHeuristic method)  // Packs a single image.
+    public Page pack(Seq<Rect> rects, FreeRectChoiceHeuristic method)  // For each rectangle, packs each one then chooses the best and packs that.
+    public Page getResult()
+    private void placeRect(Rect node)
+    private Rect scoreRect(Rect rect, FreeRectChoiceHeuristic method)
+    private float getOccupancy()  // / Computes the ratio of used surface area.
+    private Rect findPositionForNewNodeBottomLeft(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)
+    private Rect findPositionForNewNodeBestShortSideFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)
+    private Rect findPositionForNewNodeBestLongSideFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)
+    private Rect findPositionForNewNodeBestAreaFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)
+    private int commonIntervalLength(int i1start, int i1end, int i2start, int i2end)  // / Returns 0 if the two intervals i1 and i2 are disjoint, or the length of their overlap otherwise.
+    private int contactPointScoreNode(int x, int y, int width, int height)
+    private Rect findPositionForNewNodeContactPoint(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)
+    private boolean splitFreeNode(Rect freeNode, Rect usedNode)
+    private void pruneFreeList()
+    private boolean isContainedIn(Rect a, Rect b)
+
+TexturePacker.java
+Java class
+// @author Nathan Sweet
+fields:
+  String rootPath
+  private final Settings settings
+  private final Packer packer
+  private final ImageProcessor imageProcessor
+  private final Seq<InputImage> inputImages
+ctors:
+  public TexturePacker(File rootDir, Settings settings) / public TexturePacker(Settings settings)  // @param rootDir See {@link #setRootDir(File)}.
+methods:
+  public void setRootDir(File rootDir)  // @param rootDir Used to strip the root directory prefix from image file names, can be null.
+  public void addImage(File file) / public void addImage(Pixmap image, String name)
+  public void pack(File outputDir, String packFileName)
+  private void writeImages(File outputDir, String scaledPackFileName, Seq<Page> pages)
+  private static void copy(Pixmap src, int x, int y, int w, int h, Pixmap dst, int dx, int dy, boolean rotated)
+  private void writePackFile(File outputDir, String scaledPackFileName, Seq<Page> pages) throws IOException
+  private void writeRect(Writes write, Page page, Rect rect, String name) throws IOException
+  public static void process(String input, String output, String packFileName) / public static void process(Settings settings, String input, String output, String packFileName)  // Packs using defaults settings.
+  public static boolean isModified(String input, String output, String packFileName, Settings settings) / private static boolean isModified(File file, long lastModified)  // @return true if the output file does not yet exist or its last modification date is before the last modification date of
+  public static boolean processIfModified(String input, String output, String packFileName) / public static boolean processIfModified(Settings settings, String input, String output, String packFileName)
+  public static void main(String[] args) throws Exception
+inner-class: Page
+// @author Nathan Sweet
+  fields:
+    public String imageName
+    public Seq<Rect> outputRects
+    public float occupancy
+    public int x
+inner-class: Alias implements java.lang.Comparable
+// @author Regnarock
+  fields:
+    public String name
+    public int index
+    public int splits
+    public int pads
+    public int offsetX
+  ctors:
+    public Alias(Rect rect)
+  methods:
+    public void apply(Rect rect)
+    public int compareTo(Alias o)
+inner-class: Rect implements java.lang.Comparable
+// @author Nathan Sweet
+  fields:
+    public String name
+    public int offsetX
+    public int x
+    public int width  // Portion of page taken by this region, including padding.
+    public boolean rotated
+    public Set<Alias> aliases
+    public int splits
+    public int pads
+    public boolean canRotate
+    boolean isPatch
+    Pixmap pixmap
+    Fi file
+    int score1
+  ctors:
+    Rect(Pixmap source, int left, int top, int newWidth, int newHeight, boolean isPatch) / Rect() / Rect(Rect rect)
+  methods:
+    public Pixmap getImage(ImageProcessor imageProcessor)
+    void set(Rect rect)
+    public int compareTo(Rect o)
+    public boolean equals(Object obj)
+    public String toString()
+    public static String getAtlasName(String name, boolean flattenPaths)
+inner-interface: Packer
+  methods:
+    Seq<Page> pack(Seq<Rect> inputRects)
+inner-class: InputImage
+  fields:
+    File file
+    String rootPath
+    Pixmap image
+inner-class: Settings implements java.lang.Cloneable
+// @author Nathan Sweet
+  fields:
+    public boolean pot
+    public boolean multipleOfFour
+    public int paddingX
+    public boolean edgePadding
+    public boolean duplicatePadding
+    public boolean rotation
+    public int minWidth
+    public int maxWidth
+    public boolean square
+    public boolean stripWhitespaceX
+    public boolean stripWhitespaceCenter  // Whether to strip whitespace in a way that keeps the region rectangle centered.
+    public String ignoredWhitespaceStrings  // Paths containing these strings do not have whitespace stripped.
+    public int alphaThreshold
+    public TextureFilter filterMin
+    public TextureWrap wrapX
+    public boolean alias
+    public boolean ignoreBlankImages
+    public boolean fast  // with fast = false packing takes an eternity, I have no idea why that wasn't the default before
+    public boolean silent
+    public boolean printAliases
+    public boolean combineSubdirectories
+    public boolean ignore
+    public boolean flattenPaths
+    public boolean bleed
+    public int bleedIterations
+    public boolean grid
+    public float scale
+    public String scaleSuffix
+    public boolean scaleResampling
+    public String atlasExtension
+  methods:
+    public Settings copy()
+    public String getScaledPackFileName(String packFileName, int scaleIndex)
+
+TexturePackerFileProcessor.java
+Java class extends arc.packer.FileProcessor
+// @author Nathan Sweet
+fields:
+  private final Settings defaultSettings
+  private ObjectMap<File,Settings> dirToSettings
+  private Json json
+  private String packFileName
+  private File root
+  Seq<File> ignoreDirs
+  boolean countOnly
+  int packCount
+ctors:
+  public TexturePackerFileProcessor() / public TexturePackerFileProcessor(Settings defaultSettings, String packFileName)
+methods:
+  public Seq<Entry> process(File inputFile, File outputRoot) throws Exception / public Seq<Entry> process(File[] files, File outputRoot) throws Exception
+  void merge(Settings settings, File settingsFile)
+  protected void deleteOutput(File outputRoot) throws Exception
+  protected void processDir(Entry inputDir, Seq<Entry> files) throws Exception
+
+TextureUnpacker.java
+Java class
+// Unpacks a texture atlas into individual image files.
+fields:
+  private static final String DEFAULT_OUTPUT_PATH
+  private static final int NINEPATCH_PADDING
+  private static final String HELP
+  private static final String ATLAS_FILE_EXTENSION
+methods:
+  private int parseArguments(String[] args)  // Checks the command line arguments for correctness.
+  private boolean checkDirectoryValidity(String directory)
+  public void splitAtlas(TextureAtlasData atlas, String outputDir, boolean quiet)  // Splits an atlas into seperate image and ninepatch files.
+  private Pixmap extractImage(Pixmap page, Region region, int padding)  // Extract an image from a texture atlas.
+  private Pixmap extractNinePatch(Pixmap page, Region region)  // Extract a ninepatch from a texture atlas, according to the android specification.
+  public static void main(String[] args)
+

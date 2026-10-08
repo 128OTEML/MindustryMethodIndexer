@@ -1,0 +1,371 @@
+// BlendFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[]{
+            new SliderOption("radius", () -> radius, f -> radius = f, 1f, 10f),
+            new BlockOption("block", () -> block, b -> block = b, anyOptional),
+            new BlockOption("floor", () -> floor, b -> floor = b, anyOptional),
+            new BlockOption("ignore", () -> ignore, b -> ignore = b, anyOptional)
+        };
+    }
+
+// BlendFilter.java : public boolean isBuffered()
+    @Override
+    public boolean isBuffered(){
+        return true;
+    }
+
+// BlendFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockSandFloor;
+    }
+
+// ClearFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[]{
+            new BlockOption("target", () -> target, b -> target = b, anyOptional),
+            new BlockOption("replacement", () -> replace, b -> replace = b, anyOptional),
+            new BlockOption("ignore", () -> ignore, b -> ignore = b, anyOptional)
+        };
+    }
+
+// ClearFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockSnow;
+    }
+
+// CoreSpawnFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        //disabled until necessary
+        // SliderOption("amount", () -> amount, f -> amount = (int)f, 1, 10).display()
+        return new FilterOption[]{};
+    }
+
+// CoreSpawnFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockCoreShard;
+    }
+
+// CoreSpawnFilter.java : public boolean isPost()
+    @Override
+    public boolean isPost(){
+        return true;
+    }
+
+// DistortFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new SliderOption[]{
+            new SliderOption("scale", () -> scl, f -> scl = f, 1f, 200f),
+            new SliderOption("mag", () -> mag, f -> mag = f, 0.5f, 100f)
+        };
+    }
+
+// DistortFilter.java : public boolean isBuffered()
+    @Override
+    public boolean isBuffered(){
+        return true;
+    }
+
+// DistortFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockTendrils;
+    }
+
+// DistortFilter.java : public void apply(GenerateInput in)
+    @Override
+    public void apply(GenerateInput in){
+        Tile tile = in.tile(in.x + noise(in, scl, mag) - mag / 2f, in.y + noise(1, in, scl, mag) - mag / 2f);
+
+        in.floor = tile.floor();
+        if(!tile.block().synthetic() && !in.block.synthetic()) in.block = tile.block();
+        in.overlay = tile.overlay();
+    }
+
+// EnemySpawnFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new SliderOption[]{
+            new SliderOption("amount", () -> amount, f -> amount = (int)f, 1, 10).display()
+        };
+    }
+
+// EnemySpawnFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockSpawn;
+    }
+
+// EnemySpawnFilter.java : public boolean isPost()
+    @Override
+    public boolean isPost(){
+        return true;
+    }
+
+// GenerateFilter.java : public void draw(Image image)
+    public void draw(Image image){}
+
+// GenerateFilter.java : public String simpleName()
+    public String simpleName(){
+        Class c = getClass();
+        if(c.isAnonymousClass()) c = c.getSuperclass();
+        return c.getSimpleName().toLowerCase().replace("filter", "");
+    }
+
+// GenerateFilter.java : public String name()
+    public String name(){
+        return Core.bundle.get("filter." + simpleName());
+    }
+
+// GenerateFilter.java : public char icon()
+    public char icon(){
+        return '\0';
+    }
+
+// GenerateFilter.java : public void randomize()
+    public void randomize(){
+        seed = Mathf.random(999999999);
+    }
+
+// GenerateFilter.java : public boolean isBuffered()
+    public boolean isBuffered(){
+        return false;
+    }
+
+// GenerateFilter.java : public boolean isPost()
+    public boolean isPost(){
+        return false;
+    }
+
+// GenerateFilter.java : protected float noise(int seedOffset, GenerateInput in, float scl, float mag) / protected float noise(GenerateInput in, float scl, float mag) / protected float noise(GenerateInput in, float scl, float mag, float octaves, float persistence) / protected float noise(float x, float y, float scl, float mag, float octaves, float persistence)
+    protected float noise(int seedOffset, GenerateInput in, float scl, float mag){
+        return Simplex.noise2d(seedOffset + seed, 1f, 0f, 1f / scl, in.x + 10, in.y + 10) * mag;
+    }
+
+// GenerateFilter.java : protected float rnoise(float x, float y, float scl, float mag) / protected float rnoise(float x, float y, int octaves, float scl, float falloff, float mag)
+    protected float rnoise(float x, float y, float scl, float mag){
+        return Ridged.noise2d(seed + 1, (int)(x), (int)(y), 1f / scl) * mag;
+    }
+
+// GenerateFilter.java : protected float chance(int x, int y)
+    protected float chance(int x, int y){
+        return Mathf.randomSeed(Pack.longInt(x, y + seed));
+    }
+
+// GenerateFilter.java : public GenerateFilter copy()
+    public GenerateFilter copy(){
+        try{
+            return (GenerateFilter) clone();
+        }catch(CloneNotSupportedException disgrace){
+            throw new RuntimeException("java is the best language", disgrace);
+        }
+    }
+
+// LogicFilter.java : public void apply(Tiles tiles, GenerateInput in)
+    @Override
+    public void apply(Tiles tiles, GenerateInput in){
+        //this updates map width/height global variables
+        logicVars.update();
+
+        LExecutor.runLogicScript(code, maxInstructionsExecution, loop);
+    }
+
+// LogicFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockMicroProcessor;
+    }
+
+// LogicFilter.java : public boolean isPost()
+    @Override
+    public boolean isPost(){
+        return true;
+    }
+
+// MedianFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new SliderOption[]{
+            new SliderOption("radius", () -> radius, f -> radius = f, 1f, 10f),
+            new SliderOption("percentile", () -> percentile, f -> percentile = f, 0f, 1f)
+        };
+    }
+
+// MedianFilter.java : public boolean isBuffered()
+    @Override
+    public boolean isBuffered(){
+        return true;
+    }
+
+// MedianFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockSporePine;
+    }
+
+// MirrorFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[]{
+            new SliderOption("angle", () -> angle, f -> angle = (int)f, 0, 360, 15),
+            new ToggleOption("rotate", () -> rotate, f -> rotate = f)
+        };
+    }
+
+// MirrorFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockMetalFloor5;
+    }
+
+// MirrorFilter.java : public static void getDrawRect(Image image, Rect out)
+    public static void getDrawRect(Image image, Rect out){
+        if(image == null || image.getDrawable() == null || out == null){
+            if(out != null) out.set(0f, 0f, 0f, 0f);
+            return;
+        }
+
+        Vec2 size = Scaling.fit.apply(image.getDrawable().getMinWidth(), image.getDrawable().getMinHeight(), image.getWidth(), image.getHeight());
+        //account for fit scaling so handles stay on the actual map area
+        out.set((image.getWidth() - size.x)/2f, (image.getHeight() - size.y)/2f, size.x, size.y);
+    }
+
+// MirrorFilter.java : float coord(float axis, int size)
+    float coord(float axis, int size){
+        if(size <= 1) return 0f;
+        return Mathf.clamp(axis, 0f, 1f) * (size - 1f);
+    }
+
+// MirrorFilter.java : boolean left(Vec2 a, Vec2 b, Vec2 c)
+    boolean left(Vec2 a, Vec2 b, Vec2 c){
+        return ((b.x - a.x)*(c.y - a.y) > (b.y - a.y)*(c.x - a.x));
+    }
+
+// MirrorFilter.java : void clipHalfLine(Vec2 v, float xmin, float ymin, float xmax, float ymax)
+    void clipHalfLine(Vec2 v, float xmin, float ymin, float xmax, float ymax){
+        //finds the coordinates of the intersection of the half line created by the vector at (0,0) with the clipping rectangle
+        v.scl(1f / Math.max(Math.abs(v.x < 0 ? v.x / xmin : v.x / xmax), Math.abs(v.y < 0 ? v.y / ymin : v.y / ymax)));
+    }
+
+// NoiseFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockPebbles;
+    }
+
+// NoiseFilter.java : public void apply(GenerateInput in)
+    @Override
+    public void apply(GenerateInput in){
+        float noise = noise(in.x, in.y + in.x * tilt, scl, 1f, octaves, falloff);
+
+        if(noise > threshold && (target == Blocks.air || in.floor == target || in.block == target)){
+            if(floor != Blocks.air) in.floor = floor;
+            if(block != Blocks.air && in.block != Blocks.air && !in.block.synthetic()) in.block = block;
+        }
+    }
+
+// OreFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockOreCopper;
+    }
+
+// OreFilter.java : public void apply(GenerateInput in)
+    @Override
+    public void apply(GenerateInput in){
+        float noise = noise(in.x, in.y + in.x * tilt, scl, 1f, octaves, falloff);
+
+        if(noise > threshold && in.overlay != Blocks.spawn && (target == Blocks.air || in.floor == target || in.overlay == target) && in.floor.asFloor().hasSurface()){
+            in.overlay = ore;
+        }
+    }
+
+// OreMedianFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new SliderOption[]{
+            new SliderOption("radius", () -> radius, f -> radius = f, 1f, 12f),
+            new SliderOption("percentile", () -> percentile, f -> percentile = f, 0f, 1f)
+        };
+    }
+
+// OreMedianFilter.java : public boolean isBuffered()
+    @Override
+    public boolean isBuffered(){
+        return true;
+    }
+
+// OreMedianFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockOreLead;
+    }
+
+// RandomItemFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[0];
+    }
+
+// RandomItemFilter.java : public boolean isPost()
+    @Override
+    public boolean isPost(){
+        return true;
+    }
+
+// RiverNoiseFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockShallowWater;
+    }
+
+// ScatterFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[]{
+            new SliderOption("chance", () -> chance, f -> chance = f, 0f, 1f),
+            new BlockOption("flooronto", () -> flooronto, b -> flooronto = b, floorsOptional),
+            new BlockOption("floor", () -> floor, b -> floor = b, floorsOptional),
+            new BlockOption("block", () -> block, b -> block = b, wallsOresOptional)
+        };
+    }
+
+// ScatterFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockBoulder;
+    }
+
+// SpawnPathFilter.java : public FilterOption[] options()
+    @Override
+    public FilterOption[] options(){
+        return new FilterOption[]{
+            new SliderOption("radius", () -> radius, f -> radius = (int)f, 1, 20, 1f).display(),
+            new BlockOption("wall", () -> block, b -> block = b, wallsOnly)
+        };
+    }
+
+// SpawnPathFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockCoreZone;
+    }
+
+// SpawnPathFilter.java : public boolean isPost()
+    @Override
+    public boolean isPost(){
+        return true;
+    }
+
+// TerrainFilter.java : public char icon()
+    @Override
+    public char icon(){
+        return Iconc.blockStoneWall;
+    }
+

@@ -1,0 +1,988 @@
+Animation.java
+Java class
+// <p>
+fields:
+  T keyFrames  // Length must not be modified without updating {@link #animationDuration}.
+  private float frameDuration
+  private float animationDuration
+  private int lastFrameNumber
+  private float lastStateTime
+  private PlayMode playMode
+ctors:
+  public Animation(float frameDuration, Seq<? extends T> keyFrames) / public Animation(float frameDuration, Seq<? extends T> keyFrames, PlayMode playMode) / public Animation(float frameDuration, T keyFrames)  // Constructor, storing the frame duration and key frames.
+methods:
+  public T getKeyFrame(float stateTime, boolean looping) / public T getKeyFrame(float stateTime)  // Returns a frame based on the so called state time.
+  public int getKeyFrameIndex(float stateTime)  // Returns the current frame number.
+  public T[] getKeyFrames()  // Returns the keyframes[] array where all the frames of the animation are stored.
+  protected void setKeyFrames(T keyFrames)
+  public PlayMode getPlayMode()  // Returns the animation play mode.
+  public void setPlayMode(PlayMode playMode)  // Sets the animation play mode.
+  public boolean isAnimationFinished(float stateTime)  // Whether the animation would be finished if played without looping (PlayMode#NORMAL), given the state time.
+  public float getFrameDuration()  // @return the duration of a frame in seconds
+  public void setFrameDuration(float frameDuration)  // Sets duration a frame will be displayed.
+  public float getAnimationDuration()  // @return the duration of the entire animation, number of frames times frame duration, in seconds
+
+Batch.java
+Java class (abstract) implements arc.util.Disposable
+// Base batch class.
+fields:
+  protected float z
+  protected int idx
+  protected Texture lastTexture
+  protected boolean apply
+  protected final Mat transformMatrix
+  protected final Mat projectionMatrix
+  protected final Mat combinedMatrix
+  protected Blending blending
+  protected Shader shader
+  protected boolean ownsShader
+  protected float colorPacked
+  protected float mixColorPacked
+methods:
+  protected void z(float z)
+  protected void setSort(boolean sort)  // Enables or disables Z-sorting.
+  protected void setPackedColor(float packedColor)
+  protected float getPackedColor()
+  protected void setPackedMixColor(float packedColor)
+  protected float getPackedMixColor()
+  protected abstract void draw(Texture texture, float[] spriteVertices, int offset, int count) / protected abstract void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) / protected void draw(Runnable request)
+  protected abstract void flush()
+  protected void discard()  // Discards any pending sprites.
+  protected void setBlending(Blending blending)
+  protected Blending getBlending()
+  public void dispose()
+  protected Mat getProjection()
+  protected Mat getTransform()
+  protected void setProjection(Mat projection)
+  protected void setTransform(Mat transform)
+  protected void setupMatrices()
+  protected void switchTexture(Texture texture)
+  protected void setShader(Shader shader) / protected void setShader(Shader shader, boolean apply)
+  protected Shader getShader()
+
+Bloom.java
+Java class
+// Requires bloom shaders in 'bloomshaders' folder.
+fields:
+  public int blurPasses
+  public boolean blending
+  private Shader thresholdShader
+  private FrameBuffer buffer
+  private float bloomIntensity
+  private boolean capturing
+  private float r
+ctors:
+  public Bloom() / public Bloom(boolean useBlending) / public Bloom(int width, int height, boolean hasDepth, boolean useBlending)  // Creates a bloom instance with no blending, no depth and 1/4 the screen size.
+methods:
+  public void resume()  // Rebinds the context.
+  public void resize(int width, int height) / public void resize(int width, int height, int scaling)
+  private void init(int width, int height, boolean hasDepth, boolean useBlending)
+  public void setClearColor(float r, float g, float b, float a)  // Set clearing color for capturing buffer.
+  public void capture()  // Call this before rendering scene.
+  public void capturePause()  // Pause capturing to the buffer.
+  public void captureContinue()  // Start capturing again after pause, no clearing is done to the buffer.
+  public void render()  // Renders the bloomed scene.
+  public void setBloomIntensity(float intensity)  // Set intensity for bloom.
+  public void setOriginalIntensity(float intensity)  // Set intensity for original scene.
+  public void setThreshold(float threshold)  // Threshold for bright parts.
+  private void setSize(int width, int height)
+  public FrameBuffer buffer()  // @return The unprocessed frame buffer this bloom captures.
+  public void dispose()  // Disposes all resources.
+  private static Shader createShader(String vertexName, String fragmentName)
+
+CacheBatch.java
+Java class extends arc.graphics.g2d.Batch
+fields:
+  public SpriteCache cache
+  float tmpVertices
+ctors:
+  public CacheBatch(int size) / public CacheBatch(SpriteCache cache)
+methods:
+  public void flush()
+  public void setPackedColor(float color)
+  public float getPackedColor()
+  public void setProjection(Mat projection)
+  public void beginCache()
+  public int endCache()
+  protected void draw(Texture texture, float[] spriteVertices, int offset, int count) / protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation)
+  public void setShader(Shader shader) / public void setShader(Shader shader, boolean apply)
+  public void dispose()
+  public void beginDraw()
+  public void endDraw()
+  public void drawCache(int id)
+
+DistanceFieldFont.java
+Java class extends arc.graphics.g2d.Font
+// Renders bitmap fonts using distance field textures, see the <a
+fields:
+  private float distanceFieldSmoothing
+ctors:
+  public DistanceFieldFont(FontData data, Seq<TextureRegion> pageRegions, boolean integer) / public DistanceFieldFont(FontData data, TextureRegion region, boolean integer) / public DistanceFieldFont(Fi fontFile, boolean flip) / public DistanceFieldFont(Fi fontFile, Fi imageFile, boolean flip, boolean integer) / public DistanceFieldFont(Fi fontFile, Fi imageFile, boolean flip) / public DistanceFieldFont(Fi fontFile, TextureRegion region, boolean flip) / public DistanceFieldFont(Fi fontFile, TextureRegion region) / public DistanceFieldFont(Fi fontFile)
+methods:
+  public static Shader createDistanceFieldShader()  // Returns a new instance of the distance field shader, see https://github.com/libgdx/libgdx/wiki/Distance-field-fonts if the
+  protected void load(FontData data)
+  public FontCache newFontCache()
+  public float getDistanceFieldSmoothing()  // @return The distance field smoothing factor for this font.
+  public void setDistanceFieldSmoothing(float distanceFieldSmoothing)  // @param distanceFieldSmoothing Set the distance field smoothing factor for this font.
+inner-class: DistanceFieldFontCache extends arc.graphics.g2d.FontCache
+// Provides a font cache that uses distance field shader for rendering fonts.
+  ctors:
+    public DistanceFieldFontCache(DistanceFieldFont font) / public DistanceFieldFontCache(DistanceFieldFont font, boolean integer)
+  methods:
+    private float getSmoothingFactor()
+    private void setSmoothingUniform(float smoothing)
+    public void draw() / public void draw(int start, int end)
+
+Draw.java
+Java class
+fields:
+  private static ScreenQuad squad
+  private static final Color carr
+  private static final float vertices
+  private static FloatFloatf zTransformer
+  private static float actualZ
+  private static Color retColor
+  public static float scl
+  public static float xscl
+methods:
+  private static ScreenQuad getQuad()
+  public static void blit(Shader shader) / public static void blit(Texture texture, Shader shader) / public static void blit(FrameBuffer buffer, Shader shader)  // Blits an already-bound texture onto the screen with a shader.
+  public static void batch(Batch nextBatch) / public static void batch(Batch nextBatch, Runnable run)
+  public static void stencil(Runnable stencil, Runnable contents)
+  public static void beginStencil()
+  public static void beginStenciled()
+  public static void endStencil()
+  public static void scl(float nscl) / public static void scl(float nxscl, float nyscl) / public static void scl()
+  public static Shader getShader()
+  public static void shader(Shader shader) / public static void shader(Shader shader, boolean apply) / public static void shader()
+  public static void sort(boolean sort)  // Note that sorting is disabled by default, even if it is supported.
+  public static void zTransform(FloatFloatf f) / public static void zTransform()  // Sets a Z-transformer function that will modify subsequent calls to Draw.z.
+  public static float z() / public static void z(float z)  // Note that this does nothing on most Batch implementations.
+  public static float getColorAlpha()
+  public static float getColorPacked()
+  public static float getMixColorPacked()
+  public static Color getColor()
+  public static Color getMixColor()
+  public static void mixcol(Color color, float a) / public static void mixcol(Color a, Color b, float prog) / public static void mixcol() / public static void mixcol(float color)
+  public static void tint(Color a, Color b, float s) / public static void tint(Color color)
+  public static void colorMul(Color color, float mul)
+  public static void color(Color color) / public static void color(Color color, float alpha) / public static void color(int color) / public static void color(float color) / public static void color(Color a, Color b, Color c, float progress) / public static void color(Color a, Color b, float s) / public static void color() / public static void color(float r, float g, float b) / public static void color(float r, float g, float b, float a)  // Automatically mixes colors.
+  public static void colorl(float l) / public static void colorl(float l, float a)  // Lightness color.
+  public static void blend(Blending blending) / public static void blend()
+  public static Blending getBlend()
+  public static void reset()
+  public static void alpha(float alpha)
+  public static void fbo(FrameBuffer buffer, int worldWidth, int worldHeight, int tilesize) / public static void fbo(Texture texture, int worldWidth, int worldHeight, int tilesize) / public static void fbo(Texture texture, int worldWidth, int worldHeight, int tilesize, float offset)  // Draws a portion of a world-sized texture.
+  public static void draw(float z, Runnable run)  // On a sorting or queued batch implementation, this treats everything inside the runnable as one unit.
+  public static void drawRange(float z, Runnable begin, Runnable end) / public static void drawRange(float z, float range, Runnable begin, Runnable end)  // Applies runnables for the begin and end of a specific Z value.
+  public static void quad(TextureRegion region, float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4)
+  public static void rect() / public static void rect(String region, float x, float y, float w, float h) / public static void rect(TextureRegion region, float x, float y, float w, float h) / public static void rect(TextureRegion region, float x, float y) / public static void rect(String region, float x, float y) / public static void rect(TextureRegion region, float x, float y, float w, float h, float originX, float originY, float rotation) / public static void rect(String region, float x, float y, float w, float h, float originX, float originY, float rotation) / public static void rect(TextureRegion region, float x, float y, float w, float h, float rotation) / public static void rect(String region, float x, float y, float w, float h, float rotation) / public static void rect(TextureRegion region, Position pos, float w, float h) / public static void rect(TextureRegion region, Position pos, float w, float h, float rotation) / public static void rect(TextureRegion region, Position pos, float rotation) / public static void rect(TextureRegion region, float x, float y, float rotation) / public static void rect(String region, float x, float y, float rotation)  // Fill a white quad to the camera.
+  public static void vert(Texture texture, float[] vertices, int offset, int length)
+  public static void flush()
+  public static void discard()  // Discards any pending batched sprites.
+  public static void proj(float x, float y, float w, float h) / public static void proj(Camera proj) / public static void proj(Mat proj) / public static Mat proj()
+  public static void trans(Mat trans) / public static Mat trans()
+  public static TextureRegion wrap(Texture texture)
+  public static void rectv(TextureRegion region, float x, float y, float width, float height, Cons<Vec2> tweaker) / public static void rectv(TextureRegion region, float x, float y, float width, float height, float rotation, Cons<Vec2> tweaker) / public static void rectv(TextureRegion region, float x, float y, float width, float height, float originX, float originY, float rotation, Cons<Vec2> tweaker)
+
+Fill.java
+Java class
+fields:
+  private static float vertices
+  private static TextureRegion circleRegion
+  private static FloatSeq polyFloats
+methods:
+  public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) / public static void quad(float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4) / public static void quad(TextureRegion region, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) / public static void quad(TextureRegion region, float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4) / public static void quad(Texture texture, float x1, float y1, float c1, float u1, float v1, float x2, float y2, float c2, float u2, float v2, float x3, float y3, float c3, float u3, float v3, float x4, float y4, float c4, float u4, float v4)
+  public static void tri(float x1, float y1, float x2, float y2, float x3, float y3)
+  public static void dropShadowRect(float x, float y, float width, float height, float blur, float opacity)  // Draws an uncentered drop shadow.
+  public static void dropShadow(float x, float y, float width, float height, float blur, float opacity)  // Draws a centered drop shadow.
+  public static void light(float x, float y, int sides, float radius, Color center, Color edge) / public static void light(float x, float y, int sides, float radius, float rotation, Color center, Color edge)
+  public static void lightInner(float x, float y, int sides, float innerRadius, float radius, float rotation, Color center, Color edge)
+  public static void polyBegin()
+  public static void polyPoint(float x, float y)
+  public static void polyEnd()
+  public static void poly(Polygon p) / public static void poly(FloatSeq vertices) / public static void poly(float[] vertices, int length) / public static void poly(float x, float y, int sides, float radius) / public static void poly(float x, float y, int sides, float radius, float rotation)
+  public static void arc(float x, float y, float radius, float fraction) / public static void arc(float x, float y, float radius, float fraction, float rotation) / public static void arc(float x, float y, float radius, float fraction, float rotation, int sides)
+  public static void circle(Circle c) / public static void circle(float x, float y, float radius)
+  public static void rect(Rect r) / public static void rect(float x, float y, float w, float h) / public static void rect(float x, float y, float w, float h, float rot)
+  public static void crect(float x, float y, float w, float h)
+  public static void rects(float x, float y, float w, float h, float skew)
+  public static void square(float x, float y, float radius) / public static void square(float x, float y, float radius, float rotation)
+
+Font.java
+Java class implements arc.util.Disposable
+// Renders bitmap fonts.
+fields:
+  private static final int LOG2_PAGE_SIZE
+  private static final int PAGE_SIZE
+  private static final int PAGES
+  public final FontData data
+  private final FontCache cache
+  Seq<TextureRegion> regions
+  boolean integer
+  private boolean flipped
+  private boolean ownsTexture
+ctors:
+  public Font(Fi fontFile, TextureRegion region) / public Font(Fi fontFile, TextureRegion region, boolean flip) / public Font(Fi fontFile) / public Font(Fi fontFile, boolean flip) / public Font(Fi fontFile, Fi imageFile, boolean flip) / public Font(Fi fontFile, Fi imageFile, boolean flip, boolean integer) / public Font(FontData data, TextureRegion region, boolean integer) / public Font(FontData data, Seq<TextureRegion> pageRegions, boolean integer)  // Creates a BitmapFont with the glyphs relative to the specified region.
+methods:
+  static int indexOf(CharSequence text, char ch, int start)
+  protected void load(FontData data)
+  public GlyphLayout draw(CharSequence str, float x, float y) / public GlyphLayout draw(CharSequence str, float x, float y, Color color, float scale, boolean integer, int halign) / public GlyphLayout draw(CharSequence str, float x, float y, int halign) / public GlyphLayout draw(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void draw(GlyphLayout layout, float x, float y)  // Draws text at the specified position.
+  public Color getColor()  // Returns the color of text drawn with this font.
+  public void setColor(Color color) / public void setColor(float r, float g, float b, float a)  // A convenience method for setting the font color.
+  public float getScaleX()
+  public float getScaleY()
+  public TextureRegion getRegion() / public TextureRegion getRegion(int index)  // Returns the first texture region.
+  public Seq<TextureRegion> getRegions()  // Returns the array of TextureRegions that represents each texture page of glyphs.
+  public float getLineHeight()  // Returns the line height, which is the distance from one line of text to the next.
+  public float getSpaceXadvance()  // Returns the x-advance of the space character.
+  public float getXHeight()  // Returns the x-height, which is the distance from the top of most lowercase characters to the baseline.
+  public float getCapHeight()  // Returns the cap height, which is the distance from the top of most uppercase characters to the baseline.
+  public float getAscent()  // Returns the ascent, which is the distance from the cap height to the top of the tallest glyph.
+  public float getDescent()  // Returns the descent, which is the distance from the bottom of the glyph that extends the lowest to the baseline.
+  public boolean isFlipped()  // Returns true if this BitmapFont has been flipped for use with a y-down coordinate system.
+  public void dispose()  // Disposes the texture used by this BitmapFont's region IF this BitmapFont created the texture.
+  public boolean isDisposed()
+  public void setFixedWidthGlyphs(CharSequence glyphs)  // Makes the specified glyphs fixed width.
+  public void setUseIntegerPositions(boolean integer)  // Specifies whether to use integer positions.
+  public boolean usesIntegerPositions()  // Checks whether this font uses integer positions for drawing.
+  public FontCache getCache()  // For expert usage -- returns the BitmapFontCache used by this font, for rendering to a sprite batch.
+  public FontData getData()  // Gets the underlying {@link FontData} for this BitmapFont.
+  public boolean ownsTexture()  // @return whether the texture is owned by the font, font disposes the texture itself if true
+  public void setOwnsTexture(boolean ownsTexture)  // Sets whether the font owns the texture.
+  public FontCache newFontCache()  // Creates a new BitmapFontCache for this font.
+  public String toString()
+  public void addFallback(Font other)  // Adds a fallback font.
+inner-class: Glyph
+// Represents a single character in a font page.
+  fields:
+    public int id
+    public int srcX
+    public int srcY
+    public int width
+    public float u
+    public int xoffset
+    public int xadvance
+    public byte kerning
+    public boolean fixedWidth
+    public int page  // The index to the texture page that holds this glyph.
+  methods:
+    public int getKerning(char ch)
+    public void setKerning(int ch, int value)
+    public String toString()
+inner-class: FontData
+// Backing data for a {@link Font}.
+  fields:
+    public final Glyph glyphs
+    public String imagePaths  // An array of the image paths, for multiple texture pages.
+    public Fi fontFile
+    public boolean flipped
+    public float padTop
+    public float lineHeight  // The distance from one line of text to the next.
+    public float capHeight  // The distance from the top of most uppercase characters to the baseline.
+    public float ascent  // The distance from the cap height to the top of the tallest glyph.
+    public float descent  // The distance from the bottom of the glyph that extends the lowest to the baseline.
+    public float down  // The distance to move down when \n is encountered.
+    public float blankLineScale  // Multiplier for the line height of blank lines.
+    public float scaleX
+    public boolean markupEnabled
+    public float cursorX  // The amount to add to the glyph X position when drawing a cursor between glyphs.
+    public Glyph missingGlyph  // The glyph to display for characters not in the font.
+    public float spaceXadvance  // The width of the space character.
+    public float xHeight  // The x-height, which is the distance from the top of most lowercase characters to the baseline.
+    public char breakChars  // Additional characters besides whitespace where text is wrapped.
+    public char xChars
+    public char capChars
+  ctors:
+    public FontData() / public FontData(Fi fontFile, boolean flip)  // Creates an empty BitmapFontData for configuration before calling {@link #load(Fi, boolean)}, to subclass, or to
+  methods:
+    public void setOverride(FontData override)
+    public void addFallback(FontData data)
+    public void load(Fi fontFile, boolean flip)
+    public void setGlyphRegion(Glyph glyph, TextureRegion region)
+    public void setLineHeight(float height)  // Sets the line height, which is the distance from one line of text to the next.
+    public void setGlyph(int ch, Glyph glyph)
+    public Glyph getFirstGlyph()
+    public boolean hasGlyph(char ch)  // Returns true if the font has the glyph, or if the font has a {@link #missingGlyph}.
+    public Glyph getGlyph(char ch)  // Returns the glyph for the specified character, or null if no such glyph exists.
+    public void getGlyphs(GlyphRun run, CharSequence str, int start, int end, Glyph lastGlyph)  // Using the specified string, populates the glyphs and positions of the specified glyph run.
+    public int getWrapIndex(Seq<Glyph> glyphs, int start)  // Returns the first valid glyph index to use to wrap to the next line, starting at the specified start index and
+    public boolean isBreakChar(char c)
+    public boolean isWhitespace(char c)
+    public String getImagePath(int index)  // Returns the image path for the texture page at the given index (the "id" in the BMFont file).
+    public String[] getImagePaths()
+    public Fi getFontFile()
+    public void setScale(float scaleX, float scaleY) / public void setScale(float scaleXY)  // Scales the font by the specified amounts on both axes
+    public void scale(float amount)  // Sets the font's scale relative to the current scale.
+
+FontCache.java
+Java class
+// Caches glyph geometry for a BitmapFont, providing a fast way to render static text.
+fields:
+  private static final Color tempColor
+  private final Font font
+  private final Seq<GlyphLayout> layouts
+  private final Seq<GlyphLayout> pooledLayouts
+  private final Color color
+  private boolean integer
+  private int glyphCount
+  private float x
+  private float currentTint
+  private float pageVertices  // Vertex data per page.
+  private int idx  // Number of vertex data entries per page.
+  private IntSeq pageGlyphIndices  // For each page, an array with a value for each glyph from that page, where the value is the index of the character in the
+  private int tempGlyphCount  // Used internally to ensure a correct capacity for multi-page font vertex data.
+ctors:
+  public FontCache(Font font) / public FontCache(Font font, boolean integer)  // @param integer If true, rendering positions will be at integer values to avoid filtering artifacts.
+methods:
+  public void setPosition(float x, float y)  // Sets the position of the text, relative to the position when the cached text was created.
+  public void translate(float xAmount, float yAmount)  // Sets the position of the text, relative to its current position.
+  public void setRotation(float angleDeg, float anchorX, float anchorY)  // Sets the rotation of the text, relative to the anchor points given.
+  public void tint(Color tint)  // Tints all text currently in the cache.
+  public void setAlphas(float alpha)  // Sets the alpha component of all text currently in the cache.
+  public void setColors(float color) / public void setColors(Color tint) / public void setColors(float r, float g, float b, float a) / public void setColors(Color tint, int start, int end) / public void setColors(float color, int start, int end)  // Sets the color of all text currently in the cache.
+  public Color getColor()  // Returns the color used for subsequently added text.
+  public void setColor(Color color) / public void setColor(float r, float g, float b, float a)  // A convenience method for setting the cache color.
+  public void draw() / public void draw(int start, int end) / public void draw(float alphaModulation)
+  public void clear()  // Removes all glyphs in the cache.
+  private void requireGlyphs(GlyphLayout layout)
+  private void requirePageGlyphs(int page, int glyphCount)
+  private void addToCache(GlyphLayout layout, float x, float y)
+  private void addGlyph(Glyph glyph, float x, float y, float color)
+  public GlyphLayout setText(CharSequence str, float x, float y) / public GlyphLayout setText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void setText(GlyphLayout layout, float x, float y)  // Clears any cached glyphs and adds glyphs for the specified text.
+  public GlyphLayout addText(CharSequence str, float x, float y) / public GlyphLayout addText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void addText(GlyphLayout layout, float x, float y)  // Adds glyphs for the specified text.
+  public float getX()  // Returns the x position of the cached string, relative to the position when the string was cached.
+  public float getY()  // Returns the y position of the cached string, relative to the position when the string was cached.
+  public Font getFont()
+  public void setUseIntegerPositions(boolean use)  // Specifies whether to use integer positions or not.
+  public boolean usesIntegerPositions()  // @return whether this font uses integer positions for drawing.
+  public float[] getVertices() / public float[] getVertices(int page)
+  public int getVertexCount(int page)
+  public Seq<GlyphLayout> getLayouts()
+
+ForkJoinHolder.java
+Java class
+fields:
+  public final ForkJoinPool pool
+  public PopulateTask populateTask
+
+GlyphLayout.java
+Java class implements arc.util.pooling.Pool.Poolable
+// Stores {@link GlyphRun runs} of glyphs for a piece of text.
+fields:
+  public final Seq<GlyphRun> runs
+  private final Seq<Color> colorStack
+  public boolean ignoreMarkup
+  public float width
+ctors:
+  public GlyphLayout() / public GlyphLayout(boolean ignoreMarkup) / public GlyphLayout(Font font, CharSequence str) / public GlyphLayout(Font font, CharSequence str, Color color, float targetWidth, int halign, boolean wrap) / public GlyphLayout(Font font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate)  // Creates an empty GlyphLayout.
+methods:
+  public static GlyphLayout obtain()
+  public void free()
+  public void setText(Font font, CharSequence str) / public void setText(Font font, CharSequence str, Color color, float targetWidth, int halign, boolean wrap) / public void setText(Font font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate)  // @param color The default color to use for the text (the BitmapFont {@link Font#getColor() color} is not used).
+  private void truncate(FontData fontData, GlyphRun run, float targetWidth, String truncate, int widthIndex, Pool<GlyphRun> glyphRunPool)  // @param truncate May be empty string.
+  private GlyphRun wrap(FontData fontData, GlyphRun first, Pool<GlyphRun> glyphRunPool, int wrapIndex, int widthIndex)  // Breaks a run into two runs at the specified wrapIndex.
+  private void adjustLastGlyph(FontData fontData, GlyphRun run)  // Adjusts the xadvance of the last glyph to use its width instead of xadvance.
+  private int parseColorMarkup(CharSequence str, int start, int end, Pool<Color> colorPool)
+  public void reset()
+  public String toString()
+inner-class: GlyphRun implements arc.util.pooling.Pool.Poolable
+// Stores glyphs and positions for a piece of text which is a single color and does not span multiple lines.
+  fields:
+    public final Color color
+    public Seq<Glyph> glyphs
+    public FloatSeq xAdvances  // Contains glyphs.size+1 entries: First entry is X offset relative to the drawing position.
+    public float x
+  methods:
+    public void reset()
+    public String toString()
+
+Lines.java
+Java class
+fields:
+  public static boolean useLegacyLine
+  private static float stroke
+  private static Vec2 vector
+  private static FloatSeq floats
+  private static FloatSeq floatBuilder
+  private static boolean building
+  private static float circlePrecision
+  private static final Vec2 AB
+  private static final float miterLimit
+methods:
+  public static void setCirclePrecision(float amount)  // Set the vertices used for drawing a line circle.
+  public static int circleVertices(float rad)
+  public static void lineAngle(float x, float y, float angle, float length, boolean cap) / public static void lineAngle(float x, float y, float angle, float length) / public static void lineAngle(float x, float y, float angle, float length, float offset)
+  public static void lineAngleCenter(float x, float y, float angle, float length, boolean cap) / public static void lineAngleCenter(float x, float y, float angle, float length)
+  public static void line(float x, float y, float x2, float y2) / public static void line(float x, float y, Color c, float x2, float y2, Color c2) / public static void line(float x, float y, float x2, float y2, boolean cap) / public static void line(TextureRegion region, float x, float y, float x2, float y2, boolean cap) / public static void line(TextureRegion region, float x, float y, Color c, float x2, float y2, Color c2, boolean cap) / public static void line(TextureRegion region, float x, float y, float color1, float x2, float y2, float color2, boolean cap)
+  public static void linePoint(Position p) / public static void linePoint(float x, float y)
+  public static void beginLine()
+  public static void endLine() / public static void endLine(boolean wrap) / public static void endLine(boolean wrap, boolean flatEnd)
+  public static void polyline(FloatSeq points, boolean wrap) / public static void polyline(float[] points, int length, boolean wrap) / public static void polyline(float[] points, int length, boolean wrap, boolean flatEnd)  // implementation taken from https://github.com/earlygrey/shapedrawer/blob/master/drawer/src/space/earlygrey/shapedrawer/ShapeDrawer.java
+  private static void pushQuad()
+  private static void pushBevelFill(Vec2 p1, Vec2 p2, Vec2 apex)
+  private static void prepareFlatEndpoint(Vec2 pathPoint, Vec2 endPoint, Vec2 D, Vec2 E, float halfLineWidth) / private static void prepareFlatEndpoint(float pathPointX, float pathPointY, float endPointX, float endPointY, Vec2 D, Vec2 E, float halfLineWidth)
+  private static void preparePointyJoin(Vec2 A, Vec2 B, Vec2 C, Vec2 D, Vec2 E, Vec2 D2, Vec2 E2, float halfLineWidth, boolean flatEnd)
+  private static float angleRad(Vec2 v, Vec2 reference)
+  private static void prepareStraightJoin(Vec2 B, Vec2 D, Vec2 E, float halfLineWidth)
+  public static void dashLine(float x1, float y1, float x2, float y2, int divisions)
+  public static void circle(float x, float y, float rad)
+  public static void ellipse(float x, float y, float rad, float width, float height, float rot) / public static void ellipse(int sides, float x, float y, float width, float height, float rot)
+  public static void dashCircle(float x, float y, float radius)
+  public static void spikes(float x, float y, float radius, float length, int spikes, float rot) / public static void spikes(float x, float y, float rad, float length, int spikes)
+  public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+  public static void poly(float x, float y, int sides, float radius, float startAngle, float endAngle) / public static void poly(float x, float y, int sides, float radius, float angle) / public static void poly(float x, float y, int sides, float radius) / public static void poly(Vec2[] vertices, float offsetx, float offsety, float scl)
+  public static void curve(float x1, float y1, float cx1, float cy1, float cx2, float cy2, float x2, float y2, int segments)
+  public static void arc(float x, float y, float radius, float fraction) / public static void arc(float x, float y, float radius, float fraction, float rotation) / public static void arc(float x, float y, float radius, float fraction, float rotation, int sides)
+  public static void square(float x, float y, float rad) / public static void square(float x, float y, float rad, float rot)
+  public static void rect(float x, float y, float width, float height, float xspace, float yspace) / public static void rect(float x, float y, float width, float height) / public static void rect(Rect rect) / public static void rect(float x, float y, float width, float height, float space)
+  public static void stroke(float thick) / public static void stroke(float thick, Color color)
+  public static float getStroke()
+
+NinePatch.java
+Java class
+// A 3x3 grid of texture regions.
+fields:
+  public static final int TOP_LEFT
+  public static final int TOP_CENTER
+  public static final int TOP_RIGHT
+  public static final int MIDDLE_LEFT
+  public static final int MIDDLE_CENTER
+  public static final int MIDDLE_RIGHT
+  public static final int BOTTOM_LEFT
+  public static final int BOTTOM_CENTER  // alphabetically first in javadoc
+  public static final int BOTTOM_RIGHT
+  private static final Color tmpDrawColor
+  private final Color color
+  private Texture texture
+  private int bottomLeft
+  private int middleLeft
+  private int topLeft
+  private float leftWidth
+  private float vertices
+  private int idx
+  private float padLeft
+ctors:
+  public NinePatch(Texture texture, int left, int right, int top, int bottom) / public NinePatch(TextureRegion region, int left, int right, int top, int bottom) / public NinePatch(Texture texture, Color color) / public NinePatch(Texture texture) / public NinePatch(TextureRegion region, Color color) / public NinePatch(TextureRegion region) / public NinePatch(TextureRegion patches) / public NinePatch(NinePatch ninePatch) / public NinePatch(NinePatch ninePatch, Color color)  // Create a ninepatch by cutting up the given texture into nine patches.
+methods:
+  private void load(TextureRegion[] patches)
+  private int add(TextureRegion region, float color, boolean isStretchW, boolean isStretchH)
+  private void set(int idx, float x, float y, float width, float height, float color)  // Set the coordinates and color of a ninth of the patch.
+  private void prepareVertices(float x, float y, float width, float height)
+  public void draw(float x, float y, float width, float height) / public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+  public Color getColor()
+  public void setColor(Color color)  // Copy given color.
+  public float getLeftWidth()
+  public void setLeftWidth(float leftWidth)  // Set the draw-time width of the three left edge patches
+  public float getRightWidth()
+  public void setRightWidth(float rightWidth)  // Set the draw-time width of the three right edge patches
+  public float getTopHeight()
+  public void setTopHeight(float topHeight)  // Set the draw-time height of the three top edge patches
+  public float getBottomHeight()
+  public void setBottomHeight(float bottomHeight)  // Set the draw-time height of the three bottom edge patches
+  public float getMiddleWidth()
+  public void setMiddleWidth(float middleWidth)  // Set the width of the middle column of the patch.
+  public float getMiddleHeight()
+  public void setMiddleHeight(float middleHeight)  // Set the height of the middle row of the patch.
+  public float getTotalWidth()
+  public float getTotalHeight()
+  public void setPadding(float left, float right, float top, float bottom)  // Set the padding for content inside this ninepatch.
+  public float getPadLeft()  // Returns the left padding if set, else returns {@link #getLeftWidth()}.
+  public void setPadLeft(float left)  // See {@link #setPadding(float, float, float, float)}
+  public float getPadRight()  // Returns the right padding if set, else returns {@link #getRightWidth()}.
+  public void setPadRight(float right)  // See {@link #setPadding(float, float, float, float)}
+  public float getPadTop()  // Returns the top padding if set, else returns {@link #getTopHeight()}.
+  public void setPadTop(float top)  // See {@link #setPadding(float, float, float, float)}
+  public float getPadBottom()  // Returns the bottom padding if set, else returns {@link #getBottomHeight()}.
+  public void setPadBottom(float bottom)  // See {@link #setPadding(float, float, float, float)}
+  public void scale(float scaleX, float scaleY)  // Multiplies the top/left/bottom/right sizes and padding by the specified amount.
+  public Texture getTexture()
+
+PixmapPacker.java
+Java class implements arc.util.Disposable
+// Packs {@link Pixmap pixmaps} into one or more {@link Page pages} to generate an atlas of pixmap instances.
+fields:
+  final Seq<Page> pages
+  boolean packToTexture
+  boolean disposed
+  int pageWidth
+  int padding
+  boolean allowMultiplePages
+  boolean duplicateBorder
+  boolean stripWhitespaceX
+  Color transparentColor
+  PackStrategy packStrategy
+ctors:
+  public PixmapPacker(int pageWidth, int pageHeight, int padding, boolean duplicateBorder) / public PixmapPacker(int pageWidth, int pageHeight, int padding, boolean duplicateBorder, PackStrategy packStrategy) / public PixmapPacker(int pageWidth, int pageHeight, int padding, boolean duplicateBorder, boolean stripWhitespaceX, boolean stripWhitespaceY, PackStrategy packStrategy)  // Uses {@link GuillotineStrategy}.
+methods:
+  public void setAllowMultiplePages(boolean allowMultiplePages)
+  public void sort(Seq<PixmapRegion> images)  // Sorts the images to the optimal order they should be packed.
+  public synchronized Rect pack(Pixmap image) / public synchronized Rect pack(String name, Pixmap image) / public synchronized Rect pack(String name, PixmapRegion image) / public synchronized Rect pack(String name, int width, int height) / public synchronized Rect pack(String name, PixmapRegion image, int[] splits, int[] pads)  // Inserts the pixmap without a name.
+  public Seq<Page> getPages()  // @return the {@link Page} instances created so far.
+  public synchronized Rect getRect(String name)  // @param name the name of the image
+  public synchronized PixmapRegion getRegion(String name)  // @return the newly allocated region for this name, or null.
+  public synchronized Page getPage(String name)  // @param name the name of the image
+  public synchronized int getPageIndex(String name)  // Returns the index of the page containing the given packed rectangle.
+  public synchronized void dispose()  // Disposes any pixmap pages which don't have a texture.
+  public void forceDispose()  // Disposes all images, regardless of whether they have a texture.
+  public synchronized TextureAtlas generateTextureAtlas(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)  // Generates a new {@link TextureAtlas} from the pixmaps inserted so far.
+  public synchronized void updateTextureAtlas(TextureAtlas atlas, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps) / public synchronized void updateTextureAtlas(TextureAtlas atlas, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps, boolean clearRects)  // Updates the {@link TextureAtlas}, adding any new {@link Pixmap} instances packed since the last call to this method.
+  public synchronized void updateTextureRegions(Seq<TextureRegion> regions, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)  // Calls {@link Page#updateTexture(TextureFilter, TextureFilter, boolean) updateTexture} for each page and adds a region to
+  public synchronized void updatePageTextures(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)  // Calls {@link Page#updateTexture(TextureFilter, TextureFilter, boolean) updateTexture} for each page.
+  public int getPageWidth()
+  public void setPageWidth(int pageWidth)
+  public int getPageHeight()
+  public void setPageHeight(int pageHeight)
+  public int getPadding()
+  public void setPadding(int padding)
+  public boolean getDuplicateBorder()
+  public void setDuplicateBorder(boolean duplicateBorder)
+  public boolean getPackToTexture()
+  public void setPackToTexture(boolean packToTexture)  // If true, when a pixmap is packed to a page that has a texture, the portion of the texture where the pixmap was packed is
+  public Color getTransparentColor()  // @see PixmapPacker#setTransparentColor(Color color)
+  public void setTransparentColor(Color color)  // Sets the default <code>color</code> of the whole {@link PixmapPacker.Page} when a new one created.
+  private int[] getSplits(PixmapRegion raster)
+  private int[] getPads(PixmapRegion raster, int[] splits)
+  private int getSplitPoint(PixmapRegion raster, int startX, int startY, boolean startPoint, boolean xAxis)
+inner-interface: PackStrategy
+// Choose the page and location for each rectangle.
+  methods:
+    void sort(Seq<PixmapRegion> images)
+    Page pack(PixmapPacker packer, String name, Rect rect)  // Returns the page the rectangle should be placed in and modifies the specified rectangle position.
+inner-class: Page
+// @author mzechner
+  fields:
+    public final Seq<String> addedRects
+    public OrderedMap<String,PixmapPackerRect> rects
+    public Pixmap image
+    public Texture texture
+    boolean dirty
+  ctors:
+    public Page(PixmapPacker packer) / public Page(Pixmap pixmap)  // Creates a new page filled with the color provided by the {@link PixmapPacker#getTransparentColor()}
+  methods:
+    public void setDirty(boolean dirty)
+    public Pixmap getPixmap()
+    public OrderedMap<String,PixmapPackerRect> getRects()
+    public Texture getTexture()  // Returns the texture for this page, or null if the texture has not been created.
+    public boolean updateTexture(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)  // Creates the texture if it has not been created, else reuploads the entire page pixmap to the texture if the pixmap has
+inner-class: GuillotineStrategy implements arc.graphics.g2d.PixmapPacker.PackStrategy
+// Does bin packing by inserting to the right or below previously packed rectangles.
+  fields:
+    boolean full
+  methods:
+    public void sort(Seq<PixmapRegion> pixmaps)
+    public Page pack(PixmapPacker packer, String name, Rect rect)
+    private Node insert(Node node, Rect rect)
+  inner-class: Node
+    fields:
+      public final Rect rect
+      public Node leftChild
+      public Node rightChild
+      public boolean full
+  inner-class: GuillotinePage extends arc.graphics.g2d.PixmapPacker.Page
+    fields:
+      Node root
+    ctors:
+      public GuillotinePage(PixmapPacker packer) / public GuillotinePage(PixmapPacker packer, Pixmap base)
+inner-class: Node
+  fields:
+    public final Rect rect
+    public Node leftChild
+    public Node rightChild
+    public boolean full
+inner-class: GuillotinePage extends arc.graphics.g2d.PixmapPacker.Page
+  fields:
+    Node root
+  ctors:
+    public GuillotinePage(PixmapPacker packer) / public GuillotinePage(PixmapPacker packer, Pixmap base)
+inner-class: SkylineStrategy implements arc.graphics.g2d.PixmapPacker.PackStrategy
+// Does bin packing by inserting in rows.
+  methods:
+    public void sort(Seq<PixmapRegion> images)
+    public Page pack(PixmapPacker packer, String name, Rect rect)
+  inner-class: SkylinePage extends arc.graphics.g2d.PixmapPacker.Page
+    fields:
+      Seq<Row> rows
+    ctors:
+      public SkylinePage(PixmapPacker packer)
+    inner-class: Row
+      fields:
+        int x
+inner-class: SkylinePage extends arc.graphics.g2d.PixmapPacker.Page
+  fields:
+    Seq<Row> rows
+  ctors:
+    public SkylinePage(PixmapPacker packer)
+  inner-class: Row
+    fields:
+      int x
+inner-class: Row
+  fields:
+    int x
+inner-class: PixmapPackerRect extends arc.math.geom.Rect
+  fields:
+    public int splits
+    public int pads
+    public int offsetX
+    public int originalWidth
+  ctors:
+    public PixmapPackerRect(int x, int y, int width, int height) / public PixmapPackerRect(int x, int y, int width, int height, int left, int top, int originalWidth, int originalHeight)
+
+PixmapRegion.java
+Java class
+// Defines a region of a pixmap, like a TextureRegion.
+fields:
+  public Pixmap pixmap
+  public int x
+ctors:
+  public PixmapRegion(Pixmap pixmap, int x, int y, int width, int height) / public PixmapRegion(Pixmap pixmap)
+methods:
+  public int get(int x, int y) / public int get(int x, int y, Color color)  // @return the RGBA value at a region position.
+  public int getRaw(int x, int y)  // @return the RGBA value at a region position without bounds checks.
+  public int getA(int x, int y)  // @return the alpha value at a region position, 0 - 255.
+  public PixmapRegion set(Pixmap pixmap) / public PixmapRegion set(Pixmap pixmap, int x, int y, int width, int height)
+  public Pixmap crop() / public Pixmap crop(int x, int y, int width, int height)  // Allocates a new pixmap based on this region data.
+
+ScissorStack.java
+Java class
+// A stack of {@link Rect} objects to be used for clipping via {@link GL20#glScissor(int, int, int, int)}.
+fields:
+  static final Rect viewport
+  static Vec2 tmp
+  private static Seq<Rect> scissors
+methods:
+  public static boolean push(Rect scissor)  // Pushes a new scissor {@link Rect} onto the stack, merging it with the current top of the stack.
+  public static Rect pop()  // Pops the current scissor rectangle from the stack and sets the new scissor area to the new top of stack rectangle.
+  public static boolean pushWorld(Rect scissorWorld)
+  public static Rect peek()
+  private static void fix(Rect rect)
+  public static void calculateScissors(Camera camera, Mat batchTransform, Rect area, Rect scissor) / public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Mat batchTransform, Rect area, Rect scissor)  // Calculates a scissor rectangle using 0,0,Core.graphics.getWidth(),Core.graphics.getHeight() as the viewport.
+  public static Rect getViewport()  // @return the current viewport in OpenGL ES window coordinates based on the currently applied scissor
+
+ScreenQuad.java
+Java class implements arc.util.Disposable
+fields:
+  public final Mesh mesh
+ctors:
+  public ScreenQuad()
+methods:
+  public void render(Shader shader)
+  public void dispose()
+
+SpriteBatch.java
+Java class extends arc.graphics.g2d.Batch
+// Class for efficiently batching and sorting sprites.
+fields:
+  public static final int VERTEX_SIZE  // xy + color + uv + mix_color
+  public static final int SPRITE_SIZE
+  private static final int initialSize
+  private static final float emptyVertices
+  public static long totalDrawCalls  // Counts up for every draw call.
+  static ForkJoinHolder commonPool
+  boolean multithreaded
+  protected Mesh mesh
+  protected FloatBuffer buffer
+  final float tmpVertices
+  float requestVerts
+  int requestVertOffset
+  protected boolean sort
+  protected DrawRequest requests
+  protected int requestZ
+  protected int numRequests
+  protected int contiguous
+  protected int intZ
+ctors:
+  public SpriteBatch() / public SpriteBatch(int size) / public SpriteBatch(int size, Shader defaultShader)  // Constructs a new SpriteBatch with a size of 4096, one buffer, and the default shader.
+methods:
+  public void dispose()
+  protected void setSort(boolean sort)
+  protected void setShader(Shader shader, boolean apply)
+  protected void setBlending(Blending blending)
+  protected void z(float z)
+  protected void discard()
+  protected void draw(Texture texture, float[] spriteVertices, int offset, int count) / protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) / protected void draw(Runnable request)
+  protected void prepare(int i)
+  protected void expandRequests()
+  protected void flush()
+  protected void flushRequests()
+  protected void drawSuper(Texture texture, float[] spriteVertices, int offset, int count) / protected void drawSuper(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation)
+  protected final void constructVertices(float[] vertices, int idx, TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation)
+  public static Shader createShader()
+  protected void sortRequests()
+  protected void sortRequestsThreaded()
+  protected void sortRequestsStandard()
+inner-class: DrawRequest
+  fields:
+    int verticesOffset
+    Texture texture
+    Blending blending
+    Runnable run
+inner-class: CountingSort
+  fields:
+    private static final int processors
+    static int locs
+    static final int locses
+    static final IntIntMap countses
+    private static int entries3
+    private static long packedKeys  // packed (key << 32 | payload) longs, used to order unique z-keys without boxing
+    private static long packedKeysMT
+    private static final CountingSort.CountingSortTask tasks
+    private static final CountingSort.CountingSortTask2 task2s
+    private static final Future<?> futures
+  methods:
+    static int[] countingSortMapMT(int[] arr, int[] swap, int end)
+    static int[] countingSortMap(int[] arr, int[] swap, int end)
+  inner-class: CountingSortTask implements java.lang.Runnable
+    fields:
+      static int arr
+      int start
+    methods:
+      public void set(int start, int end, int id)
+      public void run()
+  inner-class: CountingSortTask2 implements java.lang.Runnable
+    fields:
+      static int src
+      int start
+    methods:
+      public void set(int start, int end, int id)
+      public void run()
+inner-class: CountingSortTask implements java.lang.Runnable
+  fields:
+    static int arr
+    int start
+  methods:
+    public void set(int start, int end, int id)
+    public void run()
+inner-class: CountingSortTask2 implements java.lang.Runnable
+  fields:
+    static int src
+    int start
+  methods:
+    public void set(int start, int end, int id)
+    public void run()
+inner-class: PopulateTask extends java.util.concurrent.RecursiveAction
+  fields:
+    int from
+    static int tasks
+    static DrawRequest src
+    static DrawRequest dest
+    static int locs
+  ctors:
+    PopulateTask(int from, int to) / public PopulateTask()  // private static final int threshold = 256;
+  methods:
+    protected void compute()
+
+SpriteCache.java
+Java class implements arc.util.Disposable
+// Draws 2D images, optimized for geometry that does not change.
+fields:
+  static final int vertexSize  // xy + color + uv
+  private static final float tempVertices
+  private final Mesh mesh
+  private final Mat transformMatrix
+  private final Mat projectionMatrix
+  private final Mat combinedMatrix
+  private final Shader shader
+  private final Seq<Texture> textures
+  private final IntSeq counts
+  public int renderCalls  // Number of render calls since the last {@link #begin()}.
+  public int totalRenderCalls  // Number of rendering calls, ever.
+  private boolean drawing
+  private Seq<Cache> caches
+  private Cache currentCache
+  private float colorPacked
+  private Shader customShader
+  private static Shader defaultShader
+ctors:
+  public SpriteCache() / public SpriteCache(int size, boolean useIndices) / public SpriteCache(int size, int cacheSize, boolean useIndices) / public SpriteCache(int size, int cacheSize, Shader shader, boolean useIndices)  // Creates a cache that uses indexed geometry and can contain up to 1000 images.
+methods:
+  public static Shader getDefaultShader()
+  public Seq<Cache> getCaches()
+  public void setColor(float r, float g, float b, float a) / public void setColor(Color tint)  // @see #setColor(Color)
+  public float getPackedColor()
+  public void setPackedColor(float packedColor)  // Sets the color of this sprite cache, expanding the alpha from 0-254 to 0-255.
+  public void beginCache() / public void beginCache(int cacheID)  // Starts the definition of a new cache, allowing the add and {@link #endCache()} methods to be called.
+  public int endCache()  // Ends the definition of a cache, returning the cache ID to be used with {@link #draw(int)}.
+  public void clear()  // Invalidates all cache IDs and resets the SpriteCache so new caches can be added.
+  public int reserve(int sprites)  // Ensures that this cache can hold this amount of sprites.
+  public int getSpritesUsed()
+  public int getSpriteCapacity()
+  public void add(Texture texture, float[] vertices, int offset, int length) / public void add(TextureRegion region, float x, float y) / public void add(TextureRegion region, float x, float y, float width, float height) / public void add(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)  // Adds the specified vertices to the cache.
+  public void begin() / public void begin(boolean writeUniforms)  // Prepares the OpenGL state for SpriteCache rendering.
+  public void end()  // Completes rendering for this SpriteCache.
+  public void draw(int cacheID) / public void draw(int cacheID, int offset, int length)  // Draws all the images defined for the specified cache ID.
+  public void dispose()  // Releases all resources held by this SpriteCache.
+  public Mat getProjectionMatrix()
+  public void setProjectionMatrix(Mat projection)
+  public Mat getTransformMatrix()
+  public void setTransformMatrix(Mat transform)
+  public void setShader(Shader shader)  // Sets the shader to be used in a GLES 2.0 environment.
+  public boolean isDrawing()
+inner-class: Cache
+  fields:
+    final int id
+    final int offset
+    int maxCount
+    int textureCount
+    Texture textures
+    int counts
+  ctors:
+    public Cache(int id, int offset)
+
+TextureAtlas.java
+Java class implements arc.util.Disposable
+// Loads images from texture atlases created by TexturePacker.<br>
+fields:
+  private final ObjectSet<Texture> textures
+  private final Seq<AtlasRegion> regions
+  private final ObjectMap<String,Drawable> drawables
+  private final ObjectMap<String,AtlasRegion> regionmap
+  private final ObjectMap<Texture,Pixmap> pixmaps
+  protected AtlasRegion error
+  protected float drawableScale
+ctors:
+  public TextureAtlas() / public TextureAtlas(String internalPackFile) / public TextureAtlas(Fi packFile) / public TextureAtlas(Fi packFile, boolean flip) / public TextureAtlas(Fi packFile, Fi imagesDir) / public TextureAtlas(Fi packFile, Fi imagesDir, boolean flip) / public TextureAtlas(TextureAtlasData data)  // Creates an empty atlas to which regions can be added.
+methods:
+  public static TextureAtlas blankAtlas()  // Returns a new texture atlas with only a blank texture region.
+  public void setDrawableScale(float scale)
+  private void load(TextureAtlasData data)
+  public PixmapRegion getPixmap(String name) / public PixmapRegion getPixmap(AtlasRegion region) / public PixmapRegion getPixmap(TextureRegion region)
+  public ObjectMap<Texture,Pixmap> getPixmaps()
+  public void disposePixmap(Texture texture)
+  public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) / public AtlasRegion addRegion(String name, TextureRegion textureRegion)  // Adds a region to the atlas.
+  public Seq<AtlasRegion> getRegions()  // Returns all regions in the atlas.
+  public ObjectMap<String,AtlasRegion> getRegionMap()  // Returns the region map in the atlas.
+  public AtlasRegion white()  // Returns the blank 1x1 texture region, if it exists.
+  public boolean setErrorRegion(String name)  // Finds and sets error region as name.
+  public boolean isFound(TextureRegion region)
+  public AtlasRegion find(String name) / public TextureRegion find(String name, String def) / public TextureRegion find(String name, TextureRegion def)  // Returns the first region found with the specified name.
+  public boolean has(String s)
+  public T getDrawable(String name)
+  public Drawable drawable(String name)  // Creates and caches a new drawable by name.
+  public ObjectMap<String,Drawable> getDrawables()
+  public NinePatch createPatch(String name)  // Returns the first region found with the specified name as a {@link NinePatch}.
+  public ObjectSet<Texture> getTextures()  // @return the textures of the pages, unordered
+  public Texture texture()  // @return the first texture of the pages.
+  public void dispose()  // Releases all resources associated with this TextureAtlas instance.
+inner-class: TextureAtlasData
+  fields:
+    public static final byte formatVersion
+    public static final byte formatHeader
+    final Seq<AtlasPage> pages
+    final Seq<Region> regions
+  ctors:
+    public TextureAtlasData(Fi packFile, Fi imagesDir, boolean flip)
+  methods:
+    public Seq<AtlasPage> getPages()
+    public Seq<Region> getRegions()
+  inner-class: AtlasPage
+    fields:
+      public final Fi textureFile
+      public final int width
+      public final boolean useMipMaps
+      public final TextureFilter minFilter
+      public final TextureFilter magFilter
+      public final TextureWrap uWrap
+      public final TextureWrap vWrap
+      public Texture texture
+    ctors:
+      public AtlasPage(Fi handle, int width, int height, boolean useMipMaps, TextureFilter minFilter, TextureFilter magFilter, TextureWrap uWrap, TextureWrap vWrap)
+  inner-class: Region
+    fields:
+      public AtlasPage page
+      public String name
+      public float offsetX
+      public float offsetY
+      public int originalWidth
+      public int originalHeight
+      public boolean rotate
+      public int left
+      public int top
+      public int width
+      public int height
+      public boolean flip
+      public int splits
+      public int pads
+inner-class: AtlasPage
+  fields:
+    public final Fi textureFile
+    public final int width
+    public final boolean useMipMaps
+    public final TextureFilter minFilter
+    public final TextureFilter magFilter
+    public final TextureWrap uWrap
+    public final TextureWrap vWrap
+    public Texture texture
+  ctors:
+    public AtlasPage(Fi handle, int width, int height, boolean useMipMaps, TextureFilter minFilter, TextureFilter magFilter, TextureWrap uWrap, TextureWrap vWrap)
+inner-class: Region
+  fields:
+    public AtlasPage page
+    public String name
+    public float offsetX
+    public float offsetY
+    public int originalWidth
+    public int originalHeight
+    public boolean rotate
+    public int left
+    public int top
+    public int width
+    public int height
+    public boolean flip
+    public int splits
+    public int pads
+inner-class: AtlasRegion extends arc.graphics.g2d.TextureRegion
+// Describes the region of a packed image and provides information about the original image before it was packed.
+  fields:
+    public PixmapRegion pixmapRegion
+    public String name  // The name of the original image file, up to the first underscore.
+    public float offsetX  // The offset from the left of the original image to the left of the packed image, after whitespace was removed for packing.
+    public float offsetY  // The offset from the bottom of the original image to the bottom of the packed image, after whitespace was removed for
+    public int packedWidth  // The width of the image, after whitespace was removed for packing.
+    public int packedHeight  // The height of the image, after whitespace was removed for packing.
+    public int originalWidth  // The width of the image, before whitespace was removed and rotation was applied for packing.
+    public int originalHeight  // The height of the image, before whitespace was removed for packing.
+    public boolean rotate  // If true, the region has been rotated 90 degrees counter clockwise.
+    public int splits  // The ninepatch splits, or null if not a ninepatch.
+    public int pads  // The ninepatch pads, or null if not a ninepatch or the has no padding.
+  ctors:
+    public AtlasRegion(Texture texture, int x, int y, int width, int height) / public AtlasRegion() / public AtlasRegion(AtlasRegion region) / public AtlasRegion(TextureRegion region)
+  methods:
+    public void flip(boolean x, boolean y)  // Flips the region, adjusting the offset so the image appears to be flip as if no whitespace has been removed for packing.
+    public float getRotatedPackedWidth()  // Returns the packed width considering the rotate value, if it is true then it returns the packedHeight, otherwise it
+    public float getRotatedPackedHeight()  // Returns the packed height considering the rotate value, if it is true then it returns the packedWidth, otherwise it
+    public String toString()
+
+TextureRegion.java
+Java class
+// Defines a rectangular area of a texture.
+fields:
+  public Texture texture
+  public float u  // Read-only.
+  public int width  // Read-only.
+  public float scale
+ctors:
+  public TextureRegion() / public TextureRegion(Texture texture) / public TextureRegion(Texture texture, int width, int height) / public TextureRegion(Texture texture, int x, int y, int width, int height) / public TextureRegion(Texture texture, float u, float v, float u2, float v2) / public TextureRegion(TextureRegion region) / public TextureRegion(TextureRegion region, int x, int y, int width, int height)  // Constructs a region with no texture and no coordinates defined.
+methods:
+  public static TextureRegion[][] split(Texture texture, int tileWidth, int tileHeight) / public TextureRegion[][] split(int tileWidth, int tileHeight)  // Helper function to create tiles out of the given {@link Texture} starting from the top left corner going to the right and
+  public AtlasRegion asAtlas()
+  public boolean found()
+  public void set(Texture texture) / public TextureRegion set(int x, int y, int width, int height) / public void set(float u, float v, float u2, float v2) / public void set(TextureRegion region) / public void set(TextureRegion region, int x, int y, int width, int height) / public void set(Texture texture, int x, int y, int width, int height)  // Sets the texture and sets the coordinates to the size of the specified texture.
+  public void setU(float u)
+  public void setV(float v)
+  public void setU2(float u2)
+  public void setV2(float v2)
+  public int getX()
+  public void setX(int x) / public void setX(float x)
+  public int getY()
+  public void setY(int y) / public void setY(float y)
+  public void setWidth(int width) / public void setWidth(float width)
+  public void setHeight(int height) / public void setHeight(float height)
+  public void flip(boolean x, boolean y)
+  public float ratio()  // @return x/y aspect ratio
+  public boolean isFlipX()
+  public boolean isFlipY()
+  public void scroll(float xAmount, float yAmount)  // Offsets the region relative to the current region.
+  public float scl()
+  public String toString()
+

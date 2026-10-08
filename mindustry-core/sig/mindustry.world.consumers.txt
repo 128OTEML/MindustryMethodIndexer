@@ -1,0 +1,299 @@
+Consume.java
+Java class (abstract)
+// An abstract class that defines a type of resource that a block can consume.
+fields:
+  public boolean optional  // If true, this consumer will not influence consumer validity.
+  public boolean booster  // If true, this consumer will be displayed as a boost input.
+  public boolean update  // If false, this consumer will still be checked, but it will need to updated manually.
+  public Floatf<Building> multiplier  // Multiplier for costs.
+methods:
+  public void apply(Block block)  // Apply extra filters to a block.
+  public Consume optional(boolean optional, boolean boost)
+  public Consume boost()
+  public Consume update(boolean update) / public void update(Building build)
+  public boolean ignore()  // @return if true, this consumer will be ignored in the consumer list (no updates or valid() checks)
+  public void build(Building build, Table table)
+  public void trigger(Building build)  // Called when a consumption is triggered manually.
+  public float efficiency(Building build)  // @return [0, 1] efficiency multiplier based on input.
+  public float efficiencyMultiplier(Building build)  // @return multiplier for efficiency - this can be above 1.
+  public void display(Stats stats)
+
+ConsumeCoolant.java
+Java class extends mindustry.world.consumers.ConsumeLiquidFilter
+// A ConsumeLiquidFilter that consumes specific coolant, selected based on stats.
+fields:
+  public float maxTemp
+  public boolean allowLiquid
+ctors:
+  public ConsumeCoolant(float amount, boolean allowLiquid, boolean allowGas) / public ConsumeCoolant(float amount) / public ConsumeCoolant()
+
+ConsumeItemCharged.java
+Java class extends mindustry.world.consumers.ConsumeItemEfficiency
+// For mods.
+fields:
+  public float minCharge
+ctors:
+  public ConsumeItemCharged(float minCharge) / public ConsumeItemCharged()
+methods:
+  public float itemEfficiencyMultiplier(Item item)
+
+ConsumeItemDynamic.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public final Func<Building,ItemStack[]> items
+ctors:
+  public ConsumeItemDynamic(Func<T,ItemStack[]> items)
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  private void rebuild(Building build, Table table)
+  public void trigger(Building build)
+  public float efficiency(Building build)
+
+ConsumeItemEfficiency.java
+Java class extends mindustry.world.consumers.ConsumeItemFilter
+fields:
+  public ObjectFloatMap<Item> itemDurationMultipliers  // This has no effect on the consumer itself, but is used for stat display.
+ctors:
+  public ConsumeItemEfficiency(Boolf<Item> item) / public ConsumeItemEfficiency()
+methods:
+  public void display(Stats stats)
+
+ConsumeItemExplode.java
+Java class extends mindustry.world.consumers.ConsumeItemFilter
+// Causes a block to explode when explosive items are moved into it.
+fields:
+  public float damage
+  public float threshold
+  public Effect explodeEffect
+ctors:
+  public ConsumeItemExplode(float threshold) / public ConsumeItemExplode()
+methods:
+  public void update(Building build)
+  public void build(Building build, Table table)
+  public void trigger(Building build)
+  public void display(Stats stats)
+  public void apply(Block block)
+  public float efficiency(Building build)
+
+ConsumeItemExplosive.java
+Java class extends mindustry.world.consumers.ConsumeItemEfficiency
+fields:
+  public float minExplosiveness
+ctors:
+  public ConsumeItemExplosive(float minCharge) / public ConsumeItemExplosive()
+methods:
+  public float itemEfficiencyMultiplier(Item item)
+
+ConsumeItemFilter.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public Boolf<Item> filter
+ctors:
+  public ConsumeItemFilter(Boolf<Item> item) / public ConsumeItemFilter()
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  public void update(Building build)
+  public void trigger(Building build)
+  public float efficiency(Building build)
+  public Item getConsumed(Building build)
+  public void display(Stats stats)
+  public float efficiencyMultiplier(Building build)
+  public float itemEfficiencyMultiplier(Item item)
+
+ConsumeItemFlammable.java
+Java class extends mindustry.world.consumers.ConsumeItemEfficiency
+fields:
+  public float minFlammability
+ctors:
+  public ConsumeItemFlammable(float minFlammability) / public ConsumeItemFlammable()
+methods:
+  public float itemEfficiencyMultiplier(Item item)
+
+ConsumeItemList.java
+Java class extends mindustry.world.consumers.ConsumeItemFilter
+fields:
+  public ObjectFloatMap<Item> itemMultipliers
+ctors:
+  public ConsumeItemList(Item items) / public ConsumeItemList()
+methods:
+  public void setMultipliers(Object objects)  // Initializes item efficiency multiplier map.
+  public float efficiencyMultiplier(Building build)
+
+ConsumeItemRadioactive.java
+Java class extends mindustry.world.consumers.ConsumeItemEfficiency
+fields:
+  public float minRadioactivity
+ctors:
+  public ConsumeItemRadioactive(float minRadioactivity) / public ConsumeItemRadioactive()
+methods:
+  public float itemEfficiencyMultiplier(Item item)
+
+ConsumeItems.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public final ItemStack items
+ctors:
+  public ConsumeItems(ItemStack[] items) / protected ConsumeItems()  // Mods.
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  public void trigger(Building build)
+  public float efficiency(Building build)
+  public void display(Stats stats)
+
+ConsumeLiquid.java
+Java class extends mindustry.world.consumers.ConsumeLiquidBase
+// TODO replace with ConsumeLiquids?
+fields:
+  public final Liquid liquid
+ctors:
+  public ConsumeLiquid(Liquid liquid, float amount) / protected ConsumeLiquid()
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  public void update(Building build)
+  public float efficiency(Building build)
+  public void display(Stats stats)
+  public boolean consumes(Liquid liquid)
+
+ConsumeLiquidBase.java
+Java class (abstract) extends mindustry.world.consumers.Consume
+fields:
+  public float amount  // amount used per frame
+ctors:
+  public ConsumeLiquidBase(float amount) / public ConsumeLiquidBase()
+methods:
+  public void apply(Block block)
+  public abstract boolean consumes(Liquid liquid)
+
+ConsumeLiquidFilter.java
+Java class extends mindustry.world.consumers.ConsumeLiquidBase
+fields:
+  public Boolf<Liquid> filter
+ctors:
+  public ConsumeLiquidFilter(Boolf<Liquid> liquid, float amount) / public ConsumeLiquidFilter()
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  public void update(Building build)
+  public float efficiency(Building build)
+  public float efficiencyMultiplier(Building build)
+  public Liquid getConsumed(Building build)
+  public void display(Stats stats)
+  public boolean consumes(Liquid liquid)
+  public float liquidEfficiencyMultiplier(Liquid liquid)
+
+ConsumeLiquidFlammable.java
+Java class extends mindustry.world.consumers.ConsumeLiquidFilter
+fields:
+  public float minFlammability
+ctors:
+  public ConsumeLiquidFlammable(float minFlammability, float amount) / public ConsumeLiquidFlammable(float amount) / public ConsumeLiquidFlammable()
+methods:
+  public void display(Stats stats)
+  public float liquidEfficiencyMultiplier(Liquid liquid)
+
+ConsumeLiquids.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public final LiquidStack liquids
+ctors:
+  public ConsumeLiquids(LiquidStack[] liquids) / protected ConsumeLiquids()  // Mods.
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  public void update(Building build)
+  public float efficiency(Building build)
+  public void display(Stats stats)
+
+ConsumeLiquidsDynamic.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public final Func<Building,LiquidStack[]> liquids
+ctors:
+  public ConsumeLiquidsDynamic(Func<T,LiquidStack[]> liquids)
+methods:
+  public void apply(Block block)
+  public void build(Building build, Table table)
+  private void rebuild(Building build, Table table)
+  public void update(Building build)
+  public float efficiency(Building build)
+
+ConsumePayloadDynamic.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public final Func<Building,Seq<PayloadStack>> payloads
+ctors:
+  public ConsumePayloadDynamic(Func<T,Seq<PayloadStack>> payloads)
+methods:
+  public float efficiency(Building build)
+  public void trigger(Building build)
+  public void display(Stats stats)
+  public void build(Building build, Table table)
+  private void rebuild(Building build, Table table)
+
+ConsumePayloadFilter.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  protected final UnlockableContent fitting  // cache fitting blocks to prevent search over all blocks later
+  public Boolf<UnlockableContent> filter
+ctors:
+  public ConsumePayloadFilter(Boolf<UnlockableContent> filter)
+methods:
+  public float efficiency(Building build)
+  public void trigger(Building build)
+  public void display(Stats stats)
+  public void build(Building build, Table table)
+
+ConsumePayloads.java
+Java class extends mindustry.world.consumers.Consume
+fields:
+  public Seq<PayloadStack> payloads
+ctors:
+  public ConsumePayloads(Seq<PayloadStack> payloads)
+methods:
+  public float efficiency(Building build)
+  public void trigger(Building build)
+  public void display(Stats stats)
+  public void build(Building build, Table table)
+
+ConsumePower.java
+Java class extends mindustry.world.consumers.Consume
+// Consumer class for blocks which consume power while being connected to a power graph.
+fields:
+  public float usage  // The maximum amount of power which can be processed per tick.
+  public float capacity  // The maximum power capacity in power units.
+  public boolean buffered  // True if the module can store power.
+ctors:
+  public ConsumePower(float usage, float capacity, boolean buffered) / protected ConsumePower()
+methods:
+  public void apply(Block block)
+  public boolean ignore()
+  public float efficiency(Building build)
+  public void display(Stats stats)
+  public float requestedPower(Building entity)  // Retrieves the amount of power which is requested for the given block and entity.
+
+ConsumePowerCondition.java
+Java class extends mindustry.world.consumers.ConsumePower
+// A power consumer that only activates sometimes.
+fields:
+  private final Boolf<Building> consume
+ctors:
+  public ConsumePowerCondition(float usage, Boolf<Building> consume)
+methods:
+  public float requestedPower(Building entity)
+
+ConsumePowerDynamic.java
+Java class extends mindustry.world.consumers.ConsumePower
+// A power consumer that uses a dynamic amount of power.
+fields:
+  private final Floatf<Building> usage
+  private float displayedPowerUsage
+ctors:
+  public ConsumePowerDynamic(Floatf<Building> usage) / public ConsumePowerDynamic(float displayed, Floatf<Building> usage)
+methods:
+  public float requestedPower(Building entity)
+  public void display(Stats stats)
+

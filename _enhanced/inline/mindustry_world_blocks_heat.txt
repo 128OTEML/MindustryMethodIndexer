@@ -1,0 +1,45 @@
+// HeatConductor.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        //TODO show number
+        addBar("heat", (HeatConductorBuild entity) -> new Bar(() -> Core.bundle.format("bar.heatamount", (int)(entity.heat + 0.001f)), () -> Pal.lightOrange, () -> entity.heat / visualMaxHeat));
+    }
+
+// HeatConductor.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        drawer.load(this);
+    }
+
+// HeatConductor.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawer.drawPlan(this, plan, list);
+    }
+
+// HeatConductor.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// HeatProducer.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.output, heatOutput, StatUnit.heatUnits);
+    }
+
+// HeatProducer.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("heat", (HeatProducerBuild entity) -> new Bar("bar.heat", Pal.lightOrange, () -> entity.heat / heatOutput));
+    }
+

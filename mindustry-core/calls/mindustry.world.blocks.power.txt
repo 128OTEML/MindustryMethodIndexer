@@ -1,0 +1,832 @@
+Battery
+  -> arc.struct.EnumSet.of(T...)
+init
+  -> mindustry.world.Block.init()
+  -> mindustry.world.blocks.power.Battery.checkDrawDefault()
+checkDrawDefault
+  -> mindustry.world.draw.DrawMulti.DrawMulti(mindustry.world.draw.DrawBlock...)
+  -> mindustry.world.draw.DrawDefault.DrawDefault()
+  -> mindustry.world.draw.DrawPower.DrawPower()
+  -> mindustry.world.draw.DrawRegion.DrawRegion(java.lang.String)
+load
+  -> mindustry.world.blocks.power.Battery.checkDrawDefault()
+  -> mindustry.world.Block.load()
+  -> mindustry.world.draw.DrawBlock.load(mindustry.world.Block)
+drawPlanRegion
+  -> mindustry.world.draw.DrawBlock.drawPlan(mindustry.world.Block, mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+icons
+  -> mindustry.world.draw.DrawBlock.finalIcons(mindustry.world.Block)
+getRegionsToOutline
+  -> mindustry.world.draw.DrawBlock.getRegionsToOutline(mindustry.world.Block, arc.struct.Seq<arc.graphics.g2d.TextureRegion>)
+BatteryBuild extends mindustry.gen.Building::draw
+  -> mindustry.world.draw.DrawBlock.draw(mindustry.gen.Building)
+BatteryBuild extends mindustry.gen.Building::drawLight
+  -> mindustry.gen.Building.drawLight()
+  -> mindustry.world.draw.DrawBlock.drawLight(mindustry.gen.Building)
+BatteryBuild extends mindustry.gen.Building::overwrote
+  -> arc.math.Mathf.clamp(float)
+BatteryBuild extends mindustry.gen.Building::status
+  -> arc.math.Mathf.equal(float, float, float)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.world.blocks.power.PowerNode.makePowerBalance()
+  -> mindustry.world.blocks.power.PowerNode.makeBatteryBalance()
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+init
+  -> mindustry.world.Block.init()
+  -> mindustry.world.Block.updateClipRadius(float)
+drawPlace
+  -> mindustry.core.World.build(int, int)
+  -> mindustry.gen.Building.isInsulated()
+  -> mindustry.gen.Player.team()
+  -> mindustry.graphics.Drawf.dashLine(arc.graphics.Color, float, float, float, float)
+  -> mindustry.graphics.Drawf.square(float, float, float, float)
+changePlacementPath
+  -> mindustry.input.Placement.calculateNodes(arc.struct.Seq<arc.math.geom.Point2>, mindustry.world.Block, int, arc.func.Boolf2<arc.math.geom.Point2, arc.math.geom.Point2>)
+  -> java.lang.Math.max(int, int)
+  -> java.lang.Math.abs(int)
+getNodeLinks
+  -> mindustry.game.Team.data()
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> arc.math.geom.Rect.set(float, float, float, float)
+  -> arc.math.geom.Rect.normalize()
+  -> arc.struct.Seq.clear()
+  -> arc.math.geom.QuadTree.intersect(arc.math.geom.Rect, arc.struct.Seq<T>)
+  -> arc.struct.Seq.min(arc.func.Boolf<T>, arc.func.Floatf<T>)
+  -> mindustry.world.blocks.power.BeamNode.BeamNodeBuild.couldConnect(int, mindustry.world.Block, int, int)
+  -> arc.math.geom.Position.dst2(float, float)
+  -> arc.func.Cons.get(T)
+drawLaser
+  -> java.lang.Math.max(float, float)
+  -> java.lang.Math.abs(float)
+  -> arc.math.geom.Geometry.d4(int)
+  -> mindustry.world.Tile.relativeTo(float, float, float, float)
+  -> mindustry.graphics.Drawf.laser(arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, float, float, float, float, float)
+BeamNodeBuild extends mindustry.gen.Building::couldConnect
+  -> mindustry.core.World.tile(int, int)
+  -> mindustry.gen.Building.isInsulated()
+  -> mindustry.world.Tile.block()
+  -> mindustry.world.Tile.team()
+BeamNodeBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.world.blocks.power.BeamNode.BeamNodeBuild.updateDirections()
+BeamNodeBuild extends mindustry.gen.Building::status
+  -> mindustry.world.blocks.power.PowerGraph.getPowerBalance()
+  -> mindustry.world.blocks.power.PowerGraph.getLastPowerStored()
+BeamNodeBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.math.Mathf.zero(float)
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> mindustry.world.blocks.power.PowerGraph.getSatisfaction()
+  -> arc.math.Mathf.absin(float, float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> mindustry.gen.Building.tileX()
+  -> mindustry.gen.Building.tileY()
+  -> java.lang.Math.max(int, int)
+  -> java.lang.Math.abs(int)
+  -> mindustry.graphics.Drawf.laser(arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, float, float, float, float, float)
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> arc.graphics.g2d.Draw.reset()
+BeamNodeBuild extends mindustry.gen.Building::pickedUp
+  -> java.util.Arrays.fill(java.lang.Object[], java.lang.Object)
+BeamNodeBuild extends mindustry.gen.Building::updateDirections
+  -> mindustry.core.World.build(int, int)
+  -> mindustry.gen.Building.isInsulated()
+  -> mindustry.core.World.tile(int, int)
+  -> mindustry.gen.Building.isAdded()
+  -> arc.struct.IntSeq.removeValue(int)
+  -> mindustry.gen.Building.pos()
+  -> mindustry.world.blocks.power.PowerGraph.reflow(mindustry.gen.Building)
+  -> arc.struct.IntSeq.addUnique(int)
+  -> mindustry.world.blocks.power.PowerGraph.addGraph(mindustry.world.blocks.power.PowerGraph)
+  -> mindustry.world.blocks.power.PowerGraph.PowerGraph()
+setBars
+  -> mindustry.world.blocks.power.PowerGenerator.setBars()
+  -> mindustry.world.Block.addLiquidBar(mindustry.type.Liquid)
+init
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+  -> mindustry.world.Block.init()
+afterPatch
+  -> mindustry.world.Block.afterPatch()
+  -> mindustry.world.Block.findConsumer(arc.func.Boolf<mindustry.world.consumers.Consume>)
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.liquid(mindustry.type.Liquid, float, boolean)
+ConsumeGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::updateEfficiencyMultiplier
+  -> mindustry.world.consumers.ConsumeItemFilter.efficiencyMultiplier(mindustry.gen.Building)
+  -> mindustry.world.consumers.ConsumeLiquidFilter.efficiencyMultiplier(mindustry.gen.Building)
+ConsumeGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::updateTile
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> arc.math.Mathf.chanceDelta(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)
+  -> arc.struct.ObjectFloatMap.get(K, float)
+  -> mindustry.gen.Building.consume()
+  -> java.lang.Math.min(float, float)
+  -> mindustry.gen.Building.delta()
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> mindustry.world.modules.LiquidModule.add(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.dumpLiquid(mindustry.type.Liquid)
+  -> mindustry.gen.Building.kill()
+  -> arc.Events.fire(T)
+  -> mindustry.game.EventType.GeneratorPressureExplodeEvent.GeneratorPressureExplodeEvent(mindustry.gen.Building)
+ConsumeGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::drawLight
+  -> mindustry.world.draw.DrawBlock.drawLight(mindustry.gen.Building)
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+  -> arc.math.Mathf.absin(float, float)
+HeaterGenerator
+  -> mindustry.world.draw.DrawMulti.DrawMulti(mindustry.world.draw.DrawBlock...)
+  -> mindustry.world.draw.DrawDefault.DrawDefault()
+  -> mindustry.world.draw.DrawHeatOutput.DrawHeatOutput()
+setStats
+  -> mindustry.world.blocks.power.ConsumeGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+setBars
+  -> mindustry.world.blocks.power.ConsumeGenerator.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+HeaterGeneratorBuild extends mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::updateTile
+  -> mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild.updateTile()
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> mindustry.gen.Building.delta()
+HeaterGeneratorBuild extends mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+HeaterGeneratorBuild extends mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::write
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+HeaterGeneratorBuild extends mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::read
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+ImpactReactor
+  -> arc.struct.EnumSet.of(T...)
+  -> mindustry.world.draw.DrawMulti.DrawMulti(mindustry.world.draw.DrawBlock...)
+  -> mindustry.world.draw.DrawRegion.DrawRegion(java.lang.String)
+  -> mindustry.world.draw.DrawPlasma.DrawPlasma()
+  -> mindustry.world.draw.DrawDefault.DrawDefault()
+setBars
+  -> mindustry.world.blocks.power.PowerGenerator.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.util.Strings.fixed(float, int)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.getPowerProduction()
+  -> mindustry.gen.Building.timeScale()
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.blocks.power.ImpactReactor.statWarmup(float)
+  -> arc.math.Mathf.pow(float, float)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> arc.scene.ui.layout.Cell.tooltip(java.lang.String)
+  -> arc.util.Strings.autoFixed(float, int)
+  -> mindustry.world.meta.StatUnit.localized()
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+statWarmup
+  -> java.lang.Math.log(double)
+ImpactReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::updateTile
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.getPowerProduction()
+  -> mindustry.world.consumers.ConsumePower.requestedPower(mindustry.gen.Building)
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> arc.math.Mathf.equal(float, float, float)
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.gen.Building.consume()
+  -> arc.math.Mathf.pow(float, float)
+ImpactReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+ImpactReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::write
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+ImpactReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::read
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+LightBlock
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+init
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.Block.init()
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.graphics.Drawf.dashCircle(float, float, float, arc.graphics.Color)
+changePlacementPath
+  -> arc.math.Mathf.pow(float, float)
+  -> mindustry.input.Placement.calculateNodes(arc.struct.Seq<arc.math.geom.Point2>, mindustry.world.Block, int, arc.func.Boolf2<arc.math.geom.Point2, arc.math.geom.Point2>)
+  -> arc.math.geom.Point2.dst2(arc.math.geom.Point2)
+LightBuild extends mindustry.gen.Building::configured
+  -> mindustry.gen.Building.configured(mindustry.gen.Unit, java.lang.Object)
+  -> mindustry.graphics.MinimapRenderer.update(mindustry.world.Tile)
+LightBuild extends mindustry.gen.Building::control
+  -> arc.graphics.Color.rgba8888()
+  -> arc.graphics.Color.fromDouble(double)
+  -> mindustry.graphics.MinimapRenderer.update(mindustry.world.Tile)
+  -> mindustry.gen.Building.control(mindustry.logic.LAccess, double, double, double, double)
+LightBuild extends mindustry.gen.Building::sense
+  -> arc.graphics.Color.toDoubleBits()
+  -> arc.graphics.Color.set(int)
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+LightBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(int)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.color()
+LightBuild extends mindustry.gen.Building::updateTile
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+LightBuild extends mindustry.gen.Building::buildConfiguration
+  -> arc.scene.ui.layout.Cell.size(float)
+  -> arc.scene.ui.layout.Table.button(arc.scene.style.Drawable, arc.scene.ui.ImageButton.ImageButtonStyle, java.lang.Runnable)
+  -> mindustry.ui.dialogs.ColorPicker.show(arc.graphics.Color, boolean, arc.func.Cons<arc.graphics.Color>)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.set(int)
+  -> mindustry.gen.Building.configure(java.lang.Object)
+  -> arc.graphics.Color.rgba()
+  -> mindustry.gen.Building.deselect()
+LightBuild extends mindustry.gen.Building::onConfigureBuildTapped
+  -> mindustry.gen.Building.deselect()
+LightBuild extends mindustry.gen.Building::drawLight
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+  -> java.lang.Math.min(float, float)
+  -> arc.graphics.Color.set(int)
+LightBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.i(int)
+LightBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.i()
+load
+  -> mindustry.world.Block.load()
+  -> arc.graphics.g2d.TextureAtlas.find(java.lang.String, arc.graphics.g2d.TextureRegion)
+LongPowerNodeBuild extends mindustry.world.blocks.power.PowerNode.PowerNodeBuild::updateTile
+  -> mindustry.gen.Building.updateTile()
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+LongPowerNodeBuild extends mindustry.world.blocks.power.PowerNode.PowerNodeBuild::draw
+  -> mindustry.world.blocks.power.PowerNode.PowerNodeBuild.draw()
+  -> mindustry.graphics.Drawf.additive(arc.graphics.g2d.TextureRegion, arc.graphics.Color, float, float)
+  -> arc.graphics.Color.mula(float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+NuclearReactor
+  -> arc.struct.EnumSet.of(T...)
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> arc.math.Mathf.sqrt(float)
+  -> arc.scene.ui.layout.Table.add(java.lang.CharSequence)
+  -> arc.util.Strings.autoFixed(float, int)
+  -> mindustry.world.meta.StatUnit.localized()
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> arc.scene.ui.Dialog.isShown()
+  -> mindustry.core.GameState.isGame()
+  -> mindustry.core.GameState.getPlanet()
+  -> arc.util.Strings.fixed(float, int)
+  -> arc.util.I18NBundle.get(java.lang.String)
+setBars
+  -> mindustry.world.blocks.power.PowerGenerator.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::updateTile
+  -> mindustry.world.modules.ItemModule.get(mindustry.type.Item)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.gen.Building.delta()
+  -> mindustry.gen.Building.timer(int, float)
+  -> mindustry.gen.Building.consume()
+  -> java.lang.Math.max(float, float)
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> arc.math.Mathf.chance(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> arc.Events.fire(java.lang.Enum<T>)
+  -> mindustry.gen.Building.kill()
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::shouldExplode
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.shouldExplode()
+  -> mindustry.world.modules.ItemModule.get(mindustry.type.Item)
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::drawLight
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+  -> arc.math.Mathf.absin(float, float)
+  -> arc.graphics.Color.lerp(arc.graphics.Color, float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::draw
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.draw()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.graphics.g2d.Fill.rect(float, float, float, float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> mindustry.world.modules.LiquidModule.current()
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> mindustry.world.modules.LiquidModule.currentAmount()
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.math.Mathf.absin(float, float, float)
+  -> arc.graphics.g2d.Draw.reset()
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::write
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock::read
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> bar
+  -> entity.back
+  -> entity.front
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+drawPlanRegion
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.entities.units.BuildPlan.drawx()
+  -> mindustry.entities.units.BuildPlan.drawy()
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+bar
+  -> mindustry.world.blocks.power.PowerGraph.getLastPowerStored()
+  -> mindustry.world.blocks.power.PowerGraph.getTotalBatteryCapacity()
+PowerDiodeBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)
+  -> mindustry.gen.Building.rotdeg()
+PowerDiodeBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.gen.Building.updateTile()
+  -> mindustry.gen.Building.front()
+  -> mindustry.gen.Building.back()
+  -> mindustry.world.blocks.power.PowerGraph.getBatteryStored()
+  -> mindustry.world.blocks.power.PowerGraph.getTotalBatteryCapacity()
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> mindustry.world.blocks.power.PowerGraph.transferPower(float)
+PowerGenerator
+  -> arc.struct.EnumSet.of(T...)
+icons
+  -> mindustry.world.draw.DrawBlock.finalIcons(mindustry.world.Block)
+load
+  -> mindustry.world.Block.load()
+  -> mindustry.world.draw.DrawBlock.load(mindustry.world.Block)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.util.Strings.fixed(float, int)
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.getPowerProduction()
+  -> mindustry.gen.Building.timeScale()
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+drawPlanRegion
+  -> mindustry.world.draw.DrawBlock.drawPlan(mindustry.world.Block, mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+GeneratorBuild extends mindustry.gen.Building::draw
+  -> mindustry.world.draw.DrawBlock.draw(mindustry.gen.Building)
+GeneratorBuild extends mindustry.gen.Building::onDestroyed
+  -> mindustry.gen.Building.onDestroyed()
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.createExplosion()
+GeneratorBuild extends mindustry.gen.Building::shouldExplode
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.warmup()
+GeneratorBuild extends mindustry.gen.Building::createExplosion
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.shouldExplode()
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.onExplosion()
+GeneratorBuild extends mindustry.gen.Building::onExplosion
+  -> mindustry.entities.Damage.damage(float, float, float, float)
+  -> arc.math.geom.Geometry.circle(int, int, int, arc.func.Intc2)
+  -> mindustry.gen.Building.tileX()
+  -> mindustry.gen.Building.tileY()
+  -> mindustry.core.World.tile(int, int)
+  -> arc.math.Mathf.dst(float, float, float, float)
+  -> arc.math.Mathf.chance(double)
+  -> arc.math.Mathf.sqrt(float)
+  -> arc.util.Time.run(float, java.lang.Runnable)
+  -> mindustry.entities.Fires.create(mindustry.world.Tile)
+  -> mindustry.world.Tile.block()
+  -> mindustry.world.blocks.ConstructBlock.deconstructFinish(mindustry.world.Tile, mindustry.world.Block, mindustry.gen.Unit)
+  -> arc.math.Mathf.random(int, int)
+  -> mindustry.entities.bullet.BulletType.createNet(mindustry.game.Team, float, float, float, float, float, float)
+  -> arc.math.Mathf.random(float)
+  -> mindustry.entities.Effect.at(arc.math.geom.Position)
+  -> arc.audio.Sound.at(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> mindustry.core.World.tileWorld(float, float)
+  -> mindustry.entities.Puddles.deposit(mindustry.world.Tile, mindustry.type.Liquid, float)
+  -> mindustry.entities.Effect.shake(float, float, arc.math.geom.Position)
+  -> mindustry.entities.Effect.scorch(float, float, int)
+GeneratorBuild extends mindustry.gen.Building::drawLight
+  -> mindustry.gen.Building.drawLight()
+  -> mindustry.world.draw.DrawBlock.drawLight(mindustry.gen.Building)
+GeneratorBuild extends mindustry.gen.Building::ambientVolume
+  -> arc.math.Mathf.clamp(float)
+GeneratorBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+GeneratorBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()
+PowerGraph
+  -> mindustry.gen.PowerGraphUpdater.create()
+getPowerBalance
+  -> arc.math.WindowedMean.rawMean()
+hasPowerBalanceSamples
+  -> arc.math.WindowedMean.hasEnoughData()
+transferPower
+  -> mindustry.world.blocks.power.PowerGraph.chargeBatteries(float)
+  -> mindustry.world.blocks.power.PowerGraph.useBatteries(float)
+getSatisfaction
+  -> arc.math.Mathf.zero(float)
+  -> arc.math.Mathf.clamp(float)
+getPowerProduced
+  -> producer.getPowerProduction
+  -> producer.delta
+getPowerNeeded
+  -> consumePower.requestedPower
+  -> consumer.delta
+useBatteries
+  -> mindustry.world.blocks.power.PowerGraph.getBatteryStored()
+  -> arc.math.Mathf.equal(float, float)
+  -> java.lang.Math.min(float, float)
+chargeBatteries
+  -> mindustry.world.blocks.power.PowerGraph.getBatteryCapacity()
+  -> java.lang.Math.min(float, float)
+  -> arc.math.Mathf.equal(float, float)
+distributePower
+  -> arc.math.Mathf.zero(float)
+  -> java.lang.Math.min(float, float)
+  -> Mathf.zero
+  -> cons.requestedPower
+  -> consumer.delta
+  -> Mathf.clamp
+  -> Math.min
+  -> Float.isNaN
+update
+  -> arc.struct.Seq.isEmpty()
+  -> mindustry.gen.Building.cheating()
+  -> arc.struct.Seq.first()
+  -> mindustry.world.blocks.power.PowerGraph.getPowerNeeded()
+  -> mindustry.world.blocks.power.PowerGraph.getPowerProduced()
+  -> mindustry.world.blocks.power.PowerGraph.getTotalBatteryCapacity()
+  -> mindustry.world.blocks.power.PowerGraph.getBatteryStored()
+  -> arc.math.WindowedMean.add(float)
+  -> arc.math.Mathf.equal(float, float)
+  -> mindustry.world.blocks.power.PowerGraph.useBatteries(float)
+  -> mindustry.world.blocks.power.PowerGraph.chargeBatteries(float)
+  -> mindustry.world.blocks.power.PowerGraph.distributePower(float, float, boolean)
+addGraph
+  -> mindustry.world.blocks.power.PowerGraph.addGraph(mindustry.world.blocks.power.PowerGraph)
+  -> mindustry.gen.PowerGraphUpdater.remove()
+  -> mindustry.world.blocks.power.PowerGraph.add(mindustry.gen.Building)
+  -> mindustry.world.blocks.power.PowerGraph.checkAdd()
+add
+  -> mindustry.gen.PowerGraphUpdater.remove()
+  -> arc.struct.Seq.add(T)
+checkAdd
+  -> mindustry.gen.PowerGraphUpdater.add()
+clear
+  -> arc.struct.Seq.clear()
+  -> mindustry.gen.PowerGraphUpdater.remove()
+reflow
+  -> arc.struct.Queue.clear()
+  -> arc.struct.Queue.addLast(T)
+  -> arc.struct.IntSet.clear()
+  -> arc.struct.Queue.removeFirst()
+  -> mindustry.world.blocks.power.PowerGraph.add(mindustry.gen.Building)
+  -> mindustry.world.blocks.power.PowerGraph.checkAdd()
+  -> mindustry.gen.Building.getPowerConnections(arc.struct.Seq<mindustry.gen.Building>)
+  -> arc.struct.IntSet.add(int)
+  -> mindustry.gen.Building.pos()
+removeList
+  -> arc.struct.Seq.remove(T)
+remove
+  -> mindustry.gen.Building.getPowerConnections(arc.struct.Seq<mindustry.gen.Building>)
+  -> mindustry.world.blocks.power.PowerGraph.checkAdd()
+  -> mindustry.world.blocks.power.PowerGraph.add(mindustry.gen.Building)
+  -> arc.struct.Queue.clear()
+  -> arc.struct.Queue.addLast(T)
+  -> arc.struct.Queue.removeFirst()
+  -> mindustry.world.blocks.power.PowerGraph.update()
+  -> mindustry.gen.PowerGraphUpdater.remove()
+  -> mindustry.world.blocks.power.PowerGraph.PowerGraph()
+PowerNode
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+  -> mindustry.core.World.build(int)
+  -> arc.struct.IntSeq.contains(int)
+  -> arc.struct.IntSeq.removeValue(int)
+  -> other.power.links.removeValue
+  -> entity.pos
+  -> mindustry.world.blocks.power.PowerGraph.reflow(mindustry.gen.Building)
+  -> mindustry.world.blocks.power.PowerGraph.update()
+  -> mindustry.world.blocks.power.PowerNode.linkValid(mindustry.gen.Building, mindustry.gen.Building)
+  -> arc.struct.IntSeq.addUnique(int)
+  -> mindustry.gen.Building.pos()
+  -> other.power.links.addUnique
+  -> mindustry.world.blocks.power.PowerGraph.addGraph(mindustry.world.blocks.power.PowerGraph)
+  -> arc.func.Cons2.get(T, N)
+  -> configurations.get(Integer.class).get
+  -> Point2.pack
+  -> tile.tileX
+  -> tile.tileY
+  -> mindustry.world.blocks.power.PowerGraph.PowerGraph()
+  -> IntSeq.<init>
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.world.blocks.power.PowerNode.makePowerBalance()
+  -> mindustry.world.blocks.power.PowerNode.makeBatteryBalance()
+  -> Core.bundle.format
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+makePowerBalance
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> mindustry.world.blocks.power.PowerGraph.getPowerBalance()
+  -> mindustry.core.UI.formatAmount(long)
+  -> arc.math.Mathf.clamp(float)
+  -> mindustry.world.blocks.power.PowerGraph.getLastPowerProduced()
+  -> mindustry.world.blocks.power.PowerGraph.getLastPowerNeeded()
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+makeBatteryBalance
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> mindustry.core.UI.formatAmount(long)
+  -> mindustry.world.blocks.power.PowerGraph.getLastPowerStored()
+  -> mindustry.world.blocks.power.PowerGraph.getLastCapacity()
+  -> arc.math.Mathf.clamp(float)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+init
+  -> mindustry.world.Block.init()
+  -> java.lang.Math.max(float, float)
+drawPlace
+  -> mindustry.core.World.tile(int, int)
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> mindustry.graphics.Drawf.circles(float, float, float)
+  -> mindustry.world.blocks.power.PowerNode.getPotentialLinks(mindustry.world.Tile, mindustry.game.Team, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.gen.Player.team()
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, float)
+  -> mindustry.world.blocks.power.PowerNode.drawLaser(float, float, float, float, int, int)
+  -> mindustry.graphics.Drawf.square(float, float, float, arc.graphics.Color)
+  -> arc.graphics.g2d.Draw.reset()
+changePlacementPath
+  -> mindustry.input.Placement.calculateNodes(arc.struct.Seq<arc.math.geom.Point2>, mindustry.world.Block, int, arc.func.Boolf2<arc.math.geom.Point2, arc.math.geom.Point2>)
+  -> mindustry.world.blocks.power.PowerNode.overlaps(mindustry.world.Tile, mindustry.world.Tile)
+  -> mindustry.core.World.tile(int, int)
+setupColor
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> arc.graphics.Color.a(float)
+  -> arc.graphics.Color.lerp(arc.graphics.Color, float)
+  -> arc.graphics.Color.set(arc.graphics.Color)
+  -> arc.math.Mathf.absin(float, float)
+drawLaser
+  -> mindustry.world.blocks.power.PowerNode.drawLaser(float, float, float, float, int, int, boolean)
+  -> arc.math.Angles.angle(float, float, float, float)
+  -> arc.math.Mathf.cosDeg(float)
+  -> arc.math.Mathf.sinDeg(float)
+  -> mindustry.graphics.Drawf.laser(arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, arc.graphics.g2d.TextureRegion, float, float, float, float, float, boolean, boolean)
+overlaps
+  -> arc.math.geom.Intersector.overlaps(arc.math.geom.Circle, arc.math.geom.Rect)
+  -> arc.math.geom.Circle.set(float, float, float)
+  -> arc.math.geom.Rect.setCentered(float, float, float, float)
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> mindustry.world.Tile.getHitbox(arc.math.geom.Rect)
+  -> mindustry.world.blocks.power.PowerNode.overlaps(float, float, mindustry.world.Tile, float)
+  -> mindustry.world.Tile.drawx()
+  -> mindustry.world.Tile.drawy()
+  -> arc.math.geom.Rect.setCenter(float, float)
+  -> arc.math.geom.Rect.setSize(float)
+getPotentialLinks
+  -> mindustry.world.blocks.power.PowerNode.overlaps(float, float, mindustry.world.Tile, float)
+  -> arc.struct.ObjectSet.contains(T)
+  -> mindustry.world.blocks.power.PowerNode.insulated(mindustry.world.Tile, mindustry.world.Tile)
+  -> arc.util.Structs.contains(T[], arc.func.Boolf<T>)
+  -> mindustry.world.Edges.getEdges(int)
+  -> world.tile
+  -> arc.struct.Seq.clear()
+  -> arc.struct.ObjectSet.clear()
+  -> mindustry.world.Tile.nearby(arc.math.geom.Point2)
+  -> mindustry.world.Tile.team()
+  -> arc.struct.ObjectSet.add(T)
+  -> mindustry.game.Team.data()
+  -> arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Cons<T>)
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> arc.func.Boolf.get(T)
+  -> arc.struct.Seq.contains(T)
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.Seq.sort(java.util.Comparator<? super T>)
+  -> java.lang.Boolean.compare(boolean, boolean)
+  -> java.lang.Float.compare(float, float)
+  -> arc.math.geom.Position.dst2(arc.math.geom.Position)
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> graphs.add
+  -> arc.func.Cons.get(T)
+getNodeLinks
+  -> mindustry.world.blocks.power.PowerNode.overlaps(float, float, mindustry.world.Tile, mindustry.world.Block, float)
+  -> arc.struct.ObjectSet.contains(T)
+  -> mindustry.world.blocks.power.PowerNode.insulated(mindustry.world.Tile, mindustry.world.Tile)
+  -> arc.util.Structs.contains(T[], arc.func.Boolf<T>)
+  -> mindustry.world.Edges.getEdges(int)
+  -> world.tile
+  -> arc.struct.Seq.clear()
+  -> arc.struct.ObjectSet.clear()
+  -> mindustry.world.Tile.nearby(arc.math.geom.Point2)
+  -> mindustry.world.Tile.team()
+  -> mindustry.world.Tile.block()
+  -> arc.struct.ObjectSet.add(T)
+  -> mindustry.game.Team.data()
+  -> arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Cons<T>)
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> arc.func.Boolf.get(T)
+  -> arc.struct.Seq.contains(T)
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.Seq.sort(java.util.Comparator<? super T>)
+  -> java.lang.Boolean.compare(boolean, boolean)
+  -> java.lang.Float.compare(float, float)
+  -> arc.math.geom.Position.dst2(arc.math.geom.Position)
+  -> arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)
+  -> graphs.add
+  -> arc.func.Cons.get(T)
+drawPlanConfigTop
+  -> mindustry.world.blocks.power.PowerNode.setupColor(float)
+  -> mindustry.world.Block.findPlan(arc.util.Eachable<mindustry.entities.units.BuildPlan>, int, int, arc.func.Boolf<mindustry.entities.units.BuildPlan>)
+  -> mindustry.world.blocks.power.PowerNode.drawLaser(float, float, float, float, int, int, boolean)
+  -> mindustry.entities.units.BuildPlan.drawx()
+  -> mindustry.entities.units.BuildPlan.drawy()
+  -> arc.graphics.g2d.Draw.color()
+linkValid
+  -> mindustry.world.blocks.power.PowerNode.linkValid(mindustry.gen.Building, mindustry.gen.Building, boolean)
+  -> mindustry.world.blocks.power.PowerNode.overlaps(mindustry.gen.Building, mindustry.gen.Building, float)
+  -> arc.struct.IntSeq.contains(int)
+  -> mindustry.gen.Building.pos()
+insulated
+  -> mindustry.world.blocks.power.PowerNode.insulated(int, int, int, int)
+  -> mindustry.gen.Building.tileX()
+  -> mindustry.gen.Building.tileY()
+  -> mindustry.core.World.raycast(int, int, int, int, arc.math.geom.Geometry.Raycaster)
+  -> mindustry.core.World.build(int, int)
+  -> mindustry.gen.Building.isInsulated()
+PowerNodeBuild extends mindustry.gen.Building::created
+  -> mindustry.gen.Building.created()
+PowerNodeBuild extends mindustry.gen.Building::placed
+  -> mindustry.net.Net.client()
+  -> mindustry.world.blocks.power.PowerNode.getPotentialLinks(mindustry.world.Tile, mindustry.game.Team, arc.func.Cons<mindustry.gen.Building>)
+  -> arc.struct.IntSeq.contains(int)
+  -> mindustry.gen.Building.pos()
+  -> mindustry.gen.Building.configureAny(java.lang.Object)
+  -> mindustry.gen.Building.placed()
+PowerNodeBuild extends mindustry.gen.Building::dropped
+  -> arc.struct.IntSeq.clear()
+  -> mindustry.gen.Building.updatePowerGraph()
+PowerNodeBuild extends mindustry.gen.Building::onConfigureBuildTapped
+  -> mindustry.world.blocks.power.PowerNode.linkValid(mindustry.gen.Building, mindustry.gen.Building)
+  -> mindustry.gen.Building.configure(java.lang.Object)
+  -> mindustry.gen.Building.pos()
+  -> mindustry.world.blocks.power.PowerNode.getPotentialLinks(mindustry.world.Tile, mindustry.game.Team, arc.func.Cons<mindustry.gen.Building>)
+  -> mindustry.world.blocks.power.PowerNode.insulated(mindustry.gen.Building, mindustry.gen.Building)
+  -> arc.struct.Seq.add(T)
+  -> mindustry.gen.Building.tileX()
+  -> mindustry.gen.Building.tileY()
+  -> arc.struct.Seq.toArray(java.lang.Class)
+  -> mindustry.gen.Building.deselect()
+  -> arc.struct.Seq.Seq()
+  -> arc.math.geom.Point2.Point2(int, int)
+PowerNodeBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.gen.Building.drawSelect()
+  -> arc.graphics.g2d.Lines.stroke(float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> mindustry.graphics.Drawf.circles(float, float, float)
+  -> arc.graphics.g2d.Draw.reset()
+PowerNodeBuild extends mindustry.gen.Building::drawConfigure
+  -> mindustry.graphics.Drawf.circles(float, float, float)
+  -> mindustry.world.Tile.block()
+  -> arc.math.Mathf.absin(float, float, float)
+  -> mindustry.core.World.build(int, int)
+  -> mindustry.world.blocks.power.PowerNode.linkValid(mindustry.gen.Building, mindustry.gen.Building, boolean)
+  -> mindustry.world.blocks.power.PowerNode.PowerNodeBuild.linked(mindustry.gen.Building)
+  -> mindustry.graphics.Drawf.square(float, float, float, arc.graphics.Color)
+  -> arc.graphics.g2d.Draw.reset()
+  -> arc.struct.IntSeq.each(arc.func.Intc)
+  -> mindustry.core.World.build(int)
+PowerNodeBuild extends mindustry.gen.Building::drawCached
+  -> mindustry.gen.Building.draw()
+PowerNodeBuild extends mindustry.gen.Building::draw
+  -> arc.math.Mathf.zero(float)
+  -> mindustry.gen.Building.isPayload()
+  -> arc.graphics.g2d.Draw.z(float)
+  -> mindustry.world.blocks.power.PowerNode.setupColor(float)
+  -> mindustry.world.blocks.power.PowerGraph.getSatisfaction()
+  -> mindustry.core.World.build(int)
+  -> arc.struct.IntSeq.get(int)
+  -> mindustry.world.blocks.power.PowerNode.linkValid(mindustry.gen.Building, mindustry.gen.Building)
+  -> mindustry.world.blocks.power.PowerNode.drawLaser(float, float, float, float, int, int)
+  -> arc.graphics.g2d.Draw.reset()
+PowerNodeBuild extends mindustry.gen.Building::linked
+  -> arc.struct.IntSeq.contains(int)
+  -> mindustry.gen.Building.pos()
+PowerNodeBuild extends mindustry.gen.Building::config
+  -> arc.math.geom.Point2.sub(int, int)
+  -> arc.math.geom.Point2.unpack(int)
+  -> arc.struct.IntSeq.get(int)
+SolarGenerator
+  -> arc.struct.EnumSet.of(T...)
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+SolarGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::updateTile
+  -> arc.math.Mathf.maxZero(float)
+  -> mindustry.world.meta.Attribute.env()
+init
+  -> mindustry.world.Block.init()
+  -> java.lang.Math.max(float, float)
+afterPatch
+  -> mindustry.world.Block.afterPatch()
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.Attribute, boolean, float, boolean)
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)
+  -> mindustry.world.meta.StatValues.liquid(mindustry.type.Liquid, float, boolean)
+drawPlace
+  -> mindustry.world.Block.drawPlace(int, int, int, boolean)
+  -> mindustry.world.Block.drawPlaceText(java.lang.String, int, int, boolean)
+  -> arc.util.I18NBundle.formatFloat(java.lang.String, float, int)
+  -> mindustry.world.Block.sumAttribute(mindustry.world.meta.Attribute, int, int)
+canPlaceOn
+  -> arc.struct.Seq.sumf(arc.func.Floatf<T>)
+  -> mindustry.world.Tile.getLinkedTilesAs(mindustry.world.Block, arc.struct.Seq<mindustry.world.Tile>)
+  -> mindustry.world.blocks.Attributes.get(mindustry.world.meta.Attribute)
+  -> mindustry.world.Tile.floor()
+ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::updateTile
+  -> mindustry.world.meta.Attribute.env()
+  -> arc.math.Mathf.chanceDelta(double)
+  -> mindustry.entities.Effect.at(float, float)
+  -> arc.math.Mathf.range(float)
+  -> java.lang.Math.min(float, float)
+  -> mindustry.gen.Building.delta()
+  -> mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)
+  -> mindustry.world.modules.LiquidModule.add(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.dumpLiquid(mindustry.type.Liquid)
+ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::afterPickedUp
+  -> mindustry.gen.Building.afterPickedUp()
+ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::totalProgress
+  -> mindustry.gen.Building.totalProgress()
+ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::drawLight
+  -> mindustry.graphics.Drawf.light(float, float, float, arc.graphics.Color, float)
+  -> arc.math.Mathf.absin(float, float)
+  -> java.lang.Math.min(float, float)
+ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild::onProximityAdded
+  -> mindustry.gen.Building.onProximityAdded()
+  -> mindustry.world.Block.sumAttribute(mindustry.world.meta.Attribute, int, int)
+VariableReactor
+  -> arc.graphics.Color.valueOf(java.lang.String)
+  -> mindustry.entities.effect.MultiEffect.MultiEffect(mindustry.entities.Effect...)
+  -> mindustry.entities.effect.WrapEffect.WrapEffect(mindustry.entities.Effect, arc.graphics.Color)
+setBars
+  -> mindustry.world.blocks.power.PowerGenerator.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> arc.math.Mathf.clamp(float)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+setStats
+  -> mindustry.world.blocks.power.PowerGenerator.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::updateTile
+  -> mindustry.gen.Building.calculateHeat(float[])
+  -> arc.math.Mathf.lerpDelta(float, float, float)
+  -> mindustry.gen.Building.kill()
+  -> arc.math.Mathf.chanceDelta(double)
+  -> mindustry.entities.Effect.at(float, float, arc.graphics.Color)
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::draw
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.draw()
+  -> mindustry.core.GameState.isPaused()
+  -> arc.graphics.g2d.Draw.z(float)
+  -> arc.graphics.g2d.Draw.blend(arc.graphics.Blending)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color, arc.graphics.Color, float)
+  -> arc.math.Mathf.absin(float, float, float)
+  -> arc.graphics.g2d.Draw.alpha(float)
+  -> arc.math.Mathf.clamp(float)
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> arc.graphics.g2d.Draw.blend()
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::updateEfficiencyMultiplier
+  -> arc.math.Mathf.clamp(float)
+  -> arc.math.Mathf.zero(float)
+  -> arc.math.Mathf.approachDelta(float, float, float)
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::write
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer::read
+  -> mindustry.world.blocks.power.PowerGenerator.GeneratorBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()

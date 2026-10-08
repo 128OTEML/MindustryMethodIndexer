@@ -1,0 +1,47 @@
+// DrawPart.java : public void load(String name)
+    public void load(String name){}
+
+// DrawPart.java : public void getOutlines(Seq<TextureRegion> out)
+    public void getOutlines(Seq<TextureRegion> out){}
+
+// FlarePart.java : public void load(String name)
+    @Override
+    public void load(String name){
+
+    }
+
+// HaloPart.java : public void load(String name)
+    @Override
+    public void load(String name){
+
+    }
+
+// HoverPart.java : public void load(String name)
+    @Override
+    public void load(String name){
+
+    }
+
+// RegionPart.java : void rect(TextureRegion region, float x, float y, float rotation)
+    void rect(TextureRegion region, float x, float y, float rotation){
+        float w = region.width * region.scl() * Draw.xscl, h = region.height * region.scl() * Draw.yscl;
+        Draw.rect(region, x, y, w, h, w / 2f + originX * Draw.xscl, h / 2f + originY * Draw.yscl, rotation);
+    }
+
+// RegionPart.java : public void getOutlines(Seq<TextureRegion> out)
+    @Override
+    public void getOutlines(Seq<TextureRegion> out){
+        if(outline && drawRegion){
+            out.addAll(regions);
+        }
+        for(var child : children){
+            child.getOutlines(out);
+        }
+    }
+
+// ShapePart.java : public void load(String name)
+    @Override
+    public void load(String name){
+
+    }
+

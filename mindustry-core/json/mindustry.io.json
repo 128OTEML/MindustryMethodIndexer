@@ -1,0 +1,4325 @@
+[ {
+  "file" : "JsonIO.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final Json json",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "json",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void writeBytes(Object value, Class<?> elementType, DataOutputStream output)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeBytes",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "Object"
+    }, {
+      "name" : "elementType",
+      "type" : "Class<?>"
+    }, {
+      "name" : "output",
+      "type" : "DataOutputStream"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ "arc.util.serialization.Json.setWriter(arc.util.serialization.BaseJsonWriter)", "arc.util.serialization.Json.writeValue(java.lang.Object, java.lang.Class, java.lang.Class)", "java.lang.Object.getClass()", "arc.util.serialization.UBJsonWriter.UBJsonWriter(java.io.OutputStream)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static T readBytes(Class<T> type, Class<?> elementType, DataInputStream input) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readBytes",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "elementType",
+      "type" : "Class<?>"
+    }, {
+      "name" : "input",
+      "type" : "DataInputStream"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ "arc.util.serialization.Json.readValue(java.lang.Class<T>, java.lang.Class, arc.util.serialization.JsonValue)", "arc.util.serialization.UBJsonReader.parseWihoutClosing(java.io.DataInputStream)", "arc.util.serialization.UBJsonReader.UBJsonReader()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static String write(Object object)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ "arc.util.serialization.Json.toJson(java.lang.Object, java.lang.Class)", "java.lang.Object.getClass()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static T copy(T object, T dest) / public static T copy(T object)",
+    "desc" : null,
+    "overloads" : [ "public static T copy(T object, T dest)", "public static T copy(T object)" ],
+    "name" : "copy",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "T"
+    }, {
+      "name" : "dest",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ "arc.util.serialization.Json.copyFields(java.lang.Object, java.lang.Object)", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "java.lang.Object.getClass()", "mindustry.io.JsonIO.write(java.lang.Object)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static T read(Class<T> type, String string) / public static T read(T base, String string)",
+    "desc" : null,
+    "overloads" : [ "public static T read(Class<T> type, String string)", "public static T read(T base, String string)" ],
+    "name" : "read",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "string",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ "arc.util.serialization.Json.fromJson(java.lang.Class<T>, java.lang.String)", "java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)", "arc.util.serialization.Json.readFields(java.lang.Object, arc.util.serialization.JsonValue)", "arc.util.serialization.JsonReader.parse(java.lang.String)", "arc.util.serialization.JsonReader.JsonReader()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static String print(String in)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "print",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "in",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 75,
+    "calls" : [ "arc.util.serialization.Json.prettyPrint(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void classTag(String tag, Class<?> type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "classTag",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tag",
+      "type" : "String"
+    }, {
+      "name" : "type",
+      "type" : "Class<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ "arc.util.serialization.Json.addClassTag(java.lang.String, java.lang.Class)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MapIO.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : "Reads and writes map files.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final int pngHeader",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pngHeader",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static boolean isImage(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isImage",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "arc.files.Fi.read(int)", "java.io.InputStream.read()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Map createMap(Fi file, boolean custom) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createMap",
+    "returnType" : "Map",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "custom",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 38,
+    "calls" : [ "arc.files.Fi.read(int)", "mindustry.io.SaveIO.readHeader(java.io.DataInput)", "java.io.DataInputStream.readInt()", "mindustry.io.SaveIO.getSaveWriter(int)", "mindustry.io.SaveFileReader.readRegion(java.lang.String, java.io.DataInput, arc.util.io.CounterInputStream, mindustry.io.SaveFileReader.IORunner<java.io.DataInput>)", "arc.struct.ObjectMap.putAll(arc.struct.ObjectMap<? extends K, ? extends V>)", "mindustry.io.SaveFileReader.readStringMap(java.io.DataInput)", "arc.struct.StringMap.getInt(java.lang.String)", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)", "arc.util.io.CounterInputStream.CounterInputStream(java.io.InputStream)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.io.IOException.IOException(java.lang.String)", "arc.struct.StringMap.StringMap()", "mindustry.maps.Map.Map(arc.files.Fi, int, int, arc.struct.StringMap, boolean, int, int)" ],
+    "callCount" : 14
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeMap(Fi file, Map map) throws IOException / public static void writeMap(Fi file, Map map, boolean embed) throws IOException",
+    "desc" : "@param embed if true, assets will be embedded in the map - this is needed for external export.",
+    "overloads" : [ "public static void writeMap(Fi file, Map map) throws IOException", "public static void writeMap(Fi file, Map map, boolean embed) throws IOException" ],
+    "name" : "writeMap",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "map",
+      "type" : "Map"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "mindustry.io.MapIO.writeMap(arc.files.Fi, mindustry.maps.Map, boolean)", "mindustry.io.SaveIO.write(arc.files.Fi, mindustry.io.SaveOptions)", "mindustry.io.SaveOptions.SaveOptions()", "java.io.IOException.IOException(java.lang.Throwable)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void loadMap(Map map) / public static void loadMap(Map map, WorldContext cons)",
+    "desc" : null,
+    "overloads" : [ "public static void loadMap(Map map)", "public static void loadMap(Map map, WorldContext cons)" ],
+    "name" : "loadMap",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "Map"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ "mindustry.io.SaveIO.load(arc.files.Fi)", "mindustry.io.SaveIO.load(arc.files.Fi, mindustry.world.WorldContext)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Pixmap generatePreview(Map map) throws IOException / public static Pixmap generatePreview(Tiles tiles)",
+    "desc" : null,
+    "overloads" : [ "public static Pixmap generatePreview(Map map) throws IOException", "public static Pixmap generatePreview(Tiles tiles)" ],
+    "name" : "generatePreview",
+    "returnType" : "Pixmap",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "Map"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 74,
+    "calls" : [ "arc.struct.IntSet.clear()", "arc.files.Fi.read(int)", "mindustry.io.SaveIO.readHeader(java.io.DataInput)", "java.io.DataInputStream.readInt()", "mindustry.io.SaveIO.getSaveWriter(int)", "mindustry.io.SaveFileReader.readRegion(java.lang.String, java.io.DataInput, arc.util.io.CounterInputStream, mindustry.io.SaveFileReader.IORunner<java.io.DataInput>)", "arc.graphics.Color.rgba8888(float, float, float, float)", "mindustry.gen.Building.init(mindustry.world.Tile, mindustry.game.Team, boolean, int)", "mindustry.world.Block.newBuilding()", "mindustry.world.Tile.team()", "mindustry.io.MapIO.colorFor(mindustry.world.Block, mindustry.world.Block, mindustry.world.Block, mindustry.game.Team)", "arc.graphics.Pixmap.setRaw(int, int, int)", "arc.graphics.Pixmap.set(int, int, int)", "mindustry.io.SaveFileReader.skipChunk(java.io.DataInput)", "mindustry.io.SaveVersion.readMap(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.core.World.setGenerating(boolean)", "arc.graphics.Color.rgba8888()", "mindustry.world.Tile.block()", "arc.struct.IntSet.add(int)", "mindustry.core.ContentLoader.block(int)", "mindustry.world.Block.synthetic()", "mindustry.world.Block.minimapColor(mindustry.world.Tile)", "mindustry.world.Tile.array()", "arc.graphics.Pixmap.draw(arc.graphics.Pixmap, boolean)", "arc.graphics.Pixmap.dispose()", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)", "arc.util.io.CounterInputStream.CounterInputStream(java.io.InputStream)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.io.IOException.IOException(java.lang.String)", "arc.graphics.Pixmap.Pixmap(int, int)", "mindustry.world.CachedTile.CachedTile()", "mindustry.io.SaveReadState.SaveReadState(mindustry.world.WorldContext)", "mindustry.io.MapIO.Anonymous-73997ada-613b-49d9-ad16-91f30d82c92f.Anonymous-73997ada-613b-49d9-ad16-91f30d82c92f()", "mindustry.world.Tiles.getn(int, int)", "mindustry.world.Tile.overlay()", "mindustry.world.Tile.floor()" ],
+    "callCount" : 37
+  }, {
+    "kind" : "method",
+    "signature" : "private static void readPreviewContentHeader(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPreviewContentHeader",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 192,
+    "calls" : [ "java.io.DataInput.readUnsignedByte()", "java.io.DataInput.readByte()", "java.io.DataInput.readShort()", "java.lang.Enum.ordinal()", "java.io.DataInput.readUTF()", "mindustry.core.ContentLoader.getByName(mindustry.ctype.ContentType, java.lang.String)", "arc.struct.ObjectMap.get(K, V)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public static int colorFor(Block wall, Block floor, Block overlay, Team team)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "colorFor",
+    "returnType" : "int",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "wall",
+      "type" : "Block"
+    }, {
+      "name" : "floor",
+      "type" : "Block"
+    }, {
+      "name" : "overlay",
+      "type" : "Block"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 231,
+    "calls" : [ "mindustry.world.Block.synthetic()", "arc.graphics.Color.rgba()", "arc.graphics.Pixmap.blend(int, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Pixmap writeImage(Tiles tiles)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeImage",
+    "returnType" : "Pixmap",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tiles",
+      "type" : "Tiles"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 239,
+    "calls" : [ "mindustry.world.Tile.block()", "mindustry.world.Block.hasBuilding()", "arc.graphics.Color.rgba()", "mindustry.world.Tile.floor()", "arc.graphics.Pixmap.set(int, int, int)", "arc.graphics.Pixmap.Pixmap(int, int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public static void readImage(Pixmap pixmap, Tiles tiles)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readImage",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "pixmap",
+      "type" : "Pixmap"
+    }, {
+      "name" : "tiles",
+      "type" : "Tiles"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 250,
+    "calls" : [ "arc.graphics.Pixmap.get(int, int)", "mindustry.world.ColorMapper.get(int)", "mindustry.world.Block.hasBuilding()", "mindustry.world.Block.isOverlay()", "mindustry.world.Tile.setOverlay(mindustry.world.Block)", "mindustry.world.Block.asFloor()", "mindustry.world.Block.isFloor()", "mindustry.world.Tile.setFloor(mindustry.world.blocks.environment.Floor)", "mindustry.world.Block.isMultiblock()", "mindustry.world.Tile.setBlock(mindustry.world.Block, mindustry.game.Team, int)", "mindustry.world.Tile.setBlock(mindustry.world.Block)", "mindustry.world.Tile.floor()" ],
+    "callCount" : 12
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SaveFileReader.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class (abstract)",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final ObjectMap<String,String> fallback",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fallback",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final ObjectMap<String,String> modContentNameMap",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "modContentNameMap",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 69,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final ReusableByteOutStream byteOutput",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "byteOutput",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 76,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final DataOutputStream dataBytes",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dataBytes",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 77,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final Writes writes1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writes1",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 78,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final Reads chunkReads",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "chunkReads",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 79,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected static boolean chunkNested",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "chunkNested",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 80,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static String mapFallback(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mapFallback",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ "arc.struct.ObjectMap.get(K, V)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void readRegion(String name, DataInput stream, CounterInputStream counter, IORunner<DataInput> cons) throws IOException",
+    "desc" : "TODO: unify readRegion with readChunk, they do the same thing and both should have good error messages",
+    "overloads" : null,
+    "name" : "readRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "counter",
+      "type" : "CounterInputStream"
+    }, {
+      "name" : "cons",
+      "type" : "IORunner<DataInput>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ "arc.util.io.CounterInputStream.resetCount()", "mindustry.io.SaveFileReader.readChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<java.io.DataInput>)", "mindustry.io.SaveFileReader.IORunner.accept(T)", "java.io.IOException.IOException(java.lang.String, java.lang.Throwable)", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeRegion(String name, DataOutput stream, IORunner<DataOutput> cons) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "stream",
+      "type" : "DataOutput"
+    }, {
+      "name" : "cons",
+      "type" : "IORunner<DataOutput>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 101,
+    "calls" : [ "mindustry.io.SaveFileReader.writeChunk(java.io.DataOutput, mindustry.io.SaveFileReader.IORunner<arc.util.io.Writes>)", "mindustry.io.SaveFileReader.IORunner.accept(T)", "java.io.IOException.IOException(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeChunk(DataOutput output, IORunner<Writes> runner) throws IOException",
+    "desc" : "Write a chunk of input to the stream.",
+    "overloads" : null,
+    "name" : "writeChunk",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "output",
+      "type" : "DataOutput"
+    }, {
+      "name" : "runner",
+      "type" : "IORunner<Writes>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ "java.io.ByteArrayOutputStream.reset()", "mindustry.io.SaveFileReader.IORunner.accept(T)", "java.io.ByteArrayOutputStream.size()", "java.io.DataOutput.writeInt(int)", "java.io.DataOutput.write(byte[], int, int)", "arc.util.io.ReusableByteOutStream.getBytes()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public int readChunk(DataInput input, IORunnerLength<DataInput> runner) throws IOException",
+    "desc" : "Reads a chunk of some length.",
+    "overloads" : null,
+    "name" : "readChunk",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    }, {
+      "name" : "runner",
+      "type" : "IORunnerLength<DataInput>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 134,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.IORunnerLength.accept(T, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public int readChunkReads(DataInput input, IORunnerLength<Reads> runner) throws IOException",
+    "desc" : "Reads a chunk of some length.",
+    "overloads" : null,
+    "name" : "readChunkReads",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    }, {
+      "name" : "runner",
+      "type" : "IORunnerLength<Reads>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 142,
+    "calls" : [ "mindustry.io.SaveFileReader.readChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<java.io.DataInput>)", "mindustry.io.SaveFileReader.IORunnerLength.accept(T, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void skipChunk(DataInput input) throws IOException",
+    "desc" : "Skip a chunk completely, discarding the bytes.",
+    "overloads" : null,
+    "name" : "skipChunk",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 150,
+    "calls" : [ "mindustry.io.SaveFileReader.readChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<java.io.DataInput>)", "java.io.DataInput.skipBytes(int)", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public int readLegacyShortChunk(DataInput input, IORunnerLength<Reads> runner) throws IOException",
+    "desc" : "Reads a legacy chunk where the length is only 2 bytes.",
+    "overloads" : null,
+    "name" : "readLegacyShortChunk",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    }, {
+      "name" : "runner",
+      "type" : "IORunnerLength<Reads>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 159,
+    "calls" : [ "java.io.DataInput.readUnsignedShort()", "mindustry.io.SaveFileReader.IORunnerLength.accept(T, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void skipLegacyShortChunk(DataInput input) throws IOException",
+    "desc" : "Skip a legacy chunk completely, discarding the bytes.",
+    "overloads" : null,
+    "name" : "skipLegacyShortChunk",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 167,
+    "calls" : [ "mindustry.io.SaveFileReader.readLegacyShortChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "java.io.DataInput.skipBytes(int)", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeStringMap(DataOutput stream, ObjectMap<String,String> map) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeStringMap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    }, {
+      "name" : "map",
+      "type" : "ObjectMap<String,String>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 175,
+    "calls" : [ "java.io.DataOutput.writeShort(int)", "arc.struct.ObjectMap.entries()", "stream.writeUTF" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public StringMap readStringMap(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStringMap",
+    "returnType" : "StringMap",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 183,
+    "calls" : [ "java.io.DataInput.readShort()", "arc.struct.ObjectMap.put(K, V)", "java.io.DataInput.readUTF()", "arc.struct.StringMap.StringMap()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract void read(DataInputStream stream, CounterInputStream counter, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInputStream"
+    }, {
+      "name" : "counter",
+      "type" : "CounterInputStream"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 192,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract void write(DataOutputStream stream, SaveOptions options) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutputStream"
+    }, {
+      "name" : "options",
+      "type" : "SaveOptions"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 194,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "IORunner",
+    "simpleName" : "IORunner",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void accept(T stream) throws IOException",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "accept",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "stream",
+        "type" : "T"
+      } ],
+      "throwsList" : [ "IOException" ],
+      "annotations" : [ ],
+      "line" : 197,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "IORunnerLength",
+    "simpleName" : "IORunnerLength",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void accept(T stream, int length) throws IOException",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "accept",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "stream",
+        "type" : "T"
+      }, {
+        "name" : "length",
+        "type" : "int"
+      } ],
+      "throwsList" : [ "IOException" ],
+      "annotations" : [ ],
+      "line" : 201,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "CustomChunk",
+    "simpleName" : "CustomChunk",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void write(DataOutput stream) throws IOException",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "write",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "stream",
+        "type" : "DataOutput"
+      } ],
+      "throwsList" : [ "IOException" ],
+      "annotations" : [ ],
+      "line" : 205,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void read(DataInput stream) throws IOException / default void read(DataInput stream, int length) throws IOException",
+      "desc" : null,
+      "overloads" : [ "void read(DataInput stream) throws IOException", "default void read(DataInput stream, int length) throws IOException" ],
+      "name" : "read",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "stream",
+        "type" : "DataInput"
+      } ],
+      "throwsList" : [ "IOException" ],
+      "annotations" : [ ],
+      "line" : 206,
+      "calls" : [ "mindustry.io.SaveFileReader.CustomChunk.read(java.io.DataInput)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean shouldWrite()",
+      "desc" : "@return whether this chunk is enabled at all",
+      "overloads" : null,
+      "name" : "shouldWrite",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 213,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "default boolean writeNet()",
+      "desc" : "@return whether this chunk should be written to connecting clients (default true)",
+      "overloads" : null,
+      "name" : "writeNet",
+      "returnType" : "boolean",
+      "modifiers" : [ "default" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 218,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "SaveIO.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final byte header",
+    "desc" : "Save format header.",
+    "overloads" : null,
+    "name" : "header",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final IntMap<SaveVersion> versions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "versions",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final Seq<SaveVersion> versionArray",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "versionArray",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static SaveVersion getSaveWriter() / public static SaveVersion getSaveWriter(int version)",
+    "desc" : null,
+    "overloads" : [ "public static SaveVersion getSaveWriter()", "public static SaveVersion getSaveWriter(int version)" ],
+    "name" : "getSaveWriter",
+    "returnType" : "SaveVersion",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ "arc.struct.Seq.peek()", "arc.struct.IntMap.get(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void save(Fi file) / public static void save(Fi file, SaveOptions options)",
+    "desc" : null,
+    "overloads" : [ "public static void save(Fi file)", "public static void save(Fi file, SaveOptions options)" ],
+    "name" : "save",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "mindustry.io.SaveIO.save(arc.files.Fi, mindustry.io.SaveOptions)", "mindustry.io.SaveOptions.SaveOptions()", "arc.files.Fi.exists()", "arc.files.Fi.moveTo(arc.files.Fi)", "mindustry.io.SaveIO.backupFileFor(arc.files.Fi)", "mindustry.io.SaveIO.write(arc.files.Fi, mindustry.io.SaveOptions)", "java.lang.RuntimeException.RuntimeException(java.lang.Throwable)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public static DataInputStream getStream(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStream",
+    "returnType" : "DataInputStream",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ "arc.files.Fi.read(int)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static DataInputStream getBackupStream(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getBackupStream",
+    "returnType" : "DataInputStream",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ "arc.files.Fi.read(int)", "mindustry.io.SaveIO.backupFileFor(arc.files.Fi)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean isSaveValid(Fi file) / public static boolean isSaveValid(DataInputStream stream)",
+    "desc" : null,
+    "overloads" : [ "public static boolean isSaveValid(Fi file)", "public static boolean isSaveValid(DataInputStream stream)" ],
+    "name" : "isSaveValid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ "mindustry.io.SaveIO.isSaveFileValid(arc.files.Fi)", "mindustry.io.SaveIO.backupFileFor(arc.files.Fi)", "mindustry.io.SaveIO.getMeta(java.io.DataInputStream)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean isSaveFileValid(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isSaveFileValid",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ "arc.files.Fi.read(int)", "mindustry.io.SaveIO.getMeta(java.io.DataInputStream)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static SaveMeta getMeta(Fi file) / public static SaveMeta getMeta(DataInputStream stream)",
+    "desc" : null,
+    "overloads" : [ "public static SaveMeta getMeta(Fi file)", "public static SaveMeta getMeta(DataInputStream stream)" ],
+    "name" : "getMeta",
+    "returnType" : "SaveMeta",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ "mindustry.io.SaveIO.getMeta(java.io.DataInputStream)", "mindustry.io.SaveIO.getStream(arc.files.Fi)", "arc.util.Log.err(java.lang.Throwable)", "mindustry.io.SaveIO.getBackupStream(arc.files.Fi)", "mindustry.io.SaveIO.readHeader(java.io.DataInput)", "java.io.DataInputStream.readInt()", "arc.struct.IntMap.get(int)", "mindustry.io.SaveVersion.getMeta(java.io.DataInput)", "java.io.FilterInputStream.close()", "java.io.IOException.IOException(java.lang.String)", "java.lang.RuntimeException.RuntimeException(java.lang.Throwable)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public static Fi fileFor(int slot)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fileFor",
+    "returnType" : "Fi",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "slot",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ "arc.files.Fi.child(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Fi backupFileFor(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backupFileFor",
+    "returnType" : "Fi",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ "arc.files.Fi.sibling(java.lang.String)", "arc.files.Fi.name()", "arc.files.Fi.extension()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void write(Fi file, SaveOptions options) / public static void write(Fi file) / public static void write(OutputStream os, SaveOptions options)",
+    "desc" : null,
+    "overloads" : [ "public static void write(Fi file, SaveOptions options)", "public static void write(Fi file)", "public static void write(OutputStream os, SaveOptions options)" ],
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "options",
+      "type" : "SaveOptions"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 118,
+    "calls" : [ "mindustry.io.SaveIO.write(java.io.OutputStream, mindustry.io.SaveOptions)", "arc.util.io.FastDeflaterOutputStream.FastDeflaterOutputStream(java.io.OutputStream)", "mindustry.io.SaveIO.write(arc.files.Fi, mindustry.io.SaveOptions)", "mindustry.io.SaveOptions.SaveOptions()", "arc.Events.fire(T)", "mindustry.io.SaveIO.getVersion()", "java.io.FilterOutputStream.write(byte[])", "java.io.DataOutputStream.writeInt(int)", "mindustry.io.SaveVersion.write(java.io.DataOutputStream, mindustry.io.SaveOptions)", "java.io.DataOutputStream.DataOutputStream(java.io.OutputStream)", "mindustry.game.EventType.SaveWriteEvent.SaveWriteEvent()", "java.lang.RuntimeException.RuntimeException(java.lang.Throwable)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public static void load(String saveName) throws SaveException / public static void load(Fi file) throws SaveException / public static void load(Fi file, WorldContext context) throws SaveException / public static void load(InputStream is, WorldContext context) throws SaveException",
+    "desc" : "Loads from a deflated (!) input stream.",
+    "overloads" : [ "public static void load(String saveName) throws SaveException", "public static void load(Fi file) throws SaveException", "public static void load(Fi file, WorldContext context) throws SaveException", "public static void load(InputStream is, WorldContext context) throws SaveException" ],
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "saveName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ "SaveException" ],
+    "annotations" : [ ],
+    "line" : 139,
+    "calls" : [ "mindustry.io.SaveIO.load(arc.files.Fi)", "arc.files.Fi.child(java.lang.String)", "mindustry.io.SaveIO.load(arc.files.Fi, mindustry.world.WorldContext)", "mindustry.io.SaveIO.load(java.io.InputStream, mindustry.world.WorldContext)", "arc.files.Fi.read(int)", "arc.util.Log.err(java.lang.Throwable)", "arc.files.Fi.sibling(java.lang.String)", "arc.files.Fi.name()", "arc.files.Fi.extension()", "arc.files.Fi.exists()", "java.lang.Throwable.getCause()", "java.util.zip.InflaterInputStream.InflaterInputStream(java.io.InputStream)", "mindustry.io.SaveIO.SaveException.SaveException(java.lang.Throwable)", "mindustry.core.Logic.reset()", "mindustry.io.SaveIO.readHeader(java.io.DataInput)", "java.io.DataInputStream.readInt()", "arc.struct.IntMap.get(int)", "mindustry.io.SaveVersion.read(java.io.DataInputStream, arc.util.io.CounterInputStream, mindustry.io.SaveReadState)", "arc.Events.fire(T)", "mindustry.world.WorldContext.isMap()", "mindustry.core.GameState.isCampaign()", "mindustry.core.World.setGenerating(boolean)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])", "arc.util.io.CounterInputStream.CounterInputStream(java.io.InputStream)", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.io.IOException.IOException(java.lang.String)", "mindustry.io.SaveReadState.SaveReadState(mindustry.world.WorldContext)", "mindustry.game.EventType.SaveLoadEvent.SaveLoadEvent(boolean)", "mindustry.game.EventType.RulesLoadEvent.RulesLoadEvent(mindustry.game.Rules, boolean)" ],
+    "callCount" : 29
+  }, {
+    "kind" : "method",
+    "signature" : "public static SaveVersion getVersion()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getVersion",
+    "returnType" : "SaveVersion",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 187,
+    "calls" : [ "arc.struct.Seq.peek()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void readHeader(DataInput input) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readHeader",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 191,
+    "calls" : [ "java.io.DataInput.readFully(byte[])", "java.util.Arrays.equals(byte[], byte[])", "java.util.Arrays.toString(byte[])", "java.io.IOException.IOException(java.lang.String)" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "SaveException extends java.lang.RuntimeException",
+    "simpleName" : "SaveException",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public SaveException(Throwable throwable)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "SaveException",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "throwable",
+        "type" : "Throwable"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 200,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "SaveMeta.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public int version",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "version",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int build",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public long timestamp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timestamp",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public long timePlayed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timePlayed",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Map map",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "map",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int wave",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wave",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Rules rules",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rules",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public StringMap tags",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tags",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public String mods",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mods",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SaveMeta(int version, long timestamp, long timePlayed, int build, String map, int wave, Rules rules, StringMap tags)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SaveMeta",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    }, {
+      "name" : "timestamp",
+      "type" : "long"
+    }, {
+      "name" : "timePlayed",
+      "type" : "long"
+    }, {
+      "name" : "build",
+      "type" : "int"
+    }, {
+      "name" : "map",
+      "type" : "String"
+    }, {
+      "name" : "wave",
+      "type" : "int"
+    }, {
+      "name" : "rules",
+      "type" : "Rules"
+    }, {
+      "name" : "tags",
+      "type" : "StringMap"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ "arc.struct.Seq.find(arc.func.Boolf<T>)", "mindustry.maps.Maps.all()", "java.lang.String.equals(java.lang.Object)", "mindustry.maps.Map.name()", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.struct.ObjectMap.get(K, V)" ],
+    "callCount" : 6
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean isMap()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isMap",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ "arc.struct.ObjectMap.containsKey(K)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SaveOptions.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public boolean embedAssets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "embedAssets",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public StringMap extraTags",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "extraTags",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "SavePreviewLoader.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class extends arc.assets.loaders.TextureLoader",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SavePreviewLoader()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SavePreviewLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TextureParameter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.assets.loaders.TextureLoader.loadAsync(arc.assets.AssetManager, java.lang.String, arc.files.Fi, arc.assets.loaders.TextureLoader.TextureParameter)", "arc.files.Fi.sibling(java.lang.String)", "arc.files.Fi.nameWithoutExtension()", "java.lang.Throwable.printStackTrace()", "arc.files.Fi.delete()" ],
+    "callCount" : 5
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SaveReadState.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final WorldContext context",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "context",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean preview",
+    "desc" : "true when generating a map preview",
+    "overloads" : null,
+    "name" : "preview",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public String ruleString",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ruleString",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Seq<Building> allBuildings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "allBuildings",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SaveReadState(WorldContext context)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SaveReadState",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "context",
+      "type" : "WorldContext"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "SaveVersion.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class (abstract) extends mindustry.io.SaveFileReader",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected static OrderedMap<String,CustomChunk> customChunks",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "customChunks",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final int version",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "version",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SaveVersion(int version)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SaveVersion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void addCustomChunk(String name, CustomChunk chunk)",
+    "desc" : "Registers a custom save chunk reader/writer by name.",
+    "overloads" : null,
+    "name" : "addCustomChunk",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "chunk",
+      "type" : "CustomChunk"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.struct.OrderedMap.put(K, V)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public SaveMeta getMeta(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getMeta",
+    "returnType" : "SaveMeta",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.readStringMap(java.io.DataInput)", "arc.struct.StringMap.getInt(java.lang.String)", "arc.struct.StringMap.getLong(java.lang.String)", "arc.struct.ObjectMap.get(T)", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.struct.ObjectMap.get(K, V)", "mindustry.io.SaveMeta.SaveMeta(int, long, long, int, java.lang.String, int, mindustry.game.Rules, arc.struct.StringMap)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInputStream"
+    }, {
+      "name" : "counter",
+      "type" : "CounterInputStream"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ "mindustry.io.SaveFileReader.readRegion(java.lang.String, java.io.DataInput, arc.util.io.CounterInputStream, mindustry.io.SaveFileReader.IORunner<java.io.DataInput>)", "mindustry.io.SaveVersion.readMeta(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readDataPatches(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readMap(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readEntities(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void write(DataOutputStream stream, SaveOptions options) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutputStream"
+    }, {
+      "name" : "options",
+      "type" : "SaveOptions"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 79,
+    "calls" : [ "mindustry.io.SaveFileReader.writeRegion(java.lang.String, java.io.DataOutput, mindustry.io.SaveFileReader.IORunner<java.io.DataOutput>)", "mindustry.io.SaveVersion.writeMeta(java.io.DataOutput, arc.struct.StringMap)", "mindustry.io.SaveVersion.writeDataPatches(java.io.DataOutput, boolean)", "mindustry.io.SaveVersion.writeCustomChunks(java.io.DataOutput, boolean)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeCustomChunks(DataOutput stream, boolean net) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeCustomChunks",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    }, {
+      "name" : "net",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 90,
+    "calls" : [ "arc.struct.Seq.select(arc.func.Boolf<T>)", "arc.struct.OrderedMap.orderedKeys()", "mindustry.io.SaveFileReader.CustomChunk.shouldWrite()", "arc.struct.ObjectMap.get(T)", "mindustry.io.SaveFileReader.CustomChunk.writeNet()", "java.io.DataOutput.writeInt(int)", "java.io.DataOutput.writeUTF(java.lang.String)", "mindustry.io.SaveFileReader.writeChunk(java.io.DataOutput, mindustry.io.SaveFileReader.IORunner<arc.util.io.Writes>)", "mindustry.io.SaveFileReader.CustomChunk.write(java.io.DataOutput)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void readCustomChunks(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readCustomChunks",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 101,
+    "calls" : [ "java.io.DataInput.readInt()", "java.io.DataInput.readUTF()", "arc.struct.ObjectMap.get(T)", "mindustry.io.SaveFileReader.readChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<java.io.DataInput>)", "mindustry.io.SaveFileReader.skipChunk(java.io.DataInput)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeMeta(DataOutput stream, StringMap tags) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMeta",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    }, {
+      "name" : "tags",
+      "type" : "StringMap"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ "mindustry.core.GameState.isCampaign()", "mindustry.game.SectorInfo.prepare(mindustry.type.Sector)", "mindustry.type.Sector.saveInfo()", "mindustry.content.TechTree.TechNode.save()", "arc.struct.ObjectMap.putAll(arc.struct.ObjectMap<? extends K, ? extends V>)", "mindustry.io.SaveFileReader.writeStringMap(java.io.DataOutput, arc.struct.ObjectMap<java.lang.String, java.lang.String>)", "arc.struct.ObjectMap.merge(arc.struct.ObjectMap<? extends K, ? extends V>)", "arc.struct.StringMap.of(java.lang.Object...)", "arc.util.Time.millis()", "mindustry.game.Saves.getTotalPlaytime()", "mindustry.maps.Map.name()", "mindustry.io.JsonIO.write(java.lang.Object)", "arc.struct.Seq.toArray(java.lang.Class)", "mindustry.mod.Mods.getModStrings()", "mindustry.core.World.width()", "mindustry.core.World.height()", "arc.math.geom.Vec2.toString()", "arc.math.geom.Vec2.set(arc.math.geom.Position)", "arc.struct.Seq.isEmpty()", "mindustry.game.Team.cores()", "mindustry.gen.Player.team()", "mindustry.mod.DataManager.getAllExternalAssets()", "arc.struct.StringMap.StringMap()" ],
+    "callCount" : 23
+  }, {
+    "kind" : "method",
+    "signature" : "public void readMeta(DataInput stream, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMeta",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 153,
+    "calls" : [ "mindustry.io.SaveFileReader.readStringMap(java.io.DataInput)", "arc.struct.StringMap.getInt(java.lang.String)", "arc.struct.StringMap.getFloat(java.lang.String, float)", "arc.struct.StringMap.getFloat(java.lang.String)", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.struct.ObjectMap.get(K, V)", "mindustry.io.SaveVersion.readRules(mindustry.io.SaveReadState)", "arc.math.geom.Vec2.tryFromString(java.lang.String)", "arc.struct.ObjectMap.get(T)", "arc.math.geom.Vec2.set(arc.math.geom.Vec2)", "mindustry.gen.Player.set(arc.math.geom.Position)", "mindustry.core.ContentLoader.getByName(mindustry.ctype.ContentType, java.lang.String)", "mindustry.game.Team.get(int)", "arc.struct.StringMap.getInt(java.lang.String, int)", "mindustry.net.Net.client()", "mindustry.gen.Player.team(mindustry.game.Team)", "mindustry.maps.Maps.byName(java.lang.String)", "arc.struct.StringMap.of(java.lang.Object...)", "mindustry.maps.Map.Map(arc.struct.StringMap)" ],
+    "callCount" : 19
+  }, {
+    "kind" : "method",
+    "signature" : "public void readRules(SaveReadState saveState)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readRules",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 194,
+    "calls" : [ "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.struct.Seq.isEmpty()", "mindustry.game.Waves.get()", "mindustry.world.WorldContext.getSector()", "mindustry.type.Planet.applyRules(mindustry.game.Rules)", "mindustry.game.Rules.hasEnv(int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeMap(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 213,
+    "calls" : [ "java.io.DataOutput.writeShort(int)", "mindustry.core.World.width()", "mindustry.core.World.height()", "mindustry.world.Tiles.geti(int)", "mindustry.world.Tile.floorID()", "mindustry.world.Tile.overlayID()", "mindustry.core.World.rawTile(int, int)", "java.io.DataOutput.writeByte(int)", "mindustry.world.Tile.blockID()", "mindustry.world.Tile.shouldSaveData()", "java.io.DataOutput.writeInt(int)", "mindustry.world.Tile.isCenter()", "java.io.DataOutput.writeBoolean(boolean)", "mindustry.io.SaveFileReader.writeChunk(java.io.DataOutput, mindustry.io.SaveFileReader.IORunner<arc.util.io.Writes>)", "arc.util.io.Writes.b(int)", "mindustry.gen.Building.version()", "mindustry.gen.Building.writeAll(arc.util.io.Writes)" ],
+    "callCount" : 17
+  }, {
+    "kind" : "method",
+    "signature" : "public void readMap(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 292,
+    "calls" : [ "java.io.DataInput.readUnsignedShort()", "mindustry.world.WorldContext.isGenerating()", "mindustry.world.WorldContext.begin()", "mindustry.world.WorldContext.resize(int, int)", "java.io.DataInput.readShort()", "java.io.DataInput.readUnsignedByte()", "mindustry.core.ContentLoader.block(int)", "mindustry.world.WorldContext.create(int, int, int, int, int)", "mindustry.world.WorldContext.tile(int)", "java.io.DataInput.readByte()", "java.io.DataInput.readInt()", "java.io.DataInput.readBoolean()", "mindustry.world.Tile.setBlock(mindustry.world.Block)", "arc.struct.Seq.add(T)", "mindustry.world.WorldContext.onReadTileData()", "mindustry.world.Block.hasBuilding()", "mindustry.io.SaveFileReader.readChunkReads(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.b()", "mindustry.gen.Building.readAll(arc.util.io.Reads, byte)", "mindustry.io.SaveFileReader.skipChunk(java.io.DataInput)", "mindustry.world.WorldContext.onReadBuilding()", "mindustry.world.WorldContext.end()", "java.io.IOException.IOException(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 23
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeTeamBlocks(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeTeamBlocks",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 398,
+    "calls" : [ "arc.struct.Seq.copy()", "mindustry.game.Teams.getActive()", "arc.struct.Seq.contains(T)", "mindustry.game.Team.data()", "arc.struct.Seq.add(T)", "java.io.DataOutput.writeInt(int)", "java.io.DataOutput.writeShort(int)", "mindustry.io.TypeIO.writeObject(arc.util.io.Writes, java.lang.Object)", "arc.util.io.Writes.Writes(java.io.DataOutput)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeWorldEntities(DataOutput stream) throws IOException / public void writeWorldEntities(DataOutput stream, Boolf<Unit> unitFilter) throws IOException",
+    "desc" : null,
+    "overloads" : [ "public void writeWorldEntities(DataOutput stream) throws IOException", "public void writeWorldEntities(DataOutput stream, Boolf<Unit> unitFilter) throws IOException" ],
+    "name" : "writeWorldEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 419,
+    "calls" : [ "mindustry.io.SaveVersion.writeWorldEntities(java.io.DataOutput, arc.func.Boolf<mindustry.gen.Unit>)", "java.io.DataOutput.writeInt(int)", "mindustry.entities.EntityGroup.count(arc.func.Boolf<T>)", "mindustry.entities.EntityGroup.size()", "mindustry.gen.Entityc.serialize()", "mindustry.io.SaveVersion.writeEntity(mindustry.gen.Entityc, java.io.DataOutput)", "arc.func.Boolf.get(T)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "private void writeEntity(Entityc entity, DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEntity",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Entityc"
+    }, {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 440,
+    "calls" : [ "mindustry.io.SaveFileReader.writeChunk(java.io.DataOutput, mindustry.io.SaveFileReader.IORunner<arc.util.io.Writes>)", "arc.util.io.Writes.b(int)", "mindustry.gen.Entityc.classId()", "arc.util.io.Writes.i(int)", "mindustry.gen.Entityc.id()", "mindustry.gen.Entityc.beforeWrite()", "mindustry.gen.Entityc.write(arc.util.io.Writes)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeEntityMapping(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEntityMapping",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 449,
+    "calls" : [ "java.io.DataOutput.writeShort(int)", "arc.struct.IntMap.entries()", "stream.writeShort", "stream.writeUTF" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeEntities(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 457,
+    "calls" : [ "mindustry.io.SaveVersion.writeEntityMapping(java.io.DataOutput)", "mindustry.io.SaveVersion.writeTeamBlocks(java.io.DataOutput)", "mindustry.io.SaveVersion.writeWorldEntities(java.io.DataOutput)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeMarkers(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMarkers",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 463,
+    "calls" : [ "mindustry.game.MapMarkers.write(java.io.DataOutput)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void readMarkers(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMarkers",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 467,
+    "calls" : [ "mindustry.game.MapMarkers.read(java.io.DataInput)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void readTeamBlocks(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readTeamBlocks",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 471,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.game.Team.get(int)", "mindustry.game.Team.data()", "arc.struct.Queue.clear()", "arc.struct.Queue.ensureCapacity(int)", "java.lang.Math.min(int, int)", "java.io.DataInput.readShort()", "mindustry.io.TypeIO.readObject(arc.util.io.Reads)", "arc.struct.IntSet.add(int)", "arc.math.geom.Point2.pack(int, int)", "arc.struct.Queue.addLast(T)", "mindustry.core.ContentLoader.block(int)", "arc.util.io.Reads.Reads(java.io.DataInput)", "arc.struct.IntSet.IntSet()", "mindustry.game.Teams.BlockPlan.BlockPlan(int, int, short, mindustry.world.Block, java.lang.Object)" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readWorldEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "mapping",
+      "type" : "Prov[]"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 495,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.readChunkReads(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.ub()", "arc.util.io.Reads.skip(int)", "arc.util.io.Reads.i()", "arc.func.Prov.get()", "mindustry.entities.EntityGroup.checkNextId(int)", "mindustry.gen.Entityc.id(int)", "mindustry.gen.Entityc.read(arc.util.io.Reads)", "arc.struct.IntSet.add(int)", "mindustry.gen.Entityc.add()", "arc.util.Log.warn(java.lang.String, java.lang.Object...)", "arc.struct.Seq.add(T)", "mindustry.entities.EntityGroup.nextId()", "mindustry.entities.EntityGroup.each(arc.func.Cons<T>)", "arc.struct.Seq.each(arc.func.Cons<? super T>)", "arc.struct.IntSet.IntSet()", "arc.struct.Seq.Seq()" ],
+    "callCount" : 18
+  }, {
+    "kind" : "method",
+    "signature" : "public Prov[] readEntityMapping(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntityMapping",
+    "returnType" : "Prov[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 533,
+    "calls" : [ "java.util.Arrays.copyOf(T[], int)", "java.io.DataInput.readShort()", "java.io.DataInput.readUTF()", "mindustry.gen.EntityMapping.map(java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void readEntities(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 549,
+    "calls" : [ "mindustry.io.SaveVersion.readEntityMapping(java.io.DataInput)", "mindustry.io.SaveVersion.readTeamBlocks(java.io.DataInput)", "mindustry.io.SaveVersion.readWorldEntities(java.io.DataInput, arc.func.Prov[], mindustry.io.SaveReadState)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readDataPatches",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 555,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.core.ContentLoader.planet(java.lang.String)", "arc.util.serialization.JsonValue.getString(java.lang.String, java.lang.String)", "arc.util.serialization.JsonReader.parse(java.lang.String)", "java.io.DataInput.readByte()", "java.io.DataInput.readUTF()", "java.io.DataInput.readBoolean()", "mindustry.mod.data.DataAssetType.create()", "mindustry.mod.data.DataAsset.setPath(java.lang.String)", "mindustry.mod.data.DataAsset.read(java.io.DataInput)", "java.io.DataInput.readFully(byte[])", "mindustry.mod.data.DataAsset.setHash(byte[])", "mindustry.mod.data.DataAsset.isCached()", "arc.util.Log.warn(java.lang.String, java.lang.Object...)", "arc.struct.Seq.add(T)", "arc.Events.fire(T)", "mindustry.mod.DataManager.load(arc.struct.Seq<mindustry.mod.data.DataAsset>)", "mindustry.io.SaveVersion.readRules(mindustry.io.SaveReadState)", "arc.util.serialization.JsonReader.JsonReader()", "arc.struct.Seq.Seq(int)", "java.io.IOException.IOException(java.lang.String)", "mindustry.game.EventType.DataPatchLoadEvent.DataPatchLoadEvent(arc.struct.Seq<mindustry.mod.data.DataAsset>)" ],
+    "callCount" : 22
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeDataPatches(DataOutput stream, boolean forceEmbed) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeDataPatches",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    }, {
+      "name" : "forceEmbed",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 604,
+    "calls" : [ "java.io.DataOutput.writeInt(int)", "mindustry.mod.DataManager.getAllAssets()", "mindustry.mod.data.DataAsset.isAlwaysEmbedded()", "java.io.DataOutput.writeByte(int)", "java.lang.Enum.ordinal()", "mindustry.mod.data.DataAsset.getType()", "java.io.DataOutput.writeUTF(java.lang.String)", "java.io.DataOutput.writeBoolean(boolean)", "mindustry.mod.data.DataAsset.write(java.io.DataOutput)", "java.io.DataOutput.write(byte[])" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void readContentHeader(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readContentHeader",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 627,
+    "calls" : [ "java.io.DataInput.readUnsignedByte()", "java.io.DataInput.readByte()", "java.io.DataInput.readShort()", "java.lang.Enum.ordinal()", "java.io.DataInput.readUTF()", "mindustry.core.ContentLoader.getByName(mindustry.ctype.ContentType, java.lang.String)", "arc.struct.ObjectMap.get(K, V)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])", "arc.Events.fire(T)", "mindustry.mod.DataManager.load(arc.struct.Seq<mindustry.mod.data.DataAsset>)", "arc.struct.Seq.Seq()", "mindustry.game.EventType.DataPatchLoadEvent.DataPatchLoadEvent(arc.struct.Seq<mindustry.mod.data.DataAsset>)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public void writeContentHeader(DataOutput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeContentHeader",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataOutput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 656,
+    "calls" : [ "mindustry.core.ContentLoader.getContentMap()", "arc.struct.Seq.first()", "java.io.DataOutput.writeByte(int)", "java.lang.Enum.ordinal()", "mindustry.ctype.Content.getContentType()", "java.io.DataOutput.writeShort(int)", "java.io.DataOutput.writeUTF(java.lang.String)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TypeIO.java",
+  "pkg" : "mindustry.io",
+  "type" : "Java class",
+  "typeDesc" : "Class for specifying read/write methods for code generation.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final byte nullType",
+    "desc" : "Possible Types of written objects.",
+    "overloads" : null,
+    "name" : "nullType",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int maxArraySize",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxArraySize",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 69,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final WeaponMount noMounts",
+    "desc" : "this is irrelevant.",
+    "overloads" : null,
+    "name" : "noMounts",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 421,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Ability noAbilities",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "noAbilities",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 453,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void writeObject(Writes write, Object object) / public static void writeObject(Writes write, double object)",
+    "desc" : "Write an object, prepending its {@code ObjectType}.",
+    "overloads" : [ "public static void writeObject(Writes write, Object object)", "public static void writeObject(Writes write, double object)" ],
+    "name" : "writeObject",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "object",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.i(int)", "arc.util.io.Writes.l(long)", "arc.util.io.Writes.f(float)", "mindustry.io.TypeIO.writeString(arc.util.io.Writes, java.lang.String)", "java.lang.Enum.ordinal()", "mindustry.ctype.Content.getContentType()", "arc.util.io.Writes.s(int)", "arc.math.geom.Point2.pack()", "arc.util.io.Writes.bool(boolean)", "mindustry.io.TypeIO.writeObject(arc.util.io.Writes, double)", "java.lang.Double.doubleValue()", "mindustry.gen.Building.pos()", "arc.util.io.Writes.b(byte[])", "mindustry.io.TypeIO.writeInts(arc.util.io.Writes, int[])", "mindustry.io.TypeIO.writeObject(arc.util.io.Writes, java.lang.Object)", "java.lang.Object.getClass()", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)", "arc.util.io.Writes.d(double)" ],
+    "callCount" : 20
+  }, {
+    "kind" : "method",
+    "signature" : "public static Object readObject(Reads read) / public static Object readObject(Reads read, boolean box, ContentMapper mapper) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays) / public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays, byte type)",
+    "desc" : null,
+    "overloads" : [ "public static Object readObject(Reads read)", "public static Object readObject(Reads read, boolean box, ContentMapper mapper)", "public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe)", "public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays)", "public static Object readObject(Reads read, boolean box, ContentMapper mapper, boolean safe, boolean allowArrays, byte type)" ],
+    "name" : "readObject",
+    "returnType" : "Object",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 192,
+    "calls" : [ "mindustry.io.TypeIO.readObjectBoxed(arc.util.io.Reads, boolean)", "mindustry.io.TypeIO.readObject(arc.util.io.Reads, boolean, mindustry.io.TypeIO.ContentMapper, boolean)", "mindustry.io.TypeIO.readObject(arc.util.io.Reads, boolean, mindustry.io.TypeIO.ContentMapper, boolean, boolean)", "arc.util.io.Reads.b()", "mindustry.io.TypeIO.readObject(arc.util.io.Reads, boolean, mindustry.io.TypeIO.ContentMapper, boolean, boolean, byte)", "arc.util.io.Reads.i()", "arc.util.io.Reads.l()", "arc.util.io.Reads.f()", "arc.util.io.Reads.str(int)", "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.s()", "mindustry.io.TypeIO.ContentMapper.get(mindustry.ctype.ContentType, int)", "arc.struct.IntSeq.add(int)", "arc.util.io.Reads.ub()", "arc.math.geom.Point2.unpack(int)", "arc.util.io.Reads.bool()", "arc.util.io.Reads.d()", "mindustry.core.World.build(int)", "arc.util.io.Reads.b(byte[])", "mindustry.entities.EntityGroup.getByID(int)", "mindustry.io.TypeIO.readInts(arc.util.io.Reads)", "mindustry.core.ContentLoader.unitCommand(int)", "arc.util.io.Reads.us()", "java.lang.RuntimeException.RuntimeException(java.lang.String)", "arc.struct.IntSeq.IntSeq(int)", "arc.math.geom.Point2.Point2(int, int)", "mindustry.io.TypeIO.BuildingBox.BuildingBox(int)", "mindustry.io.TypeIO.UnitBox.UnitBox(int)", "arc.math.geom.Vec2.Vec2(float, float)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 30
+  }, {
+    "kind" : "method",
+    "signature" : "public static Object readObjectBoxed(Reads read, boolean box)",
+    "desc" : "Reads an object, but optionally boxes buildings.",
+    "overloads" : null,
+    "name" : "readObjectBoxed",
+    "returnType" : "Object",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "box",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 197,
+    "calls" : [ "mindustry.io.TypeIO.readObject(arc.util.io.Reads, boolean, mindustry.io.TypeIO.ContentMapper)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Object readObjectSafe(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readObjectSafe",
+    "returnType" : "Object",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 205,
+    "calls" : [ "mindustry.io.TypeIO.readObject(arc.util.io.Reads, boolean, mindustry.io.TypeIO.ContentMapper, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeUiBuilder(Writes writes, NodeBuilder<?> node)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeUiBuilder",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "writes",
+      "type" : "Writes"
+    }, {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 310,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.write(arc.util.io.Writes)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static NodeBuilder<?> readUiBuilder(Reads reads)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readUiBuilder",
+    "returnType" : "NodeBuilder<?>",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "reads",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 314,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.read(arc.util.io.Reads)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeMenuResult(Writes writes, MenuResult result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMenuResult",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "writes",
+      "type" : "Writes"
+    }, {
+      "name" : "result",
+      "type" : "MenuResult"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 318,
+    "calls" : [ "arc.util.io.Writes.l(long)", "mindustry.io.TypeIO.writeString(arc.util.io.Writes, java.lang.String)", "arc.util.io.Writes.s(int)", "java.lang.Math.min(int, int)", "writes.str", "arc.util.io.Writes.b(int)", "arc.util.io.Writes.f(float)", "arc.util.io.Writes.bool(boolean)", "arc.util.io.Writes.str(java.lang.String)", "ArcRuntimeException.<init>" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static MenuResult readMenuResult(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMenuResult",
+    "returnType" : "MenuResult",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 346,
+    "calls" : [ "arc.util.io.Reads.l()", "arc.util.io.Reads.b()", "arc.util.io.Reads.str(int)", "java.lang.String.length()", "arc.util.io.Reads.us()", "java.lang.Math.min(int, int)", "arc.struct.ObjectMap.put(K, V)", "arc.util.io.Reads.f()", "arc.util.io.Reads.bool()", "mindustry.ui.builder.MenuResult.MenuResult()", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writePayload(Writes writes, Payload payload)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writePayload",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "writes",
+      "type" : "Writes"
+    }, {
+      "name" : "payload",
+      "type" : "Payload"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 385,
+    "calls" : [ "mindustry.world.blocks.payloads.Payload.write(mindustry.world.blocks.payloads.Payload, arc.util.io.Writes)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Payload readPayload(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPayload",
+    "returnType" : "Payload",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 389,
+    "calls" : [ "mindustry.world.blocks.payloads.Payload.read(arc.util.io.Reads)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeMounts(Writes writes, WeaponMount[] mounts)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMounts",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "writes",
+      "type" : "Writes"
+    }, {
+      "name" : "mounts",
+      "type" : "WeaponMount[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 393,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.f(float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static WeaponMount[] readMounts(Reads read, WeaponMount[] mounts) / public static WeaponMount[] readMounts(Reads read)",
+    "desc" : null,
+    "overloads" : [ "public static WeaponMount[] readMounts(Reads read, WeaponMount[] mounts)", "public static WeaponMount[] readMounts(Reads read)" ],
+    "name" : "readMounts",
+    "returnType" : "WeaponMount[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "mounts",
+      "type" : "WeaponMount[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 402,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.f()", "arc.util.io.Reads.skip(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Ability[] readAbilities(Reads read, Ability[] abilities) / public static Ability[] readAbilities(Reads read)",
+    "desc" : null,
+    "overloads" : [ "public static Ability[] readAbilities(Reads read, Ability[] abilities)", "public static Ability[] readAbilities(Reads read)" ],
+    "name" : "readAbilities",
+    "returnType" : "Ability[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "abilities",
+      "type" : "Ability[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 429,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.f()", "mindustry.entities.abilities.EmptyDataAbility.EmptyDataAbility()", "arc.util.io.Reads.skip(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeAbilities(Writes write, Ability[] abilities)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeAbilities",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "abilities",
+      "type" : "Ability[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 446,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.f(float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeUnitContainer(Writes write, UnitSyncContainer cont)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeUnitContainer",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "cont",
+      "type" : "UnitSyncContainer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 460,
+    "calls" : [ "arc.util.io.Writes.i(int)", "arc.util.io.Writes.b(int)", "mindustry.gen.Entityc.classId()", "mindustry.gen.Entityc.beforeWrite()", "mindustry.gen.Syncc.writeSync(arc.util.io.Writes)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static UnitSyncContainer readUnitContainer(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readUnitContainer",
+    "returnType" : "UnitSyncContainer",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 467,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.util.io.Reads.ub()", "mindustry.entities.EntityGroup.getByID(int)", "arc.func.Prov.get()", "mindustry.gen.EntityMapping.map(int)", "mindustry.gen.Unit.id(int)", "mindustry.core.NetClient.isEntityUsed(int)", "mindustry.gen.Syncc.readSync(arc.util.io.Reads)", "mindustry.gen.Syncc.snapSync()", "mindustry.gen.Entityc.add()", "mindustry.core.NetClient.addRemovedEntity(int)", "mindustry.gen.Unit.id()" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeUnit(Writes write, Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeUnit",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 500,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.i(int)", "mindustry.gen.Building.pos()", "mindustry.gen.BlockUnitc.tile()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static Unit readUnit(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readUnit",
+    "returnType" : "Unit",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 513,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.i()", "mindustry.entities.EntityGroup.getByID(int)", "mindustry.core.World.build(int)", "mindustry.world.blocks.ControlBlock.unit()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeCommand(Writes write, UnitCommand command)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeCommand",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "command",
+      "type" : "UnitCommand"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 527,
+    "calls" : [ "arc.util.io.Writes.b(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static UnitCommand readCommand(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readCommand",
+    "returnType" : "UnitCommand",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 531,
+    "calls" : [ "arc.util.io.Reads.ub()", "mindustry.core.ContentLoader.unitCommand(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeStance(Writes write, UnitStance stance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeStance",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "stance",
+      "type" : "UnitStance"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 536,
+    "calls" : [ "arc.util.io.Writes.b(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static UnitStance readStance(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStance",
+    "returnType" : "UnitStance",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 540,
+    "calls" : [ "arc.util.io.Reads.ub()", "mindustry.core.ContentLoader.unitStances()", "mindustry.core.ContentLoader.unitStance(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writePosEntity(Writes write, Posc entity)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writePosEntity",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "entity",
+      "type" : "Posc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 546,
+    "calls" : [ "arc.util.io.Writes.i(int)", "mindustry.gen.Entityc.id()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Posc readPosEntity(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPosEntity",
+    "returnType" : "Posc",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 550,
+    "calls" : [ "mindustry.entities.EntityGroup.getByID(int)", "arc.util.io.Reads.i()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeEntity(Writes write, Entityc entity)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEntity",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "entity",
+      "type" : "Entityc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 554,
+    "calls" : [ "arc.util.io.Writes.i(int)", "mindustry.gen.Entityc.id()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static T readEntity(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntity",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 558,
+    "calls" : [ "mindustry.entities.EntityGroup.getByID(int)", "arc.util.io.Reads.i()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeBuilding(Writes write, Building tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeBuilding",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "tile",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 562,
+    "calls" : [ "arc.util.io.Writes.i(int)", "mindustry.gen.Building.pos()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building readBuilding(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readBuilding",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 566,
+    "calls" : [ "mindustry.core.World.build(int)", "arc.util.io.Reads.i()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeTile(Writes write, Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeTile",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 570,
+    "calls" : [ "arc.util.io.Writes.i(int)", "arc.math.geom.Point2.pack(int, int)", "mindustry.world.Tile.pos()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Tile readTile(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readTile",
+    "returnType" : "Tile",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 574,
+    "calls" : [ "mindustry.core.World.tile(int)", "arc.util.io.Reads.i()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeBlock(Writes write, Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeBlock",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 578,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Block readBlock(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readBlock",
+    "returnType" : "Block",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 582,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.core.ContentLoader.block(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static int getMaxPlans(Queue<BuildPlan> plans)",
+    "desc" : "@return the maximum acceptable amount of plans to send over the network",
+    "overloads" : null,
+    "name" : "getMaxPlans",
+    "returnType" : "int",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "plans",
+      "type" : "Queue<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 588,
+    "calls" : [ "java.lang.Math.min(int, int)", "arc.struct.Queue.get(int)", "java.lang.String.length()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writePlansQueueNet(Writes write, Queue<BuildPlan> plans)",
+    "desc" : "on the network, plans must be capped by size",
+    "overloads" : null,
+    "name" : "writePlansQueueNet",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "plans",
+      "type" : "Queue<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 614,
+    "calls" : [ "arc.util.io.Writes.i(int)", "mindustry.io.TypeIO.getMaxPlans(arc.struct.Queue<mindustry.entities.units.BuildPlan>)", "mindustry.io.TypeIO.writePlan(arc.util.io.Writes, mindustry.entities.units.BuildPlan)", "arc.struct.Queue.get(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static Queue<BuildPlan> readPlansQueueNet(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPlansQueueNet",
+    "returnType" : "Queue<BuildPlan>",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 628,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.struct.Queue.add(T)", "mindustry.io.TypeIO.readPlan(arc.util.io.Reads)", "java.lang.RuntimeException.RuntimeException(java.lang.String)", "arc.struct.Queue.Queue()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static Queue<BuildPlan> readPlansQueue(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPlansQueue",
+    "returnType" : "Queue<BuildPlan>",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 639,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.struct.Queue.add(T)", "mindustry.io.TypeIO.readPlan(arc.util.io.Reads)", "arc.struct.Queue.Queue()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writePlan(Writes write, BuildPlan plan)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writePlan",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 650,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.i(int)", "arc.math.geom.Point2.pack(int, int)", "arc.util.io.Writes.s(int)", "mindustry.io.TypeIO.writeObject(arc.util.io.Writes, java.lang.Object)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static BuildPlan readPlan(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPlan",
+    "returnType" : "BuildPlan",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 661,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.i()", "mindustry.core.World.tile(int)", "arc.math.geom.Point2.x(int)", "arc.math.geom.Point2.y(int)", "arc.util.io.Reads.s()", "mindustry.io.TypeIO.readObjectSafe(arc.util.io.Reads)", "mindustry.core.ContentLoader.block(int)", "mindustry.entities.units.BuildPlan.BuildPlan(int, int)", "mindustry.entities.units.BuildPlan.BuildPlan(int, int, int, mindustry.world.Block)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writePlans(Writes write, BuildPlan[] plans)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writePlans",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "plans",
+      "type" : "BuildPlan[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 688,
+    "calls" : [ "arc.util.io.Writes.s(int)", "mindustry.io.TypeIO.writePlan(arc.util.io.Writes, mindustry.entities.units.BuildPlan)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static BuildPlan[] readPlans(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readPlans",
+    "returnType" : "BuildPlan[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 699,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.io.TypeIO.readPlan(arc.util.io.Reads)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeClientPlans(Writes write, ClientBuildPlans plans)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeClientPlans",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "plans",
+      "type" : "ClientBuildPlans"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 716,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.i(int)", "arc.math.geom.Point2.pack(int, int)", "arc.util.io.Writes.b(int)", "mindustry.io.TypeIO.writeObject(arc.util.io.Writes, java.lang.Object)", "mindustry.io.TypeIO.validClientPlanConfig(java.lang.Object)", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public static ClientBuildPlans readClientPlans(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readClientPlans",
+    "returnType" : "ClientBuildPlans",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 735,
+    "calls" : [ "arc.util.io.Reads.s()", "arc.struct.Seq.ensureCapacity(int)", "java.lang.Math.min(int, int)", "arc.util.io.Reads.us()", "mindustry.core.ContentLoader.block(int)", "arc.util.io.Reads.b()", "mindustry.io.TypeIO.readClientPlanConfig(arc.util.io.Reads)", "arc.struct.Seq.add(T)", "java.lang.RuntimeException.RuntimeException(java.lang.String)", "mindustry.io.TypeIO.ClientBuildPlans.ClientBuildPlans()", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "mindustry.entities.units.BuildPlan.BuildPlan(int, int, int, mindustry.world.Block, java.lang.Object)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "static Object readClientPlanConfig(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readClientPlanConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 757,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.i()", "arc.util.io.Reads.l()", "arc.util.io.Reads.f()", "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.s()", "arc.util.io.Reads.bool()", "arc.util.io.Reads.d()", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "static boolean validClientPlanConfig(Object o)",
+    "desc" : "for client plans, most configs aren't necessary (links are intentionally not displayed/sent)",
+    "overloads" : null,
+    "name" : "validClientPlanConfig",
+    "returnType" : "boolean",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "o",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 772,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeController(Writes write, UnitController control)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeController",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "control",
+      "type" : "UnitController"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 776,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.i(int)", "mindustry.gen.Building.pos()", "arc.util.io.Writes.bool(boolean)", "arc.util.io.Writes.f(float)", "arc.struct.Seq.count(arc.func.Boolf<T>)", "mindustry.core.ContentLoader.unitStances()", "mindustry.ai.types.CommandAI.hasStance(mindustry.ai.UnitStance)", "mindustry.io.TypeIO.writeStance(arc.util.io.Writes, mindustry.ai.UnitStance)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public static UnitController readController(Reads read, UnitController prev)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readController",
+    "returnType" : "UnitController",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "prev",
+      "type" : "UnitController"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 838,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.i()", "mindustry.entities.EntityGroup.getByID(int)", "mindustry.core.World.build(int)", "arc.util.io.Reads.bool()", "arc.math.geom.Vec2.set(float, float)", "arc.util.io.Reads.f()", "mindustry.ai.types.CommandAI.setupLastPos()", "mindustry.core.ContentLoader.unitCommand(int)", "arc.struct.Seq.clear()", "arc.util.io.Reads.ub()", "arc.struct.Seq.add(T)", "mindustry.ai.types.CommandAI.setStance(mindustry.ai.UnitStance)", "mindustry.io.TypeIO.readStance(arc.util.io.Reads)", "mindustry.ai.types.LogicAI.LogicAI()", "mindustry.ai.types.CommandAI.CommandAI()", "arc.math.geom.Vec2.Vec2()", "arc.math.geom.Vec2.Vec2(float, float)", "mindustry.ai.types.AssemblerAI.AssemblerAI()", "mindustry.ai.types.GroundAI.GroundAI()" ],
+    "callCount" : 20
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeKick(Writes write, KickReason reason)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeKick",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "reason",
+      "type" : "KickReason"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 939,
+    "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static KickReason readKick(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readKick",
+    "returnType" : "KickReason",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 943,
+    "calls" : [ "arc.util.io.Reads.b()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeMarkerControl(Writes write, LMarkerControl reason)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeMarkerControl",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "reason",
+      "type" : "LMarkerControl"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 947,
+    "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static LMarkerControl readMarkerControl(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMarkerControl",
+    "returnType" : "LMarkerControl",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 951,
+    "calls" : [ "arc.util.io.Reads.ub()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeRules(Writes write, Rules rules)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeRules",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "rules",
+      "type" : "Rules"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 955,
+    "calls" : [ "mindustry.io.JsonIO.write(java.lang.Object)", "java.lang.String.getBytes(java.nio.charset.Charset)", "arc.util.io.Writes.i(int)", "arc.util.io.Writes.b(byte[])" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static Rules readRules(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readRules",
+    "returnType" : "Rules",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 962,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.util.io.Reads.b(byte[])", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "java.lang.String.String(byte[], java.nio.charset.Charset)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeObjectives(Writes write, MapObjectives executor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeObjectives",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "executor",
+      "type" : "MapObjectives"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 970,
+    "calls" : [ "mindustry.io.JsonIO.write(java.lang.Object)", "java.lang.String.getBytes(java.nio.charset.Charset)", "arc.util.io.Writes.i(int)", "arc.util.io.Writes.b(byte[])" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static MapObjectives readObjectives(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readObjectives",
+    "returnType" : "MapObjectives",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 977,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.util.io.Reads.b(byte[])", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "java.lang.RuntimeException.RuntimeException(java.lang.String)", "java.lang.String.String(byte[], java.nio.charset.Charset)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeObjectiveMarker(Writes write, ObjectiveMarker marker)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeObjectiveMarker",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "marker",
+      "type" : "ObjectiveMarker"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 984,
+    "calls" : [ "arc.util.serialization.Json.toJson(java.lang.Object, java.lang.Class)", "java.lang.String.getBytes(java.nio.charset.Charset)", "arc.util.io.Writes.i(int)", "arc.util.io.Writes.b(byte[])" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static ObjectiveMarker readObjectiveMarker(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readObjectiveMarker",
+    "returnType" : "ObjectiveMarker",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 991,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.util.io.Reads.b(byte[])", "mindustry.io.JsonIO.read(java.lang.Class<T>, java.lang.String)", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "java.lang.String.String(byte[], java.nio.charset.Charset)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeVecNullable(Writes write, Vec2 v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeVecNullable",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "v",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 998,
+    "calls" : [ "arc.util.io.Writes.f(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Vec2 readVecNullable(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readVecNullable",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 1008,
+    "calls" : [ "arc.util.io.Reads.f()", "java.lang.Float.isNaN(float)", "arc.math.geom.Vec2.Vec2(float, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeVec2(Writes write, Vec2 v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeVec2",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "v",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1013,
+    "calls" : [ "arc.util.io.Writes.f(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Vec2 readVec2(Reads read, Vec2 base) / public static Vec2 readVec2(Reads read)",
+    "desc" : null,
+    "overloads" : [ "public static Vec2 readVec2(Reads read, Vec2 base)", "public static Vec2 readVec2(Reads read)" ],
+    "name" : "readVec2",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "base",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1023,
+    "calls" : [ "arc.math.geom.Vec2.set(float, float)", "arc.util.io.Reads.f()", "arc.math.geom.Vec2.Vec2(float, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeStatus(Writes write, StatusEntry entry)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeStatus",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "entry",
+      "type" : "StatusEntry"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1031,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.f(float)", "arc.util.io.Writes.b(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static StatusEntry readStatus(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStatus",
+    "returnType" : "StatusEntry",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1058,
+    "calls" : [ "arc.util.io.Reads.s()", "arc.util.io.Reads.f()", "new StatusEntry().set", "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.ub()", "mindustry.entities.units.StatusEntry.StatusEntry()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeItems(Writes write, ItemStack stack)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeItems",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "stack",
+      "type" : "ItemStack"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1080,
+    "calls" : [ "mindustry.io.TypeIO.writeItem(arc.util.io.Writes, mindustry.type.Item)", "arc.util.io.Writes.i(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ItemStack readItems(Reads read, ItemStack stack) / public static ItemStack readItems(Reads read)",
+    "desc" : null,
+    "overloads" : [ "public static ItemStack readItems(Reads read, ItemStack stack)", "public static ItemStack readItems(Reads read)" ],
+    "name" : "readItems",
+    "returnType" : "ItemStack",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "stack",
+      "type" : "ItemStack"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1085,
+    "calls" : [ "mindustry.type.ItemStack.set(mindustry.type.Item, int)", "mindustry.io.TypeIO.readItem(arc.util.io.Reads)", "arc.util.io.Reads.i()", "mindustry.type.ItemStack.ItemStack(mindustry.type.Item, int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeItemStacks(Writes write, ItemStack[] stacks)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeItemStacks",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "stacks",
+      "type" : "ItemStack[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1093,
+    "calls" : [ "arc.util.io.Writes.s(int)", "mindustry.io.TypeIO.writeItems(arc.util.io.Writes, mindustry.type.ItemStack)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ItemStack[] readItemStacks(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readItemStacks",
+    "returnType" : "ItemStack[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1100,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.io.TypeIO.readItems(arc.util.io.Reads)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeLiquidStacks(Writes write, LiquidStack[] stacks)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeLiquidStacks",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "stacks",
+      "type" : "LiquidStack[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1108,
+    "calls" : [ "arc.util.io.Writes.s(int)", "mindustry.io.TypeIO.writeLiquid(arc.util.io.Writes, mindustry.type.Liquid)", "arc.util.io.Writes.f(float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static LiquidStack[] readLiquidStacks(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readLiquidStacks",
+    "returnType" : "LiquidStack[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1116,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.io.TypeIO.readLiquid(arc.util.io.Reads)", "arc.util.io.Reads.f()", "mindustry.type.LiquidStack.LiquidStack(mindustry.type.Liquid, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeTeam(Writes write, Team team)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeTeam",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1126,
+    "calls" : [ "arc.util.io.Writes.b(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Team readTeam(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readTeam",
+    "returnType" : "Team",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1130,
+    "calls" : [ "mindustry.game.Team.get(int)", "arc.util.io.Reads.b()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeAction(Writes write, AdminAction reason)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeAction",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "reason",
+      "type" : "AdminAction"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1134,
+    "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Enum.ordinal()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static AdminAction readAction(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readAction",
+    "returnType" : "AdminAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1138,
+    "calls" : [ "arc.util.io.Reads.b()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeUnitType(Writes write, UnitType effect)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeUnitType",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "effect",
+      "type" : "UnitType"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1142,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static UnitType readUnitType(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readUnitType",
+    "returnType" : "UnitType",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1146,
+    "calls" : [ "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.s()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeEffect(Writes write, Effect effect)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEffect",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "effect",
+      "type" : "Effect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1150,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Effect readEffect(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEffect",
+    "returnType" : "Effect",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1154,
+    "calls" : [ "mindustry.entities.Effect.get(int)", "arc.util.io.Reads.us()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeColor(Writes write, Color color)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeColor",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1158,
+    "calls" : [ "arc.util.io.Writes.i(int)", "arc.graphics.Color.rgba()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Color readColor(Reads read) / public static Color readColor(Reads read, Color color)",
+    "desc" : null,
+    "overloads" : [ "public static Color readColor(Reads read)", "public static Color readColor(Reads read, Color color)" ],
+    "name" : "readColor",
+    "returnType" : "Color",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1162,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.graphics.Color.Color(int)", "arc.graphics.Color.set(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeIntSeq(Writes write, IntSeq seq)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeIntSeq",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "seq",
+      "type" : "IntSeq"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1170,
+    "calls" : [ "arc.util.io.Writes.i(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static IntSeq readIntSeq(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readIntSeq",
+    "returnType" : "IntSeq",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1177,
+    "calls" : [ "arc.util.io.Reads.i()", "arc.struct.IntSeq.IntSeq(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeContent(Writes write, Content cont)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeContent",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "cont",
+      "type" : "Content"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1187,
+    "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Enum.ordinal()", "mindustry.ctype.Content.getContentType()", "arc.util.io.Writes.s(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static Content readContent(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readContent",
+    "returnType" : "Content",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1192,
+    "calls" : [ "arc.util.io.Reads.b()", "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.s()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeLiquid(Writes write, Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeLiquid",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1197,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Liquid readLiquid(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readLiquid",
+    "returnType" : "Liquid",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1201,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.core.ContentLoader.liquid(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeBulletType(Writes write, BulletType type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeBulletType",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "type",
+      "type" : "BulletType"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1206,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static BulletType readBulletType(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readBulletType",
+    "returnType" : "BulletType",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1210,
+    "calls" : [ "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)", "arc.util.io.Reads.s()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeItem(Writes write, Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeItem",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1214,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Item readItem(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readItem",
+    "returnType" : "Item",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1218,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeSound(Writes write, Sound sound)",
+    "desc" : "note that only the standard sound constants in Sounds are supported; modded sounds are not.",
+    "overloads" : null,
+    "name" : "writeSound",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "sound",
+      "type" : "Sound"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1224,
+    "calls" : [ "arc.util.io.Writes.s(int)", "mindustry.gen.Sounds.getSoundId(arc.audio.Sound)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Sound readSound(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readSound",
+    "returnType" : "Sound",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1228,
+    "calls" : [ "mindustry.gen.Sounds.getSound(int)", "arc.util.io.Reads.s()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeWeather(Writes write, Weather item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeWeather",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "item",
+      "type" : "Weather"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1232,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Weather readWeather(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readWeather",
+    "returnType" : "Weather",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1236,
+    "calls" : [ "arc.util.io.Reads.s()", "mindustry.core.ContentLoader.getByID(mindustry.ctype.ContentType, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeString(Writes write, String string) / public static void writeString(ByteBuffer write, String string)",
+    "desc" : null,
+    "overloads" : [ "public static void writeString(Writes write, String string)", "public static void writeString(ByteBuffer write, String string)" ],
+    "name" : "writeString",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "string",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1241,
+    "calls" : [ "arc.util.io.Writes.b(int)", "arc.util.io.Writes.str(java.lang.String)", "java.lang.String.getBytes(java.nio.charset.Charset)", "java.nio.ByteBuffer.putShort(short)", "java.nio.ByteBuffer.put(byte[])" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static String readString(Reads read) / public static String readString(ByteBuffer read)",
+    "desc" : null,
+    "overloads" : [ "public static String readString(Reads read)", "public static String readString(ByteBuffer read)" ],
+    "name" : "readString",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1250,
+    "calls" : [ "arc.util.io.Reads.b()", "arc.util.io.Reads.str()", "java.nio.ByteBuffer.getShort()", "java.nio.ByteBuffer.get(byte[])", "java.lang.String.String(byte[], java.nio.charset.Charset)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeBytes(Writes write, byte[] bytes)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeBytes",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "bytes",
+      "type" : "byte[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1280,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.b(byte[])" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static byte[] readBytes(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readBytes",
+    "returnType" : "byte[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1285,
+    "calls" : [ "arc.util.io.Reads.s()", "arc.util.io.Reads.b(byte[])" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeInts(Writes write, int[] ints)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeInts",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "ints",
+      "type" : "int[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1290,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.i(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static int[] readInts(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readInts",
+    "returnType" : "int[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1297,
+    "calls" : [ "arc.util.io.Reads.s()", "arc.util.io.Reads.i()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeShorts(Writes write, short[] ints)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeShorts",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "ints",
+      "type" : "short[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1306,
+    "calls" : [ "arc.util.io.Writes.s(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static short[] readShorts(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readShorts",
+    "returnType" : "short[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1313,
+    "calls" : [ "arc.util.io.Reads.s()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeTraceInfo(Writes write, TraceInfo trace)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeTraceInfo",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "trace",
+      "type" : "TraceInfo"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1322,
+    "calls" : [ "mindustry.io.TypeIO.writeString(arc.util.io.Writes, java.lang.String)", "arc.util.io.Writes.b(int)", "arc.util.io.Writes.i(int)", "mindustry.io.TypeIO.writeStrings(arc.util.io.Writes, java.lang.String[], int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static TraceInfo readTraceInfo(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readTraceInfo",
+    "returnType" : "TraceInfo",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1335,
+    "calls" : [ "mindustry.io.TypeIO.readString(arc.util.io.Reads)", "arc.util.io.Reads.b()", "arc.util.io.Reads.i()", "mindustry.io.TypeIO.readStrings(arc.util.io.Reads)", "mindustry.net.Administration.TraceInfo.TraceInfo(java.lang.String, java.lang.String, java.lang.String, boolean, boolean, int, int, java.lang.String[], java.lang.String[])" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeStrings(Writes write, String[] strings, int maxLen) / public static void writeStrings(Writes write, String[] strings)",
+    "desc" : null,
+    "overloads" : [ "public static void writeStrings(Writes write, String[] strings, int maxLen)", "public static void writeStrings(Writes write, String[] strings)" ],
+    "name" : "writeStrings",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "strings",
+      "type" : "String[]"
+    }, {
+      "name" : "maxLen",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1339,
+    "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Math.min(int, int)", "mindustry.io.TypeIO.writeString(arc.util.io.Writes, java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static String[] readStrings(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStrings",
+    "returnType" : "String[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1353,
+    "calls" : [ "arc.util.io.Reads.ub()", "mindustry.io.TypeIO.readString(arc.util.io.Reads)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeStringArray(Writes write, String[][] strings)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeStringArray",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "strings",
+      "type" : "String[][]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1363,
+    "calls" : [ "arc.util.io.Writes.b(int)", "mindustry.io.TypeIO.writeString(arc.util.io.Writes, java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static String[][] readStringArray(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStringArray",
+    "returnType" : "String[][]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1373,
+    "calls" : [ "arc.util.io.Reads.ub()", "mindustry.io.TypeIO.readString(arc.util.io.Reads)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void writeStringData(DataOutput buffer, String string) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeStringData",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "buffer",
+      "type" : "DataOutput"
+    }, {
+      "name" : "string",
+      "type" : "String"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 1387,
+    "calls" : [ "java.lang.String.getBytes(java.nio.charset.Charset)", "java.io.DataOutput.writeShort(int)", "java.io.DataOutput.write(byte[])" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static String readStringData(DataInput buffer) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readStringData",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "buffer",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 1397,
+    "calls" : [ "java.io.DataInput.readShort()", "java.io.DataInput.readFully(byte[])", "java.lang.String.String(byte[], java.nio.charset.Charset)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "ClientBuildPlans extends arc.struct.Seq",
+    "simpleName" : "ClientBuildPlans",
+    "desc" : "wrapper for custom sync code",
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public ClientBuildPlans() / public ClientBuildPlans(int capacity)",
+      "desc" : null,
+      "overloads" : [ "public ClientBuildPlans()", "public ClientBuildPlans(int capacity)" ],
+      "name" : "ClientBuildPlans",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 1410,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "ContentMapper",
+    "simpleName" : "ContentMapper",
+    "desc" : "Converter of an ID to a content instance.",
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "Content get(ContentType type, int id)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "get",
+      "returnType" : "Content",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "type",
+        "type" : "ContentType"
+      }, {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 1421,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "Boxed",
+    "simpleName" : "Boxed",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "T unbox()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "unbox",
+      "returnType" : "T",
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 1425,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "BuildingBox implements mindustry.io.TypeIO.Boxed",
+    "simpleName" : "BuildingBox",
+    "desc" : "Represents a building that has not been resolved yet.",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public int pos",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pos",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 1430,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public BuildingBox(int pos)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BuildingBox",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "pos",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 1432,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public Building unbox()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "unbox",
+      "returnType" : "Building",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 1436,
+      "calls" : [ "mindustry.core.World.build(int)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 1441,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "UnitBox implements mindustry.io.TypeIO.Boxed",
+    "simpleName" : "UnitBox",
+    "desc" : "Represents a unit that has not been resolved yet.",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public int id",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 1451,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public UnitBox(int id)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "UnitBox",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 1453,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public Unit unbox()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "unbox",
+      "returnType" : "Unit",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 1457,
+      "calls" : [ "mindustry.entities.EntityGroup.getByID(int)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 1462,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+} ]

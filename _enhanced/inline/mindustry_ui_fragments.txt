@@ -1,0 +1,557 @@
+// BlockConfigFragment.java : public void build(Group parent)
+    public void build(Group parent){
+        table.visible = false;
+        parent.addChild(table);
+
+        Events.on(ResetEvent.class, e -> forceHide());
+    }
+
+// BlockConfigFragment.java : public void forceHide()
+    public void forceHide(){
+        table.visible = false;
+        selected = null;
+    }
+
+// BlockConfigFragment.java : public boolean isShown()
+    public boolean isShown(){
+        return table.visible && selected != null;
+    }
+
+// BlockConfigFragment.java : public Building getSelected()
+    public Building getSelected(){
+        return selected;
+    }
+
+// BlockConfigFragment.java : public boolean hasConfigMouse()
+    public boolean hasConfigMouse(){
+        Element e = Core.scene.getHoverElement();
+        return e != null && (e == table || e.isDescendantOf(table));
+    }
+
+// BlockConfigFragment.java : public void hideConfig()
+    public void hideConfig(){
+        if(selected != null) selected.onConfigureClosed();
+        selected = null;
+        table.actions(Actions.scaleTo(0f, 1f, 0.06f, Interp.pow3Out), Actions.visible(false));
+    }
+
+// BlockInventoryFragment.java : public void build(Group parent)
+    public void build(Group parent){
+        table.name = "inventory";
+        table.setTransform(true);
+        parent.setTransform(true);
+        parent.addChild(table);
+    }
+
+// BlockInventoryFragment.java : public void hide()
+    public void hide(){
+        if(table == null) return;
+
+        table.actions(Actions.scaleTo(0f, 1f, 0.06f, Interp.pow3Out), Actions.run(() -> {
+            table.clearChildren();
+            table.clearListeners();
+            table.update(null);
+        }), Actions.visible(false));
+        table.touchable = Touchable.disabled;
+        build = null;
+    }
+
+// BlockInventoryFragment.java : private String round(float f)
+    private String round(float f){
+        f = (int)f;
+        if(f >= 1000000){
+            return (int)(f / 1000000f) + "[gray]" + UI.millions;
+        }else if(f >= 1000){
+            return (int)(f / 1000) + UI.thousands;
+        }else{
+            return (int)f + "";
+        }
+    }
+
+// BlockInventoryFragment.java : private void updateTablePosition()
+    private void updateTablePosition(){
+        Vec2 v = Core.input.mouseScreen(build.x + build.block.size * tilesize / 2f, build.y + build.block.size * tilesize / 2f);
+        table.pack();
+        table.setPosition(v.x - Core.scene.marginLeft, v.y - Core.scene.marginBottom, build.block.diagonalConfigInventory ? Align.bottomLeft : Align.topLeft);
+    }
+
+// BlockInventoryFragment.java : private Element itemImage(TextureRegion region, Prov<CharSequence> text)
+    private Element itemImage(TextureRegion region, Prov<CharSequence> text){
+        Stack stack = new Stack();
+
+        Table t = new Table().left().bottom();
+        t.label(text);
+
+        stack.add(new Image(region));
+        stack.add(t);
+        return stack;
+    }
+
+// ChatFragment.java : public void build(Group parent)
+    public void build(Group parent){
+        scene.add(this);
+    }
+
+// ChatFragment.java : public void clearMessages()
+    public void clearMessages(){
+        messages.clear();
+        history.clear();
+        history.insert(0, "");
+    }
+
+// ChatFragment.java : protected void rect(float x, float y, float w, float h)
+    protected void rect(float x, float y, float w, float h){
+        //prevents texture bindings; the string lookup is irrelevant as it is only called <10 times per frame, and maps are very fast anyway
+        Draw.rect("whiteui", x + w/2f, y + h/2f, w, h);
+    }
+
+// ChatFragment.java : public void hide()
+    public void hide(){
+        scene.setKeyboardFocus(null);
+        shown = false;
+        clearChatInput();
+    }
+
+// ChatFragment.java : public void updateChat()
+    public void updateChat(){
+        chatfield.setText(mode.normalizedPrefix() + history.get(historyPos));
+        updateCursor();
+    }
+
+// ChatFragment.java : public void clearChatInput()
+    public void clearChatInput(){
+        historyPos = 0;
+        history.set(0, "");
+        chatfield.setText(mode.normalizedPrefix());
+        updateCursor();
+    }
+
+// ChatFragment.java : public void updateCursor()
+    public void updateCursor(){
+        chatfield.setCursorPosition(chatfield.getText().length());
+    }
+
+// ChatFragment.java : public boolean shown()
+    public boolean shown(){
+        return shown;
+    }
+
+// ChatFragment.java : public void addMessage(String message)
+    public void addMessage(String message){
+        if(message == null) return;
+        messages.insert(0, message);
+
+        fadetime += 1f;
+        fadetime = Math.min(fadetime, messagesShown) + 1f;
+
+        if(scrollPos > 0) scrollPos++;
+    }
+
+// ConsoleFragment.java : public void build(Group parent)
+    public void build(Group parent){
+        scene.add(this);
+    }
+
+// ConsoleFragment.java : public void clearMessages()
+    public void clearMessages(){
+        messages.clear();
+        history.clear();
+        history.insert(0, "");
+    }
+
+// ConsoleFragment.java : protected void rect(float x, float y, float w, float h)
+    protected void rect(float x, float y, float w, float h){
+        Draw.rect("whiteui", x + w/2f, y + h/2f, w, h);
+    }
+
+// ConsoleFragment.java : public void toggleMobile()
+    public void toggleMobile(){
+        shown = !shown;
+        open = false; //never true on mobile
+    }
+
+// ConsoleFragment.java : public void close()
+    public void close(){
+        shown = false;
+        open = false;
+    }
+
+// ConsoleFragment.java : public void hide()
+    public void hide(){
+        scene.setKeyboardFocus(null);
+        open = false;
+        clearChatInput();
+    }
+
+// ConsoleFragment.java : public void updateChat()
+    public void updateChat(){
+        chatfield.setText(history.get(historyPos));
+        chatfield.setCursorPosition(chatfield.getText().length());
+    }
+
+// ConsoleFragment.java : public void clearChatInput()
+    public void clearChatInput(){
+        historyPos = 0;
+        history.set(0, "");
+        chatfield.setText("");
+    }
+
+// ConsoleFragment.java : public boolean open()
+    public boolean open(){
+        return open;
+    }
+
+// ConsoleFragment.java : public boolean shown()
+    public boolean shown(){
+        return shown;
+    }
+
+// ConsoleFragment.java : public void addMessage(String message)
+    public void addMessage(String message){
+        messages.insert(0, message);
+    }
+
+// HintsFragment.java : void complete()
+    void complete(){
+        if(current == null) return;
+
+        current.finish();
+        hints.remove(current);
+
+        hide();
+    }
+
+// HintsFragment.java : void hide()
+    void hide(){
+        //hide previous child if found
+        if(last != null){
+            last.actions(Actions.parallel(Actions.alpha(0f, foutTime, Interp.smooth), Actions.translateBy(0f, Scl.scl(-200f), foutTime, Interp.smooth)), Actions.remove());
+        }
+        //check for next hint to display immediately
+        current = null;
+        last = null;
+        checkNext();
+    }
+
+// HintsFragment.java : public boolean shown()
+    public boolean shown(){
+        return current != null;
+    }
+
+// HintsFragment.java : static boolean isSerpulo()
+    static boolean isSerpulo(){
+        return !state.rules.hasEnv(Env.scorching);
+    }
+
+// HudFragment.java : private static void loadFavorites()
+    private static void loadFavorites(){
+        favoriteBlocks = Core.settings.getJson("editor-block-favorites", ObjectSet.class, String.class, ObjectSet::new);
+    }
+
+// HudFragment.java : private static void saveFavorites()
+    private static void saveFavorites(){
+        Core.settings.putJson("editor-block-favorites", String.class, favoriteBlocks);
+    }
+
+// HudFragment.java : private static boolean isFavorite(Block block)
+    private static boolean isFavorite(Block block){
+        return favoriteBlocks.contains(block.name);
+    }
+
+// HudFragment.java : public static void setPlayerTeamEditor(Player player, Team team)
+    @Remote(targets = Loc.both, forward = true, called = Loc.both)
+    public static void setPlayerTeamEditor(Player player, Team team){
+        if(state.isEditor() && player != null){
+            player.team(team);
+        }
+    }
+
+// HudFragment.java : public void setHudText(String text)
+    public void setHudText(String text){
+        showHudText = true;
+        hudText = text;
+    }
+
+// HudFragment.java : public void toggleHudText(boolean shown)
+    public void toggleHudText(boolean shown){
+        showHudText = shown;
+    }
+
+// HudFragment.java : private void scheduleToast(Runnable run)
+    private void scheduleToast(Runnable run){
+        long duration = (int)(3.5 * 1000);
+        long since = Time.timeSinceMillis(lastToast);
+        if(since > duration){
+            lastToast = Time.millis();
+            run.run();
+        }else{
+            Time.runTask((duration - since) / 1000f * 60f, run);
+            lastToast += duration;
+        }
+    }
+
+// HudFragment.java : public boolean hasToast()
+    public boolean hasToast(){
+        return Time.timeSinceMillis(lastToast) < 3.5f * 1000f;
+    }
+
+// HudFragment.java : public void showToast(String text) / public void showToast(Drawable icon, String text) / public void showToast(Drawable icon, float size, String text)
+    public void showToast(String text){
+        showToast(Icon.ok, text);
+    }
+
+// HudFragment.java : public void showPauseDisabled()
+    public void showPauseDisabled(){
+        pauseDisableDur = 60f;
+    }
+
+// HudFragment.java : private void toggleMenus()
+    private void toggleMenus(){
+        shown = !shown;
+    }
+
+// HudFragment.java : private boolean canSkipWave()
+    private boolean canSkipWave(){
+        return state.rules.waves && state.rules.waveSending && ((net.server() || player.admin) || !net.active()) && state.enemies == 0 && !spawner.isSpawning();
+    }
+
+// HudFragment.java : public boolean shown()
+    public boolean shown() {
+        return shown && !control.input.logicHideHud;
+    }
+
+// LoadingFragment.java : public void toFront()
+    public void toFront(){
+        table.toFront();
+    }
+
+// LoadingFragment.java : public void setProgress(Floatp progress) / public void setProgress(float progress)
+    public void setProgress(Floatp progress){
+        bar.reset(0f);
+        bar.visible = true;
+        bar.set(() -> ((int)(progress.get() * 100) + "%"), progress, Pal.accent);
+    }
+
+// LoadingFragment.java : public void snapProgress()
+    public void snapProgress(){
+        bar.snap();
+    }
+
+// LoadingFragment.java : public void showProgressBar()
+    public void showProgressBar(){
+        if(!bar.visible){
+            setProgress(() -> progValue);
+        }
+    }
+
+// LoadingFragment.java : public boolean showingProgress()
+    public boolean showingProgress(){
+        return bar.visible;
+    }
+
+// LoadingFragment.java : public void setButton(Runnable listener)
+    public void setButton(Runnable listener){
+        button.visible = true;
+        button.requestKeyboard();
+        cancelListener = listener;
+    }
+
+// LoadingFragment.java : public void setText(String text) / public void setText(String text, Color color)
+    public void setText(String text){
+        nameLabel.setText(text);
+    }
+
+// LoadingFragment.java : public void show() / public void show(String text)
+    public void show(){
+        show("@loading");
+    }
+
+// LoadingFragment.java : public boolean shown()
+    public boolean shown(){
+        return table.visible;
+    }
+
+// LoadingFragment.java : public void hide()
+    public void hide(){
+        table.clearActions();
+        table.toFront();
+        button.visible = false;
+        table.touchable = Touchable.disabled;
+        table.actions(Actions.fadeOut(0.5f), Actions.visible(false));
+
+        if(Core.scene.getKeyboardFocus() == button){
+            Core.scene.setKeyboardFocus(null);
+        }
+    }
+
+// MenuFragment.java : private void checkPlay(Runnable run)
+    private void checkPlay(Runnable run){
+        if(!mods.hasContentErrors()){
+            run.run();
+        }else{
+            ui.showInfo("@mod.noerrorplay");
+        }
+    }
+
+// MenuFragment.java : private void fadeInMenu()
+    private void fadeInMenu(){
+        submenu.clearActions();
+        submenu.actions(Actions.alpha(1f, 0.15f, Interp.fade));
+    }
+
+// MenuFragment.java : private void fadeOutMenu()
+    private void fadeOutMenu(){
+        //nothing to fade out
+        if(submenu.getChildren().isEmpty()){
+            return;
+        }
+
+        submenu.clearActions();
+        submenu.actions(Actions.alpha(1f), Actions.alpha(0f, 0.2f, Interp.fade), Actions.run(() -> submenu.clearChildren()));
+    }
+
+// MenuFragment.java : public void addButton(String text, Drawable icon, Runnable callback) / public void addButton(String text, Runnable callback) / public void addButton(MenuButton button)
+    public void addButton(String text, Drawable icon, Runnable callback){
+        addButton(new MenuButton(text, icon, callback));
+    }
+
+// MinimapFragment.java : protected Rect getRectBounds()
+    protected Rect getRectBounds(){
+        float
+            w = Core.graphics.getWidth(),
+            h = Core.graphics.getHeight(),
+            ratio = renderer.minimap.getTexture() == null ? 1f : (float)renderer.minimap.getTexture().height / renderer.minimap.getTexture().width,
+            size = baseSize * zoom * world.width();
+
+        return Tmp.r1.set(w/2f + panx*zoom - size/2f, h/2f + pany*zoom - size/2f * ratio, size, size * ratio);
+    }
+
+// MinimapFragment.java : public void panTo(float relativeX, float relativeY)
+    public void panTo(float relativeX, float relativeY){
+        control.input.panCamera(convert(relativeX, relativeY).clamp(-tilesize/2f, -tilesize/2f, world.unitWidth() + tilesize/2f, world.unitHeight() + tilesize/2f));
+    }
+
+// MinimapFragment.java : public Vec2 convert(float relativeX, float relativeY)
+    public Vec2 convert(float relativeX, float relativeY){
+        Rect r = getRectBounds();
+        return Tmp.v1.set(relativeX, relativeY).sub(r.x - scene.marginLeft, r.y - scene.marginBottom).scl(1f / r.width, 1f / r.height).scl(world.unitWidth(), world.unitHeight()).sub(tilesize/2f, tilesize/2f);
+    }
+
+// MinimapFragment.java : public boolean shown()
+    public boolean shown(){
+        return shown;
+    }
+
+// MinimapFragment.java : public void hide()
+    public void hide(){
+        shown = false;
+    }
+
+// MinimapFragment.java : public void toggle()
+    public void toggle(){
+        if(renderer.minimap.getTexture() != null){
+            float size = baseSize * zoom * world.width();
+            float ratio = (float)renderer.minimap.getTexture().height / renderer.minimap.getTexture().width;
+            float px = player.dead() ? Core.camera.position.x : player.x, py = player.dead() ? Core.camera.position.y : player.y;
+            panx = (size/2f - px / (world.width() * tilesize) * size) / zoom;
+            pany = (size*ratio/2f - py / (world.height() * tilesize) * size*ratio) / zoom;
+        }
+
+        shown = !shown;
+    }
+
+// PerformanceFragment.java : private static Color color(PerfCounter counter)
+    private static Color color(PerfCounter counter){
+        return counterToColor.get(counter, Color.white);
+    }
+
+// PlacementFragment.java : public Displayable hover()
+    public Displayable hover(){
+        return hover;
+    }
+
+// PlacementFragment.java : public void rebuild()
+    public void rebuild(){
+        //category does not change on rebuild anymore, only on new world load
+        Group group = toggler.parent;
+        int index = toggler.getZIndex();
+        toggler.remove();
+        build(group);
+        toggler.setZIndex(index);
+        lastDisplayState = null;
+    }
+
+// PlacementFragment.java : String getUnplaceableReason(Block block)
+    @Nullable String getUnplaceableReason(Block block){
+        if(block == null) return null;
+        if(!player.isBuilder()) return "@unit.nobuild";
+        if(state.isEditor()) return null; //always placeable in editor as long as there's a builder
+        if(!block.supportsEnv(state.rules.env)) return "@unsupported.environment";
+        if(block.isBanned()) return "@banned";
+        if(block.isOverPlacementLimit(player.team())) return Core.bundle.format("block.limit", state.rules.blockLimits.get(block));
+        return null;
+    }
+
+// PlacementFragment.java : Seq<Category> getCategories()
+    Seq<Category> getCategories(){
+        return returnCatArray.clear().addAll(Category.all).sort((c1, c2) -> Boolean.compare(categoryEmpty[c1.ordinal()], categoryEmpty[c2.ordinal()]));
+    }
+
+// PlacementFragment.java : Seq<Block> getByCategory(Category cat)
+    Seq<Block> getByCategory(Category cat){
+        return returnArray.selectFrom(content.blocks(), block -> block.category == cat && block.isVisible() && block.environmentBuildable());
+    }
+
+// PlacementFragment.java : Seq<Block> getUnlockedByCategory(Category cat)
+    Seq<Block> getUnlockedByCategory(Category cat){
+        return returnArray2.selectFrom(content.blocks(), block -> block.category == cat && block.isVisible() && unlocked(block)).sort((b1, b2) -> Boolean.compare(!b1.isPlaceable(), !b2.isPlaceable()));
+    }
+
+// PlacementFragment.java : Block getSelectedBlock(Category cat)
+    Block getSelectedBlock(Category cat){
+        return selectedBlocks.get(cat, () -> getByCategory(cat).find(this::unlocked));
+    }
+
+// PlacementFragment.java : boolean unlocked(Block block)
+    boolean unlocked(Block block){
+        return block.unlockedNowHost() && block.placeablePlayer && block.environmentBuildable() &&
+            block.supportsEnv(state.rules.env);
+    }
+
+// PlacementFragment.java : boolean hasInfoBox()
+    boolean hasInfoBox(){
+        hover = hovered();
+        return control.input.block != null || menuHoverBlock != null || hover != null;
+    }
+
+// PlanConfigFragment.java : public void build(Group parent)
+    public void build(Group parent){
+        table.visible = false;
+        parent.addChild(table);
+
+        Events.on(EventType.ResetEvent.class, e -> forceHide());
+    }
+
+// PlanConfigFragment.java : public void forceHide()
+    public void forceHide(){
+        table.visible = false;
+        selected = null;
+    }
+
+// PlanConfigFragment.java : public void hide()
+    public void hide(){
+        selected = null;
+        table.actions(Actions.scaleTo(0f, 1f, 0.06f, Interp.pow3Out), Actions.visible(false));
+    }
+
+// PlayerListFragment.java : public void toggle()
+    public void toggle(){
+        visible = !visible;
+        if(visible){
+            rebuild();
+        }else{
+            Core.scene.setKeyboardFocus(null);
+            search.clearText();
+        }
+    }
+

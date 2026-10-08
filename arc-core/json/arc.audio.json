@@ -1,0 +1,3480 @@
+[ {
+  "file" : "Audio.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class implements arc.util.Disposable",
+  "typeDesc" : "High-level wrapper for the Soloud library.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float globalPitch",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "globalPitch",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float falloff",
+    "desc" : "Falloff when playing audio.",
+    "overloads" : null,
+    "name" : "falloff",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int defaultSoundMaxConcurrent",
+    "desc" : "Default value for maximum instances of a sound.",
+    "overloads" : null,
+    "name" : "defaultSoundMaxConcurrent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean initialized",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialized",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float sfxVolume",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sfxVolume",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public AudioBus soundBus",
+    "desc" : "Global bus for all sounds.",
+    "overloads" : null,
+    "name" : "soundBus",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public AudioBus musicBus",
+    "desc" : "Global bus for all music.",
+    "overloads" : null,
+    "name" : "musicBus",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Audio() / public Audio(boolean enabled)",
+    "desc" : "Initializes Soloud audio by default.",
+    "overloads" : [ "public Audio()", "public Audio(boolean enabled)" ],
+    "name" : "Audio",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : [ "arc.audio.Audio.initialize()" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean initialized()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialized",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void initialize()",
+    "desc" : "Intializes Soloud audio.",
+    "overloads" : null,
+    "name" : "initialize",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ "arc.audio.Soloud.init()", "arc.util.Log.info(java.lang.String, java.lang.Object...)", "arc.audio.Soloud.version()", "arc.audio.Soloud.backendString()", "arc.audio.Soloud.backendSamplerate()", "arc.audio.Soloud.backendBufferSize()", "arc.audio.Soloud.backendChannels()", "arc.audio.AudioBus.init()", "arc.Application.addListener(arc.ApplicationListener)", "arc.Settings.getInt(java.lang.String)", "arc.Application.isMobile()", "arc.audio.Soloud.pauseAll(boolean)", "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "arc.audio.AudioBus.AudioBus()", "arc.audio.Audio.Anonymous-b5b7e954-7a8b-429d-a7ba-34fa37917749.Anonymous-b5b7e954-7a8b-429d-a7ba-34fa37917749()" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "public Sound newSound(Fi file)",
+    "desc" : "Loads a sound, logging an error and returning a dummy track upon failure.",
+    "overloads" : null,
+    "name" : "newSound",
+    "returnType" : "Sound",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "arc.audio.Sound.Sound()", "arc.audio.Sound.Sound(arc.files.Fi)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Music newMusic(Fi file)",
+    "desc" : "Loads music, logging an error and returning a dummy track upon failure.",
+    "overloads" : null,
+    "name" : "newMusic",
+    "returnType" : "Music",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 90,
+    "calls" : [ "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "arc.audio.Music.Music()", "arc.audio.Music.Music(arc.files.Fi)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isPlaying(int soundId)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isPlaying",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ "arc.audio.Soloud.idValid(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void protect(int voice, boolean protect)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "protect",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "protect",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 105,
+    "calls" : [ "arc.audio.Soloud.idProtected(int, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int play(AudioSource source, float volume, float pitch, float pan, boolean loop)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "play",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "AudioSource"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "loop",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ "arc.audio.Soloud.sourcePlay(long, float, float, float, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void stop(AudioSource source) / public void stop(int soundId)",
+    "desc" : null,
+    "overloads" : [ "public void stop(AudioSource source)", "public void stop(int soundId)" ],
+    "name" : "stop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "AudioSource"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ "arc.audio.Soloud.sourceStop(long)", "arc.audio.Soloud.idStop(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPaused(int soundId, boolean paused)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setPaused",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    }, {
+      "name" : "paused",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 125,
+    "calls" : [ "arc.audio.Soloud.idPause(int, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setLooping(int soundId, boolean looping)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setLooping",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    }, {
+      "name" : "looping",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 130,
+    "calls" : [ "arc.audio.Soloud.idLooping(int, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPitch(int soundId, float pitch)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setPitch",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 135,
+    "calls" : [ "java.lang.Float.isInfinite(float)", "java.lang.Float.isNaN(float)", "arc.audio.Soloud.idPitch(int, float)", "java.lang.Math.max(float, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void setVolume(int soundId, float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setVolume",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 140,
+    "calls" : [ "java.lang.Float.isInfinite(float)", "java.lang.Float.isNaN(float)", "arc.audio.Soloud.idVolume(int, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void set(int soundId, float pan, float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "soundId",
+      "type" : "int"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 145,
+    "calls" : [ "java.lang.Float.isInfinite(float)", "java.lang.Float.isNaN(float)", "arc.audio.Soloud.idVolume(int, float)", "arc.audio.Soloud.idPan(int, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void fadeFilterParam(int voice, int filter, int attribute, float value, float timeSec)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fadeFilterParam",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    }, {
+      "name" : "timeSec",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 151,
+    "calls" : [ "arc.audio.Soloud.filterFade(int, int, int, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFilterParam(int voice, int filter, int attribute, float value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFilterParam",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 156,
+    "calls" : [ "arc.audio.Soloud.filterSet(int, int, int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFilter(int index, AudioFilter filter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFilter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "AudioFilter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 161,
+    "calls" : [ "arc.audio.Soloud.setGlobalFilter(int, long)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int countPlaying(AudioSource source)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "countPlaying",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "AudioSource"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 166,
+    "calls" : [ "arc.audio.Soloud.sourceCount(long)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int countTotalPlaying()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "countTotalPlaying",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 171,
+    "calls" : [ "arc.audio.Soloud.activeVoiceCount()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 176,
+    "calls" : [ "arc.audio.Soloud.stopAll()", "arc.audio.Soloud.deinit()" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AudioBus.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class extends arc.audio.AudioSource",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public int id",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "id",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public AudioBus()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "AudioBus",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ "arc.audio.AudioBus.init()" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setFilter(int index, AudioFilter filter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFilter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "AudioFilter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.audio.Soloud.sourceFilter(long, int, long)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "AudioBus init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "AudioBus",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ "arc.audio.Soloud.busNew()", "arc.audio.Soloud.sourcePlay(long)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean playing()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "playing",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ "arc.audio.Audio.isPlaying(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void play()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "play",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 34,
+    "calls" : [ "arc.audio.Soloud.idValid(int)", "arc.audio.Soloud.sourcePlay(long)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void stop()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "arc.audio.Audio.stop(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getLength()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getLength",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void fadeFilterParam(int filter, int attribute, float value, float timeSec)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fadeFilterParam",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    }, {
+      "name" : "timeSec",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "arc.audio.Audio.fadeFilterParam(int, int, int, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFilterParam(int filter, int attribute, float value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFilterParam",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ "arc.audio.Audio.setFilterParam(int, int, int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setVolume(float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setVolume",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ "arc.audio.Audio.setVolume(int, float)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AudioFilter.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class (abstract)",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected long handle",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 4,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "protected AudioFilter(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "AudioFilter",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "AudioSource.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class (abstract) implements arc.util.Disposable",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected long handle",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handle",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int maxConcurrent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxConcurrent",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float minInterruptAbsolute",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minInterruptAbsolute",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float priority",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "priority",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean valid()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "valid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFilter(int index, AudioFilter filter) / public void setFilter(AudioFilter filter)",
+    "desc" : null,
+    "overloads" : [ "public void setFilter(int index, AudioFilter filter)", "public void setFilter(AudioFilter filter)" ],
+    "name" : "setFilter",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "AudioFilter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ "arc.audio.Soloud.sourceFilter(long, int, long)", "arc.audio.AudioSource.setFilter(int, arc.audio.AudioFilter)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "protected void setParamsAfterLoad()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setParamsAfterLoad",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ "arc.audio.AudioSource.setPriority(float)", "arc.audio.AudioSource.setMaxConcurrent(int)", "arc.audio.AudioSource.setConcurrentGroup(int)", "arc.audio.AudioSource.setMinConcurrentInterruptFraction(float, float)", "arc.audio.AudioSource.setMinConcurrentInterrupt(float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPriority(float priority)",
+    "desc" : "Sets the priority of this source.",
+    "overloads" : null,
+    "name" : "setPriority",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "priority",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.audio.Soloud.sourcePriority(long, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setMaxConcurrent(int max)",
+    "desc" : "Sets the priority of this source.",
+    "overloads" : null,
+    "name" : "setMaxConcurrent",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "max",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "arc.audio.Soloud.sourceMaxConcurrent(long, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setConcurrentGroup(int group)",
+    "desc" : "Sets the group ID of this source, for which maxConcurrent will be enforced.",
+    "overloads" : null,
+    "name" : "setConcurrentGroup",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "group",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ "arc.audio.Soloud.sourceConcurrentGroup(long, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setMinConcurrentInterrupt(float seconds)",
+    "desc" : "Sets the minimum playtime (in seconds) that a sound must have in order to be interrupted when its concurrent limit is reached.",
+    "overloads" : null,
+    "name" : "setMinConcurrentInterrupt",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "seconds",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 61,
+    "calls" : [ "arc.audio.Soloud.sourceMinConcurrentInterrupt(long, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setMinConcurrentInterruptFraction(float min, float fraction)",
+    "desc" : "Sets the minimum playtime (in seconds) that a sound must have in order to be interrupted when its concurrent limit is reached.",
+    "overloads" : null,
+    "name" : "setMinConcurrentInterruptFraction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "min",
+      "type" : "float"
+    }, {
+      "name" : "fraction",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 69,
+    "calls" : [ "arc.audio.Soloud.sourceMinConcurrentInterrupt(long, float)", "java.lang.Math.min(float, float)", "arc.audio.AudioSource.getLength()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public int countPlaying()",
+    "desc" : "@return number of currently playing instances",
+    "overloads" : null,
+    "name" : "countPlaying",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ "arc.audio.Audio.countPlaying(arc.audio.AudioSource)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setSingleInstance(boolean singleInstance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setSingleInstance",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "singleInstance",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ "arc.audio.Soloud.sourceSingleInstance(long, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void stop()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ "arc.audio.Soloud.sourceStop(long)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract float getLength()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getLength",
+    "returnType" : "float",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 92,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isLazy()",
+    "desc" : "@return true if this is a lazily loaded source (only loaded once played)",
+    "overloads" : null,
+    "name" : "isLazy",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void dispose()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dispose",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 99,
+    "calls" : [ "arc.audio.Soloud.sourceDestroy(long)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Filters.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int paramWet",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "paramWet",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "BiquadFilter extends arc.audio.AudioFilter",
+    "simpleName" : "BiquadFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public BiquadFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BiquadFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 10,
+      "calls" : [ "arc.audio.Soloud.filterBiquad()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(int type, float frequency, float resonance)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "type",
+        "type" : "int"
+      }, {
+        "name" : "frequency",
+        "type" : "float"
+      }, {
+        "name" : "resonance",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 14,
+      "calls" : [ "arc.audio.Soloud.biquadSet(long, int, float, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "EchoFilter extends arc.audio.AudioFilter",
+    "simpleName" : "EchoFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public EchoFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "EchoFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 21,
+      "calls" : [ "arc.audio.Soloud.filterEcho()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float delay, float decay, float filter)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "delay",
+        "type" : "float"
+      }, {
+        "name" : "decay",
+        "type" : "float"
+      }, {
+        "name" : "filter",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 25,
+      "calls" : [ "arc.audio.Soloud.echoSet(long, float, float, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "LofiFilter extends arc.audio.AudioFilter",
+    "simpleName" : "LofiFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public LofiFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "LofiFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 32,
+      "calls" : [ "arc.audio.Soloud.filterLofi()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float sampleRate, float depth)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "sampleRate",
+        "type" : "float"
+      }, {
+        "name" : "depth",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 36,
+      "calls" : [ "arc.audio.Soloud.lofiSet(long, float, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "FlangerFilter extends arc.audio.AudioFilter",
+    "simpleName" : "FlangerFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public FlangerFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "FlangerFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 43,
+      "calls" : [ "arc.audio.Soloud.filterFlanger()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float delay, float frequency)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "delay",
+        "type" : "float"
+      }, {
+        "name" : "frequency",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 47,
+      "calls" : [ "arc.audio.Soloud.flangerSet(long, float, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "WaveShaperFilter extends arc.audio.AudioFilter",
+    "simpleName" : "WaveShaperFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public WaveShaperFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "WaveShaperFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 54,
+      "calls" : [ "arc.audio.Soloud.filterWaveShaper()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "amount",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 58,
+      "calls" : [ "arc.audio.Soloud.waveShaperSet(long, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "BassBoostFilter extends arc.audio.AudioFilter",
+    "simpleName" : "BassBoostFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public BassBoostFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BassBoostFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 65,
+      "calls" : [ "arc.audio.Soloud.filterBassBoost()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "amount",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 69,
+      "calls" : [ "arc.audio.Soloud.bassBoostSet(long, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "RobotizeFilter extends arc.audio.AudioFilter",
+    "simpleName" : "RobotizeFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public RobotizeFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "RobotizeFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 76,
+      "calls" : [ "arc.audio.Soloud.filterRobotize()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float freq, int waveform)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "freq",
+        "type" : "float"
+      }, {
+        "name" : "waveform",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 80,
+      "calls" : [ "arc.audio.Soloud.robotizeSet(long, float, int)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "FreeverbFilter extends arc.audio.AudioFilter",
+    "simpleName" : "FreeverbFilter",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public FreeverbFilter()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "FreeverbFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 87,
+      "calls" : [ "arc.audio.Soloud.filterFreeverb()" ],
+      "callCount" : 1
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(float mode, float roomSize, float damp, float width)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "mode",
+        "type" : "float"
+      }, {
+        "name" : "roomSize",
+        "type" : "float"
+      }, {
+        "name" : "damp",
+        "type" : "float"
+      }, {
+        "name" : "width",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 91,
+      "calls" : [ "arc.audio.Soloud.freeverbSet(long, float, float, float, float)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Music.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class extends arc.audio.AudioSource",
+  "typeDesc" : "<p>",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Fi file",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "file",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "int voice",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "voice",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean looping",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "looping",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "float volume",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "volume",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Music(Fi file) / public Music()",
+    "desc" : "Loads music from a file.",
+    "overloads" : [ "public Music(Fi file)", "public Music()" ],
+    "name" : "Music",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 52,
+    "calls" : [ "arc.audio.Music.load(arc.files.Fi)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Music create(Fi file)",
+    "desc" : "Creates music from an external file without copying it.",
+    "overloads" : null,
+    "name" : "create",
+    "returnType" : "Music",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.audio.Soloud.streamLoadFile(java.lang.String)", "arc.files.Fi.path()", "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "arc.audio.Music.Music()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void load(byte[] bytes) throws Exception / public void load(Fi file) throws Exception",
+    "desc" : null,
+    "overloads" : [ "public void load(byte[] bytes) throws Exception", "public void load(Fi file) throws Exception" ],
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "bytes",
+      "type" : "byte[]"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 61,
+    "calls" : [ "arc.audio.Soloud.streamLoadBytes(byte[], int)", "arc.files.Fi.type()", "arc.Files.getInternalStoragePath()", "arc.audio.Soloud.streamLoadFile(java.lang.String)", "java.lang.String.endsWith(java.lang.String)", "arc.files.Fi.path()", "arc.audio.Music.caches(java.lang.String)", "arc.files.Fi.nameWithoutExtension()", "arc.files.Fi.length()", "arc.files.Fi.extension()", "arc.files.Fi.exists()", "arc.files.Fi.isDirectory()", "arc.files.Fi.copyTo(arc.files.Fi)", "java.io.File.getCanonicalPath()", "arc.files.Fi.file()", "java.io.File.getAbsolutePath()", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 17
+  }, {
+    "kind" : "method",
+    "signature" : "public void play()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "play",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ "arc.audio.Soloud.idValid(int)", "arc.audio.Soloud.idGetPause(int)", "arc.audio.Music.pause(boolean)", "arc.audio.Soloud.sourcePlayBus(long, long, float, float, float, boolean)", "arc.audio.Soloud.idProtected(int, boolean)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void pause(boolean pause)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pause",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pause",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ "arc.audio.Soloud.idPause(int, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void stop()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stop",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 120,
+    "calls" : [ "arc.audio.AudioSource.stop()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isPlaying()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isPlaying",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 126,
+    "calls" : [ "arc.audio.Soloud.idValid(int)", "arc.audio.Soloud.idGetPause(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isLooping()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isLooping",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 132,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setLooping(boolean isLooping)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setLooping",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "isLooping",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 136,
+    "calls" : [ "arc.audio.Soloud.idLooping(int, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getVolume()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getVolume",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 143,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setVolume(float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setVolume",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 147,
+    "calls" : [ "arc.audio.Soloud.idVolume(int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void set(float pan, float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 154,
+    "calls" : [ "arc.audio.Soloud.idVolume(int, float)", "arc.audio.Soloud.idPan(int, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float getPosition()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getPosition",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 164,
+    "calls" : [ "arc.audio.Soloud.idPosition(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPosition(float position)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setPosition",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 170,
+    "calls" : [ "arc.audio.Soloud.idSeek(int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getLength()",
+    "desc" : "@return length in seconds",
+    "overloads" : null,
+    "name" : "getLength",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 177,
+    "calls" : [ "arc.audio.Soloud.streamLength(long)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 183,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected static Fi[] caches(String name) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "caches",
+    "returnType" : "Fi[]",
+    "modifiers" : [ "protected", "static" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 188,
+    "calls" : [ "java.lang.System.getProperty(java.lang.String)", "arc.Application.isAndroid()", "arc.Files.cache(java.lang.String)", "arc.files.Fi.child(java.lang.String)", "arc.Settings.getDataDirectory()", "arc.Files.absolute(java.lang.String)", "java.io.File.getAbsolutePath()", "java.io.File.createTempFile(java.lang.String, java.lang.String)" ],
+    "callCount" : 8
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RandomSound.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class extends arc.audio.Sound",
+  "typeDesc" : "Plays a sound from an array at random.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Sound sounds",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sounds",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public RandomSound(Sound sounds) / public RandomSound()",
+    "desc" : null,
+    "overloads" : [ "public RandomSound(Sound sounds)", "public RandomSound()" ],
+    "name" : "RandomSound",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sounds",
+      "type" : "Sound"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void load(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "play",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "volume",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "loop",
+      "type" : "boolean"
+    }, {
+      "name" : "checkFrame",
+      "type" : "boolean"
+    }, {
+      "name" : "bus",
+      "type" : "AudioBus"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "arc.audio.Sound.play(float, float, float, boolean, boolean, arc.audio.AudioBus)", "arc.util.Structs.random(T...)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Soloud.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class",
+  "typeDesc" : "JNI bindings for the Soloud library.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "static native void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void deinit()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "deinit",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native String backendString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backendString",
+    "returnType" : "String",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int backendId()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backendId",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int backendChannels()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backendChannels",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int backendSamplerate()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backendSamplerate",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int backendBufferSize()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "backendBufferSize",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 61,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int version()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "version",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int activeVoiceCount()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "activeVoiceCount",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 69,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void stopAll()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stopAll",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 73,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void pauseAll(boolean paused)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pauseAll",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "paused",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void biquadSet(long handle, int type, float frequency, float resonance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "biquadSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "type",
+      "type" : "int"
+    }, {
+      "name" : "frequency",
+      "type" : "float"
+    }, {
+      "name" : "resonance",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 81,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void echoSet(long handle, float delay, float decay, float filter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "echoSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "delay",
+      "type" : "float"
+    }, {
+      "name" : "decay",
+      "type" : "float"
+    }, {
+      "name" : "filter",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 85,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void lofiSet(long handle, float sampleRate, float bitDepth)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lofiSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "sampleRate",
+      "type" : "float"
+    }, {
+      "name" : "bitDepth",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 89,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void flangerSet(long handle, float delay, float frequency)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flangerSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "delay",
+      "type" : "float"
+    }, {
+      "name" : "frequency",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 93,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void waveShaperSet(long handle, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "waveShaperSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 97,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void bassBoostSet(long handle, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bassBoostSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 101,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void robotizeSet(long handle, float freq, int waveform)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "robotizeSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "freq",
+      "type" : "float"
+    }, {
+      "name" : "waveform",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 105,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void freeverbSet(long handle, float mode, float roomSize, float damp, float width)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "freeverbSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "mode",
+      "type" : "float"
+    }, {
+      "name" : "roomSize",
+      "type" : "float"
+    }, {
+      "name" : "damp",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 109,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterBiquad()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filterBiquad",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 113,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterEcho()",
+    "desc" : "return (jlong)(new BiquadResonantFilter());",
+    "overloads" : null,
+    "name" : "filterEcho",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterLofi()",
+    "desc" : "return (jlong)(new EchoFilter());",
+    "overloads" : null,
+    "name" : "filterLofi",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterFlanger()",
+    "desc" : "return (jlong)(new LofiFilter());",
+    "overloads" : null,
+    "name" : "filterFlanger",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 116,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterBassBoost()",
+    "desc" : "return (jlong)(new FlangerFilter());",
+    "overloads" : null,
+    "name" : "filterBassBoost",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 117,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterWaveShaper()",
+    "desc" : "return (jlong)(new BassboostFilter());",
+    "overloads" : null,
+    "name" : "filterWaveShaper",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 118,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterRobotize()",
+    "desc" : "return (jlong)(new WaveShaperFilter());",
+    "overloads" : null,
+    "name" : "filterRobotize",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long filterFreeverb()",
+    "desc" : "return (jlong)(new RobotizeFilter());",
+    "overloads" : null,
+    "name" : "filterFreeverb",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 120,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void setGlobalFilter(int index, long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setGlobalFilter",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 122,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void filterFade(int voice, int filter, int attribute, float value, float timeSec)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filterFade",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    }, {
+      "name" : "timeSec",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 126,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void filterSet(int voice, int filter, int attribute, float value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filterSet",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "int"
+    }, {
+      "name" : "attribute",
+      "type" : "int"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 130,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long busNew()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "busNew",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 134,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idSeek(int id, float seconds)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idSeek",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "seconds",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 138,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idVolume(int id, float volume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idVolume",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 142,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native float idGetVolume(int id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idGetVolume",
+    "returnType" : "float",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 146,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idPan(int id, float pan)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idPan",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 150,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idPitch(int id, float pitch)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idPitch",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 154,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idPause(int id, boolean pause)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idPause",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "pause",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 158,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native boolean idGetPause(int voice)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idGetPause",
+    "returnType" : "boolean",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 162,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idProtected(int id, boolean protect)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idProtected",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "protect",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 166,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idStop(int voice)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idStop",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 170,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void idLooping(int voice, boolean looping)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idLooping",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    }, {
+      "name" : "looping",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 174,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native boolean idGetLooping(int voice)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idGetLooping",
+    "returnType" : "boolean",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 178,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native float idPosition(int voice)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idPosition",
+    "returnType" : "float",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 182,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native boolean idValid(int voice)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "idValid",
+    "returnType" : "boolean",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "voice",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 186,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long wavLoadBytes(byte[] bytes, int length)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wavLoadBytes",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "bytes",
+      "type" : "byte[]"
+    }, {
+      "name" : "length",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 190,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long wavLoadFile(String path)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wavLoadFile",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "path",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 200,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long streamLoadBytes(byte[] bytes, int length)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "streamLoadBytes",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "bytes",
+      "type" : "byte[]"
+    }, {
+      "name" : "length",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 210,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native long streamLoadFile(String path)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "streamLoadFile",
+    "returnType" : "long",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "path",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 220,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native double streamLength(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "streamLength",
+    "returnType" : "double",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 230,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native double wavLength(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wavLength",
+    "returnType" : "double",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 235,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceDestroy(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceDestroy",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 240,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceInaudible(long handle, boolean tick, boolean play)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceInaudible",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "tick",
+      "type" : "boolean"
+    }, {
+      "name" : "play",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 245,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int sourcePlay(long handle) / static native int sourcePlay(long handle, float volume, float pitch, float pan, boolean loop)",
+    "desc" : null,
+    "overloads" : [ "static native int sourcePlay(long handle)", "static native int sourcePlay(long handle, float volume, float pitch, float pan, boolean loop)" ],
+    "name" : "sourcePlay",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 250,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int sourceCount(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceCount",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 255,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int sourcePlayBus(long handle, long busHandle, float volume, float pitch, float pan, boolean loop)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourcePlayBus",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "busHandle",
+      "type" : "long"
+    }, {
+      "name" : "volume",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "loop",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 266,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourcePriority(long handle, float priority)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourcePriority",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "priority",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 273,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceMinConcurrentInterrupt(long handle, float value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceMinConcurrentInterrupt",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "value",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 278,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceMaxConcurrent(long handle, int maxConcurrent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceMaxConcurrent",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "maxConcurrent",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 283,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceConcurrentGroup(long handle, int group)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceConcurrentGroup",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "group",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 288,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceLoop(long handle, boolean loop)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceLoop",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "loop",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceSingleInstance(long handle, boolean single)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceSingleInstance",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "single",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 298,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceStop(long handle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceStop",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 303,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native void sourceFilter(long handle, int index, long filter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sourceFilter",
+    "returnType" : "void",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ {
+      "name" : "handle",
+      "type" : "long"
+    }, {
+      "name" : "index",
+      "type" : "int"
+    }, {
+      "name" : "filter",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 308,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int pauseDevice()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pauseDevice",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 314,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static native int resumeDevice()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resumeDevice",
+    "returnType" : "int",
+    "modifiers" : [ "static", "native" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 318,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Sound.java",
+  "pkg" : "arc.audio",
+  "type" : "Java class extends arc.audio.AudioSource",
+  "typeDesc" : "<p>",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public AudioBus bus",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bus",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Fi file",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "file",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "float falloffOffset",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "falloffOffset",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "long minInterval",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minInterval",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "long lastTimePlayed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTimePlayed",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "int lastVoice",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastVoice",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "float lastVolume",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastVolume",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean stream",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stream",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean lazyLoad",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lazyLoad",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "volatile boolean currentlyLoading",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "currentlyLoading",
+    "returnType" : null,
+    "modifiers" : [ "volatile" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Sound() / public Sound(Fi file)",
+    "desc" : "Creates an empty sound.",
+    "overloads" : [ "public Sound()", "public Sound(Fi file)" ],
+    "name" : "Sound",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 63,
+    "calls" : [ "arc.audio.Sound.load(arc.files.Fi)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Sound createStream(Fi file)",
+    "desc" : "Creates music from an external file without copying it.",
+    "overloads" : null,
+    "name" : "createStream",
+    "returnType" : "Sound",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ "arc.audio.Soloud.streamLoadFile(java.lang.String)", "arc.files.Fi.path()", "arc.util.Log.err(java.lang.String, java.lang.Throwable)", "arc.audio.Sound.Sound()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static Sound createLazy(Fi file)",
+    "desc" : "Creates a sound that only loads itself once played.",
+    "overloads" : null,
+    "name" : "createLazy",
+    "returnType" : "Sound",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ "arc.audio.Sound.loadLazy(arc.files.Fi)", "arc.audio.Sound.Sound()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void load(byte[] data, boolean stream) / public void load(Fi file)",
+    "desc" : null,
+    "overloads" : [ "public void load(byte[] data, boolean stream)", "public void load(Fi file)" ],
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "data",
+      "type" : "byte[]"
+    }, {
+      "name" : "stream",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "arc.audio.Soloud.streamLoadBytes(byte[], int)", "arc.audio.Soloud.wavLoadBytes(byte[], int)", "arc.audio.AudioSource.setMaxConcurrent(int)", "arc.audio.Sound.load(byte[], boolean)", "arc.files.Fi.readBytes()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadLazy(Fi file)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadLazy",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isLazy()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isLazy",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void checkLazyLoad(Runnable complete)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkLazyLoad",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "complete",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 96,
+    "calls" : [ "java.util.concurrent.ExecutorService.submit(java.lang.Runnable)", "arc.audio.Sound.load(arc.files.Fi)", "arc.audio.AudioSource.setParamsAfterLoad()", "java.lang.Runnable.run()", "arc.util.Log.err(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus) / public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame) / public int play() / public int play(AudioBus bus) / public int play(float volume) / public int play(float volume, float pitch, float pan, boolean loop) / public int play(float volume, float pitch, float pan)",
+    "desc" : "Plays the sound.",
+    "overloads" : [ "public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus)", "public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame)", "public int play()", "public int play(AudioBus bus)", "public int play(float volume)", "public int play(float volume, float pitch, float pan, boolean loop)", "public int play(float volume, float pitch, float pan)" ],
+    "name" : "play",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "volume",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "pan",
+      "type" : "float"
+    }, {
+      "name" : "loop",
+      "type" : "boolean"
+    }, {
+      "name" : "checkFrame",
+      "type" : "boolean"
+    }, {
+      "name" : "bus",
+      "type" : "AudioBus"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 124,
+    "calls" : [ "arc.audio.Sound.checkLazyLoad(java.lang.Runnable)", "arc.audio.Sound.play(float, float, float, boolean, boolean, arc.audio.AudioBus)", "arc.util.Time.timeSinceMillis(long)", "arc.audio.Audio.set(int, float, float)", "java.lang.Math.max(float, float)", "java.lang.Math.min(float, float)", "java.lang.Float.isInfinite(float)", "java.lang.Float.isNaN(float)", "arc.util.Time.millis()", "arc.audio.Soloud.sourcePlayBus(long, long, float, float, float, boolean)", "arc.math.Mathf.clamp(float, float, float)", "arc.audio.Sound.play(float)", "arc.audio.Sound.play(float, float, float)", "arc.audio.Sound.play(float, float, float, boolean, boolean)", "arc.audio.Sound.play(float, float, float, boolean)" ],
+    "callCount" : 15
+  }, {
+    "kind" : "method",
+    "signature" : "public void setBus(AudioBus bus)",
+    "desc" : "Sets the bus that will be used for the next play of this SFX.",
+    "overloads" : null,
+    "name" : "setBus",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "bus",
+      "type" : "AudioBus"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 162,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float calcPan(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "calcPan",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 166,
+    "calls" : [ "arc.Application.isHeadless()", "arc.math.Mathf.clamp(float, float, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float calcVolume(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "calcVolume",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 172,
+    "calls" : [ "arc.audio.Sound.calcFalloff(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float calcFalloff(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "calcFalloff",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 176,
+    "calls" : [ "arc.Application.isHeadless()", "java.lang.Math.max(float, float)", "arc.math.Mathf.dst2(float, float, float, float)", "arc.math.Mathf.clamp(float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public int at(float x, float y, float pitch) / public int at(float x, float y, float pitch, float volume, boolean checkFrame) / public int at(float x, float y, float pitch, float volume, AudioBus bus) / public int at(Position pos, float pitch, float volume) / public int at(float x, float y, float pitch, float volume) / public int at(float x, float y) / public int at(Position pos) / public int at(Position pos, float pitch)",
+    "desc" : "Plays this sound at a certain position, with correct panning and volume applied.",
+    "overloads" : [ "public int at(float x, float y, float pitch)", "public int at(float x, float y, float pitch, float volume, boolean checkFrame)", "public int at(float x, float y, float pitch, float volume, AudioBus bus)", "public int at(Position pos, float pitch, float volume)", "public int at(float x, float y, float pitch, float volume)", "public int at(float x, float y)", "public int at(Position pos)", "public int at(Position pos, float pitch)" ],
+    "name" : "at",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 187,
+    "calls" : [ "arc.audio.Sound.at(float, float, float, float)", "arc.audio.Sound.calcVolume(float, float)", "arc.audio.Sound.play(float, float, float, boolean, boolean)", "arc.audio.Sound.calcPan(float, float)", "arc.audio.Sound.play(float, float, float, boolean, boolean, arc.audio.AudioBus)", "arc.math.geom.Position.getX()", "arc.math.geom.Position.getY()", "arc.audio.Sound.at(float, float, float, float, boolean)", "arc.audio.Sound.at(float, float, float)", "arc.audio.Sound.at(float, float)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public int loop() / public int loop(float volume) / public int loop(float volume, float pitch, float pan)",
+    "desc" : "Plays the sound, looping.",
+    "overloads" : [ "public int loop()", "public int loop(float volume)", "public int loop(float volume, float pitch, float pan)" ],
+    "name" : "loop",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ "arc.audio.Sound.loop(float)", "arc.audio.Sound.loop(float, float, float)", "arc.audio.Sound.play(float, float, float, boolean)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public float getLength()",
+    "desc" : "@return length in seconds",
+    "overloads" : null,
+    "name" : "getLength",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 318,
+    "calls" : [ "arc.audio.Soloud.streamLength(long)", "arc.audio.Soloud.wavLength(long)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void setMinInterval(long interval)",
+    "desc" : "Sets the minimum interval for playbacks of this sound, in milliseconds.",
+    "overloads" : null,
+    "name" : "setMinInterval",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "interval",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 325,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setFalloffOffset(float falloffOffset)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFalloffOffset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "falloffOffset",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 329,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 333,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

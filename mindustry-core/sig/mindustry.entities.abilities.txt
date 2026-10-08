@@ -1,0 +1,338 @@
+Ability.java
+Java class (abstract) implements java.lang.Cloneable
+fields:
+  protected static final float descriptionWidth
+  public boolean display  // If false, this ability does not show in unit stats.
+  public float data  // the one and only data variable that is synced.
+methods:
+  public void update(Unit unit)
+  public void draw(Unit unit)
+  public void death(Unit unit)
+  public void created(Unit unit)
+  public void init(UnitType type)
+  public void displayBars(Unit unit, Table bars)
+  public void display(Table t)
+  public void addStats(Table t)
+  public String abilityStat(String stat, Object values)
+  public Ability copy()
+  public String localized()  // @return localized ability name; mods should override this.
+  public String getBundle()
+
+ArmorPlateAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public TextureRegion plateRegion
+  public TextureRegion shineRegion
+  public String plateSuffix
+  public String shineSuffix
+  public Color color  // Color of the shine.
+  public float shineSpeed
+  public float z
+  public boolean drawPlate  // Whether to draw the plate region.
+  public boolean drawShine  // Whether to draw the shine over the plate region.
+  public float healthMultiplier
+  protected float warmup
+methods:
+  public void update(Unit unit)
+  public void addStats(Table t)
+  public void draw(Unit unit)
+
+EmptyDataAbility.java
+Java class extends mindustry.entities.abilities.Ability
+
+EnergyFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  private static final Seq<Healthc> all
+  public float damage
+  public Effect healEffect
+  public StatusEffect status
+  public Sound shootSound
+  public float statusDuration
+  public float x
+  public boolean targetGround
+  public int maxTargets
+  public float healPercent
+  public float sameTypeHealMult  // Multiplies healing to units of the same type by this amount.
+  public boolean displayHeal
+  public float layer
+  public float effectRadius
+  public int sectors
+  public Color color
+  public boolean useAmmo
+  protected float timer
+  protected boolean anyNearby
+ctors:
+  EnergyFieldAbility() / public EnergyFieldAbility(float damage, float reload, float range)
+methods:
+  public void addStats(Table t)
+  public void draw(Unit unit)
+  public void update(Unit unit)
+
+ForceFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float radius  // Shield radius.
+  public float regen  // Shield regen speed in damage/tick.
+  public float max  // Maximum shield.
+  public float cooldown  // Cooldown after the shield is broken, in ticks.
+  public int sides  // Sides of shield polygon.
+  public float rotation  // Rotation of shield.
+  public Sound breakSound
+  public Sound hitSound
+  public float hitSoundVolume
+  protected float radiusScale  // State.
+  protected boolean wasBroken
+  private static float realRad
+  private static Unit paramUnit
+  private static ForceFieldAbility paramField
+  private static final Cons<Bullet> shieldConsumer
+ctors:
+  public ForceFieldAbility(float radius, float regen, float max, float cooldown) / public ForceFieldAbility(float radius, float regen, float max, float cooldown, int sides, float rotation) / ForceFieldAbility()
+methods:
+  public float scaledMax(Unit unit)
+  public void addStats(Table t)
+  public void update(Unit unit)
+  public void death(Unit unit)
+  public void draw(Unit unit)
+  public void displayBars(Unit unit, Table bars)
+  public void created(Unit unit)
+  public void checkRadius(Unit unit)
+
+LiquidExplodeAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public Liquid liquid
+  public float amount
+  public float radAmountScale
+  public float noiseMag
+methods:
+  public void addStats(Table t)
+  public void death(Unit unit)
+
+LiquidRegenAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public Liquid liquid
+  public float slurpSpeed
+  public float regenPerSlurp
+  public float slurpEffectChance
+  public Effect slurpEffect
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+
+MoveEffectAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float minVelocity
+  public float interval
+  public int amount
+  public float x
+  public boolean rotateEffect
+  public float effectParam
+  public boolean teamColor
+  public boolean parentizeEffects
+  public Color color
+  public Effect effect
+  protected float counter
+ctors:
+  public MoveEffectAbility(float x, float y, Color color, Effect effect, float interval) / public MoveEffectAbility()
+methods:
+  public void update(Unit unit)
+
+MoveLightningAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float damage  // Lightning damage
+  public float chance  // Chance of firing every tick.
+  public int length  // Length of the lightning.
+  public float minSpeed  // Speeds for when to start lightninging and when to stop getting faster
+  public Color color  // Lightning color
+  public float y  // Shifts where the lightning spawns along the Y axis
+  public float x  // Offset along the X axis
+  public boolean alternate  // Whether the spawn side alternates
+  public String heatRegion  // Jittering heat sprite like the shield on v5 Javelin
+  public BulletType bullet  // Bullet type that is fired.
+  public float bulletAngle  // Bullet angle parameters
+  public Effect shootEffect
+  public boolean parentizeEffects
+  public Sound shootSound
+  protected float side
+ctors:
+  MoveLightningAbility() / public MoveLightningAbility(float damage, int length, float chance, float y, float minSpeed, float maxSpeed, Color color, String heatRegion) / public MoveLightningAbility(float damage, int length, float chance, float y, float minSpeed, float maxSpeed, Color color)
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+  public void draw(Unit unit)
+
+RegenAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float percentAmount  // Amount healed as percent per tick.
+  public float amount  // Amount healed as a flat amount per tick.
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+
+RepairFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float amount
+  public Effect healEffect
+  public Effect activeEffect
+  public Sound sound
+  public float soundVolume
+  public boolean parentizeEffects
+  public float sameTypeHealMult  // Multiplies healing to units of the same type by this amount.
+  public int maxTargets  // Maximum number of units healed.
+  public boolean smartHeal  // If true, this ability will consider missing hp, number of targets, cooldowns...etc.
+  public float smartHealPercent  // If a damaged unit health % is lower than this heal it as soon as possible.
+  public float smartHealStrength  // A multiplier on potential healing efficiency.
+  public float smartDowntime  // If all damaged units havent been hurt for at least this amount of time, force healing them, regardless of thresholds.
+  public float smartInterval  // How often to check for healing when at least 1 damaged unit is found.
+  public float randDesync  // Random initial reload multiplier to check for damaged units.
+  protected static Seq<Unit> targets  // a high capacity is needed to account for t1 spam in custom gamemodes, but set too high it becomes expensive
+  protected float healTimer
+  protected float healthMissing
+  protected boolean hasHealed
+ctors:
+  public RepairFieldAbility() / public RepairFieldAbility(float amount, float reload, float range) / public RepairFieldAbility(float amount, float reload, float range, float healPercent)
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+
+ShieldArcAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  private static Unit paramUnit
+  private static ShieldArcAbility paramField
+  private static Vec2 paramPos
+  private static final Cons<Bullet> shieldConsumer
+  protected static final Cons<Unit> unitConsumer
+  public float radius  // Shield radius.
+  public float regen  // Shield regen speed in damage/tick.
+  public float max  // Maximum shield.
+  public float cooldown  // Cooldown after the shield is broken, in ticks.
+  public float angle  // Angle of shield arc.
+  public float angleOffset  // Offset parameters for shield.
+  public boolean whenShooting  // If true, only activates when shooting.
+  public float width  // Width of shield line.
+  public float chanceDeflect  // Bullet deflection chance.
+  public float reflectBuildingDamage  // Multiplier for reflected bullet building damage.
+  public float reflectVel  // Velocity multiplier for reflected bullets on the opposite axis.
+  public float reflectTime  // Time multiplier for reflected bullets.
+  public Sound deflectSound  // Deflection sound.
+  public Sound breakSound
+  public Sound hitSound
+  public float hitSoundVolume
+  public float missileUnitMultiplier  // Multiplier for shield damage taken from missile units.
+  public boolean drawArc  // Whether to draw the arc line.
+  public String region  // If not null, will be drawn on top.
+  public Color color  // Color override of the shield.
+  public boolean offsetRegion  // If true, sprite position will be influenced by x/y.
+  public boolean pushUnits  // If true, enemy units are pushed out.
+  public boolean pushDiffLayer  // If pushUnits is true, allow ground units to push air or air units to push ground
+  public Effect pushEffect
+  protected float widthScale  // State.
+methods:
+  public float scaledMax(Unit unit)
+  public void addStats(Table t)
+  public void update(Unit unit)
+  public void created(Unit unit)
+  public void draw(Unit unit)
+  public void displayBars(Unit unit, Table bars)
+
+ShieldRegenFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public float amount
+  public Effect applyEffect
+  public Effect activeEffect
+  public Sound sound
+  public float soundVolume
+  public boolean parentizeEffects
+  protected float timer
+  protected boolean applied
+ctors:
+  ShieldRegenFieldAbility() / public ShieldRegenFieldAbility(float amount, float max, float reload, float range)
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+
+SpawnDeathAbility.java
+Java class extends mindustry.entities.abilities.Ability
+// Spawns a certain amount of units upon death.
+fields:
+  public UnitType unit
+  public int amount
+  public float spread  // Random spread of units away from the spawned.
+  public boolean faceOutwards  // If true, units spawned face outwards from the middle.
+ctors:
+  public SpawnDeathAbility(UnitType unit, int amount, float spread) / public SpawnDeathAbility()
+methods:
+  public void addStats(Table t)
+  public void death(Unit unit)
+
+StatusFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public StatusEffect effect
+  public float duration
+  public boolean onShoot
+  public Effect applyEffect
+  public Effect activeEffect
+  public float effectX
+  public boolean parentizeEffects
+  public Color color
+  protected float timer
+ctors:
+  StatusFieldAbility() / public StatusFieldAbility(StatusEffect effect, float duration, float reload, float range)
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+
+SuppressionFieldAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  protected static Rand rand
+  public float reload
+  public float maxDelay
+  public float range
+  public float orbRadius
+  public Color color
+  public float layer
+  public float x
+  public int particles
+  public float particleSize
+  public float particleLen
+  public float rotateScl
+  public float particleLife
+  public boolean active
+  public Interp particleInterp
+  public Color particleColor
+  public Color effectColor
+  public float applyParticleChance
+  protected float timer
+methods:
+  public void init(UnitType type)
+  public void addStats(Table t)
+  public void update(Unit unit)
+  public void draw(Unit unit)
+
+UnitSpawnAbility.java
+Java class extends mindustry.entities.abilities.Ability
+fields:
+  public UnitType unit
+  public float spawnTime
+  public Effect spawnEffect
+  public boolean parentizeEffects
+  protected float timer
+ctors:
+  public UnitSpawnAbility(UnitType unit, float spawnTime, float spawnX, float spawnY) / public UnitSpawnAbility()
+methods:
+  public void addStats(Table t)
+  public void update(Unit unit)
+  public void draw(Unit unit)
+  public String localized()
+

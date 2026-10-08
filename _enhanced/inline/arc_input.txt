@@ -1,0 +1,463 @@
+// GestureDetector.java : public GestureListener getListener()
+    public GestureListener getListener(){
+        return listener;
+    }
+
+// GestureDetector.java : public boolean touchDown(int x, int y, int pointer, KeyCode button) / public boolean touchDown(float x, float y, int pointer, KeyCode button)
+    @Override
+    public boolean touchDown(int x, int y, int pointer, KeyCode button){
+        return touchDown((float)x, (float)y, pointer, button);
+    }
+
+// GestureDetector.java : public boolean touchDragged(int x, int y, int pointer) / public boolean touchDragged(float x, float y, int pointer)
+    @Override
+    public boolean touchDragged(int x, int y, int pointer){
+        return touchDragged((float)x, (float)y, pointer);
+    }
+
+// GestureDetector.java : public boolean touchUp(int x, int y, int pointer, KeyCode button) / public boolean touchUp(float x, float y, int pointer, KeyCode button)
+    @Override
+    public boolean touchUp(int x, int y, int pointer, KeyCode button){
+        return touchUp((float)x, (float)y, pointer, button);
+    }
+
+// GestureDetector.java : public void cancel()
+    public void cancel(){
+        longPressTask.cancel();
+        longPressFired = true;
+    }
+
+// GestureDetector.java : public boolean isLongPressed() / public boolean isLongPressed(float duration)
+    public boolean isLongPressed(){
+        return isLongPressed(longPressSeconds);
+    }
+
+// GestureDetector.java : public boolean isPanning()
+    public boolean isPanning(){
+        return panning;
+    }
+
+// GestureDetector.java : public void reset()
+    public void reset(){
+        gestureStartTime = 0;
+        panning = false;
+        inTapRectangle = false;
+        tracker.lastTime = 0;
+    }
+
+// GestureDetector.java : private boolean isWithinTapRectangle(float x, float y, float centerX, float centerY)
+    private boolean isWithinTapRectangle(float x, float y, float centerX, float centerY){
+        return Math.abs(x - centerX) < tapRectangleWidth && Math.abs(y - centerY) < tapRectangleHeight;
+    }
+
+// GestureDetector.java : public void invalidateTapSquare()
+    public void invalidateTapSquare(){
+        inTapRectangle = false;
+    }
+
+// GestureDetector.java : public void setTapSquareSize(float halfTapSquareSize)
+    public void setTapSquareSize(float halfTapSquareSize){
+        setTapRectangleSize(halfTapSquareSize, halfTapSquareSize);
+    }
+
+// GestureDetector.java : public void setTapRectangleSize(float halfTapRectangleWidth, float halfTapRectangleHeight)
+    public void setTapRectangleSize(float halfTapRectangleWidth, float halfTapRectangleHeight){
+        this.tapRectangleWidth = halfTapRectangleWidth;
+        this.tapRectangleHeight = halfTapRectangleHeight;
+    }
+
+// GestureDetector.java : public void setTapCountInterval(float tapCountInterval)
+    public void setTapCountInterval(float tapCountInterval){
+        this.tapCountInterval = (long)(tapCountInterval * 1000000000L);
+    }
+
+// GestureDetector.java : public void setLongPressSeconds(float longPressSeconds)
+    public void setLongPressSeconds(float longPressSeconds){
+        this.longPressSeconds = longPressSeconds;
+    }
+
+// GestureDetector.java : public void setMaxFlingDelay(long maxFlingDelay)
+    public void setMaxFlingDelay(long maxFlingDelay){
+        this.maxFlingDelay = maxFlingDelay;
+    }
+
+// InputEventQueue.java : public InputProcessor getProcessor()
+    public InputProcessor getProcessor(){
+        return processor;
+    }
+
+// InputEventQueue.java : public void setProcessor(InputProcessor processor)
+    public void setProcessor(InputProcessor processor){
+        this.processor = processor;
+    }
+
+// InputEventQueue.java : private void queueTime()
+    private void queueTime(){
+        long time = Time.nanos();
+        queue.add((int)(time >> 32));
+        queue.add((int)time);
+    }
+
+// InputEventQueue.java : public synchronized boolean keyDown(KeyCode key)
+    @Override
+    public synchronized boolean keyDown(KeyCode key){
+        queue.add(KEY_DOWN);
+        queueTime();
+        queue.add(key.ordinal());
+        return false;
+    }
+
+// InputEventQueue.java : public synchronized boolean keyUp(KeyCode key)
+    @Override
+    public synchronized boolean keyUp(KeyCode key){
+        queue.add(KEY_UP);
+        queueTime();
+        queue.add(key.ordinal());
+        return false;
+    }
+
+// InputEventQueue.java : public synchronized boolean keyTyped(char character)
+    @Override
+    public synchronized boolean keyTyped(char character){
+        queue.add(KEY_TYPED);
+        queueTime();
+        queue.add(character);
+        return false;
+    }
+
+// InputEventQueue.java : public synchronized boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public synchronized boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
+        queue.add(TOUCH_DOWN);
+        queueTime();
+        queue.add(screenX);
+        queue.add(screenY);
+        queue.add(pointer);
+        queue.add(button.ordinal());
+        return false;
+    }
+
+// InputEventQueue.java : public synchronized boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public synchronized boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
+        queue.add(TOUCH_UP);
+        queueTime();
+        queue.add(screenX);
+        queue.add(screenY);
+        queue.add(pointer);
+        queue.add(button.ordinal());
+        return false;
+    }
+
+// InputEventQueue.java : public synchronized boolean scrolled(float amountX, float amountY)
+    @Override
+    public synchronized boolean scrolled(float amountX, float amountY){
+        queue.add(SCROLLED);
+        queueTime();
+        queue.add((int)(amountX * 256));
+        queue.add((int)(amountY * 256));
+        return false;
+    }
+
+// InputEventQueue.java : public long getCurrentEventTime()
+    public long getCurrentEventTime(){
+        return currentEventTime;
+    }
+
+// InputMultiplexer.java : public void addProcessor(int index, InputProcessor processor) / public void addProcessor(InputProcessor processor)
+    public void addProcessor(int index, InputProcessor processor){
+        if(processor == null) throw new NullPointerException("processor cannot be null");
+        processors.insert(index, processor);
+    }
+
+// InputMultiplexer.java : public void removeProcessor(int index) / public void removeProcessor(InputProcessor processor)
+    public void removeProcessor(int index){
+        processors.remove(index);
+    }
+
+// InputMultiplexer.java : public int size()
+    public int size(){
+        return processors.size;
+    }
+
+// InputMultiplexer.java : public void clear()
+    public void clear(){
+        processors.clear();
+    }
+
+// InputMultiplexer.java : public SnapshotSeq<InputProcessor> getProcessors()
+    public SnapshotSeq<InputProcessor> getProcessors(){
+        return processors;
+    }
+
+// InputMultiplexer.java : public void setProcessors(InputProcessor processors) / public void setProcessors(Seq<InputProcessor> processors)
+    public void setProcessors(InputProcessor... processors){
+        this.processors.clear();
+        this.processors.addAll(processors);
+    }
+
+// InputMultiplexer.java : public boolean keyDown(KeyCode keycode)
+    @Override
+    public boolean keyDown(KeyCode keycode){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).keyDown(keycode)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean keyUp(KeyCode keycode)
+    @Override
+    public boolean keyUp(KeyCode keycode){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).keyUp(keycode)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean keyTyped(char character)
+    @Override
+    public boolean keyTyped(char character){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).keyTyped(character)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).touchDown(screenX, screenY, pointer, button)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).touchUp(screenX, screenY, pointer, button)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean touchDragged(int screenX, int screenY, int pointer)
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).touchDragged(screenX, screenY, pointer)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean mouseMoved(int screenX, int screenY)
+    @Override
+    public boolean mouseMoved(int screenX, int screenY){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).mouseMoved(screenX, screenY)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputMultiplexer.java : public boolean scrolled(float amountX, float amountY)
+    @Override
+    public boolean scrolled(float amountX, float amountY){
+        Object[] items = processors.begin();
+        try{
+            for(int i = 0, n = processors.size; i < n; i++)
+                if(((InputProcessor)items[i]).scrolled(amountX, amountY)) return true;
+        }finally{
+            processors.end();
+        }
+        return false;
+    }
+
+// InputProcessor.java : default boolean keyDown(KeyCode keycode)
+    default boolean keyDown(KeyCode keycode){
+        return false;
+    }
+
+// InputProcessor.java : default boolean keyUp(KeyCode keycode)
+    default boolean keyUp(KeyCode keycode){
+        return false;
+    }
+
+// InputProcessor.java : default boolean keyTyped(char character)
+    default boolean keyTyped(char character){
+        return false;
+    }
+
+// InputProcessor.java : default boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+    default boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
+        return false;
+    }
+
+// InputProcessor.java : default boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+    default boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
+        return false;
+    }
+
+// InputProcessor.java : default boolean touchDragged(int screenX, int screenY, int pointer)
+    default boolean touchDragged(int screenX, int screenY, int pointer){
+        return false;
+    }
+
+// InputProcessor.java : default boolean mouseMoved(int screenX, int screenY)
+    default boolean mouseMoved(int screenX, int screenY){
+        return false;
+    }
+
+// InputProcessor.java : default boolean scrolled(float amountX, float amountY)
+    default boolean scrolled(float amountX, float amountY){
+        return false;
+    }
+
+// KeyBind.java : public static KeyBind add(String name, KeybindValue defaultValue, String category) / public static KeyBind add(String name, KeybindValue defaultValue)
+    public static KeyBind add(String name, KeybindValue defaultValue, String category){
+        return new KeyBind(name, defaultValue, category);
+    }
+
+// KeyBind.java : public static void resetAll()
+    public static void resetAll(){
+        for(KeyBind def : all){
+            def.resetToDefault();
+        }
+    }
+
+// KeyBind.java : public void save()
+    public void save(){
+        String name = settingsKey();
+        settings.put(name + "-single", value.key != null);
+
+        if(value.key != null){
+            settings.put(name + "-key", value.key.ordinal());
+        }else{
+            settings.put(name + "-min", value.min.ordinal());
+            settings.put(name + "-max", value.max.ordinal());
+        }
+    }
+
+// KeyBind.java : public void unset()
+    public void unset(){
+        value = new Axis(KeyCode.unset);
+    }
+
+// KeyBind.java : public boolean isDefault()
+    public boolean isDefault(){
+        if(defaultValue instanceof Axis){
+            if(((Axis)defaultValue).min == null){
+                return ((Axis)defaultValue).key == value.key;
+            }else{
+                return ((Axis)defaultValue).max == value.max && ((Axis)defaultValue).min == value.min;
+            }
+        }else{
+            return defaultValue == value.key;
+        }
+    }
+
+// KeyBind.java : public boolean isUnset()
+    public boolean isUnset(){
+        return value.key == KeyCode.unset;
+    }
+
+// KeyBind.java : String settingsKey()
+    String settingsKey(){
+        return "keybind-default-keyboard-" + name;
+    }
+
+// KeyboardDevice.java : public void postUpdate()
+    public void postUpdate(){
+        lastFramePressed.clear();
+        lastFramePressed.addAll(pressed);
+        justPressed.clear();
+        justReleased.clear();
+        axes.clear();
+    }
+
+// KeyboardDevice.java : public boolean isPressed(KeyCode key)
+    public boolean isPressed(KeyCode key){
+        if(key == KeyCode.anyKey) return pressed.size > 0;
+
+        return pressed.contains(key.ordinal());
+    }
+
+// KeyboardDevice.java : public boolean isTapped(KeyCode key)
+    public boolean isTapped(KeyCode key){
+        return justPressed.contains(key.ordinal());
+    }
+
+// KeyboardDevice.java : public boolean isReleased(KeyCode key)
+    public boolean isReleased(KeyCode key){
+        return justReleased.contains(key.ordinal());
+    }
+
+// KeyboardDevice.java : public float getAxis(KeyCode keyCode)
+    public float getAxis(KeyCode keyCode){
+        return axes.get(keyCode.ordinal(), 0);
+    }
+
+// KeyboardDevice.java : public boolean keyDown(KeyCode key)
+    @Override
+    public boolean keyDown(KeyCode key){
+        pressed.add(key.ordinal());
+        justPressed.add(key.ordinal());
+        return false;
+    }
+
+// KeyboardDevice.java : public boolean keyUp(KeyCode key)
+    @Override
+    public boolean keyUp(KeyCode key){
+        pressed.remove(key.ordinal());
+        justReleased.add(key.ordinal());
+        return false;
+    }
+
+// KeyboardDevice.java : public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button){
+        keyDown(button);
+        return false;
+    }
+
+// KeyboardDevice.java : public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button){
+        if(pointer == 0) keyUp(button);
+        return false;
+    }
+
+// KeyboardDevice.java : public boolean scrolled(float amountX, float amountY)
+    @Override
+    public boolean scrolled(float amountX, float amountY){
+        axes.put(KeyCode.scroll.ordinal(), -amountY);
+        return false;
+    }
+

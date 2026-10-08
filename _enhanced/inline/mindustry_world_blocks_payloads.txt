@@ -1,0 +1,490 @@
+// BlockProducer.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, outRegion, topRegion};
+    }
+
+// BlockProducer.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// BlockProducer.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("progress", (BlockProducerBuild e) -> new Bar(
+            () -> Core.bundle.format("bar.progress", Strings.autoFixed(e.fraction() * 100f, 0)),
+            () -> Pal.ammo,
+            e::fraction
+        ));
+    }
+
+// BuildPayload.java : public Block block()
+    public Block block(){
+        return build.block;
+    }
+
+// BuildPayload.java : public void place(Tile tile) / public void place(Tile tile, int rotation)
+    public void place(Tile tile){
+        place(tile, 0);
+    }
+
+// BuildPayload.java : public boolean isDead()
+    @Override
+    public boolean isDead(){
+        return build.dead;
+    }
+
+// BuildPayload.java : public boolean contentEquals(Payload other)
+    @Override
+    public boolean contentEquals(Payload other){
+        return other instanceof BuildPayload bp && bp.block() == build.block;
+    }
+
+// BuildPayload.java : public UnlockableContent content()
+    @Override
+    public UnlockableContent content(){
+        return build.block;
+    }
+
+// BuildPayload.java : public void update(Unit unitHolder, Building buildingHolder)
+    @Override
+    public void update(@Nullable Unit unitHolder, @Nullable Building buildingHolder){
+        if(unitHolder != null && (!build.block.updateInUnits || (!state.rules.unitPayloadUpdate && !build.block.alwaysUpdateInUnits))) return;
+
+        build.tile = emptyTile;
+        build.updatePayload(unitHolder, buildingHolder);
+    }
+
+// BuildPayload.java : public void destroyed()
+    @Override
+    public void destroyed(){
+        build.dead = true;
+        build.onDestroyed();
+        build.afterDestroyed();
+    }
+
+// BuildPayload.java : public ItemStack[] requirements()
+    @Override
+    public ItemStack[] requirements(){
+        return build.block.requirements;
+    }
+
+// BuildPayload.java : public float buildTime()
+    @Override
+    public float buildTime(){
+        return build.block.buildTime;
+    }
+
+// BuildPayload.java : public float x()
+    @Override
+    public float x(){
+        return build.x;
+    }
+
+// BuildPayload.java : public float y()
+    @Override
+    public float y(){
+        return build.y;
+    }
+
+// BuildPayload.java : public float size()
+    @Override
+    public float size(){
+        return build.block.size * tilesize;
+    }
+
+// BuildPayload.java : public void remove()
+    @Override
+    public void remove(){
+        build.remove();
+    }
+
+// BuildPayload.java : public void write(Writes write)
+    @Override
+    public void write(Writes write){
+        write.b(payloadBlock);
+        write.s(build.block.id);
+        write.b(build.version());
+        build.writeAll(write);
+    }
+
+// BuildPayload.java : public void set(float x, float y, float rotation)
+    @Override
+    public void set(float x, float y, float rotation){
+        build.set(x, y);
+    }
+
+// BuildPayload.java : public void drawShadow(float alpha)
+    @Override
+    public void drawShadow(float alpha){
+        Drawf.squareShadow(build.x, build.y, build.block.size * tilesize * 1.85f, alpha);
+    }
+
+// BuildPayload.java : public TextureRegion icon()
+    @Override
+    public TextureRegion icon(){
+        return block().fullIcon;
+    }
+
+// Constructor.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.output, "@x@ ~ @x@", minBlockSize, minBlockSize, maxBlockSize, maxBlockSize);
+        stats.addPercent(Stat.buildSpeed, buildSpeed);
+    }
+
+// Constructor.java : public void getPlanConfigs(Seq<UnlockableContent> options)
+    @Override
+    public void getPlanConfigs(Seq<UnlockableContent> options){
+        options.add(content.blocks().select(this::canProduce));
+    }
+
+// Constructor.java : public boolean canProduce(Block b)
+    public boolean canProduce(Block b){
+        return b.isVisible() && b.size >= minBlockSize && b.size <= maxBlockSize && !(b instanceof CoreBlock) && !state.rules.isBanned(b) && b.environmentBuildable() && (filter.isEmpty() || filter.contains(b));
+    }
+
+// Payload.java : default void update(Unit unitHolder, Building buildingHolder)
+    default void update(@Nullable Unit unitHolder, @Nullable Building buildingHolder){}
+
+// Payload.java : default boolean isDead()
+    default boolean isDead(){
+        return false;
+    }
+
+// Payload.java : default boolean dump()
+    default boolean dump(){
+        return false;
+    }
+
+// Payload.java : default boolean fits(float s)
+    default boolean fits(float s){
+        return size() / tilesize <= s;
+    }
+
+// Payload.java : default float rotation()
+    default float rotation(){
+        return 0f;
+    }
+
+// Payload.java : default void destroyed()
+    default void destroyed(){};
+
+// Payload.java : default float getX()
+    @Override
+    default float getX(){
+        return x();
+    }
+
+// Payload.java : default float getY()
+    @Override
+    default float getY(){
+        return y();
+    }
+
+// Payload.java : default void remove()
+    default void remove(){}
+
+// PayloadBlock.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        topRegion = findFactoryRegion("-top");
+        outRegion =  findFactoryRegion("-out");
+        inRegion =  findFactoryRegion("-in");
+    }
+
+// PayloadBlock.java : protected TextureRegion findFactoryRegion(String suf)
+    protected TextureRegion findFactoryRegion(String suf){
+        TextureRegion region = Core.atlas.find(name + suf);
+
+        if(!region.found() && minfo.mod != null) region = Core.atlas.find(minfo.mod.name + "-factory" + suf + "-" + size + regionSuffix);
+        if(!region.found()) region = Core.atlas.find("factory" + suf + "-" + size + regionSuffix);
+
+        return region;
+    }
+
+// PayloadConveyor.java : protected TextureRegion[] icons()
+    @Override
+    protected TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find(name + "-icon")};
+    }
+
+// PayloadConveyor.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.payloadCapacity, StatValues.squared(payloadLimit, StatUnit.blocksSquared));
+    }
+
+// PayloadConveyor.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        //increase clip size for oversize loads
+        clipSize = Math.max(clipSize, size * tilesize * 2.1f);
+    }
+
+// PayloadDeconstructor.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// PayloadDeconstructor.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("progress", (PayloadDeconstructorBuild e) -> new Bar(
+            () -> Core.bundle.format("bar.progress", Strings.autoFixed(e.progress * 100f, 0)),
+            () -> Pal.ammo,
+            () -> e.progress
+        ));
+    }
+
+// PayloadLoader.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, inRegion, outRegion, topRegion};
+    }
+
+// PayloadLoader.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// PayloadLoader.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("progress", (PayloadLoaderBuild build) -> new Bar(() ->
+            Core.bundle.format(build.payload != null && build.payload.block().hasItems ? "bar.items" : "bar.loadprogress",
+                build.payload == null || !build.payload.block().hasItems ? 0 : build.payload.build.items.total()), () -> Pal.items, build::fraction));
+    }
+
+// PayloadLoader.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(inRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// PayloadLoader.java : public void init()
+    @Override
+    public void init(){
+        if(loadPowerDynamic){
+            basePowerUse = consPower != null ? consPower.usage : 0f;
+            consumePowerDynamic(basePowerUse, (PayloadLoaderBuild loader) -> loader.shouldConsume() ? (loader.hasBattery() && !loader.exporting ? maxPowerConsumption + basePowerUse : basePowerUse) : 0f);
+        }
+
+        super.init();
+    }
+
+// PayloadMassDriver.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        updateClipRadius(range + 4f);
+    }
+
+// PayloadMassDriver.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.payloadCapacity, StatValues.squared(maxPayloadSize, StatUnit.blocksSquared));
+        stats.add(Stat.reload, 60f / (chargeTime + reload), StatUnit.perSecond);
+        stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
+    }
+
+// PayloadMassDriver.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, outRegion, region};
+    }
+
+// PayloadMassDriver.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(baseRegion, plan.drawx(), plan.drawy());
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(region, plan.drawx(), plan.drawy());
+    }
+
+// PayloadMassDriver.java : public void getRegionsToOutline(Seq<TextureRegion> out)
+    @Override
+    public void getRegionsToOutline(Seq<TextureRegion> out){
+        out.add(leftRegion, rightRegion, capRegion);
+    }
+
+// PayloadRouter.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        super.drawPlanRegion(plan, list);
+
+        Draw.rect(overRegion, plan.drawx(), plan.drawy());
+    }
+
+// PayloadRouter.java : public void getPlanConfigs(Seq<UnlockableContent> options)
+    @Override
+    public void getPlanConfigs(Seq<UnlockableContent> options){
+        options.add(content.blocks().select(this::canSort));
+        options.add(content.units().select(this::canSort));
+    }
+
+// PayloadRouter.java : public boolean canSort(Block b) / public boolean canSort(UnitType t)
+    public boolean canSort(Block b){
+        return b.isVisible() && b.size <= size && !(b instanceof CoreBlock) && !state.rules.isBanned(b) && b.environmentBuildable();
+    }
+
+// PayloadSource.java : public void getPlanConfigs(Seq<UnlockableContent> options)
+    @Override
+    public void getPlanConfigs(Seq<UnlockableContent> options){
+        options.add(content.blocks().select(this::canProduce));
+        options.add(content.units().select(this::canProduce));
+    }
+
+// PayloadSource.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, outRegion, topRegion};
+    }
+
+// PayloadSource.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// PayloadSource.java : public boolean canProduce(Block b) / public boolean canProduce(UnitType t)
+    public boolean canProduce(Block b){
+        return !b.removed && b.isVisible() && b.size < size && b.allowedInPayloads && !state.rules.isBanned(b) && b.environmentBuildable();
+    }
+
+// PayloadUnloader.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return true;
+    }
+
+// PayloadUnloader.java : public boolean rotatedOutput(int x, int y)
+    @Override
+    public boolean rotatedOutput(int x, int y){
+        return false;
+    }
+
+// PayloadVoid.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// UnitPayload.java : public void showOverlay(TextureRegion icon) / public void showOverlay(TextureRegionDrawable icon)
+    public void showOverlay(TextureRegion icon){
+        overlayRegion = icon;
+        overlayTime = 1f;
+    }
+
+// UnitPayload.java : public boolean contentEquals(Payload other)
+    @Override
+    public boolean contentEquals(Payload other){
+        return other instanceof UnitPayload up && up.unit.type == unit.type;
+    }
+
+// UnitPayload.java : public void update(Unit unitHolder, Building buildingHolder)
+    @Override
+    public void update(@Nullable Unit unitHolder, @Nullable Building buildingHolder){
+        unit.type.updatePayload(unit, unitHolder, buildingHolder);
+    }
+
+// UnitPayload.java : public UnlockableContent content()
+    @Override
+    public UnlockableContent content(){
+        return unit.type;
+    }
+
+// UnitPayload.java : public ItemStack[] requirements()
+    @Override
+    public ItemStack[] requirements(){
+        return unit.type.getTotalRequirements();
+    }
+
+// UnitPayload.java : public float buildTime()
+    @Override
+    public float buildTime(){
+        return unit.type.getBuildTime();
+    }
+
+// UnitPayload.java : public void write(Writes write)
+    @Override
+    public void write(Writes write){
+        write.b(payloadUnit);
+        write.b(unit.classId());
+        unit.write(write);
+    }
+
+// UnitPayload.java : public void set(float x, float y, float rotation)
+    @Override
+    public void set(float x, float y, float rotation){
+        unit.set(x, y);
+        unit.rotation = rotation;
+    }
+
+// UnitPayload.java : public float x()
+    @Override
+    public float x(){
+        return unit.x;
+    }
+
+// UnitPayload.java : public float y()
+    @Override
+    public float y(){
+        return unit.y;
+    }
+
+// UnitPayload.java : public float rotation()
+    @Override
+    public float rotation(){
+        return unit.rotation;
+    }
+
+// UnitPayload.java : public float size()
+    @Override
+    public float size(){
+        return unit.hitSize;
+    }
+
+// UnitPayload.java : public void drawShadow(float alpha)
+    @Override
+    public void drawShadow(float alpha){
+        //TODO should not happen
+        if(unit.type == null) return;
+
+        unit.type.drawSoftShadow(unit, alpha);
+    }
+
+// UnitPayload.java : public TextureRegion icon()
+    @Override
+    public TextureRegion icon(){
+        return unit.type.fullIcon;
+    }
+

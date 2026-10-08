@@ -1,0 +1,1335 @@
+[ {
+  "file" : "Noise.java",
+  "pkg" : "arc.util.noise",
+  "type" : "Java class (final)",
+  "typeDesc" : "Perlin noise implementation.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private static int seed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "seed",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int P",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "P",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int B",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "B",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int M",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "M",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int NP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "NP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int N",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "N",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static int p",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "p",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static double g2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "g2",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static double g1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "g1",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static double points",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "points",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "private static double lerp(double t, double a, double b)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lerp",
+    "returnType" : "double",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "t",
+      "type" : "double"
+    }, {
+      "name" : "a",
+      "type" : "double"
+    }, {
+      "name" : "b",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static double s_curve(double t)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "s_curve",
+    "returnType" : "double",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "t",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static double rawNoise(double x) / public static double rawNoise(double x, double y) / static double rawNoise(double x, double y, double z)",
+    "desc" : null,
+    "overloads" : [ "public static double rawNoise(double x)", "public static double rawNoise(double x, double y)", "static double rawNoise(double x, double y, double z)" ],
+    "name" : "rawNoise",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ "arc.util.noise.Noise.s_curve(double)", "arc.util.noise.Noise.lerp(double, double, double)", "java.lang.Math.floor(double)", "arc.util.noise.Noise.G(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static double snoise(float x, float y, float scale, float mag, float exp) / public static float snoise(float x, float y, float scale, float mag)",
+    "desc" : null,
+    "overloads" : [ "public static double snoise(float x, float y, float scale, float mag, float exp)", "public static float snoise(float x, float y, float scale, float mag)" ],
+    "name" : "snoise",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    }, {
+      "name" : "exp",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "java.lang.Math.pow(double, double)", "arc.util.noise.Noise.rawNoise(double, double)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static float snoise3(float x, float y, float z, float scale, float mag)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "snoise3",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ "arc.util.noise.Noise.rawNoise(double, double, double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static float nnoise(float x, float y, float scale, float mag)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "nnoise",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ "arc.util.noise.Noise.snoise(float, float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static float noise(float x, float y, float scale, float mag) / public static float noise(float x, float y, float scale, float mag, float xp)",
+    "desc" : null,
+    "overloads" : [ "public static float noise(float x, float y, float scale, float mag)", "public static float noise(float x, float y, float scale, float mag, float xp)" ],
+    "name" : "noise",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 63,
+    "calls" : [ "arc.util.noise.Noise.snoise(float, float, float, float)", "arc.util.noise.Noise.snoise(float, float, float, float, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static float fnoise(float x, float y, float scale, float mag)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fnoise",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "mag",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ "arc.util.noise.Noise.rawNoise(double, double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private static double[] G(int i)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "G",
+    "returnType" : "double[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "i",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 213,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void setSeed(int s)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setSeed",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "s",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 217,
+    "calls" : [ "arc.util.noise.Noise.init()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private static void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ "java.util.Random.nextDouble()", "java.lang.Math.abs(double)", "arc.util.noise.Noise.normalize2(double[])", "java.lang.Math.min(double, double)", "java.lang.Math.max(double, double)", "java.util.Random.nextLong()", "java.lang.Math.sqrt(double)", "java.util.Random.Random(long)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "private static void normalize2(double[] v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "normalize2",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "double[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ "java.lang.Math.sqrt(double)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Ridged.java",
+  "pkg" : "arc.util.noise",
+  "type" : "Java class",
+  "typeDesc" : "Ridged perlin noise implementation.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "static final int X_NOISE_GEN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "X_NOISE_GEN",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int Y_NOISE_GEN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Y_NOISE_GEN",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int Z_NOISE_GEN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Z_NOISE_GEN",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int SEED_NOISE_GEN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SEED_NOISE_GEN",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int SHIFT_NOISE_GEN",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SHIFT_NOISE_GEN",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int quality",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "quality",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "private Ridged()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Ridged",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static float noise2d(int seed, double x, double y, double frequency) / public static float noise2d(int seed, double x, double y, int octaves, double frequency) / public static float noise2d(int seed, double x, double y, int octaves, double persistence, double frequency)",
+    "desc" : null,
+    "overloads" : [ "public static float noise2d(int seed, double x, double y, double frequency)", "public static float noise2d(int seed, double x, double y, int octaves, double frequency)", "public static float noise2d(int seed, double x, double y, int octaves, double persistence, double frequency)" ],
+    "name" : "noise2d",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "frequency",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ "arc.util.noise.Ridged.noise2d(int, double, double, int, double)", "arc.util.noise.Ridged.noise2d(int, double, double, int, double, double)", "arc.util.noise.Ridged.range(double)", "arc.util.noise.Ridged.scurve3(double)", "arc.util.noise.Ridged.scurve5(double)", "arc.util.noise.Ridged.gradientNoise(double, double, int, int, int)", "arc.util.noise.Ridged.lerp(double, double, double)", "java.lang.Math.abs(double)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public static float noise3d(int seed, double x, double y, double z, float frequency) / public static float noise3d(int seed, double x, double y, double z, int octaves, float frequency)",
+    "desc" : null,
+    "overloads" : [ "public static float noise3d(int seed, double x, double y, double z, float frequency)", "public static float noise3d(int seed, double x, double y, double z, int octaves, float frequency)" ],
+    "name" : "noise3d",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    }, {
+      "name" : "frequency",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 113,
+    "calls" : [ "arc.util.noise.Ridged.noise3d(int, double, double, double, int, float)", "arc.util.noise.Ridged.range(double)", "arc.util.noise.Ridged.scurve3(double)", "arc.util.noise.Ridged.scurve5(double)", "arc.util.noise.Ridged.gradientNoise3D(double, double, double, int, int, int, int)", "arc.util.noise.Ridged.lerp(double, double, double)", "java.lang.Math.abs(double)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "static double range(double n)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "range",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "n",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 225,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double gradientNoise3D(double fx, double fy, double fz, int ix, int iy, int iz, int seed)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "gradientNoise3D",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "fx",
+      "type" : "double"
+    }, {
+      "name" : "fy",
+      "type" : "double"
+    }, {
+      "name" : "fz",
+      "type" : "double"
+    }, {
+      "name" : "ix",
+      "type" : "int"
+    }, {
+      "name" : "iy",
+      "type" : "int"
+    }, {
+      "name" : "iz",
+      "type" : "int"
+    }, {
+      "name" : "seed",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 234,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double gradientNoise(double fx, double fy, int ix, int iy, int seed)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "gradientNoise",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "fx",
+      "type" : "double"
+    }, {
+      "name" : "fy",
+      "type" : "double"
+    }, {
+      "name" : "ix",
+      "type" : "int"
+    }, {
+      "name" : "iy",
+      "type" : "int"
+    }, {
+      "name" : "seed",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 260,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double lerp(double n0, double n1, double a)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lerp",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "n0",
+      "type" : "double"
+    }, {
+      "name" : "n1",
+      "type" : "double"
+    }, {
+      "name" : "a",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 283,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double scurve3(double a)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scurve3",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 287,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double scurve5(double a)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scurve5",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 291,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Simplex.java",
+  "pkg" : "arc.util.noise",
+  "type" : "Java class",
+  "typeDesc" : "- should use float instead of double, nobody needs this sort of precision",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "static final int grad3",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "grad3",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int grad4",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "grad4",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final int simplex",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "simplex",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "private Simplex()",
+    "desc" : "static only",
+    "overloads" : null,
+    "name" : "Simplex",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static float noise2d(int seed, double octaves, double persistence, double scale, double x, double y)",
+    "desc" : "The higher the persistence [0-1], the more of each succeeding octave will be added.",
+    "overloads" : null,
+    "name" : "noise2d",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "octaves",
+      "type" : "double"
+    }, {
+      "name" : "persistence",
+      "type" : "double"
+    }, {
+      "name" : "scale",
+      "type" : "double"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 46,
+    "calls" : [ "arc.util.noise.Simplex.raw2d(int, double, double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static float noise3d(int seed, double octaves, double persistence, double scale, double x, double y, double z)",
+    "desc" : "The higher the persistence [0-1], the more of each succeeding octave will be added.",
+    "overloads" : null,
+    "name" : "noise3d",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "octaves",
+      "type" : "double"
+    }, {
+      "name" : "persistence",
+      "type" : "double"
+    }, {
+      "name" : "scale",
+      "type" : "double"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ "arc.util.noise.Simplex.raw3d(int, double, double, double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static float noise4d(double octaves, double persistence, double scale, double x, double y, double z, double w)",
+    "desc" : "The higher the persistence [0-1], the more of each succeeding octave will be added.",
+    "overloads" : null,
+    "name" : "noise4d",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "octaves",
+      "type" : "double"
+    }, {
+      "name" : "persistence",
+      "type" : "double"
+    }, {
+      "name" : "scale",
+      "type" : "double"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    }, {
+      "name" : "w",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 96,
+    "calls" : [ "arc.util.noise.Simplex.raw4d(double, double, double, double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static double raw2d(int seed, double x, double y)",
+    "desc" : "2D raw Simplex noise",
+    "overloads" : null,
+    "name" : "raw2d",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 117,
+    "calls" : [ "java.lang.Math.sqrt(double)", "arc.util.noise.Simplex.fastfloor(double)", "arc.util.noise.Simplex.perm(int, int)", "arc.util.noise.Simplex.dot(int[], double, double)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static double raw3d(int seed, double x, double y, double z)",
+    "desc" : "3D raw Simplex noise",
+    "overloads" : null,
+    "name" : "raw3d",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 192,
+    "calls" : [ "arc.util.noise.Simplex.fastfloor(double)", "arc.util.noise.Simplex.perm(int, int)", "arc.util.noise.Simplex.dot(int[], double, double, double)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static double raw4d(double x, double y, double z, double w)",
+    "desc" : "4D raw Simplex noise",
+    "overloads" : null,
+    "name" : "raw4d",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    }, {
+      "name" : "w",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 327,
+    "calls" : [ "java.lang.Math.sqrt(double)", "arc.util.noise.Simplex.fastfloor(double)", "arc.util.noise.Simplex.dot(int[], double, double, double, double)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static double rawTiled(double x, double y, double x1, double y1, double w, double h, double scl)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rawTiled",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    }, {
+      "name" : "x1",
+      "type" : "double"
+    }, {
+      "name" : "y1",
+      "type" : "double"
+    }, {
+      "name" : "w",
+      "type" : "double"
+    }, {
+      "name" : "h",
+      "type" : "double"
+    }, {
+      "name" : "scl",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 459,
+    "calls" : [ "java.lang.Math.cos(double)", "java.lang.Math.sin(double)", "arc.util.noise.Simplex.raw4d(double, double, double, double)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "static int perm(int seed, int x)",
+    "desc" : "thanks to TEttinger on Discord for the negative coordinate discontinuity fix",
+    "overloads" : null,
+    "name" : "perm",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 480,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static int fastfloor(double x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fastfloor",
+    "returnType" : "int",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 487,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "static double dot(int[] g, double x, double y) / static double dot(int[] g, double x, double y, double z) / static double dot(int[] g, double x, double y, double z, double w)",
+    "desc" : null,
+    "overloads" : [ "static double dot(int[] g, double x, double y)", "static double dot(int[] g, double x, double y, double z)", "static double dot(int[] g, double x, double y, double z, double w)" ],
+    "name" : "dot",
+    "returnType" : "double",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "g",
+      "type" : "int[]"
+    }, {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "y",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 491,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "VectorTable.java",
+  "pkg" : "arc.util.noise",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "static double randomVectors",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "randomVectors",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "VoronoiNoise.java",
+  "pkg" : "arc.util.noise",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final double SQRT_2",
+    "desc" : "for speed, we can approximate the sqrt term in the distance funtions",
+    "overloads" : null,
+    "name" : "SQRT_2",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final double SQRT_3",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "SQRT_3",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean useDistance",
+    "desc" : "You can either use the feature point height (for biomes or solid pillars), or the distance to the feature point",
+    "overloads" : null,
+    "name" : "useDistance",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long seed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "seed",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 45,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean useManhattan",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "useManhattan",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Rand rnd",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rnd",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 47,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public VoronoiNoise(long seed, boolean useManhattan)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "VoronoiNoise",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "long"
+    }, {
+      "name" : "useManhattan",
+      "type" : "boolean"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 49,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static double valueNoise2D(int x, int z, long seed)",
+    "desc" : "To avoid having to store the feature points, we use a hash function",
+    "overloads" : null,
+    "name" : "valueNoise2D",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "z",
+      "type" : "int"
+    }, {
+      "name" : "seed",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static double valueNoise3D(int x, int y, int z, long seed)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "valueNoise3D",
+    "returnType" : "double",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "z",
+      "type" : "int"
+    }, {
+      "name" : "seed",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private double getDistance(double xDist, double zDist) / private double getDistance(double xDist, double yDist, double zDist)",
+    "desc" : null,
+    "overloads" : [ "private double getDistance(double xDist, double zDist)", "private double getDistance(double xDist, double yDist, double zDist)" ],
+    "name" : "getDistance",
+    "returnType" : "double",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "xDist",
+      "type" : "double"
+    }, {
+      "name" : "zDist",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ "java.lang.Math.sqrt(double)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isUseDistance()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isUseDistance",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setUseDistance(boolean useDistance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setUseDistance",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "useDistance",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 83,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public long getSeed()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getSeed",
+    "returnType" : "long",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setSeed(long seed)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setSeed",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "seed",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public double noise(double x, double z, double frequency) / public double noise(double x, double y, double z, double frequency)",
+    "desc" : null,
+    "overloads" : [ "public double noise(double x, double z, double frequency)", "public double noise(double x, double y, double z, double frequency)" ],
+    "name" : "noise",
+    "returnType" : "double",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "double"
+    }, {
+      "name" : "z",
+      "type" : "double"
+    }, {
+      "name" : "frequency",
+      "type" : "double"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ "arc.math.Rand.setSeed(long)", "arc.math.Rand.nextLong()", "arc.util.noise.VoronoiNoise.valueNoise2D(int, int, long)", "arc.util.noise.VoronoiNoise.getDistance(double, double)", "java.lang.Math.floor(double)", "arc.util.noise.VoronoiNoise.valueNoise3D(int, int, int, long)", "java.util.Random.nextLong()", "arc.util.noise.VoronoiNoise.getDistance(double, double, double)", "java.util.Random.Random(long)" ],
+    "callCount" : 9
+  } ],
+  "inner" : [ ]
+} ]

@@ -1,0 +1,614 @@
+ArmoredConveyor.java
+Java class extends mindustry.world.blocks.distribution.Conveyor
+ctors:
+  public ArmoredConveyor(String name)
+methods:
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+inner-class: ArmoredConveyorBuild extends mindustry.world.blocks.distribution.Conveyor.ConveyorBuild
+  methods:
+    public boolean acceptItem(Building source, Item item)
+
+BufferedItemBridge.java
+Java class extends mindustry.world.blocks.distribution.ItemBridge
+fields:
+  public final int timerAccept
+  public float speed
+  public int bufferCapacity
+  public float displayedSpeed
+ctors:
+  public BufferedItemBridge(String name)
+methods:
+  public void setStats()
+inner-class: BufferedItemBridgeBuild extends mindustry.world.blocks.distribution.ItemBridge.ItemBridgeBuild
+  fields:
+    ItemBuffer buffer
+  methods:
+    public void updateTransport(Building other)
+    public void doDump()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ChainedBuilding.java
+Java interface
+methods:
+  Building next()
+
+Conveyor.java
+Java class extends mindustry.world.Block implements mindustry.world.blocks.Autotiler
+fields:
+  private static final float itemSpace
+  private static final int capacity
+  public TextureRegion regions
+  public float speed
+  public float displayedSpeed
+  public boolean pushUnits
+  public Block junctionReplacement
+ctors:
+  public Conveyor(String name)
+methods:
+  public void setStats()
+  public void init()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public boolean canReplace(Block other)  // stack conveyors should be bridged over, not replaced
+  public void handlePlacementLine(Seq<BuildPlan> plans)
+  public TextureRegion[] icons()
+  public boolean isAccessible()
+  public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)
+inner-class: ConveyorBuild extends mindustry.gen.Building implements mindustry.world.blocks.distribution.ChainedBuilding
+  fields:
+    public Item ids  // parallel array data
+    public float xs
+    public int len  // amount of items, always < capacity
+    public Building next  // next entity
+    public ConveyorBuild nextc
+    public boolean aligned  // whether the next conveyor's rotation == tile rotation
+    public int lastInserted
+    public float minitem
+    public int blendbits
+    public int blendsclx
+    public float clogHeat
+  methods:
+    public void draw()
+    public void payloadDraw()
+    public void drawCracks()
+    public void overwrote(Seq<Building> builds)
+    public boolean shouldAmbientSound()
+    public void onProximityUpdate()
+    public void unitOn(Unit unit)
+    public void updateTile()
+    public boolean pass(Item item)
+    public int removeStack(Item item, int amount)
+    public void getStackOffset(Item item, Vec2 trns)
+    public int acceptStack(Item item, int amount, Teamc source)
+    public void handleStack(Item item, int amount, Teamc source)
+    public boolean acceptItem(Building source, Item item)
+    public void handleItem(Building source, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public double sense(LAccess sensor)
+    public Object senseObject(LAccess sensor)
+    public void setProp(UnlockableContent content, double value)
+    public final void add(int o)
+    public final void remove(int o)
+    public Building next()
+
+DirectionBridge.java
+Java class extends mindustry.world.Block
+fields:
+  private int otherDst
+  public TextureRegion bridgeRegion
+  public TextureRegion bridgeBotRegion
+  public TextureRegion bridgeLiquidRegion
+  public TextureRegion arrowRegion
+  public TextureRegion dirRegion
+  public int range
+  private static BuildPlan currentPlan
+  private Boolf<BuildPlan> planFinder
+ctors:
+  public DirectionBridge(String name)
+methods:
+  public void init()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public void changePlacementPath(Seq<Point2> points, int rotation)
+  public void drawPlace(int x, int y, int rotation, boolean valid, boolean line) / public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void drawBridge(int rotation, float x1, float y1, float x2, float y2, Color liquidColor)
+  public boolean positionsValid(int x1, int y1, int x2, int y2)
+inner-class: DirectionBridgeBuild extends mindustry.gen.Building
+  fields:
+    public DirectionBridgeBuild occupied
+    public DirectionBridgeBuild lastLink
+  methods:
+    public void drawCached()
+    public void draw()
+    public void drawSelect()
+    public DirectionBridgeBuild findLink()
+
+DirectionLiquidBridge.java
+Java class extends mindustry.world.blocks.distribution.DirectionBridge
+fields:
+  public final int timerFlow
+  public float speed
+  public float liquidPadding
+  public TextureRegion bottomRegion
+ctors:
+  public DirectionLiquidBridge(String name)
+methods:
+  public TextureRegion[] icons()
+inner-class: DuctBridgeBuild extends mindustry.world.blocks.distribution.DirectionBridge.DirectionBridgeBuild
+  methods:
+    public void drawCached()
+    public void draw()
+    public void updateTile()
+    public boolean acceptLiquid(Building source, Liquid liquid)
+
+DirectionalUnloader.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion centerRegion
+  public TextureRegion topRegion
+  public TextureRegion arrowRegion
+  public float speed
+  public boolean allowCoreUnload
+ctors:
+  public DirectionalUnloader(String name)
+methods:
+  public void setStats()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public void setBars()
+  public TextureRegion[] icons()
+inner-class: DirectionalUnloaderBuild extends mindustry.gen.Building
+  fields:
+    public float unloadTimer
+    public Item unloadItem
+    public int offset
+  methods:
+    public void updateTile()
+    public void draw()
+    public void drawSelect()
+    public void buildConfiguration(Table table)
+    public Item config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Duct.java
+Java class extends mindustry.world.Block implements mindustry.world.blocks.Autotiler
+fields:
+  public float speed
+  public boolean armored
+  public TextureRegion topRegions
+  public TextureRegion botRegions
+  public TextureRegion capRegion
+  public Block bridgeReplacement
+ctors:
+  public Duct(String name)
+methods:
+  public void setStats()
+  public void init()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public TextureRegion[] icons()
+  public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)
+  public void handlePlacementLine(Seq<BuildPlan> plans)
+inner-class: DuctBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public Item current
+    public int recDir
+    public int blendbits
+    public Building next
+    public DuctBuild nextc
+    public boolean capped
+  methods:
+    public void draw() / public void draw(boolean under)
+    public void drawCached()
+    public void payloadDraw()
+    protected void drawAt(float x, float y, int bits, float rotation, SliceMode slice, boolean under)
+    public void updateTile()
+    public boolean acceptItem(Building source, Item item)
+    public int removeStack(Item item, int amount)
+    public void handleStack(Item item, int amount, Teamc source)
+    public void handleItem(Building source, Item item)
+    public void onProximityUpdate()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public double sense(LAccess sensor)
+
+DuctBridge.java
+Java class extends mindustry.world.blocks.distribution.DirectionBridge
+fields:
+  public float speed
+ctors:
+  public DuctBridge(String name)
+methods:
+  public void setStats()
+inner-class: DuctBridgeBuild extends mindustry.world.blocks.distribution.DirectionBridge.DirectionBridgeBuild
+  fields:
+    public float progress
+  methods:
+    public void updateTile()
+    public boolean acceptItem(Building source, Item item)
+
+DuctJunction.java
+Java class extends mindustry.world.Block
+fields:
+  public Color transparentColor
+  public TextureRegion bottomRegion
+  public TextureRegion topRegion
+  public float speed
+ctors:
+  public DuctJunction(String name)
+methods:
+  public void setStats()
+  public void load()
+  public boolean outputsItems()
+  public void init()
+inner-class: DuctJunctionBuild extends mindustry.gen.Building
+  fields:
+    Item itemdata
+    float times
+  methods:
+    public void draw()
+    public void updateTile()
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+    public int acceptStack(Item item, int amount, Teamc source)
+    public int removeStack(Item item, int amount)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+DuctRouter.java
+Java class extends mindustry.world.Block
+fields:
+  public float speed
+  public TextureRegion topRegion
+ctors:
+  public DuctRouter(String name)
+methods:
+  public void setStats()
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public int minimapColor(Tile tile)
+  public boolean rotatedOutput(int x, int y)
+inner-class: DuctRouterBuild extends mindustry.gen.Building
+  fields:
+    public Item sortItem
+    public float progress
+    public Item current
+  methods:
+    public void draw()
+    public void drawSelect()
+    public void updateTile()
+    public void buildConfiguration(Table table)
+    public void configured(Unit player, Object value)
+    public Building target()
+    public boolean acceptItem(Building source, Item item)
+    public int removeStack(Item item, int amount)
+    public void handleStack(Item item, int amount, Teamc source)
+    public void handleItem(Building source, Item item)
+    public Item config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ItemBridge.java
+Java class extends mindustry.world.Block
+fields:
+  public final int timerCheckMoved
+  public int range
+  public float transportTime
+  public TextureRegion endRegion
+  public TextureRegion bridgeRegion
+  public TextureRegion arrowRegion
+  public boolean fadeIn
+  public boolean moveArrows
+  public boolean pulse
+  public boolean linkSameType  // If true, only allows this bridge to link with the same block type.
+  public float arrowSpacing
+  public float arrowTimeScl
+  public float bridgeWidth
+  public boolean noAcceptDisabled  // If true, this bridge will not accept items or liquids when disabled.
+  public ItemBridgeBuild lastBuild  // for autolink
+  private static int currentFindX
+  private static BuildPlan currentPlan
+  private static final Boolf<BuildPlan> planFinder
+ctors:
+  public ItemBridge(String name)
+methods:
+  public void setStats()
+  public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawBridge(BuildPlan req, float ox, float oy, float flip)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean linkValid(Tile tile, Tile other) / public boolean linkValid(Tile tile, Tile other, boolean checkDouble)
+  public boolean positionsValid(int x1, int y1, int x2, int y2) / public boolean positionsValid(int x1, int y1, int x2, int y2, int baseRange)
+  public Tile findLink(int x, int y)
+  public void init()
+  public void handlePlacementLine(Seq<BuildPlan> plans)
+  public void changePlacementPath(Seq<Point2> points, int rotation)
+inner-class: ItemBridgeBuild extends mindustry.gen.Building
+  fields:
+    public int link
+    public IntSeq incoming
+    public float warmup
+    public float time
+    public boolean wasMoved
+    public float transportCounter
+  methods:
+    public void pickedUp()
+    public void playerPlaced(Object config)
+    public void drawSelect()
+    private void drawInput(Tile other)
+    public void drawConfigure()
+    public boolean onConfigureBuildTapped(Building other)
+    public void checkIncoming()
+    public void updateTile()
+    public void doDump()
+    public void updateTransport(Building other)
+    public void draw()
+    public boolean acceptItem(Building source, Item item)
+    public boolean canDumpLiquid(Building to, Liquid liquid)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+    protected boolean checkAccept(Building source, Tile link)
+    protected boolean linked(Building source)
+    public boolean canDump(Building to, Item item)
+    protected boolean checkDump(Building to)
+    public boolean shouldConsume()
+    public Point2 config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Junction.java
+Java class extends mindustry.world.Block
+fields:
+  public float speed  // frames taken to go through this junction
+  public int capacity
+  public float displayedSpeed
+ctors:
+  public Junction(String name)
+methods:
+  public void setStats()
+  public boolean outputsItems()
+inner-class: JunctionBuild extends mindustry.gen.Building
+  fields:
+    public DirectionalItemBuffer buffer
+  methods:
+    public int acceptStack(Item item, int amount, Teamc source)
+    public void updateTile()
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+MassDriver.java
+Java class extends mindustry.world.Block
+fields:
+  public float range
+  public float rotateSpeed
+  public float translation
+  public int minDistribute
+  public float knockback
+  public float reload
+  public MassDriverBolt bullet
+  public float bulletSpeed
+  public float bulletLifetime
+  public Effect shootEffect
+  public Effect smokeEffect
+  public Effect receiveEffect
+  public Sound shootSound
+  public Sound receiveSound
+  public float shootSoundVolume
+  public float shake
+  public TextureRegion baseRegion
+ctors:
+  public MassDriver(String name)
+methods:
+  public void load()
+  public void setStats()
+  public TextureRegion[] icons()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: DriverBulletData implements arc.util.pooling.Pool.Poolable
+  fields:
+    public MassDriverBuild from
+    public int items
+  methods:
+    public void reset()
+inner-class: MassDriverBuild extends mindustry.gen.Building implements mindustry.world.blocks.RotBlock
+  fields:
+    public int link
+    public float rotation
+    public float reloadCounter
+    public DriverState state
+    public OrderedSet<Building> waitingShooters  // TODO use queue? this array usually holds about 3 shooters max anyway
+  methods:
+    public float buildRotation()
+    public Building currentShooter()
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public void draw()
+    public void drawConfigure()
+    public boolean onConfigureBuildTapped(Building other)
+    public boolean acceptItem(Building source, Item item)
+    protected void fire(MassDriverBuild target)
+    public void handlePayload(Bullet bullet, DriverBulletData data)
+    protected boolean shooterValid(Building other)
+    protected boolean linkValid()
+    public Point2 config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+OverflowDuct.java
+Java class extends mindustry.world.Block
+fields:
+  public float speed
+  public boolean invert
+  public TextureRegion topRegion
+ctors:
+  public OverflowDuct(String name)
+methods:
+  public void setStats()
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean rotatedOutput(int x, int y)
+inner-class: OverflowDuctBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public Item current
+  methods:
+    public void draw()
+    public void updateTile()
+    public Building target()
+    public boolean acceptItem(Building source, Item item)
+    public int removeStack(Item item, int amount)
+    public void handleStack(Item item, int amount, Teamc source)
+    public void handleItem(Building source, Item item)
+
+OverflowGate.java
+Java class extends mindustry.world.Block
+fields:
+  public float speed
+  public boolean invert
+ctors:
+  public OverflowGate(String name)
+methods:
+  public boolean outputsItems()
+inner-class: OverflowGateBuild extends mindustry.gen.Building
+  methods:
+    public boolean acceptItem(Building source, Item item)
+    public void handleItem(Building source, Item item)
+    public Building getTileTarget(Item item, Building src, boolean flip)
+    public byte version()
+    public void read(Reads read, byte revision)
+
+Router.java
+Java class extends mindustry.world.Block
+fields:
+  public float speed
+ctors:
+  public Router(String name)
+inner-class: RouterBuild extends mindustry.gen.Building implements mindustry.world.blocks.ControlBlock
+  fields:
+    protected byte cycles
+    public Item lastItem
+    public Tile lastInput
+    public float time
+    public BlockUnitc unit
+  methods:
+    public Unit unit()
+    public boolean canControl()
+    public boolean shouldAutoTarget()
+    public void updateTile()
+    public int acceptStack(Item item, int amount, Teamc source)
+    public boolean acceptItem(Building source, Item item)
+    public void handleItem(Building source, Item item)
+    public int removeStack(Item item, int amount)
+    public Building getTileTarget(Item item, Tile from, boolean set)
+
+Sorter.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion cross
+  public boolean invert
+ctors:
+  public Sorter(String name)
+methods:
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean outputsItems()
+  public int minimapColor(Tile tile)
+  protected TextureRegion[] icons()
+inner-class: SorterBuild extends mindustry.gen.Building
+  fields:
+    public Item sortItem
+  methods:
+    public void configured(Unit player, Object value)
+    public void draw()
+    public void drawSelect()
+    public boolean acceptItem(Building source, Item item)
+    public void handleItem(Building source, Item item)
+    public boolean isSame(Building other)
+    public Building getTileTarget(Item item, Building source, boolean flip)
+    public void buildConfiguration(Table table)
+    public Item config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+StackConveyor.java
+Java class extends mindustry.world.Block implements mindustry.world.blocks.Autotiler
+fields:
+  protected static final int stateMove
+  public TextureRegion regions
+  public TextureRegion edgeRegion
+  public TextureRegion stackRegion
+  public TextureRegion glowRegion  // requires power to work properly
+  public TextureRegion edgeGlowRegion
+  public float glowAlpha
+  public Color glowColor
+  public float baseEfficiency
+  public float speed
+  public boolean outputRouter
+  public float recharge  // (minimum) amount of loading docks needed to fill a line.
+  public Effect loadEffect
+  public Effect unloadEffect
+ctors:
+  public StackConveyor(String name)
+methods:
+  public void setStats()
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean rotatedOutput(int x, int y)
+inner-class: StackConveyorBuild extends mindustry.gen.Building
+  fields:
+    public int state
+    public int link
+    public float cooldown
+    public Item lastItem
+    boolean proxUpdating
+  methods:
+    public void drawCached()
+    public void draw()
+    public void dropped()
+    public void drawCracks()
+    public void payloadDraw()
+    public void onProximityUpdate()
+    public boolean canUnload()
+    public void updateTile()
+    public void overwrote(Seq<Building> builds)
+    public boolean shouldAmbientSound()
+    protected void poofIn()
+    protected void poofOut()
+    public int acceptStack(Item item, int amount, Teamc source)
+    public void handleItem(Building source, Item item)
+    public void handleStack(Item item, int amount, Teamc source)
+    public int removeStack(Item item, int amount)
+    public void itemTaken(Item item)
+    public boolean acceptItem(Building source, Item item)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+StackRouter.java
+Java class extends mindustry.world.blocks.distribution.DuctRouter
+fields:
+  public float baseEfficiency
+  public TextureRegion glowRegion
+  public float glowAlpha
+  public Color glowColor
+ctors:
+  public StackRouter(String name)
+inner-class: StackRouterBuild extends mindustry.world.blocks.distribution.DuctRouter.DuctRouterBuild
+  fields:
+    public boolean unloading
+  methods:
+    public void updateTile()
+    public void drawCached()
+    public void draw()
+    public boolean acceptItem(Building source, Item item)
+

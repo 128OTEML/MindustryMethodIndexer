@@ -1,0 +1,710 @@
+[ {
+  "file" : "LegacyIO.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final StringMap unitMap",
+    "desc" : "Maps old unit names to new ones.",
+    "overloads" : null,
+    "name" : "unitMap",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Seq<Server> readServers()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readServers",
+    "returnType" : "Seq<Server>",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ "arc.Settings.getBytes(java.lang.String)", "java.io.DataInputStream.readInt()", "java.io.DataInputStream.readUTF()", "arc.struct.Seq.add(T)", "java.lang.Throwable.printStackTrace()", "arc.struct.Seq.Seq()", "java.io.DataInputStream.DataInputStream(java.io.InputStream)", "java.io.ByteArrayInputStream.ByteArrayInputStream(byte[])", "mindustry.ui.dialogs.JoinDialog.Server.Server()" ],
+    "callCount" : 9
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "LegacyRegionSaveVersion.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.ShortChunkSaveVersion",
+  "typeDesc" : "This version does not read custom chunk data (<= 6).",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LegacyRegionSaveVersion(int version)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LegacyRegionSaveVersion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInputStream"
+    }, {
+      "name" : "counter",
+      "type" : "CounterInputStream"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "mindustry.io.SaveFileReader.readRegion(java.lang.String, java.io.DataInput, arc.util.io.CounterInputStream, mindustry.io.SaveFileReader.IORunner<java.io.DataInput>)", "mindustry.io.SaveVersion.readMeta(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.versions.ShortChunkSaveVersion.readMap(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readEntities(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])" ],
+    "callCount" : 5
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "LegacySaveVersion.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class (abstract) extends mindustry.io.versions.LegacyRegionSaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LegacySaveVersion(int version)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LegacySaveVersion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readMap(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ "java.io.DataInput.readUnsignedShort()", "mindustry.world.WorldContext.isGenerating()", "mindustry.world.WorldContext.begin()", "mindustry.world.WorldContext.resize(int, int)", "java.io.DataInput.readShort()", "java.io.DataInput.readUnsignedByte()", "mindustry.core.ContentLoader.block(int)", "mindustry.world.WorldContext.create(int, int, int, int, int)", "mindustry.world.WorldContext.tile(int)", "mindustry.world.Tile.isCenter()", "mindustry.world.Tile.setBlock(mindustry.world.Block)", "arc.struct.Seq.add(T)", "mindustry.world.Block.hasBuilding()", "mindustry.io.SaveFileReader.readLegacyShortChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.b()", "java.io.DataInput.readByte()", "arc.util.Pack.leftByte(byte)", "arc.util.Pack.rightByte(byte)", "mindustry.world.Tile.setTeam(mindustry.game.Team)", "mindustry.game.Team.get(int)", "mindustry.world.modules.ItemModule.read(arc.util.io.Reads, boolean)", "mindustry.world.modules.BlockModule.read(arc.util.io.Reads, boolean)", "mindustry.world.modules.LiquidModule.read(arc.util.io.Reads, boolean)", "mindustry.gen.Building.read(arc.util.io.Reads, byte)", "mindustry.world.WorldContext.onReadBuilding()", "mindustry.world.WorldContext.end()", "java.io.IOException.IOException(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 27
+  }, {
+    "kind" : "method",
+    "signature" : "public void readLegacyEntities(DataInput stream) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readLegacyEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 112,
+    "calls" : [ "java.io.DataInput.readByte()", "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.skipLegacyShortChunk(java.io.DataInput)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "LegacySaveVersion2.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacyRegionSaveVersion",
+  "typeDesc" : "This version did not read/write entity IDs to the save.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LegacySaveVersion2(int version)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LegacySaveVersion2",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readWorldEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "mapping",
+      "type" : "Prov[]"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.readLegacyShortChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.ub()", "arc.util.io.Reads.skip(int)", "arc.func.Prov.get()", "mindustry.gen.Entityc.read(arc.util.io.Reads)", "mindustry.gen.Entityc.add()" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save1.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacySaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save1()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save1",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readEntities(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 13,
+    "calls" : [ "mindustry.io.versions.LegacySaveVersion.readLegacyEntities(java.io.DataInput)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save10.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.SaveVersion",
+  "typeDesc" : "Removes short entity chunks, switching to 4 byte lengths for all chunks.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save10()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save10",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save11.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.SaveVersion",
+  "typeDesc" : "Adds patches in content header.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save11()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save11",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInputStream"
+    }, {
+      "name" : "counter",
+      "type" : "CounterInputStream"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "mindustry.io.SaveFileReader.readRegion(java.lang.String, java.io.DataInput, arc.util.io.CounterInputStream, mindustry.io.SaveFileReader.IORunner<java.io.DataInput>)", "mindustry.io.SaveVersion.readMeta(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.versions.Save11.readDataPatches(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readMap(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.io.SaveVersion.readEntities(java.io.DataInput, mindustry.io.SaveReadState)", "mindustry.core.ContentLoader.setTemporaryMapper(mindustry.ctype.MappableContent[][])" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException",
+    "desc" : "old, simplified string-only data patches",
+    "overloads" : null,
+    "name" : "readDataPatches",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 41,
+    "calls" : [ "java.io.DataInput.readUnsignedByte()", "java.io.DataInput.readInt()", "java.io.DataInput.readFully(byte[])", "arc.struct.Seq.add(T)", "arc.Events.fire(T)", "mindustry.mod.DataManager.load(arc.struct.Seq<mindustry.mod.data.DataAsset>)", "arc.struct.Seq.Seq()", "mindustry.mod.data.PatchAsset.PatchAsset(java.lang.String)", "java.lang.String.String(byte[], java.nio.charset.Charset)", "mindustry.game.EventType.DataPatchLoadEvent.DataPatchLoadEvent(arc.struct.Seq<mindustry.mod.data.DataAsset>)" ],
+    "callCount" : 10
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save12.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.SaveVersion",
+  "typeDesc" : "Changes data patches to be read before content, and adds support for more complex data patch IO.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save12()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save12",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readDataPatches",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "saveState",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "java.io.DataInput.readInt()", "java.io.DataInput.readFully(byte[])", "arc.struct.Seq.add(T)", "java.io.DataInput.readUTF()", "java.io.DataInput.readShort()", "arc.Events.fire(T)", "mindustry.mod.DataManager.load(arc.struct.Seq<mindustry.mod.data.DataAsset>)", "arc.struct.Seq.Seq()", "mindustry.mod.data.PatchAsset.PatchAsset(java.lang.String)", "java.lang.String.String(byte[], java.nio.charset.Charset)", "mindustry.mod.data.ImageAsset.ImageAsset(java.lang.String, byte[])", "mindustry.game.EventType.DataPatchLoadEvent.DataPatchLoadEvent(arc.struct.Seq<mindustry.mod.data.DataAsset>)" ],
+    "callCount" : 12
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save13.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.SaveVersion",
+  "typeDesc" : "New asset-based data patch system.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save13()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save13",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save2.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacySaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save2()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save2",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readEntities(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 13,
+    "calls" : [ "mindustry.io.versions.LegacySaveVersion.readLegacyEntities(java.io.DataInput)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save3.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacySaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save3()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save3",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readEntities(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.game.Team.get(int)", "mindustry.game.Team.data()", "arc.struct.Queue.addLast(T)", "java.io.DataInput.readShort()", "mindustry.core.ContentLoader.block(int)", "mindustry.io.versions.LegacySaveVersion.readLegacyEntities(java.io.DataInput)", "mindustry.game.Teams.BlockPlan.BlockPlan(int, int, short, mindustry.world.Block, java.lang.Object)" ],
+    "callCount" : 8
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save4.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacySaveVersion2",
+  "typeDesc" : "This version only reads entities, no entity ID mappings.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save4()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save4",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readEntities(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "mindustry.io.SaveVersion.readTeamBlocks(java.io.DataInput)", "mindustry.io.versions.LegacySaveVersion2.readWorldEntities(java.io.DataInput, arc.func.Prov[], mindustry.io.SaveReadState)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Save5.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacySaveVersion2",
+  "typeDesc" : "Uses the legacy readWorldEntities function without entity IDs.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save5()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save5",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save6.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.LegacyRegionSaveVersion",
+  "typeDesc" : "This version does not read custom chunk data.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save6()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save6",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save7.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.ShortChunkSaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save7()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save7",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save8.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.ShortChunkSaveVersion",
+  "typeDesc" : "Adds support for the marker binary data region.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save8()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save8",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Save9.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.versions.ShortChunkSaveVersion",
+  "typeDesc" : "Adds support for the new 7-byte custom tile data.",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Save9()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Save9",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "ShortChunkSaveVersion.java",
+  "pkg" : "mindustry.io.versions",
+  "type" : "Java class extends mindustry.io.SaveVersion",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ShortChunkSaveVersion(int version)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ShortChunkSaveVersion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "version",
+      "type" : "int"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readWorldEntities",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "mapping",
+      "type" : "Prov[]"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "java.io.DataInput.readInt()", "mindustry.io.SaveFileReader.readLegacyShortChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.ub()", "arc.util.io.Reads.skip(int)", "arc.util.io.Reads.i()", "arc.func.Prov.get()", "mindustry.entities.EntityGroup.checkNextId(int)", "mindustry.gen.Entityc.id(int)", "mindustry.gen.Entityc.read(arc.util.io.Reads)", "mindustry.gen.Entityc.add()", "mindustry.entities.EntityGroup.each(arc.func.Cons<T>)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void readMap(DataInput stream, SaveReadState state) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "readMap",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stream",
+      "type" : "DataInput"
+    }, {
+      "name" : "state",
+      "type" : "SaveReadState"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ "Override" ],
+    "line" : 47,
+    "calls" : [ "java.io.DataInput.readUnsignedShort()", "mindustry.world.WorldContext.isGenerating()", "mindustry.world.WorldContext.begin()", "mindustry.world.WorldContext.resize(int, int)", "java.io.DataInput.readShort()", "java.io.DataInput.readUnsignedByte()", "mindustry.core.ContentLoader.block(int)", "mindustry.world.WorldContext.create(int, int, int, int, int)", "mindustry.world.WorldContext.tile(int)", "java.io.DataInput.readByte()", "java.io.DataInput.readInt()", "java.io.DataInput.readBoolean()", "mindustry.world.Tile.setBlock(mindustry.world.Block)", "arc.struct.Seq.add(T)", "mindustry.world.WorldContext.onReadTileData()", "mindustry.world.Block.hasBuilding()", "mindustry.io.SaveFileReader.readLegacyShortChunk(java.io.DataInput, mindustry.io.SaveFileReader.IORunnerLength<arc.util.io.Reads>)", "arc.util.io.Reads.b()", "mindustry.gen.Building.readAll(arc.util.io.Reads, byte)", "mindustry.io.SaveFileReader.skipLegacyShortChunk(java.io.DataInput)", "mindustry.world.WorldContext.onReadBuilding()", "mindustry.world.WorldContext.end()", "java.io.IOException.IOException(java.lang.String, java.lang.Throwable)" ],
+    "callCount" : 23
+  } ],
+  "inner" : [ ]
+} ]

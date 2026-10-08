@@ -1,0 +1,94 @@
+// AsyncCore.java : public void end()
+    public void end(){
+        if(state.isPlaying()){
+            complete();
+
+            //sync end (flush data)
+            for(AsyncProcess p : processes){
+                p.end();
+            }
+        }
+    }
+
+// AsyncProcess.java : default void init()
+    default void init(){}
+
+// AsyncProcess.java : default void reset()
+    default void reset(){}
+
+// AsyncProcess.java : default void begin()
+    default void begin(){}
+
+// AsyncProcess.java : default void process()
+    default void process(){}
+
+// AsyncProcess.java : default void end()
+    default void end(){}
+
+// AsyncProcess.java : default boolean shouldProcess()
+    default boolean shouldProcess(){
+        return true;
+    }
+
+// AvoidanceProcess.java : public int[] getAvoidance()
+    public @Nullable int[] getAvoidance(){
+        if(!active){
+            //lazily initialize and begin processing after this first request
+            buffer1 = new int[wwidth * wheight];
+            buffer2 = new int[wwidth * wheight];
+            active = true;
+        }
+        return avoidance;
+    }
+
+// AvoidanceProcess.java : public void init()
+    @Override
+    public void init(){
+        wwidth = Vars.world.width();
+        wheight = Vars.world.height();
+    }
+
+// AvoidanceProcess.java : public void reset()
+    @Override
+    public void reset(){
+        buffer1 = buffer2 = avoidance = null;
+        swap = false;
+        modified = false;
+        active = false;
+        requests.clear();
+    }
+
+// AvoidanceProcess.java : public boolean shouldProcess()
+    @Override
+    public boolean shouldProcess(){
+        return active;
+    }
+
+// PhysicsProcess.java : public boolean shouldProcess()
+    @Override
+    public boolean shouldProcess(){
+        return false;
+    }
+
+// PhysicsProcess.java : public void reset()
+    @Override
+    public void reset(){
+        if(physics != null){
+            refs.clear();
+            futures.clear();
+            physics = null;
+        }
+    }
+
+// PhysicsProcess.java : public void init()
+    @Override
+    public void init(){
+        reset();
+
+        Rect bounds = Vars.world.getQuadBounds(new Rect());
+        physics = new PhysicsWorld[layers];
+        for(int i = 0; i < layers; i++){
+            physics[i] = new PhysicsWorld(bounds);
+        }
+    }
+

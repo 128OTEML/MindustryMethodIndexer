@@ -1,0 +1,908 @@
+Button.java
+Java class extends arc.scene.ui.layout.Table implements arc.scene.utils.Disableable
+// A button is a {@link Table} with a checked state and additional {@link ButtonStyle style} fields for pressed, unpressed, and
+fields:
+  boolean isChecked
+  ButtonGroup buttonGroup
+  Boolp disabledProvider
+  private ButtonStyle style
+  private ClickListener clickListener
+  private boolean programmaticChangeEvents
+ctors:
+  public Button(ButtonStyle style) / public Button() / public Button(Drawable up) / public Button(Drawable up, Drawable down) / public Button(Drawable up, Drawable down, Drawable checked)  // Creates a button without setting the style or size.
+methods:
+  public void act(float delta)
+  private void initialize()
+  void setChecked(boolean isChecked, boolean fireEvent) / public void setChecked(boolean isChecked)
+  public void toggle()  // Toggles the checked state.
+  public boolean isChecked()
+  public boolean isPressed()
+  public boolean isOver()
+  public ClickListener getClickListener()
+  public boolean isDisabled()
+  public void setDisabled(Boolp prov) / public void setDisabled(boolean isDisabled)  // When true, the button will not toggle {@link #isChecked()} when clicked and will not fire a {@link ChangeEvent}.
+  public boolean childrenPressed()
+  public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)  // If false, {@link #setChecked(boolean)} and {@link #toggle()} will not fire {@link ChangeEvent}, event will be fired only
+  public ButtonStyle getStyle()  // Returns the button's style.
+  public void setStyle(ButtonStyle style)
+  public ButtonGroup getButtonGroup()  // @return May be null.
+  public void draw()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMinWidth()
+  public float getMinHeight()
+inner-class: ButtonStyle extends arc.scene.style.Style
+// The style for a button, see {@link Button}.
+  fields:
+    public Drawable up  // Optional.
+    public float pressedOffsetX  // Optional.
+  ctors:
+    public ButtonStyle() / public ButtonStyle(Drawable up, Drawable down, Drawable checked) / public ButtonStyle(ButtonStyle style)
+
+ButtonGroup.java
+Java class
+// Manages a group of buttons to enforce a minimum and maximum number of checked buttons.
+fields:
+  private final Seq<T> buttons
+  private Seq<T> checkedButtons
+  private int minCheckCount
+  private boolean uncheckLast
+  private T lastChecked
+ctors:
+  public ButtonGroup() / public ButtonGroup(T buttons)
+methods:
+  public void add(T button) / public void add(T buttons)
+  public void remove(T button) / public void remove(T buttons)
+  public void clear()
+  protected boolean canCheck(T button, boolean newState)  // Called when a button is checked or unchecked.
+  public void uncheckAll()  // Sets all buttons' {@link Button#isChecked()} to false, regardless of {@link #setMinCheckCount(int)}.
+  public T getChecked()  // @return The first checked button, or null.
+  public void setChecked(String text)  // Sets the first {@link TextButton} with the specified text to checked.
+  public int getCheckedIndex()  // @return The first checked button index, or -1.
+  public Seq<T> getAllChecked()
+  public Seq<T> getButtons()
+  public void setMinCheckCount(int minCheckCount)  // Sets the minimum number of buttons that must be checked.
+  public void setMaxCheckCount(int maxCheckCount)  // Sets the maximum number of buttons that can be checked.
+  public void setUncheckLast(boolean uncheckLast)  // If true, when the maximum number of buttons are checked and an additional button is checked, the last button to be checked
+
+CheckBox.java
+Java class extends arc.scene.ui.TextButton
+// A checkbox is a button that contains an image indicating the checked or unchecked state and a label.
+fields:
+  private Image image
+  private Cell imageCell
+  private CheckBoxStyle style
+ctors:
+  public CheckBox(String text) / public CheckBox(String text, CheckBoxStyle style)
+methods:
+  public CheckBoxStyle getStyle()  // Returns the checkbox's style.
+  public void setStyle(ButtonStyle style)
+  public void draw()
+  public Image getImage()
+  public Cell getImageCell()
+inner-class: CheckBoxStyle extends arc.scene.ui.TextButton.TextButtonStyle
+// The style for a select box, see {@link CheckBox}.
+  fields:
+    public Drawable checkboxOn
+    public Drawable checkboxOver  // Optional.
+
+ColorImage.java
+Java class extends arc.scene.ui.Image
+fields:
+  private Color set
+ctors:
+  public ColorImage(Color set)
+methods:
+  public void draw()
+
+Dialog.java
+Java class extends arc.scene.ui.layout.Table
+// A table that can be dragged and act as a modal window.
+fields:
+  private static Prov<Action> defaultShowAction
+  protected InputListener ignoreTouchDown
+  private static final Vec2 tmpPosition
+  private static final Vec2 tmpSize
+  private static final int MOVE
+  protected int edge
+  protected boolean dragging
+  boolean isMovable
+  int resizeBorder
+  boolean keepWithinStage
+  private DialogStyle style
+  private float lastWidth
+  Element previousKeyboardFocus
+  FocusListener focusListener
+  public final Table cont
+  public final Label title
+  public final Table titleTable
+ctors:
+  public Dialog() / public Dialog(String title) / public Dialog(String title, DialogStyle style)
+methods:
+  public DialogStyle getStyle()  // Returns the window's style.
+  public void setStyle(DialogStyle style)
+  void keepWithinStage()
+  public void act(float delta)
+  public void draw()
+  protected void drawStageBackground(float x, float y, float width, float height)
+  public Element hit(float x, float y, boolean touchable)
+  public void centerWindow()  // Centers the dialog in the scene.
+  public boolean isMovable()
+  public void setMovable(boolean isMovable)
+  public boolean isModal()
+  public void setModal(boolean isModal)
+  public void setKeepWithinStage(boolean keepWithinStage)
+  public boolean isCentered()
+  public void setCentered(boolean center)
+  public boolean isResizable()
+  public void setResizable(boolean isResizable)
+  public void setResizeBorder(int resizeBorder)
+  public boolean isDragging()
+  public void updateScrollFocus()
+  public static void setHideAction(Prov<Action> prov)
+  public static void setShowAction(Prov<Action> prov)
+  protected void setScene(Scene stage)
+  public void shown(Runnable run)  // Adds a show() listener.
+  public void hidden(Runnable run)  // Adds a hide() listener.
+  public void resizedShown(Runnable run)  // Runs the callback when this dialog is resized or hidden.
+  public void resized(Runnable run) / public void resized(boolean invoke, Runnable run)  // Adds a scene resize listener.
+  public void addCloseButton()
+  public void closeOnBack() / public void closeOnBack(Runnable callback)  // Adds a listener for back/escape keys to hide this dialog.
+  public boolean isShown()
+  public Dialog show(Scene stage, Action action) / public Dialog show() / public Dialog show(Scene stage)  // {@link #pack() Packs} the dialog and adds it to the stage with custom action which can be null for instant show
+  public void toggle()  // Shows this dialog if it was hidden, and vice versa.
+  public void hide(Action action) / public void hide()  // Hides the dialog with the given action and then removes it from the stage.
+inner-class: DialogStyle extends arc.scene.style.Style
+  fields:
+    public Drawable background  // Optional.
+    public Font titleFont
+    public Color titleFontColor  // Optional.
+    public Drawable stageBackground  // Optional.
+
+Image.java
+Java class extends arc.scene.Element
+// Displays a {@link Drawable}, scaled various way within the widgets bounds.
+fields:
+  protected float imageX
+  protected Scaling scaling
+  protected int align
+  protected Drawable drawable
+ctors:
+  public Image() / public Image(Drawable name, Color color) / public Image(NinePatch patch) / public Image(TextureRegion region) / public Image(Texture texture) / public Image(Drawable drawable) / public Image(Drawable drawable, Scaling scaling) / public Image(Drawable drawable, Scaling scaling, int align)  // Creates an image with no region or patch, stretched, and aligned center.
+methods:
+  public void layout()
+  public void draw()
+  public TextureRegion getRegion()
+  public Drawable getDrawable()  // @return May be null.
+  public void setDrawable(TextureRegion region) / public void setDrawable(Drawable drawable)  // @param drawable May be null.
+  public Image setScaling(Scaling scaling)
+  public void setAlign(int align)
+  public float getMinWidth()
+  public float getMinHeight()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getImageX()
+  public float getImageY()
+  public float getImageWidth()
+  public float getImageHeight()
+
+ImageButton.java
+Java class extends arc.scene.ui.Button
+// A button with a child {@link Image} to display an image.
+fields:
+  private final Image image
+  private ImageButtonStyle style
+ctors:
+  public ImageButton() / public ImageButton(Drawable icon, ImageButtonStyle stylen) / public ImageButton(TextureRegion region) / public ImageButton(TextureRegion region, ImageButtonStyle stylen) / public ImageButton(ImageButtonStyle style) / public ImageButton(Drawable imageUp) / public ImageButton(Drawable imageUp, Drawable imageDown) / public ImageButton(Drawable imageUp, Drawable imageDown, Drawable imageChecked)
+methods:
+  public ImageButtonStyle getStyle()
+  public void setStyle(ButtonStyle style)
+  public void replaceImage(Element element)
+  protected void updateImage()  // Updates the Image with the appropriate Drawable from the style before it is drawn.
+  public void draw()
+  public Image getImage()
+  public Cell getImageCell()
+  public void resizeImage(float size)
+inner-class: ImageButtonStyle extends arc.scene.ui.Button.ButtonStyle
+// The style for an image button, see {@link ImageButton}.
+  fields:
+    public Drawable imageUp  // Optional.
+    public Color imageUpColor
+  ctors:
+    public ImageButtonStyle() / public ImageButtonStyle(Drawable up, Drawable down, Drawable checked, Drawable imageUp, Drawable imageDown, Drawable imageChecked) / public ImageButtonStyle(ImageButtonStyle style)
+
+Label.java
+Java class extends arc.scene.Element
+// A text label, with optional word wrapping.
+fields:
+  protected static final Color tempColor
+  protected static final GlyphLayout prefSizeLayout
+  protected final GlyphLayout layout
+  protected final Vec2 prefSize
+  protected final StringBuilder text
+  protected LabelStyle style
+  protected FontCache cache
+  protected int labelAlign
+  protected int lineAlign
+  protected boolean wrap
+  protected float lastPrefHeight
+  protected boolean prefSizeInvalid
+  protected float fontScaleX
+  protected boolean fontScaleChanged
+  protected String ellipsis
+ctors:
+  public Label(Prov<CharSequence> sup) / public Label(CharSequence text) / public Label(CharSequence text, LabelStyle style)
+methods:
+  public LabelStyle getStyle()  // Returns the label's style.
+  public void setStyle(LabelStyle style)
+  public void setText(Prov<CharSequence> sup) / public void setText(CharSequence newText)  // @param newText May be null, "" will be used.
+  private void setTextInternal(CharSequence newText)
+  public boolean textEquals(CharSequence other)
+  public StringBuilder getText()
+  public void invalidate()
+  private void scaleAndComputePrefSize()
+  private void computePrefSize()
+  public void layout()
+  public void draw()
+  public float getMinWidth()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public GlyphLayout getGlyphLayout()
+  public void setWrap(boolean wrap) / public void setWrap(boolean wrap, boolean wrapFit)  // If false, the text will only wrap where it contains newlines (\n).
+  public int getLabelAlign()
+  public int getLineAlign()
+  public void setAlignment(int alignment) / public void setAlignment(int labelAlign, int lineAlign)  // @param alignment Aligns all the text within the label (default left center) and each line of text horizontally (default
+  public void setFontScale(float fontScale) / public void setFontScale(float fontScaleX, float fontScaleY)
+  public float getFontScaleX()
+  public void setFontScaleX(float fontScaleX)
+  public float getFontScaleY()
+  public void setFontScaleY(float fontScaleY)
+  public void setEllipsis(String ellipsis) / public void setEllipsis(boolean ellipsis)  // When non-null the text will be truncated "..." if it does not fit within the width of the label.
+  public FontCache getFontCache()  // Allows subclasses to access the cache.
+  public String toString()
+inner-class: LabelStyle extends arc.scene.style.Style
+// The style for a label, see {@link Label}.
+  fields:
+    public Font font
+    public Color fontColor  // Optional.
+    public Drawable background  // Optional.
+  ctors:
+    public LabelStyle() / public LabelStyle(Font font, Color fontColor) / public LabelStyle(LabelStyle style)
+
+ProgressBar.java
+Java class extends arc.scene.Element implements arc.scene.utils.Disableable
+// A progress bar is a widget that visually displays the progress of some activity or a value within given range.
+fields:
+  final boolean vertical
+  float position
+  boolean disabled
+  private ProgressBarStyle style
+  private float min
+  private float value
+  private float animateDuration
+  private Interp animateInterpolation
+  private Interp visualInterpolation
+  private boolean round
+ctors:
+  public ProgressBar(float min, float max, float stepSize, boolean vertical, ProgressBarStyle style)  // Creates a new progress bar.
+methods:
+  public ProgressBarStyle getStyle()  // Returns the progress bar's style.
+  public void setStyle(ProgressBarStyle style)
+  public void act(float delta)
+  public void draw()
+  public float getValue()
+  public float getVisualValue()  // If {@link #setAnimateDuration(float) animating} the progress bar value, this returns the value current displayed.
+  public float getPercent()
+  public float getVisualPercent()
+  protected Drawable getKnobDrawable()
+  protected float getKnobPosition()  // Returns progress bar visual position within the range.
+  public boolean setValue(float value) / public boolean setValue(float value, boolean fireChanged)  // Sets the progress bar position, rounded to the nearest step size and clamped to the minimum and maximum values.
+  protected float clamp(float value)  // Clamps the value to the progress bar's min/max range.
+  public void setRange(float min, float max)  // Sets the range of this progress bar.
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMinValue()
+  public float getMaxValue()
+  public float getStepSize()
+  public void setStepSize(float stepSize)
+  public void setAnimateDuration(float duration)  // If > 0, changes to the progress bar value via {@link #setValue(float)} will happen over this duration in seconds.
+  public void setAnimateInterpolation(Interp animateInterpolation)  // Sets the interpolation to use for {@link #setAnimateDuration(float)}.
+  public void setVisualInterpolation(Interp interpolation)  // Sets the interpolation to use for display.
+  public void setRound(boolean round)  // If true (the default), inner Drawable positions and sizes are rounded to integers.
+  public boolean isDisabled()
+  public void setDisabled(boolean disabled)
+  public boolean isVertical()  // True if the progress bar is vertical, false if it is horizontal.
+inner-class: ProgressBarStyle extends arc.scene.style.Style
+// The style for a progress bar, see {@link ProgressBar}.
+  fields:
+    public Drawable background  // The progress bar background, stretched only in one direction.
+    public Drawable disabledBackground  // Optional.
+    public Drawable knob  // Optional, centered on the background.
+    public Drawable knobBefore  // Optional.
+  ctors:
+    public ProgressBarStyle() / public ProgressBarStyle(Drawable background, Drawable knob) / public ProgressBarStyle(ProgressBarStyle style)
+
+ScrollPane.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+// A group that scrolls a child widget using scrollbars and/or mouse or touch dragging.
+fields:
+  final Rect hScrollBounds
+  final Rect vScrollBounds
+  final Rect hKnobBounds
+  final Rect vKnobBounds
+  final Vec2 lastPoint
+  private final Rect widgetAreaBounds
+  private final Rect widgetCullingArea
+  private final Rect scissorBounds
+  protected boolean disableX
+  boolean scrollX
+  boolean vScrollOnRight
+  boolean hScrollOnBottom
+  float amountX
+  float visualAmountX
+  float maxX
+  boolean touchScrollH
+  float areaWidth
+  float fadeAlpha
+  boolean cancelTouchFocus
+  boolean flickScroll
+  float velocityX
+  float flingTimer
+  float flingTime
+  int draggingPointer
+  private ScrollPaneStyle style
+  private Element widget
+  private ElementGestureListener flickScrollListener
+  private boolean fadeScrollBars
+  private boolean overscrollX
+  private float overscrollDistance
+  private boolean forceScrollX
+  private boolean clamp
+  private boolean scrollbarsOnTop
+  private boolean variableSizeKnobs
+  private boolean clip
+ctors:
+  public ScrollPane(Element widget) / public ScrollPane(Element widget, ScrollPaneStyle style)  // @param widget May be null.
+methods:
+  void resetFade()
+  public void cancelTouchFocus()  // Cancels the stage's touch focus for all listeners except this scroll pane's flick scroll listener.
+  public void cancel()  // If currently scrolling by tracking a touch down, stop scrolling.
+  void clamp()
+  public ScrollPaneStyle getStyle()  // Returns the scroll pane's style.
+  public void setStyle(ScrollPaneStyle style)
+  public void act(float delta)
+  public void setClip(boolean clip)
+  public void layout()
+  public void draw()
+  public void fling(float flingTime, float velocityX, float velocityY)  // Generate fling gesture.
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMinWidth()
+  public float getMinHeight()
+  public Element getWidget()  // Returns the actor embedded in this scroll pane, or null.
+  public void setWidget(Element widget)  // Sets the {@link Element} embedded in this scroll pane.
+  public boolean removeChild(Element actor) / public boolean removeChild(Element actor, boolean unfocus)
+  public Element hit(float x, float y, boolean touchable)
+  protected void scrollX(float pixelsX)  // Called whenever the x scroll amount is changed.
+  protected void scrollY(float pixelsY)  // Called whenever the y scroll amount is changed.
+  protected void visualScrollX(float pixelsX)  // Called whenever the visual x scroll amount is changed.
+  protected void visualScrollY(float pixelsY)  // Called whenever the visual y scroll amount is changed.
+  protected float getMouseWheelX()  // Returns the amount to scroll horizontally when the mouse wheel is scrolled.
+  protected float getMouseWheelY()  // Returns the amount to scroll vertically when the mouse wheel is scrolled.
+  public void setScrollXForce(float pixels)
+  public float getScrollX()  // Returns the x scroll position in pixels, where 0 is the left of the scroll pane.
+  public void setScrollYForce(float pixels)
+  public float getScrollY()  // Returns the y scroll position in pixels, where 0 is the top of the scroll pane.
+  public void updateVisualScroll()  // Sets the visual scroll amount equal to the scroll amount.
+  public float getVisualScrollX()
+  public float getVisualScrollY()
+  public float getVisualScrollPercentX()
+  public float getVisualScrollPercentY()
+  public float getScrollPercentX()
+  public void setScrollPercentX(float percentX)
+  public float getScrollPercentY()
+  public void setScrollPercentY(float percentY)
+  public void setFlickScroll(boolean flickScroll)
+  public void setFlickScrollTapSquareSize(float halfTapSquareSize)
+  public void scrollTo(float x, float y, float width, float height) / public void scrollTo(float x, float y, float width, float height, boolean centerHorizontal, boolean centerVertical)  // Sets the scroll offset so the specified rectangle is fully in view, if possible.
+  public float getMaxX()  // Returns the maximum scroll value in the x direction.
+  public float getMaxY()  // Returns the maximum scroll value in the y direction.
+  public float getScrollBarHeight()
+  public float getScrollBarWidth()
+  public float getScrollWidth()  // Returns the width of the scrolled viewport.
+  public float getScrollHeight()  // Returns the height of the scrolled viewport.
+  public boolean isScrollX()  // Returns true if the widget is larger than the scroll pane horizontally.
+  public void setScrollX(float pixels)
+  public boolean isScrollY()  // Returns true if the widget is larger than the scroll pane vertically.
+  public void setScrollY(float pixels)
+  public void setScrollingDisabled(boolean x, boolean y)  // Disables scrolling in a direction.
+  public void setScrollingDisabledX(boolean x)
+  public void setScrollingDisabledY(boolean y)
+  public boolean isScrollingDisabledX()
+  public boolean isScrollingDisabledY()
+  public boolean isLeftEdge()
+  public boolean isRightEdge()
+  public boolean isTopEdge()
+  public boolean isBottomEdge()
+  public boolean isDragging()
+  public boolean isPanning()
+  public boolean isFlinging()
+  public float getVelocityX()  // Gets the flick scroll x velocity.
+  public void setVelocityX(float velocityX)
+  public float getVelocityY()  // Gets the flick scroll y velocity.
+  public void setVelocityY(float velocityY)
+  public void setOverscroll(boolean overscrollX, boolean overscrollY)  // For flick scroll, if true the widget can be scrolled slightly past its bounds and will animate back to its bounds when
+  public void setupOverscroll(float distance, float speedMin, float speedMax)  // For flick scroll, sets the overscroll distance in pixels and the speed it returns to the widget's bounds in seconds.
+  public void setForceScroll(boolean x, boolean y)  // Forces enabling scrollbars (for non-flick scroll) and overscrolling (for flick scroll) in a direction, even if the contents
+  public boolean isForceScrollX()
+  public boolean isForceScrollY()
+  public void setFlingTime(float flingTime)  // For flick scroll, sets the amount of time in seconds that a fling will continue to scroll.
+  public void setClamp(boolean clamp)  // For flick scroll, prevents scrolling out of the widget's bounds.
+  public void setScrollBarPositions(boolean bottom, boolean right)  // Set the position of the vertical and horizontal scroll bars.
+  public void setFadeScrollBars(boolean fadeScrollBars)  // When true the scrollbars don't reduce the scrollable size and fade out after some time of not being used.
+  public void setupFadeScrollBars(float fadeAlphaSeconds, float fadeDelaySeconds)
+  public void setSmoothScrolling(boolean smoothScrolling)
+  public void setScrollbarsOnTop(boolean scrollbarsOnTop)  // When false (the default), the widget is clipped so it is not drawn under the scrollbars.
+  public boolean getVariableSizeKnobs()
+  public void setVariableSizeKnobs(boolean variableSizeKnobs)  // If true, the scroll knobs are sized based on {@link #getMaxX()} or {@link #getMaxY()}.
+  public void setCancelTouchFocus(boolean cancelTouchFocus)  // When true (default) and flick scrolling begins, {@link #cancelTouchFocus()} is called.
+inner-class: ScrollPaneStyle extends arc.scene.style.Style
+// The style for a scroll pane, see {@link ScrollPane}.
+  fields:
+    public Drawable background  // Optional.
+    public Drawable hScroll  // Optional.
+    public Drawable vScroll  // Optional.
+  ctors:
+    public ScrollPaneStyle() / public ScrollPaneStyle(ScrollPaneStyle style)
+
+Slider.java
+Java class extends arc.scene.ui.ProgressBar
+// A slider is a horizontal indicator that allows a user to set a value.
+fields:
+  int draggingPointer
+  boolean mouseOver
+  private Interp visualInterpolationInverse
+  private float snapValues
+  private float threshold
+ctors:
+  public Slider(float min, float max, float stepSize, boolean vertical) / public Slider(float min, float max, float stepSize, boolean vertical, SliderStyle style)  // Creates a new slider.
+methods:
+  public SliderStyle getStyle()  // Returns the slider's style.
+  public void setStyle(SliderStyle style)
+  protected Drawable getKnobDrawable()
+  boolean calculatePositionAndValue(float x, float y)
+  public void moved(Floatc listener)
+  protected float snap(float value)  // Returns a snapped value.
+  public void setSnapToValues(float[] values, float threshold)  // Will make this progress bar snap to the specified values, if the knob is within the threshold.
+  public boolean isDragging()  // Returns true if the slider is being dragged.
+  public void setVisualInterpolationInverse(Interp interpolation)  // Sets the inverse interpolation to use for display.
+inner-class: SliderStyle extends arc.scene.ui.ProgressBar.ProgressBarStyle
+// The style for a slider, see {@link Slider}.
+  fields:
+    public Drawable knobOver  // Optional.
+
+TextArea.java
+Java class extends arc.scene.ui.TextField
+// A multiple-line text input field, entirely based on {@link TextField}
+fields:
+  protected IntSeq linesBreak  // Array storing starting and ending positions of each line.
+  protected int cursorLine  // Current line for the cursor *
+  protected int firstLineShowing  // Index of the first line showed by the text area *
+  protected float moveOffset  // Variable to maintain the x offset of the cursor when moving up and down.
+  protected String lastText  // Last text processed.
+  protected int linesShowing  // Number of lines showed by the text area *
+  protected float prefRows
+ctors:
+  public TextArea(String text) / public TextArea(String text, TextFieldStyle style)
+methods:
+  protected void initialize()
+  protected int letterUnderCursor(float x)
+  public void setPrefRows(float prefRows)  // Sets the preferred number of rows (lines) for this text area.
+  public float getPrefHeight()
+  public int getLines()  // Returns total number of lines that the text occupies *
+  public boolean newLineAtEnd()  // Returns if there's a new line at then end of the text *
+  public void moveCursorLine(int line)  // Moves the cursor to the given number line *
+  void updateCurrentLine()  // Updates the current line, checking the cursor position in the text *
+  void showCursor()  // Scroll the text area to show the line of the cursor *
+  private int calculateCurrentLineIndex(int cursor)  // Calculates the text area line for the given cursor position *
+  protected void sizeChanged()
+  protected float getTextY(Font font, Drawable background)
+  protected void drawSelection(Drawable selection, Font font, float x, float y)
+  protected void drawText(Font font, float x, float y)
+  protected void drawCursor(Drawable cursorPatch, Font font, float x, float y)
+  protected void calculateOffsets()
+  protected InputListener createInputListener()
+  public void setSelection(int selectionStart, int selectionEnd)
+  protected void moveCursor(boolean forward, boolean jump)
+  protected boolean continueCursor(int index, int offset)
+  public int getCursorLine()
+  public int getFirstLineShowing()
+  public int getLinesShowing()
+  public float getCursorX()
+  public float getCursorY()
+inner-class: TextAreaListener extends arc.scene.ui.TextField.TextFieldClickListener
+// Input listener for the text area *
+  methods:
+    protected void setCursorPosition(float x, float y)
+    protected boolean checkFocusTraverse(char character)
+    public boolean keyDown(InputEvent event, KeyCode keycode)
+    public boolean keyTyped(InputEvent event, char character)
+    protected void goHome(boolean jump)
+    protected void goEnd(boolean jump)
+
+TextButton.java
+Java class extends arc.scene.ui.Button
+// A button with a child {@link Label} to display text.
+fields:
+  protected final Label label
+  private TextButtonStyle style
+ctors:
+  public TextButton(String text) / public TextButton(String text, TextButtonStyle style)
+methods:
+  public TextButtonStyle getStyle()
+  public void setStyle(ButtonStyle style)
+  public void draw()
+  public Label getLabel()
+  public Cell<Label> getLabelCell()
+  public CharSequence getText()
+  public void setText(String text)
+inner-class: TextButtonStyle extends arc.scene.ui.Button.ButtonStyle
+// The style for a text button, see {@link TextButton}.
+  fields:
+    public Font font
+    public Color fontColor  // Optional.
+  ctors:
+    public TextButtonStyle() / public TextButtonStyle(Drawable up, Drawable down, Drawable checked, Font font) / public TextButtonStyle(TextButtonStyle style)
+
+TextField.java
+Java class extends arc.scene.Element implements arc.scene.utils.Disableable
+// A single-line text input field.
+fields:
+  static protected final char BACKSPACE
+  static protected final char TAB
+  static protected final char DELETE
+  static protected final char BULLET
+  private static final Vec2 tmp1
+  private static final Vec2 tmp2
+  private static final Vec2 tmp3
+  public static float keyRepeatInitialTime
+  public static float keyRepeatTime
+  public Object imeData  // Special field containing implementation-specific data for IME support.
+  protected final GlyphLayout layout
+  protected final FloatSeq glyphPositions
+  protected String text
+  protected int cursor
+  protected boolean hasSelection
+  protected boolean writeEnters
+  protected CharSequence displayText
+  protected float fontOffset
+  protected InputListener inputDialogListener
+  protected TextFieldStyle style
+  protected InputListener inputListener
+  protected TextFieldListener listener
+  protected TextFieldValidator validator
+  protected TextFieldFilter filter
+  protected boolean focusTraversal
+  protected String undoText
+  protected long lastChangeTime
+  protected boolean passwordMode
+  protected float renderOffset
+  protected boolean cursorOn
+  protected boolean hasInputDialog
+  protected long lastBlink
+  protected KeyRepeatTask keyRepeatTask
+  protected boolean programmaticChangeEvents
+  protected String messageText
+  protected int textHAlign
+  protected float selectionX
+  protected StringBuilder passwordBuffer
+  protected char passwordCharacter
+  protected int visibleTextStart
+  protected int maxLength
+  protected float blinkTime
+ctors:
+  public TextField() / public TextField(String text) / public TextField(String text, TextFieldStyle style)
+methods:
+  protected void initialize()
+  protected InputListener createInputListener()
+  protected int letterUnderCursor(float x)
+  protected boolean isWordCharacter(char c)
+  protected int[] wordUnderCursor(int at) / int[] wordUnderCursor(float x)
+  boolean withinMaxLength(int size)
+  public void removeInputDialog()
+  public void addInputDialog()
+  public int getMaxLength()
+  public void setMaxLength(int maxLength)
+  public void clearText()
+  public void setOnlyFontChars(boolean onlyFontChars)  // When false, text set by {@link #setText(String)} may contain characters not in the font, a space will be displayed instead.
+  public TextFieldStyle getStyle()  // Returns the text field's style.
+  public void setStyle(TextFieldStyle style)
+  protected void calculateOffsets()
+  private Drawable getBackgroundDrawable()
+  public void draw()
+  public boolean isValid()
+  protected float getTextY(Font font, Drawable background)
+  protected void drawSelection(Drawable selection, Font font, float x, float y)  // Draws selection rectangle *
+  protected void drawText(Font font, float x, float y)
+  protected void drawCursor(Drawable cursorPatch, Font font, float x, float y)
+  protected void updateDisplayText()
+  private void blink()
+  public void copy()  // Copies the contents of this TextField to the lipboard implementation set on this TextField.
+  public void cut() / void cut(boolean fireChangeEvent)  // Copies the selected contents of this TextField to the Clipboard implementation set on this TextField, then removes
+  public void paste(String content, boolean fireChangeEvent)
+  String insert(int position, CharSequence text, String to)
+  int delete(boolean fireChangeEvent)
+  public void next(boolean up)  // Focuses the next TextField.
+  private TextField findNextTextField(Seq<Element> elements, TextField best, Vec2 bestCoords, Vec2 currentCoords, boolean up)
+  public InputListener getDefaultInputListener()
+  public void setTextFieldListener(TextFieldListener listener)  // @param listener May be null.
+  public void typed(char ch, Runnable run) / public void typed(Cons<Character> cons)
+  public TextFieldFilter getFilter()
+  public void setFilter(TextFieldFilter filter)  // @param filter May be null.
+  public void setValidator(TextFieldValidator validator)
+  public TextFieldValidator getValidator()
+  public void setFocusTraversal(boolean focusTraversal)  // If true (the default), tab/shift+tab will move to the next text field.
+  public String getMessageText()  // @return May be null.
+  public void setMessageText(String messageText)  // Sets the text that will be drawn in the text field if no text has been entered.
+  public void appendText(String str)  // @param str If null, "" is used.
+  public String getText()  // @return Never null, might be an empty string.
+  public void setText(String str)  // @param str If null, "" is used.
+  boolean changeText(String oldText, String newText)  // @param oldText May be null.
+  public boolean getProgrammaticChangeEvents()
+  public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)  // If false, methods that change the text will not fire {@link ChangeEvent}, the event will be fired only when user changes
+  public int getSelectionStart()
+  public String getSelection()
+  public void setSelection(int selectionStart, int selectionEnd)  // Sets the selected text.
+  public void selectAll()
+  public void clearSelection()
+  public int getCursorPosition()
+  public void setCursorPosition(int cursorPosition)  // Sets the cursor position and clears any selection.
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public void setAlignment(int alignment)  // Sets text horizontal alignment (left, center or right).
+  public boolean isPasswordMode()
+  public void setPasswordMode(boolean passwordMode)  // If true, the text in this text field will be shown as bullet characters.
+  public void setPasswordCharacter(char passwordCharacter)  // Sets the password character for the text field.
+  public void setBlinkTime(float blinkTime)
+  public boolean isDisabled()
+  public void setDisabled(boolean disabled)
+  protected void moveCursor(boolean forward, boolean jump)
+  protected boolean continueCursor(int index, int offset)
+inner-interface: TextFieldListener
+// Interface for listening to typed characters.
+  methods:
+    void keyTyped(TextField textField, char c)
+inner-interface: TextFieldFilter
+// Interface for filtering characters entered into the text field.
+  fields:
+    TextFieldFilter digitsOnly
+    TextFieldFilter floatsOnly
+  methods:
+    boolean acceptChar(TextField textField, char c)
+inner-interface: TextFieldValidator
+  methods:
+    boolean valid(String text)
+inner-class: TextFieldStyle extends arc.scene.style.Style
+// The style for a text field, see {@link TextField}.
+  fields:
+    public Font font
+    public Color fontColor
+    public Color focusedFontColor  // Optional.
+    public Drawable background  // Optional.
+    public Font messageFont  // Optional.
+    public Color messageFontColor  // Optional.
+  ctors:
+    public TextFieldStyle() / public TextFieldStyle(TextFieldStyle style)
+inner-class: KeyRepeatTask extends arc.util.Timer.Task
+  fields:
+    KeyCode keycode
+  methods:
+    public void run()
+inner-class: TextFieldClickListener extends arc.scene.event.ClickListener
+// Basic input listener for the text field
+  methods:
+    public void clicked(InputEvent event, float x, float y)
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public void touchDragged(InputEvent event, float x, float y, int pointer)
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+    protected void setCursorPosition(float x, float y)
+    protected void goHome(boolean jump)
+    protected void goEnd(boolean jump)
+    public boolean keyDown(InputEvent event, KeyCode keycode)
+    protected void scheduleKeyRepeatTask(KeyCode keycode)
+    public boolean keyUp(InputEvent event, KeyCode keycode)
+    protected boolean checkFocusTraverse(char character)
+    public boolean keyTyped(InputEvent event, char character)
+
+Tooltip.java
+Java class extends arc.scene.event.InputListener
+// A listener that shows a tooltip element when another element is hovered over with the mouse.
+fields:
+  static Vec2 tmp
+  public final Tooltips manager
+  public final Table container
+  public boolean allowMobile
+  protected Element targetActor
+  protected Runnable show
+ctors:
+  public Tooltip(Cons<Table> contents) / public Tooltip(Cons<Table> contents, Runnable show) / public Tooltip(Cons<Table> contents, Tooltips manager)
+methods:
+  public Tooltips getManager()
+  public Table getContainer()
+  public void setInstant(boolean instant)  // If true, this tooltip is shown without delay when hovered.
+  public void setAlways(boolean always)  // If true, this tooltip is shown even when tooltips are not {@link Tooltips#enabled}.
+  public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public boolean mouseMoved(InputEvent event, float x, float y)
+  protected void setContainerPosition(Element element, float x, float y)
+  public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+  public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+  public void show(Element element, float x, float y)
+  public void hide()
+inner-class: Tooltips
+// Keeps track of an application's tooltips.
+  fields:
+    private static Tooltips instance
+    public Func<String,Tooltip> textProvider  // Default text tooltip provider.
+    public float initialTime  // Seconds from when an element is hovered to when the tooltip is shown.
+    public float subsequentTime  // Once a tooltip is shown, this is used instead of {@link #initialTime}.
+    public float resetTime  // Seconds to use {@link #subsequentTime}.
+    public boolean enabled  // If false, tooltips will not be shown.
+    public boolean animations  // If false, tooltips will be shown without animations.
+    public float offsetX  // The distance from the mouse position to offset the tooltip element.
+    public float edgeDistance  // The distance from the tooltip element position to the edge of the screen where the element will be shown on the other side of
+    float time
+    final Task resetTask
+    Tooltip showTooltip
+    final Task showTask
+  methods:
+    public static Tooltips getInstance()
+    public Tooltip create(String text) / public Tooltip create(String text, boolean mobile)
+    public void touchDown(Tooltip tooltip)
+    public void enter(Tooltip tooltip)
+    public void hide(Tooltip tooltip)
+    protected void showAction(Tooltip tooltip)  // Called when tooltip is shown.
+    protected void hideAction(Tooltip tooltip)  // Called when tooltip is hidden.
+    public void instant()  // Shows all tooltips on hover without a delay for {@link #resetTime} seconds.
+
+Touchpad.java
+Java class extends arc.scene.Element
+// An on-screen joystick.
+fields:
+  private final Circle knobBounds
+  private final Circle touchBounds
+  private final Circle deadzoneBounds
+  private final Vec2 knobPosition
+  private final Vec2 knobPercent
+  boolean touched
+  boolean resetOnTouchUp
+  private TouchpadStyle style
+  private float deadzoneRadius
+ctors:
+  public Touchpad(float deadzoneRadius) / public Touchpad(float deadzoneRadius, TouchpadStyle style)  // @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved.
+methods:
+  void calculatePositionAndValue(float x, float y, boolean isTouchUp)
+  public TouchpadStyle getStyle()  // Returns the touchpad's style.
+  public void setStyle(TouchpadStyle style)
+  public Element hit(float x, float y, boolean touchable)
+  public void layout()
+  public void draw()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public boolean isTouched()
+  public boolean getResetOnTouchUp()
+  public void setResetOnTouchUp(boolean reset)  // @param reset Whether to reset the knob to the center on touch up.
+  public void setDeadzone(float deadzoneRadius)  // @param deadzoneRadius The distance in pixels from the center of the touchpad required for the knob to be moved.
+  public float getKnobX()  // Returns the x-position of the knob relative to the center of the widget.
+  public float getKnobY()  // Returns the y-position of the knob relative to the center of the widget.
+  public float getKnobPercentX()  // Returns the x-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
+  public float getKnobPercentY()  // Returns the y-position of the knob as a percentage from the center of the touchpad to the edge of the circular movement
+inner-class: TouchpadStyle
+// The style for a {@link Touchpad}.
+  fields:
+    public Drawable background  // Stretched in both directions.
+    public Drawable knob  // Optional.
+  ctors:
+    public TouchpadStyle() / public TouchpadStyle(Drawable background, Drawable knob) / public TouchpadStyle(TouchpadStyle style)
+
+TreeElement.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+// A tree widget where each node has an icon, element, and child nodes.
+fields:
+  final Seq<TreeElementNode> rootNodes
+  final Selection<TreeElementNode> selection
+  TreeStyle style
+  float ySpacing
+  TreeElementNode overNode
+  private float leftColumnWidth
+  private boolean sizeInvalid
+  private TreeElementNode foundNode
+  private ClickListener clickListener
+ctors:
+  public TreeElement() / public TreeElement(TreeStyle style)
+methods:
+  static boolean findExpandedObjects(Seq<TreeElementNode> nodes, Seq<Object> objects) / public void findExpandedObjects(Seq objects)
+  static TreeElementNode findNode(Seq<TreeElementNode> nodes, Object object) / public TreeElementNode findNode(Object object)  // Returns the node with the specified object, or null.
+  static void collapseAll(Seq<TreeElementNode> nodes) / public void collapseAll()
+  static void expandAll(Seq<TreeElementNode> nodes) / public void expandAll()
+  private void initialize()
+  public void add(TreeElementNode node)
+  public void insert(int index, TreeElementNode node)
+  public void remove(TreeElementNode node)
+  public void clearChildren()  // Removes all tree nodes.
+  public Seq<TreeElementNode> getNodes()
+  public void invalidate()
+  private void computeSize() / private void computeSize(Seq<TreeElementNode> nodes, float indent)
+  public void layout() / private float layout(Seq<TreeElementNode> nodes, float indent, float y)
+  public void draw() / private void draw(Seq<TreeElementNode> nodes, float indent)  // Draws selection, icons, and expand icons.
+  protected void drawBackground()  // Called to draw the background.
+  public TreeElementNode getNodeAt(float y) / private float getNodeAt(Seq<TreeElementNode> nodes, float y, float rowY)  // @return May be null.
+  void selectNodes(Seq<TreeElementNode> nodes, float low, float high)
+  public Selection<TreeElementNode> getSelection()
+  public TreeStyle getStyle()
+  public void setStyle(TreeStyle style)
+  public Seq<TreeElementNode> getRootNodes()
+  public TreeElementNode getOverNode()  // @return May be null.
+  public void setOverNode(TreeElementNode overNode)  // @param overNode May be null.
+  public Object getOverObject()  // @return May be null.
+  public void setPadding(float padding)  // Sets the amount of horizontal space between the nodes and the left/right edges of the tree.
+  public float getIndentSpacing()  // Returns the amount of horizontal space for indentation level.
+  public float getYSpacing()
+  public void setYSpacing(float ySpacing)  // Sets the amount of vertical space between nodes.
+  public void setIconSpacing(float left, float right)  // Sets the amount of horizontal space between the node elements and icons.
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public void restoreExpandedObjects(Seq objects)
+  public ClickListener getClickListener()  // Returns the click listener the tree uses for clicking on nodes and the over node.
+inner-class: TreeElementNode
+  fields:
+    final Seq<TreeElementNode> children
+    Cons<Cons<TreeElementNode>> childProvider
+    Element element
+    TreeElementNode parent
+    boolean selectable
+    boolean expanded
+    Drawable icon
+    float height
+    Object object
+  ctors:
+    public TreeElementNode(Element element)
+  methods:
+    public TreeElementNode children(Cons<Cons<TreeElementNode>> provider)  // Adds a child node provider that only gets called on-demand.
+    public TreeElementNode hoverable(boolean hover)
+    public boolean hasChildren()
+    protected void addToTree(TreeElement tree)  // Called to add the element to the tree when the node's parent is expanded.
+    protected void removeFromTree(TreeElement tree)  // Called to remove the element from the tree when the node's parent is collapsed.
+    public TreeElementNode add(TreeElementNode node)
+    public TreeElementNode addAll(Seq<TreeElementNode> nodes)
+    public void insert(int index, TreeElementNode node)
+    public void remove() / public void remove(TreeElementNode node)
+    public void removeAll()
+    public TreeElement getTree()  // Returns the tree this node is currently in, or null.
+    public boolean isExpanded()
+    public void setExpanded(boolean expanded)
+    public Seq<TreeElementNode> getChildren()  // If the children order is changed, {@link #updateChildren()} must be called.
+    public void updateChildren()
+    public TreeElementNode getParent()  // @return May be null.
+    public Object getObject()
+    public void setObject(Object object)  // Sets an application specific object for this node.
+    public Drawable getIcon()
+    public void setIcon(Drawable icon)  // Sets an icon that will be drawn to the left of the element.
+    public int getLevel()
+    public TreeElementNode findNode(Object object)  // Returns this node or the child node with the specified object, or null.
+    public void collapseAll()  // Collapses all nodes under and including this node.
+    public void expandAll()  // Expands all nodes under and including this node.
+    public void expandTo()  // Expands all parent nodes of this node.
+    public boolean isSelectable()
+    public void setSelectable(boolean selectable)
+    public void findExpandedObjects(Seq<Object> objects)
+    public void restoreExpandedObjects(Seq objects)
+    public float getHeight()  // Returns the height of the node as calculated for layout.
+inner-class: TreeStyle
+// The style for a {@link TreeElement}.
+  fields:
+    public Drawable plus
+    public Drawable over  // Optional.
+  ctors:
+    public TreeStyle() / public TreeStyle(Drawable plus, Drawable minus, Drawable selection) / public TreeStyle(TreeStyle style)
+

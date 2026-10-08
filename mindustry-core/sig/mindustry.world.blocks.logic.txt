@@ -1,0 +1,305 @@
+CanvasBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public float padding
+  public int canvasSize
+  public int palette
+  public int bitsPerPixel
+  public IntIntMap colorToIndex
+  public TextureRegion side1
+  public TextureRegion side2
+  public TextureRegion corner1
+  public TextureRegion corner2
+  protected Pixmap previewPixmap  // please use only for previews
+  protected Texture previewTexture
+  protected int tempBlend
+ctors:
+  public CanvasBlock(String name)
+methods:
+  public void setPaletteFromString(String value)
+  public void init()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public Pixmap makePixmap(byte[] data, Pixmap target)
+  protected int getByte(byte[] data, int bitOffset)
+inner-class: CanvasBuild extends mindustry.gen.Building implements mindustry.logic.LReadable, mindustry.logic.LWritable
+  fields:
+    public Texture texture
+    public byte data
+    public int blending
+    protected boolean invalidated
+  methods:
+    public void setPixel(int pos, int index)
+    public double getPixel(int pos)
+    public void updateTexture()
+    public byte[] packPixmap(Pixmap pixmap)
+    protected void setByte(byte[] bytes, int bitOffset, int value)
+    public void onProximityUpdate()
+    public void afterPickedUp()
+    public void dropped()
+    public boolean readable(LExecutor exec)
+    public void read(LVar position, LVar output) / public void read(Reads read, byte revision)
+    public boolean writable(LExecutor exec)
+    public void write(LVar position, LVar value) / public void write(Writes write)
+    boolean blends(Tile other)
+    public void draw()
+    public double sense(LAccess sensor)
+    public void remove()
+    public void buildConfiguration(Table table)
+    public boolean onConfigureBuildTapped(Building other)
+    public byte[] config()
+
+LogicBlock.java
+Java class extends mindustry.world.Block
+fields:
+  private static final int maxByteLen
+  private static final int maxCompressedLen
+  private static final int maxLinks
+  public static final int maxNameLength
+  private static final IntSet usedBuildings
+  private static final IntSeq waitIndices
+  private static final FloatSeq waitValues
+  public int maxInstructionScale
+  public int instructionsPerTick
+  public int maxInstructionsPerTick  // privileged only
+  public float range
+ctors:
+  public LogicBlock(String name)
+methods:
+  public boolean checkForceDark(Tile tile)
+  public boolean accessible()
+  public boolean canBreak(Tile tile)
+  public static String getLinkName(Block block)
+  public static byte[] compress(String code, Seq<LogicLink> links) / public static byte[] compress(byte[] bytes, Seq<LogicLink> links)
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public Object pointConfig(Object config, Cons<Point2> transformer)
+inner-class: LogicLink
+  fields:
+    public boolean valid
+    public int x
+    public String name
+    public Building lastBuild
+    public LVar logicVar
+  ctors:
+    public LogicLink(int x, int y, String name, boolean valid)
+  methods:
+    public void trySet(LExecutor exec, Object value)
+    public LogicLink copy()
+inner-class: LogicBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.logic.LReadable, mindustry.logic.LWritable
+  fields:
+    public String code  // logic "source code" as list of asm statements
+    public LExecutor executor
+    public float accumulator
+    public Seq<LogicLink> links
+    public ObjectIntMap<String> linkMap
+    public boolean checkedDuplicates
+    public int ipt
+    public String tag  // Display name, for convenience.
+    public char iconTag
+    public LVar linksVar
+    public Runnable loadBlock  // Block of code to run after load.
+  methods:
+    public void readCompressed(byte[] data, boolean relative)
+    public String findLinkName(Block block)
+    public void updateCode(String str) / public void updateCode(String str, boolean keep, Cons<LAssembler> assemble)
+    public boolean collide(Bullet other)  // editor-only processors cannot be damaged or destroyed
+    public boolean displayable()
+    public void damage(float damage)
+    public void removeFromProximity()
+    public Cursor getCursor()
+    public boolean canPickup()  // logic blocks cause write problems when picked up
+    public float range()
+    public void updateTile()
+    public void updateLinks()
+    public boolean readable(LExecutor exec)
+    public void read(LVar position, LVar output) / public void read(Reads read, byte revision)
+    public Building optionalLink(String name)
+    public boolean writable(LExecutor exec)
+    public void write(LVar position, LVar value) / public void write(Writes write)
+    public byte[] config()
+    public Seq<LogicLink> relativeConnections()
+    public void drawConfigure()
+    public void drawSelect()
+    public boolean validLink(Building other)
+    public boolean shouldShowConfigure(Player player)
+    public void buildConfiguration(Table table)
+    public void showEditDialog() / public void showEditDialog(boolean forceEditor)
+    public boolean onConfigureBuildTapped(Building other)
+    public byte version()
+    public void checkReadCode()
+    public void afterReadAll()
+
+LogicDisplay.java
+Java class extends mindustry.world.Block
+fields:
+  public static final byte commandClear
+  public static final Seq<LogicDisplayBuild> displays
+  public static final int displayDrawType  // When the content type of a draw command is this number, it counts as a display.
+  public static final float scaleStep
+  public int maxSides
+  public int displaySize
+  public float scaleFactor
+  public Color backgroundColor
+ctors:
+  public LogicDisplay(String name)
+methods:
+  public void setStats()
+  public void init()
+  static int unpackSign(int value)
+inner-class: LogicDisplayBuild extends mindustry.gen.Building implements mindustry.logic.LDrawable
+  fields:
+    public LogicDisplayBuild rootDisplay  // The root display (bottom left corner of display for tileable displays)
+    public FrameBuffer buffer
+    public float color
+    public float stroke
+    public LongQueue commands
+    public Mat transform
+    public long operations
+    public int index
+    public boolean processing
+  methods:
+    public void draw() / public void draw(LongSeq graphicsBuffer)
+    public double sense(LAccess sensor)
+    public boolean drawable(LExecutor exec)
+    public void ensureBuffer()
+    public void getBufferRegion(TextureRegion region)
+    public void processCommands()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public void add()
+    public void remove()
+inner-class: DisplayCmdStruct
+  fields:
+    public int type
+    public int x  // at least 9 bits are required for full 360 degrees
+
+MemoryBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public int memoryCapacity
+ctors:
+  public MemoryBlock(String name)
+methods:
+  public void setStats()
+  public boolean accessible()
+  public double sense(LAccess sensor)
+  public boolean canBreak(Tile tile)
+inner-class: MemoryBuild extends mindustry.gen.Building implements mindustry.logic.LReadable, mindustry.logic.LWritable
+  fields:
+    private static final Object sentinel  // Marks a memory slot as being stored in {@code numberMemory} (instead of {@code objectMemory})
+    private Object objectMemory  // Objects stored in this memory building
+    private double numberMemory  // Numbers stored in this memory building
+  methods:
+    public boolean canPickup()  // massive byte size means picking up causes sync issues
+    public boolean collide(Bullet other)
+    public boolean displayable()
+    public boolean readable(LExecutor exec)
+    public void read(LVar position, LVar output) / public void read(Reads read, byte revision)
+    public boolean writable(LExecutor exec)
+    public void write(LVar position, LVar value) / public void write(Writes write)
+    public double sense(LAccess sensor)
+    public void damage(float damage)
+    public byte version()
+    public void afterReadAll()
+
+MessageBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public int maxTextLength  // writeUTF maximum UTF-8 length per char is 3, so 3*400 = 1200 bytes, the max string byte size
+  public int maxNewlines
+ctors:
+  public MessageBlock(String name)
+methods:
+  public boolean accessible()
+  public boolean canBreak(Tile tile)
+inner-class: MessageBuild extends mindustry.gen.Building implements mindustry.logic.LReadable, mindustry.logic.LPrintable
+  fields:
+    public StringBuilder message
+  methods:
+    public void drawSelect()
+    public boolean shouldShowConfigure(Player player)
+    public void buildConfiguration(Table table)
+    public boolean onConfigureBuildTapped(Building other)
+    public Cursor getCursor()
+    public boolean readable(LExecutor exec)
+    public void read(LVar position, LVar output) / public void read(Reads read, byte revision)
+    public boolean printable(LExecutor exec)
+    public void print(StringBuilder text)
+    public double sense(LAccess sensor)
+    public void damage(float damage)
+    public boolean canPickup()
+    public boolean collide(Bullet other)
+    public void handleString(Object value)
+    public void updateTableAlign(Table table)
+    public String config()
+    public void write(Writes write)
+
+SwitchBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public Sound clickSound
+  public TextureRegion onRegion
+ctors:
+  public SwitchBlock(String name)
+methods:
+  public boolean accessible()
+  public boolean canBreak(Tile tile)
+inner-class: SwitchBuild extends mindustry.gen.Building
+  methods:
+    public void damage(float damage)
+    public boolean canPickup()
+    public boolean collide(Bullet other)
+    public boolean configTapped()
+    public void draw()
+    public Boolean config()
+    public byte version()
+    public void read(Reads read, byte revision)
+    public void write(Writes write)
+
+TileableLogicDisplay.java
+Java class extends mindustry.world.blocks.logic.LogicDisplay
+fields:
+  protected static final Seq<TileableLogicDisplayBuild> queue
+  protected static final Seq<TileableLogicDisplayBuild> displays
+  protected static final ObjectSet<FrameBuffer> buffers
+  protected static final IntSet processed
+  public int maxDisplayDimensions  // in tiles
+  public TextureRegion tileRegion
+  public TextureRegion backRegion
+  public int frameSize
+ctors:
+  public TileableLogicDisplay(String name)
+methods:
+  public static void linkDisplays(TileableLogicDisplayBuild start)
+inner-class: MergeBuffer
+  fields:
+    FrameBuffer buffer
+    int x
+  ctors:
+    MergeBuffer(FrameBuffer buffer, int x, int y, int width, int height)
+  methods:
+    public String toString()
+inner-class: TileableLogicDisplayBuild extends mindustry.world.blocks.logic.LogicDisplay.LogicDisplayBuild
+  fields:
+    public int tilesWidth  // size of display area
+    public Seq<MergeBuffer> prevBuffers
+    public int bits
+    public boolean needsUpdate
+    public long frameId
+    private final Runnable drawFull  // some JVM may allocate a new instance of Runnable each time the lambda is constructed in the code
+    private final Runnable drawTile
+  methods:
+    public double sense(LAccess sensor)
+    public void display(Table table)
+    public void onProximityUpdate()
+    public void draw() / public void draw(LongSeq graphicsBuffer)
+    private void drawFull()
+    private void drawTile()
+    public void ensureBuffer()
+    public void updateOthers()
+    public void updateTile()
+    public void onProximityAdded()
+    public void onProximityRemoved()
+    public boolean isRoot()
+

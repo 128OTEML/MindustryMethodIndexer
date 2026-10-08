@@ -1,0 +1,152 @@
+Attribute.java
+Java class
+fields:
+  public static Attribute all
+  public static ObjectMap<String,Attribute> map
+  public static final Attribute heat  // Heat content.
+  public final int id
+  public final String name
+ctors:
+  Attribute(int id, String name)
+methods:
+  public float env()  // @return the environmental value for this attribute.
+  public String toString()
+  public static Attribute get(String name)  // Never returns null, may throw an exception if not found.
+  public static Attribute getOrNull(String name)  // May return null.
+  public static boolean exists(String name)  // @return Whether an attribute exists.
+  public static Attribute add(String name)  // Automatically registers this attribute for use.
+
+BlockFlag.java
+(unknown)
+
+BlockGroup.java
+(unknown)
+
+BlockStatus.java
+(unknown)
+
+BuildVisibility.java
+Java class
+fields:
+  public static final BuildVisibility hidden
+  private final Boolp visible
+ctors:
+  public BuildVisibility(Boolp visible)
+methods:
+  public boolean visible()
+
+Env.java
+Java class
+// Environmental flags for different types of locations.
+fields:
+  public static final int terrestrial
+
+Stat.java
+Java class implements java.lang.Comparable
+// Describes one type of stat for content.
+fields:
+  public static final Seq<Stat> all
+  public static final Stat health
+  public final StatCat category
+  public final String name
+  public final int id
+ctors:
+  public Stat(String name, StatCat category) / public Stat(String name)
+methods:
+  public String localized()
+  public String toString()
+  public int compareTo(Stat o)
+
+StatCat.java
+Java class implements java.lang.Comparable
+// A specific category for a stat.
+fields:
+  public static final Seq<StatCat> all
+  public static final StatCat general
+  public final String name
+  public final int id
+ctors:
+  public StatCat(String name)
+methods:
+  public String localized()
+  public String toString()
+  public int compareTo(StatCat o)
+
+StatUnit.java
+Java class
+// Defines a unit of measurement for block stats.
+fields:
+  public static final StatUnit blocks
+  public final boolean space
+  public final String name
+  public String icon
+ctors:
+  public StatUnit(String name, boolean space) / public StatUnit(String name) / public StatUnit(String name, String icon)
+methods:
+  public String localized()
+
+StatValue.java
+Java interface
+// A base interface for a value of a stat that is displayed.
+methods:
+  void display(Table table)  // This method should provide all elements necessary to display this stat to the specified table.
+
+StatValues.java
+Java class
+// Utilities for displaying certain stats in a table.
+methods:
+  public static StatValue string(String value, Object args)
+  public static StatValue bool(boolean value)
+  public static String fixValue(float value)
+  public static StatValue squared(float value, StatUnit unit)
+  public static StatValue number(float value, StatUnit unit, boolean merge) / public static StatValue number(float value, StatUnit unit)
+  public static StatValue multiplierModifier(float value, StatUnit unit, boolean merge) / public static StatValue multiplierModifier(float value, StatUnit unit) / public static StatValue multiplierModifier(float value)
+  public static StatValue percentModifier(float value, StatUnit unit, boolean merge) / public static StatValue percentModifier(float value, StatUnit unit) / public static StatValue percentModifier(float value)
+  public static StatValue liquid(Liquid liquid, float amount, boolean perSecond)
+  public static StatValue liquids(Boolf<Liquid> filter, float amount, boolean perSecond) / public static StatValue liquids(float timePeriod, LiquidStack stacks) / public static StatValue liquids(float timePeriod, boolean perSecond, LiquidStack stacks)
+  public static StatValue items(ItemStack stacks) / public static StatValue items(boolean displayName, ItemStack stacks) / public static StatValue items(float timePeriod, ItemStack stacks) / public static StatValue items(Boolf<Item> filter) / public static StatValue items(float timePeriod, Boolf<Item> filter)
+  public static Table displayLiquid(Liquid liquid, float amount, boolean perSecond)
+  public static T withTooltip(T element, UnlockableContent content, boolean tooltip) / public static T withTooltip(T element, UnlockableContent content)
+  public static String statusText(StatusEffect status, float duration, float chance)  // Displays the chance for status effects
+  private static Stack stack(TextureRegion region, int amount, UnlockableContent content, boolean tooltip) / private static Stack stack(TextureRegion region, float amount, UnlockableContent content, boolean tooltip) / private static Stack stack(TextureRegion region, int amount, UnlockableContent content) / public static Stack stack(ItemStack stack) / public static Stack stack(UnlockableContent item, int amount) / public static Stack stack(UnlockableContent item, int amount, boolean tooltip) / public static Stack stack(UnlockableContent item, float amount, boolean tooltip) / public static Stack stack(Item item) / public static Stack stack(PayloadStack stack)  // Displays an item with a specified amount.
+  public static Table displayItem(Item item) / public static Table displayItem(Item item, int amount, boolean showName) / public static Table displayItem(Item item, int amount) / public static Table displayItem(Item item, int amount, float timePeriod, boolean showName) / public static Table displayItem(Item item, float amount, float timePeriod, boolean showName)  // Displays the item with a "/sec" qualifier based on the time period, in ticks.
+  public static Table displayItemPercent(Item item, int percent, boolean showName)  // Displays the item with a "/sec" qualifier based on the time period, in ticks.
+  public static StatValue content(UnlockableContent content) / public static StatValue content(Seq<UnlockableContent> list) / public static StatValue content(Seq<T> list, Boolf<T> check) / public static StatValue content(Seq<T> list, Boolf<T> check, String noneText)
+  public static StatValue blockEfficiency(Block floor, float multiplier, boolean startZero)
+  public static StatValue blocks(Attribute attr, boolean floating, float scale, boolean startZero) / public static StatValue blocks(Attribute attr, boolean floating, float scale1, float scale2, Seq<ItemStack> outputs, float timePeriod, boolean startZero) / public static StatValue blocks(Attribute attr, boolean floating, float scale, boolean startZero, boolean checkFloors) / public static StatValue blocks(Attribute attr, boolean floating, float scaleEff, float scaleAmount, Seq<ItemStack> outputs, float timePeriod, boolean startZero, boolean checkFloors) / public static StatValue blocks(Boolf<Block> pred) / public static StatValue blocks(Seq<Block> list)
+  public static StatValue statusEffects(Seq<StatusEffect> list)
+  public static StatValue drillables(float drillTime, float drillMultiplier, float size, ObjectFloatMap<Item> multipliers, Boolf<Block> filter)
+  public static StatValue boosters(float reload, float maxUsed, float multiplier, boolean baseReload, Boolf<Liquid> filter)
+  public static StatValue itemEffMultiplier(Floatf<Item> efficiency, float timePeriod, Boolf<Item> filter) / public static StatValue itemEffMultiplier(Floatf<Item> efficiency, float timePeriod, Boolf<Item> filter, ObjectFloatMap<Item> itemDurationMultipliers)
+  public static StatValue liquidEffMultiplier(Floatf<Liquid> efficiency, float amount, Boolf<Liquid> filter)
+  public static StatValue speedBoosters(String unit, float amount, float speed, boolean strength, Boolf<Liquid> filter)
+  public static StatValue itemBoosters(String unit, float timePeriod, float speedBoost, float rangeBoost, ItemStack[] items)
+  public static StatValue weapons(UnitType unit, Seq<Weapon> weapons)
+  public static StatValue abilities(Seq<Ability> abilities)
+  public static StatValue ammo(ObjectMap<T,BulletType> map) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean showUnit) / public static StatValue ammo(ObjectMap<T,BulletType> map, String blockName) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean showUnit, String blockName) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean nested, boolean showUnit) / public static StatValue ammo(ObjectMap<T,BulletType> map, boolean nested, boolean showUnit, String blockName)
+  private static Cell<?> tableInfo(Table table, String key)  // Adds an info table with an icon and description key from the bundle
+  private static Cell<?> note(Table table, String text)  // Adds a note under a value
+  private static Cell<?> sep(Table table, String text)  // for AmmoListValue
+  private static String ammoStat(float val)  // for AmmoListValue
+  private static String multStat(float val)
+  private static TextureRegion icon(UnlockableContent t)
+
+Stats.java
+Java class
+// Hold and organizes a list of block stats.
+fields:
+  public boolean useCategories  // Whether to display stats with categories.
+  public boolean intialized  // @deprecated does nothing, will be removed in v9
+  public float timePeriod  // Production time period in ticks.
+  private OrderedMap<StatCat,OrderedMap<Stat,Seq<StatValue>>> map
+  private boolean dirty
+methods:
+  public void add(Stat stat, float value, StatUnit unit) / public void add(Stat stat, float value) / public void add(Stat stat, boolean value) / public void add(Stat stat, Item item) / public void add(Stat stat, ItemStack item) / public void add(Stat stat, Liquid liquid, float amount, boolean perSecond) / public void add(Stat stat, Attribute attr) / public void add(Stat stat, Attribute attr, float scale) / public void add(Stat stat, Attribute attr, boolean floating) / public void add(Stat stat, Attribute attr, boolean floating, float scale, boolean startZero) / public void add(Stat stat, Attribute attr, boolean floating, float scale1, float scale2, Seq<ItemStack> outputs, float timePeriod, boolean startZero) / public void add(Stat stat, String format, Object args) / public void add(Stat stat, StatValue value)  // Adds a single float value with this stat, formatted to 2 decimal places.
+  public void addPercent(Stat stat, float value)  // Adds an integer percent stat value.
+  public void addMultModifier(Stat stat, float value)  // Adds a multiplicative modifier stat value.
+  public void addPercentModifier(Stat stat, float value)  // Adds an percent modifier stat value.
+  public void replace(Stat stat, StatValue value)  // Replaces a stat, removing the old value if it exists.
+  public void remove(Stat stat)  // Removes a stat, if it exists.
+  public OrderedMap<StatCat,OrderedMap<Stat,Seq<StatValue>>> toMap()
+  public void statInfo(Cell<?> cell, Stat stat)
+

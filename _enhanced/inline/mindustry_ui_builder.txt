@@ -1,0 +1,304 @@
+// MenuBuilder.java : public static MenuBuilder of(NodeBuilder<?> ui) / public static MenuBuilder of(String dslString)
+    public static MenuBuilder of(NodeBuilder<?> ui){
+        var builder = new MenuBuilder();
+        builder.ui = ui;
+        return builder;
+    }
+
+// MenuBuilder.java : public void show(Player player)
+    public void show(Player player){
+        Call.menuBuilder(player.con, id, token, title, hideOnClick, hideExisting, fillScreen, ui);
+    }
+
+// MenuBuilder.java : public void showAll()
+    public void showAll(){
+        Call.menuBuilder(id, token, title, hideOnClick, hideExisting, fillScreen, ui);
+    }
+
+// MenuBuilder.java : public void update(Player player, String elementId)
+    public void update(Player player, String elementId){
+        Call.menuBuilderUpdate(player.con, id, elementId, ui);
+    }
+
+// MenuBuilder.java : public MenuBuilder hideExisting(boolean hideExisting)
+    public MenuBuilder hideExisting(boolean hideExisting){
+        this.hideExisting = hideExisting;
+        return this;
+    }
+
+// MenuBuilder.java : public MenuBuilder token(long token)
+    public MenuBuilder token(long token){
+        this.token = token;
+        return this;
+    }
+
+// MenuBuilder.java : public MenuBuilder title(String title)
+    public MenuBuilder title(String title){
+        this.title = title;
+        return this;
+    }
+
+// MenuBuilder.java : public MenuBuilder hideOnClick(boolean hideOnClick)
+    public MenuBuilder hideOnClick(boolean hideOnClick){
+        this.hideOnClick = hideOnClick;
+        return this;
+    }
+
+// MenuBuilder.java : public MenuBuilder fillScreen(boolean fillScreen)
+    public MenuBuilder fillScreen(boolean fillScreen){
+        this.fillScreen = fillScreen;
+        return this;
+    }
+
+// MenuBuilder.java : public MenuBuilder id(int id)
+    public MenuBuilder id(int id){
+        this.id = id;
+        return this;
+    }
+
+// MenuResult.java : public boolean wasCancelled()
+    public boolean wasCancelled(){
+        return result == null;
+    }
+
+// MenuResult.java : public boolean is(String text)
+    public boolean is(String text){
+        return Structs.eq(text, result);
+    }
+
+// MenuResult.java : public String getString(String id, String defaultValue) / public String getString(String id)
+    public String getString(String id, String defaultValue){
+        return values.get(id) instanceof String s ? s : defaultValue;
+    }
+
+// MenuResult.java : public float getFloat(String id, float def) / public float getFloat(String id)
+    public float getFloat(String id, float def){
+        return values.get(id) instanceof Float s ? s : def;
+    }
+
+// MenuResult.java : public boolean getBool(String id, boolean def) / public boolean getBool(String id)
+    public boolean getBool(String id, boolean def){
+        return values.get(id) instanceof Boolean s ? s : def;
+    }
+
+// MenuResult.java : public String toString()
+    @Override
+    public String toString(){
+        return "MenuResult{" +
+        "token=" + token +
+        ", result='" + result + '\'' +
+        ", values=" + values +
+        '}';
+    }
+
+// UiBuilder.java : public static TableBuilder parse(String source)
+    public static TableBuilder parse(String source){ return UiDslParser.parse(source); }
+
+// UiBuilder.java : public static TableBuilder table()
+    public static TableBuilder table(){ return new TableBuilder(); }
+
+// UiBuilder.java : public static StackBuilder stack()
+    public static StackBuilder stack(){ return new StackBuilder(); }
+
+// UiBuilder.java : public static PaneBuilder pane()
+    public static PaneBuilder pane(){ return new PaneBuilder(); }
+
+// UiBuilder.java : public static LabelBuilder label(String text)
+    public static LabelBuilder label(String text){ return new LabelBuilder().text(text); }
+
+// UiBuilder.java : public static ImageBuilder image() / public static ImageBuilder image(String region)
+    public static ImageBuilder image(){ return new ImageBuilder(); }
+
+// UiBuilder.java : public static ButtonBuilder button(String text)
+    public static ButtonBuilder button(String text){ return new ButtonBuilder().text(text); }
+
+// UiBuilder.java : public static ImageButtonBuilder imageButton(String icon)
+    public static ImageButtonBuilder imageButton(String icon){ return new ImageButtonBuilder().icon(icon); }
+
+// UiBuilder.java : public static FieldBuilder field(String text)
+    public static FieldBuilder field(String text){ return new FieldBuilder().text(text); }
+
+// UiBuilder.java : public static CheckBuilder check() / public static CheckBuilder check(String text)
+    public static CheckBuilder check(){ return new CheckBuilder(); }
+
+// UiBuilder.java : public static SliderBuilder slider(float min, float max, float step)
+    public static SliderBuilder slider(float min, float max, float step){ return new SliderBuilder().min(min).max(max).step(step); }
+
+// UiBuilder.java : public static SpaceBuilder space()
+    public static SpaceBuilder space(){ return new SpaceBuilder(); }
+
+// UiBuilder.java : public static DefaultsBuilder defaults()
+    public static DefaultsBuilder defaults(){ return new DefaultsBuilder(); }
+
+// UiBuilder.java : public static ButtonTableBuilder buttonTable()
+    public static ButtonTableBuilder buttonTable(){ return new ButtonTableBuilder(); }
+
+// UiDslParser.java : public static TableBuilder parse(String source)
+    public static TableBuilder parse(String source){
+        TableBuilder root = new TableBuilder();
+        UiDslParser p = new UiDslParser(source);
+        p.parseStatementsInto(root);
+        p.skipWs();
+        if(!p.atEnd()) throw new SerializationException("Unexpected character '" + p.peek() + "' at line " + p.line(p.pos));
+        return root;
+    }
+
+// UiDslParser.java : private void parseStatementsInto(NodeBuilder<?> node)
+    private void parseStatementsInto(NodeBuilder<?> node){
+        skipWs();
+        while(!atEnd() && peek() != '}'){
+
+// UiDslParser.java : private static UiKey getShorthandType(UiKey key)
+    private static UiKey getShorthandType(UiKey key){
+        return switch(key){
+            case image -> UiKey.region;
+            default -> UiKey.text;
+        };
+    }
+
+// UiDslParser.java : private String parseValue()
+    private String parseValue(){
+        skipWs();
+        if(!atEnd() && peek() == '"'){
+            lastQuoted = true;
+            return parseString();
+        }
+        lastQuoted = false;
+        String tok = readBareToken();
+        if(tok.isEmpty()) throw new SerializationException("Expected value at line " + line(pos));
+        return tok;
+    }
+
+// UiDslParser.java : private String readBareToken()
+    private String readBareToken(){
+        int start = pos;
+        while(!atEnd()){
+            char c = src.charAt(pos);
+            if(Character.isWhitespace(c) || c == '{' || c == '}' || c == ':') break;
+            pos++;
+        }
+        return src.substring(start, pos);
+    }
+
+// UiDslParser.java : private void skipWs()
+    private void skipWs(){
+        while(!atEnd()){
+            char c = src.charAt(pos);
+            if(Character.isWhitespace(c)){ pos++; continue; }
+            if(c == '/' && pos + 1 < src.length() && src.charAt(pos + 1) == '/'){ // line comment
+                while(!atEnd() && src.charAt(pos) != '\n') pos++;
+                continue;
+            }
+            break;
+        }
+    }
+
+// UiDslParser.java : private void expect(char c)
+    private void expect(char c){
+        if(atEnd() || peek() != c) throw new SerializationException("Expected '" + c + "', found '" + (atEnd() ? "<eof>" : peek()) + "' at line " + line(pos));
+        pos++;
+    }
+
+// UiDslParser.java : private boolean atEnd()
+    private boolean atEnd(){
+        return pos >= src.length();
+    }
+
+// UiDslParser.java : private char peek()
+    private char peek(){
+        return src.charAt(pos);
+    }
+
+// UiDslParser.java : private int line(int index)
+    private int line(int index){
+        int line = 1;
+        int end = Math.min(index, src.length());
+        for(int i = 0; i < end; i++){
+            if(src.charAt(i) == '\n') line++;
+        }
+        return line;
+    }
+
+// UiDslWriter.java : public static String write(NodeBuilder<?> root)
+    public static String write(NodeBuilder<?> root){
+        StringBuilder sb = new StringBuilder();
+        writeEntries(sb, root.entries, 0);
+        return sb.toString();
+    }
+
+// UiDslWriter.java : private static UiKey shorthandType(UiKey key)
+    private static UiKey shorthandType(UiKey key){
+        return switch(key){
+            case image -> UiKey.region;
+            default -> UiKey.text;
+        };
+    }
+
+// UiDslWriter.java : private static String formatValue(Object value)
+    private static String formatValue(Object value){
+        if(value instanceof Boolean b) return b ? "true" : "false";
+        if(value instanceof Float f) return formatFloat(f);
+        if(value instanceof String s) return needsQuotes(s) ? quote(s) : s;
+        throw new IllegalArgumentException("Unsupported value type: " + value);
+    }
+
+// UiDslWriter.java : private static String formatFloat(float f)
+    private static String formatFloat(float f){
+        if(f == (long)f) return Long.toString((long)f);
+        return Float.toString(f);
+    }
+
+// UiDslWriter.java : private static void indent(StringBuilder sb, int depth)
+    private static void indent(StringBuilder sb, int depth){
+        for(int i = 0; i < depth; i++) sb.append("  ");
+    }
+
+// UiStyleLookup.java : public static T get(Class<T> type, String name)
+    public static <T> @Nullable T get(Class<T> type, String name){
+        if(styles.isEmpty()) init();
+        return (T)styles.get(type, ObjectMap::new).get(name);
+    }
+
+// UiStyleLookup.java : private static void init()
+    private static void init(){
+        for(var field : Styles.class.getFields()){
+            try{
+                styles.get(field.getType(), ObjectMap::new).put(field.getName(), field.get(null));
+            }catch(Exception e){
+                Log.err(e);
+            }
+        }
+    }
+
+// UiTreeBuilder.java : public static BuildResult build(Table root, NodeBuilder<?> builder) / public static BuildResult build(Table root, NodeBuilder<?> builder, Cons<MenuResult> resultListener)
+    public static BuildResult build(Table root, NodeBuilder<?> builder){
+        return build(root, builder, null);
+    }
+
+// UiTreeBuilder.java : private static boolean applyStyle(NodeBuilder<?> node, Class<S> styleType, Cons<S> setter)
+    private static <S> boolean applyStyle(NodeBuilder<?> node, Class<S> styleType, Cons<S> setter){
+        String name = node.str(UiKey.style);
+        if(name == null) return false;
+        S style = UiStyleLookup.get(styleType, name);
+        if(style != null){
+            setter.get(style);
+            return true;
+        }
+        return false;
+    }
+
+// UiTreeBuilder.java : private static void applyTableProp(Table table, UiKey key, Object value)
+    private static void applyTableProp(Table table, UiKey key, Object value){
+        switch(key){
+            case background -> table.setBackground(findDrawable((String)value));
+            case margin -> table.margin((Float)value);
+            case align -> table.align(parseAlign((String)value));
+            default -> {}
+        }
+    }
+
+// UiTreeBuilder.java : private static Drawable findDrawable(String name) / private static Drawable findDrawable(String name, String placeholder)
+    private static Drawable findDrawable(String name){
+        return findDrawable(name, "error");
+    }
+

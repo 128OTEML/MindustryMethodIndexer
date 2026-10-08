@@ -1,0 +1,3289 @@
+// BlockUnitComp.java : public void tile(Building tile)
+    public void tile(Building tile){
+        this.tile = tile;
+
+        //sets up block stats
+        maxHealth(tile.block.health);
+        health(tile.health);
+        hitSize(tile.block.size * tilesize * 0.7f);
+        set(tile);
+    }
+
+// BlockUnitComp.java : public void add()
+    @Override
+    public void add(){
+        if(tile == null){
+            throw new RuntimeException("Do not add BlockUnit entities to the game, they will simply crash. Internal use only.");
+        }
+    }
+
+// BlockUnitComp.java : public void update()
+    @Override
+    public void update(){
+        if(tile != null){
+            team = tile.team;
+        }
+    }
+
+// BlockUnitComp.java : public TextureRegion icon()
+    @Replace
+    @Override
+    public TextureRegion icon(){
+        return tile.block.uiIcon;
+    }
+
+// BlockUnitComp.java : public float ammof()
+    @Replace
+    @Override
+    public float ammof(){
+        return ammo;
+    }
+
+// BlockUnitComp.java : public void killed()
+    @Override
+    public void killed(){
+        tile.kill();
+    }
+
+// BlockUnitComp.java : public void damage(float v, boolean b)
+    @Replace
+    public void damage(float v, boolean b){
+        tile.damage(v, b);
+    }
+
+// BlockUnitComp.java : public boolean dead()
+    @Replace
+    public boolean dead(){
+        return tile == null || tile.dead();
+    }
+
+// BlockUnitComp.java : public boolean isValid()
+    @Replace
+    public boolean isValid(){
+        return tile != null && tile.isValid();
+    }
+
+// BlockUnitComp.java : public boolean isAdded()
+    @Replace
+    public boolean isAdded(){
+        return tile != null && tile.isValid();
+    }
+
+// BlockUnitComp.java : public void team(Team team)
+    @Replace
+    public void team(Team team){
+        if(tile != null && this.team != team){
+            this.team = team;
+            if(tile.team != team){
+                tile.changeTeam(team);
+            }
+        }
+    }
+
+// BuilderComp.java : public boolean canBuild()
+    public boolean canBuild(){
+        return type.buildSpeed > 0 && buildSpeedMultiplier > 0;
+    }
+
+// BuilderComp.java : public void update()
+    @Override
+    public void update(){
+        updateBuildLogic();
+    }
+
+// BuilderComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        //why would this happen?
+        if(plans == null){
+            plans = new Queue<>(1);
+        }
+    }
+
+// BuilderComp.java : void drawPlan(BuildPlan plan, float alpha)
+    void drawPlan(BuildPlan plan, float alpha){
+        plan.animScale = 1f;
+        if(plan.breaking){
+            control.input.drawBreaking(plan);
+        }else{
+            plan.block.drawPlan(plan, control.input.allPlans(),
+            Build.validPlace(plan.block, team, plan.x, plan.y, plan.rotation) || control.input.planMatches(plan),
+            alpha);
+        }
+    }
+
+// BuilderComp.java : void drawPlanTop(BuildPlan plan, float alpha)
+    void drawPlanTop(BuildPlan plan, float alpha){
+        if(!plan.breaking){
+            Draw.reset();
+            Draw.mixcol(Color.white, 0.24f + Mathf.absin(Time.globalTime, 6f, 0.28f));
+            Draw.alpha(alpha);
+            plan.block.drawPlanConfigTop(plan, plans);
+        }
+    }
+
+// BuilderComp.java : boolean shouldSkip(BuildPlan plan, Building core)
+    boolean shouldSkip(BuildPlan plan, @Nullable Building core){
+        if(state.rules.infiniteResources || team.rules().infiniteResources || plan.breaking || core == null || plan.isRotation(team) || plan.isDerelictRepair()) return false;
+
+        return (plan.stuck && !core.items.has(plan.block.requirements)) ||
+            (Structs.contains(plan.block.requirements, i -> !core.items.has(i.item, Math.min(i.amount, 15)) && Mathf.round(i.amount * state.rules.buildCostMultiplier) > 0));
+    }
+
+// BuilderComp.java : void removeBuild(int x, int y, boolean breaking)
+    void removeBuild(int x, int y, boolean breaking){
+        //remove matching plan
+        int idx = plans.indexOf(req -> req.breaking == breaking && req.x == x && req.y == y);
+        if(idx != -1){
+            plans.removeIndex(idx);
+        }
+    }
+
+// BuilderComp.java : boolean isBuilding()
+    boolean isBuilding(){
+        return plans.size != 0;
+    }
+
+// BuilderComp.java : void clearBuilding()
+    void clearBuilding(){
+        plans.clear();
+    }
+
+// BuilderComp.java : void addBuild(BuildPlan place) / void addBuild(BuildPlan place, boolean tail)
+    void addBuild(BuildPlan place){
+        addBuild(place, true);
+    }
+
+// BuilderComp.java : boolean activelyBuilding()
+    boolean activelyBuilding(){
+        //not actively building when not near the build plan
+        if(isBuilding()){
+            var plan = buildPlan();
+            if(!state.isEditor() && plan != null && !within(plan, state.rules.infiniteResources ? Float.MAX_VALUE : type.buildRange)){
+                return false;
+            }
+        }
+        return isBuilding() && updateBuilding;
+    }
+
+// BuilderComp.java : BuildPlan buildPlan()
+    @Nullable BuildPlan buildPlan(){
+        return plans.size == 0 ? null : plans.first();
+    }
+
+// BuildingComp.java : public void add()
+    @Override
+    public void add(){
+        if(power != null){
+            power.graph.checkAdd();
+        }
+    }
+
+// BuildingComp.java : public int tileX()
+    @Override
+    @Replace
+    public int tileX(){
+        return tile.x;
+    }
+
+// BuildingComp.java : public int tileY()
+    @Override
+    @Replace
+    public int tileY(){
+        return tile.y;
+    }
+
+// BuildingComp.java : public int moduleBitmask()
+    public int moduleBitmask(){
+        return
+        (items != null ? 1 : 0) |
+        (power != null ? 1 << 1 : 0) |
+        (liquids != null ? 1 << 2 : 0) |
+        1 << 3 | //old consume module
+        (timeScale != 1f ? 1 << 4 : 0) |
+        (lastDisabler != null && lastDisabler.isValid() ? 1 << 5 : 0);
+    }
+
+// BuildingComp.java : public void writeAll(Writes write)
+    public void writeAll(Writes write){
+        writeBase(write);
+        write(write);
+    }
+
+// BuildingComp.java : public void readAll(Reads read, byte revision)
+    public void readAll(Reads read, byte revision){
+        readBase(read);
+        read(read, revision);
+    }
+
+// BuildingComp.java : public void writeSync(Writes write)
+    public void writeSync(Writes write){
+        writeAll(write);
+    }
+
+// BuildingComp.java : public void readSync(Reads read, byte revision)
+    public void readSync(Reads read, byte revision){
+        readAll(read, revision);
+    }
+
+// BuildingComp.java : public void write(Writes write)
+    @CallSuper
+    public void write(Writes write){
+        //overriden by subclasses!
+    }
+
+// BuildingComp.java : public void read(Reads read, byte revision)
+    @CallSuper
+    public void read(Reads read, byte revision){
+        //overriden by subclasses!
+    }
+
+// BuildingComp.java : public void addPlan(boolean checkPrevious) / public void addPlan(boolean checkPrevious, boolean ignoreConditions)
+    public void addPlan(boolean checkPrevious){
+        addPlan(checkPrevious, false);
+    }
+
+// BuildingComp.java : public void configure(Object value)
+    public void configure(Object value){
+        //save last used config
+        block.lastConfig = value;
+        Call.tileConfig(player, self(), value);
+    }
+
+// BuildingComp.java : public void configureAny(Object value)
+    public void configureAny(Object value){
+        Call.tileConfig(null, self(), value);
+    }
+
+// BuildingComp.java : public void deselect()
+    public void deselect(){
+        if(!headless && control.input.config.getSelected() == self()){
+            control.input.config.hideConfig();
+        }
+    }
+
+// BuildingComp.java : public boolean configTapped()
+    public boolean configTapped(){
+        return true;
+    }
+
+// BuildingComp.java : public float calculateHeat(float[] sideHeat) / public float calculateHeat(float[] sideHeat, IntSet cameFrom)
+    public float calculateHeat(float[] sideHeat){
+        return calculateHeat(sideHeat, null);
+    }
+
+// BuildingComp.java : public void applyBoost(float intensity, float duration)
+    public void applyBoost(float intensity, float duration){
+        if(!block.canOverdrive) return;
+        //do not refresh time scale when getting a lower intensity
+        if(intensity >= this.timeScale - 0.001f){
+            timeScaleDuration = Math.max(timeScaleDuration, duration);
+        }
+        timeScale = Math.max(timeScale, intensity);
+    }
+
+// BuildingComp.java : public void applySlowdown(float intensity, float duration)
+    public void applySlowdown(float intensity, float duration){
+        //do not refresh time scale when getting a higher intensity
+        if(intensity <= this.timeScale + 0.001f){
+            timeScaleDuration = Math.max(timeScaleDuration, duration);
+        }
+        timeScale = Math.min(timeScale, intensity);
+    }
+
+// BuildingComp.java : public void applyHealSuppression(float amount) / public void applyHealSuppression(float amount, Color suppressColor)
+    public void applyHealSuppression(float amount){
+        applyHealSuppression(amount, Pal.sapBullet);
+    }
+
+// BuildingComp.java : public boolean isHealSuppressed()
+    public boolean isHealSuppressed(){
+        return block.suppressable && Time.time <= healSuppressionTime;
+    }
+
+// BuildingComp.java : public void recentlyHealed()
+    public void recentlyHealed(){
+        lastHealTime = Time.time;
+    }
+
+// BuildingComp.java : public boolean wasRecentlyHealed(float duration)
+    public boolean wasRecentlyHealed(float duration){
+        return lastHealTime + duration >= Time.time;
+    }
+
+// BuildingComp.java : public boolean wasRecentlyDamaged()
+    public boolean wasRecentlyDamaged(){
+        return lastDamageTime + recentDamageTime >= Time.time;
+    }
+
+// BuildingComp.java : public void eachEdge(Cons<Tile> cons)
+    public void eachEdge(Cons<Tile> cons){
+        for(var edge : block.getEdges()){
+            Tile other = world.tile(tile.x + edge.x, tile.y + edge.y);
+            if(other != null){
+                cons.get(other);
+            }
+        }
+    }
+
+// BuildingComp.java : public Building nearby(int dx, int dy) / public Building nearby(int rotation)
+    public Building nearby(int dx, int dy){
+        return world.build(tile.x + dx, tile.y + dy);
+    }
+
+// BuildingComp.java : public byte relativeTo(Tile tile) / public byte relativeTo(Building build) / public byte relativeTo(int cx, int cy)
+    public byte relativeTo(Tile tile){
+        return relativeTo(tile.x, tile.y);
+    }
+
+// BuildingComp.java : public byte relativeToEdge(Tile other)
+    public byte relativeToEdge(Tile other){
+        return relativeTo(Edges.getFacingEdge(other, tile));
+    }
+
+// BuildingComp.java : public Building front()
+    public @Nullable Building front(){
+        int trns = block.size/2 + 1;
+        return nearby(Geometry.d4(rotation).x * trns, Geometry.d4(rotation).y * trns);
+    }
+
+// BuildingComp.java : public Building back()
+    public @Nullable Building back(){
+        int trns = block.size/2 + 1;
+        return nearby(Geometry.d4(rotation + 2).x * trns, Geometry.d4(rotation + 2).y * trns);
+    }
+
+// BuildingComp.java : public Building left()
+    public @Nullable Building left(){
+        int trns = block.size/2 + 1;
+        return nearby(Geometry.d4(rotation + 1).x * trns, Geometry.d4(rotation + 1).y * trns);
+    }
+
+// BuildingComp.java : public Building right()
+    public @Nullable Building right(){
+        int trns = block.size/2 + 1;
+        return nearby(Geometry.d4(rotation + 3).x * trns, Geometry.d4(rotation + 3).y * trns);
+    }
+
+// BuildingComp.java : public float fogRadius()
+    public float fogRadius(){
+        return block.fogRadius;
+    }
+
+// BuildingComp.java : public int pos()
+    public int pos(){
+        return tile.pos();
+    }
+
+// BuildingComp.java : public float rotdeg()
+    public float rotdeg(){
+        return rotation * 90;
+    }
+
+// BuildingComp.java : public float drawrot()
+    public float drawrot(){
+        return block.rotate && block.rotateDraw ? rotation * 90 : 0f;
+    }
+
+// BuildingComp.java : public Floor floor()
+    public Floor floor(){
+        return tile.floor();
+    }
+
+// BuildingComp.java : public boolean interactable(Team team)
+    public boolean interactable(Team team){
+        return state.teams.canInteract(team, team());
+    }
+
+// BuildingComp.java : public float timeScale()
+    public float timeScale(){
+        return timeScale;
+    }
+
+// BuildingComp.java : public float warmup()
+    public float warmup(){
+        return 0f;
+    }
+
+// BuildingComp.java : public float totalProgress()
+    public float totalProgress(){
+        return Time.time;
+    }
+
+// BuildingComp.java : public float progress()
+    public float progress(){
+        return 0f;
+    }
+
+// BuildingComp.java : public boolean allowUpdate()
+    public boolean allowUpdate(){
+        return team != Team.derelict && block.supportsEnv(state.rules.env) &&
+            //check if outside map limit (privileged blocks are exempt)
+            (tile instanceof EditorTile || block.privileged || !state.rules.limitMapArea || !state.rules.disableOutsideArea || Rect.contains(state.rules.limitX, state.rules.limitY, state.rules.limitWidth, state.rules.limitHeight, tile.x, tile.y));
+    }
+
+// BuildingComp.java : public boolean inMapArea()
+    public boolean inMapArea(){
+        return !state.rules.limitMapArea || Rect.contains(state.rules.limitX * tilesize, state.rules.limitY * tilesize, state.rules.limitWidth * tilesize, state.rules.limitHeight * tilesize, x, y);
+    }
+
+// BuildingComp.java : public void sleep()
+    public void sleep(){
+        sleepTime += Time.delta;
+        if(!sleeping && sleepTime >= timeToSleep){
+            remove();
+            sleeping = true;
+            sleepingEntities++;
+        }
+    }
+
+// BuildingComp.java : public void noSleep()
+    public void noSleep(){
+        sleepTime = 0f;
+        if(sleeping){
+            add();
+            sleeping = false;
+            sleepingEntities--;
+        }
+    }
+
+// BuildingComp.java : public byte version()
+    public byte version(){
+        return 0;
+    }
+
+// BuildingComp.java : public boolean canControlSelect(Unit player)
+    public boolean canControlSelect(Unit player){
+        return false;
+    }
+
+// BuildingComp.java : public void onControlSelect(Unit player)
+    public void onControlSelect(Unit player){
+
+    }
+
+// BuildingComp.java : public void onCommand(Vec2 target)
+    public void onCommand(Vec2 target){
+
+    }
+
+// BuildingComp.java : public Vec2 getCommandPosition()
+    public @Nullable Vec2 getCommandPosition(){
+        return null;
+    }
+
+// BuildingComp.java : public boolean canWithdraw()
+    public boolean canWithdraw(){
+        return true;
+    }
+
+// BuildingComp.java : public boolean canUnload()
+    public boolean canUnload(){
+        return block.unloadable;
+    }
+
+// BuildingComp.java : public boolean canResupply()
+    public boolean canResupply(){
+        return block.allowResupply;
+    }
+
+// BuildingComp.java : public boolean payloadCheck(int conveyorRotation)
+    public boolean payloadCheck(int conveyorRotation){
+        return block.rotate && (rotation + 2) % 4 == conveyorRotation;
+    }
+
+// BuildingComp.java : public void itemTaken(Item item)
+    public void itemTaken(Item item){
+
+    }
+
+// BuildingComp.java : public boolean allowDeposit()
+    public boolean allowDeposit(){
+        return block.alwaysAllowDeposit || !state.rules.onlyDepositCore;
+    }
+
+// BuildingComp.java : public void dropped()
+    public void dropped(){
+
+    }
+
+// BuildingComp.java : public void handleString(Object value)
+    public void handleString(Object value){
+
+    }
+
+// BuildingComp.java : public void created()
+    public void created(){}
+
+// BuildingComp.java : public boolean shouldConsume()
+    public boolean shouldConsume(){
+        return enabled;
+    }
+
+// BuildingComp.java : public boolean productionValid()
+    public boolean productionValid(){
+        return true;
+    }
+
+// BuildingComp.java : public boolean consumeTriggerValid()
+    public boolean consumeTriggerValid(){
+        return false;
+    }
+
+// BuildingComp.java : public float getPowerProduction()
+    public float getPowerProduction(){
+        return 0f;
+    }
+
+// BuildingComp.java : public int acceptStack(Item item, int amount, Teamc source)
+    public int acceptStack(Item item, int amount, Teamc source){
+        if(acceptItem(self(), item) && block.hasItems && (source == null || source.team() == team)){
+            return Math.min(getMaximumAccepted(item) - items.get(item), amount);
+        }else{
+            return 0;
+        }
+    }
+
+// BuildingComp.java : public int getMaximumAccepted(Item item)
+    public int getMaximumAccepted(Item item){
+        return block.itemCapacity;
+    }
+
+// BuildingComp.java : public int removeStack(Item item, int amount)
+    public int removeStack(Item item, int amount){
+        if(items == null) return 0;
+        amount = Math.min(amount, items.get(item));
+        noSleep();
+        items.remove(item, amount);
+        return amount;
+    }
+
+// BuildingComp.java : public void handleStack(Item item, int amount, Teamc source)
+    public void handleStack(Item item, int amount, @Nullable Teamc source){
+        noSleep();
+        items.add(item, amount);
+    }
+
+// BuildingComp.java : public void getStackOffset(Item item, Vec2 trns)
+    public void getStackOffset(Item item, Vec2 trns){
+
+    }
+
+// BuildingComp.java : public boolean acceptPayload(Building source, Payload payload)
+    public boolean acceptPayload(Building source, Payload payload){
+        return false;
+    }
+
+// BuildingComp.java : public void handlePayload(Building source, Payload payload)
+    public void handlePayload(Building source, Payload payload){
+
+    }
+
+// BuildingComp.java : public boolean movePayload(Payload todump)
+    public boolean movePayload(Payload todump){
+        int trns = block.size/2 + 1;
+        Tile next = tile.nearby(Geometry.d4(rotation).x * trns, Geometry.d4(rotation).y * trns);
+
+        if(next != null && next.build != null && next.build.team == team && next.build.acceptPayload(self(), todump)){
+            next.build.handlePayload(self(), todump);
+            return true;
+        }
+
+        return false;
+    }
+
+// BuildingComp.java : public boolean canBeReplaced(Block other)
+    public boolean canBeReplaced(Block other){
+        return other.canReplace(block);
+    }
+
+// BuildingComp.java : public void handleItem(Building source, Item item)
+    public void handleItem(Building source, Item item){
+        items.add(item, 1);
+    }
+
+// BuildingComp.java : public boolean acceptItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item){
+        return block.consumesItem(item) && items.get(item) < getMaximumAccepted(item);
+    }
+
+// BuildingComp.java : public boolean acceptLiquid(Building source, Liquid liquid)
+    public boolean acceptLiquid(Building source, Liquid liquid){
+        return block.hasLiquids && block.consumesLiquid(liquid);
+    }
+
+// BuildingComp.java : public void handleLiquid(Building source, Liquid liquid, float amount)
+    public void handleLiquid(Building source, Liquid liquid, float amount){
+        liquids.add(liquid, amount);
+    }
+
+// BuildingComp.java : public void dumpLiquid(Liquid liquid) / public void dumpLiquid(Liquid liquid, float scaling) / public void dumpLiquid(Liquid liquid, float scaling, int outputDir)
+    public void dumpLiquid(Liquid liquid){
+        dumpLiquid(liquid, 2f);
+    }
+
+// BuildingComp.java : public boolean canDumpLiquid(Building to, Liquid liquid)
+    public boolean canDumpLiquid(Building to, Liquid liquid){
+        return true;
+    }
+
+// BuildingComp.java : public void transferLiquid(Building next, float amount, Liquid liquid)
+    public void transferLiquid(Building next, float amount, Liquid liquid){
+        float flow = Math.min(next.block.liquidCapacity - next.liquids.get(liquid), amount);
+
+        if(next.acceptLiquid(self(), liquid)){
+            next.handleLiquid(self(), liquid, flow);
+            liquids.remove(liquid, flow);
+        }
+    }
+
+// BuildingComp.java : public Building getLiquidDestination(Building from, Liquid liquid)
+    public Building getLiquidDestination(Building from, Liquid liquid){
+        return self();
+    }
+
+// BuildingComp.java : public Payload getPayload()
+    public @Nullable Payload getPayload(){
+        return null;
+    }
+
+// BuildingComp.java : public Payload takePayload()
+    public @Nullable Payload takePayload(){
+        return null;
+    }
+
+// BuildingComp.java : public PayloadSeq getPayloads()
+    public @Nullable PayloadSeq getPayloads(){
+        return null;
+    }
+
+// BuildingComp.java : public void produced(Item item) / public void produced(Item item, int amount)
+    public void produced(Item item){
+        produced(item, 1);
+    }
+
+// BuildingComp.java : public boolean dumpAccumulate() / public boolean dumpAccumulate(Item item)
+    public boolean dumpAccumulate(){
+        return dumpAccumulate(null);
+    }
+
+// BuildingComp.java : public boolean dump() / public boolean dump(Item todump)
+    public boolean dump(){
+        return dump(null);
+    }
+
+// BuildingComp.java : public void incrementDump(int prox)
+    public void incrementDump(int prox){
+        //this is possible if transferring an item changed a block
+        if(prox != 0){
+            cdump = ((cdump + 1) % prox);
+        }
+    }
+
+// BuildingComp.java : public boolean canDump(Building to, Item item)
+    public boolean canDump(Building to, Item item){
+        return true;
+    }
+
+// BuildingComp.java : public boolean moveForward(Item item)
+    public boolean moveForward(Item item){
+        Building other = front();
+        if(other != null && other.team == team && other.acceptItem(self(), item)){
+            other.handleItem(self(), item);
+            return true;
+        }
+        return false;
+    }
+
+// BuildingComp.java : public void onProximityRemoved()
+    public void onProximityRemoved(){
+        if(power != null){
+            powerGraphRemoved();
+        }
+    }
+
+// BuildingComp.java : public void onProximityAdded()
+    public void onProximityAdded(){
+        if(power != null){
+            updatePowerGraph();
+        }
+    }
+
+// BuildingComp.java : public void onProximityUpdate()
+    public void onProximityUpdate(){
+        noSleep();
+    }
+
+// BuildingComp.java : public void updatePowerGraph()
+    public void updatePowerGraph(){
+        for(Building other : getPowerConnections(tempBuilds)){
+            if(other.power != null){
+                other.power.graph.addGraph(power.graph);
+            }
+        }
+    }
+
+// BuildingComp.java : public boolean conductsTo(Building other)
+    public boolean conductsTo(Building other){
+        return !block.insulated;
+    }
+
+// BuildingComp.java : public float getProgressIncrease(float baseTime)
+    public float getProgressIncrease(float baseTime){
+        return 1f / baseTime * edelta();
+    }
+
+// BuildingComp.java : public float getDisplayEfficiency()
+    public float getDisplayEfficiency(){
+        return getProgressIncrease(1f) / edelta();
+    }
+
+// BuildingComp.java : public boolean shouldAmbientSound()
+    public boolean shouldAmbientSound(){
+        return shouldConsume();
+    }
+
+// BuildingComp.java : public void drawCracks()
+    public void drawCracks(){
+        if(!block.drawCracks || !damaged() || block.size > BlockRenderer.maxCrackSize) return;
+        int id = pos();
+        TextureRegion region = renderer.blocks.cracks[block.size - 1][Mathf.clamp((int)((1f - healthf()) * BlockRenderer.crackRegions), 0, BlockRenderer.crackRegions-1)];
+        Draw.colorl(0.2f, 0.1f + (1f - healthf())* 0.6f);
+        //TODO could be random, flipped, pseudorandom, etc
+        Draw.rect(region, x, y, (id%4)*90);
+        Draw.color();
+    }
+
+// BuildingComp.java : public void drawSelect()
+    public void drawSelect(){
+        block.drawOverlay(x, y, rotation);
+        if(status() == BlockStatus.inactiveUnitFactory){
+            block.drawPlaceText(Core.bundle.format("rules.unitfactoryactivation.objective", UI.formatTime((float)Math.max(0f, state.rules.unitActivationDelay(team) - state.tick))), tile.x, tile.y, false);
+        }
+    }
+
+// BuildingComp.java : public void drawItemSelection(UnlockableContent selection)
+    public void drawItemSelection(@Nullable UnlockableContent selection){
+        if(selection != null){
+            float dx = x - block.size * tilesize/2f, dy = y + block.size * tilesize/2f, s = iconSmall / 4f * selection.fullIcon.ratio(), h = iconSmall / 4f;
+            Draw.mixcol(Color.darkGray, 1f);
+            Draw.rect(selection.fullIcon, dx, dy - 1, s, h);
+            Draw.reset();
+            Draw.rect(selection.fullIcon, dx, dy, s, h);
+        }
+    }
+
+// BuildingComp.java : public void drawDisabled()
+    public void drawDisabled(){
+        Draw.color(Color.scarlet);
+        Draw.alpha(0.8f);
+
+        float size = 6f;
+        Draw.rect(Icon.cancel.getRegion(), x, y, size, size);
+
+        Draw.reset();
+    }
+
+// BuildingComp.java : public void draw()
+    public void draw(){
+        if(block.variants == 0 || block.variantRegions == null){
+            Draw.rect(block.region, x, y, drawrot());
+        }else{
+            Draw.rect(block.variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, block.variantRegions.length - 1))], x, y, drawrot());
+        }
+
+        drawTeamTop();
+    }
+
+// BuildingComp.java : public void drawCached()
+    public void drawCached(){
+        draw();
+    }
+
+// BuildingComp.java : public void recache()
+    public void recache(){
+        if(!headless) renderer.blocks.recacheBuilding(block.buildingCacheLayer, tile);
+    }
+
+// BuildingComp.java : public void payloadDraw()
+    public void payloadDraw(){
+        float z = Draw.z();
+        if(block.drawCached){
+            Draw.z(block.buildingCacheLayer.layer);
+            drawCached();
+        }
+        if(block.drawDynamic){
+            Draw.z(z);
+            draw();
+        }
+    }
+
+// BuildingComp.java : public void drawTeamTop()
+    public void drawTeamTop(){
+        if(block.teamRegion.found()){
+            if(block.teamRegions[team.id] == block.teamRegion) Draw.color(team.color);
+            Draw.rect(block.teamRegions[team.id], x, y);
+            Draw.color();
+        }
+    }
+
+// BuildingComp.java : public void drawLight()
+    public void drawLight(){
+        Liquid liq = block.hasLiquids && block.lightLiquid == null ? liquids.current() : block.lightLiquid;
+        if(block.hasLiquids && block.drawLiquidLight && liq.lightColor.a > 0.001f){
+            //yes, I am updating in draw()... but this is purely visual anyway, better have it here than in update() where it wastes time
+            visualLiquid = Mathf.lerpDelta(visualLiquid, liquids.get(liq)>= 0.01f ? 1f : 0f, 0.06f);
+            drawLiquidLight(liq, visualLiquid);
+        }
+    }
+
+// BuildingComp.java : public void drawLiquidLight(Liquid liquid, float amount)
+    public void drawLiquidLight(Liquid liquid, float amount){
+        if(amount > 0.01f){
+            Color color = liquid.lightColor;
+            float fract = 1f;
+            float opacity = color.a * fract;
+            if(opacity > 0.001f){
+                Drawf.light(x, y, block.size * 30f * fract, color, opacity * amount);
+            }
+        }
+    }
+
+// BuildingComp.java : public void drawTeam()
+    public void drawTeam(){
+        Draw.color(team.color);
+        Draw.rect("block-border", x - block.size * tilesize / 2f + 4, y - block.size * tilesize / 2f + 4);
+        Draw.color();
+    }
+
+// BuildingComp.java : public boolean checkSuppression()
+    public boolean checkSuppression(){
+        if(isHealSuppressed()){
+            if(Mathf.chanceDelta(0.03)){
+                Fx.regenSuppressParticle.at(x + Mathf.range(block.size * tilesize/2f - 1f), y + Mathf.range(block.size * tilesize/2f - 1f), suppressColor);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+// BuildingComp.java : public void playerPlaced(Object config)
+    @CallSuper
+    public void playerPlaced(Object config){
+
+    }
+
+// BuildingComp.java : public void onRepaired()
+    @CallSuper
+    public void onRepaired(){
+        placed();
+        if(block.flags.contains(BlockFlag.hasFogRadius)){
+            fogControl.forceUpdate(team, self());
+        }
+    }
+
+// BuildingComp.java : public boolean isCommandable()
+    public boolean isCommandable(){
+        return block.commandable;
+    }
+
+// BuildingComp.java : public boolean isPayload()
+    public boolean isPayload(){
+        return tile == emptyTile;
+    }
+
+// BuildingComp.java : public void overwrote(Seq<Building> previous)
+    public void overwrote(Seq<Building> previous){
+
+    }
+
+// BuildingComp.java : public void onRemoved()
+    public void onRemoved(){
+    }
+
+// BuildingComp.java : public void unitOn(Unit unit)
+    public void unitOn(Unit unit){
+    }
+
+// BuildingComp.java : public void unitOnAny(Unit unit)
+    public void unitOnAny(Unit unit){
+    }
+
+// BuildingComp.java : public void unitRemoved(Unit unit)
+    public void unitRemoved(Unit unit){
+    }
+
+// BuildingComp.java : public void puddleOn(Puddle puddle)
+    public void puddleOn(Puddle puddle){
+
+    }
+
+// BuildingComp.java : public void updateLastAccess(Player player)
+    public void updateLastAccess(Player player){
+        lastAccessed = player.coloredName();
+    }
+
+// BuildingComp.java : public void tapped()
+    public void tapped(){
+
+    }
+
+// BuildingComp.java : public void afterDestroyed()
+    public void afterDestroyed(){
+        if(block.destroyBullet != null){
+            //I really do not like that the bullet will not destroy derelict
+            //but I can't do anything about it without using a random team
+            //which may or may not cause issues with servers and js
+            block.destroyBullet.create(this, block.destroyBulletSameTeam ? team : Team.derelict, x, y, Mathf.randomSeed(id(), 360f));
+        }
+    }
+
+// BuildingComp.java : public int explosionItemCap()
+    public int explosionItemCap(){
+        return block.itemCapacity;
+    }
+
+// BuildingComp.java : public void onDeconstructed(Unit builder)
+    public void onDeconstructed(@Nullable Unit builder){
+        //deposit non-incinerable liquid on ground
+        if(liquids != null && liquids.currentAmount() > 0 && (!liquids.current().incinerable || block.deconstructDropAllLiquid)){
+            float perCell = liquids.currentAmount() / (block.size * block.size) * 2f;
+            tile.getLinkedTiles(other -> Puddles.deposit(other, liquids.current(), perCell));
+        }
+    }
+
+// BuildingComp.java : public void playDestroySound()
+    public void playDestroySound(){
+        block.destroySound.at(tile, Mathf.random(block.destroyPitchMin, block.destroyPitchMax), block.destroySoundVolume);
+    }
+
+// BuildingComp.java : public String getDisplayName()
+    public String getDisplayName(){
+        //derelict team icon currently doesn't display
+        return team == Team.derelict ?
+            block.localizedName + "\n" + Core.bundle.get("block.derelict") :
+            block.localizedName + (team == player.team() || team.emoji.isEmpty() ? "" : " " + team.emoji);
+    }
+
+// BuildingComp.java : public TextureRegion getDisplayIcon()
+    public TextureRegion getDisplayIcon(){
+        return block.uiIcon;
+    }
+
+// BuildingComp.java : public ItemModule flowItems()
+    public ItemModule flowItems(){
+        return items;
+    }
+
+// BuildingComp.java : public void displayConsumption(Table table)
+    public void displayConsumption(Table table){
+        table.left();
+        for(Consume cons : block.consumers){
+            if(cons.optional && cons.booster) continue;
+            cons.build(self(), table);
+        }
+    }
+
+// BuildingComp.java : public void displayBars(Table table)
+    public void displayBars(Table table){
+        for(Func<Building, Bar> bar : block.listBars()){
+            var result = bar.get(self());
+            if(result == null) continue;
+            table.add(result).growX();
+            table.row();
+        }
+    }
+
+// BuildingComp.java : public void buildConfiguration(Table table)
+    public void buildConfiguration(Table table){
+    }
+
+// BuildingComp.java : public void updateTableAlign(Table table)
+    public void updateTableAlign(Table table){
+        Vec2 pos = Core.input.mouseScreen(x, y - block.size * tilesize / 2f - 1);
+        table.setPosition(pos.x - Core.scene.marginLeft, pos.y - Core.scene.marginBottom, Align.top);
+    }
+
+// BuildingComp.java : public Cursor getCursor()
+    public Cursor getCursor(){
+        return block.configurable && interactable(player.team()) ? SystemCursor.hand : SystemCursor.arrow;
+    }
+
+// BuildingComp.java : public boolean onConfigureBuildTapped(Building other)
+    public boolean onConfigureBuildTapped(Building other){
+        if(block.clearOnDoubleTap){
+            if(self() == other){
+                deselect();
+                configure(null);
+                return false;
+            }
+            return true;
+        }
+        return self() != other;
+    }
+
+// BuildingComp.java : public boolean onConfigureTapped(float x, float y)
+    public boolean onConfigureTapped(float x, float y){
+        return false;
+    }
+
+// BuildingComp.java : public void onConfigureClosed()
+    public void onConfigureClosed(){}
+
+// BuildingComp.java : public boolean shouldShowConfigure(Player player)
+    public boolean shouldShowConfigure(Player player){
+        return true;
+    }
+
+// BuildingComp.java : public boolean shouldHideConfigure(Player player)
+    public boolean shouldHideConfigure(Player player){
+        return false;
+    }
+
+// BuildingComp.java : public void drawConfigure()
+    public void drawConfigure(){
+        Draw.color(Pal.accent);
+        Lines.stroke(1f);
+        Lines.square(x, y, block.size * tilesize / 2f + 1f);
+        Draw.reset();
+    }
+
+// BuildingComp.java : public boolean checkSolid()
+    public boolean checkSolid(){
+        return false;
+    }
+
+// BuildingComp.java : public float handleDamage(float amount)
+    public float handleDamage(float amount){
+        return amount;
+    }
+
+// BuildingComp.java : public boolean absorbLasers()
+    public boolean absorbLasers(){
+        return block.absorbLasers;
+    }
+
+// BuildingComp.java : public boolean isInsulated()
+    public boolean isInsulated(){
+        return block.insulated;
+    }
+
+// BuildingComp.java : public boolean collide(Bullet other)
+    public boolean collide(Bullet other){
+        return true;
+    }
+
+// BuildingComp.java : public void damage(Team source, float damage) / public void damage(Bullet bullet, Team source, float damage) / public void damage(float damage)
+    public void damage(@Nullable Team source, float damage){
+        damage(damage);
+    }
+
+// BuildingComp.java : public void changeTeam(Team next) / public void changeTeam(Team next, boolean updatePower)
+    public void changeTeam(Team next){
+        changeTeam(next, true);
+    }
+
+// BuildingComp.java : public boolean canPickup()
+    public boolean canPickup(){
+        return block.allowedInPayloads;
+    }
+
+// BuildingComp.java : public void pickedUp()
+    public void pickedUp(){
+
+    }
+
+// BuildingComp.java : public void afterPickedUp()
+    public void afterPickedUp(){
+        if(power != null){
+            //TODO can lead to ghost graphs?
+            power.graph = new PowerGraph();
+            power.links.clear();
+            if(block.consPower != null && !block.consPower.buffered){
+                power.status = 0f;
+            }
+        }
+    }
+
+// BuildingComp.java : public void onNearbyBuildAdded(Building other)
+    public void onNearbyBuildAdded(Building other){}
+
+// BuildingComp.java : public void consume()
+    public void consume(){
+        for(Consume cons : block.consumers){
+            cons.trigger(self());
+        }
+    }
+
+// BuildingComp.java : public boolean canConsume()
+    public boolean canConsume(){
+        return potentialEfficiency > 0;
+    }
+
+// BuildingComp.java : public float delta()
+    public float delta(){
+        return Time.delta * timeScale;
+    }
+
+// BuildingComp.java : public float edelta()
+    public float edelta(){
+        return efficiency * delta();
+    }
+
+// BuildingComp.java : public void updateEfficiencyMultiplier()
+    public void updateEfficiencyMultiplier(){
+        float scale = efficiencyScale();
+        efficiency *= scale;
+        optionalEfficiency *= scale;
+    }
+
+// BuildingComp.java : public float efficiencyScale()
+    public float efficiencyScale(){
+        return 1f;
+    }
+
+// BuildingComp.java : public void updatePayload(Unit unitHolder, Building buildingHolder)
+    public void updatePayload(@Nullable Unit unitHolder, @Nullable Building buildingHolder){
+        update();
+    }
+
+// BuildingComp.java : public void updateTile()
+    public void updateTile(){
+
+    }
+
+// BuildingComp.java : public float ambientVolume()
+    public float ambientVolume(){
+        return efficiency;
+    }
+
+// BuildingComp.java : public Object config()
+    @Nullable
+    public Object config(){
+        return null;
+    }
+
+// BuildingComp.java : public boolean isValid()
+    @Replace
+    @Override
+    public boolean isValid(){
+        return tile.build == self() && !dead();
+    }
+
+// BuildingComp.java : public void heal() / public void heal(float amount)
+    @MethodPriority(100)
+    @Override
+    public void heal(){
+        healthChanged();
+    }
+
+// BuildingComp.java : public float hitSize()
+    @Override
+    public float hitSize(){
+        return tile.block().size * tilesize;
+    }
+
+// BuildingComp.java : public void kill()
+    @Replace
+    @Override
+    public void kill(){
+        Call.buildDestroyed(self());
+    }
+
+// BuildingComp.java : public void healthChanged()
+    public void healthChanged(){
+        //server-side, health updates are batched.
+        if(net.server()){
+            netServer.buildHealthUpdate(self());
+        }
+
+        indexer.notifyHealthChanged(self());
+    }
+
+// BuildingComp.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        return switch(sensor){
+            case type -> block;
+            case firstItem -> items == null ? null : items.first();
+            case config -> block.configSenseable() ? config() : null;
+            case payloadType -> getPayload() instanceof UnitPayload p1 ? p1.unit.type : getPayload() instanceof BuildPayload p2 ? p2.block() : null;
+            default -> noSensed;
+        };
+    }
+
+// BuildingComp.java : public void control(LAccess type, double p1, double p2, double p3, double p4) / public void control(LAccess type, Object p1, double p2, double p3, double p4)
+    @Override
+    public void control(LAccess type, double p1, double p2, double p3, double p4){
+        if(type == LAccess.enabled){
+            enabled = !Mathf.zero((float)p1);
+        }
+    }
+
+// BuildingComp.java : public void killed()
+    @Override
+    public void killed(){
+        dead = true;
+        Events.fire(new BlockDestroyEvent(tile));
+        onDestroyed();
+        if(tile != emptyTile){
+            tile.remove();
+        }
+        remove();
+        afterDestroyed();
+    }
+
+// BuildingComp.java : public void checkAllowUpdate()
+    public void checkAllowUpdate(){
+        if(!allowUpdate()){
+            enabled = false;
+        }
+    }
+
+// BuildingComp.java : public void updateFogVisibility()
+    public void updateFogVisibility(){
+        if(!wasVisible && !inFogTo(player.team())){
+            visibleFlags |= (1L << player.team().id);
+            wasVisible = true;
+            renderer.blocks.updateShadow(self());
+            renderer.minimap.update(tile);
+            if(block.drawCached) recache();
+        }
+    }
+
+// BuildingComp.java : public float getAmbientVolume()
+    @Override
+    public float getAmbientVolume(){
+        return block.ambientSoundVolume * ambientVolume();
+    }
+
+// BuildingComp.java : public Sound getAmbientSound()
+    @Override
+    public Sound getAmbientSound(){
+        return block.ambientSound;
+    }
+
+// BuildingComp.java : public void hitbox(Rect out)
+    @Override
+    public void hitbox(Rect out){
+        out.setCentered(x, y, block.size * tilesize, block.size * tilesize);
+    }
+
+// BuildingComp.java : public String toString()
+    @Override
+    @Replace
+    public String toString(){
+        return "Building#" + id() + "[" + tileX() + "," + tileY() + "]:" + block;
+    }
+
+// BuildingTetherComp.java : public void update()
+    @Override
+    public void update(){
+        if(building == null || !building.isValid() || building.team != team){
+            Call.unitDespawn(self());
+        }
+    }
+
+// BulletComp.java : public void getCollisions(Cons<QuadTree> consumer)
+    @Override
+    public void getCollisions(Cons<QuadTree> consumer){
+        Seq<TeamData> data = state.teams.present;
+        for(int i = 0; i < data.size; i++){
+            if(data.items[i].team != team){
+                consumer.get(data.items[i].tree());
+            }
+        }
+    }
+
+// BulletComp.java : public boolean isLocal()
+    @Override
+    @Replace
+    public boolean isLocal(){
+        return true;
+    }
+
+// BulletComp.java : public void add()
+    @Override
+    public void add(){
+        type.init(self());
+    }
+
+// BulletComp.java : public void remove()
+    @Override
+    public void remove(){
+        if(Groups.isClearing) return;
+
+        //'despawned' only counts when the bullet is killed externally or reaches the end of life
+        if(!hit){
+            type.despawned(self());
+        }
+        type.removed(self());
+        collided.clear();
+    }
+
+// BulletComp.java : public float damageMultiplier()
+    @Override
+    public float damageMultiplier(){
+        return type.damageMultiplier(self());
+    }
+
+// BulletComp.java : public void absorb()
+    @Override
+    public void absorb(){
+        absorbed = true;
+        remove();
+    }
+
+// BulletComp.java : public boolean hasCollided(int id)
+    public boolean hasCollided(int id){
+        return collided.size != 0 && collided.contains(id);
+    }
+
+// BulletComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        return type.drawSize;
+    }
+
+// BulletComp.java : public boolean collides(Hitboxc other)
+    @Replace
+    @Override
+    public boolean collides(Hitboxc other){
+        return type.collides && (other instanceof Teamc t && t.team() != team)
+            && !(other instanceof Unit f && !f.checkTarget(type.collidesAir, type.collidesGround))
+            && !(type.pierce && hasCollided(other.id())) && stickyTarget == null; //prevent multiple collisions
+    }
+
+// BulletComp.java : public void stickTo(Posc other)
+    public void stickTo(Posc other){
+        lifetime += type.stickyExtraLifetime;
+        //sticky bullets don't actually hit anything.
+        stickyX = this.x - other.x();
+        stickyY = this.y - other.y();
+        stickyTarget = other;
+        stickyRotationOffset = rotation;
+        stickyRotation = (other instanceof Rotc rot ? rot.rotation() : 0f);
+    }
+
+// BulletComp.java : public void moveRelative(float x, float y)
+    public void moveRelative(float x, float y){
+        float rot = rotation();
+        this.x += Angles.trnsx(rot, x * Time.delta, y * Time.delta);
+        this.y += Angles.trnsy(rot, x * Time.delta, y * Time.delta);
+    }
+
+// BulletComp.java : public void turn(float x, float y)
+    public void turn(float x, float y){
+        float ang = vel.angle();
+        vel.add(Angles.trnsx(ang, x * Time.delta, y * Time.delta), Angles.trnsy(ang, x * Time.delta, y * Time.delta)).limit(type.speed);
+    }
+
+// BulletComp.java : public void initVel(float angle, float amount)
+    public void initVel(float angle, float amount){
+        vel.trns(angle, amount);
+        rotation = angle;
+    }
+
+// BulletComp.java : public void rotation(float angle) / public float rotation()
+    @Override
+    public void rotation(float angle){
+        vel.setAngle(rotation = angle);
+    }
+
+// CrawlComp.java : public SolidPred solidity()
+    @Replace
+    @Override
+    public SolidPred solidity(){
+        return ignoreSolids() ? null : EntityCollisions::legsSolid;
+    }
+
+// CrawlComp.java : public float floorSpeedMultiplier()
+    @Override
+    @Replace
+    public float floorSpeedMultiplier(){
+        Floor on = isFlying() ? Blocks.air.asFloor() : floorOn();
+        //TODO take into account extra blocks
+        return ((float)Math.pow(on.isDeep() ? 0.45f : on.speedMultiplier, type.floorMultiplier)) * speedMultiplier * lastCrawlSlowdown;
+    }
+
+// CrawlComp.java : public void add()
+    @Override
+    public void add(){
+        //reset segment rotation on add
+        segmentRot = rotation;
+    }
+
+// CrawlComp.java : public Floor drownFloor()
+    @Override
+    @Replace
+    public Floor drownFloor(){
+        return lastDeepFloor;
+    }
+
+// DecalComp.java : public void draw()
+    @Override
+    public void draw(){
+        Draw.z(Layer.scorch);
+
+        Draw.mixcol(color, color.a);
+        Draw.alpha(1f - Mathf.curve(fin(), 0.98f));
+        Draw.rect(region, x, y, rotation);
+        Draw.reset();
+    }
+
+// DecalComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        return region.width *2;
+    }
+
+// DrawComp.java : float clipSize()
+    float clipSize(){
+        return Float.MAX_VALUE;
+    }
+
+// DrawComp.java : void draw()
+    void draw(){
+
+    }
+
+// EffectStateComp.java : public void draw()
+    @Override
+    public void draw(){
+        lifetime = effect.render(id, color, time, lifetime, rotation, x, y, data);
+    }
+
+// EffectStateComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        return effect.clip;
+    }
+
+// ElevationMoveComp.java : public SolidPred solidity()
+    @Replace
+    @Override
+    public SolidPred solidity(){
+        return isFlying() || ignoreSolids() ? null : EntityCollisions::solid;
+    }
+
+// EntityComp.java : boolean isAdded()
+    boolean isAdded(){
+        return added;
+    }
+
+// EntityComp.java : void update()
+    void update(){}
+
+// EntityComp.java : void remove()
+    void remove(){
+        added = false;
+    }
+
+// EntityComp.java : void add()
+    void add(){
+        added = true;
+    }
+
+// EntityComp.java : boolean isLocal()
+    boolean isLocal(){
+        return ((Object)this) == player || ((Object)this) instanceof Unitc u && u.controller() == player;
+    }
+
+// EntityComp.java : boolean isRemote()
+    boolean isRemote(){
+        return ((Object)this) instanceof Unitc u && u.isPlayer() && !isLocal();
+    }
+
+// EntityComp.java : T self()
+    <T extends Entityc> T self(){
+        return (T)this;
+    }
+
+// EntityComp.java : T as()
+    <T> T as(){
+        return (T)this;
+    }
+
+// EntityComp.java : void read(Reads read)
+    @MethodPriority(1)
+    void read(Reads read){
+        afterRead();
+    }
+
+// EntityComp.java : void write(Writes write)
+    void write(Writes write){
+
+    }
+
+// EntityComp.java : void beforeWrite()
+    void beforeWrite(){
+
+    }
+
+// EntityComp.java : void afterRead()
+    void afterRead(){
+
+    }
+
+// EntityComp.java : void afterReadAll()
+    void afterReadAll(){
+
+    }
+
+// FireComp.java : public float clipSize()
+    @Replace
+    @Override
+    public float clipSize(){
+        return 25;
+    }
+
+// FireComp.java : public void remove()
+    @Override
+    public void remove(){
+        Fx.fireRemove.at(x, y, animation);
+        Fires.remove(tile);
+    }
+
+// FireComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        Fires.register(self());
+    }
+
+// FireComp.java : public void afterSync()
+    @Override
+    public void afterSync(){
+        Fires.register(self());
+    }
+
+// HealthComp.java : boolean isValid()
+    boolean isValid(){
+        return !dead && isAdded();
+    }
+
+// HealthComp.java : float healthf()
+    float healthf(){
+        return health / maxHealth;
+    }
+
+// HealthComp.java : public void update()
+    @Override
+    public void update(){
+        hitTime -= Time.delta / hitDuration;
+    }
+
+// HealthComp.java : void killed()
+    void killed(){
+        //implement by other components
+    }
+
+// HealthComp.java : void kill()
+    void kill(){
+        if(dead) return;
+
+        health = Math.min(health, 0);
+        dead = true;
+        killed();
+        remove();
+    }
+
+// HealthComp.java : void heal() / void heal(float amount)
+    void heal(){
+        dead = false;
+        health = maxHealth;
+    }
+
+// HealthComp.java : boolean damaged()
+    boolean damaged(){
+        return health < maxHealth - 0.001f;
+    }
+
+// HealthComp.java : void damagePierce(float amount, boolean withEffect) / void damagePierce(float amount)
+    void damagePierce(float amount, boolean withEffect){
+        damage(amount, withEffect);
+    }
+
+// HealthComp.java : void damageArmorMult(float amount, float armorMult, boolean withEffect) / void damageArmorMult(float amount, float armorMult)
+    void damageArmorMult(float amount, float armorMult, boolean withEffect){
+        damage(amount, withEffect);
+    }
+
+// HealthComp.java : void damage(float amount) / void damage(float amount, boolean withEffect)
+    void damage(float amount){
+        if(Float.isNaN(health)) health = 0f;
+
+        health -= amount;
+        hitTime = 1f;
+        if(health <= 0 && !dead){
+            kill();
+        }
+    }
+
+// HealthComp.java : void damageContinuous(float amount)
+    void damageContinuous(float amount){
+        damage(amount * Time.delta, hitTime <= -10 + hitDuration);
+    }
+
+// HealthComp.java : void damageContinuousPierce(float amount)
+    void damageContinuousPierce(float amount){
+        damagePierce(amount * Time.delta, hitTime <= -20 + hitDuration);
+    }
+
+// HealthComp.java : void damageContinuousArmorMult(float amount, float armorMult)
+    void damageContinuousArmorMult(float amount, float armorMult){
+        damageArmorMult(amount * Time.delta, armorMult, hitTime <= -20 + hitDuration);
+    }
+
+// HealthComp.java : void clampHealth()
+    void clampHealth(){
+        health = Math.min(health, maxHealth);
+        if(Float.isNaN(health)) health = 0f;
+    }
+
+// HealthComp.java : void healFract(float amount)
+    void healFract(float amount){
+        heal(amount * maxHealth);
+    }
+
+// HitboxComp.java : public void update()
+    @Override
+    public void update(){
+
+    }
+
+// HitboxComp.java : public void add()
+    @Override
+    public void add(){
+        updateLastPosition();
+    }
+
+// HitboxComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        updateLastPosition();
+    }
+
+// HitboxComp.java : public float hitSize()
+    @Override
+    public float hitSize(){
+        return hitSize;
+    }
+
+// HitboxComp.java : void getCollisions(Cons<QuadTree> consumer)
+    void getCollisions(Cons<QuadTree> consumer){
+
+    }
+
+// HitboxComp.java : void updateLastPosition()
+    void updateLastPosition(){
+        deltaX = x - lastX;
+        deltaY = y - lastY;
+        lastX = x;
+        lastY = y;
+    }
+
+// HitboxComp.java : void collision(Hitboxc other, float x, float y)
+    void collision(Hitboxc other, float x, float y){
+
+    }
+
+// HitboxComp.java : float deltaLen()
+    float deltaLen(){
+        return Mathf.len(deltaX, deltaY);
+    }
+
+// HitboxComp.java : float deltaAngle()
+    float deltaAngle(){
+        return Mathf.angle(deltaX, deltaY);
+    }
+
+// HitboxComp.java : boolean collides(Hitboxc other)
+    boolean collides(Hitboxc other){
+        return true;
+    }
+
+// HitboxComp.java : public void hitbox(Rect rect)
+    @Override
+    public void hitbox(Rect rect){
+        rect.setCentered(x, y, hitSize, hitSize);
+    }
+
+// HitboxComp.java : public void hitboxTile(Rect rect)
+    public void hitboxTile(Rect rect){
+        //tile hitboxes are never bigger than a tile, otherwise units get stuck
+        float size = Math.min(hitSize * 0.66f, 7.8f);
+        //TODO: better / more accurate version is
+        //float size = hitSize * 0.85f;
+        //- for tanks?
+        rect.setCentered(x, y, size, size);
+    }
+
+// ItemsComp.java : public void update()
+    @Override
+    public void update(){
+        stack.amount = Mathf.clamp(stack.amount, 0, itemCapacity());
+        itemTime = Mathf.lerpDelta(itemTime, Mathf.num(hasItem()), 0.05f);
+    }
+
+// ItemsComp.java : Item item()
+    Item item(){
+        return stack.item;
+    }
+
+// ItemsComp.java : void clearItem()
+    void clearItem(){
+        stack.amount = 0;
+    }
+
+// ItemsComp.java : boolean acceptsItem(Item item)
+    boolean acceptsItem(Item item){
+        return !hasItem() || item == stack.item && stack.amount + 1 <= itemCapacity();
+    }
+
+// ItemsComp.java : boolean hasItem()
+    boolean hasItem(){
+        return stack.amount > 0;
+    }
+
+// ItemsComp.java : void addItem(Item item) / void addItem(Item item, int amount)
+    void addItem(Item item){
+        addItem(item, 1);
+    }
+
+// ItemsComp.java : int maxAccepted(Item item)
+    int maxAccepted(Item item){
+        return stack.item != item && stack.amount > 0 ? 0 : itemCapacity() - stack.amount;
+    }
+
+// LaunchCoreComp.java : float cx()
+    float cx(){
+        return x + fin(Interp.pow2In) * (12f + Mathf.randomSeedRange(id() + 3, 4f));
+    }
+
+// LaunchCoreComp.java : float cy()
+    float cy(){
+        return y + fin(Interp.pow5In) * (100f + Mathf.randomSeedRange(id() + 2, 30f));
+    }
+
+// LaunchCoreComp.java : public void update()
+    @Override
+    public void update(){
+        float r = 4f;
+        if(in.get(3f - fin()*2f)){
+            Fx.rocketSmokeLarge.at(cx() + Mathf.range(r), cy() + Mathf.range(r), fin());
+        }
+    }
+
+// LegsComp.java : public SolidPred solidity()
+    @Replace
+    @Override
+    public SolidPred solidity(){
+        return ignoreSolids() ? null : type.allowLegStep ? EntityCollisions::legsSolid : EntityCollisions::solid;
+    }
+
+// LegsComp.java : public Floor drownFloor()
+    @Override
+    @Replace
+    public Floor drownFloor(){
+        return lastDeepFloor;
+    }
+
+// LegsComp.java : public void add()
+    @Override
+    public void add(){
+        resetLegs();
+    }
+
+// LegsComp.java : public void unloaded()
+    @Override
+    public void unloaded(){
+        resetLegs(1f);
+    }
+
+// LegsComp.java : public void resetLegs() / public void resetLegs(float legLength)
+    public void resetLegs(){
+        resetLegs(type.legLength);
+    }
+
+// LegsComp.java : float legAngle(int index)
+    float legAngle(int index){
+        if(type.legStraightness > 0){
+            return Mathf.slerp(defaultLegAngle(index), (index >= legs.length/2 ? -90 : 90f) + baseRotation, type.legStraightness);
+        }
+        return defaultLegAngle(index);
+    }
+
+// LegsComp.java : float defaultLegAngle(int index)
+    float defaultLegAngle(int index){
+        return baseRotation + 360f / legs.length * index + (360f / legs.length / 2f);
+    }
+
+// MechComp.java : public void rotateMove(Vec2 vec)
+    @Override
+    @Replace
+    public void rotateMove(Vec2 vec){
+        //mechs use baseRotation to rotate, not rotation.
+        moveAt(Tmp.v2.trns(baseRotation, vec.len()));
+
+        if(!vec.isZero()){
+            baseRotation = Angles.moveToward(baseRotation, vec.angle(), type.rotateSpeed * Math.max(Time.delta, 1));
+        }
+    }
+
+// MechComp.java : public void moveAt(Vec2 vector, float acceleration)
+    @Override
+    public void moveAt(Vec2 vector, float acceleration){
+        //mark walking state when moving in a controlled manner
+        if(!vector.isZero()){
+            walked = true;
+        }
+    }
+
+// MechComp.java : public void approach(Vec2 vector)
+    @Override
+    public void approach(Vec2 vector){
+        //mark walking state when moving in a controlled manner
+        if(!vector.isZero(0.001f)){
+            walked = true;
+        }
+    }
+
+// MinerComp.java : public boolean canMine(Item item) / public boolean canMine()
+    public boolean canMine(@Nullable Item item){
+        if(item == null) return false;
+        return type.mineTier >= item.hardness;
+    }
+
+// MinerComp.java : public boolean offloadImmediately()
+    public boolean offloadImmediately(){
+        return this.<Unit>self().isPlayer();
+    }
+
+// MinerComp.java : boolean mining()
+    boolean mining(){
+        return mineTile != null && !this.<Unit>self().activelyBuilding();
+    }
+
+// MinerComp.java : public boolean validMine(Tile tile, boolean checkDst) / public boolean validMine(Tile tile)
+    public boolean validMine(Tile tile, boolean checkDst){
+        if(tile == null) return false;
+
+        if(checkDst && !within(tile.worldx(), tile.worldy(), type.mineRange)){
+            return false;
+        }
+
+        return getMineResult(tile) != null;
+    }
+
+// PayloadComp.java : public void remove()
+    @Override
+    public void remove(){
+        for(Payload pay : payloads){
+            pay.remove();
+        }
+        payloads.clear();
+    }
+
+// PayloadComp.java : public void destroy()
+    public void destroy(){
+        if(Vars.state.rules.unitPayloadsExplode) payloads.each(Payload::destroyed);
+    }
+
+// PayloadComp.java : float payloadUsed()
+    float payloadUsed(){
+        return payloads.sumf(p -> p.size() * p.size());
+    }
+
+// PayloadComp.java : boolean canPickup(Unit unit) / boolean canPickup(Building build)
+    boolean canPickup(Unit unit){
+        return type.pickupUnits && payloadUsed() + unit.hitSize * unit.hitSize <= type.payloadCapacity + 0.001f && unit.team == team() && unit.isAI() && unit.type.allowedInPayloads;
+    }
+
+// PayloadComp.java : boolean canPickupPayload(Payload pay)
+    boolean canPickupPayload(Payload pay){
+        return payloadUsed() + pay.size()*pay.size() <= type.payloadCapacity + 0.001f && (type.pickupUnits || !(pay instanceof UnitPayload));
+    }
+
+// PayloadComp.java : boolean hasPayload()
+    boolean hasPayload(){
+        return payloads.size > 0;
+    }
+
+// PayloadComp.java : void addPayload(Payload load)
+    void addPayload(Payload load){
+        payloads.add(load);
+    }
+
+// PayloadComp.java : boolean dropLastPayload()
+    boolean dropLastPayload(){
+        if(payloads.isEmpty()) return false;
+
+        Payload load = payloads.peek();
+
+        if(tryDropPayload(load)){
+            payloads.pop();
+            return true;
+        }
+        return false;
+    }
+
+// PayloadComp.java : void playPayloadDropSound(Payload payload)
+    void playPayloadDropSound(Payload payload){
+        Sound dropSound =
+            payload.size() <= 12f ? Sounds.payloadDrop1 :
+            payload.size() <= 20f ? Sounds.payloadDrop2 :
+            Sounds.payloadDrop3;
+        dropSound.at(self(), Mathf.random(0.9f, 1.1f));
+    }
+
+// PhysicsComp.java : float mass()
+    float mass(){
+        return hitSize * hitSize * Mathf.pi;
+    }
+
+// PhysicsComp.java : void impulse(float x, float y) / void impulse(Vec2 v)
+    void impulse(float x, float y){
+        float mass = mass();
+        vel.add(x / mass, y / mass);
+    }
+
+// PhysicsComp.java : void impulseNet(Vec2 v)
+    void impulseNet(Vec2 v){
+        impulse(v.x, v.y);
+
+        //manually move units to simulate velocity for remote players
+        if(isRemote()){
+            float mass = mass();
+            move(v.x / mass, v.y / mass);
+        }
+
+    }
+
+// PlayerComp.java : public Seq<BuildPlan> getPreviewPlans()
+    public Seq<BuildPlan> getPreviewPlans(){
+        long timeToCommit = 100; //ms needed after first plan is received to "commit" the plans.
+        if(Time.timeSinceMillis(lastPreviewPlanTimestamp) >= timeToCommit && receivingNewPlanGroup){
+            receivingNewPlanGroup = false;
+            previewPlansDirty = true;
+            previewPlansCurrent.set(previewPlansAssembling);
+            previewPlansAssembling.clear();
+        }
+
+        return previewPlansCurrent;
+    }
+
+// PlayerComp.java : public boolean isBuilder()
+    public boolean isBuilder(){
+        return unit != null && unit.canBuild();
+    }
+
+// PlayerComp.java : public CoreBuild closestCore()
+    public @Nullable CoreBuild closestCore(){
+        return state.teams.closestCore(x, y, team);
+    }
+
+// PlayerComp.java : public CoreBuild core()
+    public @Nullable CoreBuild core(){
+        return team.core();
+    }
+
+// PlayerComp.java : public CoreBuild bestCore()
+    @Nullable
+    public CoreBuild bestCore(){
+        var cores = team.cores();
+        //if someone screws up the map and adds an invalid core, prioritize the core that's supported
+        //if there's only one core, there are no other options
+        return cores.min(b -> cores.size == 1 || ((CoreBlock)b.block).unitType.supportsEnv(state.rules.env), Structs.comps(Structs.comparingInt(c -> -c.block.size), Structs.comparingFloat(c -> c.dst2(x, y))));
+    }
+
+// PlayerComp.java : public boolean displayAmmo()
+    public boolean displayAmmo(){
+        return unit instanceof BlockUnitc;
+    }
+
+// PlayerComp.java : public boolean isValidController()
+    @Override
+    public boolean isValidController(){
+        return isAdded();
+    }
+
+// PlayerComp.java : public boolean isLogicControllable()
+    @Override
+    public boolean isLogicControllable(){
+        return false;
+    }
+
+// PlayerComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        return Float.MAX_VALUE;
+    }
+
+// PlayerComp.java : public void checkSpawn()
+    public void checkSpawn(){
+        CoreBuild core = bestCore();
+        if(core != null){
+            core.requestSpawn(self());
+        }
+    }
+
+// PlayerComp.java : public void remove()
+    @Override
+    public void remove(){
+        //clear unit upon removal
+        if(unit != null){
+            clearUnit();
+        }
+
+        lastReadUnit = null;
+        justSwitchTo = justSwitchFrom = null;
+    }
+
+// PlayerComp.java : public void team(Team team)
+    public void team(Team team){
+        this.team = team;
+        if(unit != null){
+            unit.team(team);
+        }
+    }
+
+// PlayerComp.java : public void clearUnit()
+    public void clearUnit(){
+        unit(null);
+    }
+
+// PlayerComp.java : public Unit unit() / public void unit(Unit unit)
+    public @Nullable Unit unit(){
+        return unit;
+    }
+
+// PlayerComp.java : boolean dead()
+    boolean dead(){
+        return unit == null || !unit.isValid();
+    }
+
+// PlayerComp.java : String ip()
+    String ip(){
+        return con == null ? "localhost" : con.address;
+    }
+
+// PlayerComp.java : String uuid()
+    String uuid(){
+        return con == null ? "[LOCAL]" : con.uuid;
+    }
+
+// PlayerComp.java : String usid()
+    String usid(){
+        return con == null ? "[LOCAL]" : con.usid;
+    }
+
+// PlayerComp.java : void kick(KickReason reason) / void kick(KickReason reason, long duration) / void kick(String reason) / void kick(String reason, long duration)
+    void kick(KickReason reason){
+        con.kick(reason);
+    }
+
+// PlayerComp.java : public void draw()
+    @Override
+    public void draw(){
+        drawPing();
+        drawName();
+    }
+
+// PlayerComp.java : public boolean isPinging()
+    public boolean isPinging(){
+        return pingTime > 0f;
+    }
+
+// PlayerComp.java : String coloredName()
+    String coloredName(){
+        return  "[#" + color.toString().toUpperCase() + "]" + name;
+    }
+
+// PlayerComp.java : String plainName()
+    String plainName(){
+        return Strings.stripColors(name);
+    }
+
+// PlayerComp.java : void sendMessage(String text) / void sendMessage(String text, Player from) / void sendMessage(String text, Player from, String unformatted)
+    void sendMessage(String text){
+        sendMessage(text, null, null);
+    }
+
+// PlayerComp.java : void sendUnformatted(String unformatted) / void sendUnformatted(Player from, String unformatted)
+    void sendUnformatted(String unformatted){
+        sendUnformatted(null, unformatted);
+    }
+
+// PlayerComp.java : PlayerInfo getInfo()
+    PlayerInfo getInfo(){
+        if(isLocal()){
+            throw new IllegalArgumentException("Local players cannot be traced and do not have info.");
+        }else{
+            return netServer.admins.getInfo(uuid());
+        }
+    }
+
+// PosComp.java : void set(float x, float y) / void set(Position pos)
+    void set(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
+
+// PosComp.java : void trns(float x, float y) / void trns(Position pos)
+    void trns(float x, float y){
+        set(this.x + x, this.y + y);
+    }
+
+// PosComp.java : int tileX()
+    int tileX(){
+        return World.toTile(x);
+    }
+
+// PosComp.java : int tileY()
+    int tileY(){
+        return World.toTile(y);
+    }
+
+// PosComp.java : Floor floorOn()
+    Floor floorOn(){
+        Tile tile = tileOn();
+        return tile == null || tile.block() != Blocks.air ? (Floor)Blocks.air : tile.floor();
+    }
+
+// PosComp.java : Block blockOn()
+    Block blockOn(){
+        Tile tile = tileOn();
+        return tile == null ? Blocks.air : tile.block();
+    }
+
+// PosComp.java : Building buildOn()
+    @Nullable
+    Building buildOn(){
+        return world.buildWorld(x, y);
+    }
+
+// PosComp.java : Tile tileOn()
+    @Nullable
+    Tile tileOn(){
+        return world.tileWorld(x, y);
+    }
+
+// PosComp.java : boolean onSolid()
+    boolean onSolid(){
+        Tile tile = tileOn();
+        return tile == null || tile.solid();
+    }
+
+// PosComp.java : public float getX()
+    @Override
+    public float getX(){
+        return x;
+    }
+
+// PosComp.java : public float getY()
+    @Override
+    public float getY(){
+        return y;
+    }
+
+// PowerGraphUpdaterComp.java : public void update()
+    @Override
+    public void update(){
+        graph.update();
+    }
+
+// PuddleComp.java : public float getFlammability()
+    public float getFlammability(){
+        return liquid.flammability * amount;
+    }
+
+// PuddleComp.java : public void draw()
+    @Override
+    public void draw(){
+        Draw.z(Layer.debris - 1);
+
+        liquid.drawPuddle(self());
+    }
+
+// PuddleComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        return 50; //high for light drawing
+    }
+
+// PuddleComp.java : public void remove()
+    @Override
+    public void remove(){
+        Puddles.remove(tile);
+    }
+
+// PuddleComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        Puddles.register(self());
+    }
+
+// PuddleComp.java : public void afterSync()
+    @Override
+    public void afterSync(){
+        if(liquid != null){
+            Puddles.register(self());
+        }
+    }
+
+// SegmentComp.java : public boolean isHead()
+    public boolean isHead(){
+        return parentSegment == null;
+    }
+
+// SegmentComp.java : public boolean ignoreSolids()
+    @Override
+    @Replace
+    public boolean ignoreSolids(){
+        return isFlying() || parentSegment != null;
+    }
+
+// SegmentComp.java : public boolean playerControllable()
+    @Replace
+    @Override
+    public boolean playerControllable(){
+        return type.playerControllable && isHead();
+    }
+
+// SegmentComp.java : public boolean shouldUpdateController()
+    @Override
+    @Replace
+    public boolean shouldUpdateController(){
+        return isHead();
+    }
+
+// SegmentComp.java : public boolean moving()
+    @Override
+    @Replace
+    public boolean moving(){
+        if(isHead()){
+            return !vel.isZero(0.01f);
+        }else{
+            return deltaLen() / Time.delta >= 0.01f;
+        }
+    }
+
+// SegmentComp.java : public int collisionLayer()
+    @Override
+    @Replace
+    public int collisionLayer(){
+        if(parentSegment != null) return -1;
+        return type.allowLegStep && type.legPhysicsLayer ? PhysicsProcess.layerLegs : isGrounded() ? PhysicsProcess.layerGround : PhysicsProcess.layerFlying;
+    }
+
+// SegmentComp.java : public boolean isCommandable()
+    @Replace
+    @Override
+    public boolean isCommandable(){
+        return parentSegment == null && controller() instanceof CommandAI;
+    }
+
+// SegmentComp.java : public void afterSync()
+    @Override
+    public void afterSync(){
+        checkParent();
+    }
+
+// SegmentComp.java : public void afterReadAll()
+    @Override
+    public void afterReadAll(){
+        checkParent();
+    }
+
+// SegmentComp.java : public void beforeWrite()
+    @Override
+    public void beforeWrite(){
+        parentId = parentSegment == null ? -1 : parentSegment.id();
+    }
+
+// ShieldComp.java : public void damage(float amount)
+    @Replace
+    @Override
+    public void damage(float amount){
+        //apply armor and scaling effects
+        rawDamage(Damage.applyArmor(amount, armorOverride >= 0f ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team));
+    }
+
+// ShieldComp.java : public void damagePierce(float amount, boolean withEffect)
+    @Replace
+    @Override
+    public void damagePierce(float amount, boolean withEffect){
+        float pre = hitTime;
+
+        rawDamage(amount / healthMultiplier / Vars.state.rules.unitHealth(team));
+
+        if(!withEffect){
+            hitTime = pre;
+        }
+    }
+
+// ShieldComp.java : public void damageArmorMult(float amount, float armorMult, boolean withEffect)
+    @Replace
+    @Override
+    public void damageArmorMult(float amount, float armorMult, boolean withEffect){
+        float pre = hitTime;
+
+        rawDamage(Damage.applyArmor(amount, armorOverride >= 0f ? armorOverride * armorMult : armor * armorMult) / healthMultiplier / Vars.state.rules.unitHealth(team));
+
+        if(!withEffect){
+            hitTime = pre;
+        }
+    }
+
+// ShieldComp.java : public void update()
+    @Override
+    public void update(){
+        shieldAlpha -= Time.delta / 15f;
+        if(shieldAlpha < 0) shieldAlpha = 0f;
+    }
+
+// ShielderComp.java : void absorb()
+    void absorb(){
+
+    }
+
+// StatusComp.java : public void apply(StatusEffect effect) / public void apply(StatusEffect effect, float duration)
+    public void apply(StatusEffect effect){
+        apply(effect, 1);
+    }
+
+// StatusComp.java : public float getDuration(StatusEffect effect)
+    public float getDuration(StatusEffect effect){
+        var entry = statuses.find(e -> e.effect == effect);
+        return entry == null ? 0 : entry.time;
+    }
+
+// StatusComp.java : public void setDuration(StatusEffect effect, float duration)
+    public void setDuration(StatusEffect effect, float duration){
+        applyStatus(effect, duration, true);
+    }
+
+// StatusComp.java : public void clearStatuses()
+    public void clearStatuses(){
+        statuses.each(e -> e.effect.onRemoved(self()));
+        statuses.clear();
+    }
+
+// StatusComp.java : public void unapply(StatusEffect effect)
+    public void unapply(StatusEffect effect){
+        statuses.remove(e -> {
+            if(e.effect == effect){
+                e.effect.onRemoved(self());
+                Pools.free(e);
+                return true;
+            }
+            return false;
+        });
+    }
+
+// StatusComp.java : public boolean isBoss()
+    public boolean isBoss(){
+        return hasEffect(StatusEffects.boss);
+    }
+
+// StatusComp.java : public boolean isImmune(StatusEffect effect)
+    public boolean isImmune(StatusEffect effect){
+        return type.immunities.contains(effect);
+    }
+
+// StatusComp.java : public void statusSpeed(float speed)
+    public void statusSpeed(float speed){
+        //type.speed should never be 0
+        applyDynamicStatus().speedMultiplier = speed / (type.speed * 60f / tilesize);
+    }
+
+// StatusComp.java : public void statusDamageMultiplier(float damageMultiplier)
+    public void statusDamageMultiplier(float damageMultiplier){
+        applyDynamicStatus().damageMultiplier = damageMultiplier;
+    }
+
+// StatusComp.java : public void statusReloadMultiplier(float reloadMultiplier)
+    public void statusReloadMultiplier(float reloadMultiplier){
+        applyDynamicStatus().reloadMultiplier = reloadMultiplier;
+    }
+
+// StatusComp.java : public void statusMaxHealth(float health)
+    public void statusMaxHealth(float health){
+        //maxHealth should never be zero
+        applyDynamicStatus().healthMultiplier = health / maxHealth;
+    }
+
+// StatusComp.java : public void statusBuildSpeed(float buildSpeed)
+    public void statusBuildSpeed(float buildSpeed){
+        //build speed should never be zero
+        applyDynamicStatus().buildSpeedMultiplier = buildSpeed / type.buildSpeed;
+    }
+
+// StatusComp.java : public void statusDrag(float drag)
+    public void statusDrag(float drag){
+        //prevent divide by 0 (drag can be zero, if someone makes a broken unit)
+        applyDynamicStatus().dragMultiplier = type.drag == 0f ? 0f : drag / type.drag;
+    }
+
+// StatusComp.java : public void statusArmor(float armor)
+    public void statusArmor(float armor){
+        applyDynamicStatus().armorOverride = armor;
+    }
+
+// StatusComp.java : public Bits statusBits()
+    public Bits statusBits(){
+        return applied;
+    }
+
+// StatusComp.java : public void draw()
+    public void draw(){
+        for(StatusEntry e : statuses){
+            e.effect.draw(self(), e.time);
+        }
+    }
+
+// StatusComp.java : public boolean hasEffect(StatusEffect effect)
+    public boolean hasEffect(StatusEffect effect){
+        return applied.get(effect.id);
+    }
+
+// SyncComp.java : void snapSync()
+    void snapSync(){}
+
+// SyncComp.java : void snapInterpolation()
+    void snapInterpolation(){}
+
+// SyncComp.java : void readSync(Reads read)
+    void readSync(Reads read){}
+
+// SyncComp.java : void writeSync(Writes write)
+    void writeSync(Writes write){}
+
+// SyncComp.java : void readSyncManual(FloatBuffer buffer)
+    void readSyncManual(FloatBuffer buffer){}
+
+// SyncComp.java : void writeSyncManual(FloatBuffer buffer)
+    void writeSyncManual(FloatBuffer buffer){}
+
+// SyncComp.java : void afterSync()
+    void afterSync(){}
+
+// SyncComp.java : void interpolate()
+    void interpolate(){}
+
+// SyncComp.java : boolean isSyncHidden(Team team)
+    boolean isSyncHidden(Team team){
+        return false;
+    }
+
+// SyncComp.java : void handleSyncHidden()
+    void handleSyncHidden(){
+
+    }
+
+// SyncComp.java : public void update()
+    @Override
+    public void update(){
+        //interpolate the player if:
+        //- this is a client and the entity is everything except the local player
+        //- this is a server and the entity is a remote player
+        if((Vars.net.client() && !isLocal()) || isRemote()){
+            interpolate();
+        }
+    }
+
+// SyncComp.java : public void remove()
+    @Override
+    public void remove(){
+        //notify client of removal
+        if(Vars.net.client()){
+            Vars.netClient.addRemovedEntity(id());
+        }
+    }
+
+// TankComp.java : public float floorSpeedMultiplier()
+    @Override
+    @Replace
+    public float floorSpeedMultiplier(){
+        Floor on = isFlying() || type.hovering ? Blocks.air.asFloor() : floorOn();
+        //TODO take into account extra blocks
+        return (float)Math.pow(on.speedMultiplier, type.floorMultiplier) * speedMultiplier * lastSlowdown;
+    }
+
+// TankComp.java : public Floor drownFloor()
+    @Replace
+    @Override
+    public @Nullable Floor drownFloor(){
+        return canDrown() ? lastDeepFloor : null;
+    }
+
+// TankComp.java : public void moveAt(Vec2 vector, float acceleration)
+    @Override
+    public void moveAt(Vec2 vector, float acceleration){
+        //mark walking state when moving in a controlled manner
+        if(!vector.isZero(0.001f)){
+            walked = true;
+        }
+    }
+
+// TankComp.java : public void approach(Vec2 vector)
+    @Override
+    public void approach(Vec2 vector){
+        //mark walking state when moving in a controlled manner
+        if(!vector.isZero(0.001f)){
+            walked = true;
+        }
+    }
+
+// TargetDummyComp.java : public void update()
+    @Override
+    public void update(){
+        if(building == null || (!building.isPayload() && !building.isValid())){
+            Call.unitDespawn(self()); //Don't despawn even if the building is on another team
+        }
+    }
+
+// TargetDummyComp.java : public void rawDamage(float amount)
+    @Replace
+    @Override
+    public void rawDamage(float amount){
+        if(building instanceof TargetDummyBuild td){
+            td.dummyHit(amount);
+        }
+    }
+
+// TargetDummyComp.java : public boolean canLand()
+    @Override
+    @Replace
+    public boolean canLand(){
+        //dummies should always respect the boost config even when the landing area is obstructed (usually by other dummies)
+        return true;
+    }
+
+// TeamComp.java : public boolean cheating()
+    public boolean cheating(){
+        return team.rules().cheat;
+    }
+
+// TeamComp.java : boolean inFogTo(Team viewer)
+    boolean inFogTo(Team viewer){
+        return this.team != viewer && !fogControl.isVisible(viewer, x, y);
+    }
+
+// TeamComp.java : public CoreBuild core()
+    @Nullable
+    public CoreBuild core(){
+        return team.core();
+    }
+
+// TeamComp.java : public CoreBuild closestCore()
+    @Nullable
+    public CoreBuild closestCore(){
+        return state.teams.closestCore(x, y, team);
+    }
+
+// TeamComp.java : public CoreBuild closestEnemyCore()
+    @Nullable
+    public CoreBuild closestEnemyCore(){
+        return state.teams.closestEnemyCore(x, y, team);
+    }
+
+// TimedComp.java : public void update()
+    @MethodPriority(100)
+    @Override
+    public void update(){
+        time = Math.min(time + Time.delta, lifetime);
+
+        if(time >= lifetime){
+            remove();
+        }
+    }
+
+// TimedComp.java : public float fin()
+    @Override
+    public float fin(){
+        return time / lifetime;
+    }
+
+// TimedKillComp.java : public void update()
+    @MethodPriority(100)
+    @Override
+    public void update(){
+        time = Math.min(time + Time.delta, lifetime);
+
+        if(time >= lifetime){
+            kill();
+        }
+    }
+
+// TimedKillComp.java : public float fin()
+    @Override
+    public float fin(){
+        return time / lifetime;
+    }
+
+// TimerComp.java : public boolean timer(int index, float time)
+    public boolean timer(int index, float time){
+        if(Float.isInfinite(time)) return false;
+        return timer.get(index, time);
+    }
+
+// UnderwaterMoveComp.java : public void draw()
+    @MethodPriority(10f)
+    @Replace
+    public void draw(){
+        //TODO draw status effects?
+
+        Drawf.underwater(() -> {
+            type.draw(self());
+        });
+    }
+
+// UnderwaterMoveComp.java : public int collisionLayer()
+    @Override
+    public int collisionLayer(){
+        return PhysicsProcess.layerUnderwater;
+    }
+
+// UnderwaterMoveComp.java : public boolean hittable()
+    @Override
+    public boolean hittable(){
+        return false && type.hittable(self());
+    }
+
+// UnderwaterMoveComp.java : public boolean targetable(Team targeter)
+    @Override
+    public boolean targetable(Team targeter){
+        return false && type.targetable(self(), targeter);
+    }
+
+// UnitComp.java : public boolean checkTarget(boolean targetAir, boolean targetGround)
+    public boolean checkTarget(boolean targetAir, boolean targetGround){
+        return (isGrounded() && targetGround) || (isFlying() && targetAir);
+    }
+
+// UnitComp.java : public boolean isGrounded()
+    public boolean isGrounded(){
+        return elevation < 0.001f;
+    }
+
+// UnitComp.java : public boolean isFlying()
+    public boolean isFlying(){
+        return elevation >= 0.09f;
+    }
+
+// UnitComp.java : public boolean canDrown()
+    public boolean canDrown(){
+        return isGrounded() && type.canDrown;
+    }
+
+// UnitComp.java : public Floor drownFloor()
+    public @Nullable Floor drownFloor(){
+        return floorOn();
+    }
+
+// UnitComp.java : public void wobble()
+    public void wobble(){
+        x += Mathf.sin(Time.time + (id % 10) * 12, 25f, 0.05f) * Time.delta * elevation;
+        y += Mathf.cos(Time.time + (id % 10) * 12, 25f, 0.05f) * Time.delta * elevation;
+    }
+
+// UnitComp.java : public void moveAt(Vec2 vector, float acceleration) / public void moveAt(Vec2 vector)
+    public void moveAt(Vec2 vector, float acceleration){
+        Vec2 t = tmp1.set(vector); //target vector
+        tmp2.set(t).sub(vel).limit(acceleration * vector.len() * Time.delta); //delta vector
+        vel.add(tmp2);
+    }
+
+// UnitComp.java : public float floorSpeedMultiplier()
+    public float floorSpeedMultiplier(){
+        Floor on = isFlying() || type.hovering ? Blocks.air.asFloor() : floorOn();
+        return (float)Math.pow(on.speedMultiplier, type.floorMultiplier) * speedMultiplier;
+    }
+
+// UnitComp.java : public void unloaded()
+    public void unloaded(){
+
+    }
+
+// UnitComp.java : public void updateBoosting(boolean boost) / public void updateBoosting(boolean boost, boolean event)
+    public void updateBoosting(boolean boost){
+        updateBoosting(boost, false);
+    }
+
+// UnitComp.java : public void movePref(Vec2 movement)
+    public void movePref(Vec2 movement){
+        if(type.omniMovement){
+            moveAt(movement);
+        }else{
+            rotateMove(movement);
+        }
+    }
+
+// UnitComp.java : public void approach(Vec2 vector)
+    public void approach(Vec2 vector){
+        vel.approachDelta(vector, type.accel * speed());
+    }
+
+// UnitComp.java : public void rotateMove(Vec2 vec)
+    public void rotateMove(Vec2 vec){
+        moveAt(Tmp.v2.trns(rotation, vec.len()));
+
+        if(!vec.isZero()){
+            rotation = Angles.moveToward(rotation, vec.angle(), type.rotateSpeed * Time.delta * speedMultiplier);
+        }
+    }
+
+// UnitComp.java : public void aimLook(Position pos) / public void aimLook(float x, float y)
+    public void aimLook(Position pos){
+        aim(pos);
+        lookAt(pos);
+    }
+
+// UnitComp.java : public boolean isPathImpassable(int tileX, int tileY)
+    public boolean isPathImpassable(int tileX, int tileY){
+        return !type.flying && world.tiles.in(tileX, tileY) && type.pathCost.getCost(team.id, pathfinder.get(tileX, tileY)) == -1;
+    }
+
+// UnitComp.java : public float physicSize()
+    public float physicSize(){
+        return hitSize * 0.7f;
+    }
+
+// UnitComp.java : public boolean canLand()
+    public boolean canLand(){
+        float psize = physicSize();
+        return !onSolid() && !Units.any(x - psize/2f, y - psize/2f, psize, psize, f -> f != self() && f.isGrounded());
+    }
+
+// UnitComp.java : public boolean inRange(Position other)
+    public boolean inRange(Position other){
+        return within(other, type.range);
+    }
+
+// UnitComp.java : public boolean hasWeapons()
+    public boolean hasWeapons(){
+        return type.hasWeapons();
+    }
+
+// UnitComp.java : public float speed()
+    public float speed(){
+        float strafePenalty = isGrounded() || !isPlayer() ? 1f : Mathf.lerp(1f, type.strafePenalty, Angles.angleDist(vel().angle(), rotation) / 180f);
+        float boost = Mathf.lerp(1f, type.canBoost ? type.boostMultiplier : 1f, elevation);
+        return type.speed * strafePenalty * boost * floorSpeedMultiplier();
+    }
+
+// UnitComp.java : public float prefRotation()
+    public float prefRotation(){
+        if(activelyBuilding() && type.rotateToBuilding){
+            return angleTo(buildPlan());
+        }else if(mineTile != null){
+            return angleTo(mineTile);
+        }else if(moving() && type.omniMovement){
+            return vel().angle();
+        }
+        return rotation;
+    }
+
+// UnitComp.java : public float ammof()
+    public float ammof(){
+        return 1f;
+    }
+
+// UnitComp.java : public boolean displayable()
+    @Override
+    public boolean displayable(){
+        return type.hoverable;
+    }
+
+// UnitComp.java : public boolean isSyncHidden(Team team)
+    @Override
+    @Replace
+    public boolean isSyncHidden(Team team){
+        //shooting reveals position so bullets can be seen
+        return !isShooting() && inFogTo(team);
+    }
+
+// UnitComp.java : public void handleSyncHidden()
+    @Override
+    public void handleSyncHidden(){
+        remove();
+        netClient.clearRemovedEntity(id);
+    }
+
+// UnitComp.java : public float range()
+    @Override
+    public float range(){
+        return type.maxRange;
+    }
+
+// UnitComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        if(isBuilding()){
+            return state.rules.infiniteResources ? Float.MAX_VALUE : Math.max(type.clipSize, type.region.width) + type.buildRange + tilesize*4f;
+        }
+        if(mining()){
+            return type.clipSize + type.mineRange;
+        }
+        return type.clipSize;
+    }
+
+// UnitComp.java : public boolean canShoot()
+    @Override
+    @Replace
+    public boolean canShoot(){
+        //cannot shoot while boosting
+        return !disarmed && !(type.canBoost && isFlying());
+    }
+
+// UnitComp.java : public boolean isEnemy()
+    public boolean isEnemy(){
+        return type.isEnemy;
+    }
+
+// UnitComp.java : public boolean collides(Hitboxc other)
+    @Override
+    @Replace
+    public boolean collides(Hitboxc other){
+        return hittable();
+    }
+
+// UnitComp.java : public void collision(Hitboxc other, float x, float y)
+    @Override
+    public void collision(Hitboxc other, float x, float y){
+        if(other instanceof Bullet bullet){
+            controller.hit(bullet);
+        }
+    }
+
+// UnitComp.java : public int itemCapacity()
+    @Override
+    public int itemCapacity(){
+        return type.itemCapacity;
+    }
+
+// UnitComp.java : public float bounds()
+    @Override
+    public float bounds(){
+        return hitSize *  2f;
+    }
+
+// UnitComp.java : public void controller(UnitController next) / public UnitController controller()
+    @Override
+    public void controller(UnitController next){
+        this.controller = next;
+        if(controller.unit() != self()) controller.unit(self());
+    }
+
+// UnitComp.java : public void resetController()
+    public void resetController(){
+        controller(type.createController(self()));
+    }
+
+// UnitComp.java : public void set(UnitType def, UnitController controller)
+    @Override
+    public void set(UnitType def, UnitController controller){
+        if(this.type != def){
+            setType(def);
+        }
+        controller(controller);
+    }
+
+// UnitComp.java : public int collisionLayer()
+    public int collisionLayer(){
+        return type.allowLegStep && type.legPhysicsLayer ? PhysicsProcess.layerLegs : isGrounded() ? PhysicsProcess.layerGround : PhysicsProcess.layerFlying;
+    }
+
+// UnitComp.java : public void lookAt(float angle) / public void lookAt(Position pos) / public void lookAt(float x, float y)
+    public void lookAt(float angle){
+        rotation = Angles.moveToward(rotation, angle, type.rotateSpeed * Time.delta * speedMultiplier());
+    }
+
+// UnitComp.java : public boolean isAI()
+    public boolean isAI(){
+        return controller instanceof AIController;
+    }
+
+// UnitComp.java : public boolean allowCommand()
+    public boolean allowCommand(){
+        return controller instanceof CommandAI;
+    }
+
+// UnitComp.java : public boolean isCommandable()
+    public boolean isCommandable(){
+        return controller instanceof CommandAI;
+    }
+
+// UnitComp.java : public boolean canTarget(Teamc other)
+    public boolean canTarget(Teamc other){
+        return other != null && (other instanceof Unit u ? u.checkTarget(type.targetAir, type.targetGround) : (other instanceof Building b && type.targetGround));
+    }
+
+// UnitComp.java : public CommandAI command()
+    public CommandAI command(){
+        if(controller instanceof CommandAI ai){
+            return ai;
+        }else{
+            throw new IllegalArgumentException("Unit cannot be commanded - check isCommandable() first.");
+        }
+    }
+
+// UnitComp.java : public boolean isMissile()
+    public boolean isMissile(){
+        return this instanceof TimedKillc;
+    }
+
+// UnitComp.java : public int count()
+    public int count(){
+        return team.data().countType(type);
+    }
+
+// UnitComp.java : public int cap()
+    public int cap(){
+        return Units.getCap(team);
+    }
+
+// UnitComp.java : public boolean playerControllable()
+    public boolean playerControllable(){
+        return type.playerControllable && !(controller instanceof LogicAI ai && ai.controller != null && ai.controller.block.privileged);
+    }
+
+// UnitComp.java : public boolean targetable(Team targeter)
+    public boolean targetable(Team targeter){
+        return type.targetable(self(), targeter);
+    }
+
+// UnitComp.java : public boolean killable()
+    public boolean killable(){
+        return type.killable(self());
+    }
+
+// UnitComp.java : public boolean hittable()
+    public boolean hittable(){
+        return type.hittable(self());
+    }
+
+// UnitComp.java : public void afterSync()
+    @Override
+    public void afterSync(){
+        //set up type info after reading
+        setType(this.type);
+        controller.unit(self());
+    }
+
+// UnitComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        setType(this.type);
+        controller.unit(self());
+        //reset controller state
+        if(!(controller instanceof AIController ai && ai.keepState())){
+            controller(type.createController(self()));
+        }
+    }
+
+// UnitComp.java : public void afterReadAll()
+    @Override
+    public void afterReadAll(){
+        controller.afterRead(self());
+    }
+
+// UnitComp.java : public void remove()
+    @Override
+    public void remove(){
+        team.data().updateCount(type, -1);
+        controller.removed(self());
+
+        //make sure trail doesn't just go poof
+        if(trail != null && trail.size() > 0){
+            Fx.trailFade.at(x, y, trail.width(), type.trailColor == null ? team.color : type.trailColor, trail.copy());
+        }
+    }
+
+// UnitComp.java : public void landed()
+    @Override
+    public void landed(){
+        if(type.mechLandShake > 0f){
+            Effect.shake(type.mechLandShake, type.mechLandShake, this);
+        }
+
+        type.landed(self());
+    }
+
+// UnitComp.java : public void heal(float amount)
+    @Override
+    public void heal(float amount){
+        if(health < maxHealth && amount > 0){
+            wasHealed = true;
+        }
+    }
+
+// UnitComp.java : public boolean shouldUpdateController()
+    public boolean shouldUpdateController(){
+        return true;
+    }
+
+// UnitComp.java : public TextureRegion icon()
+    public TextureRegion icon(){
+        return type.uiIcon;
+    }
+
+// UnitComp.java : public String getControllerName()
+    @Override
+    public @Nullable String getControllerName(){
+        if(isPlayer()) return getPlayer().coloredName();
+        if(controller instanceof LogicAI ai && ai.controller != null) return ai.controller.lastAccessed;
+        return null;
+    }
+
+// UnitComp.java : public void display(Table table)
+    @Override
+    public void display(Table table){
+        type.display(self(), table);
+    }
+
+// UnitComp.java : public void draw()
+    @Override
+    public void draw(){
+        type.draw(self());
+    }
+
+// UnitComp.java : public boolean isPlayer()
+    @Override
+    public boolean isPlayer(){
+        return controller instanceof Player;
+    }
+
+// UnitComp.java : public Player getPlayer()
+    @Nullable
+    public Player getPlayer(){
+        return isPlayer() ? (Player)controller : null;
+    }
+
+// UnitComp.java : public void kill()
+    @Override
+    @Replace
+    public void kill(){
+        if(dead || net.client() || !killable()) return;
+
+        //deaths are synced; this calls killed()
+        Call.unitDeath(id);
+    }
+
+// UnitComp.java : public String toString()
+    @Override
+    @Replace
+    public String toString(){
+        return "Unit#" + id() + ":" + type + " (" + x + ", " + y + ")";
+    }
+
+// UnitTetherComp.java : public void afterRead()
+    @Override
+    public void afterRead(){
+        if(spawnerUnitId != -1) spawner = Groups.unit.getByID(spawnerUnitId);
+        spawnerUnitId = -1;
+    }
+
+// UnitTetherComp.java : public void afterSync()
+    @Override
+    public void afterSync(){
+        if(spawnerUnitId != -1) spawner = Groups.unit.getByID(spawnerUnitId);
+        spawnerUnitId = -1;
+    }
+
+// UnitTetherComp.java : public void update()
+    @Override
+    public void update(){
+        if(spawner == null || !spawner.isValid() || spawner.team != team){
+            Call.unitDespawn(self());
+        }else{
+            spawnerUnitId = spawner.id;
+        }
+    }
+
+// VelComp.java : SolidPred solidity()
+    @Nullable
+    SolidPred solidity(){
+        return null;
+    }
+
+// VelComp.java : boolean ignoreSolids()
+    boolean ignoreSolids(){
+        return false;
+    }
+
+// VelComp.java : boolean canPass(int tileX, int tileY)
+    boolean canPass(int tileX, int tileY){
+        SolidPred s = solidity();
+        return s == null || !s.solid(tileX, tileY);
+    }
+
+// VelComp.java : boolean canPassOn()
+    boolean canPassOn(){
+        return canPass(tileX(), tileY());
+    }
+
+// VelComp.java : boolean moving()
+    boolean moving(){
+        return !vel.isZero(0.01f);
+    }
+
+// VelComp.java : void move(Vec2 v) / void move(float cx, float cy)
+    void move(Vec2 v){
+        move(v.x, v.y);
+    }
+
+// VelComp.java : void velAddNet(Vec2 v) / void velAddNet(float vx, float vy)
+    void velAddNet(Vec2 v){
+        vel.add(v);
+        if(isRemote()){
+            x += v.x;
+            y += v.y;
+        }
+    }
+
+// WaterCrawlComp.java : public SolidPred solidity()
+    @Replace
+    public SolidPred solidity(){
+        return isFlying() || ignoreSolids() ? null : EntityCollisions::waterSolid;
+    }
+
+// WaterCrawlComp.java : public boolean onSolid()
+    @Replace
+    public boolean onSolid(){
+        return EntityCollisions.waterSolid(tileX(), tileY());
+    }
+
+// WaterCrawlComp.java : public float floorSpeedMultiplier()
+    @Replace
+    public float floorSpeedMultiplier(){
+        Floor on = isFlying() ? Blocks.air.asFloor() : floorOn();
+        return (on.shallow ? 1f : 1.3f) * speedMultiplier;
+    }
+
+// WaterCrawlComp.java : public boolean onLiquid()
+    public boolean onLiquid(){
+        Tile tile = tileOn();
+        return tile != null && tile.floor().isLiquid;
+    }
+
+// WaterMoveComp.java : public void add()
+    @Override
+    public void add(){
+        tleft.clear();
+        tright.clear();
+    }
+
+// WaterMoveComp.java : public SolidPred solidity()
+    @Replace
+    @Override
+    public SolidPred solidity(){
+        return isFlying() || ignoreSolids() ? null : EntityCollisions::waterSolid;
+    }
+
+// WaterMoveComp.java : public boolean onSolid()
+    @Replace
+    @Override
+    public boolean onSolid(){
+        return EntityCollisions.waterSolid(tileX(), tileY());
+    }
+
+// WaterMoveComp.java : public float floorSpeedMultiplier()
+    @Replace
+    public float floorSpeedMultiplier(){
+        Floor on = isFlying() ? Blocks.air.asFloor() : floorOn();
+        return (on.shallow ? 1f : 1.3f) * speedMultiplier;
+    }
+
+// WaterMoveComp.java : public boolean onLiquid()
+    public boolean onLiquid(){
+        Tile tile = tileOn();
+        return tile != null && tile.floor().isLiquid;
+    }
+
+// WeaponsComp.java : void setWeaponRotation(float rotation)
+    void setWeaponRotation(float rotation){
+        for(WeaponMount mount : mounts){
+            mount.rotation = rotation;
+        }
+    }
+
+// WeaponsComp.java : void setupWeapons(UnitType def)
+    void setupWeapons(UnitType def){
+        mounts = new WeaponMount[def.weapons.size];
+        for(int i = 0; i < mounts.length; i++){
+            mounts[i] = def.weapons.get(i).mountType.get(def.weapons.get(i));
+        }
+    }
+
+// WeaponsComp.java : void controlWeapons(boolean rotateShoot) / void controlWeapons(boolean rotate, boolean shoot)
+    void controlWeapons(boolean rotateShoot){
+        controlWeapons(rotateShoot, rotateShoot);
+    }
+
+// WeaponsComp.java : void aim(Position pos) / void aim(float x, float y) / void aim(float x, float y, boolean clearTarget)
+    void aim(Position pos){
+        aim(pos.getX(), pos.getY());
+    }
+
+// WeaponsComp.java : boolean canShoot()
+    boolean canShoot(){
+        return !disarmed;
+    }
+
+// WeaponsComp.java : public void update()
+    @Override
+    public void update(){
+        for(WeaponMount mount : mounts){
+            mount.weapon.update(self(), mount);
+        }
+    }
+
+// WorldLabelComp.java : public float clipSize()
+    @Replace
+    public float clipSize(){
+        if(parent != null) return Float.MAX_VALUE;
+        return text == null ? 0f : text.length() * 10f * fontSize;
+    }
+
+// WorldLabelComp.java : public void update()
+    @Override
+    public void update(){
+        if(duration >= 0){
+            duration -= Time.delta / 60f;
+            if(duration <= 0){
+                hide();
+                if(expired != null) expired.run();
+            }
+        }
+    }
+
+// WorldLabelComp.java : public void draw()
+    @Override
+    public void draw(){
+        float x = this.x, y = this.y;
+        if(parent != null){
+            x += parent.x();
+            y += parent.y();
+        }
+        drawAt(text, x, y, z, flags, fontSize, Align.center, (flags & flagAlignLeft) != 0 ? Align.left : (flags & flagAlignRight) != 0 ? Align.right : Align.center);
+    }
+
+// WorldLabelComp.java : public void show(Player player)
+    public void show(Player player){
+        if(added || player.con == null) return;
+        player.con.localEntities.add(this);
+        added = true;
+    }
+
+// WorldLabelComp.java : public void hide(Player player) / public void hide()
+    public void hide(Player player){
+        if(!added || player.con == null) return;
+        player.con.localEntities.remove(this);
+        Call.removeWorldLabel(player.con, id);
+        added = false;
+    }
+

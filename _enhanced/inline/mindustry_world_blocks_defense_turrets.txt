@@ -1,0 +1,267 @@
+// BaseTurret.java : public void reinitializeConsumers()
+    @Override
+    public void reinitializeConsumers(){
+        checkInitCoolant();
+
+        super.reinitializeConsumers();
+    }
+
+// BaseTurret.java : void checkInitCoolant()
+    void checkInitCoolant(){
+        if(coolant != null){
+            coolant.update = false;
+            coolant.booster = true;
+            coolant.optional = true;
+
+            //json parsing does not add to consumes
+            if(!hasConsumer(coolant)) consume(coolant);
+        }
+    }
+
+// BaseTurret.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.placing);
+
+        if(fogRadiusMultiplier < 0.99f && state.rules.fog){
+            Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range * fogRadiusMultiplier, Pal.lightishGray);
+        }
+    }
+
+// BaseTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
+        if(activationTime > 0) stats.add(Stat.activationTime, activationTime / 60f, StatUnit.seconds);
+    }
+
+// ContinuousLiquidTurret.java : public void ammo(Object objects)
+    public void ammo(Object... objects){
+        ammoTypes = ObjectMap.of(objects);
+    }
+
+// ContinuousLiquidTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        //mirror stats onto each bullet (purely visual)
+        ammoTypes.each((l, b) -> b.statLiquidConsumed = liquidConsumed);
+
+        stats.replace(Stat.ammo, StatValues.ammo(ammoTypes));
+    }
+
+// ContinuousTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.ammo, StatValues.ammo(ObjectMap.of(this, shootType)));
+        stats.remove(Stat.reload);
+        stats.remove(Stat.inaccuracy);
+    }
+
+// ItemTurret.java : public void ammo(Object objects)
+    public void ammo(Object... objects){
+        ammoTypes = OrderedMap.of(objects);
+    }
+
+// ItemTurret.java : public void limitRange() / public void limitRange(float margin)
+    public void limitRange(){
+        limitRange(9f);
+    }
+
+// ItemTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.itemCapacity);
+        stats.add(Stat.ammo, StatValues.ammo(ammoTypes, name));
+        stats.add(Stat.ammoCapacity, maxAmmo / Math.max(ammoPerShot, 1), StatUnit.shots);
+    }
+
+// LaserTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.booster);
+        if(coolant != null){
+            stats.add(Stat.input, StatValues.boosters(reload, coolant.amount, coolantMultiplier, false, this::consumesLiquid));
+        }
+    }
+
+// LaserTurret.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        if(coolant == null){
+            coolant = findConsumer(c -> c instanceof ConsumeLiquidBase);
+        }
+    }
+
+// LiquidTurret.java : public void ammo(Object objects)
+    public void ammo(Object... objects){
+        ammoTypes = ObjectMap.of(objects);
+    }
+
+// LiquidTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.ammo, StatValues.ammo(ammoTypes, name));
+    }
+
+// PayloadAmmoTurret.java : public void ammo(Object objects)
+    public void ammo(Object... objects){
+        ammoTypes = ObjectMap.of(objects);
+    }
+
+// PayloadAmmoTurret.java : public void limitRange() / public void limitRange(float margin)
+    public void limitRange(){
+        limitRange(1f);
+    }
+
+// PayloadAmmoTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.itemCapacity);
+        stats.add(Stat.ammo, StatValues.ammo(ammoTypes, true));
+    }
+
+// PointDefenseTurret.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
+    }
+
+// PointDefenseTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.reload, 60f / reload, StatUnit.perSecond);
+        stats.add(Stat.damage, bulletDamage, StatUnit.none);
+    }
+
+// PowerTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.add(Stat.ammo, StatValues.ammo(ObjectMap.of(this, shootType)));
+    }
+
+// PowerTurret.java : public void limitRange(float margin)
+    public void limitRange(float margin){
+        limitRange(shootType, margin);
+    }
+
+// ReloadTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        if(coolant != null){
+            stats.replace(Stat.booster, StatValues.boosters(reload, coolant.amount, coolantMultiplier, true, coolant::consumes));
+        }
+    }
+
+// TractorBeamTurret.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
+    }
+
+// TractorBeamTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.targetsAir, targetAir);
+        stats.add(Stat.targetsGround, targetGround);
+        if(damage > 0) stats.add(Stat.damage, damage * 60f, StatUnit.perSecond);
+        if(status != StatusEffects.none && statusChance > 0f){
+            stats.add(Stat.status, StatValues.statusText(status, statusDuration, statusChance));
+        }
+    }
+
+// TractorBeamTurret.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        updateClipRadius(range + tilesize);
+    }
+
+// Turret.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// Turret.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        drawer.load(this);
+    }
+
+// Turret.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawer.drawPlan(this, plan, list);
+    }
+
+// Turret.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// Turret.java : public void getRegionsToOutline(Seq<TextureRegion> out)
+    @Override
+    public void getRegionsToOutline(Seq<TextureRegion> out){
+        drawer.getRegionsToOutline(this, out);
+    }
+
+// Turret.java : public void limitRange(BulletType bullet, float margin)
+    public void limitRange(BulletType bullet, float margin){
+        float realRange = bullet.rangeChange + range;
+        //doesn't handle drag
+        bullet.lifetime = (realRange + margin + bullet.extraRangeMargin + 10f) / bullet.speed;
+    }
+
+// Turret.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        if(drawMinRange){
+            Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, minRange, Pal.placing);
+        }
+    }
+
+// Turret.java : public boolean rotatedOutput(int x, int y)
+    @Override
+    public boolean rotatedOutput(int x, int y){
+        return false;
+    }
+
+// Turret.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    @Override
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+        super.placeEnded(tile, builder, rotation, config);
+        if(rotate && tile.build instanceof TurretBuild turret){
+            turret.rotation = tile.build.rotdeg();
+        }
+    }
+

@@ -1,0 +1,86 @@
+ShootAlternate.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public int barrels  // number of barrels used for shooting.
+  public float spread  // spread between barrels, in world units - not degrees.
+  public int barrelOffset  // offset of barrel to start on
+  public boolean mirror  // If true, the shoot order is flipped.
+ctors:
+  public ShootAlternate(float spread) / public ShootAlternate()
+methods:
+  public void flip()
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootBarrel.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public float barrels  // barrels [in x, y, rotation] format.
+  public int barrelOffset  // offset of barrel to start on
+methods:
+  public void flip()
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootHelix.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public float scl
+ctors:
+  public ShootHelix(float scl, float mag) / public ShootHelix(float scl, float mag, float offset) / public ShootHelix()
+methods:
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootMulti.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public ShootPattern source
+  public ShootPattern dest
+ctors:
+  public ShootMulti(ShootPattern source, ShootPattern dest) / public ShootMulti()
+methods:
+  public void flip()  // deep copy needed for flips
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootPattern.java
+Java class implements java.lang.Cloneable
+// Handles different types of bullet patterns for shooting.
+fields:
+  public int shots  // amount of shots per "trigger pull"
+  public float firstShotDelay  // delay in ticks before first shot
+  public float shotDelay  // delay in ticks between shots
+methods:
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer) / public void shoot(int totalShots, BulletHandler handler)  // Called on a single "trigger pull".
+  public void flip()  // Subclasses should override this to flip its sides.
+  public ShootPattern copy()
+inner-interface: BulletHandler
+  methods:
+    default void shoot(float x, float y, float rotation, float delay) / void shoot(float x, float y, float rotation, float delay, Mover move)  // @param x x offset of bullet, should be transformed by weapon rotation
+
+ShootSine.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public float scl  // scaling applied to bullet index
+  public float mag  // magnitude of sine curve for position displacement
+ctors:
+  public ShootSine(float scl, float mag) / public ShootSine()
+methods:
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootSpread.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public float spread  // spread between bullets, in degrees.
+ctors:
+  public ShootSpread(int shots, float spread) / public ShootSpread()
+methods:
+  public static ShootSpread circle(int points)
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+
+ShootSummon.java
+Java class extends mindustry.entities.pattern.ShootPattern
+fields:
+  public float x
+ctors:
+  public ShootSummon(float x, float y, float radius, float spread) / public ShootSummon()
+methods:
+  public void shoot(int totalShots, BulletHandler handler, Runnable barrelIncrementer)
+

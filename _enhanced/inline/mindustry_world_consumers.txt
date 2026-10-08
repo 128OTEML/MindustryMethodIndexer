@@ -1,0 +1,614 @@
+// Consume.java : public void apply(Block block)
+    public void apply(Block block){
+
+    }
+
+// Consume.java : public Consume optional(boolean optional, boolean boost)
+    public Consume optional(boolean optional, boolean boost){
+        this.optional = optional;
+        this.booster = boost;
+        return this;
+    }
+
+// Consume.java : public Consume boost()
+    public Consume boost(){
+        return optional(true, true);
+    }
+
+// Consume.java : public Consume update(boolean update) / public void update(Building build)
+    public Consume update(boolean update){
+        this.update = update;
+        return this;
+    }
+
+// Consume.java : public boolean ignore()
+    public boolean ignore(){
+        return false;
+    }
+
+// Consume.java : public void build(Building build, Table table)
+    public void build(Building build, Table table){}
+
+// Consume.java : public void trigger(Building build)
+    public void trigger(Building build){}
+
+// Consume.java : public float efficiency(Building build)
+    public float efficiency(Building build){
+        return 1f;
+    }
+
+// Consume.java : public float efficiencyMultiplier(Building build)
+    public float efficiencyMultiplier(Building build){
+        return 1f;
+    }
+
+// Consume.java : public void display(Stats stats)
+    public void display(Stats stats){}
+
+// ConsumeItemCharged.java : public float itemEfficiencyMultiplier(Item item)
+    @Override
+    public float itemEfficiencyMultiplier(Item item){
+        return item.charge;
+    }
+
+// ConsumeItemDynamic.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasItems = true;
+        block.acceptsItems = true;
+    }
+
+// ConsumeItemDynamic.java : private void rebuild(Building build, Table table)
+    private void rebuild(Building build, Table table){
+        table.clear();
+        int i = 0;
+
+        for(ItemStack stack : items.get(build)){
+            table.add(new ReqImage(StatValues.stack(stack.item, Math.round(stack.amount * multiplier.get(build))),
+            () -> build.items != null && build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build))))).padRight(8).left();
+            if(++i % 4 == 0) table.row();
+        }
+    }
+
+// ConsumeItemDynamic.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        for(ItemStack stack : items.get(build)){
+            build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
+        }
+    }
+
+// ConsumeItemDynamic.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        return build.consumeTriggerValid() || build.items.has(items.get(build), multiplier.get(build)) ? 1f : 0f;
+    }
+
+// ConsumeItemEfficiency.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.itemEffMultiplier(this::itemEfficiencyMultiplier, stats.timePeriod, filter, itemDurationMultipliers));
+    }
+
+// ConsumeItemExplode.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){}
+
+// ConsumeItemExplode.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){}
+
+// ConsumeItemExplode.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){}
+
+// ConsumeItemExplode.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){}
+
+// ConsumeItemExplode.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        return 1f;
+    }
+
+// ConsumeItemExplosive.java : public float itemEfficiencyMultiplier(Item item)
+    @Override
+    public float itemEfficiencyMultiplier(Item item){
+        return item.explosiveness;
+    }
+
+// ConsumeItemFilter.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasItems = true;
+        block.acceptsItems = true;
+        content.items().each(filter, item -> {
+            if(item.id < block.itemFilter.length){
+                block.itemFilter[item.id] = true;
+            }
+        });
+    }
+
+// ConsumeItemFilter.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){
+        MultiReqImage image = new MultiReqImage();
+        content.items().each(i -> filter.get(i) && i.unlockedNow() && !i.hidden, item -> image.add(new ReqImage(StatValues.stack(item, 1),
+            () -> build.items.has(item))));
+
+        table.add(image).size(8 * 4);
+    }
+
+// ConsumeItemFilter.java : public void update(Building build)
+    @Override
+    public void update(Building build){
+    }
+
+// ConsumeItemFilter.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        Item item = getConsumed(build);
+        if(item != null){
+            build.items.remove(item, 1);
+        }
+    }
+
+// ConsumeItemFilter.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        return build.consumeTriggerValid() || getConsumed(build) != null ? 1f : 0f;
+    }
+
+// ConsumeItemFilter.java : public Item getConsumed(Building build)
+    public @Nullable Item getConsumed(Building build){
+        for(int i = 0; i < content.items().size; i++){
+            Item item = content.item(i);
+            if(build.items.has(item) && this.filter.get(item)){
+                return item;
+            }
+        }
+        return null;
+    }
+
+// ConsumeItemFilter.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.items(stats.timePeriod, filter));
+    }
+
+// ConsumeItemFilter.java : public float efficiencyMultiplier(Building build)
+    @Override
+    public float efficiencyMultiplier(Building build){
+        var item = getConsumed(build);
+        return item == null ? 0f : itemEfficiencyMultiplier(item);
+    }
+
+// ConsumeItemFilter.java : public float itemEfficiencyMultiplier(Item item)
+    public float itemEfficiencyMultiplier(Item item){
+        return 1f;
+    }
+
+// ConsumeItemFlammable.java : public float itemEfficiencyMultiplier(Item item)
+    @Override
+    public float itemEfficiencyMultiplier(Item item){
+        return item.flammability;
+    }
+
+// ConsumeItemList.java : public void setMultipliers(Object objects)
+    public void setMultipliers(Object... objects){
+        for(int i = 0; i < objects.length; i += 2){
+            itemMultipliers.put((Item)objects[i], (Float)objects[i + 1]);
+        }
+    }
+
+// ConsumeItemList.java : public float efficiencyMultiplier(Building build)
+    @Override
+    public float efficiencyMultiplier(Building build){
+        var item = getConsumed(build);
+        return itemMultipliers.get(item, 1f);
+    }
+
+// ConsumeItemRadioactive.java : public float itemEfficiencyMultiplier(Item item)
+    @Override
+    public float itemEfficiencyMultiplier(Item item){
+        return item.radioactivity;
+    }
+
+// ConsumeItems.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasItems = true;
+        block.acceptsItems = true;
+        for(var stack : items){
+            if(stack.item.id < block.itemFilter.length) block.itemFilter[stack.item.id] = true;
+        }
+    }
+
+// ConsumeItems.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){
+        table.table(c -> {
+            int i = 0;
+            for(var stack : items){
+                c.add(new ReqImage(StatValues.stack(stack.item, Math.round(stack.amount * multiplier.get(build))),
+                () -> build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build))))).padRight(8);
+                if(++i % 4 == 0) c.row();
+            }
+        }).left();
+    }
+
+// ConsumeItems.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        for(var stack : items){
+            build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
+        }
+    }
+
+// ConsumeItems.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        return build.consumeTriggerValid() || build.items.has(items, multiplier.get(build)) ? 1f : 0f;
+    }
+
+// ConsumeItems.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, stats.timePeriod < 0 ? StatValues.items(items) : StatValues.items(stats.timePeriod, items));
+    }
+
+// ConsumeLiquid.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        super.apply(block);
+        if(liquid.id < block.liquidFilter.length) block.liquidFilter[liquid.id] = true;
+    }
+
+// ConsumeLiquid.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){
+        table.add(new ReqImage(liquid.uiIcon, () -> build.liquids.get(liquid) > 0)).size(iconMed).top().left();
+    }
+
+// ConsumeLiquid.java : public void update(Building build)
+    @Override
+    public void update(Building build){
+        build.liquids.remove(liquid, amount * build.edelta() * multiplier.get(build));
+    }
+
+// ConsumeLiquid.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        float ed = build.edelta() * build.efficiencyScale();
+        if(ed <= 0.00000001f) return 0f;
+        //there can be more liquid than necessary, so cap at 1
+        return Math.min(build.liquids.get(liquid) / (amount * ed * multiplier.get(build)), 1f);
+    }
+
+// ConsumeLiquid.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, liquid, amount * 60f, true);
+    }
+
+// ConsumeLiquid.java : public boolean consumes(Liquid liquid)
+    @Override
+    public boolean consumes(Liquid liquid){
+        return liquid == this.liquid;
+    }
+
+// ConsumeLiquidBase.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasLiquids = true;
+    }
+
+// ConsumeLiquidFilter.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasLiquids = true;
+        content.liquids().each(filter, item -> {
+            if(item.id < block.liquidFilter.length) block.liquidFilter[item.id] = true;
+        });
+    }
+
+// ConsumeLiquidFilter.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){
+        Seq<Liquid> list = content.liquids().select(l -> !l.isHidden() && filter.get(l));
+        MultiReqImage image = new MultiReqImage();
+        list.each(liquid -> image.add(new ReqImage(liquid.uiIcon, () -> getConsumed(build) == liquid)));
+
+        table.add(image).size(8 * 4);
+    }
+
+// ConsumeLiquidFilter.java : public void update(Building build)
+    @Override
+    public void update(Building build){
+        Liquid liq = getConsumed(build);
+        if(liq != null){
+            build.liquids.remove(liq, amount * build.edelta() * multiplier.get(build));
+        }
+    }
+
+// ConsumeLiquidFilter.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        var liq = getConsumed(build);
+        float ed = build.edelta();
+        if(ed <= 0.00000001f) return 0f;
+        return liq != null ? Math.min(build.liquids.get(liq) / (amount * ed * multiplier.get(build)), 1f) : 0f;
+    }
+
+// ConsumeLiquidFilter.java : public float efficiencyMultiplier(Building build)
+    @Override
+    public float efficiencyMultiplier(Building build){
+        var liq = getConsumed(build);
+        return liq == null ? 0 : liquidEfficiencyMultiplier(liq);
+    }
+
+// ConsumeLiquidFilter.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.liquids(filter, amount * 60f, true));
+    }
+
+// ConsumeLiquidFilter.java : public boolean consumes(Liquid liquid)
+    @Override
+    public boolean consumes(Liquid liquid){
+        return filter.get(liquid);
+    }
+
+// ConsumeLiquidFilter.java : public float liquidEfficiencyMultiplier(Liquid liquid)
+    public float liquidEfficiencyMultiplier(Liquid liquid){
+        return 1f;
+    }
+
+// ConsumeLiquidFlammable.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.liquidEffMultiplier(l -> l.flammability, amount * 60f, filter));
+    }
+
+// ConsumeLiquidFlammable.java : public float liquidEfficiencyMultiplier(Liquid liquid)
+    @Override
+    public float liquidEfficiencyMultiplier(Liquid liquid){
+        return liquid.flammability;
+    }
+
+// ConsumeLiquids.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasLiquids = true;
+        for(var stack : liquids){
+            if(stack.liquid.id < block.liquidFilter.length) block.liquidFilter[stack.liquid.id] = true;
+        }
+    }
+
+// ConsumeLiquids.java : public void build(Building build, Table table)
+    @Override
+    public void build(Building build, Table table){
+        table.table(c -> {
+            int i = 0;
+            for(var stack : liquids){
+                c.add(new ReqImage(stack.liquid.uiIcon,
+                () -> build.liquids.get(stack.liquid) > 0)).size(Vars.iconMed).padRight(8);
+                if(++i % 4 == 0) c.row();
+            }
+        }).left();
+    }
+
+// ConsumeLiquids.java : public void update(Building build)
+    @Override
+    public void update(Building build){
+        float mult = multiplier.get(build);
+        for(var stack : liquids){
+            build.liquids.remove(stack.liquid, stack.amount * build.edelta() * mult);
+        }
+    }
+
+// ConsumeLiquids.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        float mult = multiplier.get(build);
+        float ed = build.edelta() * build.efficiencyScale();
+        if(ed <= 0.00000001f) return 0f;
+        float min = 1f;
+        for(var stack : liquids){
+            min = Math.min(build.liquids.get(stack.liquid) / (stack.amount * ed * mult), min);
+        }
+        return min;
+    }
+
+// ConsumeLiquids.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.liquids(1f, true, liquids));
+    }
+
+// ConsumeLiquidsDynamic.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasLiquids = true;
+    }
+
+// ConsumeLiquidsDynamic.java : private void rebuild(Building build, Table table)
+    private void rebuild(Building build, Table table){
+        table.clear();
+        int i = 0;
+
+        for(LiquidStack stack : liquids.get(build)){
+            table.add(new ReqImage(stack.liquid.uiIcon,
+                    () -> build.liquids != null && build.liquids.get(stack.liquid) > 0)).size(Vars.iconMed).padRight(8);
+            if(++i % 4 == 0) table.row();
+        }
+    }
+
+// ConsumeLiquidsDynamic.java : public void update(Building build)
+    @Override
+    public void update(Building build){
+        float mult = multiplier.get(build);
+        for(LiquidStack stack : liquids.get(build)){
+            build.liquids.remove(stack.liquid, stack.amount * build.edelta() * mult);
+        }
+    }
+
+// ConsumeLiquidsDynamic.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        float ed = build.edelta();
+        if(ed <= 0.00000001f) return 0f;
+        float min = 1f;
+        for(LiquidStack stack : liquids.get(build)){
+            min = Math.min(build.liquids.get(stack.liquid) / (stack.amount * ed * multiplier.get(build)), min);
+        }
+        return min;
+    }
+
+// ConsumePayloadDynamic.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        float mult = multiplier.get(build);
+        for(PayloadStack stack : payloads.get(build)){
+            if(!build.getPayloads().contains(stack.item, Math.round(stack.amount * mult))){
+                return 0f;
+            }
+        }
+        return 1f;
+    }
+
+// ConsumePayloadDynamic.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        float mult = multiplier.get(build);
+        for(PayloadStack stack : payloads.get(build)){
+            build.getPayloads().remove(stack.item, Math.round(stack.amount * mult));
+        }
+    }
+
+// ConsumePayloadDynamic.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        //needs to be implemented by the block itself, not enough info to display here
+    }
+
+// ConsumePayloadFilter.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        var payloads = build.getPayloads();
+        for(var block : fitting){
+            if(payloads.contains(block, 1)){
+                return 1f;
+            }
+        }
+        return 0f;
+    }
+
+// ConsumePayloadFilter.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        var payloads = build.getPayloads();
+        for(var block : fitting){
+            if(payloads.contains(block, 1)){
+                payloads.remove(block);
+                return;
+            }
+        }
+    }
+
+// ConsumePayloadFilter.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        stats.add(booster ? Stat.booster : Stat.input, StatValues.content(new Seq<>(fitting)));
+    }
+
+// ConsumePayloads.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        float mult = multiplier.get(build);
+        for(PayloadStack stack : payloads){
+            if(!build.getPayloads().contains(stack.item, Math.round(stack.amount * mult))){
+                return 0f;
+            }
+        }
+        return 1f;
+    }
+
+// ConsumePayloads.java : public void trigger(Building build)
+    @Override
+    public void trigger(Building build){
+        float mult = multiplier.get(build);
+        for(PayloadStack stack : payloads){
+            build.getPayloads().remove(stack.item, Math.round(stack.amount * mult));
+        }
+    }
+
+// ConsumePayloads.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+
+        for(var stack : payloads){
+            stats.add(Stat.input, t -> {
+                t.add(StatValues.stack(stack));
+                t.add(stack.item.localizedName).padLeft(4).padRight(4);
+            });
+        }
+    }
+
+// ConsumePower.java : public void apply(Block block)
+    @Override
+    public void apply(Block block){
+        block.hasPower = true;
+        block.consPower = this;
+    }
+
+// ConsumePower.java : public boolean ignore()
+    @Override
+    public boolean ignore(){
+        return buffered;
+    }
+
+// ConsumePower.java : public float efficiency(Building build)
+    @Override
+    public float efficiency(Building build){
+        return build.power.status;
+    }
+
+// ConsumePower.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        if(buffered){
+            stats.add(Stat.powerCapacity, capacity, StatUnit.none);
+        }else if(usage > 0f){
+            stats.add(Stat.powerUse, usage * 60f, StatUnit.powerSecond);
+        }
+    }
+
+// ConsumePower.java : public float requestedPower(Building entity)
+    public float requestedPower(Building entity){
+        return buffered ?
+            (1f - entity.power.status) * capacity :
+            usage * (entity.shouldConsume() ? 1f : 0f);
+    }
+
+// ConsumePowerCondition.java : public float requestedPower(Building entity)
+    @Override
+    public float requestedPower(Building entity){
+        return consume.get(entity) ? usage : 0f;
+    }
+
+// ConsumePowerDynamic.java : public float requestedPower(Building entity)
+    @Override
+    public float requestedPower(Building entity){
+        return usage.get(entity);
+    }
+
+// ConsumePowerDynamic.java : public void display(Stats stats)
+    @Override
+    public void display(Stats stats){
+        if(displayedPowerUsage != 0f){
+            stats.add(Stat.powerUse, displayedPowerUsage * 60f, StatUnit.powerSecond);
+        }
+    }
+

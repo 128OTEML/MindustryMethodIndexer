@@ -1,0 +1,491 @@
+AttributeCrafter.java
+Java class extends mindustry.world.blocks.production.GenericCrafter
+// A crafter that gains efficiency from attribute tiles.
+fields:
+  public Attribute attribute
+  public float baseEfficiency  // Base efficiency of the crafter.
+  public float maxBoost  // Maximum efficiency/output boost from attributes.
+  public float minEfficiency  // Minimum efficiency required to place this block.
+  public boolean displayEfficiency  // Whether to show this bar in the UI.
+  public boolean scaleLiquidConsumption  // Whether liquid consumption scales with efficiency.
+  public float outputScale  // Scaled output (yield) multiplier, scales with attribute.
+  public float boostScale  // Scaled efficiency (speed) multiplier, scales with attribute.
+ctors:
+  public AttributeCrafter(String name)
+methods:
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void setBars()
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void setStats()
+inner-class: AttributeCrafterBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild
+  fields:
+    public float attrsum
+  methods:
+    public float getProgressIncrease(float base)
+    public float outputMultiplier()
+    public float efficiencyMultiplier()
+    public float efficiencyScale()
+    public float scaleOutput(float amount)
+    public void pickedUp()
+    public void onProximityUpdate()
+
+BeamDrill.java
+Java class extends mindustry.world.Block
+fields:
+  protected Rand rand
+  public TextureRegion laser
+  public TextureRegion laserEnd
+  public TextureRegion laserCenter
+  public TextureRegion laserBoost
+  public TextureRegion laserEndBoost
+  public TextureRegion laserCenterBoost
+  public TextureRegion topRegion
+  public TextureRegion glowRegion
+  public float drillTime
+  public int range
+  public int tier
+  public float laserWidth
+  public float optionalBoostIntensity  // How many times faster the drill will progress when boosted by an optional consumer.
+  public ObjectFloatMap<Item> drillMultipliers  // Multipliers of drill speed for each item.
+  public Item blockedItem  // Special exemption item that this drill can't mine.
+  public Seq<Item> blockedItems  // Special exemption items that this drill can't mine.
+  public Color sparkColor
+  public float glowIntensity
+  public float glowScl
+  public int sparks
+  public float sparkRange
+  public Color boostHeatColor
+  public Color heatColor
+  public float heatPulse
+ctors:
+  public BeamDrill(String name)
+methods:
+  public void init()
+  public void setBars()
+  public boolean outputsItems()
+  public boolean rotatedOutput(int x, int y)
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public float getDrillTime(Item item)
+inner-class: BeamDrillBuild extends mindustry.gen.Building
+  fields:
+    public Tile facing
+    public Point2 lasers
+    public Item lastItem
+    public float time
+    public float warmup
+    public float lastDrillSpeed
+    public int facingAmount
+  methods:
+    public void drawSelect()
+    public void updateTile()
+    public boolean shouldConsume()
+    public void draw()
+    public void onProximityUpdate()
+    protected void updateLasers()
+    protected void updateFacing()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+BurstDrill.java
+Java class extends mindustry.world.blocks.production.Drill
+fields:
+  public float shake
+  public Interp speedCurve
+  public TextureRegion topInvertRegion
+  public TextureRegion glowRegion
+  public TextureRegion arrowRegion
+  public TextureRegion arrowBlurRegion
+  public float invertedTime
+  public float arrowSpacing
+  public int arrows
+  public Color arrowColor
+  public Color glowColor
+  public Sound drillSound
+  public float drillSoundVolume
+ctors:
+  public BurstDrill(String name)
+methods:
+  public TextureRegion[] icons()
+  public float getDrillTime(Item item)
+  public void setStats()
+inner-class: BurstDrillBuild extends mindustry.world.blocks.production.Drill.DrillBuild
+  fields:
+    public float smoothProgress  // used so the lights don't fade out immediately
+    public float invertTime
+  methods:
+    public void updateTile()
+    public float ambientVolume()
+    public boolean shouldConsume()
+    public void draw()
+
+Drill.java
+Java class extends mindustry.world.Block
+fields:
+  public float hardnessDrillMultiplier
+  protected final ObjectIntMap<Item> oreCount
+  protected final Seq<Item> itemArray
+  public int tier  // Maximum tier of blocks this drill can mine.
+  public float drillTime  // Base time to drill one ore, in frames.
+  public float liquidBoostIntensity  // How many times faster the drill will progress when boosted by liquid.
+  public float warmupSpeed  // Speed at which the drill speeds up.
+  public Item blockedItem  // Special exemption item that this drill can't mine.
+  public Seq<Item> blockedItems  // Special exemption items that this drill can't mine.
+  protected Item returnItem  // return variables for countOre
+  protected int returnCount
+  public boolean drawMineItem  // Whether to draw the item this drill is mining.
+  public Effect drillEffect  // Effect played when an item is produced.
+  public float drillEffectRnd  // Drill effect randomness.
+  public float drillEffectChance  // Chance of displaying the effect.
+  public float rotateSpeed  // Speed the drill bit rotates at.
+  public Effect updateEffect  // Effect randomly played while drilling.
+  public float updateEffectChance  // Chance the update effect will appear.
+  public ObjectFloatMap<Item> drillMultipliers  // Multipliers of drill speed for each item.
+  public boolean drawRim
+  public boolean drawSpinSprite
+  public Color heatColor
+  public TextureRegion rimRegion
+  public TextureRegion rotatorRegion
+  public TextureRegion topRegion
+  public TextureRegion itemRegion
+ctors:
+  public Drill(String name)
+methods:
+  public void init()
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public void setBars()
+  public Item getDrop(Tile tile)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public float getDrillTime(Item item)
+  public void setStats()
+  public TextureRegion[] icons()
+  protected void countOre(Tile tile)
+  public boolean canMine(Tile tile)
+inner-class: DrillBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public float warmup
+    public float timeDrilled
+    public float lastDrillSpeed
+    public int dominantItems
+    public Item dominantItem
+  methods:
+    public boolean shouldConsume()
+    public boolean shouldAmbientSound()
+    public float ambientVolume()
+    public void drawSelect()
+    public void pickedUp()
+    public void onProximityUpdate()
+    public Object senseObject(LAccess sensor)
+    public void updateTile()
+    public float progress()
+    public double sense(LAccess sensor)
+    public void drawCracks()
+    public void drawDefaultCracks()
+    public void draw()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Fracker.java
+Java class extends mindustry.world.blocks.production.SolidPump
+fields:
+  public float itemUseTime
+ctors:
+  public Fracker(String name)
+methods:
+  public void setStats()
+inner-class: FrackerBuild extends mindustry.world.blocks.production.SolidPump.SolidPumpBuild
+  fields:
+    public float accumulator
+  methods:
+    public void updateTile()
+
+GenericCrafter.java
+Java class extends mindustry.world.Block
+fields:
+  public ItemStack outputItem  // Written to outputItems as a single-element array if outputItems is null.
+  public ItemStack outputItems  // Overwrites outputItem if not null.
+  public LiquidStack outputLiquid  // Written to outputLiquids as a single-element array if outputLiquids is null.
+  public LiquidStack outputLiquids  // Overwrites outputLiquid if not null.
+  public int liquidOutputDirections  // Liquid output directions, specified in the same order as outputLiquids.
+  public boolean dumpExtraLiquid  // if true, crafters with multiple liquid outputs will dump excess when there's still space for at least one liquid type
+  public boolean ignoreLiquidFullness
+  public float craftTime
+  public Effect craftEffect
+  public Effect updateEffect
+  public float updateEffectChance
+  public float updateEffectSpread
+  public float warmupSpeed
+  public boolean legacyReadWarmup  // Only used for legacy cultivator blocks.
+  public DrawBlock drawer
+ctors:
+  public GenericCrafter(String name)
+methods:
+  public void setStats()
+  public void setBars()
+  public boolean rotatedOutput(int fromX, int fromY, Tile destination)
+  public void load()
+  public void init()
+  public void afterPatch()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public boolean outputsItems()
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+  public void drawOverlay(float x, float y, int rotation)
+inner-class: GenericCrafterBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public float totalProgress
+    public float warmup
+    public float outputAccumulator
+  methods:
+    public void draw()
+    public void drawLight()
+    public boolean shouldConsume()
+    public void updateTile()
+    public float getProgressIncrease(float baseTime)
+    public float warmupTarget()
+    public float warmup()
+    public float totalProgress()
+    public float scaleOutput(float amount)  // Allows scaling the crafter's output dynamically.
+    public void craft()
+    public void dumpOutputs()
+    public double sense(LAccess sensor)
+    public float progress()
+    public int getMaximumAccepted(Item item)
+    public boolean shouldAmbientSound()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+HeatCrafter.java
+Java class extends mindustry.world.blocks.production.GenericCrafter
+// A crafter that requires contact from heater blocks to craft.
+fields:
+  public float heatRequirement  // Base heat requirement for 100% efficiency.
+  public float overheatScale  // After heat meets this requirement, excess heat will be scaled by this number.
+  public float maxEfficiency  // Maximum possible efficiency after overheat.
+ctors:
+  public HeatCrafter(String name)
+methods:
+  public void setBars()
+  public void setStats()
+inner-class: HeatCrafterBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatConsumer
+  fields:
+    public float sideHeat  // TODO sideHeat could be smooth
+    public float heat
+  methods:
+    public void updateTile()
+    public BlockStatus status()
+    public boolean shouldConsume()
+    public float heatRequirement()
+    public float[] sideHeat()
+    public float warmupTarget()
+    public double sense(LAccess sensor)
+    public float efficiencyScale()
+
+Incinerator.java
+Java class extends mindustry.world.Block
+fields:
+  public Effect effect
+  public Color flameColor
+ctors:
+  public Incinerator(String name)
+inner-class: IncineratorBuild extends mindustry.gen.Building
+  fields:
+    public float heat
+  methods:
+    public void updateTile()
+    public BlockStatus status()
+    public void draw()
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+    public void handleLiquid(Building source, Liquid liquid, float amount)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+
+ItemIncinerator.java
+Java class extends mindustry.world.Block
+// Incinerator that accepts only items and optionally requires a liquid, e.g.
+fields:
+  public Effect effect
+  public float effectChance
+  public TextureRegion liquidRegion
+  public TextureRegion topRegion
+ctors:
+  public ItemIncinerator(String name)
+methods:
+  public TextureRegion[] icons()
+inner-class: ItemIncineratorBuild extends mindustry.gen.Building
+  methods:
+    public void updateTile()
+    public BlockStatus status()
+    public void draw()
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+
+Pump.java
+Java class extends mindustry.world.blocks.liquid.LiquidBlock
+fields:
+  public float pumpAmount  // Pump amount per tile.
+  public float consumeTime  // Interval in-between item consumptions, if applicable.
+  public float warmupSpeed
+  public DrawBlock drawer
+ctors:
+  public Pump(String name)
+methods:
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void load()
+  public TextureRegion[] icons()
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void setBars()
+  protected boolean canPump(Tile tile)
+inner-class: PumpBuild extends mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild
+  fields:
+    public float warmup
+    public float consTimer
+    public float amount
+    public Liquid liquidDrop
+  methods:
+    public void draw()
+    public void drawLight()
+    public void pickedUp()
+    public double sense(LAccess sensor)
+    public void onProximityUpdate()
+    public boolean shouldConsume()
+    public void updateTile()
+    public float warmup()
+    public float progress()
+    public float totalProgress()
+
+Separator.java
+Java class extends mindustry.world.Block
+// Extracts a random list of items from an input item and an input liquid.
+fields:
+  protected ConsumeItems consItems
+  public ItemStack results
+  public float craftTime
+  public DrawBlock drawer
+ctors:
+  public Separator(String name)
+methods:
+  public void setStats()
+  public void init()
+  public void load()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+inner-class: SeparatorBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public float totalProgress
+    public float warmup
+    public int seed
+  methods:
+    public void created()
+    public boolean shouldAmbientSound()
+    public boolean shouldConsume()
+    public void draw()
+    public void drawLight()
+    public float warmup()
+    public float progress()
+    public float totalProgress()
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public boolean canDump(Building to, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+SingleBlockProducer.java
+Java class extends mindustry.world.blocks.payloads.BlockProducer
+fields:
+  public Block result
+ctors:
+  public SingleBlockProducer(String name)
+inner-class: SingleBlockProducerBuild extends mindustry.world.blocks.payloads.BlockProducer.BlockProducerBuild
+  methods:
+    public Block recipe()
+
+SolidPump.java
+Java class extends mindustry.world.blocks.production.Pump
+// Pump that makes liquid from solids and takes in power.
+fields:
+  public Liquid result
+  public Effect updateEffect
+  public float updateEffectChance
+  public float rotateSpeed
+  public float baseEfficiency
+  public Attribute attribute  // Attribute that is checked when calculating output.
+  public TextureRegion rotatorRegion
+ctors:
+  public SolidPump(String name)
+methods:
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void setBars()
+  public void setStats()
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public boolean outputsItems()
+  protected boolean canPump(Tile tile)
+  public TextureRegion[] icons()
+inner-class: SolidPumpBuild extends mindustry.world.blocks.production.Pump.PumpBuild
+  fields:
+    public float warmup
+    public float pumpTime
+    public float boost
+    public float validTiles
+    public float lastPump
+  methods:
+    public void drawCracks()
+    public void pickedUp()
+    public void draw()
+    public boolean shouldConsume()
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public void onProximityUpdate()
+    public float typeLiquid()
+
+WallCrafter.java
+Java class extends mindustry.world.Block
+fields:
+  static int idx
+  public TextureRegion topRegion
+  public TextureRegion rotatorBottomRegion
+  public TextureRegion rotatorRegion
+  public float drillTime  // Time to produce one item at 100% efficiency.
+  public float liquidBoostIntensity  // How many times faster the drill will progress when boosted by liquid.
+  public Effect updateEffect  // Effect randomly played while drilling.
+  public float updateEffectChance
+  public float rotateSpeed
+  public Attribute attribute  // Attribute to check for wall output.
+  public Item output
+  public float boostItemUseTime
+  public float itemBoostIntensity  // How many times faster the drill will progress when boosted by items.
+  public Consume itemConsumer
+  public boolean hasLiquidBooster
+  public final int timerUse
+ctors:
+  public WallCrafter(String name)
+methods:
+  public void setBars()
+  public void setStats()
+  public void init()
+  public boolean outputsItems()
+  public boolean rotatedOutput(int x, int y)
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  float getEfficiency(int tx, int ty, int rotation, Cons<Tile> ctile, Intc2 cpos)
+inner-class: WallCrafterBuild extends mindustry.gen.Building
+  fields:
+    public float time
+  methods:
+    public void updateTile()
+    public boolean shouldConsume()
+    public void draw()
+

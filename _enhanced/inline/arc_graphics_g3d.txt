@@ -1,0 +1,172 @@
+// Camera3D.java : public void resize(float width, float height)
+    public void resize(float width, float height){
+        this.width = width;
+        this.height = height;
+    }
+
+// Camera3D.java : public void normalizeUp()
+    public void normalizeUp(){
+        tmpVec.set(direction).crs(up);
+        up.set(tmpVec).crs(direction).nor();
+    }
+
+// Camera3D.java : public Vec3 unproject(Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight) / public Vec3 unproject(Vec3 screenCoords)
+    public Vec3 unproject(Vec3 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight){
+        float x = screenCoords.x, y = screenCoords.y;
+        x = x - viewportX;
+        y = y - viewportY;
+        screenCoords.x = (2 * x) / viewportWidth - 1;
+        screenCoords.y = (2 * y) / viewportHeight - 1;
+        screenCoords.z = 2 * screenCoords.z - 1;
+        Mat3D.prj(screenCoords, invProjectionView);
+        return screenCoords;
+    }
+
+// Camera3D.java : public Vec3 project(Vec3 worldCoords) / public Vec3 project(Vec3 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight)
+    public Vec3 project(Vec3 worldCoords){
+        project(worldCoords, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+        return worldCoords;
+    }
+
+// Camera3D.java : public Ray getMouseRay()
+    public Ray getMouseRay(){
+        return getPickRay(Core.input.mouseX(), Core.input.mouseY());
+    }
+
+// Camera3D.java : public Ray getPickRay(float screenX, float screenY, float viewportX, float viewportY, float viewportWidth, float viewportHeight) / public Ray getPickRay(float screenX, float screenY)
+    public Ray getPickRay(float screenX, float screenY, float viewportX, float viewportY, float viewportWidth, float viewportHeight){
+        unproject(ray.origin.set(screenX, screenY, 0), viewportX, viewportY, viewportWidth, viewportHeight);
+        unproject(ray.direction.set(screenX, screenY, 1), viewportX, viewportY, viewportWidth, viewportHeight);
+        ray.direction.sub(ray.origin).nor();
+        return ray;
+    }
+
+// PlaneBatch3D.java : public void setScaling(float scaling)
+    public void setScaling(float scaling){
+        this.scaling = scaling;
+    }
+
+// PlaneBatch3D.java : public void setPlane(Vec3 origin, Vec3 up, Vec3 right)
+    public void setPlane(Vec3 origin, Vec3 up, Vec3 right){
+        this.origin.set(origin);
+        this.up.set(up).nor();
+        this.right.set(right).nor();
+    }
+
+// PlaneBatch3D.java : public void proj(Mat3D mat)
+    public void proj(Mat3D mat){
+        batch.proj(mat);
+    }
+
+// PlaneBatch3D.java : private void checkFlush()
+    private void checkFlush(){
+        if(idx >= batch.getMaxVertices() / 6 / 6){
+            flush();
+        }
+    }
+
+// PlaneBatch3D.java : private void vertex(float x1, float y1, float c1, float u1, float v1)
+    private void vertex(float x1, float y1, float c1, float u1, float v1){
+        vec.set(origin).add(right, x1 * scaling).add(up, y1 * scaling);
+        vertex[0] = vec.x;
+        vertex[1] = vec.y;
+        vertex[2] = vec.z;
+        vertex[3] = c1;
+        vertex[4] = u1;
+        vertex[5] = v1;
+        batch.vertex(vertex);
+    }
+
+// VertexBatch3D.java : public static Shader createDefaultShader(boolean hasNormals, boolean hasColors, int numTexCoords)
+    public static Shader createDefaultShader(boolean hasNormals, boolean hasColors, int numTexCoords){
+        String vertexShader = createVertexShader(hasNormals, hasColors, numTexCoords);
+        String fragmentShader = createFragmentShader(hasNormals, hasColors, numTexCoords);
+        return new Shader(vertexShader, fragmentShader);
+    }
+
+// VertexBatch3D.java : private VertexAttribute[] buildVertexAttributes(boolean hasNormals, boolean hasColor, int numTexCoords)
+    private VertexAttribute[] buildVertexAttributes(boolean hasNormals, boolean hasColor, int numTexCoords){
+        Seq<VertexAttribute> attribs = new Seq<>();
+        attribs.add(VertexAttribute.position3);
+        if(hasNormals) attribs.add(VertexAttribute.normal);
+        if(hasColor) attribs.add(VertexAttribute.color);
+        for(int i = 0; i < numTexCoords; i++){
+            attribs.add(new VertexAttribute(2, Shader.texcoordAttribute + i));
+        }
+        return attribs.toArray(VertexAttribute.class);
+    }
+
+// VertexBatch3D.java : public void setShader(Shader shader)
+    public void setShader(Shader shader){
+        if(ownsShader) this.shader.dispose();
+        this.shader = shader;
+        ownsShader = false;
+    }
+
+// VertexBatch3D.java : public void color(Color color) / public void color(float r, float g, float b, float a) / public void color(float colorBits)
+    public void color(Color color){
+        vertices[vertexIdx + colorOffset] = color.toFloatBits();
+    }
+
+// VertexBatch3D.java : public void texCoord(float u, float v)
+    public void texCoord(float u, float v){
+        final int idx = vertexIdx + texCoordOffset;
+        vertices[idx + numSetTexCoords] = u;
+        vertices[idx + numSetTexCoords + 1] = v;
+        numSetTexCoords += 2;
+    }
+
+// VertexBatch3D.java : public void normal(Vec3 v) / public void normal(float x, float y, float z)
+    public void normal(Vec3 v){
+        normal(v.x, v.y, v.z);
+    }
+
+// VertexBatch3D.java : public void tri2(Vec3 v1, Vec3 v2, Vec3 v3, Color color)
+    public void tri2(Vec3 v1, Vec3 v2, Vec3 v3, Color color){
+        tri(v1, v2, v3, color);
+        tri(v1, v3, v2, color);
+    }
+
+// VertexBatch3D.java : public void tri(Vec3 v1, Vec3 v2, Vec3 v3, Color color) / public void tri(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, Color color)
+    public void tri(Vec3 v1, Vec3 v2, Vec3 v3, Color color){
+        tri(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z, v3.x, v3.y, v3.z, color);
+    }
+
+// VertexBatch3D.java : public void quad(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4, Color color)
+    public void quad(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 v4, Color color){
+        tri(v1, v2, v3, color);
+        tri(v1, v3, v4, color);
+    }
+
+// VertexBatch3D.java : public void vertex(Vec3 v, Color color) / public void vertex(Vec3 v) / public void vertex(float x, float y, float z, float color) / public void vertex(float x, float y, float z) / public void vertex(float[] floats)
+    public void vertex(Vec3 v, Color color){
+        color(color);
+        vertex(v.x, v.y, v.z);
+    }
+
+// VertexBatch3D.java : public Mat3D proj() / public void proj(Mat3D projModelView)
+    public Mat3D proj(){
+        return proj;
+    }
+
+// VertexBatch3D.java : public void flush(int primitiveType) / public void flush(int primitiveType, Shader shader)
+    public void flush(int primitiveType){
+        flush(primitiveType, this.shader);
+    }
+
+// VertexBatch3D.java : public int getNumVertices()
+    public int getNumVertices(){
+        return numVertices;
+    }
+
+// VertexBatch3D.java : public int getMaxVertices()
+    public int getMaxVertices(){
+        return maxVertices;
+    }
+
+// VertexBatch3D.java : public void dispose()
+    public void dispose(){
+        if(ownsShader && shader != null) shader.dispose();
+        mesh.dispose();
+    }
+

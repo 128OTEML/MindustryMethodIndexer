@@ -1,0 +1,104 @@
+AsyncCore
+  -> arc.Events.on(java.lang.Class<T>, arc.func.Cons<T>)
+  -> mindustry.async.AsyncCore.complete()
+  -> mindustry.async.AsyncProcess.init()
+  -> mindustry.async.AsyncProcess.reset()
+begin
+  -> mindustry.core.GameState.isPlaying()
+  -> mindustry.async.AsyncProcess.begin()
+  -> arc.struct.Seq.clear()
+  -> java.util.concurrent.Executors.newFixedThreadPool(int, java.util.concurrent.ThreadFactory)
+  -> java.lang.Thread.setDaemon(boolean)
+  -> java.lang.Thread.setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler)
+  -> arc.util.Threads.throwAppException(java.lang.Throwable)
+  -> mindustry.async.AsyncProcess.shouldProcess()
+  -> arc.struct.Seq.add(T)
+  -> java.util.concurrent.ExecutorService.submit(java.lang.Runnable)
+  -> java.lang.Thread.Thread(java.lang.Runnable, java.lang.String)
+end
+  -> mindustry.core.GameState.isPlaying()
+  -> mindustry.async.AsyncCore.complete()
+  -> mindustry.async.AsyncProcess.end()
+complete
+  -> java.util.concurrent.Future.get()
+  -> arc.struct.Seq.clear()
+  -> java.lang.RuntimeException.RuntimeException(java.lang.Throwable)
+init
+  -> mindustry.core.World.width()
+  -> mindustry.core.World.height()
+reset
+  -> arc.struct.IntSeq.clear()
+begin
+  -> arc.struct.IntSeq.clear()
+  -> mindustry.game.Team.isAI()
+  -> mindustry.game.Team.rules()
+  -> mindustry.gen.Unitc.collisionLayer()
+  -> arc.struct.IntSeq.add(int, int, int)
+  -> arc.math.geom.Point2.pack(int, int)
+  -> mindustry.gen.Posc.tileX()
+  -> mindustry.gen.Posc.tileY()
+  -> java.lang.Float.floatToRawIntBits(float)
+process
+  -> java.util.Arrays.fill(int[], int)
+  -> arc.math.geom.Point2.x(int)
+  -> arc.math.geom.Point2.y(int)
+  -> java.lang.Float.intBitsToFloat(int)
+  -> arc.math.Mathf.clamp(int, int, int)
+  -> arc.math.Mathf.ceil(float)
+  -> java.lang.Math.max(int, int)
+add
+  -> mindustry.async.PhysicsProcess.init()
+  -> mindustry.gen.Physicsc.mass()
+  -> arc.struct.Seq.add(T)
+  -> mindustry.async.PhysicsProcess.PhysicsWorld.PhysicsBody.PhysicsBody()
+  -> mindustry.async.PhysicsProcess.PhysicRef.PhysicRef(mindustry.gen.Unit, mindustry.async.PhysicsProcess.PhysicsWorld.PhysicsBody)
+begin
+  -> mindustry.net.Net.client()
+  -> mindustry.core.PerfCounter.begin()
+  -> futures.items[i].get
+  -> arc.struct.Seq.clear()
+  -> mindustry.core.PerfCounter.end()
+  -> mindustry.core.PerfCounter.add(long)
+  -> mindustry.async.PhysicsProcess.PhysicsWorld.add(mindustry.async.PhysicsProcess.PhysicsWorld.PhysicsBody)
+  -> mindustry.gen.Velc.move(float, float)
+  -> mindustry.gen.Entityc.isAdded()
+  -> arc.struct.Seq.remove(int)
+  -> mindustry.async.PhysicsProcess.PhysicsWorld.remove(mindustry.async.PhysicsProcess.PhysicsWorld.PhysicsBody)
+  -> mindustry.gen.Unitc.collisionLayer()
+  -> mindustry.gen.Entityc.isLocal()
+  -> arc.struct.Seq.add(T)
+  -> java.util.concurrent.ExecutorService.submit(java.lang.Runnable)
+  -> java.lang.RuntimeException.RuntimeException(java.lang.Throwable)
+reset
+  -> arc.struct.Seq.clear()
+init
+  -> mindustry.async.PhysicsProcess.reset()
+  -> mindustry.core.World.getQuadBounds(arc.math.geom.Rect)
+  -> arc.math.geom.Rect.Rect()
+  -> mindustry.async.PhysicsProcess.PhysicsWorld.PhysicsWorld(arc.math.geom.Rect)
+PhysicRef::PhysicRef
+  -> mindustry.gen.Unitc.collisionLayer()
+PhysicsWorld::PhysicsWorld
+  -> arc.math.geom.QuadTree.QuadTree(arc.math.geom.Rect)
+  -> arc.math.geom.Rect.Rect(arc.math.geom.Rect)
+PhysicsWorld::add
+  -> arc.struct.Seq.add(T)
+PhysicsWorld::remove
+  -> arc.struct.Seq.remove(T)
+PhysicsWorld::update
+  -> arc.util.Time.nanos()
+  -> mindustry.net.Net.client()
+  -> arc.math.geom.QuadTree.fill(arc.struct.Seq<T>)
+  -> arc.math.geom.QuadTree.intersect(float, float, float, float, arc.struct.Seq<T>)
+  -> arc.math.Mathf.sqrt(float)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.math.geom.Vec2.isZero()
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> arc.math.Rand.random(float)
+  -> arc.math.geom.Vec2.setLength(float)
+  -> java.lang.Math.max(long, long)
+  -> arc.util.Time.timeSinceNanos(long)
+PhysicsWorld.PhysicsBody implements arc.math.geom.QuadTree.QuadTreeObject::hitbox
+  -> arc.math.geom.Rect.setCentered(float, float, float, float)
+PhysicsBody implements arc.math.geom.QuadTree.QuadTreeObject::hitbox
+  -> arc.math.geom.Rect.setCentered(float, float, float, float)

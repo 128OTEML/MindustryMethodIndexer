@@ -1,0 +1,210 @@
+GenericMesh.java
+Java interface extends arc.util.Disposable
+methods:
+  void render(PlanetParams params, Mat3D projection, Mat3D transform)
+
+HexMesh.java
+Java class extends mindustry.graphics.g3d.PlanetMesh
+ctors:
+  public HexMesh(Planet planet, int divisions) / public HexMesh(Planet planet, HexMesher mesher, int divisions, Shader shader) / public HexMesh()
+methods:
+  public void preRender(PlanetParams params)
+
+HexMesher.java
+Java interface
+// Defines color and height for a planet mesh.
+methods:
+  default float getHeight(Vec3 position)
+  default void getColor(Vec3 position, Color out)
+  default void getEmissiveColor(Vec3 position, Color out)
+  default boolean isEmissive()
+  default boolean skip(Vec3 position)
+
+HexSkyMesh.java
+Java class extends mindustry.graphics.g3d.PlanetMesh
+fields:
+  static Mat3D mat
+  public float speed
+ctors:
+  public HexSkyMesh(Planet planet, int seed, float speed, float radius, int divisions, Color color, int octaves, float persistence, float scl, float thresh) / public HexSkyMesh()
+methods:
+  public float relRot()
+  public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void preRender(PlanetParams params)
+
+MatMesh.java
+Java class implements mindustry.graphics.g3d.GenericMesh
+// A GenericMesh that wraps and applies an additional transform to a generic mesh.
+fields:
+  private static final Mat3D tmp
+  GenericMesh mesh
+  Mat3D mat
+ctors:
+  public MatMesh(GenericMesh mesh, Mat3D mat)
+methods:
+  public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void dispose()
+
+MeshBuilder.java
+Java class
+fields:
+  private static final boolean packNormals
+  private static volatile float tmpHeights  // highest amount of corners in vanilla
+methods:
+  public static Mesh buildIcosphere(int divisions, float radius)  // Note that the resulting icosphere does not have normals or a color.
+  public static Mesh buildPlanetGrid(PlanetGrid grid, Color color, float scale)
+  public static Mesh buildHex(Color color, int divisions, float radius) / public static synchronized Mesh buildHex(HexMesher mesher, int divisions, float radius, float intensity)  // TODO: in principle this should not be synchronized, but I would rather not realloc tmpHeights every time, and it is unlikely that two planets will be reloading at the same time
+  private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive) / private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive, boolean color)
+  private static Mesh end(Mesh mesh)
+  private static Vec3 normal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 out) / private static void normal(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z, float v3x, float v3y, float v3z, Vec3 out)
+  private static void verts(Mesh mesh, float[] floats, Vec3 a, float h1, Vec3 b, float h2, Vec3 c, float h3, Vec3 normal, float color, float emissive)
+  private static void vert(Mesh mesh, float[] floats, float x, float y, float z, Vec3 normal, float color, float emissive)
+  private static float packNormals(float x, float y, float z)
+
+MultiMesh.java
+Java class implements mindustry.graphics.g3d.GenericMesh
+fields:
+  GenericMesh meshes
+ctors:
+  public MultiMesh(GenericMesh meshes)
+methods:
+  public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void dispose()
+
+NoiseMesh.java
+Java class extends mindustry.graphics.g3d.HexMesh
+ctors:
+  public NoiseMesh(Planet planet, int seed, int divisions, Color color, float radius, int octaves, float persistence, float scale, float mag) / public NoiseMesh(Planet planet, int seed, int divisions, float radius, int octaves, float persistence, float scale, float mag, Color color1, Color color2, int coct, float cper, float cscl, float cthresh)  // Two-color variant.
+
+PlanetGrid.java
+Java class
+// TODO clean this up somehow
+fields:
+  private static final PlanetGrid cache
+  private static final float x
+  private static final float z
+  private static final Vec3 iTiles
+  private static final int iTilesP
+  public int size
+  public Ptile tiles
+  public Corner corners
+  public Edge edges
+ctors:
+  protected PlanetGrid(int size)  // this is protected so if you want to make strange grids you should know what you're doing.
+methods:
+  public static synchronized PlanetGrid create(int size)
+  public static PlanetGrid initialGrid()
+  public static PlanetGrid subdividedGrid(PlanetGrid prev)
+  static void addCorner(int id, PlanetGrid grid, int t1, int t2, int t3)
+  static void addEdge(int id, PlanetGrid grid, int t1, int t2)
+  static int pos(Ptile t, Ptile n) / static int pos(Ptile t, Corner c) / static int pos(Corner c, Corner n)
+  static int tileCount(int size)
+  static int cornerCount(int size)
+  static int edgeCount(int size)
+inner-class: Ptile
+  fields:
+    public static final Ptile empty
+    public int id
+    public int edgeCount
+    public Ptile tiles
+    public Corner corners
+    public Edge edges
+    public Vec3 v
+  ctors:
+    public Ptile(int id, int edgeCount)
+  methods:
+    public String toString()
+inner-class: Corner
+  fields:
+    public int id
+    public Ptile tiles
+    public Corner corners
+    public Edge edges
+    public Vec3 v
+  ctors:
+    public Corner(int id)
+inner-class: Edge
+  fields:
+    public int id
+    public Ptile tiles
+    public Corner corners
+  ctors:
+    public Edge(int id)
+
+PlanetMesh.java
+Java class (abstract) implements mindustry.graphics.g3d.GenericMesh
+// Defines a mesh that is rendered for a planet.
+fields:
+  protected Mesh mesh
+  protected Planet planet
+  protected Shader shader
+ctors:
+  public PlanetMesh(Planet planet, Mesh mesh, Shader shader) / public PlanetMesh()
+methods:
+  public void preRender(PlanetParams params)  // Should be overridden to set up any shader parameters such as planet position, normals, etc.
+  public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void dispose()
+
+PlanetParams.java
+Java class
+// Parameters for rendering a solar system.
+fields:
+  public Vec3 camPos  // Camera direction relative to the planet.
+  public Vec3 otherCamPos  // If not null, this is the position of the "previous" planet for smooth camera movement.
+  public float otherCamAlpha  // Interpolation value for otherCamPos.
+  public Vec3 camUp  // Camera up vector.
+  public Vec3 camDir  // the unit length direction vector of the camera *
+  public Planet planet  // Planet being looked at.
+  public float zoom  // Zoom relative to planet.
+  public float uiAlpha  // Alpha of orbit rings and other UI elements.
+  public boolean drawUi  // If false, orbit and sector grid are not drawn.
+  public boolean drawSkybox  // If true, a space skybox is drawn.
+  public transient PlanetInterfaceRenderer renderer  // Handles drawing details.
+  public transient int viewW  // Viewport size.
+  public transient boolean alwaysDrawAtmosphere  // If true, atmosphere will be drawn regardless of player options.
+
+PlanetRenderer.java
+Java class implements arc.util.Disposable
+fields:
+  public static final float outlineRad
+  public static final Color outlineColor
+  public final Camera3D cam  // Camera used for rendering.
+  public final VertexBatch3D batch  // Raw vertex batch.
+  public final PlaneBatch3D projector
+  public final Mat3D mat
+  public final Bloom bloom
+  public final Mesh atmosphere
+  public final CubemapMesh skybox  // seed: 8kmfuix03fw
+ctors:
+  public PlanetRenderer()
+methods:
+  public void render(PlanetParams params)  // Render the entire planet scene to the screen.
+  public void renderPlanet(Planet planet, PlanetParams params)
+  public void renderTransparent(Planet planet, PlanetParams params)
+  public void renderOrbit(Planet planet, PlanetParams params)
+  public void renderSectors(Planet planet, PlanetParams params)
+  public void drawArcLine(Planet planet, Vec3 a, Vec3 b) / public void drawArcLine(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount, float stroke)
+  public void drawArc(Planet planet, Vec3 a, Vec3 b) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount)
+  public void drawBorders(Sector sector, Color base, float alpha)
+  public void drawPlane(Sector sector, Runnable run)
+  public void setPlane(Sector sector)
+  public void fill(Sector sector, Color color, float offset)
+  public void drawSelection(Sector sector, float alpha) / public void drawSelection(Sector sector, Color color, float stroke, float length)
+  public void drawSpecialSelection(Sector sector, Color color, float stroke, float length)  // Draws sector when selected.
+  public void dispose()
+inner-interface: PlanetInterfaceRenderer
+  methods:
+    void renderSectors(Planet planet)
+    void renderProjections(Planet planet)
+    default void renderOverProjections(Planet planet)
+
+ShaderSphereMesh.java
+Java class extends mindustry.graphics.g3d.PlanetMesh
+ctors:
+  public ShaderSphereMesh(Planet planet, Shader shader, int divisions)
+
+SunMesh.java
+Java class extends mindustry.graphics.g3d.HexMesh
+ctors:
+  public SunMesh(Planet planet, int divisions, double octaves, double persistence, double scl, double pow, double mag, float colorScale, Color colors)
+
