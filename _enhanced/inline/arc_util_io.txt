@@ -1,0 +1,575 @@
+// ByteBufferInput.java : public void setBuffer(ByteBuffer buffer)
+    public void setBuffer(ByteBuffer buffer){
+        this.buffer = buffer;
+    }
+
+// ByteBufferInput.java : public void readFully(byte[] bytes) / public void readFully(byte[] bytes, int f, int to)
+    @Override
+    public void readFully(byte[] bytes){
+        buffer.get(bytes);
+    }
+
+// ByteBufferInput.java : public int skipBytes(int i)
+    @Override
+    public int skipBytes(int i){
+        buffer.position(buffer.position() + i);
+        return i;
+    }
+
+// ByteBufferInput.java : public boolean readBoolean()
+    @Override
+    public boolean readBoolean(){
+        return buffer.get() == 1;
+    }
+
+// ByteBufferInput.java : public byte readByte()
+    @Override
+    public byte readByte(){
+        return buffer.get();
+    }
+
+// ByteBufferInput.java : public int readUnsignedByte()
+    @Override
+    public int readUnsignedByte(){
+        return buffer.get() & 0xff;
+    }
+
+// ByteBufferInput.java : public short readShort()
+    @Override
+    public short readShort(){
+        return buffer.getShort();
+    }
+
+// ByteBufferInput.java : public int readUnsignedShort()
+    @Override
+    public int readUnsignedShort(){
+        return buffer.getShort() & 0xffff;
+    }
+
+// ByteBufferInput.java : public char readChar()
+    @Override
+    public char readChar(){
+        return buffer.getChar();
+    }
+
+// ByteBufferInput.java : public int readInt()
+    @Override
+    public int readInt(){
+        return buffer.getInt();
+    }
+
+// ByteBufferInput.java : public long readLong()
+    @Override
+    public long readLong(){
+        return buffer.getLong();
+    }
+
+// ByteBufferInput.java : public float readFloat()
+    @Override
+    public float readFloat(){
+        return buffer.getFloat();
+    }
+
+// ByteBufferInput.java : public double readDouble()
+    @Override
+    public double readDouble(){
+        return buffer.getDouble();
+    }
+
+// ByteBufferInput.java : public String readLine()
+    @Override
+    public String readLine(){
+        throw new RuntimeException("Stub!");
+    }
+
+// ByteBufferInput.java : public String readUTF() throws IOException
+    @Override
+    public String readUTF() throws IOException{
+        return DataInputStream.readUTF(this);
+    }
+
+// ByteBufferOutput.java : public void write(int i) / public void write(byte[] bytes) / public void write(byte[] bytes, int off, int len)
+    @Override
+    public void write(int i){
+        buffer.put((byte) i);
+    }
+
+// ByteBufferOutput.java : public void writeBoolean(boolean b)
+    @Override
+    public void writeBoolean(boolean b){
+        buffer.put(b ? (byte) 1 : 0);
+    }
+
+// ByteBufferOutput.java : public void writeByte(int i)
+    @Override
+    public void writeByte(int i){
+        buffer.put((byte) i);
+    }
+
+// ByteBufferOutput.java : public void writeShort(int i)
+    @Override
+    public void writeShort(int i){
+        buffer.putShort((short) i);
+    }
+
+// ByteBufferOutput.java : public void writeChar(int i)
+    @Override
+    public void writeChar(int i){
+        buffer.putChar((char) i);
+    }
+
+// ByteBufferOutput.java : public void writeInt(int i)
+    @Override
+    public void writeInt(int i){
+        buffer.putInt(i);
+    }
+
+// ByteBufferOutput.java : public void writeLong(long l)
+    @Override
+    public void writeLong(long l){
+        buffer.putLong(l);
+    }
+
+// ByteBufferOutput.java : public void writeFloat(float v)
+    @Override
+    public void writeFloat(float v){
+        buffer.putFloat(v);
+    }
+
+// ByteBufferOutput.java : public void writeDouble(double v)
+    @Override
+    public void writeDouble(double v){
+        buffer.putDouble(v);
+    }
+
+// ByteBufferOutput.java : public void writeBytes(String s)
+    @Override
+    public void writeBytes(String s){
+        throw new RuntimeException("Stub!");
+    }
+
+// ByteBufferOutput.java : public void writeChars(String s)
+    @Override
+    public void writeChars(String s){
+        throw new RuntimeException("Stub!");
+    }
+
+// CRC.java : public void init()
+    public void init(){
+        _value = -1;
+    }
+
+// CRC.java : public void update(byte[] data, int offset, int size) / public void update(byte[] data)
+    public void update(byte[] data, int offset, int size){
+        for(int i = 0; i < size; i++)
+            _value = table[(_value ^ data[offset + i]) & 0xFF] ^ (_value >>> 8);
+    }
+
+// CRC.java : public void updateByte(int b)
+    public void updateByte(int b){
+        _value = table[(_value ^ b) & 0xFF] ^ (_value >>> 8);
+    }
+
+// CRC.java : public int getDigest()
+    public int getDigest(){
+        return ~_value;
+    }
+
+// CounterInputStream.java : public void resetCount()
+    public void resetCount(){
+        count = 0;
+    }
+
+// CounterInputStream.java : public long skip(long l) throws IOException
+    @Override
+    public long skip(long l) throws IOException{
+        long skipped = super.skip(l);
+        count += skipped;
+        return skipped;
+    }
+
+// CounterInputStream.java : public int read() throws IOException / public int read(byte[] bytes, int offset, int length) throws IOException
+    @Override
+    public int read() throws IOException{
+        count ++;
+        return in.read();
+    }
+
+// FastDeflaterOutputStream.java : public void write(int var1) throws IOException
+    @Override
+    public void write(int var1) throws IOException{
+        tmp[0] = (byte)(var1 & 255);
+        this.write(tmp, 0, 1);
+    }
+
+// LittleEndianInputStream.java : public void readFully(byte[] b) throws IOException / public void readFully(byte[] b, int off, int len) throws IOException
+    public void readFully(byte[] b) throws IOException{
+        din.readFully(b);
+    }
+
+// LittleEndianInputStream.java : public int skipBytes(int n) throws IOException
+    public int skipBytes(int n) throws IOException{
+        return din.skipBytes(n);
+    }
+
+// LittleEndianInputStream.java : public boolean readBoolean() throws IOException
+    public boolean readBoolean() throws IOException{
+        return din.readBoolean();
+    }
+
+// LittleEndianInputStream.java : public byte readByte() throws IOException
+    public byte readByte() throws IOException{
+        return din.readByte();
+    }
+
+// LittleEndianInputStream.java : public int readUnsignedByte() throws IOException
+    public int readUnsignedByte() throws IOException{
+        return din.readUnsignedByte();
+    }
+
+// LittleEndianInputStream.java : public short readShort() throws IOException
+    public short readShort() throws IOException{
+        int low = din.read();
+        int high = din.read();
+        return (short)((high << 8) | (low & 0xff));
+    }
+
+// LittleEndianInputStream.java : public int readUnsignedShort() throws IOException
+    public int readUnsignedShort() throws IOException{
+        int low = din.read();
+        int high = din.read();
+        return ((high & 0xff) << 8) | (low & 0xff);
+    }
+
+// LittleEndianInputStream.java : public char readChar() throws IOException
+    public char readChar() throws IOException{
+        return din.readChar();
+    }
+
+// LittleEndianInputStream.java : public int readInt() throws IOException
+    public int readInt() throws IOException{
+        int[] res = new int[4];
+        for(int i = 3; i >= 0; i--)
+            res[i] = din.read();
+
+        return ((res[0] & 0xff) << 24) | ((res[1] & 0xff) << 16) | ((res[2] & 0xff) << 8) | (res[3] & 0xff);
+    }
+
+// LittleEndianInputStream.java : public long readLong() throws IOException
+    public long readLong() throws IOException{
+        int[] res = new int[8];
+        for(int i = 7; i >= 0; i--)
+            res[i] = din.read();
+
+        return (((long)(res[0] & 0xff) << 56) | ((long)(res[1] & 0xff) << 48) | ((long)(res[2] & 0xff) << 40)
+        | ((long)(res[3] & 0xff) << 32) | ((long)(res[4] & 0xff) << 24) | ((long)(res[5] & 0xff) << 16)
+        | ((long)(res[6] & 0xff) << 8) | ((long)(res[7] & 0xff)));
+    }
+
+// LittleEndianInputStream.java : public float readFloat() throws IOException
+    public float readFloat() throws IOException{
+        return Float.intBitsToFloat(readInt());
+    }
+
+// LittleEndianInputStream.java : public double readDouble() throws IOException
+    public double readDouble() throws IOException{
+        return Double.longBitsToDouble(readLong());
+    }
+
+// LittleEndianInputStream.java : public final String readLine() throws IOException
+    @SuppressWarnings("deprecation")
+    public final String readLine() throws IOException{
+        return din.readLine();
+    }
+
+// LittleEndianInputStream.java : public String readUTF() throws IOException
+    public String readUTF() throws IOException{
+        return din.readUTF();
+    }
+
+// PropertiesUtils.java : public static void store(ObjectMap<String,String> properties, Writer writer, String comment, boolean date) throws IOException / public static void store(ObjectMap<String,String> properties, Writer writer, String comment) throws IOException
+    public static void store(ObjectMap<String, String> properties, Writer writer, String comment, boolean date) throws IOException{
+        storeImpl(properties, writer, comment, false, date);
+    }
+
+// Reads.java : public static Reads get(DataInput input)
+    @Deprecated
+    public static Reads get(DataInput input){
+        return new Reads(input);
+    }
+
+// Reads.java : public int checkEOF()
+    public int checkEOF(){
+        try{
+            if(input instanceof InputStream){
+                return ((InputStream)input).read();
+            }
+            return -1;
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public long l()
+    public long l(){
+        try{
+            return input.readLong();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public int i()
+    public int i(){
+        try{
+            return input.readInt();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public short s()
+    public short s(){
+        try{
+            return input.readShort();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public int us()
+    public int us(){
+        try{
+            return input.readUnsignedShort();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public byte b() / public byte[] b(int length) / public byte[] b(byte[] array) / public byte[] b(byte[] array, int offset, int length)
+    public byte b(){
+        try{
+            return input.readByte();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public int ub()
+    public int ub(){
+        try{
+            return input.readUnsignedByte();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public boolean bool()
+    public boolean bool(){
+        try{
+            return input.readBoolean();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public float f()
+    public float f(){
+        try{
+            return input.readFloat();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public double d()
+    public double d(){
+        try{
+            return input.readDouble();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public String str() / public String str(int maxLen)
+    public String str(){
+        try{
+            return input.readUTF();
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public void skip(int amount)
+    public void skip(int amount){
+        try{
+            input.skipBytes(amount);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reads.java : public void close()
+    @Override
+    public void close(){
+        if(input instanceof Closeable){
+            try{
+                ((Closeable)input).close();
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+// ReusableByteInStream.java : public int position()
+    public int position(){
+        return pos;
+    }
+
+// ReusableByteInStream.java : public void setBytes(byte[] bytes) / public void setBytes(byte[] bytes, int offset, int length)
+    public void setBytes(byte[] bytes){
+        pos = 0;
+        count = bytes.length;
+        mark = 0;
+        buf = bytes;
+    }
+
+// ReusableByteOutStream.java : public byte[] getBytes()
+    public byte[] getBytes(){
+        return buf;
+    }
+
+// Streams.java : public static void copy(InputStream input, OutputStream output) throws IOException / public static void copy(InputStream input, OutputStream output, int bufferSize) throws IOException / public static void copy(InputStream input, OutputStream output, byte[] buffer) throws IOException / public static void copy(InputStream input, ByteBuffer output) throws IOException / public static void copy(InputStream input, ByteBuffer output, int bufferSize) throws IOException / public static int copy(InputStream input, ByteBuffer output, byte[] buffer) throws IOException
+    public static void copy(InputStream input, OutputStream output) throws IOException{
+        copy(input, output, new byte[defaultBufferSize]);
+    }
+
+// Streams.java : public static void copyProgress(InputStream input, OutputStream output, long totalLength, int bufferSize, Floatc progress) throws IOException
+    public static void copyProgress(InputStream input, OutputStream output, long totalLength, int bufferSize, Floatc progress) throws IOException{
+        byte[] buffer = new byte[bufferSize];
+        long totalRead = 0;
+        int bytesRead;
+        while((bytesRead = input.read(buffer)) != -1){
+            totalRead += bytesRead;
+            progress.get(totalRead / (float)totalLength);
+            output.write(buffer, 0, bytesRead);
+        }
+    }
+
+// Streams.java : public static byte[] copyBytes(InputStream input) throws IOException / public static byte[] copyBytes(InputStream input, int estimatedSize) throws IOException
+    public static byte[] copyBytes(InputStream input) throws IOException{
+        return copyBytes(input, input.available());
+    }
+
+// Streams.java : public static String copyString(InputStream input) throws IOException / public static String copyString(InputStream input, int estimatedSize) throws IOException / public static String copyString(InputStream input, int estimatedSize, String charset) throws IOException
+    public static String copyString(InputStream input) throws IOException{
+        return copyString(input, input.available(), null);
+    }
+
+// Streams.java : public static void close(Closeable c)
+    public static void close(Closeable c){
+        if(c != null){
+            try{
+                c.close();
+            }catch(Throwable ignored){
+            }
+        }
+    }
+
+// Streams.java : public static byte[] sha256(byte[] bytes)
+    public static byte[] sha256(byte[] bytes){
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.update(bytes);
+            return digest.digest();
+        }catch(NoSuchAlgorithmException e){
+            throw new ArcRuntimeException(e);
+        }
+    }
+
+// Writes.java : public static Writes get(DataOutput output)
+    @Deprecated
+    public static Writes get(DataOutput output){
+        return new Writes(output);
+    }
+
+// Writes.java : public void l(long i)
+    public void l(long i){
+        try{
+            output.writeLong(i);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void i(int i)
+    public void i(int i){
+        try{
+            output.writeInt(i);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void b(int i) / public void b(byte[] array, int offset, int length) / public void b(byte[] array)
+    public void b(int i){
+        try{
+            output.writeByte(i);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void bool(boolean b)
+    public void bool(boolean b){
+        b(b ? 1 : 0);
+    }
+
+// Writes.java : public void s(int i)
+    public void s(int i){
+        try{
+            output.writeShort(i);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void f(float f)
+    public void f(float f){
+        try{
+            output.writeFloat(f);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void d(double d)
+    public void d(double d){
+        try{
+            output.writeDouble(d);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void str(String str)
+    public void str(String str){
+        try{
+            output.writeUTF(str);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Writes.java : public void close()
+    @Override
+    public void close(){
+        if(output instanceof Closeable){
+            try{
+                ((Closeable)output).close();
+            }catch(IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+    }
+

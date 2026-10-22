@@ -1,0 +1,1357 @@
+// Block.java : public void drawBase(Tile tile)
+    public void drawBase(Tile tile){
+        //delegates to building unless it is null
+        if(tile.build != null){
+            tile.build.draw();
+        }else{
+            Draw.rect(
+                variants == 0 ? region :
+                variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))],
+            tile.drawx(), tile.drawy());
+        }
+    }
+
+// Block.java : public void drawBaseCached(Tile tile)
+    public void drawBaseCached(Tile tile){
+        //delegates to building unless it is null
+        if(tile.build != null){
+            tile.build.drawCached();
+        }else{
+            Draw.rect(
+            variants == 0 ? region :
+            variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))],
+            tile.drawx(), tile.drawy());
+        }
+    }
+
+// Block.java : public void drawShadow(Tile tile)
+    public void drawShadow(Tile tile){
+        Draw.color(0f, 0f, 0f, BlockRenderer.shadowColor.a);
+        Draw.rect(
+            variants == 0 ? customShadowRegion :
+            variantShadowRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantShadowRegions.length - 1))],
+        tile.drawx(), tile.drawy());
+        Draw.color();
+    }
+
+// Block.java : public float percentSolid(int x, int y)
+    public float percentSolid(int x, int y){
+        Tile tile = world.tile(x, y);
+        if(tile == null) return 0;
+        return tile.getLinkedTilesAs(this, tempTiles)
+            .sumf(other -> !other.floor().isLiquid ? 1f : 0f) / size / size;
+    }
+
+// Block.java : public void drawEnvironmentLight(Tile tile)
+    public void drawEnvironmentLight(Tile tile){
+        Drawf.light(tile.worldx(), tile.worldy(), lightRadius, lightColor, lightColor.a);
+    }
+
+// Block.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        drawPotentialLinks(x, y);
+        drawOverlay(x * tilesize + offset, y * tilesize + offset, rotation);
+    }
+
+// Block.java : public void drawSideRegion(TextureRegion region, float x, float y, int rotation)
+    public void drawSideRegion(TextureRegion region, float x, float y, int rotation){
+        var p = Geometry.d4[Mathf.mod(rotation, 4)];
+        float s = size * tilesize/2f;
+
+        Draw.rect(region,
+        x + p.x * (s - region.width/2f * region.scl()),
+        y + p.y * (s - region.width/2f * region.scl()),
+        rotation * 90f
+        );
+    }
+
+// Block.java : public float drawPlaceText(String text, int x, int y, boolean valid) / public float drawPlaceText(String text, int x, int y, Color color, boolean drawLine)
+    public float drawPlaceText(String text, int x, int y, boolean valid){
+        return drawPlaceText(text, x, y, valid ? Pal.accent : Pal.remove, true);
+    }
+
+// Block.java : public void drawOverlay(float x, float y, int rotation)
+    public void drawOverlay(float x, float y, int rotation){
+    }
+
+// Block.java : public boolean displayShadow(Tile tile)
+    public boolean displayShadow(Tile tile){
+        return hasShadow;
+    }
+
+// Block.java : public float sumAttribute(Attribute attr, int x, int y)
+    public float sumAttribute(@Nullable Attribute attr, int x, int y){
+        if(attr == null) return 0;
+        Tile tile = world.tile(x, y);
+        if(tile == null) return 0;
+        return tile.getLinkedTilesAs(this, tempTiles)
+            .sumf(other -> !floating && !placeableLiquid && other.floor().isDeep() ? 0 : other.floor().attributes.get(attr));
+    }
+
+// Block.java : public TextureRegion getDisplayIcon(Tile tile)
+    public TextureRegion getDisplayIcon(Tile tile){
+        return tile.build == null ? uiIcon : tile.build.getDisplayIcon();
+    }
+
+// Block.java : public String getDisplayName(Tile tile)
+    public String getDisplayName(Tile tile){
+        return tile.build == null ? localizedName : tile.build.getDisplayName();
+    }
+
+// Block.java : public int minimapColor(Tile tile)
+    public int minimapColor(Tile tile){
+        return 0;
+    }
+
+// Block.java : public Color getColor(Tile tile)
+    public Color getColor(Tile tile){
+        int mc = minimapColor(tile);
+        return mc == 0 ? mapColor : Tmp.c3.set(mc);
+    }
+
+// Block.java : public boolean outputsItems()
+    public boolean outputsItems(){
+        return hasItems;
+    }
+
+// Block.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return true;
+    }
+
+// Block.java : public boolean canBreak(Tile tile)
+    public boolean canBreak(Tile tile){
+        return true;
+    }
+
+// Block.java : public boolean rotatedOutput(int x, int y) / public boolean rotatedOutput(int fromX, int fromY, Tile destination)
+    public boolean rotatedOutput(int x, int y){
+        return rotate;
+    }
+
+// Block.java : public boolean synthetic()
+    public boolean synthetic(){
+        return update || destructible;
+    }
+
+// Block.java : public boolean checkForceDark(Tile tile)
+    public boolean checkForceDark(Tile tile){
+        return forceDark;
+    }
+
+// Block.java : public boolean isDarkened(Tile tile)
+    public boolean isDarkened(Tile tile){
+        return solid && ((!synthetic() && fillsTile) || checkForceDark(tile));
+    }
+
+// Block.java : public void addBar(String name, Func<T,Bar> sup)
+    public <T extends Building> void addBar(String name, Func<T, Bar> sup){
+        barMap.put(name, (Func<Building, Bar>)sup);
+    }
+
+// Block.java : public void removeBar(String name)
+    public void removeBar(String name){
+        barMap.remove(name);
+    }
+
+// Block.java : public Iterable<Func<Building,Bar>> listBars()
+    public Iterable<Func<Building, Bar>> listBars(){
+        return barMap.values();
+    }
+
+// Block.java : public void addLiquidBar(Liquid liq) / public void addLiquidBar(Func<T,Liquid> current)
+    public void addLiquidBar(Liquid liq){
+        addBar("liquid-" + liq.name, entity -> !liq.unlockedNow() ? null : new Bar(
+            () -> liq.localizedName,
+            liq::barColor,
+            () -> entity.liquids.get(liq) / liquidCapacity
+        ));
+    }
+
+// Block.java : public boolean consumesItem(Item item)
+    public boolean consumesItem(Item item){
+        return itemFilter[item.id];
+    }
+
+// Block.java : public boolean consumesLiquid(Liquid liq)
+    public boolean consumesLiquid(Liquid liq){
+        return liquidFilter[liq.id];
+    }
+
+// Block.java : public boolean canReplace(Block other)
+    public boolean canReplace(Block other){
+        if(other.alwaysReplace) return true;
+        if(other.privileged) return false;
+        return other.replaceable && (other != this || (rotate && quickRotate)) && ((this.group != BlockGroup.none && other.group == this.group) || other == this) &&
+            (size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
+    }
+
+// Block.java : public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)
+    public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans){
+        return this;
+    }
+
+// Block.java : public void changePlacementPath(Seq<Point2> points, int rotation, boolean diagonalOn) / public void changePlacementPath(Seq<Point2> points, int rotation)
+    public void changePlacementPath(Seq<Point2> points, int rotation, boolean diagonalOn){
+        changePlacementPath(points, rotation);
+    }
+
+// Block.java : public void handlePlacementLine(Seq<BuildPlan> plans)
+    public void handlePlacementLine(Seq<BuildPlan> plans){
+
+    }
+
+// Block.java : public boolean configSenseable()
+    public boolean configSenseable(){
+        return configurations.containsKey(Item.class) || configurations.containsKey(Liquid.class) || configurations.containsKey(UnlockableContent.class) ||
+               configurations.containsKey(Block.class) || configurations.containsKey(UnitType.class);
+    }
+
+// Block.java : public Object nextConfig()
+    public Object nextConfig(){
+        if(saveConfig && lastConfig != null){
+            return lastConfig;
+        }
+        return null;
+    }
+
+// Block.java : public void onNewPlan(BuildPlan plan)
+    public void onNewPlan(BuildPlan plan){
+
+    }
+
+// Block.java : public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid) / public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+    public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid){
+        drawPlan(plan, list, valid, 1f);
+    }
+
+// Block.java : public void drawOtherPlayerPlan(BuildPlan plan, Eachable<BuildPlan> list, float alpha)
+    public void drawOtherPlayerPlan(BuildPlan plan, Eachable<BuildPlan> list, float alpha){
+        Draw.mixcol(Color.white, Mathf.absin(Time.globalTime, 6f, 0.15f));
+        Draw.alpha(alpha);
+        float prevScale = Draw.scl;
+        Draw.scl *= plan.animScale;
+        drawPlanRegion(plan, list);
+        Draw.scl = prevScale;
+        Draw.reset();
+    }
+
+// Block.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawDefaultPlanRegion(plan, list);
+    }
+
+// Block.java : public static BuildPlan findPlan(Eachable<BuildPlan> list, int x, int y, Boolf<BuildPlan> predicate) / public static BuildPlan findPlan(Eachable<BuildPlan> list, int x, int y, int size, Boolf<BuildPlan> predicate)
+    public static BuildPlan findPlan(Eachable<BuildPlan> list, int x, int y, Boolf<BuildPlan> predicate){
+        return findPlan(list, x, y, 1, predicate);
+    }
+
+// Block.java : public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        return fullIcon;
+    }
+
+// Block.java : public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+    public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list){
+
+    }
+
+// Block.java : public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list)
+    public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list){
+
+    }
+
+// Block.java : public float planConfigClipSize()
+    public float planConfigClipSize(){
+        return clipSize;
+    }
+
+// Block.java : public Object pointConfig(Object config, Cons<Point2> transformer)
+    public Object pointConfig(Object config, Cons<Point2> transformer){
+        return config;
+    }
+
+// Block.java : public void configClear(Cons<E> cons)
+    public <E extends Building> void configClear(Cons<E> cons){
+        configurations.put(void.class, (tile, value) -> cons.get((E)tile));
+    }
+
+// Block.java : public void config(Class<T> type, Cons2<E,T> config)
+    public <T, E extends Building> void config(Class<T> type, Cons2<E, T> config){
+        configurations.put(type, config);
+    }
+
+// Block.java : public boolean isAccessible()
+    public boolean isAccessible(){
+        return (hasItems && itemCapacity > 0);
+    }
+
+// Block.java : public void nearbySide(int x, int y, int rotation, int index, Point2 out)
+    public void nearbySide(int x, int y, int rotation, int index, Point2 out){
+        int cornerX = x - (size-1)/2, cornerY = y - (size-1)/2, s = size;
+        switch(rotation){
+            case 0 -> out.set(cornerX + s, cornerY + index);
+            case 1 -> out.set(cornerX + index, cornerY + s);
+            case 2 -> out.set(cornerX - 1, cornerY + index);
+            case 3 -> out.set(cornerX + index, cornerY - 1);
+        }
+    }
+
+// Block.java : public Point2[] getEdges()
+    public Point2[] getEdges(){
+        return Edges.getEdges(size);
+    }
+
+// Block.java : public Point2[] getInsideEdges()
+    public Point2[] getInsideEdges(){
+        return Edges.getInsideEdges(size);
+    }
+
+// Block.java : public TextureRegion[] makeIconRegions()
+    public TextureRegion[] makeIconRegions(){
+        return new TextureRegion[0];
+    }
+
+// Block.java : protected TextureRegion[] icons()
+    protected TextureRegion[] icons(){
+        //use team region in vanilla team blocks
+        TextureRegion r = variants > 0 ? Core.atlas.find(name + "1") : region;
+        return teamRegion.found() && minfo.mod == null ? new TextureRegion[]{r, teamRegions[Team.sharded.id]} : new TextureRegion[]{r};
+    }
+
+// Block.java : public void getRegionsToOutline(Seq<TextureRegion> out)
+    public void getRegionsToOutline(Seq<TextureRegion> out){
+
+    }
+
+// Block.java : public TextureRegion[] getGeneratedIcons()
+    public TextureRegion[] getGeneratedIcons(){
+        return generatedIcons == null ? (generatedIcons = icons()) : generatedIcons;
+    }
+
+// Block.java : public void resetGeneratedIcons()
+    public void resetGeneratedIcons(){
+        generatedIcons = null;
+    }
+
+// Block.java : public TextureRegion[] variantRegions()
+    public TextureRegion[] variantRegions(){
+        return variantRegions == null ? (variantRegions = new TextureRegion[]{fullIcon}) : variantRegions;
+    }
+
+// Block.java : public boolean hasBuilding()
+    public boolean hasBuilding(){
+        return destructible || update;
+    }
+
+// Block.java : public final Building newBuilding()
+    public final Building newBuilding(){
+        return buildType.get();
+    }
+
+// Block.java : public void updateClipRadius(float radiusInWorldUnits)
+    public void updateClipRadius(float radiusInWorldUnits){
+        clipSize = Math.max(clipSize, this.size * tilesize + radiusInWorldUnits * 2f);
+    }
+
+// Block.java : public Rect bounds(int x, int y, Rect rect)
+    public Rect bounds(int x, int y, Rect rect){
+        return rect.setSize(size * tilesize).setCenter(x * tilesize + offset, y * tilesize + offset);
+    }
+
+// Block.java : public boolean isMultiblock()
+    public boolean isMultiblock(){
+        return size > 1;
+    }
+
+// Block.java : public boolean isVisible()
+    public boolean isVisible(){
+        return !isHidden() && (state.rules.editor || (!state.rules.hideBannedBlocks || !isBanned()));
+    }
+
+// Block.java : public boolean isPlaceable()
+    public boolean isPlaceable(){
+        return isVisible() && (!isBanned() || state.rules.editor) && supportsEnv(state.rules.env);
+    }
+
+// Block.java : public boolean isBanned()
+    @Override
+    public boolean isBanned(){
+        return state.rules.isBanned(this);
+    }
+
+// Block.java : public boolean isOverPlacementLimit(Team team)
+    public boolean isOverPlacementLimit(Team team){
+        if(!state.rules.editor && !team.isAI()){
+            int limit = state.rules.blockLimits.get(this, 0);
+            return limit > 0 && team.data().getBuildings(this).size >= limit;
+        }
+        return false;
+    }
+
+// Block.java : public boolean supportsEnv(int env)
+    public boolean supportsEnv(int env){
+        return (envEnabled & env) != 0 && (envDisabled & env) == 0 && (envRequired == 0 || (envRequired & env) == envRequired);
+    }
+
+// Block.java : public void buildEditorConfig(Table table)
+    public void buildEditorConfig(Table table){}
+
+// Block.java : public void onPicked(Tile tile)
+    public void onPicked(Tile tile){}
+
+// Block.java : public Object getConfig(Tile tile)
+    public Object getConfig(Tile tile){
+        return null;
+    }
+
+// Block.java : public void blockChanged(Tile tile)
+    public void blockChanged(Tile tile){}
+
+// Block.java : public void placeBegan(Tile tile, Block previous) / public void placeBegan(Tile tile, Block previous, Unit builder)
+    public void placeBegan(Tile tile, Block previous){
+
+    }
+
+// Block.java : public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+    public void placeEnded(Tile tile, @Nullable Unit builder, int rotation, @Nullable Object config){
+
+    }
+
+// Block.java : public void beforePlaceBegan(Tile tile, Block previous)
+    public void beforePlaceBegan(Tile tile, Block previous){
+
+    }
+
+// Block.java : public void editorPicked(Tile tile)
+    public void editorPicked(Tile tile){
+
+    }
+
+// Block.java : public boolean isFloor()
+    public boolean isFloor(){
+        return this instanceof Floor;
+    }
+
+// Block.java : public boolean isOverlay()
+    public boolean isOverlay(){
+        return this instanceof OverlayFloor;
+    }
+
+// Block.java : public Floor asFloor()
+    public Floor asFloor(){
+        return (Floor)this;
+    }
+
+// Block.java : public boolean isAir()
+    public boolean isAir(){
+        return id == 0;
+    }
+
+// Block.java : public boolean canBeBuilt()
+    public boolean canBeBuilt(){
+        return buildVisibility != BuildVisibility.hidden && buildVisibility != BuildVisibility.debugOnly;
+    }
+
+// Block.java : public boolean environmentBuildable()
+    public boolean environmentBuildable(){
+        return isOnPlanet(state.getPlanet());
+    }
+
+// Block.java : public boolean isStatic()
+    public boolean isStatic(){
+        return cacheLayer == CacheLayer.walls;
+    }
+
+// Block.java : public T findConsumer(Boolf<Consume> filter)
+    public <T extends Consume> T findConsumer(Boolf<Consume> filter){
+        return consumers.length == 0 ? (T)consumeBuilder.find(filter) : (T)Structs.find(consumers, filter);
+    }
+
+// Block.java : public boolean hasConsumer(Consume cons)
+    public boolean hasConsumer(Consume cons){
+        return consumeBuilder.contains(cons);
+    }
+
+// Block.java : public void removeConsumer(Consume cons)
+    public void removeConsumer(Consume cons){
+        if(consumers.length > 0){
+            throw new IllegalStateException("You can only remove consumers before init(). After init(), all consumers have already been initialized.");
+        }
+        consumeBuilder.remove(cons);
+    }
+
+// Block.java : public void removeConsumers(Boolf<Consume> b)
+    public void removeConsumers(Boolf<Consume> b){
+        consumeBuilder.removeAll(b);
+        //the power was removed, unassign it
+        if(!consumeBuilder.contains(c -> c instanceof ConsumePower)){
+            consPower = null;
+        }
+    }
+
+// Block.java : public ConsumeLiquid consumeLiquid(Liquid liquid, float amount)
+    public ConsumeLiquid consumeLiquid(Liquid liquid, float amount){
+        return consume(new ConsumeLiquid(liquid, amount));
+    }
+
+// Block.java : public ConsumeLiquids consumeLiquids(LiquidStack stacks)
+    public ConsumeLiquids consumeLiquids(LiquidStack... stacks){
+        return consume(new ConsumeLiquids(stacks));
+    }
+
+// Block.java : public ConsumePower consumePower(float powerPerTick)
+    public ConsumePower consumePower(float powerPerTick){
+        return consume(new ConsumePower(powerPerTick, 0.0f, false));
+    }
+
+// Block.java : public ConsumePower consumePowerCond(float usage, Boolf<T> cons)
+    public <T extends Building> ConsumePower consumePowerCond(float usage, Boolf<T> cons){
+        return consume(new ConsumePowerCondition(usage, (Boolf<Building>)cons));
+    }
+
+// Block.java : public ConsumePower consumePowerDynamic(Floatf<T> usage) / public ConsumePower consumePowerDynamic(float displayed, Floatf<T> usage)
+    public <T extends Building> ConsumePower consumePowerDynamic(Floatf<T> usage){
+        return consume(new ConsumePowerDynamic((Floatf<Building>)usage));
+    }
+
+// Block.java : public ConsumePower consumePowerBuffered(float powerCapacity)
+    public ConsumePower consumePowerBuffered(float powerCapacity){
+        return consume(new ConsumePower(0f, powerCapacity, true));
+    }
+
+// Block.java : public ConsumeItems consumeItem(Item item) / public ConsumeItems consumeItem(Item item, int amount)
+    public ConsumeItems consumeItem(Item item){
+        return consumeItem(item, 1);
+    }
+
+// Block.java : public ConsumeItems consumeItems(ItemStack items)
+    public ConsumeItems consumeItems(ItemStack... items){
+        return consume(new ConsumeItems(items));
+    }
+
+// Block.java : public ConsumeCoolant consumeCoolant(float amount) / public ConsumeCoolant consumeCoolant(float amount, boolean allowLiquid, boolean allowGas)
+    public ConsumeCoolant consumeCoolant(float amount){
+        return consume(new ConsumeCoolant(amount));
+    }
+
+// Block.java : public T consume(T consume)
+    public <T extends Consume> T consume(T consume){
+        if(consume instanceof ConsumePower){
+            //there can only be one power consumer
+            consumeBuilder.removeAll(b -> b instanceof ConsumePower);
+            consPower = (ConsumePower)consume;
+        }
+        consumeBuilder.add(consume);
+        return consume;
+    }
+
+// Block.java : public void setupRequirements(Category cat, ItemStack[] stacks) / public void setupRequirements(Category cat, BuildVisibility visible, ItemStack[] stacks)
+    public void setupRequirements(Category cat, ItemStack[] stacks){
+        requirements(cat, stacks);
+    }
+
+// Block.java : public void requirements(Category cat, ItemStack[] stacks, boolean unlocked) / public void requirements(Category cat, ItemStack[] stacks) / public void requirements(Category cat, BuildVisibility visible, ItemStack[] stacks)
+    public void requirements(Category cat, ItemStack[] stacks, boolean unlocked){
+        requirements(cat, BuildVisibility.shown, stacks);
+        this.alwaysUnlocked = unlocked;
+    }
+
+// Block.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.block;
+    }
+
+// Block.java : public boolean logicVisible()
+    @Override
+    public boolean logicVisible(){
+        return buildVisibility != BuildVisibility.hidden;
+    }
+
+// Block.java : public void checkContentArrayCapacity(int items, int liquids)
+    public void checkContentArrayCapacity(int items, int liquids){
+        if(liquidFilter.length != liquids) liquidFilter = Arrays.copyOf(liquidFilter, liquids);
+        if(itemFilter.length != items) itemFilter = Arrays.copyOf(itemFilter, items);
+    }
+
+// Block.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return !buildVisibility.visible() && !state.rules.revealedBlocks.contains(this);
+    }
+
+// Block.java : public int planRotation(int rot)
+    public int planRotation(int rot){
+        return !rotate && lockRotation ? 0 : rot;
+    }
+
+// Block.java : public void flipRotation(BuildPlan req, boolean x)
+    public void flipRotation(BuildPlan req, boolean x){
+        if((x == (req.rotation % 2 == 0)) != invertFlip){
+            req.rotation = planRotation(Mathf.mod(req.rotation + 2, 4));
+        }
+    }
+
+// Block.java : public void getPlanConfigs(Seq<UnlockableContent> options)
+    public void getPlanConfigs(Seq<UnlockableContent> options){
+        if(configurations.containsKey(Item.class)){
+            options.add(content.items());
+        }
+        if(configurations.containsKey(Liquid.class)){
+            options.add(content.liquids());
+        }
+    }
+
+// Block.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        if(sensor == LAccess.name) return name;
+        return noSensed;
+    }
+
+// Build.java : public static boolean validPlace(Block type, Team team, int x, int y, int rotation) / public static boolean validPlace(Block type, Team team, int x, int y, int rotation, boolean checkVisible) / public static boolean validPlace(Block type, Team team, int x, int y, int rotation, boolean checkVisible, boolean checkCoreRadius)
+    public static boolean validPlace(Block type, Team team, int x, int y, int rotation){
+        return validPlace(type, team, x, y, rotation, true);
+    }
+
+// Build.java : public static boolean checkNoUnitOverlap(Block type, int x, int y)
+    public static boolean checkNoUnitOverlap(Block type, int x, int y){
+        return (!type.solid && !type.solidifes) || !Units.anyEntities(x * tilesize + type.offset - type.size * tilesize / 2f, y * tilesize + type.offset - type.size * tilesize / 2f, type.size * tilesize, type.size * tilesize);
+    }
+
+// Build.java : public static Building getEnemyOverlap(Block block, Team team, int x, int y)
+    public static @Nullable Building getEnemyOverlap(Block block, Team team, int x, int y){
+        return indexer.findEnemyTile(team, x * tilesize + block.size, y * tilesize + block.size, block.placeOverlapRange + 4f, b -> b.team.rules().checkPlacement);
+    }
+
+// Build.java : public static boolean validBreak(Team team, int x, int y)
+    public static boolean validBreak(Team team, int x, int y){
+        Tile tile = world.tile(x, y);
+        return tile != null && tile.block() != Blocks.air && (tile.block().canBreak(tile) && (tile.breakable() || state.rules.allowEnvironmentDeconstruct)) && tile.interactable(team);
+    }
+
+// CachedTile.java : protected void preChanged()
+    @Override
+    protected void preChanged(){
+        //this basically overrides the old tile code and doesn't remove from proximity
+    }
+
+// ColorMapper.java : public static Block get(int color)
+    public static Block get(int color){
+        return color2block.get(color, Blocks.air);
+    }
+
+// ColorMapper.java : public static void load()
+    public static void load(){
+        color2block.clear();
+
+        for(Block block : Vars.content.blocks()){
+            color2block.put(block.mapColor.rgba(), block);
+        }
+
+        color2block.put(Color.rgba8888(0, 0, 0, 1), Blocks.air);
+    }
+
+// DirectionalItemBuffer.java : public boolean accepts(int buffer)
+    public boolean accepts(int buffer){
+        return indexes[buffer] < buffers[buffer].length;
+    }
+
+// DirectionalItemBuffer.java : public void accept(int buffer, Item item)
+    public void accept(int buffer, Item item){
+        if(!accepts(buffer)) return;
+        buffers[buffer][indexes[buffer]++] = BufferItem.get(item.id, Time.time);
+    }
+
+// DirectionalItemBuffer.java : public Item poll(int buffer, float speed)
+    public Item poll(int buffer, float speed){
+        if(indexes[buffer] > 0){
+            long l = buffers[buffer][0];
+            float time = BufferItem.time(l);
+
+            if(Time.time >= time + speed || Time.time < time){
+                return content.item(BufferItem.item(l));
+            }
+        }
+        return null;
+    }
+
+// DirectionalItemBuffer.java : public void remove(int buffer)
+    public void remove(int buffer){
+        System.arraycopy(buffers[buffer], 1, buffers[buffer], 0, indexes[buffer] - 1);
+        indexes[buffer] --;
+    }
+
+// DirectionalItemBuffer.java : public void write(Writes write)
+    public void write(Writes write){
+        for(int i = 0; i < 4; i++){
+            write.b(indexes[i]);
+            write.b(buffers[i].length);
+            for(long l : buffers[i]){
+                write.l(l);
+            }
+        }
+    }
+
+// DirectionalItemBuffer.java : public void read(Reads read) / public void read(Reads read, boolean legacy)
+    public void read(Reads read){
+        read(read, false);
+    }
+
+// Edges.java : public static Tile getFacingEdge(Building tile, Building other) / public static Tile getFacingEdge(Tile tile, Tile other) / public static Tile getFacingEdge(Block block, int tilex, int tiley, Tile other)
+    public static Tile getFacingEdge(Building tile, Building other){
+        Tile res = getFacingEdge(tile.block, tile.tileX(), tile.tileY(), other.tile);
+        return res == null ? tile.tile : res;
+    }
+
+// Edges.java : public static Vec2[] getPixelPolygon(float radius)
+    public static Vec2[] getPixelPolygon(float radius){
+        if(radius < 1 || radius > maxRadius)
+            throw new RuntimeException("Polygon size must be between 1 and " + maxRadius);
+        return polygons[(int)(radius * 2) - 1];
+    }
+
+// Edges.java : public static Point2[] getEdges(int size)
+    public static Point2[] getEdges(int size){
+        if(size < 0 || size > maxBlockSize) throw new RuntimeException("Block size must be between 0 and " + maxBlockSize);
+
+        return edges[size - 1];
+    }
+
+// Edges.java : public static Point2[] getInsideEdges(int size)
+    public static Point2[] getInsideEdges(int size){
+        if(size < 0 || size > maxBlockSize) throw new RuntimeException("Block size must be between 0 and " + maxBlockSize);
+
+        return edgeInside[size - 1];
+    }
+
+// ItemBuffer.java : public boolean accepts()
+    public boolean accepts(){
+        return index < buffer.length;
+    }
+
+// ItemBuffer.java : public void accept(Item item, short data) / public void accept(Item item)
+    public void accept(Item item, short data){
+        //if(!accepts()) return;
+        buffer[index++] = TimeItem.get(data, item.id, Time.time);
+    }
+
+// ItemBuffer.java : public Item poll(float speed)
+    public Item poll(float speed){
+        if(index > 0){
+            long l = buffer[0];
+            float time = TimeItem.time(l);
+
+            if(Time.time >= time + speed || Time.time < time){
+                return content.item(TimeItem.item(l));
+            }
+        }
+        return null;
+    }
+
+// ItemBuffer.java : public void remove()
+    public void remove(){
+        System.arraycopy(buffer, 1, buffer, 0, index - 1);
+        index--;
+    }
+
+// ItemBuffer.java : public void write(Writes write)
+    public void write(Writes write){
+        write.b((byte)index);
+        write.b((byte)buffer.length);
+        for(long l : buffer){
+            write.l(l);
+        }
+    }
+
+// ItemBuffer.java : public void read(Reads read)
+    public void read(Reads read){
+        index = read.b();
+        byte length = read.b();
+        for(int i = 0; i < length; i++){
+            long l = read.l();
+            if(i < buffer.length){
+                buffer[i] = l;
+            }
+        }
+        index = Math.min(index, length - 1);
+    }
+
+// Tile.java : public int pos()
+    public int pos(){
+        return Point2.pack(x, y);
+    }
+
+// Tile.java : public int array()
+    public int array(){
+        return x + y * world.tiles.width;
+    }
+
+// Tile.java : public byte relativeTo(Tile tile) / public byte relativeTo(int cx, int cy) / public static byte relativeTo(int x, int y, int cx, int cy) / public static int relativeTo(float x, float y, float cx, float cy)
+    public byte relativeTo(Tile tile){
+        return relativeTo(tile.x, tile.y);
+    }
+
+// Tile.java : public boolean inMapArea()
+    public boolean inMapArea(){
+        return world.isInMapArea(x, y);
+    }
+
+// Tile.java : public float worldx()
+    public float worldx(){
+        return x * tilesize;
+    }
+
+// Tile.java : public float worldy()
+    public float worldy(){
+        return y * tilesize;
+    }
+
+// Tile.java : public float drawx()
+    public float drawx(){
+        return block().offset + worldx();
+    }
+
+// Tile.java : public float drawy()
+    public float drawy(){
+        return block().offset + worldy();
+    }
+
+// Tile.java : public boolean isDarkened()
+    public boolean isDarkened(){
+        return block.isDarkened(this);
+    }
+
+// Tile.java : public Floor floor()
+    public Floor floor(){
+        return floor;
+    }
+
+// Tile.java : public Block block()
+    public Block block(){
+        return block;
+    }
+
+// Tile.java : public Floor overlay()
+    public Floor overlay(){
+        return overlay;
+    }
+
+// Tile.java : public void updateBlockReference(Block block)
+    public void updateBlockReference(Block block){
+        this.block = block;
+    }
+
+// Tile.java : public T cblock()
+    @SuppressWarnings("unchecked")
+    public <T extends Block> T cblock(){
+        return (T)block;
+    }
+
+// Tile.java : public Team team()
+    public Team team(){
+        return build == null ? Team.derelict : build.team;
+    }
+
+// Tile.java : public void setTeam(Team team) / public static void setTeam(Building build, Team team)
+    public void setTeam(Team team){
+        if(build != null){
+            build.team(team);
+        }
+    }
+
+// Tile.java : public boolean isCenter()
+    public boolean isCenter(){
+        return build == null || build.tile == this;
+    }
+
+// Tile.java : public int centerX()
+    public int centerX(){
+        return build == null ? x : build.tile.x;
+    }
+
+// Tile.java : public int centerY()
+    public int centerY(){
+        return build == null ? y : build.tile.y;
+    }
+
+// Tile.java : public int getTeamID()
+    public int getTeamID(){
+        return team().id;
+    }
+
+// Tile.java : public void setBlock(Block type, Team team, int rotation) / public void setBlock(Block type, Team team, int rotation, Prov<Building> entityprov) / public void setBlock(Block type, Team team) / public void setBlock(Block type)
+    public void setBlock(Block type, Team team, int rotation){
+        setBlock(type, team, rotation, type::newBuilding);
+    }
+
+// Tile.java : public boolean isEditorTile()
+    public boolean isEditorTile(){
+        return false;
+    }
+
+// Tile.java : public void setAir()
+    public void setAir(){
+        setBlock(Blocks.air);
+    }
+
+// Tile.java : public void circle(int radius, Intc2 cons) / public void circle(int radius, Cons<Tile> cons)
+    public void circle(int radius, Intc2 cons){
+        Geometry.circle(x, y, world.width(), world.height(), radius, cons);
+    }
+
+// Tile.java : public Color getFloorColor()
+    public Color getFloorColor(){
+        return floor.getColor(this);
+    }
+
+// Tile.java : public void recacheWall()
+    public void recacheWall(){
+        if(!headless && !world.isGenerating()){
+            renderer.blocks.recacheWall(this);
+        }
+    }
+
+// Tile.java : public void remove()
+    public void remove(){
+        //this automatically removes multiblock references to this block
+        setBlock(Blocks.air);
+    }
+
+// Tile.java : public void removeNet()
+    public void removeNet(){
+        Call.removeTile(this);
+    }
+
+// Tile.java : public void setNet(Block block) / public void setNet(Block block, Team team, int rotation)
+    public void setNet(Block block){
+        Call.setTile(this, block, Team.derelict, 0);
+    }
+
+// Tile.java : public void setFloorNet(Block floor, Block overlay) / public void setFloorNet(Block floor)
+    public void setFloorNet(Block floor, Block overlay){
+        Call.setFloor(this, floor, overlay);
+    }
+
+// Tile.java : public void setOverlayNet(Block overlay)
+    public void setOverlayNet(Block overlay){
+        Call.setOverlay(this, overlay);
+    }
+
+// Tile.java : public short overlayID()
+    public short overlayID(){
+        return overlay.id;
+    }
+
+// Tile.java : public short blockID()
+    public short blockID(){
+        return block.id;
+    }
+
+// Tile.java : public short floorID()
+    public short floorID(){
+        return floor.id;
+    }
+
+// Tile.java : public void setOverlayQuiet(Block block)
+    public void setOverlayQuiet(Block block){
+        this.overlay = (Floor)block;
+    }
+
+// Tile.java : public void clearOverlay()
+    public void clearOverlay(){
+        setOverlay(Blocks.air);
+    }
+
+// Tile.java : public boolean passable()
+    public boolean passable(){
+        return !((floor.solid && (block == Blocks.air || block.solidifes)) || (block.solid && (!block.destructible && !block.update)));
+    }
+
+// Tile.java : public boolean synthetic()
+    public boolean synthetic(){
+        return block.update || block.destructible;
+    }
+
+// Tile.java : public boolean solid()
+    public boolean solid(){
+        return block.solid || floor.solid || (build != null && build.checkSolid());
+    }
+
+// Tile.java : public boolean breakable()
+    public boolean breakable(){
+        return block.destructible || block.breakable || block.update;
+    }
+
+// Tile.java : public boolean dangerous()
+    public boolean dangerous(){
+        return !block.solid && (floor.isDeep() || floor.damages());
+    }
+
+// Tile.java : public boolean isDeep()
+    public boolean isDeep(){
+        return block == Blocks.air && floor.isDeep();
+    }
+
+// Tile.java : public Seq<Tile> getLinkedTilesAs(Block block, Seq<Tile> tmpArray) / public void getLinkedTilesAs(Block block, Cons<Tile> tmpArray)
+    public Seq<Tile> getLinkedTilesAs(Block block, Seq<Tile> tmpArray){
+        tmpArray.clear();
+        getLinkedTilesAs(block, tmpArray::add);
+        return tmpArray;
+    }
+
+// Tile.java : public Rect getHitbox(Rect rect)
+    public Rect getHitbox(Rect rect){
+        return rect.setCentered(drawx(), drawy(), block.size * tilesize, block.size * tilesize);
+    }
+
+// Tile.java : public Rect getBounds(Rect rect)
+    public Rect getBounds(Rect rect){
+        return rect.set(x * tilesize - tilesize/2f, y * tilesize - tilesize/2f, tilesize, tilesize);
+    }
+
+// Tile.java : public void hitbox(Rect rect)
+    @Override
+    public void hitbox(Rect rect){
+        getHitbox(rect);
+    }
+
+// Tile.java : public Tile nearby(Point2 relative) / public Tile nearby(int dx, int dy) / public Tile nearby(int rotation)
+    public @Nullable Tile nearby(Point2 relative){
+        return world.tile(x + relative.x, y + relative.y);
+    }
+
+// Tile.java : public Building nearbyBuild(int rotation)
+    public @Nullable Building nearbyBuild(int rotation){
+        return switch(rotation){
+            case 0 -> world.build(x + 1, y);
+            case 1 -> world.build(x, y + 1);
+            case 2 -> world.build(x - 1, y);
+            case 3 -> world.build(x, y - 1);
+            default -> null;
+        };
+    }
+
+// Tile.java : public boolean interactable(Team team)
+    public boolean interactable(Team team){
+        return state.teams.canInteract(team, team());
+    }
+
+// Tile.java : public Item drop()
+    public @Nullable Item drop(){
+        return overlay == Blocks.air || overlay.itemDrop == null ? floor.itemDrop : overlay.itemDrop;
+    }
+
+// Tile.java : public Item wallDrop()
+    public @Nullable Item wallDrop(){
+        return block.solid ?
+            block.itemDrop != null ? block.itemDrop :
+            overlay.wallOre && !block.synthetic() ? overlay.itemDrop :
+            null : null;
+    }
+
+// Tile.java : public boolean shouldSaveData()
+    public boolean shouldSaveData(){
+        return floor.saveData || overlay.saveData || block.saveData;
+    }
+
+// Tile.java : public int staticDarkness()
+    public int staticDarkness(){
+        return block.solid && block.fillsTile && !block.synthetic() ? data : 0;
+    }
+
+// Tile.java : public boolean legSolid()
+    public boolean legSolid(){
+        return staticDarkness() >= 2 || (floor.solid && block == Blocks.air);
+    }
+
+// Tile.java : public boolean adjacentTo(Tile tile)
+    public boolean adjacentTo(Tile tile){
+        return relativeTo(tile) != -1;
+    }
+
+// Tile.java : protected void fireChanged()
+    protected void fireChanged(){
+        if(!world.isGenerating()){
+            Events.fire(tileChange.set(this));
+        }
+    }
+
+// Tile.java : protected void firePreChanged()
+    protected void firePreChanged(){
+        if(!world.isGenerating()){
+            Events.fire(preChange.set(this));
+        }
+    }
+
+// Tile.java : public long getPackedData()
+    public long getPackedData(){
+        return PackedTileData.get(extraData, data, floorData, overlayData);
+    }
+
+// Tile.java : public void setPackedData(long packed)
+    public void setPackedData(long packed){
+        extraData = PackedTileData.extraData(packed);
+        data = PackedTileData.data(packed);
+        floorData = PackedTileData.floorData(packed);
+        overlayData = PackedTileData.overlayData(packed);
+    }
+
+// Tile.java : public boolean displayable()
+    @Override
+    public boolean displayable(){
+        return (drop() != null && block == Blocks.air) || wallDrop() != null || (floor().liquidDrop != null && block == Blocks.air);
+    }
+
+// Tile.java : public float getX()
+    @Override
+    public float getX(){
+        return drawx();
+    }
+
+// Tile.java : public float getY()
+    @Override
+    public float getY(){
+        return drawy();
+    }
+
+// Tile.java : public String toString()
+    @Override
+    public String toString(){
+        return floor.name + ":" + block.name + ":" + overlay + "[" + x + "," + y + "] " + "entity=" + (build == null ? "null" : (build.getClass().getSimpleName())) + ":" + team();
+    }
+
+// Tile.java : public static void setTileBlocks(Block block, Team team, int[] positions)
+    @Remote(called = Loc.server)
+    public static void setTileBlocks(Block block, Team team, int[] positions){
+        if(block == null || positions == null) return;
+        for(int pos : positions){
+            Tile tile = world.tile(pos);
+            if(tile != null){
+                tile.setBlock(block, team, 0);
+            }
+        }
+    }
+
+// Tile.java : public static void setTileFloors(Block block, int[] positions)
+    @Remote(called = Loc.server)
+    public static void setTileFloors(Block block, int[] positions){
+        if(positions == null || !(block instanceof Floor floor)) return;
+        for(int pos : positions){
+            Tile tile = world.tile(pos);
+            if(tile != null){
+                tile.setFloor(floor);
+            }
+        }
+    }
+
+// Tile.java : public static void setTileOverlays(Block block, int[] positions)
+    @Remote(called = Loc.server)
+    public static void setTileOverlays(Block block, int[] positions){
+        if(positions == null || !(block instanceof OverlayFloor floor)) return;
+        for(int pos : positions){
+            Tile tile = world.tile(pos);
+            if(tile != null){
+                tile.setOverlay(floor);
+            }
+        }
+    }
+
+// Tile.java : public static void fillTileBlocks(int x, int y, int x2, int y2, Block block, Team team)
+    @Remote(called = Loc.server)
+    public static void fillTileBlocks(int x, int y, int x2, int y2, Block block, Team team){
+        for(int tx = x; tx <= x2; tx++){
+            for(int ty = y; ty <= y2; ty++){
+                Tile tile = world.tile(tx, ty);
+                if(tile == null) return; //out of bounds; return instead of breaking since it's a rectangle
+                tile.setBlock(block, team, 0);
+            }
+        }
+    }
+
+// Tile.java : public static void fillTileFloors(int x, int y, int x2, int y2, Block block)
+    @Remote(called = Loc.server)
+    public static void fillTileFloors(int x, int y, int x2, int y2, Block block){
+        if(!(block instanceof Floor floor)) return;
+        for(int tx = x; tx <= x2; tx++){
+            for(int ty = y; ty <= y2; ty++){
+                Tile tile = world.tile(tx, ty);
+                if(tile == null) return; //out of bounds; return instead of breaking since it's a rectangle
+                tile.setFloor(floor);
+            }
+        }
+    }
+
+// Tile.java : public static void fillTileOverlays(int x, int y, int x2, int y2, Block block)
+    @Remote(called = Loc.server)
+    public static void fillTileOverlays(int x, int y, int x2, int y2, Block block){
+        if(!(block instanceof OverlayFloor floor)) return;
+        for(int tx = x; tx <= x2; tx++){
+            for(int ty = y; ty <= y2; ty++){
+                Tile tile = world.tile(tx, ty);
+                if(tile == null) return; //out of bounds; return instead of breaking since it's a rectangle
+                tile.setOverlay(floor);
+            }
+        }
+    }
+
+// Tile.java : public static void removeTile(Tile tile)
+    @Remote(called = Loc.server)
+    public static void removeTile(Tile tile){
+        tile.remove();
+    }
+
+// Tile.java : public static void setTile(Tile tile, Block block, Team team, int rotation)
+    @Remote(called = Loc.server)
+    public static void setTile(Tile tile, Block block, Team team, int rotation){
+        if(tile == null) return;
+        tile.setBlock(block, team, rotation);
+    }
+
+// Tile.java : public static void buildDestroyed(Building build)
+    @Remote(called = Loc.server)
+    public static void buildDestroyed(Building build){
+        if(build == null) return;
+        build.killed();
+    }
+
+// TileGen.java : public void reset()
+    public void reset(){
+        floor = Blocks.stone;
+        block = Blocks.air;
+        overlay = Blocks.air;
+    }
+
+// Tiles.java : public long getTmpFloorState(int pos)
+    public long getTmpFloorState(int pos){
+        return tmpFloorState == null ? 0 : tmpFloorState[pos];
+    }
+
+// Tiles.java : public void setTmpFloorState(int pos, long value)
+    public void setTmpFloorState(int pos, long value){
+        if(tmpFloorState == null || tmpFloorState.length != array.length) tmpFloorState = new long[array.length];
+        tmpFloorState[pos] = value;
+    }
+
+// Tiles.java : public long getTmpBlockState(int pos)
+    public long getTmpBlockState(int pos){
+        return tmpBlockState == null ? 0 : tmpBlockState[pos];
+    }
+
+// Tiles.java : public void setTmpBlockState(int pos, long value)
+    public void setTmpBlockState(int pos, long value){
+        if(tmpBlockState == null || tmpBlockState.length != array.length) tmpBlockState = new long[array.length];
+        tmpBlockState[pos] = value;
+    }
+
+// Tiles.java : public Puddle getPuddle(int pos)
+    public Puddle getPuddle(int pos){
+        return puddles[pos];
+    }
+
+// Tiles.java : public void setPuddle(int pos, Puddle p)
+    public void setPuddle(int pos, Puddle p){
+        puddles[pos] = p;
+    }
+
+// Tiles.java : public Fire getFire(int pos)
+    public @Nullable Fire getFire(int pos){
+        return fires[pos];
+    }
+
+// Tiles.java : public void setFire(int pos, Fire f)
+    public void setFire(int pos, Fire f){
+        fires[pos] = f;
+    }
+
+// Tiles.java : public void each(Intc2 cons)
+    public void each(Intc2 cons){
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                cons.get(x, y);
+            }
+        }
+    }
+
+// Tiles.java : public void fill()
+    public void fill(){
+        for(int i = 0; i < array.length; i++){
+            array[i] = new Tile(i % width, i / width);
+        }
+    }
+
+// Tiles.java : public void set(int x, int y, Tile tile)
+    public void set(int x, int y, Tile tile){
+        array[y*width + x] = tile;
+    }
+
+// Tiles.java : public void seti(int i, Tile tile)
+    public void seti(int i, Tile tile){
+        array[i] = tile;
+    }
+
+// Tiles.java : public boolean in(int x, int y)
+    public boolean in(int x, int y){
+        return x >= 0 && x < width && y >= 0 && y < height;
+    }
+
+// Tiles.java : public Tile get(int x, int y)
+    @Nullable
+    public Tile get(int x, int y){
+        return (x < 0 || x >= width || y < 0 || y >= height) ? null : array[y*width + x];
+    }
+
+// Tiles.java : public Tile getn(int x, int y)
+    public Tile getn(int x, int y){
+        if(x < 0 || x >= width || y < 0 || y >= height) throw new IllegalArgumentException(x + ", " + y + " out of bounds: width=" + width + ", height=" + height);
+        return array[y*width + x];
+    }
+
+// Tiles.java : public Tile getc(int x, int y)
+    public Tile getc(int x, int y){
+        x = Mathf.clamp(x, 0, width - 1);
+        y = Mathf.clamp(y, 0, height - 1);
+        return array[y*width + x];
+    }
+
+// Tiles.java : public Tile geti(int idx)
+    public Tile geti(int idx){
+        return array[idx];
+    }
+
+// Tiles.java : public Tile getp(int pos)
+    public @Nullable Tile getp(int pos){
+        return get(Point2.x(pos), Point2.y(pos));
+    }
+
+// Tiles.java : public void eachTile(Cons<Tile> cons)
+    public void eachTile(Cons<Tile> cons){
+        for(Tile tile : array){
+            cons.get(tile);
+        }
+    }
+
+// Tiles.java : public Iterator<Tile> iterator()
+    @Override
+    public Iterator<Tile> iterator(){
+        //iterating through the entire map is expensive anyway, so a new allocation doesn't make much of a difference
+        return new TileIterator();
+    }
+
+// WorldContext.java : default void onReadBuilding()
+    default void onReadBuilding(){}
+
+// WorldContext.java : default void onReadTileData()
+    default void onReadTileData(){}
+
+// WorldContext.java : default Sector getSector()
+    default @Nullable Sector getSector(){
+        return null;
+    }
+
+// WorldContext.java : default boolean isMap()
+    default boolean isMap(){
+        return false;
+    }
+

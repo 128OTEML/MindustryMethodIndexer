@@ -1,0 +1,70 @@
+BranchTreeLayout.java
+Java class implements mindustry.ui.layout.TreeLayout
+// Algorithm taken from <a href="https://github.com/abego/treelayout">TreeLayout</a>.
+fields:
+  public TreeLocation rootLocation
+  public TreeAlignment alignment
+  public float gapBetweenLevels
+  public float gapBetweenNodes
+  private final FloatSeq sizeOfLevel
+  private float boundsLeft
+  private float boundsRight
+  private float boundsTop
+  private float boundsBottom
+methods:
+  public void layout(TreeNode root)
+  private float getWidthOrHeightOfNode(TreeNode treeNode, boolean returnWidth)
+  private float getNodeThickness(TreeNode treeNode)
+  private float getNodeSize(TreeNode treeNode)
+  private boolean isLevelChangeInYAxis()
+  private int getLevelChangeSign()
+  private void updateBounds(TreeNode node, float centerX, float centerY)
+  public Rect getBounds()
+  private void calcSizeOfLevels(TreeNode node, int level)
+  public int getLevelCount()
+  public float getGapBetweenNodes(TreeNode a, TreeNode b)
+  public float getSizeOfLevel(int level)
+  private TreeNode getAncestor(TreeNode node)
+  private float getDistance(TreeNode v, TreeNode w)
+  private TreeNode nextLeft(TreeNode v)
+  private TreeNode nextRight(TreeNode v)
+  private int getNumber(TreeNode node, TreeNode parentNode)
+  private TreeNode ancestor(TreeNode vIMinus, TreeNode parentOfV, TreeNode defaultAncestor)
+  private void moveSubtree(TreeNode wMinus, TreeNode wPlus, TreeNode parent, float shift)
+  private TreeNode apportion(TreeNode v, TreeNode defaultAncestor, TreeNode leftSibling, TreeNode parentOfV)
+  private void executeShifts(TreeNode v)
+  private void firstWalk(TreeNode v, TreeNode leftSibling)
+  private void secondWalk(TreeNode v, float m, int level, float levelStart)
+
+RadialTreeLayout.java
+Java class implements mindustry.ui.layout.TreeLayout
+fields:
+  private static ObjectSet<TreeNode> visited
+  private static Queue<TreeNode> queue
+  public float startRadius
+methods:
+  public void layout(TreeNode root)
+  void radialize(TreeNode root, float radius, float from, float to)
+  int bfs(TreeNode node, boolean assign)
+
+RowTreeLayout.java
+Java class implements mindustry.ui.layout.TreeLayout
+methods:
+  public void layout(TreeNode root) / void layout(TreeNode node, int depth, IntSeq nexts)
+
+TreeLayout.java
+Java interface
+methods:
+  void layout(TreeNode root)
+inner-class: TreeNode
+  fields:
+    public float width
+    public T children  // should be initialized by user
+    public T parent
+    public float mode  // internal stuff
+    public int number
+    public TreeNode thread
+  methods:
+    public boolean isLeaf()
+    public float calcWidth()
+

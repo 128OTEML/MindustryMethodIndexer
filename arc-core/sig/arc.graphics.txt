@@ -1,0 +1,1440 @@
+Blending.java
+Java class
+// Blending modes, can be instantiated to make custom blending.
+fields:
+  public static final Blending normal
+  public final int src
+ctors:
+  public Blending(int src, int dst) / public Blending(int src, int dst, int srcAlpha, int dstAlpha)
+methods:
+  public void apply()  // Enables/disables blending and sets the correct GL blend function.
+
+Camera.java
+Java class
+fields:
+  private static final Vec2 tmpVector  // temporary vector which is returned.
+  public final Vec2 position  // the position of the camera *
+  public final Mat mat  // the view matrix*
+  public final Mat inv  // the inverse view matrix *
+  public float width  // the viewport width and height *
+methods:
+  public void update()  // Recalculates the projection and view matrix of this camera.
+  public void resize(float viewportWidth, float viewportHeight)
+  public Vec2 unproject(Vec2 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight) / public Vec2 unproject(Vec2 screenCoords) / public Vec2 unproject(float screenX, float screenY)  // Function to translate a point given in screen coordinates to world space.
+  public Vec2 project(Vec2 worldCoords) / public Vec2 project(float screenX, float screenY) / public Vec2 project(Vec2 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight)  // Projects the {@link Vec3} given in world space to screen coordinates.
+  public Rect bounds(Rect out)  // Sets the specified rectangle to this camera's bounds.
+
+Color.java
+Java class
+// A color class, holding the r, g, b and alpha component as floats in the range [0,1].
+fields:
+  public static final Color white
+  public static final Color lightGray
+  public static final Color gray
+  public static final Color darkGray
+  public static final Color black
+  public static final Color clear
+  public static final float whiteFloatBits  // Convenience for frequently used <code>WHITE.toFloatBits()</code>
+  public static final float clearFloatBits
+  public static final float blackFloatBits
+  public static final int whiteRgba
+  public static final int clearRgba
+  public static final int blackRgba
+  public static final Color blue
+  public static final Color navy
+  public static final Color royal
+  public static final Color slate
+  public static final Color sky
+  public static final Color cyan
+  public static final Color teal
+  public static final Color green
+  public static final Color acid
+  public static final Color lime
+  public static final Color forest
+  public static final Color olive
+  public static final Color yellow
+  public static final Color gold
+  public static final Color goldenrod
+  public static final Color orange
+  public static final Color brown
+  public static final Color tan
+  public static final Color brick
+  public static final Color red
+  public static final Color scarlet
+  public static final Color crimson
+  public static final Color coral
+  public static final Color salmon
+  public static final Color pink
+  public static final Color magenta
+  public static final Color purple
+  public static final Color violet
+  public static final Color maroon
+  private static final float tmpHSV
+  public float r  // the red, green, blue and alpha components *
+ctors:
+  public Color() / public Color(int rgba8888) / public Color(float r, float g, float b, float a) / public Color(float r, float g, float b) / public Color(Color color)  // Constructs a new Color with all components set to 0.
+methods:
+  public static Color valueOf(String hex) / public static Color valueOf(Color color, String hex)  // Returns a new color from a hex string with the format RRGGBBAA.
+  private static int parseHex(String string, int from, int to)
+  public static float toFloatBits(int r, int g, int b, int a) / public static float toFloatBits(float r, float g, float b, float a) / public float toFloatBits()  // Packs the color components into a 32-bit integer with the format ABGR and then converts it to a float.
+  public static double toDoubleBits(float r, float g, float b, float a) / public static double toDoubleBits(int r, int g, int b, int a) / public double toDoubleBits()
+  public Color fromDouble(double value)
+  public static int abgr(int r, int g, int b, int a) / public int abgr()  // Packs the color components into a 32-bit integer with the format ABGR.
+  public static int alpha(float alpha)
+  public static int luminanceAlpha(float luminance, float alpha)
+  public static int rgb565(float r, float g, float b) / public int rgb565() / public Color rgb565(int value)  // Sets the Color components using the specified integer value in the format RGB565.
+  public static int rgba4444(float r, float g, float b, float a) / public int rgba4444() / public Color rgba4444(int value)  // Sets the Color components using the specified integer value in the format RGBA4444.
+  public static int rgb888(float r, float g, float b) / public int rgb888() / public Color rgb888(int value)  // Sets the Color components using the specified integer value in the format RGB888.
+  public static int rgba8888(float r, float g, float b, float a) / public int rgba8888() / public Color rgba8888(int value)  // Sets the Color components using the specified integer value in the format RGBA8888.
+  public static int argb8888(float a, float r, float g, float b) / public int argb8888() / public Color argb8888(int value)  // Sets the Color components using the specified integer value in the format ARGB8888.
+  public static int packRgba(int r, int g, int b, int a)  // @return 4 0-255 RGBA components packed into an int.
+  public Color abgr8888(float value)  // Sets the Color components using the specified float value in the format ABGB8888.
+  public static Color grays(float value)  // Creates a grayscale color.
+  public static Color rgb(int r, int g, int b)  // Creates a color from 0-255 scaled RGB values.
+  public static int floatToIntColor(float value)  // Converts the color from a float ABGR encoding to an int ABGR encoding.
+  public static float intToFloatColor(int value)  // Encodes the ABGR int color as a float.
+  public Color rand()
+  public Color randHue()
+  public float diff(Color other)  // Returns the difference of all the HSV components combined.
+  public int rgba()  // Shorthand for {@link #rgba8888()}.
+  public Color set(Color color) / public Color set(Vec3 vec) / public Color set(float r, float g, float b, float a) / public Color set(float r, float g, float b) / public Color set(int rgba)  // Sets this color to the given color.
+  public Color mul(Color color) / public Color mul(float value) / public Color mul(float r, float g, float b, float a)  // Multiplies the this color and the given color
+  public Color mula(float value)  // Multiplies RGBA components of this Color with the given value.
+  public Color add(Color color) / public Color add(float r, float g, float b, float a) / public Color add(float r, float g, float b)  // Adds the given color to this color.
+  public Color sub(Color color) / public Color sub(float r, float g, float b, float a) / public Color sub(float r, float g, float b)  // Subtracts the given color from this color
+  public Color clamp()  // Clamps this Color's components to a valid range [0 - 1]
+  public float sum()  // Returns the sum of the RGB values of this color.
+  public Color inv()  // Inverts this color's RGB.
+  public Color r(float r)
+  public Color g(float g)
+  public Color b(float b)
+  public Color a(float a)
+  public Color mulA(float a)
+  public Color lerp(Color target, float t) / public Color lerp(float r, float g, float b, float a, float t) / public Color lerp(Color[] colors, float s)  // Linearly interpolates between this color and the target color by t which is in the range [0,1].
+  public Color premultiplyAlpha()  // Multiplies the RGB values by the alpha.
+  public float dst(Color other)  // @return Euclidean distance from the other color, based on RGB components.
+  public Color write(Color to)
+  public float hue() / public Color hue(float amount)
+  public float saturation() / public Color saturation(float amount)
+  public float value() / public Color value(float amount)
+  public Color shiftHue(float amount)
+  public Color shiftSaturation(float amount)
+  public Color shiftValue(float amount)
+  public boolean equals(Object o)
+  public int hashCode()
+  public String toString() / public void toString(StringBuilder builder)  // Returns the color encoded as hex string with the format RRGGBBAA.
+  public Color fromHsv(float h, float s, float v) / public Color fromHsv(float[] hsv)  // Sets the RGB Color components using the specified Hue-Saturation-Value.
+  public float[] toHsv(float[] hsv)  // Extract Hue-Saturation-Value.
+  public static Color HSVtoRGB(float h, float s, float v, float alpha) / public static Color HSVtoRGB(float h, float s, float v) / public static Color HSVtoRGB(float h, float s, float v, Color targetColor)  // Converts HSV to RGB
+  public static int[] RGBtoHSV(Color c) / public static int[] RGBtoHSV(float r, float g, float b)  // Converts {@link Color} to HSV color system
+  public Color cpy()  // @return a copy of this color
+  private static int clampf(float value)
+  public static int ri(int rgba)  // @return R value of a RGBA packed color.
+  public static int gi(int rgba)  // @return G value of a RGBA packed color.
+  public static int bi(int rgba)  // @return B value of a RGBA packed color.
+  public static int ai(int rgba)  // @return A value of a RGBA packed color.
+  public static int muli(int ca, int cb) / public static int muli(int rgba, float value)  // Multiplies 2 RGBA colors together.
+
+Colors.java
+Java class (final)
+// A general purpose class containing named colors that can be changed at will.
+fields:
+  private static final OrderedMap<String,Color> map
+ctors:
+  private Colors()
+methods:
+  public static OrderedMap<String,Color> getColors()  // Returns the color map.
+  public static Color get(String name)  // Convenience method to lookup a color by {@code name}.
+  public static Color put(String name, Color color)  // Convenience method to add a {@code color} with its {@code name}.
+  public static void reset()  // Resets the color map to the predefined colors.
+
+Cubemap.java
+Java class extends arc.graphics.GLTexture
+// Wraps a standard OpenGL ES Cubemap.
+fields:
+  protected CubemapData data
+ctors:
+  public Cubemap(CubemapData data) / public Cubemap(String base) / public Cubemap(Fi positiveX, Fi negativeX, Fi positiveY, Fi negativeY, Fi positiveZ, Fi negativeZ) / public Cubemap(Fi positiveX, Fi negativeX, Fi positiveY, Fi negativeY, Fi positiveZ, Fi negativeZ, boolean useMipMaps) / public Cubemap(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ, Pixmap negativeZ) / public Cubemap(Pixmap positiveX, Pixmap negativeX, Pixmap positiveY, Pixmap negativeY, Pixmap positiveZ, Pixmap negativeZ, boolean useMipMaps) / public Cubemap(int width, int height, int depth) / public Cubemap(TextureData positiveX, TextureData negativeX, TextureData positiveY, TextureData negativeY, TextureData positiveZ, TextureData negativeZ)  // Construct a Cubemap based on the given CubemapData.
+methods:
+  public void load(CubemapData data)  // Sets the sides of this cubemap to the specified {@link CubemapData}.
+  public CubemapData getCubemapData()
+  public int getDepth()
+
+CubemapData.java
+Java interface
+// Used by a {@link Cubemap} to load the pixel data.
+methods:
+  boolean isPrepared()  // @return whether the TextureData is prepared or not.
+  void prepare()  // Prepares the TextureData for a call to {@link #consumeCubemapData()}.
+  void consumeCubemapData()  // Uploads the pixel data for the 6 faces of the cube to the OpenGL ES texture.
+  int getWidth()  // @return the width of the pixel data
+  int getHeight()  // @return the height of the pixel data
+
+GL20.java
+Java interface
+// Interface wrapping all the methods of OpenGL ES 2.0
+fields:
+  int GL_ES_VERSION_2_0
+  int GL_DEPTH_BUFFER_BIT
+  int GL_STENCIL_BUFFER_BIT
+  int GL_COLOR_BUFFER_BIT
+  int GL_FALSE
+  int GL_TRUE
+  int GL_POINTS
+  int GL_LINES
+  int GL_LINE_LOOP
+  int GL_LINE_STRIP
+  int GL_TRIANGLES
+  int GL_TRIANGLE_STRIP
+  int GL_TRIANGLE_FAN
+  int GL_ZERO
+  int GL_ONE
+  int GL_SRC_COLOR
+  int GL_ONE_MINUS_SRC_COLOR
+  int GL_SRC_ALPHA
+  int GL_ONE_MINUS_SRC_ALPHA
+  int GL_DST_ALPHA
+  int GL_ONE_MINUS_DST_ALPHA
+  int GL_DST_COLOR
+  int GL_ONE_MINUS_DST_COLOR
+  int GL_SRC_ALPHA_SATURATE
+  int GL_FUNC_ADD
+  int GL_BLEND_EQUATION
+  int GL_BLEND_EQUATION_RGB
+  int GL_BLEND_EQUATION_ALPHA
+  int GL_FUNC_SUBTRACT
+  int GL_FUNC_REVERSE_SUBTRACT
+  int GL_BLEND_DST_RGB
+  int GL_BLEND_SRC_RGB
+  int GL_BLEND_DST_ALPHA
+  int GL_BLEND_SRC_ALPHA
+  int GL_CONSTANT_COLOR
+  int GL_ONE_MINUS_CONSTANT_COLOR
+  int GL_CONSTANT_ALPHA
+  int GL_ONE_MINUS_CONSTANT_ALPHA
+  int GL_BLEND_COLOR
+  int GL_ARRAY_BUFFER
+  int GL_ELEMENT_ARRAY_BUFFER
+  int GL_ARRAY_BUFFER_BINDING
+  int GL_ELEMENT_ARRAY_BUFFER_BINDING
+  int GL_STREAM_DRAW
+  int GL_STATIC_DRAW
+  int GL_DYNAMIC_DRAW
+  int GL_BUFFER_SIZE
+  int GL_BUFFER_USAGE
+  int GL_CURRENT_VERTEX_ATTRIB
+  int GL_FRONT
+  int GL_BACK
+  int GL_FRONT_AND_BACK
+  int GL_TEXTURE_2D
+  int GL_CULL_FACE
+  int GL_BLEND
+  int GL_DITHER
+  int GL_STENCIL_TEST
+  int GL_DEPTH_TEST
+  int GL_SCISSOR_TEST
+  int GL_POLYGON_OFFSET_FILL
+  int GL_SAMPLE_ALPHA_TO_COVERAGE
+  int GL_SAMPLE_COVERAGE
+  int GL_NO_ERROR
+  int GL_INVALID_ENUM
+  int GL_INVALID_VALUE
+  int GL_INVALID_OPERATION
+  int GL_OUT_OF_MEMORY
+  int GL_CW
+  int GL_CCW
+  int GL_LINE_WIDTH
+  int GL_ALIASED_POINT_SIZE_RANGE
+  int GL_ALIASED_LINE_WIDTH_RANGE
+  int GL_CULL_FACE_MODE
+  int GL_FRONT_FACE
+  int GL_DEPTH_RANGE
+  int GL_DEPTH_WRITEMASK
+  int GL_DEPTH_CLEAR_VALUE
+  int GL_DEPTH_FUNC
+  int GL_STENCIL_CLEAR_VALUE
+  int GL_STENCIL_FUNC
+  int GL_STENCIL_FAIL
+  int GL_STENCIL_PASS_DEPTH_FAIL
+  int GL_STENCIL_PASS_DEPTH_PASS
+  int GL_STENCIL_REF
+  int GL_STENCIL_VALUE_MASK
+  int GL_STENCIL_WRITEMASK
+  int GL_STENCIL_BACK_FUNC
+  int GL_STENCIL_BACK_FAIL
+  int GL_STENCIL_BACK_PASS_DEPTH_FAIL
+  int GL_STENCIL_BACK_PASS_DEPTH_PASS
+  int GL_STENCIL_BACK_REF
+  int GL_STENCIL_BACK_VALUE_MASK
+  int GL_STENCIL_BACK_WRITEMASK
+  int GL_VIEWPORT
+  int GL_SCISSOR_BOX
+  int GL_COLOR_CLEAR_VALUE
+  int GL_COLOR_WRITEMASK
+  int GL_UNPACK_ALIGNMENT
+  int GL_PACK_ALIGNMENT
+  int GL_MAX_TEXTURE_SIZE
+  int GL_MAX_TEXTURE_UNITS
+  int GL_MAX_VIEWPORT_DIMS
+  int GL_SUBPIXEL_BITS
+  int GL_RED_BITS
+  int GL_GREEN_BITS
+  int GL_BLUE_BITS
+  int GL_ALPHA_BITS
+  int GL_DEPTH_BITS
+  int GL_STENCIL_BITS
+  int GL_POLYGON_OFFSET_UNITS
+  int GL_POLYGON_OFFSET_FACTOR
+  int GL_TEXTURE_BINDING_2D
+  int GL_SAMPLE_BUFFERS
+  int GL_SAMPLES
+  int GL_SAMPLE_COVERAGE_VALUE
+  int GL_SAMPLE_COVERAGE_INVERT
+  int GL_NUM_COMPRESSED_TEXTURE_FORMATS
+  int GL_COMPRESSED_TEXTURE_FORMATS
+  int GL_DONT_CARE
+  int GL_FASTEST
+  int GL_NICEST
+  int GL_GENERATE_MIPMAP
+  int GL_GENERATE_MIPMAP_HINT
+  int GL_BYTE
+  int GL_UNSIGNED_BYTE
+  int GL_SHORT
+  int GL_UNSIGNED_SHORT
+  int GL_INT
+  int GL_UNSIGNED_INT
+  int GL_FLOAT
+  int GL_FIXED
+  int GL_DEPTH_COMPONENT
+  int GL_ALPHA
+  int GL_RGB
+  int GL_RGBA
+  int GL_LUMINANCE
+  int GL_LUMINANCE_ALPHA
+  int GL_UNSIGNED_SHORT_4_4_4_4
+  int GL_UNSIGNED_SHORT_5_5_5_1
+  int GL_UNSIGNED_SHORT_5_6_5
+  int GL_FRAGMENT_SHADER
+  int GL_VERTEX_SHADER
+  int GL_MAX_VERTEX_ATTRIBS
+  int GL_MAX_VERTEX_UNIFORM_VECTORS
+  int GL_MAX_VARYING_VECTORS
+  int GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS
+  int GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS
+  int GL_MAX_TEXTURE_IMAGE_UNITS
+  int GL_MAX_FRAGMENT_UNIFORM_VECTORS
+  int GL_SHADER_TYPE
+  int GL_DELETE_STATUS
+  int GL_LINK_STATUS
+  int GL_VALIDATE_STATUS
+  int GL_ATTACHED_SHADERS
+  int GL_ACTIVE_UNIFORMS
+  int GL_ACTIVE_UNIFORM_MAX_LENGTH
+  int GL_ACTIVE_ATTRIBUTES
+  int GL_ACTIVE_ATTRIBUTE_MAX_LENGTH
+  int GL_SHADING_LANGUAGE_VERSION
+  int GL_CURRENT_PROGRAM
+  int GL_NEVER
+  int GL_LESS
+  int GL_EQUAL
+  int GL_LEQUAL
+  int GL_GREATER
+  int GL_NOTEQUAL
+  int GL_GEQUAL
+  int GL_ALWAYS
+  int GL_KEEP
+  int GL_REPLACE
+  int GL_INCR
+  int GL_DECR
+  int GL_INVERT
+  int GL_INCR_WRAP
+  int GL_DECR_WRAP
+  int GL_VENDOR
+  int GL_RENDERER
+  int GL_VERSION
+  int GL_EXTENSIONS
+  int GL_NEAREST
+  int GL_LINEAR
+  int GL_NEAREST_MIPMAP_NEAREST
+  int GL_LINEAR_MIPMAP_NEAREST
+  int GL_NEAREST_MIPMAP_LINEAR
+  int GL_LINEAR_MIPMAP_LINEAR
+  int GL_TEXTURE_MAG_FILTER
+  int GL_TEXTURE_MIN_FILTER
+  int GL_TEXTURE_WRAP_S
+  int GL_TEXTURE_WRAP_T
+  int GL_TEXTURE
+  int GL_TEXTURE_CUBE_MAP
+  int GL_TEXTURE_BINDING_CUBE_MAP
+  int GL_TEXTURE_CUBE_MAP_POSITIVE_X
+  int GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+  int GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+  int GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+  int GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+  int GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+  int GL_MAX_CUBE_MAP_TEXTURE_SIZE
+  int GL_TEXTURE0
+  int GL_TEXTURE1
+  int GL_TEXTURE2
+  int GL_TEXTURE3
+  int GL_TEXTURE4
+  int GL_TEXTURE5
+  int GL_TEXTURE6
+  int GL_TEXTURE7
+  int GL_TEXTURE8
+  int GL_TEXTURE9
+  int GL_TEXTURE10
+  int GL_TEXTURE11
+  int GL_TEXTURE12
+  int GL_TEXTURE13
+  int GL_TEXTURE14
+  int GL_TEXTURE15
+  int GL_TEXTURE16
+  int GL_TEXTURE17
+  int GL_TEXTURE18
+  int GL_TEXTURE19
+  int GL_TEXTURE20
+  int GL_TEXTURE21
+  int GL_TEXTURE22
+  int GL_TEXTURE23
+  int GL_TEXTURE24
+  int GL_TEXTURE25
+  int GL_TEXTURE26
+  int GL_TEXTURE27
+  int GL_TEXTURE28
+  int GL_TEXTURE29
+  int GL_TEXTURE30
+  int GL_TEXTURE31
+  int GL_ACTIVE_TEXTURE
+  int GL_REPEAT
+  int GL_CLAMP_TO_EDGE
+  int GL_MIRRORED_REPEAT
+  int GL_FLOAT_VEC2
+  int GL_FLOAT_VEC3
+  int GL_FLOAT_VEC4
+  int GL_INT_VEC2
+  int GL_INT_VEC3
+  int GL_INT_VEC4
+  int GL_BOOL
+  int GL_BOOL_VEC2
+  int GL_BOOL_VEC3
+  int GL_BOOL_VEC4
+  int GL_FLOAT_MAT2
+  int GL_FLOAT_MAT3
+  int GL_FLOAT_MAT4
+  int GL_SAMPLER_2D
+  int GL_SAMPLER_CUBE
+  int GL_VERTEX_ATTRIB_ARRAY_ENABLED
+  int GL_VERTEX_ATTRIB_ARRAY_SIZE
+  int GL_VERTEX_ATTRIB_ARRAY_STRIDE
+  int GL_VERTEX_ATTRIB_ARRAY_TYPE
+  int GL_VERTEX_ATTRIB_ARRAY_NORMALIZED
+  int GL_VERTEX_ATTRIB_ARRAY_POINTER
+  int GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING
+  int GL_IMPLEMENTATION_COLOR_READ_TYPE
+  int GL_IMPLEMENTATION_COLOR_READ_FORMAT
+  int GL_COMPILE_STATUS
+  int GL_INFO_LOG_LENGTH
+  int GL_SHADER_SOURCE_LENGTH
+  int GL_SHADER_COMPILER
+  int GL_SHADER_BINARY_FORMATS
+  int GL_NUM_SHADER_BINARY_FORMATS
+  int GL_LOW_FLOAT
+  int GL_MEDIUM_FLOAT
+  int GL_HIGH_FLOAT
+  int GL_LOW_INT
+  int GL_MEDIUM_INT
+  int GL_HIGH_INT
+  int GL_FRAMEBUFFER
+  int GL_RENDERBUFFER
+  int GL_RGBA4
+  int GL_RGB5_A1
+  int GL_RGB565
+  int GL_DEPTH_COMPONENT16
+  int GL_STENCIL_INDEX
+  int GL_STENCIL_INDEX8
+  int GL_RENDERBUFFER_WIDTH
+  int GL_RENDERBUFFER_HEIGHT
+  int GL_RENDERBUFFER_INTERNAL_FORMAT
+  int GL_RENDERBUFFER_RED_SIZE
+  int GL_RENDERBUFFER_GREEN_SIZE
+  int GL_RENDERBUFFER_BLUE_SIZE
+  int GL_RENDERBUFFER_ALPHA_SIZE
+  int GL_RENDERBUFFER_DEPTH_SIZE
+  int GL_RENDERBUFFER_STENCIL_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE
+  int GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME
+  int GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL
+  int GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE
+  int GL_COLOR_ATTACHMENT0
+  int GL_DEPTH_ATTACHMENT
+  int GL_STENCIL_ATTACHMENT
+  int GL_NONE
+  int GL_FRAMEBUFFER_COMPLETE
+  int GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT
+  int GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT
+  int GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS
+  int GL_FRAMEBUFFER_UNSUPPORTED
+  int GL_FRAMEBUFFER_BINDING
+  int GL_RENDERBUFFER_BINDING
+  int GL_MAX_RENDERBUFFER_SIZE
+  int GL_INVALID_FRAMEBUFFER_OPERATION
+  int GL_VERTEX_PROGRAM_POINT_SIZE
+  int GL_COVERAGE_BUFFER_BIT_NV  // Extensions
+  int GL_TEXTURE_MAX_ANISOTROPY_EXT
+  int GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
+methods:
+  void glActiveTexture(int texture)
+  void glBindTexture(int target, int texture)
+  void glBlendFunc(int sfactor, int dfactor)
+  void glClear(int mask)
+  void glClearColor(float red, float green, float blue, float alpha)
+  void glClearDepthf(float depth)
+  void glClearStencil(int s)
+  void glColorMask(boolean red, boolean green, boolean blue, boolean alpha)
+  void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data)
+  void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data)
+  void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border)
+  void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height)
+  void glCullFace(int mode)
+  void glDeleteTexture(int texture)
+  void glDepthFunc(int func)
+  void glDepthMask(boolean flag)
+  void glDepthRangef(float zNear, float zFar)
+  void glDisable(int cap)
+  void glDrawArrays(int mode, int first, int count)
+  void glDrawElements(int mode, int count, int type, Buffer indices) / void glDrawElements(int mode, int count, int type, int indices)
+  void glEnable(int cap)
+  void glFinish()
+  void glFlush()
+  void glFrontFace(int mode)
+  int glGenTexture()
+  int glGetError()
+  void glGetIntegerv(int pname, IntBuffer params)
+  String glGetString(int name)
+  void glHint(int target, int mode)
+  void glLineWidth(float width)
+  void glPixelStorei(int pname, int param)
+  void glPolygonOffset(float factor, float units)
+  void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
+  void glScissor(int x, int y, int width, int height)
+  void glStencilFunc(int func, int ref, int mask)
+  void glStencilMask(int mask)
+  void glStencilOp(int fail, int zfail, int zpass)
+  void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels)
+  void glTexParameterf(int target, int pname, float param)
+  void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels)
+  void glViewport(int x, int y, int width, int height)
+  void glAttachShader(int program, int shader)
+  void glBindAttribLocation(int program, int index, String name)
+  void glBindBuffer(int target, int buffer)
+  void glBindFramebuffer(int target, int framebuffer)
+  void glBindRenderbuffer(int target, int renderbuffer)
+  void glBlendColor(float red, float green, float blue, float alpha)
+  void glBlendEquation(int mode)
+  void glBlendEquationSeparate(int modeRGB, int modeAlpha)
+  void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+  void glBufferData(int target, int size, Buffer data, int usage)
+  void glBufferSubData(int target, int offset, int size, Buffer data)
+  int glCheckFramebufferStatus(int target)
+  void glCompileShader(int shader)
+  int glCreateProgram()
+  int glCreateShader(int type)
+  void glDeleteBuffer(int buffer)
+  void glDeleteFramebuffer(int framebuffer)
+  void glDeleteProgram(int program)
+  void glDeleteRenderbuffer(int renderbuffer)
+  void glDeleteShader(int shader)
+  void glDetachShader(int program, int shader)
+  void glDisableVertexAttribArray(int index)
+  void glEnableVertexAttribArray(int index)
+  void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+  void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+  int glGenBuffer()
+  void glGenerateMipmap(int target)
+  int glGenFramebuffer()
+  int glGenRenderbuffer()
+  String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+  String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+  int glGetAttribLocation(int program, String name)
+  void glGetBooleanv(int pname, Buffer params)
+  void glGetBufferParameteriv(int target, int pname, IntBuffer params)
+  void glGetFloatv(int pname, FloatBuffer params)
+  void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params)
+  void glGetProgramiv(int program, int pname, IntBuffer params)
+  String glGetProgramInfoLog(int program)
+  void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params)
+  void glGetShaderiv(int shader, int pname, IntBuffer params)
+  String glGetShaderInfoLog(int shader)
+  void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+  void glGetTexParameterfv(int target, int pname, FloatBuffer params)
+  void glGetTexParameteriv(int target, int pname, IntBuffer params)
+  void glGetUniformfv(int program, int location, FloatBuffer params)
+  void glGetUniformiv(int program, int location, IntBuffer params)
+  int glGetUniformLocation(int program, String name)
+  void glGetVertexAttribfv(int index, int pname, FloatBuffer params)
+  void glGetVertexAttribiv(int index, int pname, IntBuffer params)
+  boolean glIsBuffer(int buffer)
+  boolean glIsEnabled(int cap)
+  boolean glIsFramebuffer(int framebuffer)
+  boolean glIsProgram(int program)
+  boolean glIsRenderbuffer(int renderbuffer)
+  boolean glIsShader(int shader)
+  boolean glIsTexture(int texture)
+  void glLinkProgram(int program)
+  void glReleaseShaderCompiler()
+  void glRenderbufferStorage(int target, int internalformat, int width, int height)
+  void glSampleCoverage(float value, boolean invert)
+  void glShaderSource(int shader, String string)
+  void glStencilFuncSeparate(int face, int func, int ref, int mask)
+  void glStencilMaskSeparate(int face, int mask)
+  void glStencilOpSeparate(int face, int fail, int zfail, int zpass)
+  void glTexParameterfv(int target, int pname, FloatBuffer params)
+  void glTexParameteri(int target, int pname, int param)
+  void glTexParameteriv(int target, int pname, IntBuffer params)
+  void glUniform1f(int location, float x)
+  void glUniform1fv(int location, int count, FloatBuffer v) / void glUniform1fv(int location, int count, float[] v, int offset)
+  void glUniform1i(int location, int x)
+  void glUniform1iv(int location, int count, IntBuffer v) / void glUniform1iv(int location, int count, int[] v, int offset)
+  void glUniform2f(int location, float x, float y)
+  void glUniform2fv(int location, int count, FloatBuffer v) / void glUniform2fv(int location, int count, float[] v, int offset)
+  void glUniform2i(int location, int x, int y)
+  void glUniform2iv(int location, int count, IntBuffer v) / void glUniform2iv(int location, int count, int[] v, int offset)
+  void glUniform3f(int location, float x, float y, float z)
+  void glUniform3fv(int location, int count, FloatBuffer v) / void glUniform3fv(int location, int count, float[] v, int offset)
+  void glUniform3i(int location, int x, int y, int z)
+  void glUniform3iv(int location, int count, IntBuffer v) / void glUniform3iv(int location, int count, int[] v, int offset)
+  void glUniform4f(int location, float x, float y, float z, float w)
+  void glUniform4fv(int location, int count, FloatBuffer v) / void glUniform4fv(int location, int count, float[] v, int offset)
+  void glUniform4i(int location, int x, int y, int z, int w)
+  void glUniform4iv(int location, int count, IntBuffer v) / void glUniform4iv(int location, int count, int[] v, int offset)
+  void glUniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) / void glUniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset)
+  void glUniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) / void glUniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset)
+  void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) / void glUniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset)
+  void glUseProgram(int program)
+  void glValidateProgram(int program)
+  void glVertexAttrib1f(int indx, float x)
+  void glVertexAttrib1fv(int indx, FloatBuffer values)
+  void glVertexAttrib2f(int indx, float x, float y)
+  void glVertexAttrib2fv(int indx, FloatBuffer values)
+  void glVertexAttrib3f(int indx, float x, float y, float z)
+  void glVertexAttrib3fv(int indx, FloatBuffer values)
+  void glVertexAttrib4f(int indx, float x, float y, float z, float w)
+  void glVertexAttrib4fv(int indx, FloatBuffer values)
+  void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr) / void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, int ptr)  // In OpenGl core profiles (3.1+), passing a pointer to client memory is not valid.
+
+GL30.java
+Java interface extends arc.graphics.GL20
+fields:
+  int GL_READ_BUFFER
+  int GL_UNPACK_ROW_LENGTH
+  int GL_UNPACK_SKIP_ROWS
+  int GL_UNPACK_SKIP_PIXELS
+  int GL_PACK_ROW_LENGTH
+  int GL_PACK_SKIP_ROWS
+  int GL_PACK_SKIP_PIXELS
+  int GL_COLOR
+  int GL_DEPTH
+  int GL_STENCIL
+  int GL_RED
+  int GL_RGB8
+  int GL_RGBA8
+  int GL_RGB10_A2
+  int GL_TEXTURE_BINDING_3D
+  int GL_UNPACK_SKIP_IMAGES
+  int GL_UNPACK_IMAGE_HEIGHT
+  int GL_TEXTURE_3D
+  int GL_TEXTURE_WRAP_R
+  int GL_MAX_3D_TEXTURE_SIZE
+  int GL_UNSIGNED_INT_2_10_10_10_REV
+  int GL_MAX_ELEMENTS_VERTICES
+  int GL_MAX_ELEMENTS_INDICES
+  int GL_TEXTURE_MIN_LOD
+  int GL_TEXTURE_MAX_LOD
+  int GL_TEXTURE_BASE_LEVEL
+  int GL_TEXTURE_MAX_LEVEL
+  int GL_MIN
+  int GL_MAX
+  int GL_DEPTH_COMPONENT24
+  int GL_MAX_TEXTURE_LOD_BIAS
+  int GL_TEXTURE_COMPARE_MODE
+  int GL_TEXTURE_COMPARE_FUNC
+  int GL_CURRENT_QUERY
+  int GL_QUERY_RESULT
+  int GL_QUERY_RESULT_AVAILABLE
+  int GL_BUFFER_MAPPED
+  int GL_BUFFER_MAP_POINTER
+  int GL_STREAM_READ
+  int GL_STREAM_COPY
+  int GL_STATIC_READ
+  int GL_STATIC_COPY
+  int GL_DYNAMIC_READ
+  int GL_DYNAMIC_COPY
+  int GL_MAX_DRAW_BUFFERS
+  int GL_DRAW_BUFFER0
+  int GL_DRAW_BUFFER1
+  int GL_DRAW_BUFFER2
+  int GL_DRAW_BUFFER3
+  int GL_DRAW_BUFFER4
+  int GL_DRAW_BUFFER5
+  int GL_DRAW_BUFFER6
+  int GL_DRAW_BUFFER7
+  int GL_DRAW_BUFFER8
+  int GL_DRAW_BUFFER9
+  int GL_DRAW_BUFFER10
+  int GL_DRAW_BUFFER11
+  int GL_DRAW_BUFFER12
+  int GL_DRAW_BUFFER13
+  int GL_DRAW_BUFFER14
+  int GL_DRAW_BUFFER15
+  int GL_MAX_FRAGMENT_UNIFORM_COMPONENTS
+  int GL_MAX_VERTEX_UNIFORM_COMPONENTS
+  int GL_SAMPLER_3D
+  int GL_SAMPLER_2D_SHADOW
+  int GL_FRAGMENT_SHADER_DERIVATIVE_HINT
+  int GL_PIXEL_PACK_BUFFER
+  int GL_PIXEL_UNPACK_BUFFER
+  int GL_PIXEL_PACK_BUFFER_BINDING
+  int GL_PIXEL_UNPACK_BUFFER_BINDING
+  int GL_FLOAT_MAT2x3
+  int GL_FLOAT_MAT2x4
+  int GL_FLOAT_MAT3x2
+  int GL_FLOAT_MAT3x4
+  int GL_FLOAT_MAT4x2
+  int GL_FLOAT_MAT4x3
+  int GL_SRGB
+  int GL_SRGB8
+  int GL_SRGB8_ALPHA8
+  int GL_COMPARE_REF_TO_TEXTURE
+  int GL_MAJOR_VERSION
+  int GL_MINOR_VERSION
+  int GL_NUM_EXTENSIONS
+  int GL_RGBA32F
+  int GL_RGB32F
+  int GL_RGBA16F
+  int GL_RGB16F
+  int GL_VERTEX_ATTRIB_ARRAY_INTEGER
+  int GL_MAX_ARRAY_TEXTURE_LAYERS
+  int GL_MIN_PROGRAM_TEXEL_OFFSET
+  int GL_MAX_PROGRAM_TEXEL_OFFSET
+  int GL_MAX_VARYING_COMPONENTS
+  int GL_TEXTURE_2D_ARRAY
+  int GL_TEXTURE_BINDING_2D_ARRAY
+  int GL_R11F_G11F_B10F
+  int GL_UNSIGNED_INT_10F_11F_11F_REV
+  int GL_RGB9_E5
+  int GL_UNSIGNED_INT_5_9_9_9_REV
+  int GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH
+  int GL_TRANSFORM_FEEDBACK_BUFFER_MODE
+  int GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS
+  int GL_TRANSFORM_FEEDBACK_VARYINGS
+  int GL_TRANSFORM_FEEDBACK_BUFFER_START
+  int GL_TRANSFORM_FEEDBACK_BUFFER_SIZE
+  int GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN
+  int GL_RASTERIZER_DISCARD
+  int GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+  int GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS
+  int GL_INTERLEAVED_ATTRIBS
+  int GL_SEPARATE_ATTRIBS
+  int GL_TRANSFORM_FEEDBACK_BUFFER
+  int GL_TRANSFORM_FEEDBACK_BUFFER_BINDING
+  int GL_RGBA32UI
+  int GL_RGB32UI
+  int GL_RGBA16UI
+  int GL_RGB16UI
+  int GL_RGBA8UI
+  int GL_RGB8UI
+  int GL_RGBA32I
+  int GL_RGB32I
+  int GL_RGBA16I
+  int GL_RGB16I
+  int GL_RGBA8I
+  int GL_RGB8I
+  int GL_RED_INTEGER
+  int GL_RGB_INTEGER
+  int GL_RGBA_INTEGER
+  int GL_SAMPLER_2D_ARRAY
+  int GL_SAMPLER_2D_ARRAY_SHADOW
+  int GL_SAMPLER_CUBE_SHADOW
+  int GL_UNSIGNED_INT_VEC2
+  int GL_UNSIGNED_INT_VEC3
+  int GL_UNSIGNED_INT_VEC4
+  int GL_INT_SAMPLER_2D
+  int GL_INT_SAMPLER_3D
+  int GL_INT_SAMPLER_CUBE
+  int GL_INT_SAMPLER_2D_ARRAY
+  int GL_UNSIGNED_INT_SAMPLER_2D
+  int GL_UNSIGNED_INT_SAMPLER_3D
+  int GL_UNSIGNED_INT_SAMPLER_CUBE
+  int GL_UNSIGNED_INT_SAMPLER_2D_ARRAY
+  int GL_BUFFER_ACCESS_FLAGS
+  int GL_BUFFER_MAP_LENGTH
+  int GL_BUFFER_MAP_OFFSET
+  int GL_DEPTH_COMPONENT32F
+  int GL_DEPTH32F_STENCIL8
+  int GL_FLOAT_32_UNSIGNED_INT_24_8_REV
+  int GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING
+  int GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE
+  int GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE
+  int GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE
+  int GL_FRAMEBUFFER_DEFAULT
+  int GL_FRAMEBUFFER_UNDEFINED
+  int GL_DEPTH_STENCIL_ATTACHMENT
+  int GL_DEPTH_STENCIL
+  int GL_UNSIGNED_INT_24_8
+  int GL_DEPTH24_STENCIL8
+  int GL_UNSIGNED_NORMALIZED
+  int GL_DRAW_FRAMEBUFFER_BINDING
+  int GL_READ_FRAMEBUFFER
+  int GL_DRAW_FRAMEBUFFER
+  int GL_READ_FRAMEBUFFER_BINDING
+  int GL_RENDERBUFFER_SAMPLES
+  int GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER
+  int GL_MAX_COLOR_ATTACHMENTS
+  int GL_COLOR_ATTACHMENT1
+  int GL_COLOR_ATTACHMENT2
+  int GL_COLOR_ATTACHMENT3
+  int GL_COLOR_ATTACHMENT4
+  int GL_COLOR_ATTACHMENT5
+  int GL_COLOR_ATTACHMENT6
+  int GL_COLOR_ATTACHMENT7
+  int GL_COLOR_ATTACHMENT8
+  int GL_COLOR_ATTACHMENT9
+  int GL_COLOR_ATTACHMENT10
+  int GL_COLOR_ATTACHMENT11
+  int GL_COLOR_ATTACHMENT12
+  int GL_COLOR_ATTACHMENT13
+  int GL_COLOR_ATTACHMENT14
+  int GL_COLOR_ATTACHMENT15
+  int GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE
+  int GL_MAX_SAMPLES
+  int GL_HALF_FLOAT
+  int GL_MAP_READ_BIT
+  int GL_MAP_WRITE_BIT
+  int GL_MAP_INVALIDATE_RANGE_BIT
+  int GL_MAP_INVALIDATE_BUFFER_BIT
+  int GL_MAP_FLUSH_EXPLICIT_BIT
+  int GL_MAP_UNSYNCHRONIZED_BIT
+  int GL_RG
+  int GL_RG_INTEGER
+  int GL_R8
+  int GL_RG8
+  int GL_R16F
+  int GL_R32F
+  int GL_RG16F
+  int GL_RG32F
+  int GL_R8I
+  int GL_R8UI
+  int GL_R16I
+  int GL_R16UI
+  int GL_R32I
+  int GL_R32UI
+  int GL_RG8I
+  int GL_RG8UI
+  int GL_RG16I
+  int GL_RG16UI
+  int GL_RG32I
+  int GL_RG32UI
+  int GL_VERTEX_ARRAY_BINDING
+  int GL_R8_SNORM
+  int GL_RG8_SNORM
+  int GL_RGB8_SNORM
+  int GL_RGBA8_SNORM
+  int GL_SIGNED_NORMALIZED
+  int GL_PRIMITIVE_RESTART_FIXED_INDEX
+  int GL_COPY_READ_BUFFER
+  int GL_COPY_WRITE_BUFFER
+  int GL_COPY_READ_BUFFER_BINDING
+  int GL_COPY_WRITE_BUFFER_BINDING
+  int GL_UNIFORM_BUFFER
+  int GL_UNIFORM_BUFFER_BINDING
+  int GL_UNIFORM_BUFFER_START
+  int GL_UNIFORM_BUFFER_SIZE
+  int GL_MAX_VERTEX_UNIFORM_BLOCKS
+  int GL_MAX_FRAGMENT_UNIFORM_BLOCKS
+  int GL_MAX_COMBINED_UNIFORM_BLOCKS
+  int GL_MAX_UNIFORM_BUFFER_BINDINGS
+  int GL_MAX_UNIFORM_BLOCK_SIZE
+  int GL_MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS
+  int GL_MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS
+  int GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT
+  int GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH
+  int GL_ACTIVE_UNIFORM_BLOCKS
+  int GL_UNIFORM_TYPE
+  int GL_UNIFORM_SIZE
+  int GL_UNIFORM_NAME_LENGTH
+  int GL_UNIFORM_BLOCK_INDEX
+  int GL_UNIFORM_OFFSET
+  int GL_UNIFORM_ARRAY_STRIDE
+  int GL_UNIFORM_MATRIX_STRIDE
+  int GL_UNIFORM_IS_ROW_MAJOR
+  int GL_UNIFORM_BLOCK_BINDING
+  int GL_UNIFORM_BLOCK_DATA_SIZE
+  int GL_UNIFORM_BLOCK_NAME_LENGTH
+  int GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS
+  int GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES
+  int GL_UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER
+  int GL_UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER
+  int GL_INVALID_INDEX
+  int GL_MAX_VERTEX_OUTPUT_COMPONENTS
+  int GL_MAX_FRAGMENT_INPUT_COMPONENTS
+  int GL_MAX_SERVER_WAIT_TIMEOUT
+  int GL_OBJECT_TYPE
+  int GL_SYNC_CONDITION
+  int GL_SYNC_STATUS
+  int GL_SYNC_FLAGS
+  int GL_SYNC_FENCE
+  int GL_SYNC_GPU_COMMANDS_COMPLETE
+  int GL_UNSIGNALED
+  int GL_SIGNALED
+  int GL_ALREADY_SIGNALED
+  int GL_TIMEOUT_EXPIRED
+  int GL_CONDITION_SATISFIED
+  int GL_WAIT_FAILED
+  int GL_SYNC_FLUSH_COMMANDS_BIT
+  long GL_TIMEOUT_IGNORED
+  int GL_VERTEX_ATTRIB_ARRAY_DIVISOR
+  int GL_ANY_SAMPLES_PASSED
+  int GL_ANY_SAMPLES_PASSED_CONSERVATIVE
+  int GL_SAMPLER_BINDING
+  int GL_RGB10_A2UI
+  int GL_TEXTURE_SWIZZLE_R
+  int GL_TEXTURE_SWIZZLE_G
+  int GL_TEXTURE_SWIZZLE_B
+  int GL_TEXTURE_SWIZZLE_A
+  int GL_GREEN
+  int GL_BLUE
+  int GL_INT_2_10_10_10_REV
+  int GL_TRANSFORM_FEEDBACK
+  int GL_TRANSFORM_FEEDBACK_PAUSED
+  int GL_TRANSFORM_FEEDBACK_ACTIVE
+  int GL_TRANSFORM_FEEDBACK_BINDING
+  int GL_PROGRAM_BINARY_RETRIEVABLE_HINT
+  int GL_PROGRAM_BINARY_LENGTH
+  int GL_NUM_PROGRAM_BINARY_FORMATS
+  int GL_PROGRAM_BINARY_FORMATS
+  int GL_COMPRESSED_R11_EAC
+  int GL_COMPRESSED_SIGNED_R11_EAC
+  int GL_COMPRESSED_RG11_EAC
+  int GL_COMPRESSED_SIGNED_RG11_EAC
+  int GL_COMPRESSED_RGB8_ETC2
+  int GL_COMPRESSED_SRGB8_ETC2
+  int GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2
+  int GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2
+  int GL_COMPRESSED_RGBA8_ETC2_EAC
+  int GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC
+  int GL_TEXTURE_IMMUTABLE_FORMAT
+  int GL_MAX_ELEMENT_INDEX
+  int GL_NUM_SAMPLE_COUNTS
+  int GL_TEXTURE_IMMUTABLE_LEVELS
+methods:
+  void glReadBuffer(int mode)
+  void glDrawRangeElements(int mode, int start, int end, int count, int type, java.nio.Buffer indices) / void glDrawRangeElements(int mode, int start, int end, int count, int type, int offset)
+  void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, java.nio.Buffer pixels) / void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int offset)
+  void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, java.nio.Buffer pixels) / void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int offset)
+  void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
+  void glGenQueries(int n, java.nio.IntBuffer ids)
+  void glDeleteQueries(int n, java.nio.IntBuffer ids)
+  boolean glIsQuery(int id)
+  void glBeginQuery(int target, int id)
+  void glEndQuery(int target)
+  void glGetQueryiv(int target, int pname, java.nio.IntBuffer params)
+  void glGetQueryObjectuiv(int id, int pname, java.nio.IntBuffer params)
+  boolean glUnmapBuffer(int target)
+  java.nio.Buffer glGetBufferPointerv(int target, int pname)
+  void glDrawBuffers(int n, java.nio.IntBuffer bufs)
+  void glUniformMatrix2x3fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glUniformMatrix3x2fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glUniformMatrix2x4fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glUniformMatrix4x2fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glUniformMatrix3x4fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glUniformMatrix4x3fv(int location, int count, boolean transpose, java.nio.FloatBuffer value)
+  void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter)
+  void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height)
+  void glFramebufferTextureLayer(int target, int attachment, int texture, int level, int layer)
+  void glFlushMappedBufferRange(int target, int offset, int length)
+  void glBindVertexArray(int array)
+  void glDeleteVertexArrays(int n, java.nio.IntBuffer arrays)
+  void glGenVertexArrays(int n, java.nio.IntBuffer arrays)
+  boolean glIsVertexArray(int array)
+  void glBeginTransformFeedback(int primitiveMode)
+  void glEndTransformFeedback()
+  void glBindBufferRange(int target, int index, int buffer, int offset, int size)
+  void glBindBufferBase(int target, int index, int buffer)
+  void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode)
+  void glVertexAttribIPointer(int index, int size, int type, int stride, int offset)
+  void glGetVertexAttribIiv(int index, int pname, java.nio.IntBuffer params)
+  void glGetVertexAttribIuiv(int index, int pname, java.nio.IntBuffer params)
+  void glVertexAttribI4i(int index, int x, int y, int z, int w)
+  void glVertexAttribI4ui(int index, int x, int y, int z, int w)
+  void glGetUniformuiv(int program, int location, java.nio.IntBuffer params)
+  int glGetFragDataLocation(int program, String name)
+  void glUniform1uiv(int location, int count, java.nio.IntBuffer value)
+  void glUniform3uiv(int location, int count, java.nio.IntBuffer value)
+  void glUniform4uiv(int location, int count, java.nio.IntBuffer value)
+  void glClearBufferiv(int buffer, int drawbuffer, java.nio.IntBuffer value)
+  void glClearBufferuiv(int buffer, int drawbuffer, java.nio.IntBuffer value)
+  void glClearBufferfv(int buffer, int drawbuffer, java.nio.FloatBuffer value)
+  void glClearBufferfi(int buffer, int drawbuffer, float depth, int stencil)
+  String glGetStringi(int name, int index)
+  void glCopyBufferSubData(int readTarget, int writeTarget, int readOffset, int writeOffset, int size)
+  void glGetUniformIndices(int program, String[] uniformNames, java.nio.IntBuffer uniformIndices)
+  void glGetActiveUniformsiv(int program, int uniformCount, java.nio.IntBuffer uniformIndices, int pname, java.nio.IntBuffer params)
+  int glGetUniformBlockIndex(int program, String uniformBlockName)
+  void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, java.nio.IntBuffer params)
+  void glGetActiveUniformBlockName(int program, int uniformBlockIndex, java.nio.Buffer length, java.nio.Buffer uniformBlockName)
+  void glUniformBlockBinding(int program, int uniformBlockIndex, int uniformBlockBinding)
+  void glDrawArraysInstanced(int mode, int first, int count, int instanceCount)
+  void glDrawElementsInstanced(int mode, int count, int type, int indicesOffset, int instanceCount)
+  void glGetInteger64v(int pname, java.nio.LongBuffer params)
+  void glGetBufferParameteri64v(int target, int pname, java.nio.LongBuffer params)
+  void glGenSamplers(int count, java.nio.IntBuffer samplers)
+  void glDeleteSamplers(int count, java.nio.IntBuffer samplers)
+  boolean glIsSampler(int sampler)
+  void glBindSampler(int unit, int sampler)
+  void glSamplerParameteri(int sampler, int pname, int param)
+  void glSamplerParameteriv(int sampler, int pname, java.nio.IntBuffer param)
+  void glSamplerParameterf(int sampler, int pname, float param)
+  void glSamplerParameterfv(int sampler, int pname, java.nio.FloatBuffer param)
+  void glGetSamplerParameteriv(int sampler, int pname, java.nio.IntBuffer params)
+  void glGetSamplerParameterfv(int sampler, int pname, java.nio.FloatBuffer params)
+  void glVertexAttribDivisor(int index, int divisor)
+  void glBindTransformFeedback(int target, int id)
+  void glDeleteTransformFeedbacks(int n, java.nio.IntBuffer ids)
+  void glGenTransformFeedbacks(int n, java.nio.IntBuffer ids)
+  boolean glIsTransformFeedback(int id)
+  void glPauseTransformFeedback()
+  void glResumeTransformFeedback()
+  void glProgramParameteri(int program, int pname, int value)
+  void glInvalidateFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments)
+  void glInvalidateSubFramebuffer(int target, int numAttachments, java.nio.IntBuffer attachments, int x, int y, int width, int height)
+
+GLTexture.java
+Java class (abstract) implements arc.util.Disposable
+// Class representing an OpenGL texture by its target and handle.
+fields:
+  public final int glTarget  // The target of this texture, used when binding the texture, e.g.
+  public int width  // Do not change.
+  protected int glHandle
+  protected TextureFilter minFilter
+  protected TextureFilter magFilter
+  protected TextureWrap uWrap
+  protected TextureWrap vWrap
+ctors:
+  public GLTexture(int glTarget) / public GLTexture(int glTarget, int glHandle)  // Generates a new OpenGL texture with the specified target.
+methods:
+  protected static void uploadImageData(int target, TextureData data) / public static void uploadImageData(int target, TextureData data, int miplevel)
+  public abstract int getDepth()  // @return the depth of the texture in pixels
+  public void bind() / public void bind(int unit)  // Binds this texture.
+  public TextureFilter getMinFilter()  // @return The {@link Texture.TextureFilter} used for minification.
+  public TextureFilter getMagFilter()  // @return The {@link Texture.TextureFilter} used for magnification.
+  public TextureWrap getUWrap()  // @return The {@link Texture.TextureWrap} used for horizontal (U) texture coordinates.
+  public TextureWrap getVWrap()  // @return The {@link Texture.TextureWrap} used for vertical (V) texture coordinates.
+  public int getTextureObjectHandle()  // @return The OpenGL handle for this texture.
+  public void unsafeSetWrap(TextureWrap u, TextureWrap v) / public void unsafeSetWrap(TextureWrap u, TextureWrap v, boolean force)  // Sets the {@link TextureWrap} for this texture on the u and v axis.
+  public void setWrap(TextureWrap wrap) / public void setWrap(TextureWrap u, TextureWrap v)  // Sets the {@link TextureWrap} for this texture on the u and v axis.
+  public void unsafeSetFilter(TextureFilter minFilter, TextureFilter magFilter) / public void unsafeSetFilter(TextureFilter minFilter, TextureFilter magFilter, boolean force)  // Sets the {@link TextureFilter} for this texture for minification and magnification.
+  public void setFilter(TextureFilter filter) / public void setFilter(TextureFilter minFilter, TextureFilter magFilter)  // Sets the {@link TextureFilter} for this texture for minification and magnification.
+  public void dispose()
+
+Gl.java
+Java class
+fields:
+  private static final boolean optimize
+  public static final int esVersion20
+  private static IntBuffer ibuf
+  private static FloatBuffer fbuf
+  private static int lastActiveTexture  // last active texture unit
+  private static int lastBoundTextures  // last bound texture2ds, mapping from texture unit to texture handle
+  private static int lastUsedProgram  // last useProgram call
+  private static Bits enabled  // enabled bits, from glEnable/disable
+  private static boolean wasDepthMask
+  private static int lastBlendSrc  // blend func separate state
+methods:
+  public static void reset()  // Reset optimization cache.
+  public static void activeTexture(int texture)
+  public static void bindTexture(int target, int texture)
+  public static void blendFunc(int sfactor, int dfactor)
+  public static void clear(int mask)
+  public static void clearColor(float red, float green, float blue, float alpha)
+  public static void clearDepthf(float depth)
+  public static void clearStencil(int s)
+  public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha)
+  public static void compressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data)
+  public static void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data)
+  public static void copyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border)
+  public static void copyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height)
+  public static void cullFace(int mode)
+  public static void deleteTexture(int texture)
+  public static void depthFunc(int func)
+  public static void depthMask(boolean flag)
+  public static void depthRangef(float zNear, float zFar)
+  public static void disable(int cap)
+  public static void drawArrays(int mode, int first, int count)
+  public static void drawElements(int mode, int count, int type, Buffer indices) / public static void drawElements(int mode, int count, int type, int indices)
+  public static void enable(int cap)
+  public static void finish()
+  public static void flush()
+  public static void frontFace(int mode)
+  public static int genTexture()
+  public static int getError()
+  public static void getIntegerv(int pname, IntBuffer params)
+  public static int getInt(int name)
+  public static float getFloat(int name)
+  public static String getString(int name)
+  public static void hint(int target, int mode)
+  public static void pixelStorei(int pname, int param)
+  public static void polygonOffset(float factor, float units)
+  public static void readPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
+  public static void scissor(int x, int y, int width, int height)
+  public static void stencilFunc(int func, int ref, int mask)
+  public static void stencilMask(int mask)
+  public static void stencilOp(int fail, int zfail, int zpass)
+  public static void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels)
+  public static void texParameterf(int target, int pname, float param)
+  public static void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels)
+  public static void viewport(int x, int y, int width, int height)
+  public static void attachShader(int program, int shader)
+  public static void bindAttribLocation(int program, int index, String name)
+  public static void bindBuffer(int target, int buffer)
+  public static void bindFramebuffer(int target, int framebuffer)
+  public static void bindRenderbuffer(int target, int renderbuffer)
+  public static void blendColor(float red, float green, float blue, float alpha)
+  public static void blendEquation(int mode)
+  public static void blendEquationSeparate(int modeRGB, int modeAlpha)
+  public static void blendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+  public static void bufferData(int target, int size, Buffer data, int usage)
+  public static void bufferSubData(int target, int offset, int size, Buffer data)
+  public static int checkFramebufferStatus(int target)
+  public static void compileShader(int shader)
+  public static int createProgram()
+  public static int createShader(int type)
+  public static void deleteBuffer(int buffer)
+  public static void deleteFramebuffer(int framebuffer)
+  public static void deleteProgram(int program)
+  public static void deleteRenderbuffer(int renderbuffer)
+  public static void deleteShader(int shader)
+  public static void detachShader(int program, int shader)
+  public static void disableVertexAttribArray(int index)
+  public static void enableVertexAttribArray(int index)
+  public static void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+  public static void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+  public static int genBuffer()
+  public static void generateMipmap(int target)
+  public static int genFramebuffer()
+  public static int genRenderbuffer()
+  public static String getActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+  public static String getActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+  public static int getAttribLocation(int program, String name)
+  public static void getBooleanv(int pname, Buffer params)
+  public static void getBufferParameteriv(int target, int pname, IntBuffer params)
+  public static void getFloatv(int pname, FloatBuffer params)
+  public static void getFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params)
+  public static void getProgramiv(int program, int pname, IntBuffer params)
+  public static String getProgramInfoLog(int program)
+  public static void getRenderbufferParameteriv(int target, int pname, IntBuffer params)
+  public static void getShaderiv(int shader, int pname, IntBuffer params)
+  public static String getShaderInfoLog(int shader)
+  public static void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+  public static void getTexParameterfv(int target, int pname, FloatBuffer params)
+  public static void getTexParameteriv(int target, int pname, IntBuffer params)
+  public static void getUniformfv(int program, int location, FloatBuffer params)
+  public static void getUniformiv(int program, int location, IntBuffer params)
+  public static int getUniformLocation(int program, String name)
+  public static void getVertexAttribfv(int index, int pname, FloatBuffer params)
+  public static void getVertexAttribiv(int index, int pname, IntBuffer params)
+  public static boolean isBuffer(int buffer)
+  public static boolean isEnabled(int cap)
+  public static boolean isFramebuffer(int framebuffer)
+  public static boolean isProgram(int program)
+  public static boolean isRenderbuffer(int renderbuffer)
+  public static boolean isShader(int shader)
+  public static boolean isTexture(int texture)
+  public static void linkProgram(int program)
+  public static void releaseShaderCompiler()
+  public static void renderbufferStorage(int target, int internalformat, int width, int height)
+  public static void sampleCoverage(float value, boolean invert)
+  public static void shaderSource(int shader, String string)
+  public static void stencilFuncSeparate(int face, int func, int ref, int mask)
+  public static void stencilMaskSeparate(int face, int mask)
+  public static void stencilOpSeparate(int face, int fail, int zfail, int zpass)
+  public static void texParameterfv(int target, int pname, FloatBuffer params)
+  public static void texParameteri(int target, int pname, int param)
+  public static void texParameteriv(int target, int pname, IntBuffer params)
+  public static void uniform1f(int location, float x)
+  public static void uniform1fv(int location, int count, FloatBuffer v) / public static void uniform1fv(int location, int count, float[] v, int offset)
+  public static void uniform1i(int location, int x)
+  public static void uniform1iv(int location, int count, IntBuffer v) / public static void uniform1iv(int location, int count, int[] v, int offset)
+  public static void uniform2f(int location, float x, float y)
+  public static void uniform2fv(int location, int count, FloatBuffer v) / public static void uniform2fv(int location, int count, float[] v, int offset)
+  public static void uniform2i(int location, int x, int y)
+  public static void uniform2iv(int location, int count, IntBuffer v) / public static void uniform2iv(int location, int count, int[] v, int offset)
+  public static void uniform3f(int location, float x, float y, float z)
+  public static void uniform3fv(int location, int count, FloatBuffer v) / public static void uniform3fv(int location, int count, float[] v, int offset)
+  public static void uniform3i(int location, int x, int y, int z)
+  public static void uniform3iv(int location, int count, IntBuffer v) / public static void uniform3iv(int location, int count, int[] v, int offset)
+  public static void uniform4f(int location, float x, float y, float z, float w)
+  public static void uniform4fv(int location, int count, FloatBuffer v) / public static void uniform4fv(int location, int count, float[] v, int offset)
+  public static void uniform4i(int location, int x, int y, int z, int w)
+  public static void uniform4iv(int location, int count, IntBuffer v) / public static void uniform4iv(int location, int count, int[] v, int offset)
+  public static void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset)
+  public static void uniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset)
+  public static void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset)
+  public static void useProgram(int program)
+  public static void validateProgram(int program)
+  public static void vertexAttrib1f(int indx, float x)
+  public static void vertexAttrib1fv(int indx, FloatBuffer values)
+  public static void vertexAttrib2f(int indx, float x, float y)
+  public static void vertexAttrib2fv(int indx, FloatBuffer values)
+  public static void vertexAttrib3f(int indx, float x, float y, float z)
+  public static void vertexAttrib3fv(int indx, FloatBuffer values)
+  public static void vertexAttrib4f(int indx, float x, float y, float z, float w)
+  public static void vertexAttrib4fv(int indx, FloatBuffer values)
+  public static void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr) / public static void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, int ptr)
+
+Mesh.java
+Java class implements arc.util.Disposable
+// <p>
+fields:
+  public final int vertexSize  // The size of one vertex, in bytes.
+  public final VertexAttribute attributes  // Do not modify.
+  public VertexData vertices
+  public IndexData indices
+  boolean autoBind
+ctors:
+  public Mesh(boolean isStatic, int maxVertices, int maxIndices, VertexAttribute attributes) / public Mesh(boolean useVertexArray, boolean isStatic, int maxVertices, int maxIndices, VertexAttribute attributes)  // Creates a new Mesh with the given attributes.
+methods:
+  public Mesh setVertices(float[] vertices) / public Mesh setVertices(float[] vertices, int offset, int count)  // Sets the vertices of this Mesh.
+  public Mesh updateVertices(int targetOffset, float[] source) / public Mesh updateVertices(int targetOffset, float[] source, int sourceOffset, int count)  // Update (a portion of) the vertices.
+  public Mesh setIndices(short[] indices) / public Mesh setIndices(short[] indices, int offset, int count)  // Sets the indices of this Mesh
+  public void getIndices(short[] indices) / public void getIndices(short[] indices, int destOffset) / public void getIndices(int srcOffset, short[] indices, int destOffset) / public void getIndices(int srcOffset, int count, short[] indices, int destOffset)  // Copies the indices from the Mesh to the short array.
+  public int getNumIndices()  // @return the number of defined indices
+  public int getNumVertices()  // @return the number of defined vertices
+  public int getMaxVertices()  // @return the maximum number of vertices this mesh can hold
+  public int getMaxIndices()  // @return the maximum number of indices this mesh can hold
+  public int getVertexSize()  // @return the size of a single vertex in bytes
+  public void setAutoBind(boolean autoBind)  // Sets whether to bind the underlying {@link VertexArray} or {@link VertexBufferObject} automatically on a call to one of the
+  public void bind(Shader shader)  // Binds the underlying {@link VertexBufferObject} and {@link IndexBufferObject} if indices where given.
+  public void unbind(Shader shader)  // Unbinds the underlying {@link VertexBufferObject} and {@link IndexBufferObject} is indices were given.
+  public void render(Shader shader, int primitiveType) / public void render(Shader shader, int primitiveType, int offset, int count) / public void render(Shader shader, int primitiveType, int offset, int count, boolean autoBind)  // @see #render(Shader, int, int, int, boolean)
+  public void dispose()  // Frees all resources associated with this Mesh
+  public FloatBuffer getVerticesBuffer()  // @return the backing FloatBuffer holding the vertices.
+  public ShortBuffer getIndicesBuffer()  // @return the backing shortbuffer holding the indices.
+
+Pixmap.java
+Java class implements arc.util.Disposable
+// <p>
+fields:
+  private static final boolean supportsBufferCopy
+  public int width  // Size of the pixmap.
+  public ByteBuffer pixels  // Internal data, arranged as RGBA with 1 byte per component.
+  long handle  // When natives are present, this handle is the address of the memory region.
+ctors:
+  public Pixmap(int width, int height) / public Pixmap(byte[] encodedData) / public Pixmap(byte[] encodedData, int offset, int len) / public Pixmap(String file) / public Pixmap(Fi file) / public Pixmap(ByteBuffer buffer, int width, int height)  // Creates a new Pixmap instance with the given width and height.
+methods:
+  public Pixmap copy()  // @return a newly allocated copy with the same pixels.
+  public void each(Intc2 cons)  // Iterates through every position in this Pixmap.
+  public void replace(IntIntf func)
+  public void fill(int color) / public void fill(Color color)  // Fills the complete bitmap with the specified color.
+  public boolean in(int x, int y)  // @return whether this point is in the pixmap.
+  public Pixmap crop(int x, int y, int width, int height)
+  public Pixmap flipY()  // @return a newly allocated pixmap, flipped vertically.
+  public Pixmap flipX()  // @return a newly allocated pixmap, flipped horizontally.
+  public Pixmap outline(Color color, int radius) / public Pixmap outline(int color, int radius)  // @return a newly allocated pixmap with the specified outline.
+  public void drawLine(int x1, int y1, int x2, int y2, int color)  // Draws a line between the given coordinates using the provided RGBA color.
+  public void drawRect(int x, int y, int width, int height, int color)  // Draws a rectangle outline starting at x, y extending by width to the right and by height downwards (y-axis points downwards) using the provided color.
+  void circlePoints(int cx, int cy, int x, int y, int col)
+  public void drawCircle(int x, int y, int radius, int col)
+  public void draw(PixmapRegion region) / public void draw(PixmapRegion region, boolean blend) / public void draw(PixmapRegion region, int x, int y) / public void draw(PixmapRegion region, int x, int y, int width, int height) / public void draw(PixmapRegion region, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight) / public void draw(PixmapRegion region, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight) / public void draw(Pixmap pixmap, boolean blend) / public void draw(Pixmap pixmap) / public void draw(Pixmap pixmap, int x, int y) / public void draw(Pixmap pixmap, int x, int y, boolean blending) / public void draw(Pixmap pixmap, int x, int y, int width, int height) / public void draw(Pixmap pixmap, int x, int y, int width, int height, boolean filter) / public void draw(Pixmap pixmap, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight, boolean filtering) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight, boolean filtering, boolean blending)  // Draws an area from another Pixmap to this Pixmap.
+  public void fillRect(int x, int y, int width, int height, int color)  // Fills a rectangle starting at x, y extending by width to the right and by height downwards (y-axis points downwards) using
+  public void fillCircle(int x, int y, int radius, int color)  // Fills a circle with the center at x,y and a radius using the current color.
+  public int get(int x, int y)  // @return The pixel color in RGBA8888 format, or 0 if out of bounds.
+  public int getClamp(int x, int y)  // @return The pixel color in RGBA8888 format, clamped to image bounds.
+  public int getRaw(int x, int y)  // @return The pixel color in RGBA8888 format.
+  public int getA(int x, int y)  // @return The pixel alpha as a byte, 0-255.
+  public boolean empty(int x, int y) / public static boolean empty(int i)  // @return whether the alpha at a position is 0.
+  public int getWidth()  // @return The width of the Pixmap in pixels.
+  public int getHeight()  // @return The height of the Pixmap in pixels.
+  public void dispose()  // Releases all resources associated with this Pixmap.
+  public boolean isDisposed()
+  public void set(int x, int y, Color color) / public void set(int x, int y, int color)  // Sets a pixel at the given location with the given color.
+  public void setRaw(int x, int y, int color)  // Sets a pixel at the given location with the given color.
+  public int getGLFormat()  // Returns the OpenGL ES format of this Pixmap.
+  public int getGLInternalFormat()  // Returns the OpenGL ES format of this Pixmap.
+  public int getGLType()  // Returns the OpenGL ES type of this Pixmap.
+  public ByteBuffer getPixels()  // @return the direct {@link ByteBuffer} holding the pixel data.
+  void hline(int x1, int x2, int y, int color)
+  void vline(int y1, int y2, int x, int color)
+  public static int blend(int src, int dst)  // @return the blended result of the input colors
+  private void load(byte[] encodedData, int offset, int len, String file) / private void load(int width, int height)
+  private void loadJava(byte[] encodedData, int offset, int len, String file)
+  public String toString()
+  static void copyMem(ByteBuffer src, int srcOffset, ByteBuffer dst, int dstOffset, int len)
+  static native ByteBuffer loadJni(long[] nativeData, byte[] buffer, int offset, int len)  // Loads a pixmap from bytes and returns [address, width, height] in nativeData.
+  static native ByteBuffer createJni(long[] nativeData, int width, int height)  // Creates a new pixmap and returns [address, width, height] in nativeData.
+  static native void free(long buffer)
+  static native String getFailureReason()
+
+PixmapIO.java
+Java class
+// Writes Pixmaps to various formats.
+methods:
+  public static void writePng(Fi file, Pixmap pixmap)  // Writes the pixmap as a PNG with compression.
+  public static byte[] writePngBytes(Pixmap pixmap) throws IOException  // Writes the pixmap as a PNG with compression.
+  public static Pixmap readPNG(Fi file) / public static Pixmap readPNG(byte[] bytes)  // Reads a PNG file using a pure-Java PNG decoder.
+inner-class: PngWriter implements arc.util.Disposable
+// PNG encoder with compression.
+  fields:
+    private static final byte SIGNATURE
+    private static final int IHDR
+    private static final byte COLOR_ARGB
+    private static final byte COMPRESSION_DEFLATE
+    private static final byte FILTER_NONE
+    private static final byte INTERLACE_NONE
+    private final ChunkBuffer buffer
+    private final Deflater deflater
+    private boolean flipY
+  ctors:
+    public PngWriter() / public PngWriter(int initialBufferSize)
+  methods:
+    public void setFlipY(boolean flipY)  // If true, the resulting PNG is flipped vertically.
+    public void setCompression(int level)  // Sets the deflate compression level.
+    public void write(Fi file, Pixmap pixmap) throws IOException / public void write(OutputStream output, Pixmap pixmap) throws IOException  // Writes the pixmap to the stream without closing the stream.
+    public void dispose()
+  inner-class: ChunkBuffer extends java.io.DataOutputStream
+    fields:
+      final ByteArrayOutputStream buffer
+      final CRC32 crc
+    ctors:
+      ChunkBuffer(int initialSize) / private ChunkBuffer(ByteArrayOutputStream buffer, CRC32 crc)
+    methods:
+      public void endChunk(DataOutputStream target) throws IOException
+inner-class: ChunkBuffer extends java.io.DataOutputStream
+  fields:
+    final ByteArrayOutputStream buffer
+    final CRC32 crc
+  ctors:
+    ChunkBuffer(int initialSize) / private ChunkBuffer(ByteArrayOutputStream buffer, CRC32 crc)
+  methods:
+    public void endChunk(DataOutputStream target) throws IOException
+inner-class: PngReader
+// Class based on https://github.com/Mike-C/lwjPNG, with many modifications
+  fields:
+    private static final int ctypeRgba
+    public int width  // Size fields are set after reading.
+    public byte bitDepth
+    private int dataLen
+    private byte imgData
+    private ByteBuffer buf
+    private int palette
+  methods:
+    public ByteBuffer read(InputStream in) throws IOException
+    private void readChunks(DataInputStream in) throws IOException
+    private void getImage(ByteBuffer bb) throws DataFormatException
+    private static int ab(int a)
+    private static int paeth(int a, int b, int c)
+
+Pixmaps.java
+Java class
+// Various pixmap utilities.
+fields:
+  private static final int offsets
+  private static Pixmap drawPixmap
+  private static IntSeq tmpArray
+methods:
+  public static Pixmap noise(int w, int h)
+  public static Texture noiseTex(int w, int h)
+  public static void flip(Pixmap pixmap)
+  public static Pixmap blend(PixmapRegion source, PixmapRegion over, float alpha)
+  public static Pixmap median(Pixmap input, int radius, double percentile) / public static Pixmap median(Pixmap input, int radius, double percentile, IntSeq tmp)
+  public static Pixmap scale(Pixmap pixmap, int width, int height, boolean filter) / public static Pixmap scale(Pixmap input, float scale) / public static Pixmap scale(Pixmap input, float scalex, float scaley)
+  public static Pixmap outline(PixmapRegion region, Color color, int radius) / public static Pixmap outline(PixmapRegion region, Color color, int radius, int padding) / public static Pixmap outline(Pixmap input, Color color)  // Outlines the input pixmap by 1 pixel.
+  public static Pixmap zoom(Pixmap input, int scale)
+  public static Pixmap resize(Pixmap input, int width, int height) / public static Pixmap resize(Pixmap input, int width, int height, int backgroundColor)
+  public static Pixmap crop(Pixmap input, int x, int y, int width, int height)
+  public static Pixmap rotate(Pixmap input, float angle)
+  public static boolean empty(int i)
+  public static Pixmap huePixmap(int width, int height)
+  public static Texture hueTexture(int width, int height)
+  public static Pixmap blankPixmap()
+  public static Texture blankTexture()
+  public static TextureRegion blankTextureRegion()
+  public static void drawPixel(Texture texture, int x, int y, int color)
+  public static Pixmap bleed(Pixmap image) / public static Pixmap bleed(Pixmap image, int maxIterations)  // Applies alpha bleeding to the target pixmap, but with only one iteration.
+  public static void antialias(Pixmap pixmap)
+
+Texture.java
+Java class extends arc.graphics.GLTexture
+// A Texture wraps a standard OpenGL ES texture.
+fields:
+  TextureData data
+ctors:
+  public Texture(String internalPath) / public Texture(Fi file) / public Texture(Fi file, boolean useMipMaps) / public Texture(Pixmap pixmap) / public Texture(Pixmap pixmap, boolean useMipMaps) / public Texture(int width, int height) / public Texture(TextureData data) / protected Texture() / protected Texture(int glTarget, int glHandle, TextureData data)  // For use in mocking only!
+methods:
+  public static Texture createEmpty(TextureData data)
+  public void load(TextureData data)
+  public void draw(Pixmap pixmap) / public void draw(Pixmap pixmap, int x, int y)  // Draws the given {@link Pixmap} to the texture at position x, y.
+  public int getDepth()
+  public TextureData getTextureData()
+  public boolean isDisposed()
+  public String toString()
+
+TextureArray.java
+Java class extends arc.graphics.GLTexture
+// OpenGL ES wrapper for TextureArray
+fields:
+  private TextureArrayData data
+ctors:
+  public TextureArray(String internalPaths) / public TextureArray(Fi files) / public TextureArray(boolean useMipMaps, Fi files) / public TextureArray(TextureArrayData data)
+methods:
+  private static Fi[] getInternalHandles(String internalPaths)
+  private void load(TextureArrayData data)
+  public int getDepth()
+
+TextureArrayData.java
+Java interface
+// Used by a {@link TextureArray} to load the pixel data.
+methods:
+  boolean isPrepared()  // @return whether the TextureArrayData is prepared or not.
+  void prepare()  // Prepares the TextureArrayData for a call to {@link #consumeTextureArrayData()}.
+  void consumeTextureArrayData()  // Uploads the pixel data of the TextureArray layers of the TextureArray to the OpenGL ES texture.
+  int getWidth()  // @return the width of this TextureArray
+  int getHeight()  // @return the height of this TextureArray
+  int getDepth()  // @return the layer count of this TextureArray
+  int getInternalFormat()  // @return the internal format of this TextureArray
+  int getGLType()  // @return the GL type of this TextureArray
+
+TextureData.java
+Java interface
+// Used by a {@link Texture} to load the pixel data.
+methods:
+  boolean isCustom()  // @return whether to use #consumeCustomData
+  boolean isPrepared()  // @return whether the TextureData is prepared or not.
+  void prepare()  // Prepares the TextureData for a call to {@link #consumePixmap()} or {@link #consumeCustomData(int)}.
+  Pixmap consumePixmap()  // Returns the {@link Pixmap} for upload by Texture.
+  default Pixmap getPixmap()
+  boolean disposePixmap()  // @return whether the caller of {@link #consumePixmap()} should dispose the Pixmap returned by {@link #consumePixmap()}
+  void consumeCustomData(int target)  // Uploads the pixel data to the OpenGL ES texture.
+  int getWidth()  // @return the width of the pixel data
+  int getHeight()  // @return the height of the pixel data
+  Format getFormat()  // @return the {@link Format} of the pixel data
+  boolean useMipMaps()  // @return whether to generate mipmaps or not.
+  static TextureData load(Fi file, boolean useMipMaps)
+
+VertexAttribute.java
+Java class (final)
+// A single vertex attribute defined by its number of components and its shader alias.
+fields:
+  public static final VertexAttribute position
+  public final int components  // the number of components this attribute has *
+  public final boolean normalized  // For fixed types, whether the values are normalized to either -1f and +1f (signed) or 0f and +1f (unsigned)
+  public final int type  // the OpenGL type of each component, e.g.
+  public final String alias  // the alias for the attribute used in a {@link Shader} *
+  public final int size  // the size (in bytes) of this attribute
+ctors:
+  public VertexAttribute(int components, String alias) / public VertexAttribute(int components, int type, boolean normalized, String alias)  // Constructs a new VertexAttribute.
+

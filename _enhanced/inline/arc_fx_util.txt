@@ -1,0 +1,209 @@
+// FxBufferQueue.java : public void dispose()
+    @Override
+    public void dispose(){
+        for(int i = 0; i < buffers.size; i++){
+            buffers.get(i).dispose();
+        }
+    }
+
+// FxBufferQueue.java : public void resize(int width, int height)
+    public void resize(int width, int height){
+        for(int i = 0; i < buffers.size; i++){
+            buffers.get(i).resize(width, height);
+        }
+    }
+
+// FxBufferQueue.java : public void rebind()
+    public void rebind(){
+        for(int i = 0; i < buffers.size; i++){
+            FrameBuffer wrapper = buffers.get(i);
+            // FBOs might be null if the instance wasn't initialized with #resize(int, int) yet.
+            if(wrapper == null) continue;
+
+            Texture texture = wrapper.getTexture();
+            texture.setWrap(wrapU, wrapV);
+            texture.setFilter(filterMin, filterMag);
+        }
+    }
+
+// FxBufferQueue.java : public FrameBuffer getCurrent()
+    public FrameBuffer getCurrent(){
+        return buffers.get(currentIdx);
+    }
+
+// FxBufferQueue.java : public FrameBuffer changeToNext()
+    public FrameBuffer changeToNext(){
+        currentIdx = (currentIdx + 1) % buffers.size;
+        return getCurrent();
+    }
+
+// FxBufferQueue.java : public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+    public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag){
+        wrapU = u;
+        wrapV = v;
+        filterMin = min;
+        filterMag = mag;
+        rebind();
+    }
+
+// FxBufferRenderer.java : public void dispose()
+    @Override
+    public void dispose(){
+        shader.dispose();
+    }
+
+// FxBufferRenderer.java : public void rebind()
+    public void rebind(){
+        shader.bind();
+        shader.setUniformi("u_texture0", 0);
+    }
+
+// FxBufferRenderer.java : public void renderToScreen(FrameBuffer input) / public void renderToScreen(FrameBuffer input, int x, int y, int width, int height)
+    public void renderToScreen(FrameBuffer input){
+        renderToScreen(input, 0, 0, Core.graphics.getBackBufferWidth(), Core.graphics.getBackBufferHeight());
+    }
+
+// FxBufferRenderer.java : public void renderToFbo(FrameBuffer input, FrameBuffer output)
+    public void renderToFbo(FrameBuffer input, FrameBuffer output){
+        output.begin();
+        input.blit(shader);
+        output.end();
+    }
+
+// FxWidgetGroup.java : public FxProcessor getFxProcessor()
+    public FxProcessor getFxProcessor(){
+        return fxProcessor;
+    }
+
+// FxWidgetGroup.java : public boolean isMatchWidgetSize()
+    public boolean isMatchWidgetSize(){
+        return matchWidgetSize;
+    }
+
+// FxWidgetGroup.java : public void setMatchWidgetSize(boolean matchWidgetSize)
+    public void setMatchWidgetSize(boolean matchWidgetSize){
+        if(this.matchWidgetSize == matchWidgetSize) return;
+
+        this.matchWidgetSize = matchWidgetSize;
+        resizePending = true;
+    }
+
+// FxWidgetGroup.java : protected void setScene(Scene stage)
+    @Override
+    protected void setScene(Scene stage){
+        super.setScene(stage);
+
+        if(stage != null){
+            initialize();
+        }else{
+            reset();
+        }
+    }
+
+// FxWidgetGroup.java : protected void sizeChanged()
+    @Override
+    protected void sizeChanged(){
+        super.sizeChanged();
+        resizePending = true;
+    }
+
+// FxWidgetGroup.java : public void setCullingArea(Rect cullingArea)
+    @Deprecated
+    @Override
+    public void setCullingArea(Rect cullingArea){
+        throw new UnsupportedOperationException("VfxWidgetGroup doesn't support culling area.");
+    }
+
+// FxWidgetGroup.java : public void setTransform(boolean transform)
+    @Deprecated
+    @Override
+    public void setTransform(boolean transform){
+        throw new UnsupportedOperationException("VfxWidgetGroup doesn't support transform.");
+    }
+
+// FxWidgetGroup.java : private void initialize()
+    private void initialize(){
+        if(initialized) return;
+
+        performPendingResize();
+
+        resizePending = false;
+        initialized = true;
+    }
+
+// FxWidgetGroup.java : private void reset()
+    private void reset(){
+        if(!initialized) return;
+
+        fxProcessor.dispose();
+
+        resizePending = false;
+        initialized = false;
+    }
+
+// PingPongBuffer.java : public void dispose()
+    public void dispose(){
+        buffer1.dispose();
+        buffer2.dispose();
+    }
+
+// PingPongBuffer.java : public void resize(int width, int height)
+    public void resize(int width, int height){
+        this.buffer1.resize(width, height);
+        this.buffer2.resize(width, height);
+        rebind();
+    }
+
+// PingPongBuffer.java : public void begin()
+    public void begin(){
+        if(capturing){
+            throw new IllegalStateException("Ping pong buffer is already in capturing state.");
+        }
+
+        capturing = true;
+        bufDst.begin();
+    }
+
+// PingPongBuffer.java : public void end()
+    public void end(){
+        if(!capturing){
+            throw new IllegalStateException("Ping pong is not in capturing state. You should call begin() before calling end().");
+        }
+        bufDst.end();
+        capturing = false;
+    }
+
+// PingPongBuffer.java : public Texture getSrcTexture()
+    public Texture getSrcTexture(){
+        return bufSrc.getTexture();
+    }
+
+// PingPongBuffer.java : public FrameBuffer getSrcBuffer()
+    public FrameBuffer getSrcBuffer(){
+        return bufSrc;
+    }
+
+// PingPongBuffer.java : public Texture getDstTexture()
+    public Texture getDstTexture(){
+        return bufDst.getTexture();
+    }
+
+// PingPongBuffer.java : public FrameBuffer getDstBuffer()
+    public FrameBuffer getDstBuffer(){
+        return bufDst;
+    }
+
+// PingPongBuffer.java : public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+    public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag){
+        wrapU = u;
+        wrapV = v;
+        filterMin = min;
+        filterMag = mag;
+        rebind();
+    }
+
+// PingPongBuffer.java : public void clear(Color clearColor) / public void clear(float r, float g, float b, float a)
+    public void clear(Color clearColor){
+        clear(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+    }
+

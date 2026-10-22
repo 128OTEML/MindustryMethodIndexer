@@ -1,0 +1,67 @@
+AssetView.java
+Java interface
+methods:
+  void build(MapAssetsDialog diag, Table table)
+  void buildButtons(MapAssetsDialog diag, Table buttons)
+
+MapAssetsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static final TextureRegionDrawable typeIcons
+  private AssetView views
+  TextField searchField
+  String searchString
+  private Table list
+  private DataAssetType currentType
+ctors:
+  public MapAssetsDialog()
+methods:
+  void changeType(DataAssetType type)
+  void rebuild()
+  void showEditMenu()
+
+MapAudioView.java
+Java class implements mindustry.editor.data.AssetView
+fields:
+  public final DataAssetType type
+  public AudioSource lastPlaying
+ctors:
+  public MapAudioView(DataAssetType type)
+methods:
+  public void build(MapAssetsDialog diag, Table list)
+  public void buildButtons(MapAssetsDialog diag, Table buttons)
+
+MapBundlesView.java
+Java class implements mindustry.editor.data.AssetView
+methods:
+  public void build(MapAssetsDialog diag, Table list)
+  public void buildButtons(MapAssetsDialog diag, Table buttons)
+
+MapContentView.java
+Java class implements mindustry.editor.data.AssetView
+fields:
+  private static final Pattern unsafeNamePattern
+  static ObjectMap<ContentType,TextureRegionDrawable> contentIcons
+methods:
+  public void build(MapAssetsDialog diag, Table list)
+  public void buildButtons(MapAssetsDialog diag, Table buttons)
+  void addContent(MapAssetsDialog diag, ContentType type, String path, String data)
+  void showImport(MapAssetsDialog diag)
+  static boolean isSafeContentName(String name)
+
+MapImagesView.java
+Java class implements mindustry.editor.data.AssetView
+methods:
+  public void buildButtons(MapAssetsDialog diag, Table buttons)
+  public void build(MapAssetsDialog diag, Table inner)
+  private Seq<ImageAsset> getImages()
+
+MapPatchesView.java
+Java class implements mindustry.editor.data.AssetView
+methods:
+  public void buildButtons(MapAssetsDialog diag, Table buttons)
+  public void build(MapAssetsDialog diag, Table list)
+  void showImport(Cons<String> handler)
+  void addPatch(String patch) / void addPatch(String patch, int replaceIndex)
+  int countFields(JsonValue value)
+

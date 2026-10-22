@@ -1,0 +1,195 @@
+ByteBufferInput.java
+Java class implements java.io.DataInput
+// DataInput wrapper of ByteBuffer.
+fields:
+  public ByteBuffer buffer
+ctors:
+  public ByteBufferInput(ByteBuffer buffer) / public ByteBufferInput()  // Wraps the specified ByteBuffer.
+methods:
+  public void setBuffer(ByteBuffer buffer)
+  public void readFully(byte[] bytes) / public void readFully(byte[] bytes, int f, int to)
+  public int skipBytes(int i)
+  public boolean readBoolean()
+  public byte readByte()
+  public int readUnsignedByte()
+  public short readShort()
+  public int readUnsignedShort()
+  public char readChar()
+  public int readInt()
+  public long readLong()
+  public float readFloat()
+  public double readDouble()
+  public String readLine()
+  public String readUTF() throws IOException
+
+ByteBufferOutput.java
+Java class implements java.io.DataOutput
+// DataOutput wrapper of ByteBuffer.
+fields:
+  public ByteBuffer buffer
+ctors:
+  public ByteBufferOutput(ByteBuffer buffer) / public ByteBufferOutput()  // Wraps the specified ByteBuffer.
+methods:
+  public void write(int i) / public void write(byte[] bytes) / public void write(byte[] bytes, int off, int len)
+  public void writeBoolean(boolean b)
+  public void writeByte(int i)
+  public void writeShort(int i)
+  public void writeChar(int i)
+  public void writeInt(int i)
+  public void writeLong(long l)
+  public void writeFloat(float v)
+  public void writeDouble(double v)
+  public void writeBytes(String s)
+  public void writeChars(String s)
+  public void writeUTF(String s) throws IOException
+
+CRC.java
+Java class
+fields:
+  public static int table
+  int _value
+methods:
+  public void init()
+  public void update(byte[] data, int offset, int size) / public void update(byte[] data)
+  public void updateByte(int b)
+  public int getDigest()
+
+CounterInputStream.java
+Java class extends java.io.FilterInputStream
+fields:
+  public int count
+ctors:
+  public CounterInputStream(InputStream inputStream)
+methods:
+  public void resetCount()
+  public long skip(long l) throws IOException
+  public int read() throws IOException / public int read(byte[] bytes, int offset, int length) throws IOException
+
+FastDeflaterOutputStream.java
+Java class extends java.util.zip.DeflaterOutputStream
+fields:
+  private final byte tmp
+ctors:
+  public FastDeflaterOutputStream(OutputStream outputStream)
+methods:
+  public void write(int var1) throws IOException
+
+LittleEndianInputStream.java
+Java class extends java.io.FilterInputStream implements java.io.DataInput
+// Taken from http://www.javafaq.nu/java-example-code-1079.html
+fields:
+  private DataInputStream din
+ctors:
+  public LittleEndianInputStream(InputStream in)
+methods:
+  public void readFully(byte[] b) throws IOException / public void readFully(byte[] b, int off, int len) throws IOException
+  public int skipBytes(int n) throws IOException
+  public boolean readBoolean() throws IOException
+  public byte readByte() throws IOException
+  public int readUnsignedByte() throws IOException
+  public short readShort() throws IOException
+  public int readUnsignedShort() throws IOException
+  public char readChar() throws IOException
+  public int readInt() throws IOException
+  public long readLong() throws IOException
+  public float readFloat() throws IOException
+  public double readDouble() throws IOException
+  public final String readLine() throws IOException
+  public String readUTF() throws IOException
+
+PropertiesUtils.java
+Java class (final)
+// {@code PropertiesUtils} is a helper class that allows you to load and store key/value pairs of an
+fields:
+  private static final int NONE
+  private static final String LINE_SEPARATOR
+ctors:
+  private PropertiesUtils()
+methods:
+  public static void load(ObjectMap<String,String> properties, Reader reader)  // Adds to the specified {@code ObjectMap} the key/value pairs loaded from the {@code Reader} in a simple line-oriented format
+  public static void store(ObjectMap<String,String> properties, Writer writer, String comment, boolean date) throws IOException / public static void store(ObjectMap<String,String> properties, Writer writer, String comment) throws IOException  // Writes the key/value pairs of the specified <code>ObjectMap</code> to the output character stream in a simple line-oriented
+  private static void storeImpl(ObjectMap<String,String> properties, Writer writer, String comment, boolean date, boolean escapeUnicode) throws IOException
+  private static void dumpString(StringBuilder outBuffer, String string, boolean escapeSpace, boolean escapeUnicode)
+  private static void writeComment(Writer writer, String comment) throws IOException
+
+Reads.java
+Java class implements java.io.Closeable
+// A wrapper for DataInput with more concise method names and no IOExceptions.
+fields:
+  private byte bytearr
+  private char chararr
+  public DataInput input
+ctors:
+  public Reads(DataInput input)
+methods:
+  public static Reads get(DataInput input)  // @deprecated Use the constructor instead.
+  public int checkEOF()  // @return -1 if EOF or unsupported, or the next byte.
+  public long l()  // read long
+  public int i()  // read int
+  public short s()  // read short
+  public int us()  // read unsigned short
+  public byte b() / public byte[] b(int length) / public byte[] b(byte[] array) / public byte[] b(byte[] array, int offset, int length)  // read byte
+  public int ub()  // read unsigned byte
+  public boolean bool()  // read boolean
+  public float f()  // read float
+  public double d()  // read double
+  public String str() / public String str(int maxLen)  // read string (UTF)
+  public void skip(int amount)  // skip bytes
+  public void close()
+
+ReusableByteInStream.java
+Java class extends java.io.ByteArrayInputStream
+// A {@link ByteArrayInputStream} that can have its content bytes reset.
+ctors:
+  public ReusableByteInStream()  // {@link #setBytes} must be called before this stream can be used.
+methods:
+  public int position()
+  public void setBytes(byte[] bytes) / public void setBytes(byte[] bytes, int offset, int length)
+
+ReusableByteOutStream.java
+Java class extends java.io.ByteArrayOutputStream
+ctors:
+  public ReusableByteOutStream(int capacity) / public ReusableByteOutStream()
+methods:
+  public byte[] getBytes()
+
+Streams.java
+Java class (final)
+// Provides utility methods to copy streams.
+fields:
+  public static final int defaultBufferSize
+  public static final byte emptyBytes
+methods:
+  public static void copy(InputStream input, OutputStream output) throws IOException / public static void copy(InputStream input, OutputStream output, int bufferSize) throws IOException / public static void copy(InputStream input, OutputStream output, byte[] buffer) throws IOException / public static void copy(InputStream input, ByteBuffer output) throws IOException / public static void copy(InputStream input, ByteBuffer output, int bufferSize) throws IOException / public static int copy(InputStream input, ByteBuffer output, byte[] buffer) throws IOException  // Allocates a {@value #defaultBufferSize} byte[] for use as a temporary buffer and calls
+  public static void copyProgress(InputStream input, OutputStream output, long totalLength, int bufferSize, Floatc progress) throws IOException  // Copy the data from an {@link InputStream} to an {@link OutputStream}, using the specified byte[] as a temporary buffer.
+  public static byte[] copyBytes(InputStream input) throws IOException / public static byte[] copyBytes(InputStream input, int estimatedSize) throws IOException  // Copy the data from an {@link InputStream} to a byte array.
+  public static String copyString(InputStream input) throws IOException / public static String copyString(InputStream input, int estimatedSize) throws IOException / public static String copyString(InputStream input, int estimatedSize, String charset) throws IOException  // Calls {@link #copyString(InputStream, int, String)} using the input's {@link InputStream#available() available} size
+  public static void close(Closeable c)  // Close and ignore all errors.
+  public static byte[] sha256(byte[] bytes)  // @return sha256 hash of provided byte array
+inner-class: OptimizedByteArrayOutputStream extends java.io.ByteArrayOutputStream
+// A ByteArrayOutputStream which avoids copying of the byte array if possible.
+  ctors:
+    public OptimizedByteArrayOutputStream(int initialSize)
+  methods:
+    public synchronized byte[] toByteArray()
+    public byte[] getBuffer()
+
+Writes.java
+Java class implements java.io.Closeable
+// A wrapper for DataOutput with more concise method names and no IOExceptions.
+fields:
+  public DataOutput output
+ctors:
+  public Writes(DataOutput output)
+methods:
+  public static Writes get(DataOutput output)  // @deprecated Use the constructor instead.
+  public void l(long i)  // write long
+  public void i(int i)  // write int
+  public void b(int i) / public void b(byte[] array, int offset, int length) / public void b(byte[] array)  // write byte
+  public void bool(boolean b)  // write boolean (writes a byte internally)
+  public void s(int i)  // write short
+  public void f(float f)  // write float
+  public void d(double d)  // write double
+  public void str(String str)  // writes a string (UTF)
+  public void close()
+

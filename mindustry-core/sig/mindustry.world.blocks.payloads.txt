@@ -1,0 +1,466 @@
+BlockProducer.java
+Java class (abstract) extends mindustry.world.blocks.payloads.PayloadBlock
+// Generic building that produces other buildings.
+fields:
+  public float buildSpeed
+ctors:
+  public BlockProducer(String name)
+methods:
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void setBars()
+inner-class: BlockProducerBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public float progress
+  methods:
+    public abstract Block recipe()
+    public float fraction()
+    public boolean acceptItem(Building source, Item item)
+    public int getMaximumAccepted(Item item)
+    public boolean acceptPayload(Building source, Payload payload)
+    public boolean shouldConsume()
+    public void updateTile()
+    public void draw()
+    public double sense(LAccess sensor)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+BuildPayload.java
+Java class implements mindustry.world.blocks.payloads.Payload
+fields:
+  public Building build
+ctors:
+  public BuildPayload(Block block, Team team) / public BuildPayload(Building build)
+methods:
+  public Block block()
+  public void place(Tile tile) / public void place(Tile tile, int rotation)
+  public boolean isDead()
+  public boolean contentEquals(Payload other)
+  public UnlockableContent content()
+  public void update(Unit unitHolder, Building buildingHolder)
+  public void destroyed()
+  public ItemStack[] requirements()
+  public float buildTime()
+  public float x()
+  public float y()
+  public float size()
+  public void remove()
+  public void write(Writes write)
+  public void set(float x, float y, float rotation)
+  public void drawShadow(float alpha)
+  public void draw()
+  public TextureRegion icon()
+
+Constructor.java
+Java class extends mindustry.world.blocks.payloads.BlockProducer
+// Configurable BlockProducer variant.
+fields:
+  public Seq<Block> filter  // Empty seq for no filter.
+  public int minBlockSize
+ctors:
+  public Constructor(String name)
+methods:
+  public void setStats()
+  public void getPlanConfigs(Seq<UnlockableContent> options)
+  public boolean canProduce(Block b)
+inner-class: ConstructorBuild extends mindustry.world.blocks.payloads.BlockProducer.BlockProducerBuild
+  fields:
+    public Block recipe
+  methods:
+    public Block recipe()
+    public void buildConfiguration(Table table)
+    public Object config()
+    public void drawSelect()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Payload.java
+Java interface extends arc.math.geom.Position
+fields:
+  int payloadUnit
+methods:
+  void set(float x, float y, float rotation)  // sets this payload's position on the map.
+  void draw()  // draws this payload at a position.
+  void drawShadow(float alpha)
+  float size()  // @return hitbox size of the payload.
+  float x()
+  float y()
+  ItemStack[] requirements()  // @return the items needed to make this payload; may be empty.
+  float buildTime()  // @return the time taken to build this payload.
+  boolean contentEquals(Payload other)
+  default void update(Unit unitHolder, Building buildingHolder)  // update this payload inside a container unit or building.
+  default boolean isDead()  // @return if this payload died for whatever reason (e.g.
+  default boolean dump()  // @return whether this payload was dumped.
+  default boolean fits(float s)  // @return whether this payload fits in a given size.
+  default float rotation()  // @return rotation of this payload.
+  default void destroyed()
+  void write(Writes write) / static void write(Payload payload, Writes write)  // writes the payload for saving.
+  TextureRegion icon()  // @return icon describing the contents.
+  UnlockableContent content()  // @return content describing this payload (block or unit)
+  default float getX()
+  default float getY()
+  default void remove()
+  static T read(Reads read)
+
+PayloadBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public float payloadSpeed
+  public String regionSuffix
+  public TextureRegion topRegion
+ctors:
+  public PayloadBlock(String name)
+methods:
+  public void load()
+  protected TextureRegion findFactoryRegion(String suf)
+  public static boolean blends(Building build, int direction)
+  public static void pushOutput(Payload payload, float progress)
+inner-class: PayloadBlockBuild extends mindustry.gen.Building
+  fields:
+    public T payload
+    public Vec2 payVector  // TODO redundant; already stored in payload?
+    public float payRotation
+    public boolean carried
+  methods:
+    public boolean acceptUnitPayload(Unit unit)
+    public boolean canControlSelect(Unit unit)
+    public void onControlSelect(Unit player)
+    public boolean acceptPayload(Building source, Payload payload)
+    public void handlePayload(Building source, Payload payload)
+    public Payload getPayload()
+    public void pickedUp()
+    public void drawTeamTop()
+    public Payload takePayload()
+    public void onRemoved()
+    public void updateTile()
+    public void onDestroyed()
+    public boolean blends(int direction)
+    public void updatePayload()
+    public boolean moveInPayload() / public boolean moveInPayload(boolean rotate)  // @return true if the payload is in position.
+    public void moveOutPayload()
+    public void dumpPayload()
+    public boolean hasArrived()
+    public void drawPayload()
+    public double sense(Content content)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PayloadConveyor.java
+Java class extends mindustry.world.Block
+fields:
+  public float moveTime
+  public TextureRegion topRegion
+  public TextureRegion edgeRegion
+  public Interp interp
+  public float payloadLimit
+  public boolean pushUnits
+ctors:
+  public PayloadConveyor(String name)
+methods:
+  protected TextureRegion[] icons()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void setStats()
+  public void init()
+inner-class: PayloadConveyorBuild extends mindustry.gen.Building
+  fields:
+    public Payload item
+    public float progress
+    public float curInterp
+    public Building next
+    public boolean blocked
+    public int step
+  methods:
+    public boolean canControlSelect(Unit unit)
+    public void onControlSelect(Unit player)
+    public Payload takePayload()
+    public void onProximityUpdate()
+    void checkBlocked()
+    public Payload getPayload()
+    public void updateTile()
+    public void moveFailed()
+    public void moved()
+    public void drawBottom()
+    public void onDestroyed()
+    public void draw()
+    public void payloadDraw()
+    public float time()
+    public void unitOn(Unit unit)
+    public boolean acceptPayload(Building source, Payload payload)
+    public void handlePayload(Building source, Payload payload)
+    public double sense(Content content)
+    public void onRemoved()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public void updatePayload()
+    protected boolean blends(int direction)
+    protected TextureRegion clipRegion(Rect bounds, Rect sprite, TextureRegion region)
+    public int curStep()
+    public float fract()
+
+PayloadDeconstructor.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public float maxPayloadSize
+  public float deconstructSpeed
+  public int dumpRate
+  public int itemBuffer  // Any payload with build requirements equalling or exceeding this value is accepted regardless.
+ctors:
+  public PayloadDeconstructor(String name)
+methods:
+  public TextureRegion[] icons()
+  public void setBars()
+inner-class: PayloadDeconstructorBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public Payload deconstructing
+    public float accum
+    public float progress
+    public float time
+    public static final float overlayDuration
+    public float overlayTime
+  methods:
+    public void draw()
+    public boolean acceptUnitPayload(Unit unit)
+    public void handlePayload(Building source, Payload payload)
+    public boolean acceptPayload(Building source, Payload payload)
+    public void updateTile()
+    public double sense(Content content) / public double sense(LAccess sensor)
+    public boolean shouldConsume()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PayloadLoader.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public final int timerLoad
+  public float loadTime
+  public int itemsLoaded
+  public float liquidsLoaded
+  public int maxBlockSize
+  public float maxPowerConsumption
+  public boolean loadPowerDynamic
+  public TextureRegion overRegion
+  protected float basePowerUse  // initialized in init(), do not touch
+ctors:
+  public PayloadLoader(String name)
+methods:
+  public TextureRegion[] icons()
+  public boolean outputsItems()
+  public void setBars()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void init()
+inner-class: PayloadLoaderBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public boolean exporting
+  methods:
+    public boolean acceptPayload(Building source, Payload payload)
+    public void handlePayload(Building source, Payload payload)
+    public boolean acceptItem(Building source, Item item)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+    public void draw()
+    public void updateTile()
+    public float fraction()
+    public boolean shouldExport()
+    public boolean hasBattery()
+    public boolean shouldConsume()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PayloadMassDriver.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public float range
+  public float rotateSpeed
+  public float length
+  public float knockback
+  public float reload
+  public float chargeTime
+  public float maxPayloadSize
+  public float grabWidth
+  public Effect shootEffect
+  public Effect smokeEffect
+  public Effect receiveEffect
+  public Sound shootSound
+  public Sound receiveSound
+  public float shootSoundVolume
+  public float shake
+  public Effect transferEffect
+  public TextureRegion baseRegion
+  public TextureRegion capRegion
+  public TextureRegion leftRegion
+  public TextureRegion rightRegion
+  public TextureRegion capOutlineRegion
+  public TextureRegion leftOutlineRegion
+  public TextureRegion rightOutlineRegion
+  public TextureRegion arrow
+ctors:
+  public PayloadMassDriver(String name)
+methods:
+  public void init()
+  public void setStats()
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+inner-class: PayloadDriverBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild implements mindustry.world.blocks.RotBlock
+  fields:
+    public int link
+    public float turretRotation
+    public float reloadCounter
+    public float targetSize
+    public float payLength
+    public PayloadDriverBuild lastOther
+    public boolean loaded
+    public boolean charging
+    public PayloadDriverState state
+    public Queue<Building> waitingShooters
+    public Payload recPayload
+  methods:
+    public Building currentShooter()
+    public boolean acceptUnitPayload(Unit unit)
+    public float buildRotation()
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public void updatePayload()
+    public void draw()
+    public void drawConfigure()
+    public boolean onConfigureBuildTapped(Building other)
+    public boolean acceptPayload(Building source, Payload payload)
+    protected boolean linkValid()
+    public Point2 config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+inner-class: PayloadMassDriverData
+  fields:
+    public float x
+    public Payload payload
+  ctors:
+    public PayloadMassDriverData(float x, float y, float ox, float oy, Payload payload)
+
+PayloadRouter.java
+Java class extends mindustry.world.blocks.payloads.PayloadConveyor
+fields:
+  public boolean invert
+  public TextureRegion overRegion
+ctors:
+  public PayloadRouter(String name)
+methods:
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void getPlanConfigs(Seq<UnlockableContent> options)
+  public boolean canSort(Block b) / public boolean canSort(UnitType t)
+inner-class: PayloadRouterBuild extends mindustry.world.blocks.payloads.PayloadConveyor.PayloadConveyorBuild
+  fields:
+    public UnlockableContent sorted
+    public int recDir
+    public boolean matches
+    public float smoothRot
+    public float controlTime
+  methods:
+    public void add()
+    public void pickNext()
+    public void control(LAccess type, double p1, double p2, double p3, double p4)
+    public void onControlSelect(Unit player)
+    public void handlePayload(Building source, Payload payload)
+    public void checkMatch()
+    public void moveFailed()
+    public void updateTile()
+    public void drawSelect()
+    public void draw()
+    public void buildConfiguration(Table table)
+    public Object config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PayloadSource.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+// Generic building that produces other buildings.
+ctors:
+  public PayloadSource(String name)
+methods:
+  public void getPlanConfigs(Seq<UnlockableContent> options)
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean canProduce(Block b) / public boolean canProduce(UnitType t)
+inner-class: PayloadSourceBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public UnitType unit
+    public Block configBlock
+    public Vec2 commandPos
+    public float scl
+  methods:
+    public Vec2 getCommandPosition()
+    public void onCommand(Vec2 target)
+    public void buildConfiguration(Table table)
+    public Object config()
+    public boolean acceptPayload(Building source, Payload payload)
+    public void updateTile()
+    public void draw()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PayloadUnloader.java
+Java class extends mindustry.world.blocks.payloads.PayloadLoader
+fields:
+  public int offloadSpeed
+  public float maxPowerUnload  // per frame
+ctors:
+  public PayloadUnloader(String name)
+methods:
+  public boolean outputsItems()
+  public boolean rotatedOutput(int x, int y)
+inner-class: PayloadUnloaderBuild extends mindustry.world.blocks.payloads.PayloadLoader.PayloadLoaderBuild
+  fields:
+    public float lastOutputPower
+  methods:
+    public boolean acceptItem(Building source, Item item)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+    public float getPowerProduction()
+    public void updateTile()
+    public boolean full()
+    public boolean shouldExport()
+
+PayloadVoid.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public Effect incinerateEffect
+  public Sound incinerateSound
+ctors:
+  public PayloadVoid(String name)
+methods:
+  public TextureRegion[] icons()
+inner-class: PayloadVoidBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  methods:
+    public void draw()
+    public boolean acceptUnitPayload(Unit unit)
+    public void updateTile()
+
+UnitPayload.java
+Java class implements mindustry.world.blocks.payloads.Payload
+fields:
+  public static final float overlayDuration
+  public Unit unit
+  public float overlayTime
+  public TextureRegion overlayRegion
+ctors:
+  public UnitPayload(Unit unit)
+methods:
+  public void showOverlay(TextureRegion icon) / public void showOverlay(TextureRegionDrawable icon)  // Flashes a red overlay region.
+  public boolean contentEquals(Payload other)
+  public void update(Unit unitHolder, Building buildingHolder)
+  public UnlockableContent content()
+  public ItemStack[] requirements()
+  public float buildTime()
+  public void write(Writes write)
+  public void set(float x, float y, float rotation)
+  public float x()
+  public float y()
+  public float rotation()
+  public float size()
+  public boolean dump()
+  public void drawShadow(float alpha)
+  public void draw()
+  public TextureRegion icon()
+

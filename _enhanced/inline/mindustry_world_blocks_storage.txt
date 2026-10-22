@@ -1,0 +1,91 @@
+// CoreBlock.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("capacity", (CoreBuild e) -> new Bar(
+            () -> Core.bundle.format("bar.capacity", UI.formatAmount(e.storageCapacity)),
+            () -> Pal.items,
+            () -> e.items.total() / ((float)e.storageCapacity * content.items().count(UnlockableContent::unlockedNow))
+        ));
+    }
+
+// CoreBlock.java : public void init()
+    @Override
+    public void init(){
+        //assign to update clipSize internally
+        lightRadius = 30f + 20f * size;
+        fogRadius = Math.max(fogRadius, (int)(lightRadius / 8f * 3f) + 13);
+        emitLight = true;
+
+        super.init();
+    }
+
+// CoreBlock.java : public void postInit()
+    @Override
+    public void postInit(){
+        super.postInit();
+
+        //sync shown planets with unit spawned
+        unitType.shownPlanets.addAll(shownPlanets);
+    }
+
+// CoreBlock.java : public boolean canBreak(Tile tile)
+    @Override
+    public boolean canBreak(Tile tile){
+        //always keep at least 1 core to not lose the save
+        return state.isEditor() || (state.rules.coreBuildAndConfig && tile.block() instanceof CoreBlock && state.teams.cores(tile.team()).size > 1);
+    }
+
+// CoreBlock.java : public boolean canReplace(Block other)
+    @Override
+    public boolean canReplace(Block other){
+        //coreblocks can upgrade smaller cores
+        return super.canReplace(other) || (other instanceof CoreBlock && size >= other.size && other != this);
+    }
+
+// StorageBlock.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// StorageBlock.java : public static void incinerateEffect(Building self, Building source)
+    public static void incinerateEffect(Building self, Building source){
+        if(Mathf.chance(0.3)){
+            Tile edge = Edges.getFacingEdge(source, self);
+            Tile edge2 = Edges.getFacingEdge(self, source);
+            if(edge != null && edge2 != null && self.wasVisible){
+                Fx.coreBurn.at((edge.worldx() + edge2.worldx())/2f, (edge.worldy() + edge2.worldy())/2f);
+            }
+        }
+    }
+
+// Unloader.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        allItems = content.items().toArray(Item.class);
+    }
+
+// Unloader.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.add(Stat.speed, 60f / speed, StatUnit.itemsSecond);
+    }
+
+// Unloader.java : public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list){
+        drawPlanConfigCenter(plan, plan.config, "unloader-center");
+    }
+
+// Unloader.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        removeBar("items");
+    }
+

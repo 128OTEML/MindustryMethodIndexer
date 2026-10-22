@@ -1,0 +1,2711 @@
+[ {
+  "file" : "Consume.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class (abstract)",
+  "typeDesc" : "An abstract class that defines a type of resource that a block can consume.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public boolean optional",
+    "desc" : "If true, this consumer will not influence consumer validity.",
+    "overloads" : null,
+    "name" : "optional",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean booster",
+    "desc" : "If true, this consumer will be displayed as a boost input.",
+    "overloads" : null,
+    "name" : "booster",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean update",
+    "desc" : "If false, this consumer will still be checked, but it will need to updated manually.",
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Floatf<Building> multiplier",
+    "desc" : "Multiplier for costs.",
+    "overloads" : null,
+    "name" : "multiplier",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : "Apply extra filters to a block.",
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Consume optional(boolean optional, boolean boost)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "optional",
+    "returnType" : "Consume",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "optional",
+      "type" : "boolean"
+    }, {
+      "name" : "boost",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Consume boost()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "boost",
+    "returnType" : "Consume",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 33,
+    "calls" : [ "mindustry.world.consumers.Consume.optional(boolean, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Consume update(boolean update) / public void update(Building build)",
+    "desc" : null,
+    "overloads" : [ "public Consume update(boolean update)", "public void update(Building build)" ],
+    "name" : "update",
+    "returnType" : "Consume",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "update",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean ignore()",
+    "desc" : "@return if true, this consumer will be ignored in the consumer list (no updates or valid() checks)",
+    "overloads" : null,
+    "name" : "ignore",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : "Called when a consumption is triggered manually.",
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : "@return [0, 1] efficiency multiplier based on input.",
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiencyMultiplier(Building build)",
+    "desc" : "@return multiplier for efficiency - this can be above 1.",
+    "overloads" : null,
+    "name" : "efficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 60,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 64,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeCoolant.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeLiquidFilter",
+  "typeDesc" : "A ConsumeLiquidFilter that consumes specific coolant, selected based on stats.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float maxTemp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxTemp",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean allowLiquid",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "allowLiquid",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeCoolant(float amount, boolean allowLiquid, boolean allowGas) / public ConsumeCoolant(float amount) / public ConsumeCoolant()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeCoolant(float amount, boolean allowLiquid, boolean allowGas)", "public ConsumeCoolant(float amount)", "public ConsumeCoolant()" ],
+    "name" : "ConsumeCoolant",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amount",
+      "type" : "float"
+    }, {
+      "name" : "allowLiquid",
+      "type" : "boolean"
+    }, {
+      "name" : "allowGas",
+      "type" : "boolean"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemCharged.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemEfficiency",
+  "typeDesc" : "For mods.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float minCharge",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minCharge",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemCharged(float minCharge) / public ConsumeItemCharged()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemCharged(float minCharge)", "public ConsumeItemCharged()" ],
+    "name" : "ConsumeItemCharged",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minCharge",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float itemEfficiencyMultiplier(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemDynamic.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Func<Building,ItemStack[]> items",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "items",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemDynamic(Func<T,ItemStack[]> items)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumeItemDynamic",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "Func<T,ItemStack[]>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.func.Func.get(P)", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.Element.update(java.lang.Runnable)", "mindustry.world.consumers.ConsumeItemDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void rebuild(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rebuild",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ "arc.scene.Group.clear()", "arc.func.Func.get(P)", "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)", "mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 52,
+    "calls" : [ "arc.func.Func.get(P)", "mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ "mindustry.gen.Building.consumeTriggerValid()", "mindustry.world.modules.ItemModule.has(mindustry.type.ItemStack[], float)", "arc.func.Func.get(P)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemEfficiency.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemFilter",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public ObjectFloatMap<Item> itemDurationMultipliers",
+    "desc" : "This has no effect on the consumer itself, but is used for stat display.",
+    "overloads" : null,
+    "name" : "itemDurationMultipliers",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemEfficiency(Boolf<Item> item) / public ConsumeItemEfficiency()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemEfficiency(Boolf<Item> item)", "public ConsumeItemEfficiency()" ],
+    "name" : "ConsumeItemEfficiency",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Boolf<Item>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.itemEffMultiplier(arc.func.Floatf<mindustry.type.Item>, float, arc.func.Boolf<mindustry.type.Item>, arc.struct.ObjectFloatMap<mindustry.type.Item>)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemExplode.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemFilter",
+  "typeDesc" : "Causes a block to explode when explosive items are moved into it.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float damage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "damage",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float threshold",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "threshold",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Effect explodeEffect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "explodeEffect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemExplode(float threshold) / public ConsumeItemExplode()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemExplode(float threshold)", "public ConsumeItemExplode()" ],
+    "name" : "ConsumeItemExplode",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "threshold",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)", "arc.math.Mathf.chance(double)", "mindustry.gen.Building.delta()", "arc.math.Mathf.clamp(float)", "mindustry.gen.Building.damage(float)", "mindustry.entities.Effect.at(float, float)", "arc.math.Mathf.range(float)", "arc.Events.fire(java.lang.Enum<T>)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 49,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemExplosive.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemEfficiency",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float minExplosiveness",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minExplosiveness",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemExplosive(float minCharge) / public ConsumeItemExplosive()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemExplosive(float minCharge)", "public ConsumeItemExplosive()" ],
+    "name" : "ConsumeItemExplosive",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minCharge",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float itemEfficiencyMultiplier(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemFilter.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Boolf<Item> filter",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemFilter(Boolf<Item> item) / public ConsumeItemFilter()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemFilter(Boolf<Item> item)", "public ConsumeItemFilter()" ],
+    "name" : "ConsumeItemFilter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Boolf<Item>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)", "mindustry.core.ContentLoader.items()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 35,
+    "calls" : [ "arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)", "mindustry.core.ContentLoader.items()", "arc.func.Boolf.get(T)", "mindustry.ctype.UnlockableContent.unlockedNow()", "mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "build.items.has", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.ui.MultiReqImage.MultiReqImage()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 48,
+    "calls" : [ "mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)", "mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 56,
+    "calls" : [ "mindustry.gen.Building.consumeTriggerValid()", "mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Item getConsumed(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConsumed",
+    "returnType" : "Item",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 61,
+    "calls" : [ "mindustry.core.ContentLoader.items()", "mindustry.core.ContentLoader.item(int)", "mindustry.world.modules.ItemModule.has(mindustry.type.Item)", "arc.func.Boolf.get(T)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 71,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.items(float, arc.func.Boolf<mindustry.type.Item>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiencyMultiplier(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 76,
+    "calls" : [ "mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)", "mindustry.world.consumers.ConsumeItemFilter.itemEfficiencyMultiplier(mindustry.type.Item)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float itemEfficiencyMultiplier(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemFlammable.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemEfficiency",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float minFlammability",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minFlammability",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemFlammable(float minFlammability) / public ConsumeItemFlammable()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemFlammable(float minFlammability)", "public ConsumeItemFlammable()" ],
+    "name" : "ConsumeItemFlammable",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minFlammability",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float itemEfficiencyMultiplier(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemList.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemFilter",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public ObjectFloatMap<Item> itemMultipliers",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemMultipliers",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemList(Item items) / public ConsumeItemList()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemList(Item items)", "public ConsumeItemList()" ],
+    "name" : "ConsumeItemList",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "Item"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ "arc.struct.ObjectFloatMap.put(K, float)", "arc.struct.ObjectFloatMap.containsKey(K)" ],
+    "callCount" : 2
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setMultipliers(Object objects)",
+    "desc" : "Initializes item efficiency multiplier map.",
+    "overloads" : null,
+    "name" : "setMultipliers",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "objects",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ "arc.struct.ObjectFloatMap.put(K, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiencyMultiplier(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ "mindustry.world.consumers.ConsumeItemFilter.getConsumed(mindustry.gen.Building)", "arc.struct.ObjectFloatMap.get(K, float)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItemRadioactive.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeItemEfficiency",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float minRadioactivity",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minRadioactivity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItemRadioactive(float minRadioactivity) / public ConsumeItemRadioactive()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeItemRadioactive(float minRadioactivity)", "public ConsumeItemRadioactive()" ],
+    "name" : "ConsumeItemRadioactive",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minRadioactivity",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float itemEfficiencyMultiplier(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "itemEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeItems.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final ItemStack items",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "items",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeItems(ItemStack[] items) / protected ConsumeItems()",
+    "desc" : "Mods.",
+    "overloads" : [ "public ConsumeItems(ItemStack[] items)", "protected ConsumeItems()" ],
+    "name" : "ConsumeItems",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "items",
+      "type" : "ItemStack[]"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)", "mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 50,
+    "calls" : [ "mindustry.gen.Building.consumeTriggerValid()", "mindustry.world.modules.ItemModule.has(mindustry.type.ItemStack[], float)", "arc.func.Floatf.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 55,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.items(mindustry.type.ItemStack...)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquid.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeLiquidBase",
+  "typeDesc" : "TODO replace with ConsumeLiquids?",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Liquid liquid",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquid",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquid(Liquid liquid, float amount) / protected ConsumeLiquid()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeLiquid(Liquid liquid, float amount)", "protected ConsumeLiquid()" ],
+    "name" : "ConsumeLiquid",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "mindustry.world.consumers.ConsumeLiquidBase.apply(mindustry.world.Block)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Cell.top()", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)", "mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)", "mindustry.gen.Building.edelta()", "arc.func.Floatf.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 41,
+    "calls" : [ "mindustry.gen.Building.edelta()", "mindustry.gen.Building.efficiencyScale()", "java.lang.Math.min(float, float)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 49,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.type.Liquid, float, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean consumes(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "consumes",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 54,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquidBase.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class (abstract) extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float amount",
+    "desc" : "amount used per frame",
+    "overloads" : null,
+    "name" : "amount",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquidBase(float amount) / public ConsumeLiquidBase()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeLiquidBase(float amount)", "public ConsumeLiquidBase()" ],
+    "name" : "ConsumeLiquidBase",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public abstract boolean consumes(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "consumes",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquidFilter.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeLiquidBase",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Boolf<Liquid> filter",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquidFilter(Boolf<Liquid> liquid, float amount) / public ConsumeLiquidFilter()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeLiquidFilter(Boolf<Liquid> liquid, float amount)", "public ConsumeLiquidFilter()" ],
+    "name" : "ConsumeLiquidFilter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Boolf<Liquid>"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)", "mindustry.core.ContentLoader.liquids()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 34,
+    "calls" : [ "arc.struct.Seq.select(arc.func.Boolf<T>)", "mindustry.core.ContentLoader.liquids()", "mindustry.type.Liquid.isHidden()", "arc.func.Boolf.get(T)", "arc.struct.Seq.each(arc.func.Cons<? super T>)", "mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)", "mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.ui.MultiReqImage.MultiReqImage()", "mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)", "mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)", "mindustry.gen.Building.edelta()", "arc.func.Floatf.get(T)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)", "mindustry.gen.Building.edelta()", "java.lang.Math.min(float, float)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiencyMultiplier(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ "mindustry.world.consumers.ConsumeLiquidFilter.getConsumed(mindustry.gen.Building)", "mindustry.world.consumers.ConsumeLiquidFilter.liquidEfficiencyMultiplier(mindustry.type.Liquid)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Liquid getConsumed(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getConsumed",
+    "returnType" : "Liquid",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 65,
+    "calls" : [ "arc.func.Boolf.get(T)", "mindustry.world.modules.LiquidModule.current()", "mindustry.world.modules.LiquidModule.currentAmount()", "mindustry.core.ContentLoader.liquids()", "arc.struct.Seq.get(int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 81,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.liquids(arc.func.Boolf<mindustry.type.Liquid>, float, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean consumes(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "consumes",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 86,
+    "calls" : [ "arc.func.Boolf.get(T)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float liquidEfficiencyMultiplier(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquidFlammable.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumeLiquidFilter",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float minFlammability",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "minFlammability",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquidFlammable(float minFlammability, float amount) / public ConsumeLiquidFlammable(float amount) / public ConsumeLiquidFlammable()",
+    "desc" : null,
+    "overloads" : [ "public ConsumeLiquidFlammable(float minFlammability, float amount)", "public ConsumeLiquidFlammable(float amount)", "public ConsumeLiquidFlammable()" ],
+    "name" : "ConsumeLiquidFlammable",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "minFlammability",
+      "type" : "float"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.liquidEffMultiplier(arc.func.Floatf<mindustry.type.Liquid>, float, arc.func.Boolf<mindustry.type.Liquid>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float liquidEfficiencyMultiplier(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidEfficiencyMultiplier",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquids.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final LiquidStack liquids",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquids",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquids(LiquidStack[] liquids) / protected ConsumeLiquids()",
+    "desc" : "Mods.",
+    "overloads" : [ "public ConsumeLiquids(LiquidStack[] liquids)", "protected ConsumeLiquids()" ],
+    "name" : "ConsumeLiquids",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquids",
+      "type" : "LiquidStack[]"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "arc.func.Floatf.get(T)", "mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)", "mindustry.gen.Building.edelta()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "arc.func.Floatf.get(T)", "mindustry.gen.Building.edelta()", "mindustry.gen.Building.efficiencyScale()", "java.lang.Math.min(float, float)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.liquids(float, boolean, mindustry.type.LiquidStack...)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumeLiquidsDynamic.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Func<Building,LiquidStack[]> liquids",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquids",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumeLiquidsDynamic(Func<T,LiquidStack[]> liquids)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumeLiquidsDynamic",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquids",
+      "type" : "Func<T,LiquidStack[]>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 24,
+    "calls" : [ "arc.func.Func.get(P)", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.Element.update(java.lang.Runnable)", "mindustry.world.consumers.ConsumeLiquidsDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void rebuild(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rebuild",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.scene.Group.clear()", "arc.func.Func.get(P)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.graphics.g2d.TextureRegion, arc.func.Boolp)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 51,
+    "calls" : [ "arc.func.Floatf.get(T)", "arc.func.Func.get(P)", "mindustry.world.modules.LiquidModule.remove(mindustry.type.Liquid, float)", "mindustry.gen.Building.edelta()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 59,
+    "calls" : [ "mindustry.gen.Building.edelta()", "arc.func.Func.get(P)", "java.lang.Math.min(float, float)", "mindustry.world.modules.LiquidModule.get(mindustry.type.Liquid)" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePayloadDynamic.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Func<Building,Seq<PayloadStack>> payloads",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "payloads",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePayloadDynamic(Func<T,Seq<PayloadStack>> payloads)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumePayloadDynamic",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "payloads",
+      "type" : "Func<T,Seq<PayloadStack>>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 19,
+    "calls" : [ "arc.func.Floatf.get(T)", "arc.func.Func.get(P)", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "mindustry.gen.Building.getPayloads()", "java.lang.Math.round(float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ "arc.func.Floatf.get(T)", "arc.func.Func.get(P)", "mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent, int)", "mindustry.gen.Building.getPayloads()", "java.lang.Math.round(float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 38,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ "arc.func.Func.get(P)", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.Element.update(java.lang.Runnable)", "mindustry.world.consumers.ConsumePayloadDynamic.rebuild(mindustry.gen.Building, arc.scene.ui.layout.Table)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void rebuild(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rebuild",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ "mindustry.gen.Building.getPayloads()", "arc.func.Func.get(P)", "arc.scene.Group.clear()", "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 13
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePayloadFilter.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected final UnlockableContent fitting",
+    "desc" : "cache fitting blocks to prevent search over all blocks later",
+    "overloads" : null,
+    "name" : "fitting",
+    "returnType" : null,
+    "modifiers" : [ "protected", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Boolf<UnlockableContent> filter",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "filter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePayloadFilter(Boolf<UnlockableContent> filter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumePayloadFilter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "filter",
+      "type" : "Boolf<UnlockableContent>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ "arc.struct.Seq.toArray(java.lang.Class)", "arc.struct.Seq.select(arc.func.Boolf<T>)", "arc.struct.Seq.add(arc.struct.Seq<? extends T>)", "arc.struct.Seq.as()", "arc.struct.Seq.copy()", "mindustry.core.ContentLoader.blocks()", "mindustry.core.ContentLoader.units()" ],
+    "callCount" : 7
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "mindustry.gen.Building.getPayloads()", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 37,
+    "calls" : [ "mindustry.gen.Building.getPayloads()", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 48,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "mindustry.world.meta.StatValues.content(arc.struct.Seq<mindustry.ctype.UnlockableContent>)", "arc.struct.Seq.Seq(T[])" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 53,
+    "calls" : [ "mindustry.gen.Building.getPayloads()", "arc.struct.Seq.each(arc.func.Boolf<? super T>, arc.func.Cons<E>)", "mindustry.core.ContentLoader.blocks()", "arc.func.Boolf.get(T)", "mindustry.ctype.UnlockableContent.unlockedNow()", "mindustry.ui.MultiReqImage.add(mindustry.ui.ReqImage)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.ui.MultiReqImage.MultiReqImage()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 12
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePayloads.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Seq<PayloadStack> payloads",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "payloads",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePayloads(Seq<PayloadStack> payloads)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumePayloads",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "payloads",
+      "type" : "Seq<PayloadStack>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.func.Floatf.get(T)", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "mindustry.gen.Building.getPayloads()", "java.lang.Math.round(float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void trigger(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "trigger",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ "arc.func.Floatf.get(T)", "mindustry.type.PayloadSeq.remove(mindustry.ctype.UnlockableContent, int)", "mindustry.gen.Building.getPayloads()", "java.lang.Math.round(float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, mindustry.world.meta.StatValue)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.meta.StatValues.stack(mindustry.type.PayloadStack)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Cell.padLeft(float)", "arc.scene.ui.layout.Table.add(java.lang.CharSequence)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void build(Building build, Table table)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    }, {
+      "name" : "table",
+      "type" : "Table"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 47,
+    "calls" : [ "mindustry.gen.Building.getPayloads()", "arc.scene.ui.layout.Cell.left()", "arc.scene.ui.layout.Table.table(arc.func.Cons<arc.scene.ui.layout.Table>)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Table.add(T)", "mindustry.world.meta.StatValues.stack(mindustry.ctype.UnlockableContent, int)", "java.lang.Math.round(float)", "arc.func.Floatf.get(T)", "mindustry.type.PayloadSeq.contains(mindustry.ctype.UnlockableContent, int)", "arc.scene.ui.layout.Table.row()", "mindustry.ui.ReqImage.ReqImage(arc.scene.Element, arc.func.Boolp)" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePower.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.Consume",
+  "typeDesc" : "Consumer class for blocks which consume power while being connected to a power graph.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float usage",
+    "desc" : "The maximum amount of power which can be processed per tick.",
+    "overloads" : null,
+    "name" : "usage",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float capacity",
+    "desc" : "The maximum power capacity in power units.",
+    "overloads" : null,
+    "name" : "capacity",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean buffered",
+    "desc" : "True if the module can store power.",
+    "overloads" : null,
+    "name" : "buffered",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePower(float usage, float capacity, boolean buffered) / protected ConsumePower()",
+    "desc" : null,
+    "overloads" : [ "public ConsumePower(float usage, float capacity, boolean buffered)", "protected ConsumePower()" ],
+    "name" : "ConsumePower",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "usage",
+      "type" : "float"
+    }, {
+      "name" : "capacity",
+      "type" : "float"
+    }, {
+      "name" : "buffered",
+      "type" : "boolean"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void apply(Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apply",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean ignore()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ignore",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float efficiency(Building build)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "efficiency",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "build",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 42,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float requestedPower(Building entity)",
+    "desc" : "Retrieves the amount of power which is requested for the given block and entity.",
+    "overloads" : null,
+    "name" : "requestedPower",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ "mindustry.gen.Building.shouldConsume()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePowerCondition.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumePower",
+  "typeDesc" : "A power consumer that only activates sometimes.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final Boolf<Building> consume",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "consume",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePowerCondition(float usage, Boolf<Building> consume)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ConsumePowerCondition",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "usage",
+      "type" : "float"
+    }, {
+      "name" : "consume",
+      "type" : "Boolf<Building>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float requestedPower(Building entity)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "requestedPower",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "arc.func.Boolf.get(T)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ConsumePowerDynamic.java",
+  "pkg" : "mindustry.world.consumers",
+  "type" : "Java class extends mindustry.world.consumers.ConsumePower",
+  "typeDesc" : "A power consumer that uses a dynamic amount of power.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final Floatf<Building> usage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "usage",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float displayedPowerUsage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "displayedPowerUsage",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ConsumePowerDynamic(Floatf<Building> usage) / public ConsumePowerDynamic(float displayed, Floatf<Building> usage)",
+    "desc" : null,
+    "overloads" : [ "public ConsumePowerDynamic(Floatf<Building> usage)", "public ConsumePowerDynamic(float displayed, Floatf<Building> usage)" ],
+    "name" : "ConsumePowerDynamic",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "usage",
+      "type" : "Floatf<Building>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float requestedPower(Building entity)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "requestedPower",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ "arc.func.Floatf.get(T)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void display(Stats stats)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "display",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stats",
+      "type" : "Stats"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ "mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+} ]

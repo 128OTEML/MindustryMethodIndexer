@@ -1,0 +1,718 @@
+// ClassLoaderCloser.java : public static void close(ClassLoader loader) throws Exception
+    public static void close(ClassLoader loader) throws Exception{
+        if(loader instanceof URLClassLoader u){
+            u.close();
+        }
+    }
+
+// ContentParser.java : private String getString(JsonValue value, String key)
+    private String getString(JsonValue value, String key){
+        if(value.has(key)){
+            return value.getString(key);
+        }else{
+            throw new IllegalArgumentException("You are missing a \"" + key + "\". It must be added before the file can be parsed.");
+        }
+    }
+
+// ContentParser.java : private String getType(JsonValue value)
+    private String getType(JsonValue value){
+        return getString(value, "type");
+    }
+
+// ContentParser.java : private T find(ContentType type, String name)
+    private <T extends Content> T find(ContentType type, String name){
+        Content c = Vars.content.getByName(type, name);
+        if(c == null && currentMod != null) c = Vars.content.getByName(type, currentMod.name + "-" + name);
+        if(c == null) throw new IllegalArgumentException("No " + type + " found with name '" + name + "'");
+        return (T)c;
+    }
+
+// ContentParser.java : private void attempt(Runnable run)
+    private void attempt(Runnable run){
+        try{
+            run.run();
+        }catch(Throwable t){
+            //don't overwrite double errors
+            markError(currentContent, t);
+        }
+    }
+
+// ContentParser.java : public void finishParsing()
+    public void finishParsing(){
+        reads.each(this::attempt);
+        postreads.each(this::attempt);
+        reads.clear();
+        postreads.clear();
+        toBeParsed.clear();
+        currentMod = null;
+        currentFile = null;
+    }
+
+// ContentParser.java : public void checkInit()
+    public void checkInit(){
+        if(contentTypes.isEmpty()){
+            init();
+        }
+    }
+
+// ContentParser.java : public void markError(Content content, LoadedMod mod, Fi file, Throwable error) / public void markError(Content content, Throwable error)
+    public void markError(Content content, LoadedMod mod, Fi file, Throwable error){
+        Log.err("Error loading content: " + file, error);
+
+        content.minfo.mod = mod;
+        content.minfo.sourceFile = file;
+        content.minfo.error = makeError(error, file);
+        content.minfo.baseError = error;
+        if(mod != null){
+            mod.erroredContent.add(content);
+        }
+    }
+
+// ContentParser.java : private T locate(ContentType type, String name)
+    private <T extends MappableContent> T locate(ContentType type, String name){
+        T first = Vars.content.getByName(type, name); //try vanilla replacement
+        return first != null ? first : Vars.content.getByName(type, currentMod == null ? name : currentMod.name + "-" + name);
+    }
+
+// ContentParser.java : private T locateAny(String name)
+    private <T extends MappableContent> T locateAny(String name){
+        for(ContentType t : ContentType.all){
+            var out = locate(t, name);
+            if(out != null){
+                return (T)out;
+            }
+        }
+        return null;
+    }
+
+// ContentParser.java : private GenericMesh[] parseMeshes(Planet planet, JsonValue array)
+    private GenericMesh[] parseMeshes(Planet planet, JsonValue array){
+        var res = new GenericMesh[array.size];
+        for(int i = 0; i < array.size; i++){
+            //yes get is O(n) but it's practically irrelevant here
+            res[i] = parseMesh(planet, array.get(i));
+        }
+        return res;
+    }
+
+// ContentParser.java : T make(Class<T> type) / private T make(Class<T> type, String name)
+    <T> T make(Class<T> type){
+        try{
+            Constructor<T> cons = type.getDeclaredConstructor();
+            cons.setAccessible(true);
+            return cons.newInstance();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// ContentParser.java : Prov<UnitController> resolveController(String type)
+    Prov<UnitController> resolveController(String type){
+        //this is used as a captured value to avoid parsing it multiple times
+        var controller = supply(resolve(type, FlyingAI.class));
+        return controller::get;
+    }
+
+// ContentParser.java : Object field(Class<?> type, JsonValue value) / private Object field(Class<?> type, String name)
+    Object field(Class<?> type, JsonValue value){
+        return field(type, value.asString());
+    }
+
+// ContentParser.java : Object fieldOpt(Class<?> type, JsonValue value)
+    Object fieldOpt(Class<?> type, JsonValue value){
+        try{
+            return type.getField(value.asString()).get(null);
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+// ContentParser.java : private void readFields(Object object, JsonValue jsonMap, boolean stripType) / void readFields(Object object, JsonValue jsonMap)
+    private void readFields(Object object, JsonValue jsonMap, boolean stripType){
+        if(stripType) jsonMap.remove("type");
+        readFields(object, jsonMap);
+    }
+
+// ContentParser.java : Class<T> resolve(String base) / Class<T> resolve(String base, Class<T> def) / Class<T> resolve(String base, Class<T> def, boolean warn)
+    <T> Class<T> resolve(String base){
+        return resolve(base, null);
+    }
+
+// ContentParser.java : void warn(String string, Object format)
+    void warn(String string, Object... format){
+        warnContext(currentContent, currentFile, string, format);
+    }
+
+// ContentParser.java : void warnContext(Content currentContent, Fi currentFile, String string, Object format)
+    void warnContext(@Nullable Content currentContent, @Nullable Fi currentFile, String string, Object... format){
+        Log.warn(string, format);
+    }
+
+// ContentParser.java : void onNewInstance(Object object, Class<?> type)
+    void onNewInstance(Object object, Class<?> type){}
+
+// ContentParser.java : public Json getJson()
+    public Json getJson(){
+        checkInit();
+        return parser;
+    }
+
+// DataAssetCache.java : public void load()
+    public void load(){
+        //TODO: is this necessary? you could just resolve the file on the filesystem instead...
+        for(Fi file : Vars.assetCacheDirectory.list()){
+            hashToFile.put(file.name(), file);
+        }
+    }
+
+// DataAssetCache.java : public synchronized void addOverride(String hash, Fi source)
+    public synchronized void addOverride(String hash, Fi source){
+        hashToFile.put(hash, source);
+    }
+
+// DataAssetCache.java : public synchronized byte[] add(byte[] bytes)
+    public synchronized byte[] add(byte[] bytes){
+        byte[] hash = Streams.sha256(bytes);
+        String name = encodeHash(hash);
+        Fi file = Vars.assetCacheDirectory.child(name);
+        //avoid unnecessary disk writes when adding an asset that already exists. TODO: it's possible the file may be corrupted even if length matches?
+        if(file.length() != bytes.length){
+            file.writeBytes(bytes);
+        }
+        hashToFile.put(name, file);
+        return hash;
+    }
+
+// DataAssetCache.java : public boolean has(String hash)
+    public boolean has(String hash){
+        return get(hash) != null;
+    }
+
+// DataAssetCache.java : public synchronized Fi get(String shaHash) / public Fi get(byte[] shaHash)
+    public synchronized @Nullable Fi get(String shaHash){
+        if(shaHash == null) return null;
+        return hashToFile.get(shaHash);
+    }
+
+// DataAudioLoader.java : public String getName(Fi file)
+    public @Nullable String getName(Fi file){
+        return fileToName.get(file);
+    }
+
+// DataBundleLoader.java : public void unload()
+    public void unload(){
+        originalProperties.each((bundle, properties) -> bundle.getProperties().set(properties));
+        originalProperties.clear();
+    }
+
+// DataImagePacker.java : private void removeTexture(String name)
+    private void removeTexture(String name){
+        Texture texture = serverImages.remove(name);
+        if(texture != null){
+            Core.atlas.getRegionMap().remove(serverRegionPrefix + name);
+            Core.atlas.getTextures().remove(texture);
+            texture.dispose();
+            Core.atlas.getDrawables().remove(serverRegionPrefix + name);
+        }
+    }
+
+// DataImagePacker.java : public void removeTextureQueued(String name)
+    public void removeTextureQueued(String name){
+        textureExecutor.execute(() -> Core.app.post(() -> removeTexture(name)));
+    }
+
+// DataManager.java : public String getAudioName(Fi file)
+    public @Nullable String getAudioName(Fi file){
+        return file == null ? null : soundLoader.getName(file);
+    }
+
+// DataManager.java : public void reloadContent(boolean reloadArrays)
+    public void reloadContent(boolean reloadArrays){
+
+        patcher.apply(getPatches(), getContent(), reloadArrays);
+
+        rebuildOrderedAssets();
+    }
+
+// DataManager.java : public void reloadPatches(Seq<PatchAsset> patches)
+    public void reloadPatches(Seq<PatchAsset> patches){
+        if(patches != getPatches()) getPatches().set(patches);
+
+        patcher.unapply();
+        patcher.apply(patches, getContent());
+
+        rebuildOrderedAssets();
+    }
+
+// DataManager.java : public void reloadImages() / public void reloadImages(Seq<ImageAsset> images)
+    public void reloadImages(){
+        packer.unload();
+        packer.pack(getImages());
+
+        rebuildOrderedAssets();
+    }
+
+// DataManager.java : public void addTexture(String name, byte[] pngData)
+    public void addTexture(String name, byte[] pngData){
+        if(!Vars.headless) packer.addTexture(name, pngData);
+    }
+
+// DataManager.java : public void removeTexture(String name)
+    public void removeTexture(String name){
+        if(!Vars.headless) packer.removeTextureQueued(name);
+    }
+
+// DataManager.java : public void reloadAudio()
+    public void reloadAudio(){
+        soundLoader.unload();
+        soundLoader.load(getSounds(), getMusic());
+
+        rebuildOrderedAssets();
+    }
+
+// DataManager.java : public Seq<DataAsset> getMissingAssets()
+    public Seq<DataAsset> getMissingAssets(){
+        return orderedExternalAssets.select(d -> !d.isCached());
+    }
+
+// DataManager.java : public Seq<DataAsset> getAllAssets()
+    public Seq<DataAsset> getAllAssets(){
+        return orderedAssets;
+    }
+
+// DataManager.java : public boolean hasAssetPath(DataAssetType type, String path)
+    public boolean hasAssetPath(DataAssetType type, String path){
+        return getAssets(type).contains(a -> a.path.equals(path));
+    }
+
+// DataManager.java : public boolean hasAssetName(DataAssetType type, String name)
+    public boolean hasAssetName(DataAssetType type, String name){
+        return getAssets(type).contains(a -> a.name.equals(name));
+    }
+
+// DataManager.java : public boolean hasAssetNameOrPath(DataAssetType type, String name, String path)
+    public boolean hasAssetNameOrPath(DataAssetType type, String name, String path){
+        return getAssets(type).contains(a -> a.name.equals(name) || a.path.equals(path));
+    }
+
+// DataManager.java : public boolean hasExternalAssets()
+    public boolean hasExternalAssets(){
+        return orderedExternalAssets.size > 0;
+    }
+
+// DataManager.java : public Seq<DataAsset> getAllExternalAssets()
+    public Seq<DataAsset> getAllExternalAssets(){
+        return orderedExternalAssets;
+    }
+
+// DataManager.java : public boolean isPatched(Object content)
+    public boolean isPatched(Object content){
+        return patcher.isPatched(content);
+    }
+
+// DataManager.java : public Seq<T> getAssets(DataAssetType type)
+    public <T extends DataAsset> Seq<T> getAssets(DataAssetType type){
+        return assets.get(type, Seq::new).as();
+    }
+
+// DataManager.java : public void clearGeneratedImages()
+    public void clearGeneratedImages(){
+        getImages().removeAll(ImageAsset::isGenerated);
+    }
+
+// DataManager.java : public Seq<ImageAsset> getImages()
+    public Seq<ImageAsset> getImages(){
+        return getAssets(DataAssetType.image);
+    }
+
+// DataManager.java : public Seq<PatchAsset> getPatches()
+    public Seq<PatchAsset> getPatches(){
+        return getAssets(DataAssetType.patch);
+    }
+
+// DataManager.java : public Seq<MusicAsset> getMusic()
+    public Seq<MusicAsset> getMusic(){
+        return getAssets(DataAssetType.music);
+    }
+
+// DataManager.java : public Seq<SoundAsset> getSounds()
+    public Seq<SoundAsset> getSounds(){
+        return getAssets(DataAssetType.sound);
+    }
+
+// DataManager.java : public Seq<BundleAsset> getBundles()
+    public Seq<BundleAsset> getBundles(){
+        return getAssets(DataAssetType.bundle);
+    }
+
+// DataManager.java : public Seq<ContentAsset> getContent()
+    public Seq<ContentAsset> getContent(){
+        return getAssets(DataAssetType.content);
+    }
+
+// DataPatcher.java : public boolean isPatched(Object object)
+    public boolean isPatched(Object object){
+        return usedpatches.contains(object);
+    }
+
+// DataPatcher.java : public void apply(Seq<PatchAsset> patches, Seq<ContentAsset> content) / public void apply(Seq<PatchAsset> patches, Seq<ContentAsset> content, boolean reloadContentWorld)
+    public void apply(Seq<PatchAsset> patches, Seq<ContentAsset> content){
+        apply(patches, content, true);
+    }
+
+// DataPatcher.java : public void unapply() / public void unapply(boolean reloadContentWorld)
+    public void unapply(){
+        unapply(true);
+    }
+
+// DataPatcher.java : public Seq<Content> getAddedContent()
+    public Seq<Content> getAddedContent(){
+        return addedContent;
+    }
+
+// DataPatcher.java : void callContentRemove()
+    void callContentRemove(){
+        for(var arr : Vars.content.getContentMap()){
+            for(var value : arr){
+                if(value.isModded() && value.minfo.mod == dpMod){
+                    value.removed = true;
+                    value.removeContent();
+                }
+            }
+        }
+    }
+
+// DataPatcher.java : private static Block getReplacementBlock(Block existing)
+    private static Block getReplacementBlock(Block existing){
+        Block other = Vars.content.block(existing.name);
+        if(other == null) return Blocks.air;
+        //make sure they are type compatible
+        if(other.getClass() == existing.getClass()){
+            return other;
+        }
+        //could not find an equivalent, clear it
+        return Blocks.air;
+    }
+
+// DataPatcher.java : void visit(Object object)
+    void visit(Object object){
+        visitStack.add(object);
+        if(object instanceof Content c && usedpatches.add(c)){
+            after(c::afterPatch);
+        }
+    }
+
+// DataPatcher.java : boolean checkField(Field field)
+    boolean checkField(Field field){
+        if(field.isAnnotationPresent(NoPatch.class) || field.getDeclaringClass().isAnnotationPresent(NoPatch.class)){
+            warn("Field '@' cannot be edited.", field);
+            return true;
+        }
+        return false;
+    }
+
+// DataPatcher.java : void reset(Runnable run)
+    void reset(Runnable run){
+        resetters.add(run);
+    }
+
+// DataPatcher.java : Object convertKeyType(String string, Class<?> type)
+    Object convertKeyType(String string, Class<?> type){
+        return parser.getJson().fromJson(type, string);
+    }
+
+// DataPatcher.java : void warn(String error, Object fmt)
+    void warn(String error, Object... fmt){
+        warnContext(null, null, error, fmt);
+    }
+
+// DataPatcher.java : void after(Runnable run)
+    void after(Runnable run){
+        afterCallbacks.add(run);
+    }
+
+// DataPatcher.java : static Object copyArray(Object object)
+    static Object copyArray(Object object){
+        if(object instanceof int[] i) return i.clone();
+        else if(object instanceof long[] i) return i.clone();
+        else if(object instanceof short[] i) return i.clone();
+        else if(object instanceof byte[] i) return i.clone();
+        else if(object instanceof boolean[] i) return i.clone();
+        else if(object instanceof char[] i) return i.clone();
+        else if(object instanceof float[] i) return i.clone();
+        else if(object instanceof double[] i) return i.clone();
+        else return ((Object[])object).clone();
+    }
+
+// Mod.java : public Fi getConfigFolder()
+    public Fi getConfigFolder(){
+        return Vars.mods.getConfigFolder(this);
+    }
+
+// Mod.java : public Fi getConfig()
+    public Fi getConfig(){
+        return Vars.mods.getConfig(this);
+    }
+
+// Mod.java : public void init()
+    public void init(){
+
+    }
+
+// Mod.java : public void loadContent()
+    public void loadContent(){
+
+    }
+
+// Mod.java : public void packSprites(MultiPacker packer)
+    public void packSprites(MultiPacker packer){
+
+    }
+
+// Mod.java : public void registerServerCommands(CommandHandler handler)
+    public void registerServerCommands(CommandHandler handler){
+
+    }
+
+// Mod.java : public void registerClientCommands(CommandHandler handler)
+    public void registerClientCommands(CommandHandler handler){
+
+    }
+
+// ModClassLoader.java : public void addChild(ClassLoader child)
+    public void addChild(ClassLoader child){
+        children.add(child);
+    }
+
+// ModListing.java : public ModRelease getMatchingRelease()
+    public @Nullable ModRelease getMatchingRelease(){
+        if(releases == null) return null;
+        for(var entry : releases){
+            if(ModsDialog.matchesGameVersion(ModsDialog.parseVersion(entry.key))){
+                return entry.value;
+            }
+        }
+        return null;
+    }
+
+// Mods.java : public ClassLoader mainLoader()
+    public ClassLoader mainLoader(){
+        return mainLoader;
+    }
+
+// Mods.java : public Fi getConfigFolder(Mod mod)
+    public Fi getConfigFolder(Mod mod){
+        ModMeta load = metas.get(mod.getClass());
+        if(load == null) throw new IllegalArgumentException("Mod is not loaded yet (or missing)!");
+        Fi result = modDirectory.child(load.name);
+        result.mkdirs();
+        return result;
+    }
+
+// Mods.java : public Fi getConfig(Mod mod)
+    public Fi getConfig(Mod mod){
+        return getConfigFolder(mod).child("config.json");
+    }
+
+// Mods.java : public LoadedMod getMod(String name) / public LoadedMod getMod(Class<? extends Mod> type)
+    public @Nullable LoadedMod getMod(String name){
+        return mods.find(m -> m.name.equals(name));
+    }
+
+// Mods.java : public LoadedMod importMod(Fi file) throws IOException / public LoadedMod importMod(Fi file, boolean forceEnable) throws IOException
+    public LoadedMod importMod(Fi file) throws IOException{
+        return importMod(file, true);
+    }
+
+// Mods.java : private void loadIcons()
+    private void loadIcons(){
+        for(LoadedMod mod : mods){
+            loadIcon(mod);
+        }
+    }
+
+// Mods.java : public void loadSync()
+    @Override
+    public void loadSync(){
+        loadIcons();
+    }
+
+// Mods.java : private PageType getPage(Fi file)
+    private PageType getPage(Fi file){
+        String path = file.path();
+        return
+            path.contains("sprites/blocks/environment") || path.contains("sprites-override/blocks/environment") ? PageType.environment :
+            path.contains("sprites/rubble") || path.contains("sprites-override/rubble") ? PageType.rubble :
+            path.contains("sprites/ui") || path.contains("sprites-override/ui") ? PageType.ui :
+            PageType.main;
+    }
+
+// Mods.java : public Scripts getScripts()
+    public Scripts getScripts(){
+        if(scripts == null) scripts = platform.createScripts();
+        return scripts;
+    }
+
+// Mods.java : public boolean hasScripts()
+    public boolean hasScripts(){
+        return scripts != null;
+    }
+
+// Mods.java : public boolean requiresReload()
+    public boolean requiresReload(){
+        return requiresReload;
+    }
+
+// Mods.java : public boolean skipModLoading()
+    public boolean skipModLoading(){
+        return failedToLaunch && Core.settings.getBool("modcrashdisable", true);
+    }
+
+// Mods.java : private void sortMods()
+    private void sortMods(){
+        //sort mods to make sure servers handle them properly and they appear correctly in the dialog
+        mods.sort(Structs.comps(Structs.comparingInt(m -> m.state.ordinal()), Structs.comparing(m -> m.name)));
+    }
+
+// Mods.java : public Seq<LoadedMod> orderedMods()
+    public Seq<LoadedMod> orderedMods(){
+        //update cache if it's "dirty"/empty
+        if(lastOrderedMods == null){
+            //only enabled mods participate; this state is resolved in load()
+            Seq<LoadedMod> enabled = mods.select(LoadedMod::enabled);
+
+            var mapping = enabled.asMap(m -> m.meta.internalName);
+            lastOrderedMods = resolveDependencies(enabled.map(m -> m.meta)).orderedKeys().map(mapping::get);
+        }
+        return lastOrderedMods;
+    }
+
+// Mods.java : public LoadedMod locateMod(String name)
+    public LoadedMod locateMod(String name){
+        return mods.find(mod -> mod.enabled() && mod.name.equals(name));
+    }
+
+// Mods.java : private void downloadDependencies(Seq<String> toImport)
+    private void downloadDependencies(Seq<String> toImport){
+        ui.mods.browser.downloadDependencies(toImport, results -> requiresReload |= results.any());
+    }
+
+// Mods.java : public boolean hasContentErrors()
+    public boolean hasContentErrors(){
+        return mods.contains(LoadedMod::hasContentErrors) || (scripts != null && scripts.hasErrored());
+    }
+
+// Mods.java : public void handleContentError(Content content, Throwable error)
+    public void handleContentError(Content content, Throwable error){
+        parser.markError(content, error);
+    }
+
+// Mods.java : public void addParseListener(ParseListener hook)
+    public void addParseListener(ParseListener hook){
+        parser.listeners.add(hook);
+    }
+
+// Mods.java : public Seq<String> getModStrings()
+    public Seq<String> getModStrings(){
+        return mods.select(l -> !l.meta.hidden && l.enabled()).map(l -> l.name + ":" + l.meta.version);
+    }
+
+// Mods.java : public void setEnabled(LoadedMod mod, boolean enabled)
+    public void setEnabled(LoadedMod mod, boolean enabled){
+        if(mod.enabled() != enabled){
+            Core.settings.put("mod-" + mod.name + "-enabled", enabled);
+            Core.settings.put("mod-" + mod.name + "-failed", false);
+            requiresReload = true;
+            mod.state = enabled ? ModState.enabled : ModState.disabled;
+            mods.each(this::updateDependencies);
+            sortMods();
+        }
+    }
+
+// Mods.java : public Seq<String> getIncompatibility(Seq<String> out)
+    public Seq<String> getIncompatibility(Seq<String> out){
+        Seq<String> mods = getModStrings();
+        Seq<String> result = mods.copy();
+        for(String mod : mods){
+            if(out.remove(mod)){
+                result.remove(mod);
+            }
+        }
+        return result;
+    }
+
+// Mods.java : public Seq<LoadedMod> list()
+    public Seq<LoadedMod> list(){
+        return mods;
+    }
+
+// Mods.java : public Seq<LoadedMod> getMods()
+    public Seq<LoadedMod> getMods(){
+        return mods;
+    }
+
+// Mods.java : public void eachClass(Cons<Mod> cons)
+    public void eachClass(Cons<Mod> cons){
+        orderedMods().each(p -> p.main != null, p -> contextRun(p, () -> cons.get(p.main)));
+    }
+
+// Mods.java : public void eachEnabled(Cons<LoadedMod> cons)
+    public void eachEnabled(Cons<LoadedMod> cons){
+        orderedMods().each(LoadedMod::enabled, cons);
+    }
+
+// Mods.java : public void contextRun(LoadedMod mod, Runnable run)
+    public void contextRun(LoadedMod mod, Runnable run){
+        try{
+            run.run();
+        }catch(Throwable t){
+            throw new RuntimeException("Error loading mod " + mod.meta.name, t);
+        }
+    }
+
+// Mods.java : private Fi resolveRoot(Fi fi)
+    private Fi resolveRoot(Fi fi){
+        if(OS.isMac && (!(fi instanceof ZipFi))) fi.child(".DS_Store").delete();
+        Fi[] files = fi.list();
+        return files.length == 1 && files[0].isDirectory() ? files[0] : fi;
+    }
+
+// Scripts.java : public boolean hasErrored()
+    public boolean hasErrored(){
+        return errored;
+    }
+
+// Scripts.java : private String getError(Throwable t, boolean log)
+    private String getError(Throwable t, boolean log){
+        if(log) Log.err(t);
+        return t.getClass().getSimpleName() + (t.getMessage() == null ? "" : ": " + t.getMessage());
+    }
+
+// Scripts.java : public void log(String source, String message) / public void log(LogLevel level, String source, String message)
+    public void log(String source, String message){
+        log(LogLevel.info, source, message);
+    }
+
+// Scripts.java : public float[] newFloats(int capacity)
+    public float[] newFloats(int capacity){
+        return new float[capacity];
+    }
+
+// Scripts.java : public Class<?> getClass(Object object)
+    public Class<?> getClass(Object object){
+        return object == null ? null : object.getClass();
+    }
+
+// Scripts.java : public void run(LoadedMod mod, Fi file) / private boolean run(String script, String file, boolean wrap)
+    public void run(LoadedMod mod, Fi file){
+        currentMod = mod;
+        run(file.readString(), mod.name + "/" + file.name(), true);
+        currentMod = null;
+    }
+
+// Scripts.java : public void dispose()
+    @Override
+    public void dispose(){
+        Context.exit();
+    }
+

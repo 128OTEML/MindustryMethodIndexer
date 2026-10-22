@@ -1,0 +1,92 @@
+// EntityIO.java : boolean fieldHasAnno(RevisionField field, Seq<Svar> allFields, Class<? extends Annotation> type)
+    boolean fieldHasAnno(RevisionField field, Seq<Svar> allFields, Class<? extends Annotation> type){
+        Svar var = allFields.find(s -> s.name().equals(field.name));
+        return var != null && var.has(type);
+    }
+
+// EntityIO.java : private void cont(String text, Object fmt)
+    private void cont(String text, Object... fmt){
+        method.beginControlFlow(text, fmt);
+    }
+
+// EntityIO.java : private void econt()
+    private void econt(){
+        method.endControlFlow();
+    }
+
+// EntityIO.java : private void ncont(String text, Object fmt)
+    private void ncont(String text, Object... fmt){
+        method.nextControlFlow(text, fmt);
+    }
+
+// EntityIO.java : private void st(String text, Object args)
+    private void st(String text, Object... args){
+        method.addStatement(text, args);
+    }
+
+// EntityIO.java : private void s(String type, String field)
+    private void s(String type, String field){
+        if(write){
+            method.addStatement("write.$L($L)", type, field);
+        }else{
+            method.addStatement("$Lread.$L()", field, type);
+        }
+    }
+
+// EntityProcess.java : Seq<String> getImports(Element elem)
+    Seq<String> getImports(Element elem){
+        return Seq.with(trees.getPath(elem).getCompilationUnit().getImports()).map(Object::toString);
+    }
+
+// EntityProcess.java : String interfaceName(Stype comp)
+    String interfaceName(Stype comp){
+        String suffix = "Comp";
+        if(!comp.name().endsWith(suffix)) err("All components must have names that end with 'Comp'", comp.e);
+
+        //example: BlockComp -> IBlock
+        return comp.name().substring(0, comp.name().length() - suffix.length()) + "c";
+    }
+
+// EntityProcess.java : String baseName(Stype comp)
+    String baseName(Stype comp){
+        String suffix = "Comp";
+        if(!comp.name().endsWith(suffix)) err("All components must have names that end with 'Comp'", comp.e);
+
+        return comp.name().substring(0, comp.name().length() - suffix.length());
+    }
+
+// EntityProcess.java : Stype interfaceToComp(Stype type)
+    @Nullable Stype interfaceToComp(Stype type){
+        //example: IBlock -> BlockComp
+        String name = type.name().substring(0, type.name().length() - 1) + "Comp";
+        return componentNames.get(name);
+    }
+
+// EntityProcess.java : boolean isCompInterface(Stype type)
+    boolean isCompInterface(Stype type){
+        return interfaceToComp(type) != null;
+    }
+
+// EntityProcess.java : String createName(Selement<?> elem)
+    String createName(Selement<?> elem){
+        Seq<Stype> comps = types(elem.annotation(EntityDef.class), EntityDef::value).map(this::interfaceToComp);
+        comps.sortComparing(Selement::name);
+        return comps.toString("", s -> s.name().replace("Comp", ""));
+    }
+
+// EntityProcess.java : Seq<Stype> types(T t, Cons<T> consumer)
+    <T extends Annotation> Seq<Stype> types(T t, Cons<T> consumer){
+        try{
+            consumer.get(t);
+        }catch(MirroredTypesException e){
+            return Seq.with(e.getTypeMirrors()).map(Stype::of);
+        }
+        throw new IllegalArgumentException("Missing types.");
+    }
+
+// EntityProcess.java : void skipDeprecated(TypeSpec.Builder builder)
+    void skipDeprecated(TypeSpec.Builder builder){
+        //deprecations are irrelevant in generated code
+        builder.addAnnotation(AnnotationSpec.builder(SuppressWarnings.class).addMember("value", "\"deprecation\"").build());
+    }
+

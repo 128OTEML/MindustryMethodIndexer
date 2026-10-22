@@ -1,0 +1,132 @@
+BlinkEffect.java
+Java class extends arc.flabel.FEffect
+// Blinks the entire text in two different colors at once, without interpolation.
+fields:
+  private static final float defaultFrequency
+  public Color color1  // First color of the effect.
+  public Color color2  // Second color of the effect.
+  public float frequency  // How frequently the color pattern should move through the text.
+  public float threshold  // Point to switch colors.
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+EaseEffect.java
+Java class extends arc.flabel.FEffect
+// Moves the text vertically easing it into the final position.
+fields:
+  private static final float defaultDistance
+  private static final float defaultIntensity
+  public float distance  // How much of their height they should move
+  public float intensity  // How fast the glyphs should move
+  public boolean elastic  // Whether or not the glyphs have an elastic movement
+  private IntFloatMap timePassedByGlyphIndex
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+FadeEffect.java
+Java class extends arc.flabel.FEffect
+// Fades the text's color from between colors or alphas.
+fields:
+  private Color color1  // First color of the effect.
+  private Color color2  // Second color of the effect.
+  public float alpha1  // First alpha of the effect, in case a color isn't provided.
+  public float alpha2  // Second alpha of the effect, in case a color isn't provided.
+  public float fadeDuration  // Duration of the fade effect
+  private IntFloatMap timePassedByGlyphIndex
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+GradientEffect.java
+Java class extends arc.flabel.FEffect
+// Tints the text in a gradient pattern.
+fields:
+  private static final float defaultDistance
+  private static final float defaultFrequency
+  public Color color1  // First color of the gradient.
+  public Color color2  // Second color of the gradient.
+  public float distance  // How extensive the rainbow effect should be.
+  public float frequency  // How frequently the color pattern should move through the text.
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+JumpEffect.java
+Java class extends arc.flabel.FEffect
+// Makes the text jumps and falls as if there was gravity.
+fields:
+  private static final float defaultFrequency
+  public float distance  // How much of their height they should move
+  public float frequency  // How frequently the wave pattern repeats
+  public float intensity  // How fast the glyphs should move
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+RainbowEffect.java
+Java class extends arc.flabel.FEffect
+// Tints the text in a rainbow pattern.
+fields:
+  private static final float defaultDistance
+  public float distance  // How extensive the rainbow effect should be.
+  public float frequency  // How frequently the color pattern should move through the text.
+  public float saturation  // Color saturation
+  public float brightness  // Color brightness
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+ShakeEffect.java
+Java class extends arc.flabel.FEffect
+// Shakes the text in a random pattern.
+fields:
+  private static final float defaultDistance
+  private final FloatSeq lastOffsets
+  public float distance  // How far the glyphs should move
+  public float intensity  // How fast the glyphs should move
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+SickEffect.java
+Java class extends arc.flabel.FEffect
+// Drips the text in a random pattern.
+fields:
+  private static final float defaultFrequency
+  public float distance  // How far the glyphs should move
+  public float intensity  // How fast the glyphs should move
+  private IntSeq indices
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+WaveEffect.java
+Java class extends arc.flabel.FEffect
+// Moves the text vertically in a sine wave pattern.
+fields:
+  private static final float defaultFrequency
+  public float distance  // How much of their height they should move
+  public float frequency  // How frequently the wave pattern repeats
+  public float intensity  // How fast the glyphs should move
+methods:
+  public void applyParams(String[] params)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+
+WindEffect.java
+Java class extends arc.flabel.FEffect
+// Moves the text in a wind pattern.
+fields:
+  private static final float defaultSpacing
+  private float noiseCursorX
+  private float noiseCursorY
+  public float distanceX  // How much of their line height glyphs should move in the X axis
+  public float distanceY  // How much of their line height glyphs should move in the Y axis
+  public float spacing  // How much space there should be between waves
+  public float intensity  // How strong the wind should be
+methods:
+  public void applyParams(String[] params)
+  public void update(float delta)
+  protected void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)
+

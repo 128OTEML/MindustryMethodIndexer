@@ -1,0 +1,269 @@
+// AssetDescriptor.java : public String toString()
+    @Override
+    public String toString(){
+        return fileName +
+        ", " +
+        type.getName();
+    }
+
+// AssetLoadingTask.java : public boolean update()
+    public boolean update(){
+        ticks++;
+        if(loader instanceof SynchronousAssetLoader){
+            handleSyncLoader();
+        }else{
+            handleAsyncLoader();
+        }
+        return asset != null;
+    }
+
+// AssetLoadingTask.java : private Fi resolve(AssetLoader loader, AssetDescriptor assetDesc)
+    private Fi resolve(AssetLoader loader, AssetDescriptor assetDesc){
+        if(assetDesc.file == null) assetDesc.file = loader.resolve(assetDesc.fileName);
+        return assetDesc.file;
+    }
+
+// AssetLoadingTask.java : public Object getAsset()
+    public Object getAsset(){
+        return asset;
+    }
+
+// AssetManager.java : public FileHandleResolver getFileHandleResolver()
+    public FileHandleResolver getFileHandleResolver(){
+        return resolver;
+    }
+
+// AssetManager.java : public synchronized T get(String fileName) / public synchronized T get(String fileName, Class<T> type) / public synchronized T get(AssetDescriptor<T> assetDescriptor)
+    public synchronized <T> T get(String fileName){
+        Class<T> type = assetTypes.get(fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
+        if(assetsByType == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        RefCountedContainer assetContainer = assetsByType.get(fileName);
+        if(assetContainer == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        T asset = (T)assetContainer.object;
+        if(asset == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        return asset;
+    }
+
+// AssetManager.java : public synchronized T getOrNull(String fileName, Class<T> type)
+    public synchronized <T> T getOrNull(String fileName, Class<T> type){
+        ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
+        if(assetsByType == null) return null;
+        RefCountedContainer assetContainer = assetsByType.get(fileName);
+        if(assetContainer == null) return null;
+        return (T)assetContainer.object;
+    }
+
+// AssetManager.java : public synchronized Seq<T> getAll(Class<T> type, Seq<T> out)
+    public synchronized <T> Seq<T> getAll(Class<T> type, Seq<T> out){
+        ObjectMap<String, RefCountedContainer> assetsByType = assets.get(type);
+        if(assetsByType != null){
+            for(ObjectMap.Entry<String, RefCountedContainer> asset : assetsByType.entries()){
+                out.add((T)asset.value.object);
+            }
+        }
+        return out;
+    }
+
+// AssetManager.java : public synchronized boolean contains(String fileName) / public synchronized boolean contains(String fileName, Class type)
+    public synchronized boolean contains(String fileName){
+        if(tasks.size > 0 && tasks.first().assetDesc.fileName.equals(fileName)) return true;
+
+        for(int i = 0; i < loadQueue.size; i++)
+            if(loadQueue.get(i).fileName.equals(fileName)) return true;
+
+        return isLoaded(fileName);
+    }
+
+// AssetManager.java : public synchronized boolean containsAsset(T asset)
+    public synchronized <T> boolean containsAsset(T asset){
+        ObjectMap<String, RefCountedContainer> assetsByType = assets.get(asset.getClass());
+        if(assetsByType == null) return false;
+        for(String fileName : assetsByType.keys()){
+            T otherAsset = (T)assetsByType.get(fileName).object;
+            if(otherAsset == asset || asset.equals(otherAsset)) return true;
+        }
+        return false;
+    }
+
+// AssetManager.java : public synchronized String getAssetFileName(T asset)
+    public synchronized <T> String getAssetFileName(T asset){
+        for(Class assetType : assets.keys()){
+            ObjectMap<String, RefCountedContainer> assetsByType = assets.get(assetType);
+            for(String fileName : assetsByType.keys()){
+                T otherAsset = (T)assetsByType.get(fileName).object;
+                if(otherAsset == asset || asset.equals(otherAsset)) return fileName;
+            }
+        }
+        return null;
+    }
+
+// AssetManager.java : public synchronized boolean isLoaded(AssetDescriptor assetDesc) / public synchronized boolean isLoaded(String fileName) / public synchronized boolean isLoaded(String fileName, Class type)
+    public synchronized boolean isLoaded(AssetDescriptor assetDesc){
+        return isLoaded(assetDesc.fileName);
+    }
+
+// AssetManager.java : public AssetLoader getLoader(Class<T> type) / public AssetLoader getLoader(Class<T> type, String fileName)
+    public <T> AssetLoader getLoader(final Class<T> type){
+        return getLoader(type, null);
+    }
+
+// AssetManager.java : public synchronized AssetDescriptor<T> load(String fileName, Class<T> type) / public synchronized AssetDescriptor load(Loadable load) / public synchronized AssetDescriptor<T> load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter) / public synchronized AssetDescriptor<T> load(AssetDescriptor<T> desc)
+    public synchronized <T> AssetDescriptor<T> load(String fileName, Class<T> type){
+        return load(fileName, type, null);
+    }
+
+// AssetManager.java : public synchronized AssetDescriptor loadRun(String name, Class<?> type, Runnable loadasync) / public synchronized AssetDescriptor loadRun(String name, Class<?> type, Runnable loadasync, Runnable loadsync)
+    public synchronized AssetDescriptor loadRun(String name, Class<?> type, Runnable loadasync){
+        return loadRun(name, type, loadasync, () -> {});
+    }
+
+// AssetManager.java : public synchronized AssetDescriptor getCurrentLoading()
+    public synchronized AssetDescriptor getCurrentLoading(){
+        if(tasks.size > 0){
+            return tasks.first().assetDesc;
+        }
+        return null;
+    }
+
+// AssetManager.java : public synchronized boolean isFinished()
+    public synchronized boolean isFinished(){
+        return loadQueue.size == 0 && tasks.size == 0;
+    }
+
+// AssetManager.java : public void finishLoading()
+    public void finishLoading(){
+        while(!update())
+            Thread.yield();
+    }
+
+// AssetManager.java : public void finishLoadingAsset(AssetDescriptor assetDesc) / public void finishLoadingAsset(String fileName)
+    public void finishLoadingAsset(AssetDescriptor assetDesc){
+        finishLoadingAsset(assetDesc.fileName);
+    }
+
+// AssetManager.java : synchronized void injectDependencies(String parentAssetFilename, Seq<AssetDescriptor> dependendAssetDescs)
+    synchronized void injectDependencies(String parentAssetFilename, Seq<AssetDescriptor> dependendAssetDescs){
+        ObjectSet<String> injected = this.injected;
+        for(AssetDescriptor desc : dependendAssetDescs){
+            if(injected.contains(desc.fileName)) continue; // Ignore subsequent dependencies if there are duplicates.
+            injected.add(desc.fileName);
+            injectDependency(parentAssetFilename, desc);
+        }
+        injected.clear();
+    }
+
+// AssetManager.java : private void addTask(AssetDescriptor assetDesc)
+    private void addTask(AssetDescriptor assetDesc){
+        AssetLoader loader = getLoader(assetDesc.type, assetDesc.fileName);
+        if(loader == null)
+            throw new ArcRuntimeException("No loader for type: " + assetDesc.type.getSimpleName());
+        tasks.add(new AssetLoadingTask(this, assetDesc, loader, executor));
+        peakTasks++;
+    }
+
+// AssetManager.java : protected void taskFailed(AssetDescriptor assetDesc, RuntimeException ex)
+    protected void taskFailed(AssetDescriptor assetDesc, RuntimeException ex){
+        throw ex;
+    }
+
+// AssetManager.java : private void incrementRefCountedDependencies(String parent)
+    private void incrementRefCountedDependencies(String parent){
+        Seq<String> dependencies = assetDependencies.get(parent);
+        if(dependencies == null) return;
+
+        for(String dependency : dependencies){
+            Class type = assetTypes.get(dependency);
+            RefCountedContainer assetRef = assets.get(type).get(dependency);
+            assetRef.count++;
+            incrementRefCountedDependencies(dependency);
+        }
+    }
+
+// AssetManager.java : public synchronized void setLoader(Class<T> type, AssetLoader<T,P> loader) / public synchronized void setLoader(Class<T> type, String suffix, AssetLoader<T,P> loader)
+    public synchronized <T, P extends AssetLoaderParameters<T>> void setLoader(Class<T> type, AssetLoader<T, P> loader){
+        setLoader(type, null, loader);
+    }
+
+// AssetManager.java : public synchronized int getLoadedAssets()
+    public synchronized int getLoadedAssets(){
+        return assetTypes.size;
+    }
+
+// AssetManager.java : public synchronized int getQueuedAssets()
+    public synchronized int getQueuedAssets(){
+        return loadQueue.size + tasks.size;
+    }
+
+// AssetManager.java : public synchronized float getProgress()
+    public synchronized float getProgress(){
+        if(toLoad == 0) return 1;
+        float fractionalLoaded = (float)loaded;
+        if(peakTasks > 0){
+            fractionalLoaded += ((peakTasks - tasks.size) / (float)peakTasks);
+        }
+        return Math.min(1, fractionalLoaded / (float)toLoad);
+    }
+
+// AssetManager.java : public synchronized void setErrorListener(AssetErrorListener listener)
+    public synchronized void setErrorListener(AssetErrorListener listener){
+        this.listener = listener;
+    }
+
+// AssetManager.java : public synchronized void dispose()
+    @Override
+    public synchronized void dispose(){
+        clear();
+        Threads.await(executor);
+    }
+
+// AssetManager.java : public synchronized int getReferenceCount(String fileName)
+    public synchronized int getReferenceCount(String fileName){
+        Class type = assetTypes.get(fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        return assets.get(type).get(fileName).count;
+    }
+
+// AssetManager.java : public synchronized void setReferenceCount(String fileName, int refCount)
+    public synchronized void setReferenceCount(String fileName, int refCount){
+        Class type = assetTypes.get(fileName);
+        if(type == null) throw new ArcRuntimeException("Asset not loaded: " + fileName);
+        assets.get(type).get(fileName).count = refCount;
+    }
+
+// AssetManager.java : public synchronized Seq<String> getAssetNames()
+    public synchronized Seq<String> getAssetNames(){
+        return assetTypes.keys().toSeq();
+    }
+
+// AssetManager.java : public synchronized Seq<String> getDependencies(String fileName)
+    public synchronized Seq<String> getDependencies(String fileName){
+        return assetDependencies.get(fileName);
+    }
+
+// AssetManager.java : public synchronized Class getAssetType(String fileName)
+    public synchronized Class getAssetType(String fileName){
+        return assetTypes.get(fileName);
+    }
+
+// Loadable.java : default void loadAsync()
+    default void loadAsync(){
+
+    }
+
+// Loadable.java : default void loadSync()
+    default void loadSync(){
+
+    }
+
+// Loadable.java : default String getName()
+    default String getName(){
+        return getClass().getSimpleName();
+    }
+
+// Loadable.java : default Seq<AssetDescriptor> getDependencies()
+    default Seq<AssetDescriptor> getDependencies(){
+        return null;
+    }
+

@@ -1,0 +1,751 @@
+// Application.java : default void addListener(ApplicationListener listener)
+    default void addListener(ApplicationListener listener){
+        synchronized(getListeners()){
+            getListeners().add(listener);
+        }
+    }
+
+// Application.java : default void removeListener(ApplicationListener listener)
+    default void removeListener(ApplicationListener listener){
+        post(() -> {
+            synchronized(getListeners()){
+                getListeners().remove(listener);
+            }
+        });
+    }
+
+// Application.java : default void defaultUpdate()
+    default void defaultUpdate(){
+        Core.settings.autosave();
+        Time.updateGlobal();
+    }
+
+// Application.java : default boolean isDesktop()
+    default boolean isDesktop(){
+        return getType() == ApplicationType.desktop;
+    }
+
+// Application.java : default boolean isHeadless()
+    default boolean isHeadless(){
+        return getType() == ApplicationType.headless;
+    }
+
+// Application.java : default boolean isAndroid()
+    default boolean isAndroid(){
+        return getType() == ApplicationType.android;
+    }
+
+// Application.java : default boolean isIOS()
+    default boolean isIOS(){
+        return getType() == ApplicationType.iOS;
+    }
+
+// Application.java : default boolean isMobile()
+    default boolean isMobile(){
+        return isAndroid() || isIOS();
+    }
+
+// Application.java : default boolean isWeb()
+    default boolean isWeb(){
+        return getType() == ApplicationType.web;
+    }
+
+// Application.java : default int getVersion()
+    default int getVersion(){
+        return 0;
+    }
+
+// Application.java : default long getJavaHeap()
+    default long getJavaHeap(){
+        return Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+    }
+
+// Application.java : default long getNativeHeap()
+    default long getNativeHeap(){
+        return 0;
+    }
+
+// Application.java : default Thread getMainThread()
+    default @Nullable Thread getMainThread(){
+        return null;
+    }
+
+// Application.java : default boolean isOnMainThread()
+    default boolean isOnMainThread(){
+        Thread thread = getMainThread();
+        return thread == null || Thread.currentThread() == thread;
+    }
+
+// Application.java : default boolean openFolder(String file)
+    default boolean openFolder(String file){
+        return false;
+    }
+
+// Application.java : default boolean openURI(String URI)
+    default boolean openURI(String URI){
+        return false;
+    }
+
+// Application.java : default void getDnsServers(Seq<InetSocketAddress> out)
+    default void getDnsServers(Seq<InetSocketAddress> out){}
+
+// Application.java : default void dispose()
+    @Override
+    default void dispose(){
+        //flush any changes to settings upon dispose
+        if(Core.settings != null){
+            Core.settings.autosave();
+        }
+
+        if(Core.audio != null){
+            Core.audio.dispose();
+        }
+    }
+
+// ApplicationCore.java : public void add(ApplicationListener module)
+    public void add(ApplicationListener module){
+        //use an array instead of a seq/list, for faster iteration; modules do not get added often, so a resize each time is acceptable
+        ApplicationListener[] news = new ApplicationListener[modules.length + 1];
+        news[news.length - 1] = module;
+        System.arraycopy(modules, 0, news, 0, modules.length);
+        modules = news;
+    }
+
+// ApplicationCore.java : public void init()
+    @Override
+    public void init(){
+        setup();
+
+        for(ApplicationListener listener : modules){
+            listener.init();
+        }
+    }
+
+// ApplicationCore.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        for(ApplicationListener listener : modules){
+            listener.resize(width, height);
+        }
+    }
+
+// ApplicationCore.java : public void update()
+    @Override
+    public void update(){
+        for(ApplicationListener listener : modules){
+            listener.update();
+        }
+    }
+
+// ApplicationCore.java : public void pause()
+    @Override
+    public void pause(){
+        for(ApplicationListener listener : modules){
+            listener.pause();
+        }
+    }
+
+// ApplicationCore.java : public void resume()
+    @Override
+    public void resume(){
+        for(ApplicationListener listener : modules){
+            listener.resume();
+        }
+    }
+
+// ApplicationCore.java : public void dispose()
+    @Override
+    public void dispose(){
+        for(ApplicationListener listener : modules){
+            listener.dispose();
+        }
+    }
+
+// ApplicationCore.java : public void fileDropped(Fi file)
+    @Override
+    public void fileDropped(Fi file){
+        for(ApplicationListener listener : modules){
+            listener.fileDropped(file);
+        }
+    }
+
+// ApplicationListener.java : default void init()
+    default void init(){
+    }
+
+// ApplicationListener.java : default void resize(int width, int height)
+    default void resize(int width, int height){
+    }
+
+// ApplicationListener.java : default void update()
+    default void update(){
+    }
+
+// ApplicationListener.java : default void pause()
+    default void pause(){
+    }
+
+// ApplicationListener.java : default void resume()
+    default void resume(){
+    }
+
+// ApplicationListener.java : default void dispose()
+    default void dispose(){
+    }
+
+// ApplicationListener.java : default void exit()
+    default void exit(){
+
+    }
+
+// ApplicationListener.java : default void fileDropped(Fi file)
+    default void fileDropped(Fi file){
+    }
+
+// Events.java : public static void on(Class<T> type, Cons<T> listener)
+    public static <T> void on(Class<T> type, Cons<T> listener){
+        events.get(type, () -> new Seq<>(Cons.class)).add(listener);
+    }
+
+// Events.java : public static void run(Object type, Runnable listener)
+    public static void run(Object type, Runnable listener){
+        events.get(type, () -> new Seq<>(Cons.class)).add(e -> listener.run());
+    }
+
+// Events.java : public static boolean remove(Class<T> type, Cons<T> listener)
+    public static <T> boolean remove(Class<T> type, Cons<T> listener){
+        return events.get(type, () -> new Seq<>(Cons.class)).remove(listener);
+    }
+
+// Events.java : public static void fire(Enum<T> type) / public static void fire(T type) / public static void fire(Class<?> ctype, T type)
+    public static <T extends Enum<T>> void fire(Enum<T> type){
+        Seq<Cons<?>> listeners = events.get(type);
+
+        if(listeners != null){
+            int len = listeners.size;
+            Cons[] items = listeners.items;
+            for(int i = 0; i < len; i++){
+                items[i].get(type);
+            }
+        }
+    }
+
+// Events.java : public static void clear()
+    public static void clear(){
+        events.clear();
+    }
+
+// Files.java : default Fi classpath(String path)
+    default Fi classpath(String path){
+        return get(path, FileType.classpath);
+    }
+
+// Files.java : default Fi internal(String path)
+    default Fi internal(String path){
+        return get(path, FileType.internal);
+    }
+
+// Files.java : default Fi external(String path)
+    default Fi external(String path){
+        return get(path, FileType.external);
+    }
+
+// Files.java : default Fi absolute(String path)
+    default Fi absolute(String path){
+        return get(path, FileType.absolute);
+    }
+
+// Files.java : default Fi local(String path)
+    default Fi local(String path){
+        return get(path, FileType.local);
+    }
+
+// Files.java : default Fi cache(String path)
+    default Fi cache(String path){
+        return get(getCachePath(), FileType.absolute).child(path);
+    }
+
+// Files.java : default String getCachePath()
+    default String getCachePath(){
+        return local("cache").absolutePath();
+    }
+
+// Files.java : default String getInternalStoragePath()
+    default String getInternalStoragePath(){
+        return "";
+    }
+
+// Graphics.java : public boolean isGL30Available()
+    public boolean isGL30Available(){
+        return Core.gl30 != null;
+    }
+
+// Graphics.java : public boolean supportsInstancing()
+    public boolean supportsInstancing(){
+        if(OS.isAndroid || OS.isIos){
+            //instancing via glDrawElementsInstanced + glVertexAttribDivisor is available on GL ES 3.0
+            return isGL30Available();
+        }else{
+            //otherwise, only >= Gl 3.3 has glVertexAttribDivisor on desktop
+            return getGLVersion().atLeast(3, 3);
+        }
+    }
+
+// Graphics.java : public void clear(float r, float g, float b, float a) / public void clear(Color color)
+    public void clear(float r, float g, float b, float a){
+        Gl.clearColor(r, g, b, a);
+        Gl.clear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+// Graphics.java : public boolean isPortrait()
+    public boolean isPortrait(){
+        return getWidth() < getHeight();
+    }
+
+// Graphics.java : public float getAspect()
+    public float getAspect(){
+        return (float)getWidth() / getHeight();
+    }
+
+// Graphics.java : public boolean isHidden()
+    public boolean isHidden(){
+        return getWidth() < 2 || getHeight() < 2;
+    }
+
+// Graphics.java : public int[] getSafeInsets()
+    public int[] getSafeInsets(){
+        return new int[4];
+    }
+
+// Graphics.java : public boolean setFullscreen(boolean fullscreen)
+    public boolean setFullscreen(boolean fullscreen){
+        return false;
+    }
+
+// Graphics.java : public void setWindowPosition(int x, int y)
+    public void setWindowPosition(int x, int y){}
+
+// Graphics.java : public void setWindowSize(int width, int height)
+    public void setWindowSize(int width, int height){}
+
+// Graphics.java : public void setPreferredFPS(int fps)
+    public void setPreferredFPS(int fps){}
+
+// Graphics.java : public void restoreCursor()
+    public void restoreCursor(){
+        cursor(SystemCursor.arrow);
+    }
+
+// Graphics.java : public void dispose()
+    @Override
+    public void dispose(){
+        for(SystemCursor cursor : SystemCursor.values()){
+            cursor.dispose();
+        }
+    }
+
+// Input.java : public Vec2 mouseWorld(float x, float y) / public Vec2 mouseWorld()
+    public Vec2 mouseWorld(float x, float y){
+        return Core.camera.unproject(mouseReturn.set(x, y));
+    }
+
+// Input.java : public Vec2 mouseScreen(float x, float y)
+    public Vec2 mouseScreen(float x, float y){
+        return Core.camera.project(mouseReturn.set(x, y));
+    }
+
+// Input.java : public float mouseWorldX()
+    public float mouseWorldX(){
+        return Core.camera.unproject(mouse()).x;
+    }
+
+// Input.java : public float mouseWorldY()
+    public float mouseWorldY(){
+        return Core.camera.unproject(mouse()).y;
+    }
+
+// Input.java : public Vec2 mouse()
+    public Vec2 mouse(){
+        return mouseReturn.set(mouseX(), mouseY());
+    }
+
+// Input.java : public void setUseKeyboard(boolean useKeyboard)
+    public void setUseKeyboard(boolean useKeyboard){
+        this.useKeyboard = useKeyboard;
+    }
+
+// Input.java : public boolean useKeyboard()
+    public boolean useKeyboard(){
+        return useKeyboard;
+    }
+
+// Input.java : public int getTouches()
+    public int getTouches(){
+        int sum = 0;
+        for(int i = 0; i < 10; i++){
+            if(isTouched(i)) sum ++;
+        }
+        return sum;
+    }
+
+// Input.java : public float getPressure() / public float getPressure(int pointer)
+    public float getPressure(){
+        return getPressure(0);
+    }
+
+// Input.java : public boolean shift()
+    public boolean shift(){
+        return keyDown(KeyCode.shiftLeft) || keyDown(KeyCode.shiftRight);
+    }
+
+// Input.java : public boolean ctrl()
+    public boolean ctrl(){
+        return OS.isMac ? keyDown(KeyCode.sym) : keyDown(KeyCode.controlLeft) || keyDown(KeyCode.controlRight);
+    }
+
+// Input.java : public boolean alt()
+    public boolean alt(){
+        return keyDown(KeyCode.altLeft) || keyDown(KeyCode.altRight);
+    }
+
+// Input.java : public boolean keyDown(KeyCode key) / public boolean keyDown(KeyBind key)
+    public boolean keyDown(KeyCode key){
+        return keyboard.isPressed(key);
+    }
+
+// Input.java : public boolean keyTap(KeyCode key) / public boolean keyTap(KeyBind key)
+    public boolean keyTap(KeyCode key){
+        return keyboard.isTapped(key);
+    }
+
+// Input.java : public boolean keyRelease(KeyCode key) / public boolean keyRelease(KeyBind key)
+    public boolean keyRelease(KeyCode key){
+        return keyboard.isReleased(key);
+    }
+
+// Input.java : public float axis(KeyCode key) / public float axis(KeyBind key)
+    public float axis(KeyCode key){
+        return keyboard.getAxis(key);
+    }
+
+// Input.java : public float axisTap(KeyBind key)
+    public float axisTap(KeyBind key){
+        Axis axis = key.value;
+        if(axis.key != null){
+            return keyboard.getAxis(axis.key);
+        }else{
+            return keyboard.isTapped(axis.min) ? -1 : keyboard.isTapped(axis.max) ? 1 : 0;
+        }
+    }
+
+// Input.java : public void getTextInput(TextInput input)
+    public void getTextInput(TextInput input){
+    }
+
+// Input.java : public boolean isShowingTextInput()
+    public boolean isShowingTextInput(){
+        return false;
+    }
+
+// Input.java : public void setOnscreenKeyboardVisible(boolean visible)
+    public void setOnscreenKeyboardVisible(boolean visible){
+    }
+
+// Input.java : public void vibrate(int milliseconds) / public void vibrate(long[] pattern, int repeat)
+    public void vibrate(int milliseconds){
+    }
+
+// Input.java : public void cancelVibrate()
+    public void cancelVibrate(){
+    }
+
+// Input.java : public Vec3 getAccelerometer()
+    public Vec3 getAccelerometer(){
+        return Vec3.Zero;
+    }
+
+// Input.java : public Vec3 getGyroscope()
+    public Vec3 getGyroscope(){
+        return Vec3.Zero;
+    }
+
+// Input.java : public Vec3 getOrientation()
+    public Vec3 getOrientation(){
+        return Vec3.Zero;
+    }
+
+// Input.java : public void getRotationMatrix(float[] matrix)
+    public void getRotationMatrix(float[] matrix){
+    }
+
+// Input.java : public void setCatch(KeyCode code, boolean c)
+    public void setCatch(KeyCode code, boolean c){
+        if(c){
+            caughtKeys.add(code.ordinal());
+        }else{
+            caughtKeys.remove(code.ordinal());
+        }
+    }
+
+// Input.java : public boolean isCatch(KeyCode code)
+    public boolean isCatch(KeyCode code){
+        return caughtKeys.contains(code.ordinal());
+    }
+
+// Input.java : public void addProcessor(InputProcessor processor)
+    public void addProcessor(InputProcessor processor){
+        inputMultiplexer.addProcessor(processor);
+    }
+
+// Input.java : public void removeProcessor(InputProcessor processor)
+    public void removeProcessor(InputProcessor processor){
+        inputMultiplexer.removeProcessor(processor);
+    }
+
+// Input.java : public Seq<InputProcessor> getInputProcessors()
+    public Seq<InputProcessor> getInputProcessors(){
+        return inputMultiplexer.getProcessors();
+    }
+
+// Input.java : public InputMultiplexer getInputMultiplexer()
+    public InputMultiplexer getInputMultiplexer(){
+        return inputMultiplexer;
+    }
+
+// Input.java : public KeyboardDevice getKeyboard()
+    public KeyboardDevice getKeyboard(){
+        return keyboard;
+    }
+
+// Input.java : public boolean isPeripheralAvailable(Peripheral peripheral)
+    public boolean isPeripheralAvailable(Peripheral peripheral){
+        return peripheral == Peripheral.hardwareKeyboard;
+    }
+
+// Input.java : public int getRotation()
+    public int getRotation(){
+        return 0;
+    }
+
+// Input.java : public Orientation getNativeOrientation()
+    public Orientation getNativeOrientation(){
+        return Orientation.landscape;
+    }
+
+// Input.java : public String getKeyName(KeyCode code)
+    public String getKeyName(KeyCode code){
+        return code.value;
+    }
+
+// Settings.java : public void setJson(Json json)
+    public void setJson(Json json){
+        this.json = json;
+    }
+
+// Settings.java : public void setCompressed(boolean compressed)
+    public void setCompressed(boolean compressed){
+        this.writeCompressed = compressed;
+    }
+
+// Settings.java : public String getAppName()
+    public String getAppName(){
+        return appName;
+    }
+
+// Settings.java : public void setAppName(String name)
+    public void setAppName(String name){
+        appName = name;
+    }
+
+// Settings.java : public void setErrorHandler(Cons<Throwable> handler)
+    public void setErrorHandler(Cons<Throwable> handler){
+        errorHandler = handler;
+    }
+
+// Settings.java : public void setAutosave(boolean autosave)
+    public void setAutosave(boolean autosave){
+        this.shouldAutosave = autosave;
+    }
+
+// Settings.java : public boolean modified()
+    public boolean modified(){
+        return modified;
+    }
+
+// Settings.java : public synchronized void manualSave()
+    public synchronized void manualSave(){
+        if(loaded){
+            forceSave();
+        }
+    }
+
+// Settings.java : public synchronized void autosave()
+    public synchronized void autosave(){
+        if(modified && shouldAutosave){
+            forceSave();
+            modified = false;
+        }
+    }
+
+// Settings.java : public Fi getSettingsFile()
+    public Fi getSettingsFile(){
+        return getDataDirectory().child("settings.bin");
+    }
+
+// Settings.java : public Fi getBackupFolder()
+    public Fi getBackupFolder(){
+        return getDataDirectory().child("settings_backups");
+    }
+
+// Settings.java : public Fi getBackupSettingsFile()
+    public Fi getBackupSettingsFile(){
+        return getDataDirectory().child("settings_backup.bin");
+    }
+
+// Settings.java : public Fi getDataDirectory()
+    public Fi getDataDirectory(){
+        return dataDirectory == null ? Core.files.absolute(OS.getAppDataDirectoryString(appName)) : dataDirectory;
+    }
+
+// Settings.java : public void setDataDirectory(Fi file)
+    public void setDataDirectory(Fi file){
+        this.dataDirectory = file;
+    }
+
+// Settings.java : public synchronized void defaults(Object objects)
+    public synchronized void defaults(Object... objects){
+        for(int i = 0; i < objects.length; i += 2){
+            defaults.put((String)objects[i], objects[i + 1]);
+        }
+    }
+
+// Settings.java : public synchronized void clear()
+    public synchronized void clear(){
+        values.clear();
+    }
+
+// Settings.java : public synchronized Object getDefault(String name)
+    public synchronized Object getDefault(String name){
+        return defaults.get(name);
+    }
+
+// Settings.java : public synchronized boolean has(String name)
+    public synchronized boolean has(String name){
+        return values.containsKey(name);
+    }
+
+// Settings.java : public synchronized Object get(String name, Object def)
+    public synchronized Object get(String name, Object def){
+        return values.containsKey(name) ? values.get(name) : def;
+    }
+
+// Settings.java : public boolean isModified()
+    public boolean isModified(){
+        return modified;
+    }
+
+// Settings.java : public synchronized void putJson(String name, Object value) / public synchronized void putJson(String name, Class<?> elementType, Object value)
+    public synchronized void putJson(String name, Object value){
+        putJson(name, null, value);
+    }
+
+// Settings.java : public synchronized T getJson(String name, Class<T> type, Class elementType, Prov<T> def) / public T getJson(String name, Class<T> type, Prov<T> def)
+    public synchronized <T> T getJson(String name, Class<T> type, Class elementType, Prov<T> def){
+        try{
+            if(!has(name)) return def.get();
+            byteInputStream.setBytes(getBytes(name));
+            return json.readValue(type, elementType, ureader.parse(byteInputStream));
+        }catch(Throwable e){
+            Log.err("Error reading JSON with key '" + name + "'", e);
+            return def.get();
+        }
+    }
+
+// Settings.java : public float getFloat(String name, float def) / public float getFloat(String name)
+    public float getFloat(String name, float def){
+        return (float)get(name, def);
+    }
+
+// Settings.java : public long getLong(String name, long def) / public Long getLong(String name)
+    public long getLong(String name, long def){
+        return (long)get(name, def);
+    }
+
+// Settings.java : public int getInt(String name, int def) / public int getInt(String name)
+    public int getInt(String name, int def){
+        return (int)get(name, def);
+    }
+
+// Settings.java : public boolean getBool(String name, boolean def) / public boolean getBool(String name)
+    public boolean getBool(String name, boolean def){
+        Object val = get(name, def);
+        return val instanceof Boolean ? (Boolean)val : def;
+    }
+
+// Settings.java : public byte[] getBytes(String name, byte[] def) / public byte[] getBytes(String name)
+    public byte[] getBytes(String name, byte[] def){
+        return (byte[])get(name, def);
+    }
+
+// Settings.java : public String getString(String name, String def) / public String getString(String name)
+    public String getString(String name, String def){
+        return (String)get(name, def);
+    }
+
+// Settings.java : public void getBoolOnce(String name, Runnable run) / public boolean getBoolOnce(String name)
+    public void getBoolOnce(String name, Runnable run){
+        if(!getBool(name, false)){
+            run.run();
+            put(name, true);
+        }
+    }
+
+// Settings.java : public void putAll(ObjectMap<String,Object> map)
+    public void putAll(ObjectMap<String, Object> map){
+        for(Entry<String, Object> entry : map.entries()){
+            put(entry.key, entry.value);
+        }
+    }
+
+// Settings.java : public void toggle(String name)
+    public void toggle(String name){
+        put(name, !getBool(name));
+    }
+
+// Settings.java : public void putInt(String name, int value)
+    public void putInt(String name, int value){
+        put(name, value);
+    }
+
+// Settings.java : public void putFloat(String name, float value)
+    public void putFloat(String name, float value){
+        put(name, value);
+    }
+
+// Settings.java : public synchronized void put(String name, Object object)
+    public synchronized void put(String name, Object object){
+        if(object instanceof Float || object instanceof Integer || object instanceof Boolean || object instanceof Long
+        || object instanceof String || object instanceof byte[]){
+            values.put(name, object);
+            modified = true;
+        }else{
+            throw new IllegalArgumentException("Invalid object stored: " + (object == null ? null : object.getClass()) + ".");
+        }
+    }
+
+// Settings.java : public synchronized void remove(String name)
+    public synchronized void remove(String name){
+        values.remove(name);
+        modified = true;
+    }
+
+// Settings.java : public synchronized Iterable<String> keys()
+    public synchronized Iterable<String> keys(){
+        return values.keySet();
+    }
+
+// Settings.java : public synchronized int keySize()
+    public synchronized int keySize(){
+        return values.size();
+    }
+

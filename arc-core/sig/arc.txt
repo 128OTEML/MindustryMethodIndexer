@@ -1,0 +1,300 @@
+Application.java
+Java interface extends arc.util.Disposable
+methods:
+  Seq<ApplicationListener> getListeners()  // Returns a list of all the application listeners used.
+  default void addListener(ApplicationListener listener)  // Adds a new application listener.
+  default void removeListener(ApplicationListener listener)  // Removes an application listener.
+  default void defaultUpdate()  // Call this before update() in each backend.
+  ApplicationType getType()  // @return what {@link ApplicationType} this application has, e.g.
+  default boolean isDesktop()
+  default boolean isHeadless()
+  default boolean isAndroid()
+  default boolean isIOS()
+  default boolean isMobile()
+  default boolean isWeb()
+  default int getVersion()  // @return the Android API level on Android, the major OS version on iOS (5, 6, 7, ..), or 0 on the desktop.
+  default long getJavaHeap()  // @return the Java heap memory use in bytes.
+  default long getNativeHeap()  // @return the Native heap memory use in bytes.
+  default Thread getMainThread()  // @return the main graphics thread, upon which all ApplicationListener methods are called.
+  default boolean isOnMainThread()  // @return whether the currently executing thread is the main thread.
+  String getClipboardText()
+  void setClipboardText(String text)
+  default boolean openFolder(String file)  // Open a folder in the system's file browser.
+  default boolean openURI(String URI)  // Launches the default browser to display a URI.
+  default void getDnsServers(Seq<InetSocketAddress> out)
+  void post(Runnable runnable)  // Posts a runnable on the main loop thread.
+  void exit()  // Schedule an exit from the application.
+  default void dispose()  // Disposes of core resources.
+
+ApplicationCore.java
+Java class (abstract) implements arc.ApplicationListener
+fields:
+  protected ApplicationListener modules
+methods:
+  public void add(ApplicationListener module)
+  public abstract void setup()
+  public void init()
+  public void resize(int width, int height)
+  public void update()
+  public void pause()
+  public void resume()
+  public void dispose()
+  public void fileDropped(Fi file)
+
+ApplicationListener.java
+Java interface
+// <p>
+methods:
+  default void init()  // Called when the {@link Application} is first created.
+  default void resize(int width, int height)  // Called when the {@link Application} is resized.
+  default void update()  // Called when the {@link Application} should update itself.
+  default void pause()  // Called when the {@link Application} is paused, usually when it's not active or visible on screen.
+  default void resume()  // Called when the {@link Application} is resumed from a paused state, usually when it regains focus.
+  default void dispose()  // Called when the {@link Application} is destroyed.
+  default void exit()  // Called when the applications exits gracefully, either through `Core.app.exit()` or through a window closing.
+  default void fileDropped(Fi file)  // Called when an external file is dropped into the window, e.g from the desktop.
+
+Core.java
+Java class
+// Global references to all of Arc's core modules.
+fields:
+  public static Application app
+  public static Graphics graphics
+  public static Audio audio
+  public static Input input
+  public static Files files
+  public static Settings settings
+  public static I18NBundle bundle
+  public static Camera camera
+  public static Batch batch
+  public static Scene scene
+  public static AssetManager assets
+  public static TextureAtlas atlas
+  public static ExecutorService executor
+  public static GL20 gl
+  public static GL20 gl20
+  public static GL30 gl30
+
+Events.java
+Java class
+// Simple global event listener system.
+fields:
+  private static final ObjectMap<Object,Seq<Cons<?>>> events
+methods:
+  public static void on(Class<T> type, Cons<T> listener)  // Handle an event by class.
+  public static void run(Object type, Runnable listener)  // Handle an event by enum trigger.
+  public static boolean remove(Class<T> type, Cons<T> listener)  // Only use this method if you have the reference to the exact listener object that was used.
+  public static void fire(Enum<T> type) / public static void fire(T type) / public static void fire(Class<?> ctype, T type)  // Fires an enum trigger.
+  public static void clear()  // Don't do this.
+
+Files.java
+Java interface
+// Provides standard access to the filesystem, classpath, Android SD card, and Android assets directory.
+methods:
+  Fi get(String path, FileType type)  // Returns a handle representing a file or directory.
+  default Fi classpath(String path)  // Convenience method that returns a {@link FileType#classpath} file handle.
+  default Fi internal(String path)  // Convenience method that returns a {@link FileType#internal} file handle.
+  default Fi external(String path)  // Convenience method that returns a {@link FileType#external} file handle.
+  default Fi absolute(String path)  // Convenience method that returns a {@link FileType#absolute} file handle.
+  default Fi local(String path)  // Convenience method that returns a {@link FileType#local} file handle.
+  default Fi cache(String path)  // Convenience method that returns a cache file handle.
+  default String getCachePath()  // @return absolute path to cache directory.
+  default String getInternalStoragePath()  // @return on IOS, the internal path to the assets directory.
+  String getExternalStoragePath()  // @return the external storage path directory.
+  boolean isExternalStorageAvailable()  // @return true if the external storage is ready for file IO.
+  String getLocalStoragePath()  // @return the local storage path directory.
+  boolean isLocalStorageAvailable()  // @return true if the local storage is ready for file IO.
+
+Graphics.java
+Java class (abstract) implements arc.util.Disposable
+// This interface encapsulates communication with the graphics processor.
+fields:
+  private Object lastCursor  // The last cursor used.
+methods:
+  public boolean isGL30Available()  // Returns whether OpenGL ES 3.0 is available.
+  public boolean supportsInstancing()  // @return whether instancing with glVertexAttribDivisor and glDrawElementsInstanced is available on this platform.
+  public abstract GL20 getGL20()  // @return the {@link GL20} instance
+  public abstract void setGL20(GL20 gl20)  // Set the GL20 instance *
+  public abstract GL30 getGL30()  // @return the {@link GL30} instance or null if not supported
+  public abstract void setGL30(GL30 gl30)  // Set the GL30 instance *
+  public void clear(float r, float g, float b, float a) / public void clear(Color color)  // Clears the color buffer using the specified color.
+  public boolean isPortrait()  // Returns whether this application is probably in portrait mode, e.g.
+  public abstract int getWidth()  // @return the width of the client area in logical pixels.
+  public abstract int getHeight()  // @return the height of the client area in logical pixels
+  public float getAspect()  // @return the aspect ratio, e.g.
+  public boolean isHidden()  // @return whether the window is 'hidden', e.g.
+  public abstract int getBackBufferWidth()  // @return the width of the framebuffer in physical pixels
+  public abstract int getBackBufferHeight()  // @return the height of the framebuffer in physical pixels
+  public int[] getSafeInsets()  // @return the safe area insets, in the order left-right-top-bottom.
+  public abstract long getFrameId()  // Returns the id of the current frame.
+  public abstract float getDeltaTime()  // @return the time span between the current frame and the last frame in seconds.
+  public abstract int getFramesPerSecond()  // @return the average number of frames per second
+  public abstract GLVersion getGLVersion()  // @return the {@link GLVersion} of this Graphics instance
+  public abstract float getPpiX()  // @return the pixels per inch on the x-axis
+  public abstract float getPpiY()  // @return the pixels per inch on the y-axis
+  public abstract float getPpcX()  // @return the pixels per centimeter on the x-axis
+  public abstract float getPpcY()  // @return the pixels per centimeter on the y-axis.
+  public abstract float getDensity()  // This is a scaling factor for the Density Independent Pixel unit, following the same conventions as
+  public boolean setFullscreen(boolean fullscreen)  // Sets the window to full-screen mode.
+  public void setWindowPosition(int x, int y)  // Sets the window position on its current monitor.
+  public void setWindowSize(int width, int height)  // Sets the window size in pixels.
+  public abstract void setTitle(String title)  // Sets the title of the window.
+  public abstract void setVSync(boolean vsync)  // Enable/Disable vsynching.
+  public abstract BufferFormat getBufferFormat()  // @return the format of the color, depth and stencil buffer in a {@link BufferFormat} instance
+  public abstract boolean supportsExtension(String extension)  // @param extension the extension name
+  public void setPreferredFPS(int fps)  // On iOS, sets the preferred frame rate.
+  public abstract boolean isContinuousRendering()  // @return whether rendering is continuous.
+  public abstract void setContinuousRendering(boolean isContinuous)  // Sets whether to render continuously.
+  public abstract void requestRendering()  // Requests a new frame to be rendered if the rendering mode is non-continuous.
+  public abstract boolean isFullscreen()  // Whether the app is fullscreen or not
+  public abstract Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot) / public Cursor newCursor(Pixmap pixmap, int scaling, Color outlineColor, int outlineThickness) / public Cursor newCursor(String filename, int scale) / public Cursor newCursor(String filename) / public Cursor newCursor(String filename, int scaling, Color outlineColor, int outlineScaling)  // Create a new cursor represented by the {@link arc.graphics.Pixmap}.
+  public void restoreCursor()  // Sets the cursor to the default value, e.g.
+  public void cursor(Cursor cursor)  // Sets the display cursor.
+  protected abstract void setCursor(Cursor cursor)  // Only viable on desktop and web.
+  protected abstract void setSystemCursor(SystemCursor systemCursor)  // Sets one of the predefined {@link SystemCursor}s.
+  public void dispose()
+inner-class: BufferFormat
+// Class describing the bits per pixel, depth buffer precision, stencil precision and number of MSAA samples.
+  fields:
+    public final int r  // number of bits per color channel
+    public final int depth  // number of bits for depth and stencil buffer
+    public final int samples  // number of samples for multi-sample anti-aliasing (MSAA) *
+    public final boolean coverageSampling  // whether coverage sampling anti-aliasing is used.
+  ctors:
+    public BufferFormat(int r, int g, int b, int a, int depth, int stencil, int samples, boolean coverageSampling)
+  methods:
+    public String toString()
+inner-interface: Cursor extends arc.util.Disposable
+// <p>
+
+Input.java
+Java class (abstract)
+// <p>
+fields:
+  protected KeyboardDevice keyboard  // The default input device (keyboard)
+  protected InputMultiplexer inputMultiplexer  // An input multiplexer to handle events.
+  protected IntSet caughtKeys  // List of caught keys for Android.
+  protected Vec2 mouseReturn  // Return Vec2 value for various functions.
+  protected boolean useKeyboard  // Whether to use keyboard controls on Android.
+methods:
+  public Vec2 mouseWorld(float x, float y) / public Vec2 mouseWorld()  // Returns the unprojected mouse position (screen -> world).
+  public Vec2 mouseScreen(float x, float y)  // Returns the projected mouse position (world -> screen).
+  public float mouseWorldX()  // @return the unprojected mouse position in the world.
+  public float mouseWorldY()  // @return the unprojected mouse position in the world.
+  public Vec2 mouse()  // Returns the mouse position as a Vec2.
+  public void setUseKeyboard(boolean useKeyboard)
+  public boolean useKeyboard()  // @return whether the keyboard should be preferred for mobile devices - used in text fields.
+  public abstract int mouseX() / public abstract int mouseX(int pointer)  // @return The x coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first
+  public abstract int deltaX() / public abstract int deltaX(int pointer)  // @return the different between the current pointer location and the last pointer location on the x-axis.
+  public abstract int mouseY() / public abstract int mouseY(int pointer)  // @return The y coordinate of the last touch on touch screen devices and the current mouse position on desktop for the first
+  public abstract int deltaY() / public abstract int deltaY(int pointer)  // @return the different between the current pointer location and the last pointer location on the y-axis.
+  public abstract boolean isTouched() / public abstract boolean isTouched(int pointer)  // @return whether the screen is currently touched.
+  public abstract boolean justTouched()  // @return whether a new touch down event just occurred.
+  public int getTouches()
+  public float getPressure() / public float getPressure(int pointer)  // @return the pressure of the first pointer
+  public boolean shift()  // Returns whether one of the two shift keys is currently pressed.
+  public boolean ctrl()  // Returns whether one of the two control keys is currently pressed - or, on Macs, the cmd key.
+  public boolean alt()  // Returns whether one of the two alt keys is pressed.
+  public boolean keyDown(KeyCode key) / public boolean keyDown(KeyBind key)  // Returns whether the key is pressed.
+  public boolean keyTap(KeyCode key) / public boolean keyTap(KeyBind key)  // Returns whether the key has just been pressed.
+  public boolean keyRelease(KeyCode key) / public boolean keyRelease(KeyBind key)  // Returns whether the key has just been released.
+  public float axis(KeyCode key) / public float axis(KeyBind key)  // Returns the [-1, 1] axis value of a key.
+  public float axisTap(KeyBind key)  // Returns the [-1, 1] axis value of a key.
+  public void getTextInput(TextInput input)  // System dependent method to input a string of text.
+  public boolean isShowingTextInput()  // @return on mobile, whether text input is currently being fetched.
+  public void setOnscreenKeyboardVisible(boolean visible)  // Sets the on-screen keyboard visible if available.
+  public void vibrate(int milliseconds) / public void vibrate(long[] pattern, int repeat)  // Vibrates for the given amount of time.
+  public void cancelVibrate()  // Stops the vibrator
+  public Vec3 getAccelerometer()  // @return The acceleration force in m/s^2 applied to the device, including the force of gravity
+  public Vec3 getGyroscope()  // @return The rate of rotation in rad/s.
+  public Vec3 getOrientation()  // @return the device's orientation in degrees in the format (pitch, roll, azimuth) corresponding to x,y,z.
+  public void getRotationMatrix(float[] matrix)  // Returns the rotation matrix describing the devices rotation as per <a href=
+  public abstract long getCurrentEventTime()  // @return the time of the event currently reported to the {@link InputProcessor}.
+  public void setCatch(KeyCode code, boolean c)  // Sets whether the specified button on Android should be caught.
+  public boolean isCatch(KeyCode code)  // @return whether the back button is currently being caught
+  public void addProcessor(InputProcessor processor)  // Adds a {@link InputProcessor} that will receive all touch and key input events.
+  public void removeProcessor(InputProcessor processor)  // Removes a {@link InputProcessor} from the chain.
+  public Seq<InputProcessor> getInputProcessors()  // @return the currently set {@link InputProcessor} or null.
+  public InputMultiplexer getInputMultiplexer()
+  public KeyboardDevice getKeyboard()  // Returns the default input device (keyboard).
+  public boolean isPeripheralAvailable(Peripheral peripheral)  // Queries whether a {@link Peripheral} is currently available.
+  public int getRotation()  // @return the rotation of the device with respect to its native orientation.
+  public Orientation getNativeOrientation()  // @return the native orientation of the device.
+  public String getKeyName(KeyCode code)  // Internal method for looking up a key's name based on keyboard layout.
+inner-class: TextInput
+// Parameters for text input.
+  fields:
+    public boolean multiline
+    public boolean allowEmpty
+    public String title
+    public String text
+    public String message
+    public boolean numeric
+    public Cons<String> accepted
+    public Runnable canceled
+    public int maxLength
+
+Settings.java
+Java class
+fields:
+  protected final static byte typeBool
+  protected final static int maxBackups
+  protected Fi dataDirectory  // general state data
+  protected String appName
+  protected ObjectMap<String,Object> defaults
+  protected HashMap<String,Object> values
+  protected boolean modified
+  protected Cons<Throwable> errorHandler
+  protected boolean hasErrored
+  protected boolean shouldAutosave
+  protected boolean loaded
+  protected boolean writeCompressed
+  private long lastBackupTime
+  protected ExecutorService executor
+  protected ByteArrayOutputStream byteStream  // IO utility objects
+  protected ReusableByteInStream byteInputStream
+  protected UBJsonReader ureader
+  protected Json json
+methods:
+  public void setJson(Json json)
+  public void setCompressed(boolean compressed)
+  public String getAppName()
+  public void setAppName(String name)
+  public void setErrorHandler(Cons<Throwable> handler)  // Sets the error handler function.
+  public void setAutosave(boolean autosave)  // Set whether the data should autosave immediately upon changing a value.
+  public boolean modified()
+  public synchronized void load()  // Loads all values and keybinds.
+  public synchronized void forceSave()  // Saves all values and keybinds.
+  public synchronized void manualSave()  // Manually save, if the settings have been loaded at some point.
+  public synchronized void autosave()  // Saves if any modifications were done.
+  public synchronized void loadValues() / public synchronized void loadValues(Fi file) throws IOException  // Loads a settings file into {@link #values} using the specified appName.
+  public synchronized void saveValues()  // Saves all entries from {@link #values} into the correct location.
+  public Fi getSettingsFile()  // Returns the file used for writing settings to.
+  public Fi getBackupFolder()
+  public Fi getBackupSettingsFile()
+  public Fi getDataDirectory()  // Returns the directory where all settings and data is placed.
+  public void setDataDirectory(Fi file)  // Sets the settings file where everything is written to.
+  public synchronized void defaults(Object objects)  // Set up a list of defaults values.
+  public synchronized void clear()  // Clears all preference values.
+  public synchronized Object getDefault(String name)
+  public synchronized boolean has(String name)
+  public synchronized Object get(String name, Object def)
+  public boolean isModified()
+  public synchronized void putJson(String name, Object value) / public synchronized void putJson(String name, Class<?> elementType, Object value)
+  public synchronized T getJson(String name, Class<T> type, Class elementType, Prov<T> def) / public T getJson(String name, Class<T> type, Prov<T> def)
+  public float getFloat(String name, float def) / public float getFloat(String name)
+  public long getLong(String name, long def) / public Long getLong(String name)
+  public int getInt(String name, int def) / public int getInt(String name)
+  public boolean getBool(String name, boolean def) / public boolean getBool(String name)
+  public byte[] getBytes(String name, byte[] def) / public byte[] getBytes(String name)
+  public String getString(String name, String def) / public String getString(String name)
+  public void getBoolOnce(String name, Runnable run) / public boolean getBoolOnce(String name)  // Runs the specified code once, and never again.
+  public void putAll(ObjectMap<String,Object> map)
+  public void toggle(String name)  // Toggles a boolean value.
+  public void putInt(String name, int value)  // JS compatibility method.
+  public void putFloat(String name, float value)  // JS compatibility method.
+  public synchronized void put(String name, Object object)  // Stores an object in the preference map.
+  public synchronized void remove(String name)
+  public synchronized Iterable<String> keys()
+  public synchronized int keySize()
+

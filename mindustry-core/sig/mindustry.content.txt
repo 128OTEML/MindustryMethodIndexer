@@ -1,0 +1,156 @@
+Blocks.java
+Java class
+fields:
+  public static Block air
+methods:
+  public static void load()
+
+Bullets.java
+Java class
+// Class for holding special internal bullets.
+fields:
+  public static BulletType placeholder
+methods:
+  public static void load()
+
+ErekirTechTree.java
+Java class
+fields:
+  static IntSet balanced
+methods:
+  static void rebalanceBullet(BulletType bullet)
+  public static void rebalance()  // TODO remove this
+  public static void load()
+
+Fx.java
+Java class
+fields:
+  public static final Rand rand
+  public static final Vec2 v
+  public static final Effect none
+
+Items.java
+Java class
+fields:
+  public static Item scrap
+  public static final Seq<Item> serpuloItems
+methods:
+  public static void load()
+
+Liquids.java
+Java class
+fields:
+  public static Liquid water
+methods:
+  public static void load()
+
+Loadouts.java
+Java class
+fields:
+  public static Schematic basicShard
+methods:
+  public static void load()
+
+Planets.java
+Java class
+fields:
+  public static Planet sun
+methods:
+  public static void load()
+  private static Planet makeAsteroid(String name, Planet parent, Block base, Block tint, int seed, float tintThresh, int pieces, float scale, Cons<AsteroidGenerator> cgen)
+
+SectorPresets.java
+Java class
+fields:
+  public static SectorPreset groundZero
+methods:
+  public static void load()
+
+SerpuloTechTree.java
+Java class
+methods:
+  public static void load()
+
+StatusEffects.java
+Java class
+fields:
+  public static StatusEffect none
+methods:
+  public static void load()
+
+TeamEntries.java
+Java class
+methods:
+  public static void load()
+
+TechTree.java
+Java class
+// Class for storing a list of TechNodes with some utility tree builder methods; context dependent.
+fields:
+  private static TechNode context
+  public static Seq<TechNode> all
+  public static Seq<TechNode> roots
+methods:
+  public static TechNode nodeRoot(String name, UnlockableContent content, Runnable children) / public static TechNode nodeRoot(String name, UnlockableContent content, boolean requireUnlock, Runnable children)
+  public static TechNode node(UnlockableContent content, Runnable children) / public static TechNode node(UnlockableContent content, ItemStack[] requirements, Runnable children) / public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) / public static TechNode node(UnlockableContent content, Seq<Objective> objectives, Runnable children) / public static TechNode node(UnlockableContent block)
+  public static TechNode nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) / public static TechNode nodeProduce(UnlockableContent content, Runnable children)
+  public static TechNode context()
+inner-class: TechNode
+  fields:
+    public int depth  // Depth in tech tree.
+    public Drawable icon  // Icon displayed in tech tree selector.
+    public String name  // Name for root node - used in tech tree selector.
+    public boolean requiresUnlock  // For roots only.
+    public TechNode parent  // Requirement node.
+    public ObjectFloatMap<Item> researchCostMultipliers  // Multipliers for research costs on a per-item basis.
+    public UnlockableContent content  // Content to be researched.
+    public ItemStack requirements  // Item requirements for this content.
+    public ItemStack finishedRequirements  // Requirements that have been fulfilled.
+    public Seq<Objective> objectives  // Extra objectives needed to research this.
+    public final Seq<TechNode> children  // Nodes that depend on this node.
+    public Planet planet  // Planet associated with this tech node.
+  ctors:
+    public TechNode(TechNode parent, UnlockableContent content, ItemStack[] requirements)
+  methods:
+    public void each(Cons<TechNode> consumer)  // Recursively iterates through everything that is a child of this node.
+    public void addDatabaseTab(UnlockableContent tab)  // Adds the specified database tab to all the content in this tree.
+    public void addPlanet(Planet planet)  // Adds the specified planet to the shownPlanets of all the content in this tree.
+    public Drawable icon()
+    public String localizedName()
+    public void setupRequirements(ItemStack[] requirements)
+    public void reset()  // Resets finished requirements and saves.
+    public void remove()  // Removes this node from the tech tree.
+    public void save()  // Flushes research progress to settings.
+
+UnitTypes.java
+Java class
+fields:
+  public static UnitType mace  // mech
+  public static UnitType nova  // mech, legacy
+  public static UnitType corvus  // legs
+  public static UnitType spiroct  // legs, legacy
+  public static UnitType elude  // hover
+  public static UnitType flare  // air
+  public static UnitType mono  // air, legacy
+  public static UnitType poly  // air, legacy
+  public static UnitType mega  // air + payload
+  public static UnitType quad  // air + payload, legacy
+  public static UnitType oct  // air + payload + legacy (different branch)
+  public static UnitType alpha  // air, legacy
+  public static UnitType risso  // naval
+  public static UnitType block  // special block unit type
+  public static UnitType manifold  // special building tethered (has payload capability, because it's necessary sometimes)
+  public static UnitType dummy
+  public static UnitType stell  // tank
+  public static UnitType missile  // missile definition, unused here but needed for codegen
+  public static UnitType latum
+methods:
+  public static void load()
+
+Weathers.java
+Java class
+fields:
+  public static Weather rain
+methods:
+  public static void load()
+

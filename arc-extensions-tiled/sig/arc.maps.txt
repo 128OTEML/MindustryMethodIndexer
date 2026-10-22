@@ -1,0 +1,155 @@
+ImageLayer.java
+Java class extends arc.maps.MapLayer
+fields:
+  public TextureRegion region
+  public float x
+  public float y
+ctors:
+  public ImageLayer(TextureRegion region, float x, float y)
+
+MapGroupLayer.java
+Java class extends arc.maps.MapLayer
+// Map layer containing a set of MapLayers, objects and properties
+fields:
+  public Seq<MapLayer> layers
+methods:
+  public void invalidateRenderOffset()
+
+MapLayer.java
+Java class
+// Map layer containing a set of objects and properties
+fields:
+  public String name
+  public float opacity
+  public boolean visible
+  private float offsetX
+  private float offsetY
+  private float renderOffsetX
+  private float renderOffsetY
+  private boolean renderOffsetDirty
+  private MapLayer parent
+  public final Seq<MapObject> objects
+  public final MapProperties properties
+methods:
+  public float getOffsetX()  // @return layer's x offset
+  public void setOffsetX(float offsetX)  // @param offsetX new x offset for the layer
+  public float getOffsetY()  // @return layer's y offset
+  public void setOffsetY(float offsetY)  // @param offsetY new y offset for the layer
+  public float getRenderOffsetX()  // @return the layer's x render offset, this takes into consideration all parent layers' offsets *
+  public float getRenderOffsetY()  // @return the layer's y render offset, this takes into consideration all parent layers' offsets *
+  public void invalidateRenderOffset()  // set the renderOffsetDirty state to true, when this layer or any parents' offset has changed *
+  public MapLayer getParent()  // @return the layer's parent {@link MapLayer}, or null if the layer does not have a parent *
+  public void setParent(MapLayer parent)  // @param parent the layer's new parent MapLayer, internal use only *
+  protected void calculateRenderOffsets()
+
+MapObject.java
+Java class
+// Generic Map entity with basic attributes like name, opacity, color
+fields:
+  public String name
+  public float opacity
+  public boolean visible
+  public MapProperties properties
+  public Color color
+
+MapProperties.java
+Java class
+// Set of string indexed values representing map elements' properties, allowing to retrieve, modify and add properties to
+fields:
+  private ObjectMap<String,Object> properties
+ctors:
+  public MapProperties()  // Creates an empty properties set
+methods:
+  public boolean containsKey(String key)  // @param key property name
+  public T get(String key) / public T get(String key, T defaultValue)  // Returns the object for the given key, casting it to clazz.
+  public void put(String key, Object value)  // @param key property name
+  public void putAll(MapProperties properties)  // @param properties set of properties to be added
+  public void remove(String key)  // @param key property name to be removed
+  public void clear()  // Removes all properties
+  public Iterator<String> getKeys()  // @return iterator for the property names
+  public Iterator<Object> getValues()  // @return iterator to properties' values
+
+MapTile.java
+Java class
+fields:
+  public int id
+  public TextureRegion region
+  public float offsetX
+  public float offsetY
+  private MapProperties properties
+  private Seq<MapObject> objects
+ctors:
+  public MapTile(TextureRegion region)
+methods:
+  public MapProperties getProperties()
+  public Seq<MapObject> getObjects()
+
+TileLayer.java
+Java class extends arc.maps.MapLayer
+// Layer for a TiledMap
+fields:
+  public final int width
+  public final int height
+  public final float tileWidth
+  public final float tileHeight
+  private Cell cells
+ctors:
+  public TileLayer(int width, int height, int tileWidth, int tileHeight)  // Creates TiledMap layer
+methods:
+  public Cell getCell(int x, int y)  // @param x X coordinate
+  public void setCell(int x, int y, Cell cell)  // Sets the {@link Cell} at the given coordinates.
+  public MapTile getTile(int x, int y)
+inner-class: Cell
+// represents a cell in a TiledLayer: TiledMapTile, flip and rotation properties.
+  fields:
+    public static final int ROTATE_0
+    public static final int ROTATE_90
+    public static final int ROTATE_180
+    public static final int ROTATE_270
+    public MapTile tile
+    public boolean flipHorizontally
+    public boolean flipVertically
+    public int rotation
+
+TileSet.java
+Java class implements java.lang.Iterable
+// Set of {@link MapTile} instances used to compose a TiledMapLayer
+fields:
+  public String name
+  public MapProperties properties
+  private IntMap<MapTile> tiles
+methods:
+  public MapProperties getProperties()  // @return tileset's properties set
+  public MapTile get(int id)  // Gets the {@link MapTile} that has the given id.
+  public Iterator<MapTile> iterator()  // @return iterator to tiles in this tileset
+  public void put(int id, MapTile tile)  // Adds or replaces tile with that id
+  public void remove(int id)  // @param id tile's id to be removed
+  public int size()  // @return the size of this TiledMapTileSet.
+
+TileSets.java
+Java class implements java.lang.Iterable
+// Collection of {@link TileSet}
+fields:
+  private Seq<TileSet> tilesets
+ctors:
+  public TileSets()  // Creates an empty struct of tilesets.
+methods:
+  public TileSet getTileSet(int index) / public TileSet getTileSet(String name)  // @param index index to get the desired {@link TileSet} at.
+  public void addTileSet(TileSet tileset)  // @param tileset set to be added to the struct
+  public void removeTileSet(int index) / public void removeTileSet(TileSet tileset)  // Removes tileset at index
+  public MapTile getTile(int id)  // @param id id of the {@link MapTile} to get.
+  public Iterator<TileSet> iterator()
+
+TiledMap.java
+Java class implements arc.util.Disposable
+// Represents a tiled map, adds the concept of tiles and tilesets.
+fields:
+  public final Seq<MapLayer> layers
+  public final MapProperties properties
+  public final TileSets tilesets
+  private Seq<? extends Disposable> ownedResources
+methods:
+  public void setOwnedResources(Seq<? extends Disposable> resources)  // Used by loaders to set resources when loading the map directly, without {@link AssetManager}.
+  public T getLayer(String name)
+  public void dispose()
+

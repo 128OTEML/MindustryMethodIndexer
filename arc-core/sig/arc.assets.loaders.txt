@@ -1,0 +1,221 @@
+AssetLoader.java
+Java class (abstract)
+// Abstract base class for asset loaders.
+fields:
+  private FileHandleResolver resolver  // {@link FileHandleResolver} used to map from plain asset names to {@link Fi} instances *
+ctors:
+  public AssetLoader(FileHandleResolver resolver)  // Constructor, sets the {@link FileHandleResolver} to use to resolve the file associated with the asset name.
+methods:
+  public Fi resolve(String fileName)  // @param fileName file name to resolve
+  public abstract Seq<AssetDescriptor> getDependencies(String fileName, Fi file, P parameter)  // Returns the assets this asset requires to be loaded first.
+
+AsynchronousAssetLoader.java
+Java class (abstract) extends arc.assets.loaders.AssetLoader
+// Base class for asynchronous {@link AssetLoader} instances.
+ctors:
+  public AsynchronousAssetLoader(FileHandleResolver resolver)
+methods:
+  public abstract void loadAsync(AssetManager manager, String fileName, Fi file, P parameter)  // Loads the non-OpenGL part of the asset and injects any dependencies of the asset into the AssetManager.
+  public abstract T loadSync(AssetManager manager, String fileName, Fi file, P parameter)  // Loads the OpenGL part of the asset.
+
+CubemapLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Cubemap} instances.
+fields:
+  CubemapLoaderInfo info
+ctors:
+  public CubemapLoader(FileHandleResolver resolver)
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, CubemapParameter parameter)
+  public Cubemap loadSync(AssetManager manager, String fileName, Fi file, CubemapParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, CubemapParameter parameter)
+inner-class: CubemapLoaderInfo
+  fields:
+    String filename
+    CubemapData data
+    Cubemap cubemap
+inner-class: CubemapParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public Format format  // the format of the final Texture.
+    public Cubemap cubemap  // The texture to put the {@link TextureData} in, optional.
+    public CubemapData cubemapData  // CubemapData for textures created on the fly, optional.
+    public TextureFilter minFilter
+    public TextureFilter magFilter
+    public TextureWrap wrapU
+    public TextureWrap wrapV
+
+CustomLoader.java
+Java class (abstract) extends arc.assets.loaders.AsynchronousAssetLoader
+fields:
+  public Runnable loaded
+ctors:
+  public CustomLoader()
+methods:
+  public Object loadSync(AssetManager manager, String fileName, Fi file, AssetLoaderParameters parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, AssetLoaderParameters parameter)
+
+FileHandleResolver.java
+Java interface
+// Interface for classes the can map a file name to a {@link Fi}.
+methods:
+  Fi resolve(String fileName)
+
+FontLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Font} instances.
+fields:
+  FontData data
+ctors:
+  public FontLoader(FileHandleResolver resolver)
+methods:
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FontParameter parameter)
+  public void loadAsync(AssetManager manager, String fileName, Fi file, FontParameter parameter)
+  public Font loadSync(AssetManager manager, String fileName, Fi file, FontParameter parameter)
+inner-class: FontParameter extends arc.assets.AssetLoaderParameters
+// Parameter to be passed to {@link AssetManager#load(String, Class, AssetLoaderParameters)} if additional configuration is
+  fields:
+    public boolean flip  // Flips the font vertically if {@code true}.
+    public boolean genMipMaps  // Generates mipmaps for the font if {@code true}.
+    public TextureFilter minFilter  // The {@link TextureFilter} to use when scaling down the {@link Font}.
+    public TextureFilter magFilter  // The {@link TextureFilter} to use when scaling up the {@link Font}.
+    public FontData fontData  // optional {@link FontData} to be used instead of loading the {@link Texture} directly.
+    public String atlasName  // The name of the {@link TextureAtlas} to load the {@link Font} itself from.
+
+I18NBundleLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link I18NBundle} instances.
+fields:
+  I18NBundle bundle
+ctors:
+  public I18NBundleLoader(FileHandleResolver resolver)
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter)
+  public I18NBundle loadSync(AssetManager manager, String fileName, Fi file, I18NBundleParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, I18NBundleParameter parameter)
+inner-class: I18NBundleParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public final Locale locale
+    public final String encoding
+  ctors:
+    public I18NBundleParameter() / public I18NBundleParameter(Locale locale) / public I18NBundleParameter(Locale locale, String encoding)
+
+MusicLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Music} instances.
+fields:
+  private Music music
+ctors:
+  public MusicLoader(FileHandleResolver resolver)
+methods:
+  protected Music getLoadedMusic()  // Returns the {@link Music} instance currently loaded by this
+  public void loadAsync(AssetManager manager, String fileName, Fi file, MusicParameter parameter)
+  public Music loadSync(AssetManager manager, String fileName, Fi file, MusicParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, MusicParameter parameter)
+inner-class: MusicParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public Music music
+  ctors:
+    public MusicParameter() / public MusicParameter(Music music) / public MusicParameter(LoadedCallback loadedCallback)
+
+PixmapLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Pixmap} instances.
+fields:
+  Pixmap pixmap
+ctors:
+  public PixmapLoader(FileHandleResolver resolver)
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)
+  public Pixmap loadSync(AssetManager manager, String fileName, Fi file, PixmapParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, PixmapParameter parameter)
+inner-class: PixmapParameter extends arc.assets.AssetLoaderParameters
+
+ShaderProgramLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Shader} instances loaded from text files.
+fields:
+  private String vertexFileSuffix
+  private String fragmentFileSuffix
+ctors:
+  public ShaderProgramLoader(FileHandleResolver resolver) / public ShaderProgramLoader(FileHandleResolver resolver, String vertexFileSuffix, String fragmentFileSuffix)
+methods:
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, ShaderProgramParameter parameter)
+  public void loadAsync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter)
+  public Shader loadSync(AssetManager manager, String fileName, Fi file, ShaderProgramParameter parameter)
+inner-class: ShaderProgramParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public String vertexFile  // File name to be used for the vertex program instead of the default determined by the file name used to submit this asset
+    public String fragmentFile  // File name to be used for the fragment program instead of the default determined by the file name used to submit this
+    public boolean logOnCompileFailure  // Whether to log (at the error level) the shader's log if it fails to compile.
+    public String prependVertexCode  // Code that is always added to the vertex shader code.
+    public String prependFragmentCode  // Code that is always added to the fragment shader code.
+
+SoundLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} to load {@link Sound} instances.
+fields:
+  private Sound sound
+ctors:
+  public SoundLoader(FileHandleResolver resolver)
+methods:
+  protected Sound getLoadedSound()  // Returns the {@link Sound} instance currently loaded by this
+  public void loadAsync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)
+  public Sound loadSync(AssetManager manager, String fileName, Fi file, SoundParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, SoundParameter parameter)
+inner-class: SoundParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public Sound sound
+  ctors:
+    public SoundParameter() / public SoundParameter(Sound sound) / public SoundParameter(LoadedCallback loadedCallback)
+
+SynchronousAssetLoader.java
+Java class (abstract) extends arc.assets.loaders.AssetLoader
+ctors:
+  public SynchronousAssetLoader(FileHandleResolver resolver)
+methods:
+  public abstract T load(AssetManager assetManager, String fileName, Fi file, P parameter)
+
+TextureAtlasLoader.java
+Java class extends arc.assets.loaders.SynchronousAssetLoader
+// {@link AssetLoader} to load {@link TextureAtlas} instances.
+fields:
+  TextureAtlasData data
+ctors:
+  public TextureAtlasLoader(FileHandleResolver resolver)
+methods:
+  public TextureAtlas load(AssetManager assetManager, String fileName, Fi file, TextureAtlasParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi atlasFile, TextureAtlasParameter parameter)
+inner-class: TextureAtlasParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public boolean flip  // whether to flip the texture atlas vertically *
+  ctors:
+    public TextureAtlasParameter() / public TextureAtlasParameter(boolean flip) / public TextureAtlasParameter(LoadedCallback loadedCallback)
+
+TextureLoader.java
+Java class extends arc.assets.loaders.AsynchronousAssetLoader
+// {@link AssetLoader} for {@link Texture} instances.
+fields:
+  TextureLoaderInfo info
+ctors:
+  public TextureLoader(FileHandleResolver resolver)
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+  public Texture loadSync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter)
+inner-class: TextureLoaderInfo
+  fields:
+    String filename
+    TextureData data
+    Texture texture
+inner-class: TextureParameter extends arc.assets.AssetLoaderParameters
+  fields:
+    public boolean genMipMaps  // whether to generate mipmaps *
+    public Texture texture  // The texture to put the {@link TextureData} in, optional.
+    public TextureData textureData  // TextureData for textures created on the fly, optional.
+    public TextureFilter minFilter
+    public TextureFilter magFilter
+    public TextureWrap wrapU
+    public TextureWrap wrapV
+  ctors:
+    public TextureParameter()
+

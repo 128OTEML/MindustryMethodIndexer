@@ -1,0 +1,1706 @@
+ArrayMap.java
+Java class implements java.lang.Iterable
+// An ordered or unordered map of objects.
+fields:
+  public K keys
+  public V values
+  public int size
+  public boolean ordered
+  private Entries entries1
+  private Values valuesIter1
+  private Keys keysIter1
+ctors:
+  public ArrayMap() / public ArrayMap(int capacity) / public ArrayMap(boolean ordered, int capacity) / public ArrayMap(boolean ordered, int capacity, Class keyArrayType, Class valueArrayType) / public ArrayMap(Class keyArrayType, Class valueArrayType) / public ArrayMap(ArrayMap array)  // Creates an ordered map with a capacity of 16.
+methods:
+  public int put(K key, V value) / public int put(K key, V value, int index)
+  public void putAll(ArrayMap<? extends K,? extends V> map) / public void putAll(ArrayMap<? extends K,? extends V> map, int offset, int length)
+  public V get(K key)  // Returns the value for the specified key.
+  public K getKey(V value, boolean identity)  // Returns the key for the specified value.
+  public K getKeyAt(int index)
+  public V getValueAt(int index)
+  public K firstKey()
+  public V firstValue()
+  public void setKey(int index, K key)
+  public void setValue(int index, V value)
+  public void insert(int index, K key, V value)
+  public boolean containsKey(K key)
+  public boolean containsValue(V value, boolean identity)  // @param identity If true, == comparison will be used.
+  public int indexOfKey(K key)
+  public int indexOfValue(V value, boolean identity)
+  public V removeKey(K key)
+  public boolean removeValue(V value, boolean identity)
+  public void removeIndex(int index)  // Removes and returns the key/values pair at the specified index.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public K peekKey()  // Returns the last key.
+  public V peekValue()  // Returns the last value.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity if they are larger.
+  public void shrink()  // Reduces the size of the backing arrays to the size of the actual number of entries.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing arrays to accommodate the specified number of additional entries.
+  protected void resize(int newSize)
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the arrays to the specified size.
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString()
+  public Iterator<Entry<K,V>> iterator()
+  public Entries<K,V> entries()  // Returns an iterator for the entries in the map.
+  public Values<V> values()  // Returns an iterator for the values in the map.
+  public Keys<K> keys()  // Returns an iterator for the keys in the map.
+inner-class: Entries implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final ArrayMap<K,V> map
+    Entry<K,V> entry
+    int index
+    boolean valid
+  ctors:
+    public Entries(ArrayMap<K,V> map)
+  methods:
+    public boolean hasNext()
+    public Iterator<Entry<K,V>> iterator()
+    public Entry<K,V> next()  // Note the same entry instance is returned each time this method is called.
+    public void remove()
+    public void reset()
+inner-class: Values implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final ArrayMap<Object,V> map
+    int index
+    boolean valid
+  ctors:
+    public Values(ArrayMap<Object,V> map)
+  methods:
+    public boolean hasNext()
+    public Iterator<V> iterator()
+    public V next()
+    public void remove()
+    public void reset()
+    public Seq<V> toArray() / public Seq<V> toArray(Seq array)
+inner-class: Keys implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final ArrayMap<K,Object> map
+    int index
+    boolean valid
+  ctors:
+    public Keys(ArrayMap<K,Object> map)
+  methods:
+    public boolean hasNext()
+    public Iterator<K> iterator()
+    public K next()
+    public void remove()
+    public void reset()
+    public Seq<K> toArray() / public Seq<K> toArray(Seq array)
+
+BinaryHeap.java
+Java class
+// @author Nathan Sweet
+fields:
+  private final boolean isMaxHeap
+  public int size
+  private Node nodes
+ctors:
+  public BinaryHeap() / public BinaryHeap(int capacity, boolean isMaxHeap)
+methods:
+  public T add(T node) / public T add(T node, float value)
+  public boolean contains(T node, boolean identity)  // Returns if binary heap contains the provided node.
+  public T peek()
+  public T pop()
+  public T remove(T node) / private T remove(int index)
+  public boolean isEmpty()  // Returns true if the heap is empty.
+  public void clear()
+  public void setValue(T node, float value)
+  private void up(int index)
+  private void down(int index)
+  public boolean equals(Object obj)
+  public int hashCode()
+  public String toString()
+inner-class: Node
+// @author Nathan Sweet
+  fields:
+    float value
+    int index
+  ctors:
+    public Node(float value)
+  methods:
+    public float getValue()
+    public String toString()
+
+Bits.java
+Java class
+// A bitset, without size limitation, allows comparison via bitwise operators to other bitfields.
+fields:
+  long bits
+ctors:
+  public Bits() / public Bits(int nbits)  // Creates a bit set whose initial size is large enough to explicitly represent bits with indices in the range 0 through
+methods:
+  public void set(Bits other) / public void set(int index, boolean value) / public void set(int index) / public void set(int from, int to)  // Sets this bits to have the same bits as another.
+  public boolean get(int index)  // @param index the index of the bit
+  public boolean getAndClear(int index)  // Returns the bit at the given index and clears it in one go.
+  public boolean getAndSet(int index)  // Returns the bit at the given index and sets it in one go.
+  public void flip(int index)  // @param index the index of the bit to flip
+  private void checkCapacity(int len)
+  public void clear(int index) / public void clear()  // @param index the index of the bit to clear
+  public int numBits()  // @return the number of bits currently stored, <b>not</b> the highset set bit!
+  public int length()  // Returns the "logical size" of this bitset: the index of the highest set bit in the bitset plus one.
+  public boolean isEmpty()  // @return true if this bitset contains no bits that are set to true
+  public int nextSetBit(int fromIndex)  // Returns the index of the first bit that is set to true that occurs on or after the specified starting index.
+  public int nextClearBit(int fromIndex)  // Returns the index of the first bit that is set to false that occurs on or after the specified starting index.
+  public void and(Bits other)  // Performs a logical <b>AND</b> of this target bit set with the argument bit set.
+  public void andNot(Bits other)  // Clears all of the bits in this bit set whose corresponding bit is set in the specified bit set.
+  public void or(Bits other)  // Performs a logical <b>OR</b> of this bit set with the bit set argument.
+  public void xor(Bits other)  // Performs a logical <b>XOR</b> of this bit set with the bit set argument.
+  public boolean intersects(Bits other)  // Returns true if the specified BitSet has any bits set to true that are also set to true in this BitSet.
+  public boolean containsAll(Bits other)  // Returns true if this bit set is a super set of the specified set, i.e.
+  public int hashCode()
+  public boolean equals(Object obj)
+
+BoolSeq.java
+Java class
+// A resizable, ordered or unordered boolean array.
+fields:
+  public boolean items
+  public int size
+  public boolean ordered
+ctors:
+  public BoolSeq() / public BoolSeq(int capacity) / public BoolSeq(boolean ordered, int capacity) / public BoolSeq(BoolSeq array) / public BoolSeq(boolean[] array) / public BoolSeq(boolean ordered, boolean[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static BoolSeq with(boolean array)  // @see #BoolSeq(boolean[])
+  public void add(boolean value) / public void add(boolean value1, boolean value2) / public void add(boolean value1, boolean value2, boolean value3) / public void add(boolean value1, boolean value2, boolean value3, boolean value4)
+  public void addAll(BoolSeq array) / public void addAll(BoolSeq array, int offset, int length) / public void addAll(boolean array) / public void addAll(boolean[] array, int offset, int length)
+  public boolean get(int index)
+  public void set(int index, boolean value)
+  public void insert(int index, boolean value)
+  public void swap(int first, int second)
+  public boolean removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(BoolSeq array)  // Removes from this array all of elements contained in the specified array.
+  public boolean pop()  // Removes and returns the last item.
+  public boolean peek()  // Returns the last item.
+  public boolean first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public boolean[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public boolean[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public boolean[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected boolean[] resize(int newSize)
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public boolean random()  // Returns a random item from the array, or false if the array is empty.
+  public boolean[] toArray()
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator)
+
+ByteSeq.java
+Java class
+// A resizable, ordered or unordered byte array.
+fields:
+  public byte items
+  public int size
+  public boolean ordered
+ctors:
+  public ByteSeq() / public ByteSeq(int capacity) / public ByteSeq(boolean ordered, int capacity) / public ByteSeq(ByteSeq array) / public ByteSeq(byte[] array) / public ByteSeq(boolean ordered, byte[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static ByteSeq with(byte array)  // @see #ByteSeq(byte[])
+  public void add(byte value) / public void add(byte value1, byte value2) / public void add(byte value1, byte value2, byte value3) / public void add(byte value1, byte value2, byte value3, byte value4)
+  public void addAll(ByteSeq array) / public void addAll(ByteSeq array, int offset, int length) / public void addAll(byte array) / public void addAll(byte[] array, int offset, int length)
+  public byte get(int index)
+  public void set(int index, byte value)
+  public void incr(int index, byte value)
+  public void mul(int index, byte value)
+  public void insert(int index, byte value)
+  public void swap(int first, int second)
+  public boolean contains(byte value)
+  public int indexOf(byte value)
+  public int lastIndexOf(byte value)
+  public boolean removeValue(byte value)
+  public int removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(ByteSeq array)  // Removes from this array all of elements contained in the specified array.
+  public byte pop()  // Removes and returns the last item.
+  public byte peek()  // Returns the last item.
+  public byte first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public byte[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public byte[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public byte[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected byte[] resize(int newSize)
+  public void sort()
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public byte random()  // Returns a random item from the array, or zero if the array is empty.
+  public byte[] toArray()
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator)
+
+ComparableTimSort.java
+Java class
+// This is a near duplicate of {@link TimSort}, modified for use with arrays of objects that implement {@link Comparable}, instead
+fields:
+  private static final int MIN_MERGE  // This is the minimum sized sequence that will be merged.
+  private static final int MIN_GALLOP  // When we get into galloping mode, we stay there until both runs win less often than MIN_GALLOP consecutive times.
+  private static final int INITIAL_TMP_STORAGE_LENGTH  // Maximum initial size of tmp array, which is used for merging.
+  private static final boolean DEBUG  // Asserts have been placed in if-statements for performace.
+  private final int runBase
+  private final int runLen
+  private Object a  // The array being sorted.
+  private int minGallop  // This controls when we get *into* galloping mode.
+  private Object tmp  // Temp storage for merges.
+  private int tmpCount
+  private int stackSize  // Number of pending runs on stack
+ctors:
+  ComparableTimSort() / private ComparableTimSort(Object[] a)  // Creates a TimSort instance to maintain the state of an ongoing sort.
+methods:
+  static void sort(Object[] a) / static void sort(Object[] a, int lo, int hi)
+  private static void binarySort(Object[] a, int lo, int hi, int start)  // Sorts the specified portion of the specified array using a binary insertion sort.
+  private static int countRunAndMakeAscending(Object[] a, int lo, int hi)  // Returns the length of the run beginning at the specified position in the specified array and reverses the run if it is
+  private static void reverseRange(Object[] a, int lo, int hi)  // Reverse the specified range of the specified array.
+  private static int minRunLength(int n)  // Returns the minimum acceptable run length for an array of the specified length.
+  private static int gallopLeft(Comparable<Object> key, Object[] a, int base, int len, int hint)  // Locates the position at which to insert the specified key into the specified sorted range; if the range contains an element
+  private static int gallopRight(Comparable<Object> key, Object[] a, int base, int len, int hint)  // Like gallopLeft, except that if the range contains an element equal to key, gallopRight returns the index after the
+  private static void rangeCheck(int arrayLen, int fromIndex, int toIndex)  // Checks that fromIndex and toIndex are in range, and throws an appropriate exception if they aren't.
+  public void doSort(Object[] a, int lo, int hi)
+  private void pushRun(int runBase, int runLen)  // Pushes the specified run onto the pending-run stack.
+  private void mergeCollapse()  // Examines the stack of runs waiting to be merged and merges adjacent runs until the stack invariants are reestablished:
+  private void mergeForceCollapse()  // Merges all runs on the stack until only one remains.
+  private void mergeAt(int i)  // Merges the two runs at stack indices i and i+1.
+  private void mergeLo(int base1, int len1, int base2, int len2)  // Merges two adjacent runs in place, in a stable fashion.
+  private void mergeHi(int base1, int len1, int base2, int len2)  // Like mergeLo, except that this method should be called only if len1 >= len2; mergeLo should be called if len1 <= len2.
+  private Object[] ensureCapacity(int minCapacity)  // Ensures that the external array tmp has at least the specified number of elements, increasing its size if necessary.
+
+DelayedRemovalSeq.java
+Java class extends arc.struct.Seq
+// Queues any removals done after {@link #begin()} is called to occur once {@link #end()} is called.
+fields:
+  private int iterating
+  private final IntSeq remove
+  private int clear
+ctors:
+  public DelayedRemovalSeq() / public DelayedRemovalSeq(Seq<? extends T> array) / public DelayedRemovalSeq(boolean ordered, int capacity, Class<?> arrayType) / public DelayedRemovalSeq(boolean ordered, int capacity) / public DelayedRemovalSeq(boolean ordered, T[] array, int startIndex, int count) / public DelayedRemovalSeq(Class<?> arrayType) / public DelayedRemovalSeq(int capacity) / public DelayedRemovalSeq(T[] array)
+methods:
+  public static DelayedRemovalSeq<T> with(T array)  // @see #DelayedRemovalSeq(Object[])
+  public void begin()
+  public void end()
+  private void removeIntern(int index)
+  public boolean remove(T value, boolean identity) / public T remove(int index)
+  public void removeRange(int start, int end)
+  public Seq<T> clear()
+  public void set(int index, T value)
+  public void insert(int index, T value)
+  public void swap(int first, int second)
+  public T pop()
+  public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator)
+  public Seq<T> reverse()
+  public Seq<T> shuffle()
+  public void truncate(int newSize)
+  public T[] setSize(int newSize)
+
+EnumSet.java
+Java class
+// Tiny array wrapper with a mask int for fast contains() checks.
+fields:
+  private int mask
+  public T array  // Array, for iterating over.
+  public int size
+ctors:
+  EnumSet() / EnumSet(int size)
+methods:
+  public static EnumSet<T> of(T arr)
+  public EnumSet<T> with(T add)  // @return a new set with the specified enum, or itself if this flag is already present.
+  public boolean contains(T t)
+  public boolean containsAny(EnumSet<T> other)
+  public boolean containsAll(EnumSet<T> other)
+
+FloatSeq.java
+Java class
+// A resizable, ordered or unordered float array.
+fields:
+  public float items
+  public int size
+  public boolean ordered
+ctors:
+  public FloatSeq() / public FloatSeq(int capacity) / public FloatSeq(boolean ordered, int capacity) / public FloatSeq(FloatSeq array) / public FloatSeq(float[] array) / public FloatSeq(boolean ordered, float[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static FloatSeq with(float array)  // @see #FloatSeq(float[])
+  public Seq<Vec2> toVec2Array()  // Converts this float array to a Vec2 array, with pairs used for coordinates.
+  public void add(float value) / public void add(float value1, float value2) / public void add(float value1, float value2, float value3) / public void add(float value1, float value2, float value3, float value4)
+  public void addAll(FloatSeq array) / public void addAll(FloatSeq array, int offset, int length) / public void addAll(float array) / public void addAll(float[] array, int offset, int length)
+  public float get(int index)
+  public void set(int index, float value)
+  public void incr(int index, float value)
+  public void mul(int index, float value)
+  public void insert(int index, float value)
+  public void swap(int first, int second)
+  public boolean contains(float value)
+  public int indexOf(float value)
+  public int lastIndexOf(float value)
+  public boolean removeValue(float value)
+  public float removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(FloatSeq array)  // Removes from this array all of elements contained in the specified array.
+  public float pop()  // Removes and returns the last item.
+  public float peek()  // Returns the last item.
+  public float first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public float sum()
+  public float[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public float[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public float[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected float[] resize(int newSize)
+  public void sort()
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public float random()  // Returns a random item from the array, or zero if the array is empty.
+  public float[] toArray()
+  public int hashCode()
+  public boolean equals(Object object) / public boolean equals(Object object, float epsilon)
+  public String toString() / public String toString(String separator)
+
+GridBits.java
+Java class
+fields:
+  private final Bits bits
+  private final int width
+ctors:
+  public GridBits(int width, int height)
+methods:
+  public void set(GridBits other) / public void set(int x, int y) / public void set(int x, int y, boolean b)
+  public boolean get(int x, int y)
+  public void clear()
+  public int width()
+  public int height()
+
+GridMap.java
+Java class
+// A 2-dimensional hashmap that stores objects using an x/y coordinate.
+fields:
+  protected LongMap<T> map
+methods:
+  private static long getHash(int x, int y)
+  public T get(int x, int y) / public T get(int x, int y, T defaultValue)
+  public boolean containsKey(int x, int y)
+  public void put(int x, int y, T t)
+  public void remove(int x, int y)
+  public Values<T> values()
+  public LongMap.Keys keys()
+  public void clear()
+  public int size()
+
+IntFloatMap.java
+Java class implements java.lang.Iterable
+// An unordered map where the keys are ints and values are floats.
+fields:
+  public int size
+  int keyTable
+  float valueTable
+  float zeroValue
+  boolean hasZeroValue
+  private final float loadFactor
+  private int threshold
+  protected int shift  // Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient Entries entries1
+  private transient Values values1
+  private transient Keys keys1
+ctors:
+  public IntFloatMap() / public IntFloatMap(int initialCapacity) / public IntFloatMap(int initialCapacity, float loadFactor) / public IntFloatMap(IntFloatMap map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  protected int place(int item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  private int locateKey(int key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public void put(int key, float value) / public float put(int key, float value, float defaultValue)  // Returns the old value associated with the specified key, or the specified default value.
+  public void putMissing(int key, float value) / public float putMissing(int key, float value, float defaultValue)
+  public void putAll(IntFloatMap map)
+  private void putResize(int key, float value)  // Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
+  public float get(int key) / public float get(int key, float defaultValue)  // @param defaultValue {@link Float#NaN} can be used for a value unlikely to be in the map.
+  public float increment(int key) / public float increment(int key, float increment) / public float increment(int key, float defaultValue, float increment)  // Returns the key's current value and increments the stored value.
+  public float remove(int key, float defaultValue)  // Returns the value for the removed key, or the default value if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(float value) / public boolean containsValue(float value, float epsilon)  // Returns true if the specified value is in the map.
+  public boolean containsKey(int key)
+  public int findKey(float value, int notFound) / public int findKey(float value, float epsilon, int notFound)  // Returns the key for the specified value, or notFound if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString()
+  public Iterator<Entry> iterator()
+  public Entries entries()  // Returns an iterator for the entries in the map.
+  public Values values()  // Returns an iterator for the values in the map.
+  public Keys keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public int key
+    public float value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    static private final int INDEX_ILLEGAL
+    static final int INDEX_ZERO
+    public boolean hasNext
+    final IntFloatMap map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(IntFloatMap map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.IntFloatMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final Entry entry
+  ctors:
+    public Entries(IntFloatMap map)
+  methods:
+    public Entry next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Iterator<Entry> iterator()
+    public void remove()
+inner-class: Values extends arc.struct.IntFloatMap.MapIterator
+  ctors:
+    public Values(IntFloatMap map)
+  methods:
+    public boolean hasNext()
+    public float next()
+    public Values iterator()
+    public FloatSeq toArray() / public FloatSeq toArray(FloatSeq array)  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.IntFloatMap.MapIterator
+  ctors:
+    public Keys(IntFloatMap map)
+  methods:
+    public int next()
+    public IntSeq toArray() / public IntSeq toArray(IntSeq array)  // Returns a new array containing the remaining keys.
+
+IntIntMap.java
+Java class implements java.lang.Iterable
+// An unordered map where the keys and values are ints.
+fields:
+  public int size
+  int keyTable
+  int valueTable
+  int zeroValue
+  boolean hasZeroValue
+  private final float loadFactor
+  private int threshold
+  protected int shift  // Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient Entries entries1
+  private transient Values values1
+  private transient Keys keys1
+ctors:
+  public IntIntMap() / public IntIntMap(int initialCapacity) / public IntIntMap(int initialCapacity, float loadFactor) / public IntIntMap(IntIntMap map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public static IntIntMap of(int values)
+  protected int place(int item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  private int locateKey(int key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public void put(int key, int value) / public int put(int key, int value, int defaultValue)  // Returns the old value associated with the specified key, or the specified default value.
+  public int putMissing(int key, int value) / public int putMissing(int key, int value, int defaultValue)
+  public void putAll(IntIntMap map)
+  private void putResize(int key, int value)  // Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
+  public int get(int key) / public int get(int key, int defaultValue)
+  public int increment(int key) / public int increment(int key, int increment) / public int increment(int key, int defaultValue, int increment)  // Returns the key's current value and increments the stored value.
+  public int remove(int key) / public int remove(int key, int defaultValue)  // Returns the value for the removed key, or the default value if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / locateKey, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(int value)  // Returns true if the specified value is in the map.
+  public boolean containsKey(int key)
+  public int findKey(int value, int notFound)  // Returns the key for the specified value, or null if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString()
+  public Iterator<Entry> iterator()
+  public Entries entries()  // Returns an iterator for the entries in the map.
+  public Values values()  // Returns an iterator for the values in the map.
+  public Keys keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public int key
+    public int value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    static private final int INDEX_ILLEGAL
+    static final int INDEX_ZERO
+    public boolean hasNext
+    final IntIntMap map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(IntIntMap map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.IntIntMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final Entry entry
+  ctors:
+    public Entries(IntIntMap map)
+  methods:
+    public Entry next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Iterator<Entry> iterator()
+inner-class: Values extends arc.struct.IntIntMap.MapIterator
+  ctors:
+    public Values(IntIntMap map)
+  methods:
+    public boolean hasNext()
+    public int next()
+    public Values iterator()
+    public IntSeq toArray() / public IntSeq toArray(IntSeq array)  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.IntIntMap.MapIterator
+  ctors:
+    public Keys(IntIntMap map)
+  methods:
+    public int next()
+    public IntSeq toArray() / public IntSeq toArray(IntSeq array)  // Returns a new array containing the remaining keys.
+
+IntMap.java
+Java class implements java.lang.Iterable
+// An unordered map that uses int keys.
+fields:
+  public int size
+  int keyTable
+  V valueTable
+  V zeroValue
+  boolean hasZeroValue
+  private final float loadFactor
+  private int threshold
+  protected int shift  // Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient Entries entries1
+  private transient Values values1
+  private transient Keys keys1
+ctors:
+  public IntMap() / public IntMap(int initialCapacity) / public IntMap(int initialCapacity, float loadFactor) / public IntMap(IntMap<? extends V> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public static IntMap<V> of(Object values)
+  protected int place(int item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  private int locateKey(int key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public V put(int key, V value)
+  public V putMissing(int key, V value)
+  public void putAll(IntMap<? extends V> map)
+  private void putResize(int key, V value)  // Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
+  public V get(int key) / public V get(int key, V defaultValue) / public V get(int key, Prov<V> defaultValue)
+  public V remove(int key)  // Returns the value for the removed key, or null if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(Object value, boolean identity)  // Returns true if the specified value is in the map.
+  public boolean containsKey(int key)
+  public int findKey(Object value, boolean identity, int notFound)  // Returns the key for the specified value, or <tt>notFound</tt> if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public boolean equalsIdentity(Object obj)  // Uses == for comparison of each value.
+  public String toString()
+  public Iterator<Entry<V>> iterator()
+  public Entries<V> entries()  // Returns an iterator for the entries in the map.
+  public Values<V> values()  // Returns an iterator for the values in the map.
+  public Keys keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public int key
+    public V value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    static private final int INDEX_ILLEGAL
+    static final int INDEX_ZERO
+    public boolean hasNext
+    final IntMap<V> map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(IntMap<V> map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.IntMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final Entry<V> entry
+  ctors:
+    public Entries(IntMap map)
+  methods:
+    public Entry<V> next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Iterator<Entry<V>> iterator()
+inner-class: Values extends arc.struct.IntMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  ctors:
+    public Values(IntMap<V> map)
+  methods:
+    public boolean hasNext()
+    public V next()
+    public Iterator<V> iterator()
+    public Seq<V> toArray()  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.IntMap.MapIterator
+  ctors:
+    public Keys(IntMap map)
+  methods:
+    public int next()
+    public IntSeq toSeq() / public IntSeq toSeq(IntSeq array)  // Returns a new array containing the remaining keys.
+
+IntQueue.java
+Java class
+// Queue for ints.
+fields:
+  public int size  // Number of elements in the queue.
+  public int values  // Contains the values in the queue.
+  protected int head  // Index of first element.
+  protected int tail  // Index of last element.
+ctors:
+  public IntQueue() / public IntQueue(int initialSize)  // Creates a new Queue which can hold 16 values without needing to resize backing array.
+methods:
+  public void addLast(int object)  // Append given object to the tail.
+  public void addFirst(int object)  // Prepend given object to the head.
+  public int[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public void ensureCapacity(int additional)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  protected void resize(int newSize)  // Resize backing array.
+  public int removeFirst()  // Remove the first item from the queue.
+  public int removeLast()  // Remove the last item from the queue.
+  public int indexOf(int value)  // Returns the index of first occurrence of value in the queue, or -1 if no such value exists.
+  public boolean removeValue(int value)  // Removes the first instance of the specified value in the queue.
+  public int removeIndex(int index)  // Removes and returns the item at the specified index.
+  public boolean isEmpty()  // Returns true if the queue is empty.
+  public int first()  // Returns the first (head) item in the queue (without removing it).
+  public int last()  // Returns the last (tail) item in the queue (without removing it).
+  public int get(int index)  // Retrieves the value in queue without removing it.
+  public void set(int index, int value)
+  public void clear()  // Removes all values from this queue; O(1).
+  public String toString()
+
+IntSeq.java
+Java class
+// A resizable, ordered or unordered int array.
+fields:
+  public int items
+  public int size
+  public boolean ordered
+ctors:
+  public IntSeq() / public IntSeq(int capacity) / public IntSeq(boolean ordered, int capacity) / public IntSeq(IntSeq array) / public IntSeq(int[] array) / public IntSeq(boolean ordered, int[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static IntSeq range(int min, int max)
+  public static IntSeq with(int array)  // @see #IntSeq(int[])
+  public int mode()  // @return the most frequently occuring element.
+  public void each(Intc iterator)
+  public int count(int value)
+  public int sum()
+  public void chunked(int chunkSize, Cons<int[]> iterator)
+  public boolean addUnique(int value)  // Adds a value if it was already not in this sequence.
+  public void add(int value) / public void add(int value1, int value2) / public void add(int value1, int value2, int value3) / public void add(int value1, int value2, int value3, int value4)
+  public void addAll(IntSeq array) / public void addAll(IntSeq array, int offset, int length) / public void addAll(int array) / public void addAll(int[] array, int offset, int length)
+  public int get(int index)
+  public void set(int index, int value)
+  public void incr(int index, int value)
+  public void mul(int index, int value)
+  public void insert(int index, int value)
+  public void swap(int first, int second)
+  public boolean contains(int value)
+  public int indexOf(int value)
+  public int lastIndexOf(int value)
+  public boolean removeValue(int value)
+  public int removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(IntSeq array)  // Removes from this array all of elements contained in the specified array.
+  public int pop()  // Removes and returns the last item.
+  public int peek()  // Returns the last item.
+  public int first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public int[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public int[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public int[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected int[] resize(int newSize)
+  public void sort()
+  public void reverse()
+  public void shuffle() / public void shuffle(Rand rand)
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public int random()  // Returns a random item from the array, or zero if the array is empty.
+  public int[] toArray()
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator)
+
+IntSet.java
+Java class
+// An unordered set that uses int keys.
+fields:
+  public int size
+  int keyTable
+  boolean hasZeroValue
+  private final float loadFactor
+  private int threshold
+  protected int shift  // Used by {@link #place(int)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient IntSetIterator iterator1
+ctors:
+  public IntSet() / public IntSet(int initialCapacity) / public IntSet(int initialCapacity, float loadFactor) / public IntSet(IntSet set)  // Creates a new set with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public void each(Intc cons)
+  protected int place(int item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  private int locateKey(int key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public boolean add(int key)  // Returns true if the key was added to the set or false if it was already in the set.
+  public void addAll(IntSeq array) / public void addAll(IntSeq array, int offset, int length) / public void addAll(int array) / public void addAll(int[] array, int offset, int length) / public void addAll(IntSet set)
+  private void addResize(int key)  // Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
+  public boolean remove(int key)  // Returns true if the key was removed.
+  public boolean notEmpty()  // Returns true if the set has one or more items.
+  public boolean isEmpty()  // Returns true if the set is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the set and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean contains(int key)
+  public int first()
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString()
+  public IntSetIterator iterator()  // Returns an iterator for the keys in the set.
+  static public IntSet with(int array)
+inner-class: IntSetIterator
+  fields:
+    static private final int INDEX_ILLEGAL
+    public boolean hasNext
+    final IntSet set
+    int nextIndex
+    boolean valid
+  ctors:
+    public IntSetIterator(IntSet set)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+    public int next()
+    public IntSeq toArray()  // Returns a new array containing the remaining keys.
+
+LongMap.java
+Java class implements java.lang.Iterable
+// An unordered map that uses long keys.
+fields:
+  public int size
+  long keyTable
+  V valueTable
+  V zeroValue
+  boolean hasZeroValue
+  private final float loadFactor
+  private int threshold
+  protected int shift  // Used by {@link #place(long)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient Entries entries1
+  private transient Values values1
+  private transient Keys keys1
+ctors:
+  public LongMap() / public LongMap(int initialCapacity) / public LongMap(int initialCapacity, float loadFactor) / public LongMap(LongMap<? extends V> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  protected int place(long item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  private int locateKey(long key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public V put(long key, V value)
+  public V putMissing(long key, V value)
+  public void putAll(LongMap<? extends V> map)
+  private void putResize(long key, V value)  // Skips checks for existing keys, doesn't increment size, doesn't need to handle key 0.
+  public V get(long key) / public V get(long key, V defaultValue)
+  public V remove(long key)  // Returns the value for the removed key, or null if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public void eachValue(Cons<V> iterator)
+  public boolean containsValue(Object value, boolean identity)  // Returns true if the specified value is in the map.
+  public boolean containsKey(long key)
+  public long findKey(Object value, boolean identity, long notFound)  // Returns the key for the specified value, or <tt>notFound</tt> if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public boolean equalsIdentity(Object obj)  // Uses == for comparison of each value.
+  public String toString()
+  public Iterator<Entry<V>> iterator()
+  public Entries<V> entries()  // Returns an iterator for the entries in the map.
+  public Values<V> values()  // Returns an iterator for the values in the map.
+  public Keys keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public long key
+    public V value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    static private final int INDEX_ILLEGAL
+    static final int INDEX_ZERO
+    public boolean hasNext
+    final LongMap<V> map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(LongMap<V> map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.LongMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    private final Entry<V> entry
+  ctors:
+    public Entries(LongMap map)
+  methods:
+    public Entry<V> next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Iterator<Entry<V>> iterator()
+inner-class: Values extends arc.struct.LongMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  ctors:
+    public Values(LongMap<V> map)
+  methods:
+    public boolean hasNext()
+    public V next()
+    public Iterator<V> iterator()
+    public Seq<V> toSeq()  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.LongMap.MapIterator
+  ctors:
+    public Keys(LongMap map)
+  methods:
+    public long next()
+    public LongSeq toSeq() / public LongSeq toSeq(LongSeq array)  // Returns a new array containing the remaining keys.
+
+LongQueue.java
+Java class
+// Queue for longs.
+fields:
+  public int size  // Number of elements in the queue.
+  public long values  // Contains the values in the queue.
+  protected int head  // Index of first element.
+  protected int tail  // Index of last element.
+ctors:
+  public LongQueue() / public LongQueue(int initialSize) / public LongQueue(long[] array)  // Creates a new Queue which can hold 16 values without needing to resize backing array.
+methods:
+  public void addLast(long object)  // Append given object to the tail.
+  public void addFirst(long object)  // Prepend given object to the head.
+  public long[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public void ensureCapacity(int additional)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  protected void resize(int newSize)  // Resize backing array.
+  public long removeFirst()  // Remove the first item from the queue.
+  public long removeLast()  // Remove the last item from the queue.
+  public int indexOf(long value, boolean identity)  // Returns the index of first occurrence of value in the queue, or -1 if no such value exists.
+  public boolean removeValue(long value, boolean identity)  // Removes the first instance of the specified value in the queue.
+  public long removeIndex(int index)  // Removes and returns the item at the specified index.
+  public boolean isEmpty()  // Returns true if the queue is empty.
+  public long first()  // Returns the first (head) item in the queue (without removing it).
+  public long last()  // Returns the last (tail) item in the queue (without removing it).
+  public long get(int index)  // Retrieves the value in queue without removing it.
+  public void set(int index, long value)
+  public void clear()  // Removes all values from this queue; O(1).
+  public long[] toArray()
+  public String toString()
+
+LongSeq.java
+Java class
+// A resizable, ordered or unordered long array.
+fields:
+  public long items
+  public int size
+  public boolean ordered
+ctors:
+  public LongSeq() / public LongSeq(int capacity) / public LongSeq(boolean ordered, int capacity) / public LongSeq(LongSeq array) / public LongSeq(long[] array) / public LongSeq(boolean ordered, long[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static LongSeq with(long array)  // @see #LongSeq(long[])
+  public void add(long value) / public void add(long value1, long value2) / public void add(long value1, long value2, long value3) / public void add(long value1, long value2, long value3, long value4)
+  public void addAll(LongSeq array) / public void addAll(LongSeq array, int offset, int length) / public void addAll(long array) / public void addAll(long[] array, int offset, int length)
+  public long get(int index)
+  public void set(int index, long value)
+  public void incr(int index, long value)
+  public void mul(int index, long value)
+  public void insert(int index, long value)
+  public void swap(int first, int second)
+  public boolean contains(long value)
+  public int indexOf(long value)
+  public int lastIndexOf(char value)
+  public boolean removeValue(long value)
+  public long removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(LongSeq array)  // Removes from this array all of elements contained in the specified array.
+  public long pop()  // Removes and returns the last item.
+  public long peek()  // Returns the last item.
+  public long first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public long[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public long[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public long[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected long[] resize(int newSize)
+  public void sort()
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public long random()  // Returns a random item from the array, or zero if the array is empty.
+  public long[] toArray()
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator)
+
+ObjectFloatMap.java
+Java class implements java.lang.Iterable
+// An unordered map where the values are floats.
+fields:
+  public int size
+  K keyTable
+  float valueTable
+  float loadFactor
+  int threshold
+  protected int shift  // Used by {@link #place(Object)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  transient Entries entries1
+  transient Values values1
+  transient Keys keys1
+ctors:
+  public ObjectFloatMap() / public ObjectFloatMap(int initialCapacity) / public ObjectFloatMap(int initialCapacity, float loadFactor) / public ObjectFloatMap(ObjectFloatMap<? extends K> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public ObjectFloatMap<K> putAll(Object values) / public void putAll(ObjectFloatMap<? extends K> map)
+  protected int place(K item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  int locateKey(K key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public void put(K key, float value) / public float put(K key, float value, float defaultValue)  // Returns the old value associated with the specified key, or the specified default value.
+  public void putMissing(K key, float value) / public float putMissing(K key, float value, float defaultValue)
+  public ObjectFloatMap<K> copy()
+  public void set(ObjectFloatMap<K> value)
+  public void each(Cons<Entry<K>> cons)
+  private void putResize(K key, float value)  // Skips checks for existing keys, doesn't increment size.
+  public float get(K key, float defaultValue)  // Returns the value for the specified key, or the default value if the key is not in the map.
+  public float increment(K key, float defaultValue, float increment)  // Returns the key's current value and increments the stored value.
+  public float remove(K key, float defaultValue)  // Returns the value for the removed key, or the default value if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(float value) / public boolean containsValue(float value, float epsilon)  // Returns true if the specified value is in the map.
+  public boolean containsKey(K key)
+  public K findKey(float value) / public K findKey(float value, float epsilon)  // Returns the key for the specified value, or null if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  final void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString(String separator) / public String toString() / private String toString(String separator, boolean braces)
+  public Entries<K> iterator()
+  public Entries<K> entries()  // Returns an iterator for the entries in the map.
+  public Values values()  // Returns an iterator for the values in the map.
+  public Keys<K> keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public K key
+    public float value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    public boolean hasNext
+    final ObjectFloatMap<K> map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(ObjectFloatMap<K> map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.ObjectFloatMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    Entry<K> entry
+  ctors:
+    public Entries(ObjectFloatMap<K> map)
+  methods:
+    public Entry<K> next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Entries<K> iterator()
+inner-class: Values extends arc.struct.ObjectFloatMap.MapIterator
+  ctors:
+    public Values(ObjectFloatMap<?> map)
+  methods:
+    public boolean hasNext()
+    public float next()
+    public Values iterator()
+    public FloatSeq toSeq() / public FloatSeq toSeq(FloatSeq array)  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.ObjectFloatMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  ctors:
+    public Keys(ObjectFloatMap<K> map)
+  methods:
+    public boolean hasNext()
+    public K next()
+    public Keys<K> iterator()
+    public Seq<K> toSeq() / public Seq<K> toSeq(Seq<K> array)  // Returns a new array containing the remaining keys.
+
+ObjectIntMap.java
+Java class implements java.lang.Iterable
+// An unordered map where the values are ints.
+fields:
+  public int size
+  K keyTable
+  int valueTable
+  float loadFactor
+  int threshold
+  protected int shift  // Used by {@link #place(Object)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  transient Entries entries1
+  transient Values values1
+  transient Keys keys1
+ctors:
+  public ObjectIntMap() / public ObjectIntMap(int initialCapacity) / public ObjectIntMap(int initialCapacity, float loadFactor) / public ObjectIntMap(ObjectIntMap<? extends K> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  protected int place(K item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  int locateKey(K key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public void put(K key, int value) / public int put(K key, int value, int defaultValue)  // Returns the old value associated with the specified key, or the specified default value.
+  public void putMissing(K key, int value) / public int putMissing(K key, int value, int defaultValue)
+  public void putAll(ObjectIntMap<? extends K> map) / public void putAll(Object values)
+  public ObjectIntMap<K> copy()
+  public void set(ObjectIntMap<K> value)
+  private void putResize(K key, int value)  // Skips checks for existing keys, doesn't increment size.
+  public int get(K key) / public int get(K key, int defaultValue)  // Returns the value for the specified key, or the default value if the key is not in the map.
+  public int increment(K key) / public int increment(K key, int increment) / public int increment(K key, int defaultValue, int increment)  // Returns the key's current value and increments the stored value.
+  public int remove(K key) / public int remove(K key, int defaultValue)  // Returns the value for the removed key, or the default value if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(int value)  // Returns true if the specified value is in the map.
+  public boolean containsKey(K key)
+  public K findKey(int value)  // Returns the key for the specified value, or null if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  final void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString(String separator) / public String toString() / private String toString(String separator, boolean braces)
+  public Entries<K> iterator()
+  public Entries<K> entries()  // Returns an iterator for the entries in the map.
+  public Values values()  // Returns an iterator for the values in the map.
+  public Keys<K> keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public K key
+    public int value
+  methods:
+    public String toString()
+inner-class: MapIterator
+  fields:
+    public boolean hasNext
+    final ObjectIntMap<K> map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(ObjectIntMap<K> map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.ObjectIntMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    Entry<K> entry
+  ctors:
+    public Entries(ObjectIntMap<K> map)
+  methods:
+    public Entry<K> next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Entries<K> iterator()
+    public Seq<Entry<K>> toArray()
+inner-class: Values extends arc.struct.ObjectIntMap.MapIterator
+  ctors:
+    public Values(ObjectIntMap<?> map)
+  methods:
+    public boolean hasNext()
+    public int next()
+    public Values iterator()
+    public IntSeq toSeq() / public IntSeq toSeq(IntSeq array)  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.ObjectIntMap.MapIterator implements java.lang.Iterable, java.util.Iterator
+  ctors:
+    public Keys(ObjectIntMap<K> map)
+  methods:
+    public boolean hasNext()
+    public K next()
+    public Keys<K> iterator()
+    public Seq<K> toSeq() / public Seq<K> toSeq(Seq<K> array)  // Returns a new array containing the remaining keys.
+
+ObjectMap.java
+Java class implements java.lang.Iterable
+// An unordered map.
+fields:
+  static final Object dummy
+  public int size
+  K keyTable
+  V valueTable
+  float loadFactor
+  int threshold
+  protected int shift  // Used by {@link #place(Object)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  transient Entries<K,V> entries1
+  transient Values<V> values1
+  transient Keys<K> keys1
+ctors:
+  public ObjectMap() / public ObjectMap(int initialCapacity) / public ObjectMap(int initialCapacity, float loadFactor) / public ObjectMap(ObjectMap<? extends K,? extends V> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public static ObjectMap<K,V> of(Object values)
+  protected int place(K item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  int locateKey(K key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public V put(K key, V value)  // Returns the old value associated with the specified key, or null.
+  public V putMissing(K key, V value)
+  public void putAll(Object values) / public void putAll(ObjectMap<? extends K,? extends V> map)
+  public ObjectMap<K,V> merge(ObjectMap<? extends K,? extends V> map)  // Put all the keys of this other map into this map, and return this map for chaining.
+  public void each(Cons2<K,V> cons)  // Iterates through key/value pairs.
+  public ObjectMap<K,V> copy()
+  public void set(ObjectMap<K,V> value)
+  private void putResize(K key, V value)  // Skips checks for existing keys, doesn't increment size.
+  public V getThrow(K key, Prov<? extends RuntimeException> error)
+  public V get(K key, Prov<V> supplier) / public V get(T key) / public V get(K key, V defaultValue)  // Tries to get the value.
+  public V remove(K key)  // Returns the value for the removed key, or null if the key is not in the map.
+  public boolean notEmpty()  // Returns true if the map has one or more items.
+  public boolean isEmpty()  // Returns true if the map is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the map and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean containsValue(Object value, boolean identity)  // Returns true if the specified value is in the map.
+  public boolean containsKey(K key)
+  public K findKey(Object value, boolean identity)  // Returns the key for the specified value, or null if it is not in the map.
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  final void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString(String separator) / public String toString() / public String toString(String separator, boolean braces)
+  public Entries<K,V> iterator()
+  public Entries<K,V> entries()  // Returns an iterator for the entries in the map.
+  public Values<V> values()  // Returns an iterator for the values in the map.
+  public Keys<K> keys()  // Returns an iterator for the keys in the map.
+inner-class: Entry
+  fields:
+    public K key
+    public V value
+  methods:
+    public String toString()
+inner-class: MapIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    public boolean hasNext
+    final ObjectMap<K,V> map
+    int nextIndex
+    boolean valid
+  ctors:
+    public MapIterator(ObjectMap<K,V> map)
+  methods:
+    public void reset()
+    void findNextIndex()
+    public void remove()
+inner-class: Entries extends arc.struct.ObjectMap.MapIterator
+  fields:
+    Entry<K,V> entry
+  ctors:
+    public Entries(ObjectMap<K,V> map)
+  methods:
+    public Entry<K,V> next()  // Note the same entry instance is returned each time this method is called.
+    public boolean hasNext()
+    public Entries<K,V> iterator()
+inner-class: Values extends arc.struct.ObjectMap.MapIterator
+  ctors:
+    public Values(ObjectMap<?,V> map)
+  methods:
+    public boolean hasNext()
+    public V next()
+    public Values<V> iterator()
+    public Seq<V> toSeq() / public Seq<V> toSeq(Seq<V> array)  // Returns a new array containing the remaining values.
+inner-class: Keys extends arc.struct.ObjectMap.MapIterator
+  ctors:
+    public Keys(ObjectMap<K,?> map)
+  methods:
+    public boolean hasNext()
+    public K next()
+    public Keys<K> iterator()
+    public Seq<K> toSeq() / public Seq<K> toSeq(Seq<K> array)  // Returns a new array containing the remaining keys.
+
+ObjectSet.java
+Java class implements java.lang.Iterable, arc.util.Eachable
+// An unordered set where the keys are objects.
+fields:
+  public int size
+  T keyTable
+  float loadFactor
+  int threshold
+  protected int shift  // Used by {@link #place(Object)} to bit shift the upper bits of a {@code long} into a usable range (&gt;= 0 and &lt;=
+  protected int mask  // A bitmask used to confine hashcodes to the size of the table.
+  private transient ObjectSetIterator iterator1
+ctors:
+  public ObjectSet() / public ObjectSet(int initialCapacity) / public ObjectSet(int initialCapacity, float loadFactor) / public ObjectSet(ObjectSet<? extends T> set)  // Creates a new set with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public static ObjectSet<T> with(T array) / public static ObjectSet<T> with(Seq<T> array)
+  public ObjectSet<T> copy()
+  public ObjectSet<T> select(Boolf<T> predicate)  // Allocates a new set with all elements that match the predicate.
+  public Seq<T> toSeq()
+  public void each(Cons<? super T> cons)
+  public T find(Boolf<T> predicate)
+  protected int place(T item)  // Returns an index >= 0 and <= {@link #mask} for the specified {@code item}.
+  int locateKey(T key)  // Returns the index of the key if already present, else -(index + 1) for the next empty index.
+  public boolean any()
+  public boolean add(T key)  // Returns true if the key was added to the set or false if it was already in the set.
+  public void addAll(Seq<? extends T> array) / public void addAll(Seq<? extends T> array, int offset, int length) / public boolean addAll(T array) / public boolean addAll(T[] array, int offset, int length) / public void addAll(ObjectSet<? extends T> set)
+  private void addResize(T key)  // Skips checks for existing keys, doesn't increment size.
+  public void removeAll(T[] array, int offset, int length) / public void removeAll(T[] array) / public void removeAll(Seq<? extends T> array)
+  public boolean remove(T key)  // Returns true if the key was removed.
+  public boolean notEmpty()  // Returns true if the set has one or more items.
+  public boolean isEmpty()  // Returns true if the set is empty.
+  public void shrink(int maximumCapacity)  // Reduces the size of the backing arrays to be the specified capacity / loadFactor, or less.
+  public void clear(int maximumCapacity) / public void clear()  // Clears the set and reduces the size of the backing arrays to be the specified capacity / loadFactor, if they are larger.
+  public boolean contains(T key)
+  public T get(T key)
+  public T first()
+  public void ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items / loadFactor.
+  private void resize(int newSize)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public String toString() / public String toString(String separator)
+  public ObjectSetIterator<T> iterator()  // Returns an iterator for the keys in the set.
+  static int tableSize(int capacity, float loadFactor)
+inner-class: ObjectSetIterator implements java.lang.Iterable, java.util.Iterator
+  fields:
+    public boolean hasNext
+    final ObjectSet<K> set
+    int nextIndex
+    boolean valid
+  ctors:
+    public ObjectSetIterator(ObjectSet<K> set)
+  methods:
+    public void reset()
+    private void findNextIndex()
+    public void remove()
+    public boolean hasNext()
+    public K next()
+    public ObjectSetIterator<K> iterator()
+    public Seq<K> toSeq(Seq<K> array) / public Seq<K> toSeq()  // Adds the remaining values to the array.
+
+OrderedMap.java
+Java class extends arc.struct.ObjectMap
+// An {@link ObjectMap} that also stores keys in an {@link Seq} using the insertion order.
+fields:
+  final Seq<K> keys
+ctors:
+  public OrderedMap() / public OrderedMap(int initialCapacity) / public OrderedMap(int initialCapacity, float loadFactor) / public OrderedMap(OrderedMap<? extends K,? extends V> map)  // Creates a new map with an initial capacity of 51 and a load factor of 0.8.
+methods:
+  public static OrderedMap<K,V> of(Object values)
+  public V put(K key, V value)
+  public V putMissing(K key, V value)
+  public void putAll(OrderedMap<T,? extends V> map)
+  public V remove(K key)
+  public V removeIndex(int index)
+  public boolean alter(K before, K after)  // Changes the key {@code before} to {@code after} without changing its position in the order or its value.
+  public boolean alterIndex(int index, K after)  // Changes the key at the given {@code index} in the order to {@code after}, without changing the ordering of other entries or
+  public void clear(int maximumCapacity) / public void clear()
+  public Seq<K> orderedKeys()
+  public Entries<K,V> iterator()
+  public Entries<K,V> entries()  // Returns an iterator for the entries in the map.
+  public Values<V> values()  // Returns an iterator for the values in the map.
+  public Keys<K> keys()  // Returns an iterator for the keys in the map.
+  public String toString(String separator, boolean braces)
+inner-class: OrderedMapEntries extends arc.struct.ObjectMap.Entries
+  fields:
+    private Seq<K> keys
+  ctors:
+    public OrderedMapEntries(OrderedMap<K,V> map)
+  methods:
+    public void reset()
+    public Entry<K,V> next()
+    public void remove()
+inner-class: OrderedMapKeys extends arc.struct.ObjectMap.Keys
+  fields:
+    private Seq<K> keys
+  ctors:
+    public OrderedMapKeys(OrderedMap<K,?> map)
+  methods:
+    public void reset()
+    public K next()
+    public void remove()
+    public Seq<K> toSeq(Seq<K> array) / public Seq<K> toSeq()
+inner-class: OrderedMapValues extends arc.struct.ObjectMap.Values
+  fields:
+    private Seq<V> keys
+  ctors:
+    public OrderedMapValues(OrderedMap<?,V> map)
+  methods:
+    public void reset()
+    public V next()
+    public void remove()
+    public Seq<V> toSeq(Seq<V> array) / public Seq<V> toSeq()
+
+OrderedSet.java
+Java class extends arc.struct.ObjectSet
+fields:
+  final Seq<T> items
+  transient OrderedSetIterator iterator1
+ctors:
+  public OrderedSet() / public OrderedSet(int initialCapacity, float loadFactor) / public OrderedSet(int initialCapacity) / public OrderedSet(OrderedSet<? extends T> set)
+methods:
+  public boolean add(T key) / public boolean add(T key, int index)  // Sets the key at the specfied index.
+  public void addAll(OrderedSet<T> set)
+  public void ensureCapacity(int additionalCapacity)
+  public boolean remove(T key)
+  public T removeIndex(int index)
+  public boolean alter(T before, T after)  // Changes the item {@code before} to {@code after} without changing its position in the order.
+  public boolean alterIndex(int index, T after)  // Changes the item at the given {@code index} in the order to {@code after}, without changing the ordering of other items.
+  public void clear(int maximumCapacity) / public void clear()
+  public Seq<T> orderedItems()
+  public T first()
+  public int hashCode()
+  public boolean equals(Object obj)
+  public OrderedSetIterator<T> iterator()
+  public String toString() / public String toString(String separator)
+  static public OrderedSet<T> with(T array)
+inner-class: OrderedSetIterator extends arc.struct.ObjectSet.ObjectSetIterator
+  fields:
+    private Seq<K> items
+  ctors:
+    public OrderedSetIterator(OrderedSet<K> set)
+  methods:
+    public void reset()
+    public K next()
+    public void remove()
+    public Seq<K> toSeq(Seq<K> array) / public Seq<K> toSeq()
+
+PQueue.java
+Java class
+// A priority queue.
+fields:
+  private static final float CAPACITY_RATIO_LOW
+  private static final float CAPACITY_RATIO_HI
+  public Object queue  // Priority queue represented as a balanced binary heap: the two children of queue[n] are queue[2*n+1] and queue[2*(n+1)].
+  public int size  // The number of elements in the priority queue.
+  public Comparator<E> comparator  // Function used for comparisons.
+ctors:
+  public PQueue() / public PQueue(int initialCapacity, Comparator<E> comparator)  // Creates a {@code PriorityQueue} with the default initial capacity that orders its elements according to their
+methods:
+  public boolean empty()
+  public boolean add(E e)  // Inserts the specified element into this priority queue.
+  public E peek()  // Retrieves, but does not remove, the head of this queue.
+  public E get(int index)  // Retrieves the element at the specified index.
+  public int size()  // Returns the number of elements in this queue.
+  public void clear()  // Removes all of the elements from this priority queue.
+  public E poll()  // Retrieves and removes the head of this queue, or returns {@code null} if this queue is empty.
+  private void siftUp(int k, E x)  // Inserts item x at position k, maintaining heap invariant by promoting x up the tree until it is greater than or equal to its
+  private void siftDown(int k, E x)  // Inserts item x at position k, maintaining heap invariant by demoting x down the tree repeatedly until it is less than or
+  private int compare(E a, E b)
+  private void growToSize(int minCapacity)  // Increases the capacity of the array.
+
+Queue.java
+Java class implements java.lang.Iterable, arc.util.Eachable
+// A resizable, ordered array of objects with efficient add and remove at the beginning and end.
+fields:
+  public int size  // Number of elements in the queue.
+  public T values  // Contains the values in the queue.
+  protected int head  // Index of first element.
+  protected int tail  // Index of last element.
+  private QueueIterable<T> iterable
+ctors:
+  public Queue() / public Queue(int initialSize) / public Queue(int initialSize, Class<T> type)  // Creates a new Queue which can hold 16 values without needing to resize backing array.
+methods:
+  public T[] toArray(Class<T> type)
+  public void addLast(T object)  // Append given object to the tail.
+  public void add(T object)  // Adds an object to the tail.
+  public void addFirst(T object)  // Prepend given object to the head.
+  public T[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public void ensureCapacity(int additional)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  protected void resize(int newSize)  // Resize backing array.
+  public T removeFirst()  // Remove the first item from the queue.
+  public T removeLast()  // Remove the last item from the queue.
+  public boolean contains(T value) / public boolean contains(T value, boolean identity)
+  public int indexOf(T value, boolean identity) / public int indexOf(Boolf<T> value)  // Returns the index of first occurrence of value in the queue, or -1 if no such value exists.
+  public boolean remove(Boolf<T> value) / public boolean remove(T value) / public boolean remove(T value, boolean identity)  // Removes the first instance of the specified value in the queue.
+  public T removeIndex(int index)  // Removes and returns the item at the specified index.
+  public boolean isEmpty()  // Returns true if the queue is empty.
+  public T first()  // Returns the first (head) item in the queue (without removing it).
+  public T last()  // Returns the last (tail) item in the queue (without removing it).
+  public T get(int index)  // Retrieves the value in queue without removing it.
+  public void clear()  // Removes all values from this queue.
+  public Iterator<T> iterator()  // Returns an iterator for the items in the queue.
+  public void each(Cons<? super T> c)
+  public T find(Boolf<T> func)
+  public String toString()
+  public int hashCode()
+  public boolean equals(Object o)
+inner-class: QueueIterable implements java.lang.Iterable
+  fields:
+    final Queue<T> queue
+    final boolean allowRemove
+    private QueueIterator iterator1
+  ctors:
+    public QueueIterable(Queue<T> queue) / public QueueIterable(Queue<T> queue, boolean allowRemove)
+  methods:
+    public Iterator<T> iterator()
+  inner-class: QueueIterator implements java.util.Iterator, java.lang.Iterable
+    fields:
+      int index
+      boolean done
+    ctors:
+      QueueIterator()
+    methods:
+      public boolean hasNext()
+      public T next()
+      public void remove()
+      public void reset()
+      public Iterator<T> iterator()
+inner-class: QueueIterator implements java.util.Iterator, java.lang.Iterable
+  fields:
+    int index
+    boolean done
+  ctors:
+    QueueIterator()
+  methods:
+    public boolean hasNext()
+    public T next()
+    public void remove()
+    public void reset()
+    public Iterator<T> iterator()
+
+Seq.java
+Java class implements java.lang.Iterable, arc.util.Eachable
+// A resizable, ordered or unordered array of objects.
+fields:
+  public static int iteratorsAllocated  // Debugging variable to count total number of iterators allocated.
+  public T items  // Provides direct access to the underlying array.
+  public int size
+  public boolean ordered
+  private SeqIterable<T> iterable
+ctors:
+  public Seq() / public Seq(int capacity) / public Seq(boolean ordered) / public Seq(boolean ordered, int capacity) / public Seq(boolean ordered, int capacity, Class<?> arrayType) / public Seq(Class<?> arrayType) / public Seq(Seq<? extends T> array) / public Seq(T[] array) / public Seq(boolean ordered, T[] array, int start, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static Seq<T> withArrays(Object arrays)
+  public static Seq<T> with(T array) / public static Seq<T> with(Iterable<T> array) / public Seq<T> with(Cons<Seq<T>> cons)  // @see #Seq(Object[])
+  public static Seq<V> map(T[] array, Func<T,V> mapper) / public Seq<R> map(Func<T,R> mapper)  // Returns a new array with the mapped values.
+  public static Seq<T> select(T[] array, Boolf<T> test) / public Seq<T> select(Boolf<T> predicate)  // @see #Seq(Object[])
+  public ObjectMap<K,V> asMap(Func<T,K> keygen, Func<T,V> valgen) / public ObjectMap<K,T> asMap(Func<T,K> keygen)
+  public ObjectMap<K,Seq<T>> groupBy(Func<T,K> keygen)
+  public ObjectIntMap<K> groupByCount(Func<T,K> keygen)
+  public ObjectSet<T> asSet()
+  public Seq<T> copy()
+  public ArrayList<T> list()
+  public float sumf(Floatf<T> summer)
+  public int sum(Intf<T> summer)
+  public void each(Boolf<? super T> pred, Cons<E> consumer) / public void each(Cons<? super T> consumer)
+  public void replace(Func<T,T> mapper) / public boolean replace(T from, T to)  // Replaces values without creating a new array.
+  public Seq<R> flatten()  // Flattens this array of arrays into one array.
+  public Seq<R> flatMap(Func<T,Iterable<R>> mapper)  // Returns a new array with the mapped values.
+  public IntSeq mapInt(Intf<T> mapper) / public IntSeq mapInt(Intf<T> mapper, Boolf<T> retain)  // @return a new int array with the mapped values.
+  public FloatSeq mapFloat(Floatf<T> mapper)  // @return a new float array with the mapped values.
+  public R reduce(R initial, Func2<T,R,R> reducer)
+  public boolean allMatch(Boolf<T> predicate)
+  public boolean contains(Boolf<T> predicate) / public boolean contains(T value) / public boolean contains(T value, boolean identity)  // Returns if this array contains value.
+  public T min(Comparator<T> func) / public T min(Boolf<T> filter, Floatf<T> func) / public T min(Boolf<T> filter, Comparator<T> func) / public T min(Floatf<T> func)
+  public T max(Comparator<T> func) / public T max(Floatf<T> func)
+  public T find(Boolf<T> predicate)
+  public boolean addUnique(T value)  // Adds a value if it was not already in this sequence.
+  public Seq<T> add(T value) / public Seq<T> add(T value1, T value2) / public Seq<T> add(T value1, T value2, T value3) / public Seq<T> add(T value1, T value2, T value3, T value4) / public Seq<T> add(Seq<? extends T> array) / public Seq<T> add(T[] array)
+  public Seq<T> addAll(Seq<? extends T> array) / public Seq<T> addAll(Seq<? extends T> array, int start, int count) / public Seq<T> addAll(T array) / public Seq<T> addAll(T[] array, int start, int count) / public Seq<T> addAll(Iterable<? extends T> items)
+  public void set(Seq<? extends T> array) / public void set(T[] array) / public void set(int index, T value)  // Sets this array's contents to the specified array.
+  public T getFrac(float index)
+  public T get(int index)
+  public void insert(int index, T value)
+  public void swap(int first, int second)
+  public boolean containsAll(Seq<T> seq) / public boolean containsAll(Seq<T> seq, boolean identity)  // @return whether this sequence contains every other element in the other sequence.
+  public int indexOf(T value) / public int indexOf(T value, boolean identity) / public int indexOf(Boolf<T> value)  // Returns the index of first occurrence of value in the array, or -1 if no such value exists.
+  public int lastIndexOf(T value, boolean identity)  // Returns an index of last occurrence of value in array or -1 if no such value exists.
+  public boolean remove(T value) / public boolean remove(Boolf<T> value) / public boolean remove(T value, boolean identity) / public T remove(int index)  // Removes a value, without using identity.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public Seq<T> removeAll(Boolf<T> pred) / public boolean removeAll(Seq<? extends T> array) / public boolean removeAll(Seq<? extends T> array, boolean identity)  // @return this object
+  public T pop(Prov<T> constructor) / public T pop()  // If this array is empty, returns an object specified by the constructor.
+  public T peek()  // Returns the last item.
+  public T first()  // Returns the first item.
+  public T firstOpt()  // Returns the first item, or null if this Seq is empty.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public boolean any()
+  public Seq<T> clear()
+  public T[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public T[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public T[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size null.
+  protected T[] resize(int newSize)  // Creates a new backing array with the specified size containing the current items.
+  public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator) / public Seq<T> sort(Floatf<? super T> comparator)  // Sorts this array.
+  public Seq<T> sortComparing(Func<? super T,? extends U> keyExtractor)
+  public Seq<T> selectFrom(Seq<T> base, Boolf<T> predicate)
+  public Seq<T> distinct()  // Note that this allocates a new set.
+  public Seq<R> as()
+  public Seq<T> retainAll(Boolf<T> predicate)  // Removes everything that does not match this predicate.
+  public int count(Boolf<T> predicate)
+  public T selectRanked(Comparator<T> comparator, int kthLowest)  // Selects the nth-lowest element from the Seq according to Comparator ranking.
+  public int selectRankedIndex(Comparator<T> comparator, int kthLowest)  // @param comparator used for comparison
+  public Seq<T> reverse()
+  public Seq<T> shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public T random(Rand rand) / public T random() / public T random(T exclude)  // Returns a random item from the array, or null if the array is empty.
+  public T[] toArray() / public V[] toArray(Class type)  // Returns the items as an array.
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator, Func<T,String> stringifier) / public String toString(String separator)
+  public Iterator<T> iterator()  // Returns an iterator for the items in the array.
+inner-class: SeqIterable implements java.lang.Iterable
+  fields:
+    final Seq<T> array
+    final boolean allowRemove
+    private SeqIterator iterator1
+  ctors:
+    public SeqIterable(Seq<T> array) / public SeqIterable(Seq<T> array, boolean allowRemove)
+  methods:
+    public Iterator<T> iterator()
+  inner-class: SeqIterator implements java.util.Iterator
+    fields:
+      int index
+      boolean done
+    ctors:
+      SeqIterator()
+    methods:
+      public boolean hasNext()
+      public T next()
+      public void remove()
+inner-class: SeqIterator implements java.util.Iterator
+  fields:
+    int index
+    boolean done
+  ctors:
+    SeqIterator()
+  methods:
+    public boolean hasNext()
+    public T next()
+    public void remove()
+
+ShortSeq.java
+Java class
+// A resizable, ordered or unordered short array.
+fields:
+  public short items
+  public int size
+  public boolean ordered
+ctors:
+  public ShortSeq() / public ShortSeq(int capacity) / public ShortSeq(boolean ordered, int capacity) / public ShortSeq(ShortSeq array) / public ShortSeq(short[] array) / public ShortSeq(boolean ordered, short[] array, int startIndex, int count)  // Creates an ordered array with a capacity of 16.
+methods:
+  public static ShortSeq with(short array)  // @see #ShortSeq(short[])
+  public void add(int value) / public void add(short value) / public void add(short value1, short value2) / public void add(short value1, short value2, short value3) / public void add(short value1, short value2, short value3, short value4)  // Casts the specified value to short and adds it.
+  public void addAll(ShortSeq array) / public void addAll(ShortSeq array, int offset, int length) / public void addAll(short array) / public void addAll(short[] array, int offset, int length)
+  public short get(int index)
+  public void set(int index, short value)
+  public void incr(int index, short value)
+  public void mul(int index, short value)
+  public void insert(int index, short value)
+  public void swap(int first, int second)
+  public boolean contains(short value)
+  public int indexOf(short value)
+  public int lastIndexOf(char value)
+  public boolean removeValue(short value)
+  public short removeIndex(int index)  // Removes and returns the item at the specified index.
+  public void removeRange(int start, int end)  // Removes the items between the specified indices, inclusive.
+  public boolean removeAll(ShortSeq array)  // Removes from this array all of elements contained in the specified array.
+  public short pop()  // Removes and returns the last item.
+  public short peek()  // Returns the last item.
+  public short first()  // Returns the first item.
+  public boolean isEmpty()  // Returns true if the array is empty.
+  public void clear()
+  public short[] shrink()  // Reduces the size of the backing array to the size of the actual items.
+  public short[] ensureCapacity(int additionalCapacity)  // Increases the size of the backing array to accommodate the specified number of additional items.
+  public short[] setSize(int newSize)  // Sets the array size, leaving any values beyond the current size undefined.
+  protected short[] resize(int newSize)
+  public void sort()
+  public void reverse()
+  public void shuffle()
+  public void truncate(int newSize)  // Reduces the size of the array to the specified size.
+  public short random()  // Returns a random item from the array, or zero if the array is empty.
+  public short[] toArray()
+  public int hashCode()
+  public boolean equals(Object object)
+  public String toString() / public String toString(String separator)
+
+SnapshotSeq.java
+Java class extends arc.struct.Seq
+// Guarantees that array entries provided by {@link #begin()} between indexes 0 and {@link #size} at the time begin was called
+fields:
+  private T snapshot
+  private int snapshots
+ctors:
+  public SnapshotSeq() / public SnapshotSeq(Seq<T> array) / public SnapshotSeq(boolean ordered, int capacity, Class<?> arrayType) / public SnapshotSeq(boolean ordered, int capacity) / public SnapshotSeq(boolean ordered, T[] array, int startIndex, int count) / public SnapshotSeq(Class<?> arrayType) / public SnapshotSeq(int capacity) / public SnapshotSeq(T[] array)
+methods:
+  public static SnapshotSeq<T> with(T array)  // @see #SnapshotSeq(Object[])
+  public T[] begin()  // Returns the backing array, which is guaranteed to not be modified before {@link #end()}.
+  public void end()  // Releases the guarantee that the array returned by {@link #begin()} won't be modified.
+  private void modified()
+  public void set(int index, T value)
+  public void insert(int index, T value)
+  public void swap(int first, int second)
+  public boolean remove(T value, boolean identity) / public T remove(int index)
+  public void removeRange(int start, int end)
+  public boolean removeAll(Seq<? extends T> array, boolean identity)
+  public T pop()
+  public Seq<T> clear()
+  public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator)
+  public Seq<T> reverse()
+  public Seq<T> shuffle()
+  public void truncate(int newSize)
+  public T[] setSize(int newSize)
+
+Sort.java
+Java class
+// Provides methods to sort arrays of objects.
+fields:
+  private static ThreadLocal<Sort> instance
+  private TimSort timSort
+  private ComparableTimSort comparableTimSort
+methods:
+  public static Sort instance()  // Returns a Sort instance for convenience.
+  public void sort(Seq<T> a) / public void sort(T[] a) / public void sort(T[] a, int fromIndex, int toIndex) / public void sort(Seq<T> a, Comparator<? super T> c) / public void sort(T[] a, Comparator<? super T> c) / public void sort(T[] a, Comparator<? super T> c, int fromIndex, int toIndex)
+
+StringMap.java
+Java class extends arc.struct.ObjectMap
+// An ObjectMap with string keys and values.
+ctors:
+  public StringMap() / public StringMap(ObjectMap<? extends String,? extends String> map)
+methods:
+  public static StringMap of(Object values)
+  public boolean getBool(String name)
+  public int getInt(String name) / public int getInt(String name, int def)
+  public float getFloat(String name) / public float getFloat(String name, float def)
+  public long getLong(String name) / public long getLong(String name, long def)
+
+TimSort.java
+Java class
+// A stable, adaptive, iterative mergesort that requires far fewer than n lg(n) comparisons when running on partially sorted
+fields:
+  private static final int MIN_MERGE  // This is the minimum sized sequence that will be merged.
+  private static final int MIN_GALLOP  // When we get into galloping mode, we stay there until both runs win less often than MIN_GALLOP consecutive times.
+  private static final int INITIAL_TMP_STORAGE_LENGTH  // Maximum initial size of tmp array, which is used for merging.
+  private static final boolean DEBUG  // Asserts have been placed in if-statements for performance.
+  private final int runBase
+  private final int runLen
+  private T a  // The array being sorted.
+  private Comparator<? super T> c  // The comparator for this sort.
+  private int minGallop  // This controls when we get *into* galloping mode.
+  private T tmp  // Actual runtime type will be Object[], regardless of T
+  private int tmpCount
+  private int stackSize  // Number of pending runs on stack
+ctors:
+  TimSort() / private TimSort(T[] a, Comparator<? super T> c)  // Creates a TimSort instance to maintain the state of an ongoing sort.
+methods:
+  static void sort(T[] a, Comparator<? super T> c) / static void sort(T[] a, int lo, int hi, Comparator<? super T> c)
+  private static void binarySort(T[] a, int lo, int hi, int start, Comparator<? super T> c)  // Sorts the specified portion of the specified array using a binary insertion sort.
+  private static int countRunAndMakeAscending(T[] a, int lo, int hi, Comparator<? super T> c)  // Returns the length of the run beginning at the specified position in the specified array and reverses the run if it is
+  private static void reverseRange(Object[] a, int lo, int hi)  // Reverse the specified range of the specified array.
+  private static int minRunLength(int n)  // Returns the minimum acceptable run length for an array of the specified length.
+  private static int gallopLeft(T key, T[] a, int base, int len, int hint, Comparator<? super T> c)  // Locates the position at which to insert the specified key into the specified sorted range; if the range contains an element
+  private static int gallopRight(T key, T[] a, int base, int len, int hint, Comparator<? super T> c)  // Like gallopLeft, except that if the range contains an element equal to key, gallopRight returns the index after the
+  private static void rangeCheck(int arrayLen, int fromIndex, int toIndex)  // Checks that fromIndex and toIndex are in range, and throws an appropriate exception if they aren't.
+  public void doSort(T[] a, Comparator<T> c, int lo, int hi)
+  private void pushRun(int runBase, int runLen)  // Pushes the specified run onto the pending-run stack.
+  private void mergeCollapse()  // Examines the stack of runs waiting to be merged and merges adjacent runs until the stack invariants are reestablished:
+  private void mergeForceCollapse()  // Merges all runs on the stack until only one remains.
+  private void mergeAt(int i)  // Merges the two runs at stack indices i and i+1.
+  private void mergeLo(int base1, int len1, int base2, int len2)  // Merges two adjacent runs in place, in a stable fashion.
+  private void mergeHi(int base1, int len1, int base2, int len2)  // Like mergeLo, except that this method should be called only if len1 >= len2; mergeLo should be called if len1 <= len2.
+  private T[] ensureCapacity(int minCapacity)  // Ensures that the external array tmp has at least the specified number of elements, increasing its size if necessary.
+

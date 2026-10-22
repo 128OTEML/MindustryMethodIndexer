@@ -1,0 +1,481 @@
+BaseTurret.java
+Java class extends mindustry.world.Block
+fields:
+  public float range
+  public float placeOverlapMargin
+  public float rotateSpeed
+  public float fogRadiusMultiplier
+  public boolean disableOverlapCheck
+  public float activationTime  // How much time to start shooting after placement.
+  public Effect coolEffect  // Effect displayed when coolant is used.
+  public float coolantMultiplier  // How much reload is lowered by for each unit of liquid of heat capacity.
+  public ConsumeLiquidBase coolant  // If not null, this consumer will be used for coolant.
+ctors:
+  public BaseTurret(String name)
+methods:
+  public void init()
+  public void reinitializeConsumers()
+  void checkInitCoolant()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void setStats()
+  public void setBars()
+inner-class: BaseTurretBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.RotBlock
+  fields:
+    public float rotation
+    public float activationTimer
+  methods:
+    public void placed()
+    public float range()
+    public float buildRotation()
+    public void drawSelect()
+    public float estimateDps()
+    public BlockStatus status()
+
+ContinuousLiquidTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.ContinuousTurret
+fields:
+  public ObjectMap<Liquid,BulletType> ammoTypes
+  public float liquidConsumed
+ctors:
+  public ContinuousLiquidTurret(String name)
+methods:
+  public void ammo(Object objects)  // Initializes accepted ammo map.
+  public void setStats()
+  public void init()
+inner-class: ContinuousLiquidTurretBuild extends mindustry.world.blocks.defense.turrets.ContinuousTurret.ContinuousTurretBuild
+  fields:
+    boolean activated
+  methods:
+    public boolean shouldActiveSound()
+    public UnlockableContent getAmmoContent()
+    public float getAmmoFraction()
+    public void updateTile()
+    public Object senseObject(LAccess sensor)
+    public boolean canConsume()
+    public boolean shouldConsume()
+    public BulletType useAmmo()
+    public BulletType peekAmmo()
+    public boolean hasAmmo()
+    public boolean hasCorrectAmmo()
+    public boolean acceptItem(Building source, Item item)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+
+ContinuousTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.Turret
+// A turret that fires a continuous beam bullet with no reload or coolant necessary.
+fields:
+  public BulletType shootType
+  public float aimChangeSpeed  // Speed at which the turret can change its bullet "aim" distance.
+  public boolean scaleDamageEfficiency
+ctors:
+  public ContinuousTurret(String name)
+methods:
+  public void setStats()
+inner-class: ContinuousTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+// TODO LaserTurret shared code
+  fields:
+    public Seq<BulletEntry> bullets
+    public float lastLength
+  methods:
+    public float estimateDps()
+    protected void updateCooling()
+    public BulletType useAmmo()
+    public boolean hasAmmo()
+    public boolean shouldConsume()
+    public BulletType peekAmmo()
+    public float getAmmoFraction()
+    public void updateTile()
+    protected void updateBullet(BulletEntry entry)
+    protected void updateReload()
+    protected void updateShooting()
+    protected void turnToTarget(float targetRot)
+    protected void handleBullet(Bullet bullet, float offsetX, float offsetY, float angleOffset)
+    public boolean shouldActiveSound()
+    public float activeSoundVolume()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ItemTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.Turret
+fields:
+  public ObjectMap<Item,BulletType> ammoTypes
+ctors:
+  public ItemTurret(String name)
+methods:
+  public void ammo(Object objects)  // Initializes accepted ammo map.
+  public void limitRange() / public void limitRange(float margin)  // Limits bullet range to this turret's range value.
+  public void setStats()
+  public void setBars()
+  public void init()
+inner-class: ItemTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+  methods:
+    public void onProximityAdded()
+    public Object senseObject(LAccess sensor)
+    public UnlockableContent getAmmoContent()
+    public float getAmmoFraction()
+    public int acceptStack(Item item, int amount, Teamc source)
+    public void handleStack(Item item, int amount, Teamc source)
+    public int removeStack(Item item, int amount)  // currently can't remove items from turrets.
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+inner-class: ItemEntry extends mindustry.world.blocks.defense.turrets.Turret.AmmoEntry
+  fields:
+    public Item item
+  ctors:
+    ItemEntry(Item item, int amount)
+  methods:
+    public BulletType type()
+    public String toString()
+
+LaserTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.PowerTurret
+// A turret that fires a continuous beam with a delay between shots.
+fields:
+  public float firingMoveFract
+  public float shootDuration
+ctors:
+  public LaserTurret(String name)
+methods:
+  public void setStats()
+  public void init()
+inner-class: LaserTurretBuild extends mindustry.world.blocks.defense.turrets.PowerTurret.PowerTurretBuild
+  fields:
+    public Seq<BulletEntry> bullets
+  methods:
+    protected void updateCooling()
+    public boolean shouldConsume()
+    public void placed()
+    public void updateTile()
+    public float progress()
+    protected void updateReload()
+    protected void updateShooting()
+    protected void turnToTarget(float targetRot)
+    protected void handleBullet(Bullet bullet, float offsetX, float offsetY, float angleOffset)
+    public float activeSoundVolume()
+    public boolean shouldActiveSound()
+
+LiquidTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.Turret
+fields:
+  public ObjectMap<Liquid,BulletType> ammoTypes
+  public boolean extinguish
+ctors:
+  public LiquidTurret(String name)
+methods:
+  public void ammo(Object objects)  // Initializes accepted ammo map.
+  public void setStats()
+  public void init()
+inner-class: LiquidTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+  methods:
+    public boolean shouldActiveSound()
+    public UnlockableContent getAmmoContent()
+    public float getAmmoFraction()
+    public Object senseObject(LAccess sensor)
+    protected void findTarget()
+    public BulletType useAmmo()
+    public BulletType peekAmmo()
+    public boolean hasAmmo()
+    public boolean acceptItem(Building source, Item item)
+    public boolean acceptLiquid(Building source, Liquid liquid)
+
+PayloadAmmoTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.Turret
+// Do not use this class!
+fields:
+  public ObjectMap<UnlockableContent,BulletType> ammoTypes
+  protected UnlockableContent ammoKeys
+ctors:
+  public PayloadAmmoTurret(String name)
+methods:
+  public void ammo(Object objects)  // Initializes accepted ammo map.
+  public void limitRange() / public void limitRange(float margin)  // Makes copies of all bullets and limits their range.
+  public void setStats()
+  public void init()
+inner-class: PayloadTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+  fields:
+    public PayloadSeq payloads
+  methods:
+    public UnlockableContent currentAmmo()
+    public boolean acceptPayload(Building source, Payload payload)
+    public void handlePayload(Building source, Payload payload)
+    public boolean hasAmmo()
+    public BulletType useAmmo()
+    public BulletType peekAmmo()
+    public PayloadSeq getPayloads()
+    public UnlockableContent getAmmoContent()
+    public float getAmmoFraction()
+    public void updateTile()
+    public void displayBars(Table bars)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PointDefenseTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.ReloadTurret
+fields:
+  public final int timerTarget
+  public float retargetTime
+  public TextureRegion baseRegion
+  public Color color
+  public Effect beamEffect
+  public Effect hitEffect
+  public Effect shootEffect
+  public Sound shootSound
+  public float shootCone
+  public float bulletDamage
+  public float shootLength
+ctors:
+  public PointDefenseTurret(String name)
+methods:
+  public TextureRegion[] icons()
+  public void setStats()
+inner-class: PointDefenseBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild
+  fields:
+    public Bullet target
+  methods:
+    public void updateTile()
+    public boolean shouldConsume()
+    public void draw()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PowerTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.Turret
+fields:
+  public BulletType shootType
+ctors:
+  public PowerTurret(String name)
+methods:
+  public void setStats()
+  public void limitRange(float margin)
+inner-class: PowerTurretBuild extends mindustry.world.blocks.defense.turrets.Turret.TurretBuild
+  methods:
+    public float getAmmoFraction()
+    public double sense(LAccess sensor)
+    public BulletType useAmmo()
+    public boolean hasAmmo()
+    public BulletType peekAmmo()
+
+ReloadTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.BaseTurret
+fields:
+  public float reload
+ctors:
+  public ReloadTurret(String name)
+methods:
+  public void setStats()
+inner-class: ReloadTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild
+  fields:
+    public float reloadCounter
+  methods:
+    protected void updateCooling()
+    protected float ammoReloadMultiplier()
+    protected float baseReloadSpeed()
+
+TractorBeamTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.BaseTurret
+fields:
+  public final int timerTarget
+  public float retargetTime
+  public float shootCone
+  public float shootLength
+  public float laserWidth
+  public float force
+  public float scaledForce
+  public float damage
+  public boolean targetAir
+  public Color laserColor
+  public StatusEffect status
+  public float statusDuration
+  public float statusChance
+  public Sound shootSound
+  public float shootSoundVolume
+  public TextureRegion baseRegion
+  public TextureRegion laser
+  public TextureRegion laserStart
+  public TextureRegion laserEnd
+ctors:
+  public TractorBeamTurret(String name)
+methods:
+  public TextureRegion[] icons()
+  public void setStats()
+  public void init()
+inner-class: TractorBeamBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild
+  fields:
+    public Unit target
+    public float lastX
+    public boolean any
+    public float coolantMultiplier
+  methods:
+    public void updateTile()
+    public boolean shouldConsume()
+    public float estimateDps()
+    public void draw()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Turret.java
+Java class extends mindustry.world.blocks.defense.turrets.ReloadTurret
+fields:
+  public final static float logicControlCooldown  // after being logic-controlled and this amount of time passes, the turret will resume normal AI
+  public final int timerTarget
+  public float targetInterval  // Ticks between attempt at finding a target.
+  public float newTargetInterval  // Target interval for when this turret already has a valid target.
+  public int maxAmmo  // Maximum ammo units stored.
+  public int ammoPerShot  // Ammo units used per shot.
+  public boolean consumeAmmoOnce  // If true, ammo is only consumed once per shot regardless of bullet count.
+  public float heatRequirement  // Minimum input heat required to fire.
+  public float maxHeatEfficiency  // Maximum efficiency possible, if this turret uses heat.
+  public float inaccuracy  // Bullet angle randomness in degrees.
+  public float velocityRnd  // Fraction of bullet velocity that is random.
+  public float extraVelocity  // extra velocity that is added as a fraction
+  public float lifeRnd  // fraction of lifetime that is random
+  public float extraLife  // extra lifetime that is added as a fraction
+  public float scaleLifetimeOffset  // Fraction of lifetime that is added to bullets with lifeScale.
+  public float shootCone  // Maximum angle difference in degrees at which turret will still try to shoot.
+  public float shootX  // Turret shoot point.
+  public float xRand  // Random spread on the X axis.
+  public boolean drawMinRange  // If true, a range ring is also drawn for minRange.
+  public float trackingRange  // Range at which it finds and locks on to the target, but does not shoot.
+  public float minRange  // Minimum bullet range.
+  public float minWarmup  // Minimum warmup needed to fire.
+  public boolean accurateDelay  // If true, this turret will accurately target moving targets with respect to shoot.firstShotDelay.
+  public boolean moveWhileCharging  // If false, this turret can't move while charging.
+  public boolean reloadWhileCharging  // If false, this turret can't reload while charging
+  public float warmupMaintainTime  // How long warmup is maintained even if this turret isn't shooting.
+  public ShootPattern shoot  // pattern used for bullets
+  public boolean targetAir  // If true, this block targets air units.
+  public boolean targetGround  // If true, this block targets ground units and structures.
+  public boolean targetBlocks  // If true, this block targets blocks.
+  public boolean targetHealing  // If true, this block targets friend blocks, to heal them.
+  public boolean playerControllable  // If true, this turret can be controlled by players.
+  public boolean displayAmmoMultiplier  // If true, this block will display ammo multipliers in its stats (irrelevant for certain types of turrets).
+  public boolean targetUnderBlocks  // If false, 'under' blocks like conveyors are not targeted.
+  public boolean alwaysShooting  // If true, the turret will always shoot when it has ammo, regardless of targets in range or any control.
+  public boolean predictTarget  // Whether this turret predicts unit movement.
+  public Sortf unitSort  // Function for choosing which unit to target.
+  public Boolf<Unit> unitFilter  // Filter for types of units to attack.
+  public Boolf<Building> buildingFilter  // Filter for types of buildings to attack.
+  public Color heatColor  // Color of heat region drawn on top (if found)
+  public Effect shootEffect  // Optional override for all shoot effects.
+  public Effect smokeEffect  // Optional override for all smoke effects.
+  public Effect ammoUseEffect  // Effect created when ammo is used.
+  public Sound shootSound  // Sound emitted when a single bullet is shot.
+  public float shootSoundVolume  // Volume of shooting sound.
+  public Sound chargeSound  // Sound emitted when shoot.firstShotDelay is >0 and shooting begins.
+  public Sound loopSound  // The sound that this block makes while active.
+  public float loopSoundVolume  // Active sound base volume.
+  public float soundPitchMin  // Range for pitch of shoot sound.
+  public float ammoEjectBack  // Backwards Y offset of ammo eject effect.
+  public float shootWarmupSpeed  // Lerp speed of turret warmup.
+  public boolean linearWarmup  // If true, turret warmup is linear instead of a curve.
+  public float recoil  // Visual amount by which the turret recoils back per shot.
+  public int recoils  // Number of additional counters for recoil.
+  public float recoilTime  // ticks taken for turret to return to starting position in ticks.
+  public float recoilPow  // power curve applied to visual recoil
+  public float cooldownTime  // ticks to cool down the heat region
+  public float elevation  // Visual elevation of turret shadow, -1 to use defaults.
+  public float shake  // How much the screen shakes per shot.
+  public DrawBlock drawer  // Defines drawing behavior for this turret.
+ctors:
+  public Turret(String name)
+methods:
+  public boolean outputsItems()
+  public void setStats()
+  public void setBars()
+  public void init()
+  public void load()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+  public void limitRange(BulletType bullet, float margin)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean rotatedOutput(int x, int y)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+inner-class: AmmoEntry
+  fields:
+    public int amount
+  methods:
+    public abstract BulletType type()
+inner-class: TurretBuild extends mindustry.world.blocks.defense.turrets.ReloadTurret.ReloadTurretBuild implements mindustry.world.blocks.ControlBlock
+  fields:
+    public Vec2 recoilOffset  // Turret sprite offset, based on recoil.
+    public Seq<AmmoEntry> ammo
+    public int totalAmmo
+    public float curRecoil
+    public float curRecoils
+    public float shootWarmup
+    public int totalShots
+    public boolean logicShooting
+    public Posc target
+    public Vec2 targetPos
+    public BlockUnitc unit
+    public boolean wasShooting
+    public int queuedBullets
+    public float heatReq
+    public float sideHeat
+    public SoundLoop soundLoop
+    float lastRangeChange
+  methods:
+    public void remove()
+    public void onDestroyed()
+    public UnlockableContent getAmmoContent()
+    public float getAmmoFraction()  // @return ammo as a fraction of capacity; used for direct turret control HUD
+    public float estimateDps()
+    public float minRange()
+    public float range()
+    public float trackingRange()
+    public float warmup()
+    public float drawrot()
+    public boolean shouldConsume()
+    public BlockStatus status()
+    public boolean canControl()
+    public void control(LAccess type, double p1, double p2, double p3, double p4) / public void control(LAccess type, Object p1, double p2, double p3, double p4)
+    public double sense(LAccess sensor)
+    public float fogRadius()
+    public float progress()
+    public boolean isShooting()
+    public Unit unit()
+    public boolean controlled()
+    public boolean logicControlled()
+    public boolean isActive()
+    public void targetPosition(Posc pos)
+    public void draw()
+    public void drawSelect()
+    public void updateTile()
+    public void handleLiquid(Building source, Liquid liquid, float amount)
+    public boolean canConsume()
+    protected boolean validateTarget()
+    protected boolean canHeal()
+    protected Posc findEnemy(float range)
+    protected void findTarget()
+    protected void turnToTarget(float targetRot)
+    public boolean shouldTurn()
+    public void updateEfficiencyMultiplier()
+    public BulletType useAmmo()  // Consume ammo and return a type.
+    public BulletType peekAmmo()  // @return the ammo type that will be returned if useAmmo is called.
+    public boolean hasAmmo()  // @return whether the turret has ammo.
+    public boolean charging()
+    protected void handleReload()
+    protected void updateReload()
+    protected float ammoReloadMultiplier()
+    protected void updateShooting()
+    protected void shoot(BulletType type)
+    protected void bullet(BulletType type, float xOffset, float yOffset, float angleOffset, Mover mover)
+    protected void handleBullet(Bullet bullet, float offsetX, float offsetY, float angleOffset)
+    public float activeSoundVolume()
+    public boolean shouldActiveSound()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public byte version()
+    public void readSync(Reads read, byte revision)
+inner-class: BulletEntry
+  fields:
+    public Bullet bullet
+    public float x
+  ctors:
+    public BulletEntry(Bullet bullet, float x, float y, float rotation, float life)
+

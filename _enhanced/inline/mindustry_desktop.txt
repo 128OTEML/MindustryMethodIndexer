@@ -1,0 +1,68 @@
+// DesktopLauncher.java : void logSteamError(Throwable e)
+    void logSteamError(Throwable e){
+        steamError = e;
+        loadError = true;
+        Log.err(e);
+        try(OutputStream s = new FileOutputStream("steam-error-log-" + System.nanoTime() + ".txt")){
+            String log = Strings.neatError(e);
+            s.write(log.getBytes());
+        }catch(Exception e2){
+            Log.err(e2);
+        }
+    }
+
+// DesktopLauncher.java : public Seq<Fi> getWorkshopContent(Class<? extends Publishable> type)
+    @Override
+    public Seq<Fi> getWorkshopContent(Class<? extends Publishable> type){
+        return !steam ? super.getWorkshopContent(type) : SVars.workshop.getWorkshopFiles(type);
+    }
+
+// DesktopLauncher.java : public void viewListing(Publishable pub)
+    @Override
+    public void viewListing(Publishable pub){
+        SVars.workshop.viewListing(pub);
+    }
+
+// DesktopLauncher.java : public void viewListingID(String id)
+    @Override
+    public void viewListingID(String id){
+        SVars.net.friends.activateGameOverlayToWebPage("steam://url/CommunityFilePage/" + id);
+    }
+
+// DesktopLauncher.java : public NetProvider getNet()
+    @Override
+    public NetProvider getNet(){
+        return steam ? SVars.net : new ArcNetProvider();
+    }
+
+// DesktopLauncher.java : public void openWorkshop()
+    @Override
+    public void openWorkshop(){
+        SVars.net.friends.activateGameOverlayToWebPage("https://steamcommunity.com/app/1127400/workshop/");
+    }
+
+// DesktopLauncher.java : public void publish(Publishable pub)
+    @Override
+    public void publish(Publishable pub){
+        SVars.workshop.publish(pub);
+    }
+
+// DesktopLauncher.java : public void inviteFriends()
+    @Override
+    public void inviteFriends(){
+        SVars.net.showFriendInvites();
+    }
+
+// DesktopLauncher.java : public void updateLobby()
+    @Override
+    public void updateLobby(){
+        if(SVars.net != null){
+            SVars.net.updateLobby();
+        }
+    }
+
+// DesktopLauncher.java : private static void message(String message)
+    private static void message(String message){
+        SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "oh no", message);
+    }
+

@@ -1,0 +1,93 @@
+ItemSource.java
+Java class extends mindustry.world.Block
+fields:
+  public int itemsPerSecond
+ctors:
+  public ItemSource(String name)
+methods:
+  public void setBars()
+  public void setStats()
+  protected TextureRegion[] icons()
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean outputsItems()
+inner-class: ItemSourceBuild extends mindustry.gen.Building
+  fields:
+    public float counter
+    public Item outputItem
+  methods:
+    public void draw()
+    public void drawSelect()
+    public void updateTile()
+    public void configured(Unit builder, Object value)
+    public void buildConfiguration(Table table)
+    public boolean acceptItem(Building source, Item item)
+    public Item config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ItemVoid.java
+Java class extends mindustry.world.Block
+ctors:
+  public ItemVoid(String name)
+inner-class: ItemVoidBuild extends mindustry.gen.Building
+  fields:
+    public ItemModule flowItems  // I need a fake item module, because items can't be added to older blocks (breaks saves)
+  methods:
+    public ItemModule flowItems()
+    public void handleItem(Building source, Item item)
+    public boolean acceptItem(Building source, Item item)
+
+LiquidSource.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion crossRegion
+  public TextureRegion bottomRegion
+ctors:
+  public LiquidSource(String name)
+methods:
+  public void setBars()
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+inner-class: LiquidSourceBuild extends mindustry.gen.Building
+  fields:
+    public Liquid source
+  methods:
+    public void updateTile()
+    public void draw()
+    public void drawSelect()
+    public void buildConfiguration(Table table)
+    public Liquid config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+LiquidVoid.java
+Java class extends mindustry.world.Block
+ctors:
+  public LiquidVoid(String name)
+methods:
+  public void setBars()
+inner-class: LiquidVoidBuild extends mindustry.gen.Building
+  methods:
+    public void placed()
+    public boolean acceptLiquid(Building source, Liquid liquid)
+    public void handleLiquid(Building source, Liquid liquid, float amount)
+
+PowerSource.java
+Java class extends mindustry.world.blocks.power.PowerNode
+fields:
+  public float powerProduction
+ctors:
+  public PowerSource(String name)
+inner-class: PowerSourceBuild extends mindustry.world.blocks.power.PowerNode.PowerNodeBuild
+  methods:
+    public void onProximityUpdate()
+    public float getPowerProduction()
+
+PowerVoid.java
+Java class extends mindustry.world.blocks.power.PowerBlock
+ctors:
+  public PowerVoid(String name)
+methods:
+  public void setStats()
+

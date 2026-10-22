@@ -1,0 +1,526 @@
+Administration.java
+Java class
+fields:
+  public ObjectMap<String,PlayerInfo> playerInfo  // All player info.
+  public Seq<String> bannedIPs
+  public Seq<String> whitelist
+  public Seq<ChatFilter> chatFilters
+  public Seq<ActionFilter> actionFilters
+  public Seq<String> subnetBans
+  public ObjectSet<String> dosBlacklist
+  public ObjectMap<String,Long> kickedIPs
+  public Seq<Pattern> bannedNames
+  private boolean modified
+  private ObjectMap<String,IdEncounterInfo> encounteredIDsForIp
+ctors:
+  public Administration()
+methods:
+  public synchronized void blacklistDos(String address)
+  public synchronized void unBlacklistDos(String address)
+  public synchronized boolean isDosBlacklisted(String address)
+  public long getKickTime(String uuid, String ip)  // @return time at which a player would be pardoned for a kick (0 means they were never kicked)
+  public void handleKicked(String uuid, String ip, long duration)  // Sets up kick duration for a player.
+  public Seq<String> getSubnetBans()
+  public void removeSubnetBan(String ip)
+  public void addSubnetBan(String ip)
+  public boolean isSubnetBanned(String ip)
+  public void addNameBan(String regex) throws PatternSyntaxException
+  public void addChatFilter(ChatFilter filter)  // Adds a chat filter.
+  public String filterMessage(Player player, String message)  // Filters out a chat message.
+  public void addActionFilter(ActionFilter filter)  // Add a filter to actions, preventing things such as breaking or configuring blocks.
+  public boolean allowAction(Player player, ActionType type, Tile tile, Cons<PlayerAction> setter) / public boolean allowAction(Player player, ActionType type, Cons<PlayerAction> setter)  // @return whether this action is allowed by the action filters.
+  public int getPlayerLimit()
+  public void setPlayerLimit(int limit)
+  public boolean isStrict()
+  public boolean allowsCustomClients()
+  public void updatePlayerJoined(String id, String ip, String name)  // Call when a player joins to update their information here.
+  public boolean banPlayer(String uuid)
+  public boolean banPlayerIP(String ip)  // Bans a player by IP; returns whether this player was already banned.
+  public boolean banPlayerID(String id)  // Bans a player by UUID; returns whether this player was already banned.
+  public boolean unbanPlayerIP(String ip)  // Unbans a player by IP; returns whether this player was banned in the first place.
+  public boolean unbanPlayerID(String id)  // Unbans a player by ID; returns whether this player was banned in the first place.
+  public boolean checkUuidChanges(String address, String uuid)
+  public Seq<PlayerInfo> getAdmins()  // Returns list of all players with admin status
+  public Seq<PlayerInfo> getBanned()  // Returns list of all players which are banned
+  public Seq<String> getBannedIPs()  // Returns all banned IPs.
+  public boolean adminPlayer(String id, String usid)  // Makes a player an admin.
+  public boolean unAdminPlayer(String id)  // Makes a player no longer an admin.
+  public boolean isWhitelistEnabled()
+  public boolean isWhitelisted(String id, String usid)
+  public boolean whitelist(String id)
+  public boolean unwhitelist(String id)
+  public boolean isIPBanned(String ip)
+  public boolean isIDBanned(String uuid)
+  public boolean isNameBanned(String name)
+  public boolean isAdmin(String id, String usid)
+  public ObjectSet<PlayerInfo> findByName(String name)  // Finds player info by IP, UUID and name.
+  public ObjectSet<PlayerInfo> searchNames(String name)  // Finds by name, using contains().
+  public Seq<PlayerInfo> findByIPs(String ip)
+  public PlayerInfo getInfo(String id)
+  public PlayerInfo getInfoOptional(String id)
+  public PlayerInfo findByIP(String ip)
+  public Seq<PlayerInfo> getWhitelisted()
+  private PlayerInfo getCreateInfo(String id)
+  public void save()
+  public void forceSave()
+  private void load()
+inner-class: Config
+// TODO: move this into a non-nested class, this is messy and annoying to read
+  fields:
+    public static final Seq<Config> all
+    public static final Config serverName
+    public final Object defaultValue
+    public final String name
+    final Runnable changed
+  ctors:
+    public Config(String name, String description, Object def) / public Config(String name, String description, Object def, String key) / public Config(String name, String description, Object def, Runnable changed) / public Config(String name, String description, Object def, String key, Runnable changed)
+  methods:
+    public boolean isNum()
+    public boolean isBool()
+    public boolean isString()
+    public Object get()
+    public boolean bool()
+    public int num()
+    public String string()
+    public void set(Object value)
+    public boolean isDefault()
+    private static boolean debug()
+inner-class: PlayerInfo implements arc.util.serialization.AllowSerialization
+  fields:
+    public String id
+    public String lastName
+    public Seq<String> ips
+    public Seq<String> names
+    public String adminUsid
+    public int timesKicked
+    public int timesJoined
+    public boolean banned
+    public long lastKicked  // last kicked time to expiration
+    public transient long lastMessageTime
+    public transient String lastSentMessage
+    public transient int messageInfractions
+    public transient Ratekeeper rate
+    public transient Interval messageTimer
+  ctors:
+    PlayerInfo(String id) / public PlayerInfo()
+  methods:
+    public String plainLastName()
+inner-interface: ChatFilter
+// Handles chat messages from players and changes their contents.
+  methods:
+    String filter(Player player, String message)  // @return the filtered message; a null string signals that the message should not be sent.
+inner-interface: ActionFilter
+// Allows or disallows player actions.
+  methods:
+    boolean allow(PlayerAction action)  // @return whether this action should be permitted.
+inner-class: TraceInfo
+  fields:
+    public String ip
+    public boolean modded
+    public int timesJoined
+    public String ips
+  ctors:
+    public TraceInfo(String ip, String uuid, String locale, boolean modded, boolean mobile, int timesJoined, int timesKicked, String[] ips, String[] names)
+inner-class: PlayerAction implements arc.util.pooling.Pool.Poolable
+// Defines a (potentially dangerous) action that a player has done in the world.
+  fields:
+    public Player player
+    public ActionType type
+    public Tile tile
+    public Block block  // valid for block placement events only
+    public int rotation
+    public Object config  // valid for configure and rotation-type events only.
+    public Item item  // valid for item-type events only.
+    public int itemAmount
+    public Unit unit  // valid for unit-type events only, and even in that case may be null.
+    public Payload payload  // valid only for payload events
+    public int plans  // valid only for removePlanned events only; contains packed positions.
+    public int unitIDs  // valid only for command unit events
+    public UnitCommand unitCommand
+    public int buildingPositions  // valid only for command building events
+    public String pingText  // valid only for location pings
+    public float pingX
+  methods:
+    public PlayerAction set(Player player, ActionType type, Tile tile) / public PlayerAction set(Player player, ActionType type, Unit unit)
+    public void reset()
+inner-class: IdEncounterInfo
+  fields:
+    long initialTime
+    ObjectSet<String> ids
+
+ArcNetProvider.java
+Java class implements mindustry.net.Net.NetProvider
+fields:
+  public static final int clientReadBufferSize
+  final Client client
+  final Prov<DatagramPacket> packetSupplier
+  final Server server
+  final CopyOnWriteArrayList<ArcConnection> connections
+  Thread serverThread
+  private static final LZ4SafeDecompressor decompressor
+  private static final LZ4Compressor compressor
+  private static final ThreadLocal<Seq<Connection>> writeConnections
+  private volatile int playerLimitCache
+  private Ratekeeper clientUdpErrorRate
+ctors:
+  public ArcNetProvider()
+methods:
+  public void setConnectFilter(Server.ServerConnectFilter connectFilter)
+  public ServerConnectFilter getConnectFilter()
+  private static boolean isLocal(InetAddress addr)
+  public void connectClient(String ip, int port, Runnable success)
+  public void disconnectClient()
+  public void sendClient(Object object, boolean reliable)
+  public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> invalid)
+  private Host pingHostImpl(String address, int port) throws IOException
+  public void discoverServers(Cons<Host> callback, Runnable done)
+  public void dispose()
+  public Iterable<ArcConnection> getConnections()
+  public void sendAllServer(Object object, Iterable<NetConnection> connections, boolean reliable) / public void sendAllServer(Object object, boolean reliable)
+  public void sendExceptServer(NetConnection except, Object object, boolean reliable)
+  public void hostServer(int port) throws IOException
+  public void closeServer()
+inner-class: ArcConnection extends mindustry.net.NetConnection
+  fields:
+    public final Connection connection
+    long lastErrorTime
+  ctors:
+    public ArcConnection(String address, Connection connection)
+  methods:
+    public boolean isConnected()
+    public void blacklist()
+    public void sendStream(Streamable stream)
+    public void send(Object object, boolean reliable)
+    public void close()
+inner-class: PacketSerializer implements arc.net.NetSerializer
+  fields:
+    private static final boolean debug  // for debugging total read/write speeds
+    ThreadLocal<ByteBuffer> decompressBuffer
+    ThreadLocal<Reads> reads
+    ThreadLocal<Writes> writes
+    static WindowedMean upload  // for debugging network write counts
+    static long lastUpload
+    static int lastPos
+  methods:
+    public Object read(ByteBuffer byteBuffer)
+    public void write(ByteBuffer byteBuffer, Object o)
+    public void writeFramework(ByteBuffer buffer, FrameworkMessage message)
+    public FrameworkMessage readFramework(ByteBuffer buffer)
+
+BeControl.java
+Java class
+// Handles control of bleeding edge builds.
+fields:
+  private static final int updateInterval
+  private boolean checkUpdates
+  private boolean updateAvailable
+  private String updateUrl
+  private int updateBuild
+ctors:
+  public BeControl()
+methods:
+  public boolean active()  // @return whether this is a bleeding edge build.
+  public void init()
+  public void checkUpdate(Boolc done)  // asynchronously checks for updates.
+  public boolean isUpdateAvailable()  // @return whether a new update is available
+  public void showUpdateDialog()  // shows the dialog for updating the game on desktop, or a prompt for doing so on the server
+  private void download(String furl, Fi dest, Intc length, Floatc progressor, Boolp canceled, Runnable done, Cons<Throwable> error)
+
+CrashHandler.java
+Java class
+methods:
+  public static String createReport(Throwable exception)
+  public static void log(Throwable exception)
+  public static void handle(Throwable exception, Cons<File> writeListener)
+  public static LoadedMod getModCause(Throwable e)  // @return the mod that is likely to have caused the supplied crash
+  private static int getMatches(String name1, String name2)
+  private static String writeException(Throwable e)
+
+Host.java
+Java class
+fields:
+  public final String name
+  public final String address
+  public final String mapname
+  public final int wave
+  public final int players
+  public final int version
+  public final String versionType
+  public final Gamemode mode
+  public final String modeName
+  public int ping
+ctors:
+  public Host(int ping, String name, String address, int port, String mapname, int wave, int players, int version, String versionType, Gamemode mode, int playerLimit, String description, String modeName) / public Host(int ping, String name, String address, String mapname, int wave, int players, int version, String versionType, Gamemode mode, int playerLimit, String description, String modeName)
+
+Net.java
+Java class
+fields:
+  public static final int packetIdAssetStream
+  private static Seq<Prov<? extends Packet>> packetProvs
+  private static Seq<Class<? extends Packet>> packetClasses
+  private static ObjectIntMap<Class<?>> packetToId
+  private boolean server
+  private boolean active
+  private boolean clientLoaded
+  private StreamBuilder currentStream
+  private final Seq<Packet> packetQueue
+  private final ObjectMap<Class<?>,Cons> clientListeners
+  private final ObjectMap<Class<?>,Cons2<NetConnection,Object>> serverListeners
+  private final IntMap<StreamBuilder> streams
+  private final ExecutorService pingExecutor
+  private final NetProvider provider
+ctors:
+  public Net(NetProvider provider)
+methods:
+  public static int registerPacket(Prov<T> cons)  // Registers a new packet type for serialization.
+  public static byte getPacketClassId(Class<?> c)
+  public static byte getPacketId(Packet packet)
+  public static T newPacket(byte id)
+  public void handleException(Throwable e)
+  public void showError(Throwable e)  // Display a network error.
+  public void setClientLoaded(boolean loaded)  // Sets the client loaded status, or whether it will receive normal packets from the server.
+  public void setClientConnected()
+  public void connect(String ip, int port, Runnable success)  // Connect to an address.
+  public void host(int port) throws IOException  // Host a server at an address.
+  public void closeServer()  // Closes the server.
+  public void reset()
+  public void disconnect()
+  public void discoverServers(Cons<Host> cons, Runnable done)  // Starts discovering servers on a different thread.
+  public Iterable<NetConnection> getConnections()  // Returns a list of all connections IDs.
+  public void send(Object object, boolean reliable) / public void send(Object object, Iterable<NetConnection> connections, boolean reliable)  // Send an object to all connected clients, or to the server if this is a client.
+  public void sendExcept(NetConnection except, Object object, boolean reliable)  // Send an object to everyone EXCEPT a certain client.
+  public StreamBuilder getCurrentStream()
+  public void handleClient(Class<T> type, Cons<T> listener)  // Registers a client listener for when an object is received.
+  public void handleServer(Class<T> type, Cons2<NetConnection,T> listener)  // Registers a server listener for when an object is received.
+  public void handleClientReceived(Packet object)  // Call to handle a packet being received for the client.
+  public void handleServerReceived(NetConnection connection, Packet object)  // Call to handle a packet being received for the server.
+  public void setConnectFilter(ServerConnectFilter filter)  // Sets a connection filter by IP address.
+  public ServerConnectFilter getConnectFilter()
+  public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)  // Pings a host in a pooled thread.
+  public boolean active()  // Whether the net is active, e.g.
+  public boolean server()  // Whether this is a server or not.
+  public boolean client()  // Whether this is a client or not.
+  public void dispose()
+inner-interface: NetProvider
+// Networking implementation.
+  methods:
+    default void sendAllServer(Object object, Iterable<NetConnection> connections, boolean reliable) / default void sendAllServer(Object object, boolean reliable)  // Sends a packet to a specific list of clients.
+    default void sendExceptServer(NetConnection except, Object object, boolean reliable)  // Sends a packet to all connected clients, except the specified one.
+    void connectClient(String ip, int port, Runnable success) throws IOException  // Connect to a server.
+    void sendClient(Object object, boolean reliable)  // Send an object to the server.
+    void disconnectClient()  // Disconnect from the server.
+    void discoverServers(Cons<Host> callback, Runnable done)  // Discover servers.
+    void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)  // Ping a host.
+    void hostServer(int port) throws IOException  // Host a server at specified port.
+    Iterable<? extends NetConnection> getConnections()  // Return all connected users.
+    void closeServer()  // Close the server connection.
+    default void dispose()  // Close all connections.
+    default void setConnectFilter(Server.ServerConnectFilter connectFilter)  // Sets a connection filter by IP address.
+    default ServerConnectFilter getConnectFilter()
+
+NetConnection.java
+Java class (abstract)
+fields:
+  public final String address
+  public String uuid
+  public boolean mobile
+  public Player player
+  public boolean kicked
+  public long connectTime  // When this connection was established.
+  public int lastReceivedClientSnapshot  // ID of last received client snapshot.
+  public long lastReceivedClientTime  // Timestamp of last received snapshot.
+  public Seq<BuildPlan> rejectedRequests  // Build requests that have been recently rejected.
+  public Ratekeeper chatRate  // Handles chat spam rate limits.
+  public Ratekeeper packetRate  // Handles packet spam rate limits.
+  public Seq<Syncc> localEntities  // Entities that only this player will get synced to them.
+  public boolean hasConnected  // TODO: refactor to state enum
+  public float viewWidth
+ctors:
+  public NetConnection(String address)
+methods:
+  public void kick() / public void kick(KickReason reason) / public void kick(KickReason reason, long kickDuration) / public void kick(String reason) / public void kick(String reason, long duration) / private void kick(String reason, KickReason kickType, long kickDuration)  // Kick with the standard kick reason.
+  protected void kickDisconnect()
+  public boolean isConnected()
+  public void sendStreamAsync(Streamable stream, ByteArrayOutputStream data)
+  public void sendStream(Streamable stream, ByteArrayOutputStream data) / public void sendStream(Streamable stream)
+  public void blacklist()
+  public abstract void send(Object object, boolean reliable)
+  public abstract void close()
+
+NetworkIO.java
+Java class
+methods:
+  public static void writeWorld(Player player, OutputStream os)
+  public static void loadWorld(InputStream is)
+  public static void writeRequiredAssets(OutputStream os, Seq<DataAsset> assets)
+  public static Seq<String> readRequiredAssets(InputStream is)
+  public static void writeAssets(OutputStream os, Seq<DataAsset> assets)
+  public static void loadAssets(InputStream is) throws IOException
+  public static void packTexture(OutputStream os, String name, byte[] pngData)
+  public static ByteBuffer writeServerData()
+  public static Host readServerData(int ping, String hostAddress, ByteBuffer buffer)
+  private static void writeString(ByteBuffer buffer, String string, int maxlen) / private static void writeString(ByteBuffer buffer, String string)
+  private static String readString(ByteBuffer buffer)
+
+Packet.java
+Java class (abstract)
+fields:
+  protected static final byte NODATA  // internally used by generated code
+  protected static final ReusableByteInStream BAIS
+  protected static final Reads READ
+  public static final int priorityLow  // Does not get handled unless client is connected.
+  public static final int priorityNormal  // Gets put in a queue and processed if not connected.
+  public static final int priorityHigh  // Gets handled immediately, regardless of connection status.
+methods:
+  public void read(Reads read) / public void read(Reads read, int length)
+  public void write(Writes write)
+  public boolean allow(boolean server)
+  public void handled()
+  public int getPriority()
+  public void handleClient()
+  public void handleServer(NetConnection con)
+
+Packets.java
+Java class
+// Class for storing all packets.
+inner-class: Connect extends mindustry.net.Packet
+// Generic client connection event.
+  fields:
+    public String addressTCP
+  methods:
+    public int getPriority()
+inner-class: Disconnect extends mindustry.net.Packet
+// Generic client disconnection event.
+  fields:
+    public String reason
+  methods:
+    public int getPriority()
+inner-class: WorldStream extends mindustry.net.Streamable
+inner-class: TextureStream extends mindustry.net.Streamable
+inner-class: AssetRequirementStream extends mindustry.net.Streamable
+inner-class: AssetStream extends mindustry.net.Streamable
+  methods:
+    public boolean incremental()
+inner-class: StreamBegin extends mindustry.net.Packet
+// Marks the beginning of a stream.
+  fields:
+    private static int lastid
+    public int id
+    public int total
+    public byte type
+    public transient InputStream incrementalStream  // only used when handling on the client (not sent)
+  methods:
+    public boolean allow(boolean server)
+    public void write(Writes buffer)
+    public void read(Reads buffer)
+inner-class: StreamChunk extends mindustry.net.Packet
+  fields:
+    public int id
+    public byte data
+  methods:
+    public boolean allow(boolean server)
+    public void write(Writes buffer)
+    public void read(Reads buffer)
+inner-class: ConnectPacket extends mindustry.net.Packet
+  fields:
+    public int version
+    public String versionType
+    public Seq<String> mods
+    public String name
+    public boolean mobile
+    public int color
+  methods:
+    public void write(Writes buffer)
+    public void read(Reads buffer)
+    public int getPriority()
+
+ServerGroup.java
+Java class
+fields:
+  public String name
+  public String addresses
+  public boolean prioritized
+ctors:
+  public ServerGroup(String name, String[] addresses, boolean prioritized) / public ServerGroup(String name, String[] addresses) / public ServerGroup()
+methods:
+  public boolean hidden()
+  public boolean favorite()
+  public void setHidden(boolean hidden)
+  public void setFavorite(boolean favorite)
+  String key()
+
+SteamAdmin.java
+Java class
+// Handles a database of banned Steam users.
+fields:
+  private static boolean scheduled
+  private static SteamAdminData data
+  private static final float checkInterval
+methods:
+  public static void fetch() / public static void fetch(boolean cacheBust) / private static void fetch(String url, Runnable fail)
+  private static void fetchImpl(String githubURL)
+  public static boolean isBanned(String id)
+  public static boolean isAdmin(String id)
+inner-class: SteamAdminData
+  fields:
+    ObjectSet<String> bans
+    ObjectSet<String> admins
+
+Streamable.java
+Java class extends mindustry.net.Packet
+fields:
+  public transient ByteArrayInputStream stream
+methods:
+  public int getPriority()
+  public boolean allow(boolean server)
+  public boolean incremental()  // If true, this stream is handled as soon as it is received, instead of all at once.
+inner-class: StreamBuilder
+  fields:
+    public final int id
+    public final byte type
+    public final int total
+    public final ByteArrayOutputStream stream
+    public final boolean incremental
+    public final IncrementalStream incrementalStream
+    public int received
+  ctors:
+    public StreamBuilder(StreamBegin begin, boolean incremental)
+  methods:
+    public float progress()
+    public void add(byte[] bytes)
+    public Streamable build()
+    public boolean isDone()
+    public void close()
+inner-class: IncrementalStream extends java.io.InputStream
+// Stream that has one thread write to an internal buffer, and another thread read from it.
+  fields:
+    private static final byte closedSignal
+    private final LinkedBlockingQueue<byte[]> queue
+    private volatile boolean isClosed
+    private byte currentBuffer
+    private int currentOffset
+  methods:
+    void add(byte[] bytes)
+    public int read(byte[] b, int off, int len) throws IOException / public int read() throws IOException
+    public void finish()  // unlike close(), this allows the stream to finish reading whatever it's reading, but if it tries to read more, it will throw EOF
+    public void close()  // immediately stops all reading and makes subsequent reads throw a special ClosedChannelException
+
+ValidateException.java
+Java class extends java.lang.RuntimeException
+// Thrown when a client sends invalid information.
+fields:
+  public final Player player
+ctors:
+  public ValidateException(Player player, String s)
+
+WorldReloader.java
+Java class
+// Handles player state for sending to every connected player
+fields:
+  Seq<Player> players
+  boolean wasServer
+  boolean began
+methods:
+  public void begin()  // Begins reloading the world.
+  public void end()  // Ends reloading the world.
+

@@ -1,0 +1,98 @@
+BundleAsset.java
+Java class extends mindustry.mod.data.DataAsset
+fields:
+  public OrderedMap<String,String> cachedBundle
+methods:
+  public void tryLoadCache()
+  public void updateData(byte[] data)
+  public DataAssetType getType()
+
+ContentAsset.java
+Java class extends mindustry.mod.data.DataAsset
+fields:
+  public static final ContentType loadableContent  // Note: sectors and planets can't be loaded at the moment, as custom campaigns aren't functional to begin with, and adding them would cause confusion
+  public ContentType type  // Content type to be parsed as.
+  public String data  // Raw string data to be parsed into JSON.
+  public Seq<String> warnings  // Warnings encountered during deserialization.
+  public Content content  // Content that was loaded, if successful.
+  public boolean errored  // If true, this asset failed to completely, and cannot be used.
+ctors:
+  public ContentAsset(String path, ContentType type, String data) / public ContentAsset()
+methods:
+  public String hashData()
+  public void readOverride(String path, Fi file, ContentType type) throws IOException
+  public String getFullPath()
+  public byte[] getData()
+  public DataAssetType getType()
+  public void read(DataInput stream) throws IOException
+  public void write(DataOutput stream) throws IOException
+  public int compareTo(DataAsset asset)
+
+DataAsset.java
+Java class (abstract) implements java.lang.Comparable
+// Abstract class for a kind of asset used in a data asset modification.
+fields:
+  private Fi overrideCacheFile  // set by the server to force content files to point to a specific folder
+  public String path  // File path, including name and extension, but excluding base folder prefix.
+  public String name  // File name, excluding extension.
+  public byte byteHash  // sha256 of the internal data.
+  public String stringHash
+methods:
+  public void updateData(byte[] data)  // Caches this asset in the asset folder, and updates its hash to correspond to the appropriate cache file.
+  public void setHash(byte[] value)
+  public void setPath(String path)
+  public abstract DataAssetType getType()
+  public String getFullPath()
+  public byte[] getData()  // @return for embedded assets, the data.
+  public boolean isAlwaysEmbedded()
+  public boolean isCached()
+  public Fi getCacheFileNoNull()
+  public Fi getCacheFile()
+  public void readFromZip(String path, Fi file)
+  public void readOverride(String path, Fi file) throws IOException  // Reads this asset in from a file on disk, and makes its hash point to the specified file, instead of a new one in the cache folder.
+  public void read(DataInput stream) throws IOException
+  public void write(DataOutput stream) throws IOException
+  public static boolean validPath(String path)
+  public String toString()
+  public int compareTo(DataAsset asset)
+
+DataAssetType.java
+(unknown)
+
+ImageAsset.java
+Java class extends mindustry.mod.data.DataAsset
+ctors:
+  public ImageAsset() / public ImageAsset(String path, byte[] hash)
+methods:
+  public boolean isGenerated()
+  public DataAssetType getType()
+
+MusicAsset.java
+Java class extends mindustry.mod.data.DataAsset
+methods:
+  public DataAssetType getType()
+
+PatchAsset.java
+Java class extends mindustry.mod.data.DataAsset
+fields:
+  private static final JsonValue emptyValue
+  public String patch  // Raw string value, containing original formatting.
+  public JsonValue json  // Parsed JSON value.
+  public boolean error  // True if an error was encountered.
+  public Seq<String> warnings  // Warnings encountered during patching.
+ctors:
+  public PatchAsset(String patch) / PatchAsset()
+methods:
+  public byte[] getData()
+  public void readFromZip(String path, Fi file)
+  public void readOverride(String path, Fi file) throws IOException
+  public DataAssetType getType()
+  public void read(DataInput stream) throws IOException
+  public void write(DataOutput stream) throws IOException
+  public String toString()
+
+SoundAsset.java
+Java class extends mindustry.mod.data.DataAsset
+methods:
+  public DataAssetType getType()
+

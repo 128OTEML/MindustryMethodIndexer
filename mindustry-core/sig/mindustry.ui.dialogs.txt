@@ -1,0 +1,889 @@
+AboutDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Seq<String> contributors
+  static ObjectSet<String> bannedItems
+ctors:
+  public AboutDialog()
+methods:
+  void setup()
+  public void showCredits()
+
+AdminsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public AdminsDialog()
+methods:
+  private void setup()
+
+BansDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public BansDialog()
+methods:
+  private void setup()
+
+BaseDialog.java
+Java class extends arc.scene.ui.Dialog
+fields:
+  protected boolean wasPaused
+  protected boolean shouldPause  // If true, this dialog will pause the game while open.
+  protected Image titleImage
+ctors:
+  public BaseDialog(String title, DialogStyle style) / public BaseDialog(String title)
+methods:
+  public void setTitleColor(Color color)
+  protected void makeButtonOverlay()  // Places the buttons as an overlay on top of the content.
+  protected void onResize(Runnable run)
+  public void addCloseListener()
+  public void addCloseButton(float width) / public void addCloseButton()
+
+CampaignCompleteDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public CampaignCompleteDialog()
+methods:
+  public void show(Planet planet)
+
+CampaignRulesDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Planet planet
+  Table current
+ctors:
+  public CampaignRulesDialog()
+methods:
+  void rebuild()
+  public void show(Planet planet)
+  void check(String text, Boolc cons, Boolp prov) / void check(String text, Boolc cons, Boolp prov, Boolp condition)
+
+CanvasEditDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  static final float refreshTime
+  int curColor
+  boolean fill
+  float time
+  CanvasBuild canvas
+  CanvasBlock block
+  Pixmap pix
+  Texture texture
+ctors:
+  public CanvasEditDialog(CanvasBuild canvas)
+methods:
+  void exportTo(Fi file)
+  void importFrom(Fi file)
+  int findClosest(int color)
+  void save()
+
+ColorPicker.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static Texture hueTex
+  private Cons<Color> cons
+  Color current
+  float h
+  TextField hexField
+  Slider hSlider
+ctors:
+  public ColorPicker()
+methods:
+  public void show(Color color, Cons<Color> consumer) / public void show(Color color, boolean alpha, Cons<Color> consumer)
+  void updateColor() / void updateColor(boolean updateField)
+
+ContentInfoDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public ContentInfoDialog()
+methods:
+  public void show(UnlockableContent content)
+
+CustomGameDialog.java
+Java class extends mindustry.ui.dialogs.MapListDialog
+fields:
+  private MapPlayDialog dialog
+ctors:
+  public CustomGameDialog()
+methods:
+  void showMap(Map map)
+
+CustomRulesDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Rules rules
+  private Table main
+  private Prov<Rules> resetter
+  private LoadoutDialog loadoutDialog
+  private BannedContentDialog<Block> bannedBlocks
+  private BannedContentDialog<UnitType> bannedUnits
+  public boolean showRuleEditRule
+  public Seq<Table> categories
+  public Table current
+  public Seq<String> categoryNames
+  public String currentName
+  public String ruleSearch
+  public Seq<Runnable> additionalSetup  // for modding to easily add new rules
+ctors:
+  public CustomRulesDialog() / public CustomRulesDialog(boolean showRuleEditRule)
+methods:
+  void refresh()
+  public void show(Rules rules, Prov<Rules> resetter)
+  void setup()
+  void setupMain()
+  public void category(String name)
+  void addToMain(Table category, String title)
+  public void team(String text, Cons<Team> cons, Prov<Team> prov)
+  public void number(String text, Floatc cons, Floatp prov) / public void number(String text, Floatc cons, Floatp prov, float min, float max) / public void number(String text, boolean integer, Floatc cons, Floatp prov, Boolp condition) / public void number(String text, Floatc cons, Floatp prov, Boolp condition) / public void number(String text, boolean integer, Floatc cons, Floatp prov, Boolp condition, float min, float max)
+  public void numberi(String text, Intc cons, Intp prov, int min, int max) / public void numberi(String text, Intc cons, Intp prov, Boolp condition, int min, int max)
+  public void text(String text, Cons<String> cons, Prov<String> prov, Boolf<String> valid, Boolp condition)
+  public void check(String text, Boolc cons, Boolp prov) / public void check(String text, Boolc cons, Boolp prov, Boolp condition)
+  public void ruleInfo(Cell<?> cell, String text)
+  Cell<TextField> field(Table table, float value, Floatc setter)
+  void weatherDialog()
+
+DatabaseDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private final OrderedMap<String,OrderedMap<String,Seq<UnlockableContent>>> sortedContents
+  private final OrderedMap<String,Seq<UnlockableContent>> tmpCategory
+  private TextField search
+  private Table all
+  private Seq<UnlockableContent> allTabs
+  private UnlockableContent tab  // sun means "all content"
+ctors:
+  public DatabaseDialog()
+methods:
+  void checkTabList()
+  void sortContents()
+  void rebuild()
+  boolean unlocked(UnlockableContent content)
+
+DiscordDialog.java
+Java class extends arc.scene.ui.Dialog
+ctors:
+  public DiscordDialog()
+
+EditorMapsDialog.java
+Java class extends mindustry.ui.dialogs.MapListDialog
+ctors:
+  public EditorMapsDialog()
+methods:
+  void buildButtons()
+  public void tryImportMap(Fi file, Cons<Map> success)
+  public void showMap(Map map)
+
+EffectsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  static BoundsBatch bounds
+  Iterable<EffectEntry> entries
+  Cons<EffectEntry> listener
+ctors:
+  public EffectsDialog(Iterable<EffectEntry> entries) / public EffectsDialog()
+methods:
+  public static EffectsDialog withAllEffects()
+  public Dialog show(Cons<EffectEntry> listener) / public Dialog show()
+  void setup()
+  static Object getData(Class<?> type)
+  static float calculateSize(EffectEntry entry)
+inner-class: BoundsBatch extends arc.graphics.g2d.Batch
+  fields:
+    float max
+  methods:
+    void reset()
+    void max(float xs)
+    protected void draw(Texture texture, float[] spriteVertices, int offset, int count) / protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation)
+    protected void flush()
+inner-class: EffectCell extends arc.scene.Element
+  fields:
+    EffectEntry effect
+    float size
+    int id
+    float time
+    float lifetime
+    float rotation
+    Object data
+    ClickListener cl
+  ctors:
+    public EffectCell(EffectEntry effect, ClickListener cl)
+  methods:
+    public void draw()
+    public void act(float delta)
+
+FileChooserDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static final Fi homeDirectory
+  static Fi lastDirectory
+  Fi directory
+  private Table files
+  private ScrollPane pane
+  private TextField navigation
+  private TextButton ok
+  private FileHistory stack
+  private Boolf<Fi> filter
+  private Cons<Fi> selectListener
+  private boolean open
+ctors:
+  public FileChooserDialog(String title, Boolf<Fi> filter, boolean open, Cons<Fi> result)
+methods:
+  private void setupWidgets()
+  private void updateFileFieldStatus()
+  private Fi[] getFileNames()
+  void updateFiles(boolean push)
+  public static synchronized void setLastDirectory(Fi directory)
+  public static synchronized Fi getLastDirectory()
+inner-class: FileHistory
+  fields:
+    private Seq<Fi> history
+    private int index
+  ctors:
+    public FileHistory()
+  methods:
+    public void push(Fi file)
+    public void back()
+    public void forward()
+    public boolean canForward()
+    public boolean canBack()
+
+FullTextDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public FullTextDialog()
+methods:
+  public void show(String titleText, String text)
+
+GameOverDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private Team winner
+  private boolean hudShown
+ctors:
+  public GameOverDialog()
+methods:
+  public void show(Team winner)
+  void rebuild()
+  private void addStat(Table parent, String stat, int value, float delay)
+inner-class: StatLabel extends arc.scene.ui.layout.Table
+  fields:
+    private float progress
+  ctors:
+    public StatLabel(String stat, int value, float delay)
+
+HostDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  float w
+ctors:
+  public HostDialog()
+methods:
+  public void runHost()
+
+IconSelectDialog.java
+Java class extends arc.scene.ui.Dialog
+fields:
+  private Intc consumer
+ctors:
+  public IconSelectDialog() / public IconSelectDialog(boolean allowLocked)
+methods:
+  public void show(Intc listener)
+
+JoinDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  static Seq<Element> tmpElements
+  static final int favoriteCountOffset
+  Seq<ServerGroup> tmpServers
+  Seq<Server> servers
+  Dialog add
+  Server renaming
+  Table local
+  Table remote
+  Table global
+  Table hosts
+  int totalHosts
+  int refreshes
+  boolean showHidden
+  TextButtonStyle style
+  Task fontIgnoreDirtyTask
+  String lastIp
+  int lastPort
+  Task ping
+  String serverSearch
+  boolean sortPing
+ctors:
+  public JoinDialog()
+methods:
+  void refreshAll()
+  void setupRemote()
+  void moveRemote(Server server, int sign)
+  void refreshRemote()
+  void refreshServer(Server server)
+  void setupServer(Server server, Host host)
+  void buildServer(Host host, Table content, boolean local, boolean addName)
+  void setup()
+  void section(String label, Table servers, boolean eye)
+  void refreshLocal()
+  void refreshCommunity()
+  void addHeader(Table[] groupTable, ServerGroup group, boolean hidden, boolean favorite, boolean doInit)
+  int columns()
+  void addCommunityHost(Host host, Table container)
+  void finishLocalHosts()
+  void addLocalHost(Host host)
+  public void connect(String ip, int port)
+  public void reconnect()
+  void safeConnect(String ip, int port, int version)
+  float targetWidth()
+  private void loadServers()
+  public static void fetchServers() / private static void fetchServers(String[] urls, int index)
+  private static Seq<ServerGroup> parseServerString(String str)
+  private void saveServers()
+  private String getVersionString(Host host)
+inner-class: Server
+  fields:
+    public String ip
+    public int port
+    transient Table content
+    transient Host lastHost
+  ctors:
+    public Server()
+  methods:
+    void setIP(String ip)
+    String displayIP()
+
+KeybindDialog.java
+Java class extends arc.scene.ui.Dialog
+fields:
+  protected KeyBind rebindKey
+  protected boolean rebindAxis
+  protected boolean rebindMin
+  protected KeyCode minKey
+  protected Dialog rebindDialog
+  protected Table bindsTable
+  private String searchText
+ctors:
+  public KeybindDialog()
+methods:
+  public void addCloseButton()
+  private void rebuildBinds()
+  void rebind(KeyBind bind, KeyCode newKey)
+  private void openDialog(KeyBind keyBind)
+
+LanguageDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public static final ObjectMap<String,String> displayNames
+  private Locale lastLocale
+ctors:
+  public LanguageDialog()
+methods:
+  public static String getDisplayName(Locale locale)
+  private void setup()
+  public Locale getLocale()
+  void findClosestLocale()
+
+LaunchLoadoutDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+// Dialog for selecting loadout at sector launch.
+fields:
+  LoadoutDialog loadout
+  ItemSeq total  // total required items
+  Schematic selected  // currently selected schematic
+  boolean valid  // validity of loadout items
+  int lastCapacity  // last calculated capacity
+ctors:
+  public LaunchLoadoutDialog()
+methods:
+  public void show(CoreBlock core, Sector sector, Sector destination, Runnable confirm)
+  void setMax(boolean max)
+  boolean getMax()
+
+LoadDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Table slots
+  String searchString
+  Seq<Gamemode> hidden
+  TextField searchField
+  ScrollPane pane
+ctors:
+  public LoadDialog() / public LoadDialog(String title)
+methods:
+  protected void setup()
+  public void rebuild()
+  public void addSetup()
+  public void runLoadSave(SaveSlot slot)
+  public void modifyButton(TextButton button, SaveSlot slot)
+  public Dialog show()
+
+LoadoutDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private Runnable hider
+  private Runnable resetter
+  private Runnable updater
+  private Seq<ItemStack> stacks  // TODO use itemseqs
+  private Seq<ItemStack> originalStacks
+  private Boolf<Item> validator
+  private Table items
+  private int capacity
+  private ItemSeq total
+ctors:
+  public LoadoutDialog()
+methods:
+  public void maxItems()
+  public void show(int capacity, Seq<ItemStack> stacks, Boolf<Item> validator, Runnable reseter, Runnable updater, Runnable hider) / public void show(int capacity, ItemSeq total, Seq<ItemStack> stacks, Boolf<Item> validator, Runnable reseter, Runnable updater, Runnable hider)
+  void setup()
+  private void reseed()
+  private int step(int amount)
+
+MapListDialog.java
+Java class (abstract) extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static MapViewSettings settings  // shared across map dialogs
+  BaseDialog activeDialog
+  private String searchString
+  private Seq<Gamemode> modes
+  private Seq<String> availablePlanets
+  private Table mapTable
+  private TextField searchField
+  private ObjectMap<Map,Rules> rulesCache
+  private boolean displayType
+ctors:
+  public MapListDialog(String title, boolean displayType)
+methods:
+  void buildButtons()
+  abstract void showMap(Map map)
+  void setup()
+  void rebuildMaps()
+  void showMapFilters()
+  public Dialog show()
+inner-class: MapViewSettings
+  fields:
+    boolean showBuiltIn
+    MapPriority priority
+    Seq<String> planets
+  methods:
+    void save()
+
+MapPlayDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public Runnable playListener
+  CustomRulesDialog dialog
+  Rules rules
+  Gamemode selectedGamemode
+  Map lastMap
+ctors:
+  public MapPlayDialog()
+methods:
+  public void show(Map map) / public void show(Map map, boolean playtesting)
+  private void displayGameModeHelp()
+
+ModBrowserDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  protected Table browserTable
+  protected String searchtxt
+  protected Seq<ModListing> modList
+  protected Seq<Cons<Seq<ModListing>>> fetchCallbacks
+  protected boolean orderDate
+  protected ObjectMap<String,TextureRegion> textureCache
+ctors:
+  public ModBrowserDialog()
+methods:
+  public ModListing getCachedMod(String repo)
+  public void getModList(Cons<Seq<ModListing>> listener)
+  protected void getModListInternal(int index)
+  public void downloadDependencies(Seq<String> toImport, Cons<Seq<String>> imported)
+  public void displayDependencyImportStatus(Seq<String> failed, Seq<String> success)
+  protected void rebuildBrowser()
+
+ModsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static final Pattern modVersionPattern
+  public ModBrowserDialog browser
+  protected float modImportProgress
+  protected boolean cancelledImport
+  protected BaseDialog currentContent
+  protected BaseDialog downloads
+  protected BaseDialog modDetails
+  protected float scroll
+  protected ObjectMap<LoadedMod,ModListing> modToListing  // only records mods that have a valid repo!
+  protected ObjectSet<LoadedMod> withUpdates
+  protected Element updaterElement
+ctors:
+  public ModsDialog()
+methods:
+  public void refreshModUpdates()
+  public boolean hasUpdate(LoadedMod mod)
+  void setup()
+  private String getStateText(LoadedMod item)
+  private String getStateDetails(LoadedMod item)
+  private void showMod(LoadedMod mod)
+  protected void handleMod(String repo, HttpResponse result, boolean forceEnable)
+  protected void importFail(Throwable t)
+  public void showModError(Throwable error)
+  public void viewReleases(String repo, boolean isJava, boolean reinstall)
+  public void githubImportMod(ModListing mod) / public void githubImportMod(String repo, boolean isJava, boolean forceEnable) / public void githubImportMod(String repo, boolean isJava, String release, boolean forceEnable)
+  public void githubImportJavaMod(String repo, String release, boolean forceEnable)
+  public void githubImportBranch(String branch, String repo, String release, boolean forceEnable)
+  public static int[] parseVersionTag(String str)  // @return {major, minor} parsed from a leading/trailing "[v{major}]" or "[v{major}.{minor}]" tag, or null if none is found at either end (or the numbers are unparseable).
+  public static int[] parseVersion(String str)
+  public static boolean matchesGameVersion(String releaseTitle) / public static boolean matchesGameVersion(int[] tag)  // @return whether the specified release name and its tags match the current game build (e.g.
+
+PaletteDialog.java
+Java class extends arc.scene.ui.Dialog
+fields:
+  private Cons<Color> cons
+ctors:
+  public PaletteDialog()
+methods:
+  private void build()
+  public void show(Cons<Color> cons)
+
+PausedDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private MapProcessorsDialog processors
+  private SaveDialog save
+  private LoadDialog load
+  private CustomRulesDialog rulesDialog
+ctors:
+  public PausedDialog()
+methods:
+  void rebuild()
+  void showQuitConfirm()
+  public boolean checkPlaytest()
+  public void runExitSave() / public void runExitSave(boolean save)
+
+PlanetDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog implements mindustry.graphics.g3d.PlanetRenderer.PlanetInterfaceRenderer
+fields:
+  public static boolean debugSelect  // if true, enables launching anywhere for testing
+  public static float sectorShowDuration
+  public final FrameBuffer buffer
+  public final LaunchLoadoutDialog loadouts
+  public final PlanetRenderer planets
+  public PlanetParams state
+  public float zoom
+  public Sector selected
+  public Seq<Planet> launchCandidates  // Must not be null in planet launch mode.
+  public Mode mode
+  public boolean launching
+  public Cons<Sector> listener
+  public Seq<Sector> newPresets
+  public float presetShow
+  public boolean showed
+  public String searchText
+  public Table sectorTop
+  public Label hoverLabel
+  private Texture planetTextures
+  private Element mainView
+  private SectorSelectDialog selectDialog
+ctors:
+  public PlanetDialog()
+methods:
+  public Dialog show()  // show with no limitations, just as a map.
+  void rebuildButtons()
+  void addBack()
+  void addTech()
+  public void showOverview()
+  public void showPlanetLaunch(Sector sector, Seq<Planet> launchCandidates, Cons<Sector> listener)  // TODO not fully implemented, cutscene needed
+  public void showSelect(Sector sector, Cons<Sector> listener)
+  public void lookAt(Sector sector) / public void lookAt(Sector sector, float alpha)
+  void clampZoom()
+  boolean canSelect(Sector sector)
+  Sector findLauncher(Sector to)
+  boolean showing()
+  public void renderSectors(Planet planet)
+  public void renderOverProjections(Planet planet)
+  public void renderProjections(Planet planet)
+  boolean selectable(Planet planet)
+  void setup()
+  void rebuildExpand()
+  void rebuildList()
+  public Planet getHoverPlanet(float mouseX, float mouseY)
+  public void viewPlanet(Planet planet, boolean pan)
+  public void draw()
+  public void act(float delta)
+  void displayItems(Table c, ObjectMap<Item,ExportStat> stats, String name) / void displayItems(Table c, ObjectMap<Item,ExportStat> stats, String name, Cons<Table> builder)
+  void showStats(Sector sector)
+  public void abandonSectorConfirm(Sector sector, Runnable listener)
+  void addSurvivedInfo(Sector sector, Table table, boolean wrap)
+  public void selectSector(Sector sector)
+  void updateSelected()
+  boolean hasNoCandidate(Sector sector)
+  boolean isLocked(Sector sector)
+  boolean canPlaySector(Sector sector)
+  void playSelected()
+
+ResearchDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public static boolean debugShowRequirements
+  public final float nodeSize
+  public ObjectSet<TechTreeNode> nodes
+  public TechTreeNode root
+  public TechNode lastNode
+  public Rect bounds
+  public ItemsDisplay itemDisplay
+  public View view
+  public ItemSeq items
+  private final Seq<Planet> rootPlanets
+  private boolean showTechSelect
+  private boolean needsRebuild
+ctors:
+  public ResearchDialog()
+methods:
+  void checkMargin()
+  public void rebuildItems()
+  public TechNode getPrefRoot()
+  public void switchTree(TechNode node)
+  public void rebuildTree(TechNode node)
+  void treeLayout()
+  void shift(LayoutNode[] children, float amount)
+  void copyInfo(LayoutNode node)
+  void checkNodes(TechTreeNode node)
+  boolean selectable(TechNode node)
+  boolean locked(TechNode node)
+inner-class: LayoutNode extends mindustry.ui.layout.TreeLayout.TreeNode
+  fields:
+    final TechTreeNode node
+  ctors:
+    LayoutNode(TechTreeNode node, LayoutNode parent)
+inner-class: TechTreeNode extends mindustry.ui.layout.TreeLayout.TreeNode
+  fields:
+    public final TechNode node
+    public boolean visible
+  ctors:
+    public TechTreeNode(TechNode node, TechTreeNode parent)
+inner-class: View extends arc.scene.Group
+  fields:
+    public float panX
+    public boolean moved
+    public ImageButton hoverNode
+    public Table infoTable
+  methods:
+    public void rebuildAll()
+    void clamp()
+    boolean canSpend(TechNode node)
+    void spend(TechNode node)
+    void unlock(TechNode node)
+    void rebuild() / void rebuild(boolean[] shine)  // pass an array of stack indexes that should shine here
+    public void drawChildren()
+
+SaveDialog.java
+Java class extends mindustry.ui.dialogs.LoadDialog
+ctors:
+  public SaveDialog()
+methods:
+  public void addSetup()
+  public void modifyButton(TextButton button, SaveSlot slot)
+  void save(SaveSlot slot)
+
+SchematicsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static final float tagh
+  private SchematicInfoDialog info
+  private Schematic firstSchematic
+  private String search
+  private TextField searchField
+  private Runnable rebuildPane
+  private Pattern ignoreSymbols
+  private Seq<String> tags
+  private boolean checkedTags
+ctors:
+  public SchematicsDialog()
+methods:
+  void setup()
+  public void showInfo(Schematic schematic)
+  public void showImport()
+  public void importAndShow(Fi file)
+  public void showExport(Schematic s)
+  public void showEdit(Schematic s)
+  void checkTags() / void checkTags(Schematic s)  // alternatively, unknown tags could be discarded on import?
+  void tagsChanged()
+  void addTag(Schematic s, String tag)
+  void removeTag(Schematic s, String tag)
+  void showNewTag(Cons<String> result)  // shows a dialog for creating a new tag
+  void showNewIconTag(Cons<String> cons)
+  void showAllTags()
+  void buildTags(Schematic schem, Table t) / void buildTags(Schematic schem, Table t, boolean name)
+  public Dialog show()
+inner-class: SchematicImage extends arc.scene.ui.Image
+  fields:
+    public float scaling
+    public float thickness
+    public Color borderColor
+    private Schematic schematic
+    private Texture lastTexture
+    boolean set
+  ctors:
+    public SchematicImage(Schematic s)
+  methods:
+    public void draw()
+    private void setPreview()
+inner-class: SchematicInfoDialog extends mindustry.ui.dialogs.BaseDialog
+  ctors:
+    SchematicInfoDialog()
+  methods:
+    public void show(Schematic schem)
+
+SectorSelectDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+// internal use only!
+fields:
+  Table sectors
+  Planet planet
+  Cons<SectorPreset> cons
+  TextField search
+ctors:
+  public SectorSelectDialog()
+methods:
+  public void show(Planet planet, Cons<SectorPreset> cons)
+  void rebuild()
+  boolean matches(SectorPreset sector, String text)
+
+SettingsMenuDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public SettingsTable graphics
+  public SettingsTable game
+  public SettingsTable sound
+  public SettingsTable dev
+  public SettingsTable main
+  private Table prefs
+  private Table menu
+  private BaseDialog dataDialog
+  private BaseDialog planetDataDialog
+  private Planet planet
+  private Seq<SettingsCategory> categories
+ctors:
+  public SettingsMenuDialog()
+methods:
+  String getLogs()
+  public void addCategory(String name, String region, Cons<SettingsTable> builder) / public void addCategory(String name, Drawable icon, Cons<SettingsTable> builder) / public void addCategory(String name, Cons<SettingsTable> builder)  // Adds a custom settings category, with the icon being the specified region.
+  public Seq<SettingsCategory> getCategories()
+  void rebuildMenu()
+  void addSettings()
+  public void exportData(Fi file) throws IOException
+  public void importData(Fi file)
+  private void back()
+  private void visible(int index)
+  public void addCloseButton()
+inner-interface: StringProcessor
+  methods:
+    String get(int i)
+inner-class: SettingsCategory
+  fields:
+    public String name
+    public Drawable icon
+    public Cons<SettingsTable> builder
+    public SettingsTable table
+  ctors:
+    public SettingsCategory(String name, Drawable icon, Cons<SettingsTable> builder)
+inner-class: SettingsTable extends arc.scene.ui.layout.Table
+  fields:
+    protected Seq<Setting> list
+  ctors:
+    public SettingsTable()
+  methods:
+    public Seq<Setting> getSettings()
+    public void pref(Setting setting)
+    public SliderSetting sliderPref(String name, int def, int min, int max, StringProcessor s) / public SliderSetting sliderPref(String name, int def, int min, int max, int step, StringProcessor s) / public SliderSetting sliderPref(String name, int def, int min, int max, StringProcessor s, Intc changed) / public SliderSetting sliderPref(String name, int def, int min, int max, int step, StringProcessor s, Intc changed)
+    public void checkPref(String name, boolean def) / public void checkPref(String name, boolean def, Boolc changed)
+    public void textPref(String name, String def) / public void textPref(String name, String def, Cons<String> changed)
+    public void areaTextPref(String name, String def) / public void areaTextPref(String name, String def, Cons<String> changed)
+    public void rebuild()
+  inner-class: Setting
+    fields:
+      public String name
+      public String title
+      public String description
+    ctors:
+      public Setting(String name)
+    methods:
+      public abstract void add(SettingsTable table)
+      public void addDesc(Element elem)
+  inner-class: CheckSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+    fields:
+      boolean def
+      Boolc changed
+    ctors:
+      public CheckSetting(String name, boolean def, Boolc changed)
+    methods:
+      public void add(SettingsTable table)
+  inner-class: SliderSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+    fields:
+      int def
+      StringProcessor sp
+      Intc changed
+    ctors:
+      public SliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Intc changed)
+    methods:
+      public void add(SettingsTable table)
+  inner-class: TextSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+    fields:
+      String def
+      Cons<String> changed
+    ctors:
+      public TextSetting(String name, String def, Cons<String> changed)
+    methods:
+      public void add(SettingsTable table)
+  inner-class: AreaTextSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.TextSetting
+    ctors:
+      public AreaTextSetting(String name, String def, Cons<String> changed)
+    methods:
+      public void add(SettingsTable table)
+inner-class: Setting
+  fields:
+    public String name
+    public String title
+    public String description
+  ctors:
+    public Setting(String name)
+  methods:
+    public abstract void add(SettingsTable table)
+    public void addDesc(Element elem)
+inner-class: CheckSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+  fields:
+    boolean def
+    Boolc changed
+  ctors:
+    public CheckSetting(String name, boolean def, Boolc changed)
+  methods:
+    public void add(SettingsTable table)
+inner-class: SliderSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+  fields:
+    int def
+    StringProcessor sp
+    Intc changed
+  ctors:
+    public SliderSetting(String name, int def, int min, int max, int step, StringProcessor s, Intc changed)
+  methods:
+    public void add(SettingsTable table)
+inner-class: TextSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting
+  fields:
+    String def
+    Cons<String> changed
+  ctors:
+    public TextSetting(String name, String def, Cons<String> changed)
+  methods:
+    public void add(SettingsTable table)
+inner-class: AreaTextSetting extends mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.TextSetting
+  ctors:
+    public AreaTextSetting(String name, String def, Cons<String> changed)
+  methods:
+    public void add(SettingsTable table)
+
+TraceDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public TraceDialog()
+methods:
+  public void show(Player player, TraceInfo info)
+  private void copy(String content)
+

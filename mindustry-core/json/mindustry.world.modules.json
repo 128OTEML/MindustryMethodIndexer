@@ -1,0 +1,1343 @@
+[ {
+  "file" : "BlockModule.java",
+  "pkg" : "mindustry.world.modules",
+  "type" : "Java class (abstract)",
+  "typeDesc" : "A class that represents compartmentalized tile entity state.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public abstract void write(Writes write)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public", "abstract" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 7,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void read(Reads read, boolean legacy) / public void read(Reads read)",
+    "desc" : null,
+    "overloads" : [ "public void read(Reads read, boolean legacy)", "public void read(Reads read)" ],
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "legacy",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 9,
+    "calls" : [ "mindustry.world.modules.BlockModule.read(arc.util.io.Reads)", "mindustry.world.modules.BlockModule.read(arc.util.io.Reads, boolean)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ItemModule.java",
+  "pkg" : "mindustry.world.modules",
+  "type" : "Java class extends mindustry.world.modules.BlockModule",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final ItemModule empty",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "empty",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static int flowWindowSize",
+    "desc" : "Total number of samples of flow rate that are taken.",
+    "overloads" : null,
+    "name" : "flowWindowSize",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static float flowPollInterval",
+    "desc" : "Interval between which samples are added to the window, in ticks.",
+    "overloads" : null,
+    "name" : "flowPollInterval",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static float flowVisualRefreshInterval",
+    "desc" : "Visual refresh rate of the value, in ticks.",
+    "overloads" : null,
+    "name" : "flowVisualRefreshInterval",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static WindowedMean cacheFlow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheFlow",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float cacheSums",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheSums",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float displayFlow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "displayFlow",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Bits cacheBits",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheBits",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Interval flowTimer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flowTimer",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int items",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "items",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int total",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "total",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int takeRotation",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "takeRotation",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private WindowedMean flow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flow",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public ItemModule copy()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "copy",
+    "returnType" : "ItemModule",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ "mindustry.world.modules.ItemModule.set(mindustry.world.modules.ItemModule)", "mindustry.world.modules.ItemModule.ItemModule()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void set(ItemModule other) / public void set(Item item, int amount)",
+    "desc" : null,
+    "overloads" : [ "public void set(ItemModule other)", "public void set(Item item, int amount)" ],
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "ItemModule"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ "java.lang.System.arraycopy(java.lang.Object, int, java.lang.Object, int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateFlow()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ "arc.util.Interval.get(int, float)", "mindustry.core.ContentLoader.items()", "Arrays.copyOf", "arc.math.WindowedMean.reset()", "java.util.Arrays.fill(float[], float)", "arc.struct.Bits.clear()", "arc.util.Interval.get(float)", "arc.math.WindowedMean.add(float)", "arc.struct.Bits.set(int)", "arc.math.WindowedMean.hasEnoughData()", "arc.math.WindowedMean.mean()", "arc.math.WindowedMean.WindowedMean(int)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public void stopFlow()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stopFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 90,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int length()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "length",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 94,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getFlowRate(Item item)",
+    "desc" : "@return a specific item's flow rate in items/s; any value < 0 means not ready.",
+    "overloads" : null,
+    "name" : "getFlowRate",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 99,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasFlowItem(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasFlowItem",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 103,
+    "calls" : [ "arc.struct.Bits.get(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void each(ItemConsumer cons)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "each",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "ItemConsumer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 107,
+    "calls" : [ "mindustry.world.modules.ItemModule.ItemConsumer.accept(mindustry.type.Item, int)", "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float sum(ItemCalculator calc)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sum",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "calc",
+      "type" : "ItemCalculator"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ "mindustry.world.modules.ItemModule.ItemCalculator.get(mindustry.type.Item, int)", "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean has(int id) / public boolean has(Item item) / public boolean has(Item item, int amount) / public boolean has(ItemStack[] stacks) / public boolean has(ItemSeq items) / public boolean has(Iterable<ItemStack> stacks) / public boolean has(ItemStack[] stacks, float multiplier)",
+    "desc" : null,
+    "overloads" : [ "public boolean has(int id)", "public boolean has(Item item)", "public boolean has(Item item, int amount)", "public boolean has(ItemStack[] stacks)", "public boolean has(ItemSeq items)", "public boolean has(Iterable<ItemStack> stacks)", "public boolean has(ItemStack[] stacks, float multiplier)" ],
+    "name" : "has",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 125,
+    "calls" : [ "mindustry.world.modules.ItemModule.get(mindustry.type.Item)", "mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)", "mindustry.core.ContentLoader.items()", "mindustry.type.ItemSeq.get(mindustry.type.Item)", "java.lang.Math.round(float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasOne(ItemStack[] stacks)",
+    "desc" : "Returns true if this entity has at least one of each item in each stack.",
+    "overloads" : null,
+    "name" : "hasOne",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stacks",
+      "type" : "ItemStack[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 170,
+    "calls" : [ "mindustry.world.modules.ItemModule.has(mindustry.type.Item, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean empty()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "empty",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 177,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int total()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "total",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 181,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean any()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "any",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 185,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Item first()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "first",
+    "returnType" : "Item",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 189,
+    "calls" : [ "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Item take()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "take",
+    "returnType" : "Item",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 198,
+    "calls" : [ "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int get(int id) / public int get(Item item)",
+    "desc" : null,
+    "overloads" : [ "public int get(int id)", "public int get(Item item)" ],
+    "name" : "get",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 212,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void add(Iterable<ItemStack> stacks) / public void add(ItemSeq stacks) / public void add(ItemModule items) / public void add(Item item, int amount) / private void add(int item, int amount)",
+    "desc" : null,
+    "overloads" : [ "public void add(Iterable<ItemStack> stacks)", "public void add(ItemSeq stacks)", "public void add(ItemModule items)", "public void add(Item item, int amount)", "private void add(int item, int amount)" ],
+    "name" : "add",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stacks",
+      "type" : "Iterable<ItemStack>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 225,
+    "calls" : [ "mindustry.world.modules.ItemModule.add(mindustry.type.Item, int)", "mindustry.type.ItemSeq.each(mindustry.world.modules.ItemModule.ItemConsumer)", "mindustry.world.modules.ItemModule.add(int, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void handleFlow(Item item, int amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handleFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    }, {
+      "name" : "amount",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 253,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void undoFlow(Item item)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "undoFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 259,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void remove(Item item, int amount) / public void remove(ItemStack[] stacks) / public void remove(ItemSeq stacks) / public void remove(Iterable<ItemStack> stacks) / public void remove(ItemStack stack)",
+    "desc" : null,
+    "overloads" : [ "public void remove(Item item, int amount)", "public void remove(ItemStack[] stacks)", "public void remove(ItemSeq stacks)", "public void remove(Iterable<ItemStack> stacks)", "public void remove(ItemStack stack)" ],
+    "name" : "remove",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "item",
+      "type" : "Item"
+    }, {
+      "name" : "amount",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 265,
+    "calls" : [ "java.lang.Math.min(int, int)", "mindustry.world.modules.ItemModule.remove(mindustry.type.Item, int)", "mindustry.type.ItemSeq.each(mindustry.world.modules.ItemModule.ItemConsumer)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 288,
+    "calls" : [ "java.util.Arrays.fill(int[], int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void checkArrayCapacity(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkArrayCapacity",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ "Arrays.copyOf" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void write(Writes write)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 301,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.i(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void read(Reads read, boolean legacy)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "legacy",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 318,
+    "calls" : [ "java.util.Arrays.fill(int[], int)", "arc.util.io.Reads.ub()", "arc.util.io.Reads.s()", "arc.util.io.Reads.i()", "mindustry.core.ContentLoader.item(int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 344,
+    "calls" : [ "java.lang.StringBuilder.append(java.lang.String)", "arc.struct.Seq.get(int)", "mindustry.core.ContentLoader.items()", "java.lang.AbstractStringBuilder.setLength(int)", "java.lang.AbstractStringBuilder.length()", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder()" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "ItemConsumer",
+    "simpleName" : "ItemConsumer",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void accept(Item item, int amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "accept",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "item",
+        "type" : "Item"
+      }, {
+        "name" : "amount",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 337,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "ItemCalculator",
+    "simpleName" : "ItemCalculator",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "float get(Item item, int amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "get",
+      "returnType" : "float",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "item",
+        "type" : "Item"
+      }, {
+        "name" : "amount",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 341,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "LiquidModule.java",
+  "pkg" : "mindustry.world.modules",
+  "type" : "Java class extends mindustry.world.modules.BlockModule",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public static int flowWindowSize",
+    "desc" : "Total number of samples of flow rate that are taken.",
+    "overloads" : null,
+    "name" : "flowWindowSize",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static float flowPollInterval",
+    "desc" : "Interval between which samples are added to the window, in ticks.",
+    "overloads" : null,
+    "name" : "flowPollInterval",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static float flowVisualRefreshInterval",
+    "desc" : "Visual refresh rate of the value, in ticks.",
+    "overloads" : null,
+    "name" : "flowVisualRefreshInterval",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Interval flowTimer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flowTimer",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static WindowedMean cacheFlow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheFlow",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float cacheSums",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheSums",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float displayFlow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "displayFlow",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Bits cacheBits",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cacheBits",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float liquids",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquids",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Liquid current",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "current",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private WindowedMean flow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flow",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void updateFlow()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 33,
+    "calls" : [ "arc.util.Interval.get(int, float)", "mindustry.core.ContentLoader.liquids()", "java.util.Arrays.copyOf(double[], int)", "arc.math.WindowedMean.reset()", "java.util.Arrays.fill(float[], float)", "arc.struct.Bits.clear()", "arc.util.Interval.get(float)", "arc.math.WindowedMean.add(float)", "arc.struct.Bits.set(int)", "arc.math.WindowedMean.hasEnoughData()", "arc.math.WindowedMean.mean()", "arc.math.WindowedMean.WindowedMean(int)" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "public void stopFlow()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stopFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 75,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getFlowRate(Liquid liquid)",
+    "desc" : "@return current liquid's flow rate in u/s; any value < 0 means 'not ready'.",
+    "overloads" : null,
+    "name" : "getFlowRate",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 80,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasFlowLiquid(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasFlowLiquid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ "arc.struct.Bits.get(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Liquid current()",
+    "desc" : "Last received or loaded liquid.",
+    "overloads" : null,
+    "name" : "current",
+    "returnType" : "Liquid",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 89,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset(Liquid liquid, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 93,
+    "calls" : [ "java.util.Arrays.fill(float[], float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void set(Liquid liquid, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 99,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float currentAmount()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "currentAmount",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 106,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float get(Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "get",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ "java.util.Arrays.fill(float[], float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void add(Liquid liquid, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "add",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 118,
+    "calls" : [ "java.lang.Math.max(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void handleFlow(Liquid liquid, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handleFlow",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 127,
+    "calls" : [ "java.lang.Math.max(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void remove(Liquid liquid, float amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "remove",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 133,
+    "calls" : [ "mindustry.world.modules.LiquidModule.add(mindustry.type.Liquid, float)", "java.lang.Math.max(float, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void each(LiquidConsumer cons)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "each",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "LiquidConsumer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 138,
+    "calls" : [ "mindustry.world.modules.LiquidModule.LiquidConsumer.accept(mindustry.type.Liquid, float)", "mindustry.core.ContentLoader.liquid(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float sum(LiquidCalculator calc)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sum",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "calc",
+      "type" : "LiquidCalculator"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 146,
+    "calls" : [ "mindustry.world.modules.LiquidModule.LiquidCalculator.get(mindustry.type.Liquid, float)", "mindustry.core.ContentLoader.liquid(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void checkArrayCapacity(int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkArrayCapacity",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 156,
+    "calls" : [ "java.util.Arrays.copyOf(double[], int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void write(Writes write)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 164,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.f(float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void read(Reads read, boolean legacy)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    }, {
+      "name" : "legacy",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 181,
+    "calls" : [ "java.util.Arrays.fill(float[], float)", "arc.util.io.Reads.ub()", "arc.util.io.Reads.s()", "mindustry.core.ContentLoader.liquid(int)", "arc.util.io.Reads.f()" ],
+    "callCount" : 5
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "LiquidConsumer",
+    "simpleName" : "LiquidConsumer",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void accept(Liquid liquid, float amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "accept",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "liquid",
+        "type" : "Liquid"
+      }, {
+        "name" : "amount",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 200,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "LiquidCalculator",
+    "simpleName" : "LiquidCalculator",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "float get(Liquid liquid, float amount)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "get",
+      "returnType" : "float",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "liquid",
+        "type" : "Liquid"
+      }, {
+        "name" : "amount",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 204,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "PowerModule.java",
+  "pkg" : "mindustry.world.modules",
+  "type" : "Java class extends mindustry.world.modules.BlockModule",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float status",
+    "desc" : "In case of unbuffered consumers, this is the percentage (1.0f = 100%) of the demanded power which can be supplied.",
+    "overloads" : null,
+    "name" : "status",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean init",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public PowerGraph graph",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "graph",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public IntSeq links",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "links",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void write(Writes write)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 18,
+    "calls" : [ "arc.util.io.Writes.s(int)", "arc.util.io.Writes.i(int)", "arc.struct.IntSeq.get(int)", "arc.util.io.Writes.f(float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void read(Reads read)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "read",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "read",
+      "type" : "Reads"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 27,
+    "calls" : [ "arc.struct.IntSeq.clear()", "arc.util.io.Reads.s()", "arc.struct.IntSeq.add(int)", "arc.util.io.Reads.i()", "arc.util.io.Reads.f()", "java.lang.Float.isNaN(float)", "java.lang.Float.isInfinite(float)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+} ]

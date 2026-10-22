@@ -1,0 +1,47 @@
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)
+  -> mindustry.ui.Bar.Bar(arc.func.Prov<java.lang.CharSequence>, arc.func.Prov<arc.graphics.Color>, arc.func.Floatp)
+load
+  -> mindustry.world.Block.load()
+  -> mindustry.world.draw.DrawBlock.load(mindustry.world.Block)
+drawPlanRegion
+  -> mindustry.world.draw.DrawBlock.drawPlan(mindustry.world.Block, mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)
+icons
+  -> mindustry.world.draw.DrawBlock.finalIcons(mindustry.world.Block)
+HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer::draw
+  -> mindustry.world.draw.DrawBlock.draw(mindustry.gen.Building)
+HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer::drawLight
+  -> mindustry.gen.Building.drawLight()
+  -> mindustry.world.draw.DrawBlock.drawLight(mindustry.gen.Building)
+HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer::updateTile
+  -> mindustry.world.blocks.heat.HeatConductor.HeatConductorBuild.updateHeat()
+HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer::updateHeat
+  -> mindustry.gen.Building.calculateHeat(float[], arc.struct.IntSet)
+HeatConductorBuild extends mindustry.gen.Building implements mindustry.world.blocks.heat.HeatBlock, mindustry.world.blocks.heat.HeatConsumer::sense
+  -> mindustry.gen.Building.sense(mindustry.logic.LAccess)
+HeatProducer
+  -> arc.struct.EnumSet.of(T...)
+  -> mindustry.world.draw.DrawMulti.DrawMulti(mindustry.world.draw.DrawBlock...)
+  -> mindustry.world.draw.DrawDefault.DrawDefault()
+  -> mindustry.world.draw.DrawHeatOutput.DrawHeatOutput()
+setStats
+  -> mindustry.world.blocks.production.GenericCrafter.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+setBars
+  -> mindustry.world.blocks.production.GenericCrafter.setBars()
+  -> mindustry.world.Block.addBar(java.lang.String, arc.func.Func<T, mindustry.ui.Bar>)
+  -> mindustry.ui.Bar.Bar(java.lang.String, arc.graphics.Color, arc.func.Floatp)
+HeatProducerBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatBlock::updateTile
+  -> mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild.updateTile()
+  -> arc.math.Mathf.approachDelta(float, float, float)
+  -> mindustry.gen.Building.delta()
+HeatProducerBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatBlock::sense
+  -> mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild.sense(mindustry.logic.LAccess)
+HeatProducerBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatBlock::write
+  -> mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.f(float)
+HeatProducerBuild extends mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild implements mindustry.world.blocks.heat.HeatBlock::read
+  -> mindustry.world.blocks.production.GenericCrafter.GenericCrafterBuild.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.f()

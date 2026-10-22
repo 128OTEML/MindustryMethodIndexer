@@ -1,0 +1,859 @@
+[ {
+  "file" : "BranchTreeLayout.java",
+  "pkg" : "mindustry.ui.layout",
+  "type" : "Java class implements mindustry.ui.layout.TreeLayout",
+  "typeDesc" : "Algorithm taken from <a href=\"https://github.com/abego/treelayout\">TreeLayout</a>.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TreeLocation rootLocation",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rootLocation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TreeAlignment alignment",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "alignment",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float gapBetweenLevels",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "gapBetweenLevels",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float gapBetweenNodes",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "gapBetweenNodes",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final FloatSeq sizeOfLevel",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sizeOfLevel",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float boundsLeft",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "boundsLeft",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float boundsRight",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "boundsRight",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float boundsTop",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "boundsTop",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float boundsBottom",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "boundsBottom",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void layout(TreeNode root)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layout",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.firstWalk(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.calcSizeOfLevels(mindustry.ui.layout.TreeLayout.TreeNode, int)", "mindustry.ui.layout.BranchTreeLayout.secondWalk(mindustry.ui.layout.TreeLayout.TreeNode, float, int, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private float getWidthOrHeightOfNode(TreeNode treeNode, boolean returnWidth)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getWidthOrHeightOfNode",
+    "returnType" : "float",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "treeNode",
+      "type" : "TreeNode"
+    }, {
+      "name" : "returnWidth",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ "mindustry.ui.layout.TreeLayout.TreeNode.calcWidth()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private float getNodeThickness(TreeNode treeNode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getNodeThickness",
+    "returnType" : "float",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "treeNode",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getWidthOrHeightOfNode(mindustry.ui.layout.TreeLayout.TreeNode, boolean)", "mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private float getNodeSize(TreeNode treeNode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getNodeSize",
+    "returnType" : "float",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "treeNode",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getWidthOrHeightOfNode(mindustry.ui.layout.TreeLayout.TreeNode, boolean)", "mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private boolean isLevelChangeInYAxis()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isLevelChangeInYAxis",
+    "returnType" : "boolean",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private int getLevelChangeSign()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getLevelChangeSign",
+    "returnType" : "int",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private void updateBounds(TreeNode node, float centerX, float centerY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateBounds",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "TreeNode"
+    }, {
+      "name" : "centerX",
+      "type" : "float"
+    }, {
+      "name" : "centerY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Rect getBounds()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getBounds",
+    "returnType" : "Rect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 69,
+    "calls" : [ "arc.math.geom.Rect.Rect(float, float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private void calcSizeOfLevels(TreeNode node, int level)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "calcSizeOfLevels",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "TreeNode"
+    }, {
+      "name" : "level",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 73,
+    "calls" : [ "arc.struct.FloatSeq.add(float)", "arc.struct.FloatSeq.get(int)", "mindustry.ui.layout.BranchTreeLayout.getNodeThickness(mindustry.ui.layout.TreeLayout.TreeNode)", "arc.struct.FloatSeq.set(int, float)", "mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()", "mindustry.ui.layout.BranchTreeLayout.calcSizeOfLevels(mindustry.ui.layout.TreeLayout.TreeNode, int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public int getLevelCount()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getLevelCount",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 94,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getGapBetweenNodes(TreeNode a, TreeNode b)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getGapBetweenNodes",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "TreeNode"
+    }, {
+      "name" : "b",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 98,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getSizeOfLevel(int level)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getSizeOfLevel",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "level",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getLevelCount()", "arc.struct.FloatSeq.get(int)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private TreeNode getAncestor(TreeNode node)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAncestor",
+    "returnType" : "TreeNode",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 109,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private float getDistance(TreeNode v, TreeNode w)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDistance",
+    "returnType" : "float",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    }, {
+      "name" : "w",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 113,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getNodeSize(mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.getGapBetweenNodes(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private TreeNode nextLeft(TreeNode v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "nextLeft",
+    "returnType" : "TreeNode",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ "mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private TreeNode nextRight(TreeNode v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "nextRight",
+    "returnType" : "TreeNode",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 123,
+    "calls" : [ "mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private int getNumber(TreeNode node, TreeNode parentNode)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getNumber",
+    "returnType" : "int",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "TreeNode"
+    }, {
+      "name" : "parentNode",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 127,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private TreeNode ancestor(TreeNode vIMinus, TreeNode parentOfV, TreeNode defaultAncestor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ancestor",
+    "returnType" : "TreeNode",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "vIMinus",
+      "type" : "TreeNode"
+    }, {
+      "name" : "parentOfV",
+      "type" : "TreeNode"
+    }, {
+      "name" : "defaultAncestor",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 137,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getAncestor(mindustry.ui.layout.TreeLayout.TreeNode)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private void moveSubtree(TreeNode wMinus, TreeNode wPlus, TreeNode parent, float shift)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "moveSubtree",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "wMinus",
+      "type" : "TreeNode"
+    }, {
+      "name" : "wPlus",
+      "type" : "TreeNode"
+    }, {
+      "name" : "parent",
+      "type" : "TreeNode"
+    }, {
+      "name" : "shift",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 142,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getNumber(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private TreeNode apportion(TreeNode v, TreeNode defaultAncestor, TreeNode leftSibling, TreeNode parentOfV)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "apportion",
+    "returnType" : "TreeNode",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    }, {
+      "name" : "defaultAncestor",
+      "type" : "TreeNode"
+    }, {
+      "name" : "leftSibling",
+      "type" : "TreeNode"
+    }, {
+      "name" : "parentOfV",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 151,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.nextRight(mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.nextLeft(mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.getDistance(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.moveSubtree(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, float)", "mindustry.ui.layout.BranchTreeLayout.ancestor(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "private void executeShifts(TreeNode v)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "executeShifts",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 208,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private void firstWalk(TreeNode v, TreeNode leftSibling)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "firstWalk",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    }, {
+      "name" : "leftSibling",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 221,
+    "calls" : [ "mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()", "mindustry.ui.layout.BranchTreeLayout.getDistance(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.firstWalk(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.apportion(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.executeShifts(mindustry.ui.layout.TreeLayout.TreeNode)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "private void secondWalk(TreeNode v, float m, int level, float levelStart)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "secondWalk",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "TreeNode"
+    }, {
+      "name" : "m",
+      "type" : "float"
+    }, {
+      "name" : "level",
+      "type" : "int"
+    }, {
+      "name" : "levelStart",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 246,
+    "calls" : [ "mindustry.ui.layout.BranchTreeLayout.getLevelChangeSign()", "mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()", "mindustry.ui.layout.BranchTreeLayout.getSizeOfLevel(int)", "mindustry.ui.layout.BranchTreeLayout.getNodeThickness(mindustry.ui.layout.TreeLayout.TreeNode)", "mindustry.ui.layout.BranchTreeLayout.updateBounds(mindustry.ui.layout.TreeLayout.TreeNode, float, float)", "mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()", "mindustry.ui.layout.BranchTreeLayout.secondWalk(mindustry.ui.layout.TreeLayout.TreeNode, float, int, float)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RadialTreeLayout.java",
+  "pkg" : "mindustry.ui.layout",
+  "type" : "Java class implements mindustry.ui.layout.TreeLayout",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private static ObjectSet<TreeNode> visited",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visited",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Queue<TreeNode> queue",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "queue",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float startRadius",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startRadius",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void layout(TreeNode root)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layout",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ "mindustry.ui.layout.RadialTreeLayout.bfs(mindustry.ui.layout.TreeLayout.TreeNode, boolean)", "mindustry.ui.layout.RadialTreeLayout.radialize(mindustry.ui.layout.TreeLayout.TreeNode, float, float, float)", "arc.struct.ObjectSet.ObjectSet(arc.struct.ObjectSet<? extends T>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "void radialize(TreeNode root, float radius, float from, float to)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "radialize",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "TreeNode"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "from",
+      "type" : "float"
+    }, {
+      "name" : "to",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ "arc.math.Mathf.cos(float)", "arc.math.Mathf.sin(float)", "mindustry.ui.layout.RadialTreeLayout.radialize(mindustry.ui.layout.TreeLayout.TreeNode, float, float, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "int bfs(TreeNode node, boolean assign)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bfs",
+    "returnType" : "int",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "TreeNode"
+    }, {
+      "name" : "assign",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ "arc.struct.ObjectSet.clear()", "arc.struct.Queue.clear()", "arc.struct.ObjectSet.add(T)", "arc.struct.Queue.addFirst(T)", "arc.struct.Queue.isEmpty()", "arc.struct.Queue.removeFirst()", "arc.struct.Queue.addLast(T)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RowTreeLayout.java",
+  "pkg" : "mindustry.ui.layout",
+  "type" : "Java class implements mindustry.ui.layout.TreeLayout",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void layout(TreeNode root) / void layout(TreeNode node, int depth, IntSeq nexts)",
+    "desc" : null,
+    "overloads" : [ "public void layout(TreeNode root)", "void layout(TreeNode node, int depth, IntSeq nexts)" ],
+    "name" : "layout",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 7,
+    "calls" : [ "mindustry.ui.layout.RowTreeLayout.layout(mindustry.ui.layout.TreeLayout.TreeNode, int, arc.struct.IntSeq)", "arc.struct.IntSeq.IntSeq()", "arc.struct.IntSeq.ensureCapacity(int)", "arc.struct.IntSeq.get(int)", "arc.struct.IntSeq.incr(int, int)" ],
+    "callCount" : 5
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TreeLayout.java",
+  "pkg" : "mindustry.ui.layout",
+  "type" : "Java interface",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "void layout(TreeNode root)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layout",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "TreeNode"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 4,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "TreeNode",
+    "simpleName" : "TreeNode",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public float width",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "width",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 7,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public T children",
+      "desc" : "should be initialized by user",
+      "overloads" : null,
+      "name" : "children",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 10,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public T parent",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "parent",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 11,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public float mode",
+      "desc" : "internal stuff",
+      "overloads" : null,
+      "name" : "mode",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 14,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int number",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "number",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 15,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TreeNode thread",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "thread",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 16,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public boolean isLeaf()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "isLeaf",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 18,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public float calcWidth()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "calcWidth",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 22,
+      "calls" : [ "mindustry.ui.layout.TreeLayout.TreeNode.calcWidth()", "java.lang.Math.max(float, float)" ],
+      "callCount" : 2
+    } ],
+    "inner" : [ ]
+  } ]
+} ]

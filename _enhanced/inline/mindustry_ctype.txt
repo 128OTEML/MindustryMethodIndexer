@@ -1,0 +1,230 @@
+// Content.java : public void removeContent()
+    @CallSuper
+    public void removeContent(){}
+
+// Content.java : public void init()
+    public void init(){}
+
+// Content.java : public void postInit()
+    public void postInit(){}
+
+// Content.java : public void afterPatch()
+    public void afterPatch(){}
+
+// Content.java : public void load()
+    public void load(){}
+
+// Content.java : public void loadIcon()
+    public void loadIcon(){}
+
+// Content.java : public boolean hasErrored()
+    public boolean hasErrored(){
+        return minfo.error != null;
+    }
+
+// Content.java : public boolean isVanilla()
+    public boolean isVanilla(){
+        return minfo.mod == null;
+    }
+
+// Content.java : public boolean isModded()
+    public boolean isModded(){
+        return !isVanilla();
+    }
+
+// Content.java : public boolean isPatchContent()
+    public boolean isPatchContent(){
+        return minfo.mod == DataPatcher.dpMod;
+    }
+
+// Content.java : public int compareTo(Content c)
+    @Override
+    public int compareTo(Content c){
+        return Integer.compare(id, c.id);
+    }
+
+// Content.java : public String toString()
+    @Override
+    public String toString(){
+        return getContentType().name() + "#" + id;
+    }
+
+// MappableContent.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// UnlockableContent.java : public void postInit()
+    @Override
+    public void postInit(){
+        super.postInit();
+
+        if(databaseCategory == null || databaseCategory.isEmpty()) databaseCategory = getContentType().name();
+        if(databaseTag == null || databaseTag.isEmpty()) databaseTag = "default";
+
+        databaseTabs.addAll(shownPlanets);
+    }
+
+// UnlockableContent.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        super.afterPatch();
+
+        //reset stats
+        stats = new Stats();
+    }
+
+// UnlockableContent.java : public boolean isBanned()
+    public boolean isBanned(){
+        return false;
+    }
+
+// UnlockableContent.java : public boolean isOnPlanet(Planet planet)
+    public boolean isOnPlanet(@Nullable Planet planet){
+        return planet == null || planet == Planets.sun || shownPlanets.isEmpty() || shownPlanets.contains(planet);
+    }
+
+// UnlockableContent.java : public int getLogicId()
+    public int getLogicId(){
+        return logicVars.lookupLogicId(this);
+    }
+
+// UnlockableContent.java : public String displayDescription()
+    public String displayDescription(){
+        return minfo.mod == null || isPatchContent() ? description : description + "\n" + Core.bundle.format("mod.display", minfo.mod.meta.displayName);
+    }
+
+// UnlockableContent.java : public void checkStats()
+    @Deprecated
+    public void checkStats(){
+        computeStats();
+    }
+
+// UnlockableContent.java : public void setStats()
+    public void setStats(){
+    }
+
+// UnlockableContent.java : public Stats computeStats()
+    public Stats computeStats(){
+        this.stats = new Stats();
+        setStats();
+        return this.stats;
+    }
+
+// UnlockableContent.java : public void displayExtra(Table table)
+    public void displayExtra(Table table){
+
+    }
+
+// UnlockableContent.java : public void createIcons(MultiPacker packer)
+    @CallSuper
+    public void createIcons(MultiPacker packer){
+
+    }
+
+// UnlockableContent.java : protected void makeOutline(PageType page, MultiPacker packer, TextureRegion region, boolean makeNew, Color outlineColor, int outlineRadius) / protected void makeOutline(PageType page, MultiPacker packer, TextureRegion region, boolean makeNew, Color outlineColor, int outlineRadius, int padding) / protected void makeOutline(MultiPacker packer, TextureRegion region, String name, Color outlineColor, int outlineRadius) / protected void makeOutline(MultiPacker packer, TextureRegion region, String name, Color outlineColor)
+    protected void makeOutline(PageType page, MultiPacker packer, TextureRegion region, boolean makeNew, Color outlineColor, int outlineRadius){
+        makeOutline(page, packer, region, makeNew, outlineColor, outlineRadius, 0);
+    }
+
+// UnlockableContent.java : public ItemStack[] researchRequirements()
+    public ItemStack[] researchRequirements(){
+        return ItemStack.empty;
+    }
+
+// UnlockableContent.java : public String emoji()
+    public String emoji(){
+        return Fonts.getUnicodeStr(name);
+    }
+
+// UnlockableContent.java : public int emojiChar()
+    public int emojiChar(){
+        return Fonts.getUnicode(name);
+    }
+
+// UnlockableContent.java : public boolean hasEmoji()
+    public boolean hasEmoji(){
+        return Fonts.hasUnicodeStr(name);
+    }
+
+// UnlockableContent.java : public void getDependencies(Cons<UnlockableContent> cons)
+    public void getDependencies(Cons<UnlockableContent> cons){
+
+    }
+
+// UnlockableContent.java : public void onUnlock()
+    public void onUnlock(){
+    }
+
+// UnlockableContent.java : public boolean isHidden()
+    public boolean isHidden(){
+        return false;
+    }
+
+// UnlockableContent.java : public boolean showUnlock()
+    public boolean showUnlock(){
+        return true;
+    }
+
+// UnlockableContent.java : public boolean logicVisible()
+    public boolean logicVisible(){
+        return !isHidden();
+    }
+
+// UnlockableContent.java : public void unlock()
+    public void unlock(){
+        if(!unlocked && !alwaysUnlocked){
+            unlocked = true;
+            Core.settings.put(name + "-unlocked", true);
+
+            onUnlock();
+            Events.fire(new UnlockEvent(this));
+        }
+    }
+
+// UnlockableContent.java : public void quietUnlock()
+    public void quietUnlock(){
+        if(!unlocked()){
+            unlocked = true;
+            Core.settings.put(name + "-unlocked", true);
+        }
+    }
+
+// UnlockableContent.java : public boolean unlockedNowHost()
+    public boolean unlockedNowHost(){
+        return !state.isCampaign() || unlockedHost();
+    }
+
+// UnlockableContent.java : public boolean unlockedHost()
+    public boolean unlockedHost(){
+        return net != null && net.client() ?
+            alwaysUnlocked || state.rules.researched.contains(this) :
+            unlocked || alwaysUnlocked;
+    }
+
+// UnlockableContent.java : public boolean unlockedNow()
+    public boolean unlockedNow(){
+        return unlocked() || !state.isCampaign();
+    }
+
+// UnlockableContent.java : public boolean unlocked()
+    public boolean unlocked(){
+        return net != null && net.client() ?
+            alwaysUnlocked || unlocked || state.rules.researched.contains(this) :
+            unlocked || alwaysUnlocked;
+    }
+
+// UnlockableContent.java : public void clearUnlock()
+    public void clearUnlock(){
+        if(unlocked){
+            unlocked = false;
+            Core.settings.put(name + "-unlocked", false);
+        }
+    }
+
+// UnlockableContent.java : public boolean locked()
+    public boolean locked(){
+        return !unlocked();
+    }
+

@@ -1,0 +1,539 @@
+ArtilleryBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+fields:
+  public float trailMult
+ctors:
+  public ArtilleryBulletType(float speed, float damage, String bulletSprite) / public ArtilleryBulletType(float speed, float damage) / public ArtilleryBulletType()
+methods:
+  public void update(Bullet b)
+
+BasicBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// An extended BulletType for most ammo-based bullets shot from turrets and units.
+fields:
+  public Color backColor
+  public Color mixColorFrom
+  public float width
+  public float shrinkX
+  public Interp shrinkInterp
+  public float spin
+  public String sprite
+  public String backSprite
+  public TextureRegion backRegion
+  public TextureRegion frontRegion
+ctors:
+  public BasicBulletType(float speed, float damage, String bulletSprite) / public BasicBulletType(float speed, float damage) / public BasicBulletType()  // For mods.
+methods:
+  public void load()
+  public void draw(Bullet b)
+
+BombBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+// Template class for an unmoving shrinking bullet.
+ctors:
+  public BombBulletType(float damage, float radius, String sprite) / public BombBulletType(float damage, float radius) / public BombBulletType()
+
+BulletType.java
+Java class extends mindustry.ctype.Content implements java.lang.Cloneable
+fields:
+  static final UnitDamageEvent bulletDamageEvent
+  static final BulletCreateEvent bulletCreateEvent
+  public float lifetime  // Lifetime in ticks.
+  public float lifeScaleRandMin  // Min/max multipliers for lifetime applied to this bullet when spawned.
+  public float speed  // Speed in units/tick.
+  public float velocityScaleRandMin  // Min/max multipliers for velocity applied to this bullet when spawned.
+  public float damage  // Direct damage dealt on hit.
+  public float hitSize  // Hitbox size.
+  public float drawSize  // Clipping hitbox.
+  public float angleOffset  // Angle offset applied to bullet when spawned each time.
+  public float drag  // Drag as fraction of velocity.
+  public float accel  // Acceleration per frame.
+  public boolean pierce  // Whether to pierce units.
+  public boolean pierceBuilding  // Whether to pierce buildings.
+  public int pierceCap  // Maximum # of pierced objects.
+  public float pierceDamageFactor  // Multiplier of damage decreased per health pierced.
+  public float maxDamageFraction  // If positive, limits non-splash damage dealt to a fraction of the target's maximum health.
+  public boolean removeAfterPierce  // If false, this bullet isn't removed after pierceCap is exceeded.
+  public boolean laserAbsorb  // For piercing lasers, setting this to true makes it get absorbed by plastanium walls.
+  public boolean laserBullet  // Whether this bullet is considered a laser bullet and thus absorbed by plastanium walls.
+  public float optimalLifeFract  // Life fraction at which this bullet has the best range/damage/etc.
+  public float layer  // Z layer to drawn on.
+  public Effect hitEffect  // Effect shown on direct hit.
+  public Effect despawnEffect  // Effect shown when bullet despawns.
+  public Effect shootEffect  // Effect created when shooting.
+  public ShootPattern shootPattern  // Pattern used to shoot this bullet.
+  public Effect chargeEffect  // Effect created when charging starts; only usable in single-shot weapons with a firstShotDelay / shotDelay.
+  public Effect smokeEffect  // Extra smoke effect created when shooting.
+  public Sound shootSound  // Overrides the shoot sound in turrets if set.
+  public Sound hitSound  // Sound made when hitting something or getting removed.
+  public Sound despawnSound  // Sound made when hitting something or getting removed.
+  public float hitSoundPitch  // Pitch of the sound made when hitting something
+  public float hitSoundVolume  // Volume of the sound made when hitting something
+  public float inaccuracy  // Extra inaccuracy when firing.
+  public float ammoMultiplier  // How many bullets get created per ammo item/liquid.
+  public float reloadMultiplier  // Multiplied by turret reload speed to get final shoot speed.
+  public float buildingDamageMultiplier  // Multiplier of how much base damage is done to tiles.
+  public float shieldDamageMultiplier  // Multiplier of how much base damage is done to force shields.
+  public float recoil  // Recoil from shooter entities.
+  public boolean killShooter  // Whether to kill the shooter when this is shot.
+  public boolean instantDisappear  // Whether to instantly make the bullet disappear.
+  public float splashDamage  // Damage dealt in splash.
+  public boolean scaledSplashDamage  // If true, splash damage is "correctly" affected by unit hitbox size.
+  public float knockback  // Knockback in velocity.
+  public boolean impact  // Should knockback follow the bullet's direction
+  public StatusEffect status  // Status effect applied on hit.
+  public float statusDuration  // Intensity of applied status effect in terms of duration.
+  public Sortf unitSort  // Turret only.
+  public float statusChance  // Chance for this bullet to apply a status effect
+  public boolean targetBlocks  // Turret only.
+  public boolean targetMissiles  // Turret only.
+  public boolean collidesTiles  // Whether this bullet type collides with tiles.
+  public boolean collidesTeam  // Whether this bullet type collides with tiles that are of the same team.
+  public boolean collidesAir  // Whether this bullet type collides with air/ground units.
+  public boolean collides  // Whether this bullet types collides with anything at all.
+  public boolean collideFloor  // If true, this projectile collides with non-surface floors.
+  public boolean collideTerrain  // If true, this projectile collides with static walls
+  public boolean keepVelocity  // Whether velocity is inherited from the shooter.
+  public boolean scaleKeepVelocity  // If keepVelocity = true, whether to reduce lifetime proportionally to the added speed, making range consistent.
+  public boolean scaleLife  // Whether to scale lifetime (not actually velocity!) to disappear at the target position.
+  public boolean hittable  // Whether this bullet can be hit by point defense.
+  public boolean reflectable  // Whether this bullet can be reflected.
+  public boolean absorbable  // Whether this projectile can be absorbed by shields.
+  public boolean ignoreSpawnAngle  // If true, the angle param in create is ignored.
+  public float createChance  // Chance for this bullet to be created.
+  public float maxRange  // Bullet range positive override.
+  public float rangeOverride  // When > 0, overrides range even if smaller than base range.
+  public float rangeChange  // When used in a turret with multiple ammo types, this can be set to a non-zero value to influence range.
+  public float extraRangeMargin  // When used in turrets with limitRange() applied, this adds extra range to the bullets that extends past targeting range.
+  public float range  // Range initialized in init().
+  public float minRangeChange  // When used in a turret with multiple ammo types, this can be set to a non-zero value to influence minRange
+  public float healPercent  // % of block health healed *
+  public float healAmount  // flat amount of block health healed
+  public Sound healSound  // sound played when a block is healed
+  public float healSoundVolume  // volume of heal sound
+  public float lifesteal  // Fraction of bullet damage that heals that shooter.
+  public boolean makeFire  // Whether to make fire on impact
+  public boolean hitUnder  // Whether this bullet will always hit blocks under it.
+  public boolean despawnHit  // Whether to create hit effects on despawn.
+  public boolean fragOnHit  // If true, this bullet will create bullets when it hits anything
+  public boolean fragOnDespawn  // If true, this bullet will create bullets when it despawns
+  public boolean fragOnAbsorb  // If false, this bullet will not create frags when absorbed by a shield.
+  public boolean pierceArmor  // If true, unit armor is ignored in damage calculations.
+  public float armorMultiplier  // Multiplies the unit/building armor used in damage calculations.
+  public float blockArmorMultiplier  // Multiplies only the building armor used in damage calculations.
+  public boolean sticky  // If true, the bullet will "stick" to enemies and get deactivated on collision.
+  public float stickyExtraLifetime  // Extra time added to bullet when it sticks to something.
+  public boolean setDefaults  // Whether status and despawnHit should automatically be set.
+  public float hitShake  // Amount of shaking produced when this bullet hits something or despawns.
+  public BulletType fragBullet  // Bullet type that is created when this bullet expires.
+  public boolean delayFrags  // If true, frag bullets are delayed to the next frame.
+  public float fragRandomSpread  // Degree spread range of fragmentation bullets.
+  public float fragSpread  // Uniform spread between each frag bullet in degrees.
+  public float fragAngle  // Angle offset of fragmentation bullets.
+  public int fragBullets  // Number of fragmentation bullets created.
+  public float fragVelocityMin  // Random range of frag velocity as a multiplier.
+  public float fragLifeMin  // Random range of frag lifetime as a multiplier.
+  public float fragOffsetMin  // Random offset of frag bullets from the parent bullet.
+  public int pierceFragCap  // How many times this bullet can release frag bullets, if pierce = true.
+  public BulletType intervalBullet  // Bullet that is created at a fixed interval.
+  public float bulletInterval  // Interval, in ticks, between which bullet spawn.
+  public int intervalBullets  // Number of bullet spawned per interval.
+  public float intervalRandomSpread  // Random angle added to interval bullets.
+  public float intervalSpread  // Angle spread between individual interval bullets.
+  public float intervalAngle  // Angle offset for interval bullets.
+  public float intervalDelay  // Use a negative value to disable interval bullet delay.
+  public boolean underwater  // If true, this bullet is rendered underwater.
+  public Color hitColor  // Color used for hit/despawn effects.
+  public Color healColor  // Color used for block heal effects.
+  public Effect healEffect  // Effect emitted upon blocks that are healed.
+  public Seq<BulletType> spawnBullets  // Bullets spawned when this bullet is created.
+  public boolean showStats  // Whether to display the stats of the spawned bullet.
+  public float spawnBulletRandomSpread  // Random angle spread of spawn bullets.
+  public UnitType spawnUnit  // Unit spawned _instead of_ this bullet.
+  public UnitType despawnUnit  // Unit spawned when this bullet hits something or despawns due to it hitting the end of its lifetime.
+  public float despawnUnitChance  // The chance for despawn units to spawn.
+  public int despawnUnitCount  // Amount of units spawned when this bullet despawns.
+  public float despawnUnitRadius  // Random offset distance from the original bullet despawn/hit coordinate.
+  public boolean faceOutwards  // If true, units spawned when this bullet despawns face away from the bullet instead of the same direction as the bullet.
+  public Seq<DrawPart> parts  // Extra visual parts for this bullet.
+  public Color trailColor  // Color of trail behind bullet.
+  public float trailChance  // Chance of trail effect spawning on bullet per tick.
+  public float trailInterval  // Uniform interval in which trail effect is spawned.
+  public float trailMinVelocity  // Min velocity required for trail effect to spawn.
+  public Effect trailEffect  // Trail effect that is spawned.
+  public float trailSpread  // Random offset of trail effect.
+  public float trailParam  // Rotation/size parameter that is passed to trail.
+  public boolean trailRotation  // Whether the parameter passed to the trail is the bullet rotation, instead of a flat value.
+  public Interp trailInterp  // Interpolation for trail width as function of bullet lifetime
+  public int trailLength  // Length of trail quads.
+  public float trailWidth  // Width of trail, if trailLength > 0
+  public float trailSinMag  // If trailSinMag > 0, these values are applied as a sine curve to trail width.
+  public boolean circleShooter  // If true, the bullet will attempt to circle around its shooting entity.
+  public float circleShooterRadius  // Radius that the bullet attempts to circle at.
+  public float circleShooterRadiusSmooth  // Smooth extra radius value for circling.
+  public float circleShooterRotateSpeed  // Multiplier of speed that is used to adjust velocity when circling.
+  public float splashDamageRadius  // Use a negative value to disable splash damage.
+  public boolean splashDamagePierce  // If true, splash damage pierces through tiles.
+  public int incendAmount  // Amount of fires attempted around bullet.
+  public float incendSpread  // Spread of fires around bullet.
+  public float incendChance  // Chance of fire being created.
+  public float homingPower  // Power of bullet ability.
+  public float homingRange  // Range of homing effect around bullet.
+  public float homingDelay  // Use a negative value to disable homing delay.
+  public float followAimSpeed  // Speed at which bullet rotates to follow cursor.
+  public float suppressionRange  // Range of healing block suppression effect.
+  public float suppressionDuration  // Duration of healing block suppression effect.
+  public float suppressionEffectChance  // Chance of suppression effect occurring on block, scaled down by number of blocks.
+  public Color suppressColor  // Color used for the regenSuppressSeek effect.
+  public Color lightningColor  // Color of lightning created by bullet.
+  public int lightning  // Number of separate lightning "roots".
+  public int lightningLength  // Length of each lightning strand.
+  public int lightningLengthRand  // Extra random length added onto base length of lightning.
+  public float lightningDamage  // Use a negative value to use default bullet damage.
+  public float lightningCone  // Spread of lightning, relative to bullet rotation.
+  public float lightningAngle  // Offset of lightning relative to bullet rotation.
+  public BulletType lightningType  // The bullet created at lightning points.
+  public float weaveScale  // Scale of bullet weave pattern.
+  public float weaveMag  // Intensity of bullet weaving.
+  public boolean weaveRandom  // If true, the bullet weave will randomly switch directions on spawn.
+  public float rotateSpeed  // Rotation speed of the bullet velocity as it travels.
+  public int puddles  // Number of individual puddles created.
+  public float puddleRange  // Range of puddles around bullet position.
+  public float puddleAmount  // Liquid count of each puddle created.
+  public Liquid puddleLiquid  // Liquid that puddles created are made of.
+  public boolean displayAmmoMultiplier  // Whether to display the ammo multiplayer for this bullet type in its stats.
+  public float statLiquidConsumed  // If >0, this is displayed divided by the ammo multiplier.
+  public float lightRadius  // Radius of light emitted by this bullet; <0 to use defaults.
+  public float lightOpacity  // Opacity of light color.
+  public Color lightColor  // Color of light emitted by this bullet.
+  protected float cachedDps
+ctors:
+  public BulletType(float speed, float damage) / public BulletType()
+methods:
+  public BulletType copy()
+  public void afterPatch()
+  public void load()
+  public float estimateDPS()  // @return estimated damage per shot.
+  protected float calculateRange()  // @return maximum distance the bullet this bullet type has can travel.
+  public float continuousDamage()  // @return continuous damage in damage/sec, or -1 if not continuous.
+  public boolean heals()
+  public boolean testCollision(Bullet bullet, Building tile)
+  public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct)  // If direct is false, this is an indirect hit and the tile was already damaged.
+  public void hitEntity(Bullet b, Hitboxc entity, float health)
+  public void handlePierce(Bullet b, float initialHealth, float x, float y)
+  public float damageMultiplier(Bullet b)
+  public void hit(Bullet b) / public void hit(Bullet b, float x, float y) / public void hit(Bullet b, float x, float y, boolean createFrags)
+  public void createIncend(Bullet b, float x, float y)
+  public void createPuddles(Bullet b, float x, float y)
+  public void createSplashDamage(Bullet b, float x, float y)
+  public void createFrags(Bullet b, float x, float y)
+  public void createUnits(Bullet b, float x, float y)
+  public void despawned(Bullet b)  // Called when the bullet reaches the end of its lifetime or is destroyed by something external.
+  public void removed(Bullet b)  // Called when the bullet is removed for any reason.
+  public float buildingDamage(Bullet b)
+  public float shieldDamage(Bullet b)
+  public void draw(Bullet b)
+  public void drawTrail(Bullet b)
+  public void drawParts(Bullet b)
+  public void drawLight(Bullet b)
+  public void init(Bullet b) / public void init()
+  public void update(Bullet b)
+  public void updateBulletInterval(Bullet b)
+  public void updateHoming(Bullet b)
+  public void updateWeaving(Bullet b)
+  public void updateTrailEffects(Bullet b)
+  public void updateTrail(Bullet b)
+  public ContentType getContentType()
+  public Bullet create(Teamc owner, float x, float y, float angle) / public Bullet create(Entityc owner, Team team, float x, float y, float angle) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float velocityScl) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float velocityScl, float lifetimeScl) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float velocityScl, float lifetimeScl, Mover mover) / public Bullet create(Bullet parent, float x, float y, float angle) / public Bullet create(Bullet parent, float x, float y, float angle, float velocityScl, float lifeScale) / public Bullet create(Bullet parent, float x, float y, float angle, float velocityScl) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover) / public Bullet create(Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY) / public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY) / public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target)
+  public void createNet(Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl)
+  public static void createBullet(BulletType type, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl)
+
+ContinuousBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// Basic continuous (line) bullet type that does not draw itself.
+fields:
+  public float length
+  public float shake
+  public float damageInterval
+  public boolean largeHit
+  public boolean continuous
+  public boolean timescaleDamage  // If a building fired this, whether to multiply damage by its timescale.
+methods:
+  public float continuousDamage()
+  public float estimateDPS()
+  protected float calculateRange()
+  public void init() / public void init(Bullet b)
+  public void update(Bullet b)
+  public void applyDamage(Bullet b)
+  public float currentLength(Bullet b)
+
+ContinuousFlameBulletType.java
+Java class extends mindustry.entities.bullet.ContinuousBulletType
+fields:
+  public float lightStroke
+  public float width
+  public int divisions
+  public boolean drawFlare
+  public Color flareColor
+  public float flareWidth
+  public boolean rotateFlare
+  public Interp lengthInterp
+  public float lengthWidthPans  // Lengths, widths, ellipse panning, and offsets, all as fractions of the base width and length.
+  public Color colors
+ctors:
+  public ContinuousFlameBulletType(float damage) / public ContinuousFlameBulletType()
+methods:
+  public void draw(Bullet b)
+  public float currentLength(Bullet b)
+  public void drawLight(Bullet b)
+
+ContinuousLaserBulletType.java
+Java class extends mindustry.entities.bullet.ContinuousBulletType
+fields:
+  public float fadeTime
+  public float lightStroke
+  public int divisions
+  public Color colors
+  public float strokeFrom
+  public float backLength
+  public float width
+ctors:
+  public ContinuousLaserBulletType(float damage) / public ContinuousLaserBulletType()
+methods:
+  public void draw(Bullet b)
+  public void drawLight(Bullet b)
+  public float currentLength(Bullet b)
+
+EmpBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+fields:
+  public float radius
+  public float timeIncrease
+  public float powerDamageScl
+  public Effect hitPowerEffect
+  public boolean hitUnits
+  public float unitDamageScl
+methods:
+  public void hit(Bullet b, float x, float y, boolean createFrags)
+
+EmptyBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+ctors:
+  public EmptyBulletType()
+
+ExplosionBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// Template class for a non-drawing bullet type that makes an explosion and disappears instantly.
+ctors:
+  public ExplosionBulletType(float splashDamage, float splashDamageRadius) / public ExplosionBulletType()
+
+FireBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public Color colorFrom
+  public float radius
+  public float velMin
+  public float fireTrailChance
+  public Effect trailEffect2
+  public float fireEffectChance
+ctors:
+  public FireBulletType(float speed, float damage) / public FireBulletType()
+methods:
+  public void init(Bullet b)
+  public void draw(Bullet b)
+  public void update(Bullet b)
+
+FlakBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+fields:
+  public float explodeRange
+ctors:
+  public FlakBulletType(float speed, float damage) / public FlakBulletType()
+methods:
+  public void update(Bullet b)
+
+InterceptorBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+// This class can only be used with PointDefenseBulletWeapon.
+ctors:
+  public InterceptorBulletType(float speed, float damage) / public InterceptorBulletType() / public InterceptorBulletType(float speed, float damage, String bulletSprite)
+methods:
+  public void update(Bullet b)
+
+LaserBoltBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+fields:
+  public float width
+ctors:
+  public LaserBoltBulletType(float speed, float damage) / public LaserBoltBulletType()
+methods:
+  public void draw(Bullet b)
+
+LaserBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public Color colors
+  public Effect laserEffect
+  public float length
+  public float width
+  public float lengthFalloff
+  public float sideLength
+  public float sideAngle
+  public float lightningSpacing
+  public boolean largeHit
+ctors:
+  public LaserBulletType(float damage) / public LaserBulletType()
+methods:
+  public float estimateDPS()  // assume it pierces at least 3 blocks
+  public void init() / public void init(Bullet b)
+  protected float calculateRange()
+  public void draw(Bullet b)
+  public void drawLight(Bullet b)
+
+LightningBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+ctors:
+  public LightningBulletType()
+methods:
+  protected float calculateRange()
+  public float estimateDPS()
+  public void init(Bullet b)
+
+LiquidBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public Liquid liquid
+  public float puddleSize
+  public float orbSize
+  public float boilTime
+ctors:
+  public LiquidBulletType(Liquid liquid) / public LiquidBulletType()
+methods:
+  public void update(Bullet b)
+  public void draw(Bullet b)
+  public void despawned(Bullet b)
+  public void hit(Bullet b, float hitx, float hity, boolean createFrags)
+
+MassDriverBolt.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+ctors:
+  public MassDriverBolt()
+methods:
+  public void update(Bullet b)
+  public void despawned(Bullet b)
+  public void hit(Bullet b, float hitx, float hity, boolean createFrags)
+
+MissileBulletType.java
+Java class extends mindustry.entities.bullet.BasicBulletType
+ctors:
+  public MissileBulletType(float speed, float damage, String bulletSprite) / public MissileBulletType(float speed, float damage) / public MissileBulletType()
+
+MultiBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// A fake bullet type that spawns multiple sub-bullets when "fired".
+fields:
+  public BulletType bullets
+  public int repeat  // Amount of times the bullet array is repeated.
+ctors:
+  public MultiBulletType(BulletType bullets) / public MultiBulletType(int repeat, BulletType bullets) / public MultiBulletType()
+methods:
+  public float estimateDPS()
+  protected float calculateRange()
+  public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target)
+
+PointBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  private static float cdist
+  private static Unit result
+  public float trailSpacing
+ctors:
+  public PointBulletType()
+methods:
+  public void init(Bullet b)
+
+PointLaserBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// A continuous bullet type that only damages in a point.
+fields:
+  public String sprite
+  public TextureRegion laser
+  public Color color
+  public Effect beamEffect
+  public float beamEffectInterval
+  public float oscScl
+  public float damageInterval
+  public float shake
+ctors:
+  public PointLaserBulletType()
+methods:
+  public float continuousDamage()
+  public float estimateDPS()
+  public void load()
+  public void draw(Bullet b)
+  public void update(Bullet b)
+  public void updateTrailEffects(Bullet b)
+  public void updateTrail(Bullet b)
+  public void updateBulletInterval(Bullet b)
+
+RailBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public Effect pierceEffect
+  public Effect endEffect
+  public float length
+  public float pointEffectSpace
+ctors:
+  public RailBulletType()
+methods:
+  protected float calculateRange()
+  public void handlePierce(Bullet b, float initialHealth, float x, float y)
+  public void init(Bullet b)
+  public boolean testCollision(Bullet bullet, Building tile)
+  public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct)
+
+SapBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public float length
+  public float sapStrength
+  public Color color
+  public float width
+  public String sprite
+  public TextureRegion laserRegion
+  public TextureRegion laserEndRegion
+ctors:
+  public SapBulletType()
+methods:
+  public void load()
+  public void draw(Bullet b)
+  public void drawLight(Bullet b)
+  protected float calculateRange()
+  public void init(Bullet b)
+
+ShrapnelBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+fields:
+  public float length
+  public float width
+  public Color fromColor
+  public boolean hitLarge
+  public int serrations
+  public float serrationLenScl
+ctors:
+  public ShrapnelBulletType()
+methods:
+  public void init(Bullet b) / public void init()
+  protected float calculateRange()
+  public void draw(Bullet b)
+
+SpaceLiquidBulletType.java
+Java class extends mindustry.entities.bullet.BulletType
+// this should probably be an effect?
+fields:
+  public float orbSize
+ctors:
+  public SpaceLiquidBulletType()
+methods:
+  public void draw(Bullet b)
+

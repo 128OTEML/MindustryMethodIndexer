@@ -1,0 +1,68 @@
+Cullable.java
+Java interface
+// Allows a parent to set the area that is visible on a child actor to allow the child to cull when drawing itself.
+methods:
+  void setCullingArea(Rect cullingArea)  // @param cullingArea The culling area in the child actor's coordinates.
+
+Disableable.java
+Java interface
+methods:
+  boolean isDisabled()
+  void setDisabled(boolean isDisabled)
+
+Elem.java
+Java class
+methods:
+  public static CheckBox newCheck(String text, Boolc listener)
+  public static TextButton newButton(String text, Runnable listener) / public static TextButton newButton(String text, TextButtonStyle style, Runnable listener)
+  public static ImageButton newImageButton(Drawable icon, Runnable listener) / public static ImageButton newImageButton(Drawable icon, float size, Runnable listener) / public static ImageButton newImageButton(ImageButtonStyle style, Drawable icon, float size, Runnable listener) / public static ImageButton newImageButton(Drawable icon, float size, Color color, Runnable listener)
+  public static TextField newField(String text, Cons<String> listener)
+
+Selection.java
+Java class implements arc.scene.utils.Disableable, java.lang.Iterable
+// Manages selected objects.
+fields:
+  final OrderedSet<T> selected
+  private final OrderedSet<T> old
+  boolean isDisabled
+  boolean multiple
+  boolean required
+  T lastSelected
+  private Element element
+  private boolean toggle
+  private boolean programmaticChangeEvents
+methods:
+  public void setActor(Element element)  // @param element An element to fire {@link ChangeEvent} on when the selection changes, or null.
+  public void choose(T item)  // Selects or deselects the specified item based on how the selection is configured, whether ctrl is currently pressed, etc.
+  public boolean hasItems()
+  public boolean isEmpty()
+  public int size()
+  public OrderedSet<T> items()
+  public T first()  // Returns the first selected item, or null.
+  void snapshot()
+  void revert()
+  void cleanup()
+  public void set(T item)  // Sets the selection to only the specified item.
+  public void setAll(Seq<T> items)
+  public void add(T item)  // Adds the item to the selection.
+  public void addAll(Seq<T> items)
+  public void remove(T item)
+  public void removeAll(Seq<T> items)
+  public void clear()
+  protected void changed()  // Called after the selection changes.
+  public boolean fireChangeEvent()  // Fires a change event on the selection's element, if any.
+  public boolean contains(T item)
+  public T getLastSelected()  // Makes a best effort to return the last item selected, else returns an arbitrary item or null if the selection is empty.
+  public Iterator<T> iterator()
+  public Seq<T> toArray() / public Seq<T> toArray(Seq<T> array)
+  public boolean isDisabled()
+  public void setDisabled(boolean isDisabled)  // If true, prevents {@link #choose(Object)} from changing the selection.
+  public boolean getToggle()
+  public void setToggle(boolean toggle)  // If true, prevents {@link #choose(Object)} from clearing the selection.
+  public boolean getMultiple()
+  public void setMultiple(boolean multiple)  // If true, allows {@link #choose(Object)} to select multiple items.
+  public boolean getRequired()
+  public void setRequired(boolean required)  // If true, prevents {@link #choose(Object)} from selecting none.
+  public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)  // If false, only {@link #choose(Object)} will fire a change event.
+  public String toString()
+

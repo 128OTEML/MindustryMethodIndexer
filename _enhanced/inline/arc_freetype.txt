@@ -1,0 +1,127 @@
+// FreeType.java : private static int encode(char a, char b, char c, char d)
+    private static int encode(char a, char b, char c, char d){
+        return (a << 24) | (b << 16) | (c << 8) | d;
+    }
+
+// FreeType.java : public static Library initFreeType()
+    public static Library initFreeType(){
+        new SharedLibraryLoader().load("arc-freetype");
+        long address = initFreeTypeJni();
+        if(address == 0) throw new ArcRuntimeException("Couldn't initialize FreeType library, FreeType error code: " + getLastErrorCode());
+        else return new Library(address);
+    }
+
+// FreeType.java : public static int toInt(int value)
+    public static int toInt(int value){
+        return ((value + 63) & -64) >> 6;
+    }
+
+// FreeTypeFontGenerator.java : public static int getMaxTextureSize()
+    public static int getMaxTextureSize(){
+        return maxTextureSize;
+    }
+
+// FreeTypeFontGenerator.java : public static void setMaxTextureSize(int texSize)
+    public static void setMaxTextureSize(int texSize){
+        maxTextureSize = texSize;
+    }
+
+// FreeTypeFontGenerator.java : private boolean loadChar(int c) / private boolean loadChar(int c, int flags)
+    private boolean loadChar(int c){
+        return loadChar(c, FreeType.FT_LOAD_DEFAULT | FreeType.FT_LOAD_FORCE_AUTOHINT);
+    }
+
+// FreeTypeFontGenerator.java : public Font generateFont(FreeTypeFontParameter parameter) / public Font generateFont(FreeTypeFontParameter parameter, FreeTypeFontData data)
+    public Font generateFont(FreeTypeFontParameter parameter){
+        return generateFont(parameter, new FreeTypeFontData());
+    }
+
+// FreeTypeFontGenerator.java : public int scaleForPixelHeight(int height)
+    public int scaleForPixelHeight(int height){
+        setPixelSizes(0, height);
+        SizeMetrics fontMetrics = face.getSize().getMetrics();
+        int ascent = FreeType.toInt(fontMetrics.getAscender());
+        int descent = FreeType.toInt(fontMetrics.getDescender());
+        return height * height / (ascent - descent);
+    }
+
+// FreeTypeFontGenerator.java : public int scaleForPixelWidth(int width, int numChars)
+    public int scaleForPixelWidth(int width, int numChars){
+        SizeMetrics fontMetrics = face.getSize().getMetrics();
+        int advance = FreeType.toInt(fontMetrics.getMaxAdvance());
+        int ascent = FreeType.toInt(fontMetrics.getAscender());
+        int descent = FreeType.toInt(fontMetrics.getDescender());
+        int unscaledHeight = ascent - descent;
+        int height = unscaledHeight * width / (advance * numChars);
+        setPixelSizes(0, height);
+        return height;
+    }
+
+// FreeTypeFontGenerator.java : public int scaleToFitSquare(int width, int height, int numChars)
+    public int scaleToFitSquare(int width, int height, int numChars){
+        return Math.min(scaleForPixelHeight(height), scaleForPixelWidth(width, numChars));
+    }
+
+// FreeTypeFontGenerator.java : public FreeTypeFontData generateData(int size) / public FreeTypeFontData generateData(FreeTypeFontParameter parameter) / public FreeTypeFontData generateData(FreeTypeFontParameter parameter, FreeTypeFontData data)
+    public FreeTypeFontData generateData(int size){
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = size;
+        return generateData(parameter);
+    }
+
+// FreeTypeFontGenerator.java : void setPixelSizes(int pixelWidth, int pixelHeight)
+    void setPixelSizes(int pixelWidth, int pixelHeight){
+        if(!bitmapped && !face.setPixelSizes(pixelWidth, pixelHeight))
+            throw new ArcRuntimeException("Couldn't set size for font");
+    }
+
+// FreeTypeFontGenerator.java : public void dispose()
+    @Override
+    public void dispose(){
+        face.dispose();
+        library.dispose();
+    }
+
+// FreeTypeFontGeneratorLoader.java : public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter)
+    @Override
+    public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file,
+                                      FreeTypeFontGeneratorParameters parameter){
+        FreeTypeFontGenerator generator = null;
+        if(file.extension().equals("gen")){
+            generator = new FreeTypeFontGenerator(file.sibling(file.nameWithoutExtension()));
+        }else{
+            generator = new FreeTypeFontGenerator(file);
+        }
+        return generator;
+    }
+
+// FreeTypeFontGeneratorLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontGeneratorParameters parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontGeneratorParameters parameter){
+        return null;
+    }
+
+// FreetypeFontLoader.java : public void loadAsync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+    @Override
+    public void loadAsync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter){
+        if(parameter == null)
+            throw new RuntimeException("FreetypeFontParameter must be set in AssetManager#load to point at a TTF file!");
+    }
+
+// FreetypeFontLoader.java : public Font loadSync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+    @Override
+    public Font loadSync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter){
+        if(parameter == null)
+            throw new RuntimeException("FreetypeFontParameter must be set in AssetManager#load to point at a TTF file!");
+        FreeTypeFontGenerator generator = manager.get(parameter.fontFileName + ".gen", FreeTypeFontGenerator.class);
+        return generator.generateFont(parameter.fontParameters);
+    }
+
+// FreetypeFontLoader.java : public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontLoaderParameter parameter)
+    @Override
+    public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontLoaderParameter parameter){
+        Seq<AssetDescriptor> deps = new Seq<>();
+        deps.add(new AssetDescriptor<>(parameter.fontFileName + ".gen", FreeTypeFontGenerator.class));
+        return deps;
+    }
+

@@ -1,0 +1,1039 @@
+// Affine2.java : public Affine2 idt()
+    public Affine2 idt(){
+        m00 = 1;
+        m01 = 0;
+        m02 = 0;
+        m10 = 0;
+        m11 = 1;
+        m12 = 0;
+        return this;
+    }
+
+// Affine2.java : public Affine2 set(Affine2 other) / public Affine2 set(Mat matrix)
+    public Affine2 set(Affine2 other){
+        m00 = other.m00;
+        m01 = other.m01;
+        m02 = other.m02;
+        m10 = other.m10;
+        m11 = other.m11;
+        m12 = other.m12;
+        return this;
+    }
+
+// Affine2.java : public Affine2 setToTranslation(float x, float y) / public Affine2 setToTranslation(Vec2 trn)
+    public Affine2 setToTranslation(float x, float y){
+        m00 = 1;
+        m01 = 0;
+        m02 = x;
+        m10 = 0;
+        m11 = 1;
+        m12 = y;
+        return this;
+    }
+
+// Affine2.java : public Affine2 setToScaling(float scaleX, float scaleY) / public Affine2 setToScaling(Vec2 scale)
+    public Affine2 setToScaling(float scaleX, float scaleY){
+        m00 = scaleX;
+        m01 = 0;
+        m02 = 0;
+        m10 = 0;
+        m11 = scaleY;
+        m12 = 0;
+        return this;
+    }
+
+// Affine2.java : public Affine2 setToShearing(float shearX, float shearY) / public Affine2 setToShearing(Vec2 shear)
+    public Affine2 setToShearing(float shearX, float shearY){
+        m00 = 1;
+        m01 = shearX;
+        m02 = 0;
+        m10 = shearY;
+        m11 = 1;
+        m12 = 0;
+        return this;
+    }
+
+// Affine2.java : public Affine2 setToTrnScl(float x, float y, float scaleX, float scaleY) / public Affine2 setToTrnScl(Vec2 trn, Vec2 scale)
+    public Affine2 setToTrnScl(float x, float y, float scaleX, float scaleY){
+        m00 = scaleX;
+        m01 = 0;
+        m02 = x;
+        m10 = 0;
+        m11 = scaleY;
+        m12 = y;
+        return this;
+    }
+
+// Affine2.java : public Affine2 setToProduct(Affine2 l, Affine2 r)
+    public Affine2 setToProduct(Affine2 l, Affine2 r){
+        m00 = l.m00 * r.m00 + l.m01 * r.m10;
+        m01 = l.m00 * r.m01 + l.m01 * r.m11;
+        m02 = l.m00 * r.m02 + l.m01 * r.m12 + l.m02;
+        m10 = l.m10 * r.m00 + l.m11 * r.m10;
+        m11 = l.m10 * r.m01 + l.m11 * r.m11;
+        m12 = l.m10 * r.m02 + l.m11 * r.m12 + l.m12;
+        return this;
+    }
+
+// Affine2.java : public Affine2 translate(float x, float y) / public Affine2 translate(Vec2 trn)
+    public Affine2 translate(float x, float y){
+        m02 += m00 * x + m01 * y;
+        m12 += m10 * x + m11 * y;
+        return this;
+    }
+
+// Affine2.java : public Affine2 preTranslate(float x, float y) / public Affine2 preTranslate(Vec2 trn)
+    public Affine2 preTranslate(float x, float y){
+        m02 += x;
+        m12 += y;
+        return this;
+    }
+
+// Affine2.java : public Affine2 scale(float scaleX, float scaleY) / public Affine2 scale(Vec2 scale)
+    public Affine2 scale(float scaleX, float scaleY){
+        m00 *= scaleX;
+        m01 *= scaleY;
+        m10 *= scaleX;
+        m11 *= scaleY;
+        return this;
+    }
+
+// Affine2.java : public Affine2 preScale(float scaleX, float scaleY) / public Affine2 preScale(Vec2 scale)
+    public Affine2 preScale(float scaleX, float scaleY){
+        m00 *= scaleX;
+        m01 *= scaleX;
+        m02 *= scaleX;
+        m10 *= scaleY;
+        m11 *= scaleY;
+        m12 *= scaleY;
+        return this;
+    }
+
+// Affine2.java : public float det()
+    public float det(){
+        return m00 * m11 - m01 * m10;
+    }
+
+// Affine2.java : public Vec2 getTranslation(Vec2 position)
+    public Vec2 getTranslation(Vec2 position){
+        position.x = m02;
+        position.y = m12;
+        return position;
+    }
+
+// Affine2.java : public boolean isTranslation()
+    public boolean isTranslation(){
+        return (m00 == 1 && m11 == 1 && m01 == 0 && m10 == 0);
+    }
+
+// Affine2.java : public boolean isIdt()
+    public boolean isIdt(){
+        return (m00 == 1 && m02 == 0 && m12 == 0 && m11 == 1 && m01 == 0 && m10 == 0);
+    }
+
+// Affine2.java : public void applyTo(Vec2 point)
+    public void applyTo(Vec2 point){
+        float x = point.x;
+        float y = point.y;
+        point.x = m00 * x + m01 * y + m02;
+        point.y = m10 * x + m11 * y + m12;
+    }
+
+// Affine2.java : public String toString()
+    @Override
+    public String toString(){
+        return "[" + m00 + "|" + m01 + "|" + m02 + "]\n[" + m10 + "|" + m11 + "|" + m12 + "]\n[0.0|0.0|0.1]";
+    }
+
+// Angles.java : public static float forwardDistance(float angle1, float angle2)
+    public static float forwardDistance(float angle1, float angle2){
+        return Math.abs(angle1 - angle2);
+    }
+
+// Angles.java : public static float backwardDistance(float angle1, float angle2)
+    public static float backwardDistance(float angle1, float angle2){
+        return 360 - Math.abs(angle1 - angle2);
+    }
+
+// Angles.java : public static boolean within(float a, float b, float margin)
+    public static boolean within(float a, float b, float margin){
+        return angleDist(a, b) <= margin;
+    }
+
+// Angles.java : public static float angleDist(float a, float b)
+    public static float angleDist(float a, float b){
+        a = Mathf.mod(a, 360f);
+        b = Mathf.mod(b, 360f);
+        return Math.min((a - b) < 0 ? a - b + 360 : a - b, (b - a) < 0 ? b - a + 360 : b - a);
+    }
+
+// Angles.java : public static boolean near(float a, float b, float range)
+    public static boolean near(float a, float b, float range){
+        return angleDist(a, b) < range;
+    }
+
+// Angles.java : public static float clampRange(float angle, float dest, float range)
+    public static float clampRange(float angle, float dest, float range){
+        float dst = angleDist(angle, dest);
+        return dst <= range ? angle : moveToward(angle, dest, dst - range);
+    }
+
+// Angles.java : public static float angle(float x, float y) / public static float angle(float x, float y, float x2, float y2)
+    public static float angle(float x, float y){
+        return angle(0, 0, x, y);
+    }
+
+// Angles.java : public static float angleRad(float x, float y, float x2, float y2)
+    public static float angleRad(float x, float y, float x2, float y2){
+        return Mathf.atan2(x2 - x, y2 - y);
+    }
+
+// Angles.java : public static float trnsx(float angle, float len) / public static float trnsx(float angle, float x, float y)
+    public static float trnsx(float angle, float len){
+        return len * Mathf.cosDeg(angle);
+    }
+
+// Angles.java : public static float trnsy(float angle, float len) / public static float trnsy(float angle, float x, float y)
+    public static float trnsy(float angle, float len){
+        return len * Mathf.sinDeg(angle);
+    }
+
+// Angles.java : public static float mouseAngle(float cx, float cy)
+    public static float mouseAngle(float cx, float cy){
+        Vec2 avector = Core.camera.project(cx, cy);
+        return angle(avector.x, avector.y, Core.input.mouseX(), Core.input.mouseY());
+    }
+
+// Angles.java : public static void circleVectors(int points, float length, Floatc2 pos) / public static void circleVectors(int points, float length, float offset, Floatc2 pos)
+    public static void circleVectors(int points, float length, Floatc2 pos){
+        for(int i = 0; i < points; i++){
+            float f = i * 360f / points;
+            pos.get(trnsx(f, length), trnsy(f, length));
+        }
+    }
+
+// Angles.java : public static void randVectors(long seed, int amount, float length, Floatc2 cons)
+    public static void randVectors(long seed, int amount, float length, Floatc2 cons){
+        rand.setSeed(seed);
+        for(int i = 0; i < amount; i++){
+            rv.trns(rand.random(360f), length);
+            cons.get(rv.x, rv.y);
+        }
+    }
+
+// Angles.java : public static void randLenVectors(long seed, int amount, float length, Floatc2 cons) / public static void randLenVectors(long seed, int amount, float minLength, float length, Floatc2 cons) / public static void randLenVectors(long seed, int amount, float length, float angle, float range, Floatc2 cons) / public static void randLenVectors(long seed, int amount, float length, float angle, float range, float spread, Floatc2 cons) / public static void randLenVectors(long seed, float fin, int amount, float length, ParticleConsumer cons) / public static void randLenVectors(long seed, float fin, int amount, float length, float angle, float range, ParticleConsumer cons)
+    public static void randLenVectors(long seed, int amount, float length, Floatc2 cons){
+        rand.setSeed(seed);
+        for(int i = 0; i < amount; i++){
+            rv.trns(rand.random(360f), rand.random(length));
+            cons.get(rv.x, rv.y);
+        }
+    }
+
+// CumulativeDistribution.java : public void add(T value, float intervalSize) / public void add(T value)
+    public void add(T value, float intervalSize){
+        values.add(new CumulativeValue(value, 0, intervalSize));
+    }
+
+// CumulativeDistribution.java : public void generate()
+    public void generate(){
+        float sum = 0;
+        for(int i = 0; i < values.size; ++i){
+            sum += values.items[i].interval;
+            values.items[i].frequency = sum;
+        }
+    }
+
+// CumulativeDistribution.java : public void generateNormalized()
+    public void generateNormalized(){
+        float sum = 0;
+        for(int i = 0; i < values.size; ++i){
+            sum += values.items[i].interval;
+        }
+        float intervalSum = 0;
+        for(int i = 0; i < values.size; ++i){
+            intervalSum += values.items[i].interval / sum;
+            values.items[i].frequency = intervalSum;
+        }
+    }
+
+// CumulativeDistribution.java : public void generateUniform()
+    public void generateUniform(){
+        float freq = 1f / values.size;
+        for(int i = 0; i < values.size; ++i){
+            //reset the interval to the normalized frequency
+            values.items[i].interval = freq;
+            values.items[i].frequency = (i + 1) * freq;
+        }
+    }
+
+// CumulativeDistribution.java : public int size()
+    public int size(){
+        return values.size;
+    }
+
+// CumulativeDistribution.java : public float getInterval(int index)
+    public float getInterval(int index){
+        return values.items[index].interval;
+    }
+
+// CumulativeDistribution.java : public T getValue(int index)
+    public T getValue(int index){
+        return values.items[index].value;
+    }
+
+// CumulativeDistribution.java : public void setInterval(T obj, float intervalSize) / public void setInterval(int index, float intervalSize)
+    public void setInterval(T obj, float intervalSize){
+        for(CumulativeValue value : values)
+            if(value.value == obj){
+                value.interval = intervalSize;
+                return;
+            }
+    }
+
+// CumulativeDistribution.java : public void clear()
+    public void clear(){
+        values.clear();
+    }
+
+// DelaunayTriangulator.java : public ShortSeq computeTriangles(FloatSeq points, boolean sorted) / public ShortSeq computeTriangles(float[] polygon, boolean sorted) / public ShortSeq computeTriangles(float[] points, int offset, int count, boolean sorted)
+    public ShortSeq computeTriangles(FloatSeq points, boolean sorted){
+        return computeTriangles(points.items, 0, points.size, sorted);
+    }
+
+// EarClippingTriangulator.java : private static int computeSpannedAreaSign(float p1x, float p1y, float p2x, float p2y, float p3x, float p3y)
+    private static int computeSpannedAreaSign(float p1x, float p1y, float p2x, float p2y, float p3x, float p3y){
+        float area = p1x * (p3y - p2y);
+        area += p2x * (p1y - p3y);
+        area += p3x * (p2y - p1y);
+        return (int)Math.signum(area);
+    }
+
+// EarClippingTriangulator.java : public ShortSeq computeTriangles(FloatSeq vertices) / public ShortSeq computeTriangles(float[] vertices) / public ShortSeq computeTriangles(float[] vertices, int offset, int count)
+    public ShortSeq computeTriangles(FloatSeq vertices){
+        return computeTriangles(vertices.items, 0, vertices.size);
+    }
+
+// EarClippingTriangulator.java : private int classifyVertex(int index)
+    private int classifyVertex(int index){
+        short[] indices = this.indices;
+        int previous = indices[previousIndex(index)] * 2;
+        int current = indices[index] * 2;
+        int next = indices[nextIndex(index)] * 2;
+        float[] vertices = this.vertices;
+        return computeSpannedAreaSign(vertices[previous], vertices[previous + 1], vertices[current], vertices[current + 1],
+        vertices[next], vertices[next + 1]);
+    }
+
+// EarClippingTriangulator.java : private int previousIndex(int index)
+    private int previousIndex(int index){
+        return (index == 0 ? vertexCount : index) - 1;
+    }
+
+// EarClippingTriangulator.java : private int nextIndex(int index)
+    private int nextIndex(int index){
+        return (index + 1) % vertexCount;
+    }
+
+// Extrapolator.java : public void reset(double packetTime, double curTime, float[] pos) / public void reset(double packetTime, double curTime, float[] pos, float[] vel) / public void reset(double packetTime, double curTime, float pos) / public void reset(double packetTime, double curTime, float pos, float vel)
+    public void reset(double packetTime, double curTime, float[] pos){
+        reset(packetTime, curTime, pos, clear(tmpArr));
+    }
+
+// Extrapolator.java : public boolean readPosition(double forTime, float[] outPos) / public boolean readPosition(double forTime, float[] outPos, float[] outVel) / public float readPosition(double forTime)
+    public boolean readPosition(double forTime, float[] outPos){
+        return readPosition(forTime, outPos, null);
+    }
+
+// Extrapolator.java : public double estimateLatency()
+    public double estimateLatency(){
+        return latency;
+    }
+
+// Extrapolator.java : public double estimateUpdateTime()
+    public double estimateUpdateTime(){
+        return updateTime;
+    }
+
+// Extrapolator.java : private float[] clear(float[] arr)
+    private float[] clear(float[] arr){
+        Arrays.fill(arr, 0);
+        return arr;
+    }
+
+// Extrapolator.java : private void copyArray(float[] dest, float[] src)
+    private void copyArray(float[] dest, float[] src){
+        for(int i = 0, n = src.length; i < n; ++i){
+            dest[i] = src[i];
+        }
+    }
+
+// Extrapolator.java : private void checkArraySizeOne()
+    private void checkArraySizeOne(){
+        if(size != 1){
+            throw new UnsupportedOperationException("This function should be called only when size = 1!");
+        }
+    }
+
+// FloatCounter.java : public void reset()
+    public void reset(){
+        count = 0;
+        total = 0f;
+        min = Float.MAX_VALUE;
+        max = Float.MIN_VALUE;
+        average = 0f;
+        latest = 0f;
+        value = 0f;
+        if(mean != null) mean.clear();
+    }
+
+// LinearRegression.java : public float predict(float x)
+    public float predict(float x){
+        return slope * x + intercept;
+    }
+
+// Mat.java : public Mat setToRotation(float degrees) / public Mat setToRotation(Vec3 axis, float degrees) / public Mat setToRotation(Vec3 axis, float cos, float sin)
+    public Mat setToRotation(float degrees){
+        return setToRotationRad(Mathf.degreesToRadians * degrees);
+    }
+
+// Mat.java : public String toString()
+    public String toString(){
+        float[] val = this.val;
+        return "[" + val[M00] + "|" + val[M01] + "|" + val[M02] + "]\n" //
+        + "[" + val[M10] + "|" + val[M11] + "|" + val[M12] + "]\n" //
+        + "[" + val[M20] + "|" + val[M21] + "|" + val[M22] + "]";
+    }
+
+// Mat.java : public float det()
+    public float det(){
+        float[] val = this.val;
+        return val[M00] * val[M11] * val[M22] + val[M01] * val[M12] * val[M20] + val[M02] * val[M10] * val[M21] - val[M00]
+        * val[M12] * val[M21] - val[M01] * val[M10] * val[M22] - val[M02] * val[M11] * val[M20];
+    }
+
+// Mat.java : public Mat set(Mat mat) / public Mat set(Affine2 affine) / public Mat set(float[] values)
+    public Mat set(Mat mat){
+        System.arraycopy(mat.val, 0, val, 0, val.length);
+        return this;
+    }
+
+// Mat.java : public Mat trn(Vec2 vector) / public Mat trn(float x, float y) / public Mat trn(Vec3 vector)
+    public Mat trn(Vec2 vector){
+        val[M02] += vector.x;
+        val[M12] += vector.y;
+        return this;
+    }
+
+// Mat.java : public Mat rotate(float degrees)
+    public Mat rotate(float degrees){
+        return rotateRad(Mathf.degreesToRadians * degrees);
+    }
+
+// Mat.java : public float[] getValues()
+    public float[] getValues(){
+        return val;
+    }
+
+// Mat.java : public Vec2 getTranslation(Vec2 position)
+    public Vec2 getTranslation(Vec2 position){
+        position.x = val[M02];
+        position.y = val[M12];
+        return position;
+    }
+
+// Mat.java : public Vec2 getScale(Vec2 scale)
+    public Vec2 getScale(Vec2 scale){
+        float[] val = this.val;
+        scale.x = (float)Math.sqrt(val[M00] * val[M00] + val[M01] * val[M01]);
+        scale.y = (float)Math.sqrt(val[M10] * val[M10] + val[M11] * val[M11]);
+        return scale;
+    }
+
+// Mat.java : public float getRotation()
+    public float getRotation(){
+        return Mathf.radiansToDegrees * (float)Math.atan2(val[M10], val[M00]);
+    }
+
+// Mat.java : public float getRotationRad()
+    public float getRotationRad(){
+        return (float)Math.atan2(val[M10], val[M00]);
+    }
+
+// Mat.java : public Mat scl(float scale) / public Mat scl(Vec2 scale) / public Mat scl(Vec3 scale)
+    public Mat scl(float scale){
+        val[M00] *= scale;
+        val[M11] *= scale;
+        return this;
+    }
+
+// Mathf.java : public static float sin(float radians) / public static float sin(float scl, float mag) / public static float sin(float radians, float scl, float mag)
+    public static float sin(float radians){
+        return sinTable[(int)(radians * radToIndex) & sinMask];
+    }
+
+// Mathf.java : public static float cos(float radians) / public static float cos(float radians, float scl, float mag)
+    public static float cos(float radians){
+        return sinTable[(int)((radians + PI / 2) * radToIndex) & sinMask];
+    }
+
+// Mathf.java : public static float sinDeg(float degrees)
+    public static float sinDeg(float degrees){
+        return sinTable[(int)(degrees * degToIndex) & sinMask];
+    }
+
+// Mathf.java : public static float cosDeg(float degrees)
+    public static float cosDeg(float degrees){
+        return sinTable[(int)((degrees + 90) * degToIndex) & sinMask];
+    }
+
+// Mathf.java : public static float absin(float scl, float mag) / public static float absin(float in, float scl, float mag)
+    public static float absin(float scl, float mag){
+        return absin(Time.time, scl, mag);
+    }
+
+// Mathf.java : public static float tan(float radians, float scl, float mag)
+    public static float tan(float radians, float scl, float mag){
+        return (sin(radians / scl)) / (cos(radians / scl)) * mag;
+    }
+
+// Mathf.java : public static float angle(float x, float y)
+    public static float angle(float x, float y){
+        float result = atan2(x, y) * radDeg;
+        if(result < 0) result += 360f;
+        return result;
+    }
+
+// Mathf.java : public static float angleExact(float x, float y)
+    public static float angleExact(float x, float y){
+        float result = (float)Math.atan2(y, x) * radDeg;
+        if(result < 0) result += 360f;
+        return result;
+    }
+
+// Mathf.java : public static float wrapAngleAroundZero(float a)
+    public static float wrapAngleAroundZero(float a) {
+        if(a >= 0) {
+            float rotation = a % Mathf.PI2;
+            if(rotation > Mathf.PI) rotation -= Mathf.PI2;
+            return rotation;
+        }else{
+            float rotation = -a % Mathf.PI2;
+            if(rotation > Mathf.PI) rotation -= Mathf.PI2;
+            return -rotation;
+        }
+    }
+
+// Mathf.java : private static float atn(double i)
+    private static float atn(final double i){
+        // We use double precision internally, because some constants need double precision.
+        final double n = Math.abs(i);
+        // c uses the "equally-good" formulation that permits n to be from 0 to almost infinity.
+        final double c = (n - 1.0) / (n + 1.0);
+        // The approximation needs 6 odd powers of c.
+        final double c2 = c * c, c3 = c * c2, c5 = c3 * c2, c7 = c5 * c2, c9 = c7 * c2, c11 = c9 * c2;
+        return (float)Math.copySign((Math.PI * 0.25)
+        + (0.99997726 * c - 0.33262347 * c3 + 0.19354346 * c5 - 0.11643287 * c7 + 0.05265332 * c9 - 0.0117212 * c11), i);
+    }
+
+// Mathf.java : public static int digits(int n) / public static int digits(long n)
+    public static int digits(int n){
+        return n < 100000 ? n < 100 ? n < 10 ? 1 : 2 : n < 1000 ? 3 : n < 10000 ? 4 : 5 : n < 10000000 ? n < 1000000 ? 6 : 7 : n < 100000000 ? 8 : n < 1000000000 ? 9 : 10;
+    }
+
+// Mathf.java : public static float sqrt(float x)
+    public static float sqrt(float x){
+        return (float) Math.sqrt(x);
+    }
+
+// Mathf.java : public static float sqr(float x)
+    public static float sqr(float x){
+        return x * x;
+    }
+
+// Mathf.java : public static float map(float value, float froma, float toa, float fromb, float tob) / public static float map(float value, float from, float to)
+    public static float map(float value, float froma, float toa, float fromb, float tob){
+        return fromb + (value - froma) * (tob - fromb) / (toa - froma);
+    }
+
+// Mathf.java : public static int sign(float f) / public static int sign(boolean b)
+    public static int sign(float f){
+        return (f < 0 ? -1 : 1);
+    }
+
+// Mathf.java : public static int num(boolean b)
+    public static int num(boolean b){
+        return b ? 1 : 0;
+    }
+
+// Mathf.java : public static float pow(float a, float b) / public static int pow(int a, int b)
+    public static float pow(float a, float b){
+        return (float)Math.pow(a, b);
+    }
+
+// Mathf.java : public static float range(float range) / public static int range(int range) / public static float range(float min, float max)
+    public static float range(float range){
+        return random(-range, range);
+    }
+
+// Mathf.java : public static boolean chanceDelta(double d)
+    public static boolean chanceDelta(double d){
+        return rand.nextFloat() < d * Time.delta;
+    }
+
+// Mathf.java : public static boolean chance(double d)
+    public static boolean chance(double d){
+        return d >= 1f || rand.nextFloat() < d;
+    }
+
+// Mathf.java : public static int random(int range) / public static int random(int start, int end) / public static long random(long range) / public static long random(long start, long end) / public static float random() / public static float random(float range) / public static float random(float start, float end)
+    public static int random(int range){
+        return rand.nextInt(range + 1);
+    }
+
+// Mathf.java : public static boolean randomBoolean() / public static boolean randomBoolean(float chance)
+    public static boolean randomBoolean(){
+        return rand.nextBoolean();
+    }
+
+// Mathf.java : public static int randomSign()
+    public static int randomSign(){
+        return 1 | (rand.nextInt() >> 31);
+    }
+
+// Mathf.java : public static int randomSeed(long seed, int min, int max) / public static float randomSeed(long seed, float min, float max) / public static float randomSeed(long seed) / public static float randomSeed(long seed, float max)
+    public static int randomSeed(long seed, int min, int max){
+        seedr.setSeed(seed);
+        if(isPowerOfTwo(max)){
+            seedr.nextInt();
+        }
+        return seedr.nextInt(max - min + 1) + min;
+    }
+
+// Mathf.java : public static float randomSeedRange(long seed, float range)
+    public static float randomSeedRange(long seed, float range){
+        seedr.setSeed(seed * 99999);
+        return range * (seedr.nextFloat() - 0.5f) * 2f;
+    }
+
+// Mathf.java : public static float randomTriangular() / public static float randomTriangular(float max) / public static float randomTriangular(float min, float max) / public static float randomTriangular(float min, float max, float mode)
+    public static float randomTriangular(){
+        return rand.nextFloat() - rand.nextFloat();
+    }
+
+// Mathf.java : public static int nextPowerOfTwo(int value)
+    public static int nextPowerOfTwo(int value){
+        if(value == 0) return 1;
+        value--;
+        value |= value >> 1;
+        value |= value >> 2;
+        value |= value >> 4;
+        value |= value >> 8;
+        value |= value >> 16;
+        return value + 1;
+    }
+
+// Mathf.java : public static boolean isPowerOfTwo(int value)
+    public static boolean isPowerOfTwo(int value){
+        return value != 0 && (value & value - 1) == 0;
+    }
+
+// Mathf.java : public static int clamp(int value, int min, int max) / public static long clamp(long value, long min, long max) / public static float clamp(float value, float min, float max) / public static float clamp(float value) / public static double clamp(double value, double min, double max)
+    public static int clamp(int value, int min, int max){
+        return Math.max(Math.min(value, max), min);
+    }
+
+// Mathf.java : public static float maxZero(float val)
+    public static float maxZero(float val){
+        return Math.max(val, 0);
+    }
+
+// Mathf.java : public static float approach(float from, float to, float speed)
+    public static float approach(float from, float to, float speed){
+        return from + Mathf.clamp(to - from, -speed, speed);
+    }
+
+// Mathf.java : public static float approachDelta(float from, float to, float speed)
+    public static float approachDelta(float from, float to, float speed){
+        return approach(from, to, Time.delta * speed);
+    }
+
+// Mathf.java : public static float lerp(float fromValue, float toValue, float progress)
+    public static float lerp(float fromValue, float toValue, float progress){
+        return fromValue + (toValue - fromValue) * progress;
+    }
+
+// Mathf.java : public static float lerpDelta(float fromValue, float toValue, float progress)
+    public static float lerpDelta(float fromValue, float toValue, float progress){
+        return lerp(fromValue, toValue, clamp(progress * Time.delta));
+    }
+
+// Mathf.java : public static float slerpRad(float fromRadians, float toRadians, float progress)
+    public static float slerpRad(float fromRadians, float toRadians, float progress){
+        float delta = ((toRadians - fromRadians + PI2 + PI) % PI2) - PI;
+        return (fromRadians + delta * progress + PI2) % PI2;
+    }
+
+// Mathf.java : public static float slerp(float fromDegrees, float toDegrees, float progress)
+    public static float slerp(float fromDegrees, float toDegrees, float progress){
+        float delta = ((toDegrees - fromDegrees + 360 + 180) % 360) - 180;
+        return (fromDegrees + delta * progress + 360) % 360;
+    }
+
+// Mathf.java : public static float slerpDelta(float fromDegrees, float toDegrees, float progress)
+    public static float slerpDelta(float fromDegrees, float toDegrees, float progress){
+        return slerp(fromDegrees, toDegrees, clamp(progress * Time.delta));
+    }
+
+// Mathf.java : public static int floor(float value)
+    public static int floor(float value){
+        return (int)(value + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
+    }
+
+// Mathf.java : public static int floorPositive(float value)
+    public static int floorPositive(float value){
+        return (int)value;
+    }
+
+// Mathf.java : public static int ceil(float value)
+    public static int ceil(float value){
+        return BIG_ENOUGH_INT - (int)(BIG_ENOUGH_FLOOR - value);
+    }
+
+// Mathf.java : public static int ceilPositive(float value)
+    public static int ceilPositive(float value){
+        return (int)(value + CEIL);
+    }
+
+// Mathf.java : public static int round(float value) / public static int round(int value, int step) / public static float round(float value, float step) / public static int round(float value, int step)
+    public static int round(float value){
+        return (int)(value + BIG_ENOUGH_ROUND) - BIG_ENOUGH_INT;
+    }
+
+// Mathf.java : public static int roundPositive(float value)
+    public static int roundPositive(float value){
+        return (int)(value + 0.5f);
+    }
+
+// Mathf.java : public static boolean zero(float value) / public static boolean zero(double value) / public static boolean zero(float value, float tolerance)
+    public static boolean zero(float value){
+        return Math.abs(value) <= FLOAT_ROUNDING_ERROR;
+    }
+
+// Mathf.java : public static boolean equal(float a, float b) / public static boolean equal(float a, float b, float tolerance)
+    public static boolean equal(float a, float b){
+        return Math.abs(a - b) <= FLOAT_ROUNDING_ERROR;
+    }
+
+// Mathf.java : public static float log(float a, float value)
+    public static float log(float a, float value){
+        return (float)(Math.log(value) / Math.log(a));
+    }
+
+// Mathf.java : public static float log2(float value) / public static int log2(int value)
+    public static float log2(float value){
+        return log(2, value);
+    }
+
+// Mathf.java : public static float mod(float f, float n) / public static int mod(int x, int n)
+    public static float mod(float f, float n){
+        return ((f % n) + n) % n;
+    }
+
+// Mathf.java : public static float sample(float[] values, float time)
+    public static float sample(float[] values, float time){
+        time = Mathf.clamp(time);
+        float pos = time * (values.length - 1);
+        int cur = Math.min((int)(time * (values.length - 1)), values.length - 1);
+        int next = Math.min(cur + 1, values.length - 1);
+        float mod = (pos - cur);
+        return lerp(values[cur], values[next], mod);
+    }
+
+// Mathf.java : public static float slope(float fin)
+    public static float slope(float fin){
+        return 1f - Math.abs(fin - 0.5f) * 2f;
+    }
+
+// Mathf.java : public static float curve(float f, float offset) / public static float curve(float f, float from, float to)
+    public static float curve(float f, float offset){
+        if(f < offset){
+            return 0f;
+        }else{
+            return (f - offset) / (1f - offset);
+        }
+    }
+
+// Mathf.java : public static float curveMargin(float f, float margin) / public static float curveMargin(float f, float marginLeft, float marginRight)
+    public static float curveMargin(float f, float margin){
+        return curveMargin(f, margin, margin);
+    }
+
+// Mathf.java : public static float len(float x, float y)
+    public static float len(float x, float y){
+        return (float)Math.sqrt(x * x + y * y);
+    }
+
+// Mathf.java : public static float len2(float x, float y)
+    public static float len2(float x, float y){
+        return x * x + y * y;
+    }
+
+// Mathf.java : public static float dot(float x1, float y1, float x2, float y2)
+    public static float dot(float x1, float y1, float x2, float y2){
+        return x1 * x2 + y1 * y2;
+    }
+
+// Mathf.java : public static float dst(float x1, float y1) / public static float dst(float x1, float y1, float x2, float y2)
+    public static float dst(float x1, float y1){
+        return (float)Math.sqrt(x1 * x1 + y1*y1);
+    }
+
+// Mathf.java : public static float dst2(float x1, float y1) / public static float dst2(float x1, float y1, float x2, float y2)
+    public static float dst2(float x1, float y1){
+        return (x1 * x1 + y1*y1);
+    }
+
+// Mathf.java : public static float dstm(float x1, float y1, float x2, float y2)
+    public static float dstm(float x1, float y1, float x2, float y2){
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+// Mathf.java : public static Vec2 arrive(Position pos, Position target, Vec2 curVel, float radius, float tolerance, float speed, float smoothTime) / public static Vec2 arrive(float x, float y, float destX, float destY, Vec2 curVel, float radius, float tolerance, float speed, float accel)
+    public static Vec2 arrive(Position pos, Position target, Vec2 curVel, float radius, float tolerance, float speed, float smoothTime){
+        return arrive(pos.getX(), pos.getY(), target.getX(), target.getY(), curVel, radius, tolerance, speed, smoothTime);
+    }
+
+// Mathf.java : public static boolean within(float x1, float y1, float x2, float y2, float dst) / public static boolean within(float x1, float y1, float dst)
+    public static boolean within(float x1, float y1, float x2, float y2, float dst){
+        return dst2(x1, y1, x2, y2) < dst*dst;
+    }
+
+// Rand.java : private static long murmurHash3(long x)
+    private static long murmurHash3(long x){
+        x ^= x >>> 33;
+        x *= 0xff51afd7ed558ccdL;
+        x ^= x >>> 33;
+        x *= 0xc4ceb9fe1a85ec53L;
+        x ^= x >>> 33;
+
+        return x;
+    }
+
+// Rand.java : public long nextLong() / public long nextLong(long n)
+    @Override
+    public long nextLong(){
+        long s1 = this.seed0;
+        final long s0 = this.seed1;
+        this.seed0 = s0;
+        s1 ^= s1 << 23;
+        return (this.seed1 = (s1 ^ s0 ^ (s1 >>> 17) ^ (s0 >>> 26))) + s0;
+    }
+
+// Rand.java : protected final int next(int bits)
+    @Override
+    protected final int next(int bits){
+        return (int)(nextLong() & ((1L << bits) - 1));
+    }
+
+// Rand.java : public int nextInt() / public int nextInt(int n)
+    @Override
+    public int nextInt(){
+        return (int)nextLong();
+    }
+
+// Rand.java : public double nextDouble()
+    @Override
+    public double nextDouble(){
+        return (nextLong() >>> 11) * NORM_DOUBLE;
+    }
+
+// Rand.java : public float nextFloat()
+    @Override
+    public float nextFloat(){
+        return (float)((nextLong() >>> 40) * NORM_FLOAT);
+    }
+
+// Rand.java : public boolean nextBoolean()
+    @Override
+    public boolean nextBoolean(){
+        return (nextLong() & 1) != 0;
+    }
+
+// Rand.java : public void nextBytes(byte[] bytes)
+    @Override
+    public void nextBytes(final byte[] bytes){
+        int n;
+        int i = bytes.length;
+        while(i != 0){
+            n = i < 8 ? i : 8; // min(i, 8);
+            for(long bits = nextLong(); n-- != 0; bits >>= 8)
+                bytes[--i] = (byte)bits;
+        }
+    }
+
+// Rand.java : public void setSeed(long seed)
+    @Override
+    public void setSeed(final long seed){
+        long seed0 = murmurHash3(seed == 0 ? Long.MIN_VALUE : seed);
+        setState(seed0, murmurHash3(seed0));
+    }
+
+// Rand.java : public boolean chance(double chance)
+    public boolean chance(double chance){
+        return nextDouble() < chance;
+    }
+
+// Rand.java : public float range(float amount) / public int range(int amount)
+    public float range(float amount){
+        return nextFloat() * amount * 2 - amount;
+    }
+
+// Rand.java : public float random(float max) / public int random(int max) / public float random(float min, float max) / public int random(int min, int max)
+    public float random(float max){
+        return nextFloat() * max;
+    }
+
+// Rand.java : public void setState(long seed0, long seed1)
+    public void setState(final long seed0, final long seed1){
+        this.seed0 = seed0;
+        this.seed1 = seed1;
+    }
+
+// Rand.java : public long getState(int seed)
+    public long getState(int seed){
+        return seed == 0 ? seed0 : seed1;
+    }
+
+// Scaled.java : default float fout() / default float fout(Interp i) / default float fout(float margin)
+    default float fout(){
+        return 1f - fin();
+    }
+
+// Scaled.java : default float finpow()
+    default float finpow(){
+        return Interp.pow3Out.apply(fin());
+    }
+
+// Scaled.java : default float foutpow()
+    default float foutpow(){
+        return 1 - Interp.pow3Out.apply(fin());
+    }
+
+// Scaled.java : default float finpowdown()
+    default float finpowdown(){
+        return Interp.pow3In.apply(fin());
+    }
+
+// Scaled.java : default float foutpowdown()
+    default float foutpowdown(){
+        return 1 - Interp.pow3In.apply(fin());
+    }
+
+// Scaled.java : default float fslope()
+    default float fslope(){
+        return (0.5f - Math.abs(fin() - 0.5f)) * 2f;
+    }
+
+// WindowedMean.java : public void reset()
+    public void reset(){
+        addedValues = 0;
+        lastValue = 0;
+        mean = 0;
+    }
+
+// WindowedMean.java : public float get(int index)
+    public float get(int index){
+        return values[Mathf.mod(index + lastValue, values.length)];
+    }
+
+// WindowedMean.java : public boolean hasEnoughData()
+    public boolean hasEnoughData(){
+        return addedValues >= values.length;
+    }
+
+// WindowedMean.java : public void clear()
+    public void clear(){
+        addedValues = 0;
+        lastValue = 0;
+        Arrays.fill(values, 0);
+        dirty = true;
+    }
+
+// WindowedMean.java : public void fill(float value)
+    public void fill(float value){
+        dirty = true;
+        Arrays.fill(values, value);
+        addedValues = values.length;
+    }
+
+// WindowedMean.java : public void add(float value)
+    public void add(float value){
+        if(addedValues < values.length) addedValues++;
+        values[lastValue++] = value;
+        if(lastValue > values.length - 1) lastValue = 0;
+        dirty = true;
+    }
+
+// WindowedMean.java : public float oldest()
+    public float oldest(){
+        return addedValues < values.length ? values[0] : values[lastValue];
+    }
+
+// WindowedMean.java : public float latest()
+    public float latest(){
+        return values[lastValue - 1 == -1 ? values.length - 1 : lastValue - 1];
+    }
+
+// WindowedMean.java : public float standardDeviation()
+    public float standardDeviation(){
+        if(!hasEnoughData()) return 0;
+
+        float mean = mean();
+        float sum = 0;
+        for(int i = 0; i < values.length; i++){
+            sum += (values[i] - mean) * (values[i] - mean);
+        }
+
+        return (float)Math.sqrt(sum / values.length);
+    }
+
+// WindowedMean.java : public float lowest()
+    public float lowest(){
+        float lowest = Float.MAX_VALUE;
+        for(int i = 0; i < values.length; i++)
+            lowest = Math.min(lowest, values[i]);
+        return lowest;
+    }
+
+// WindowedMean.java : public float highest()
+    public float highest(){
+        float lowest = Float.MIN_NORMAL;
+        for(int i = 0; i < values.length; i++)
+            lowest = Math.max(lowest, values[i]);
+        return lowest;
+    }
+
+// WindowedMean.java : public int getCount()
+    public int getCount(){
+        return addedValues;
+    }
+
+// WindowedMean.java : public int getWindowSize()
+    public int getWindowSize(){
+        return values.length;
+    }
+
+// WindowedMean.java : public float[] getWindowValues()
+    public float[] getWindowValues(){
+        float[] windowValues = new float[addedValues];
+        if(hasEnoughData()){
+            for(int i = 0; i < windowValues.length; i++){
+                windowValues[i] = values[(i + lastValue) % values.length];
+            }
+        }else{
+            System.arraycopy(values, 0, windowValues, 0, addedValues);
+        }
+        return windowValues;
+    }
+

@@ -1,0 +1,343 @@
+// AIController.java : protected void resetTimers()
+    protected void resetTimers(){
+        timer.reset(timerTarget, Mathf.random(40f));
+        timer.reset(timerTarget2, Mathf.random(60f));
+    }
+
+// AIController.java : public boolean hasStance(UnitStance stance)
+    public boolean hasStance(@Nullable UnitStance stance){
+        if(unit.controller() instanceof CommandAI ai){
+            return ai.hasStance(stance);
+        }
+        return false;
+    }
+
+// AIController.java : public void stanceChanged()
+    public void stanceChanged(){}
+
+// AIController.java : public boolean keepState()
+    public boolean keepState(){
+        return false;
+    }
+
+// AIController.java : public void afterRead(Unit unit)
+    @Override
+    public void afterRead(Unit unit){
+
+    }
+
+// AIController.java : public boolean isLogicControllable()
+    @Override
+    public boolean isLogicControllable(){
+        return true;
+    }
+
+// AIController.java : public void stopShooting()
+    public void stopShooting(){
+        for(var mount : unit.mounts){
+            //ignore mount controllable stats too, they should not shoot either
+            mount.shoot = false;
+        }
+    }
+
+// AIController.java : public AIController fallback()
+    @Nullable
+    public AIController fallback(){
+        return null;
+    }
+
+// AIController.java : public boolean useFallback()
+    public boolean useFallback(){
+        return false;
+    }
+
+// AIController.java : public void updateVisuals()
+    public void updateVisuals(){
+        if(unit.isFlying()){
+            if(unit.type.wobble) unit.wobble();
+
+            unit.lookAt(unit.prefRotation());
+        }
+    }
+
+// AIController.java : public void updateMovement()
+    public void updateMovement(){
+
+    }
+
+// AIController.java : public void updateTargeting()
+    public void updateTargeting(){
+        if(unit.hasWeapons()){
+            updateWeapons();
+        }
+    }
+
+// AIController.java : public void faceTarget()
+    public void faceTarget(){
+        if(unit.type.omniMovement || unit instanceof Mechc){
+            if(!Units.invalidateTarget(target, unit, unit.range()) && unit.type.faceTarget && unit.type.hasWeapons()){
+                unit.lookAt(Predict.intercept(unit, target, unit.type.weapons.first().bullet));
+            }else if(unit.moving()){
+                unit.lookAt(unit.vel().angle());
+            }
+        }
+    }
+
+// AIController.java : public void faceMovement()
+    public void faceMovement(){
+        if((unit.type.omniMovement || unit instanceof Mechc) && unit.moving()){
+            unit.lookAt(unit.vel().angle());
+        }
+    }
+
+// AIController.java : public boolean invalid(Teamc target)
+    public boolean invalid(Teamc target){
+        return Units.invalidateTarget(target, unit.team, unit.x, unit.y);
+    }
+
+// AIController.java : public void pathfind(int pathTarget) / public void pathfind(int pathTarget, boolean stopAtTargetTile) / public void pathfind(int pathTarget, boolean stopAtTargetTile, boolean avoidance)
+    public void pathfind(int pathTarget){
+        pathfind(pathTarget, true);
+    }
+
+// AIController.java : public Vec2 alterPathfind(Vec2 vec)
+    public Vec2 alterPathfind(Vec2 vec){
+        return vec;
+    }
+
+// AIController.java : public void targetInvalidated()
+    public void targetInvalidated(){
+        //immediately find a new target
+        timer.reset(timerTarget, -1f);
+    }
+
+// AIController.java : public boolean checkTarget(Teamc target, float x, float y, float range)
+    public boolean checkTarget(Teamc target, float x, float y, float range){
+        return Units.invalidateTarget(target, unit.team, x, y, range);
+    }
+
+// AIController.java : public boolean shouldFire()
+    public boolean shouldFire(){
+        return true;
+    }
+
+// AIController.java : public boolean shouldShoot()
+    public boolean shouldShoot(){
+        return true;
+    }
+
+// AIController.java : public Teamc targetFlag(float x, float y, BlockFlag flag, boolean enemy)
+    public Teamc targetFlag(float x, float y, BlockFlag flag, boolean enemy){
+        if(unit.team == Team.derelict) return null;
+        return Geometry.findClosest(x, y, enemy ? indexer.getEnemy(unit.team, flag) : indexer.getFlagged(unit.team, flag));
+    }
+
+// AIController.java : public Teamc targetFlagActive(float x, float y, BlockFlag flag, boolean enemy)
+    public Teamc targetFlagActive(float x, float y, BlockFlag flag, boolean enemy){
+        if(unit.team == Team.derelict) return null;
+        return Geometry.findClosest(x, y, enemy ? indexer.getEnemy(unit.team, flag) : indexer.getFlagged(unit.team, flag), t -> ((t.items != null && t.items.any()) || t.status() != BlockStatus.noInput) && t.block.targetable);
+    }
+
+// AIController.java : public Teamc target(float x, float y, float range, boolean air, boolean ground)
+    public Teamc target(float x, float y, float range, boolean air, boolean ground){
+        return Units.closestTarget(unit.team, x, y, range, u -> u.checkTarget(air, ground), t -> ground && (unit.type.targetUnderBlocks || !t.block.underBullets));
+    }
+
+// AIController.java : public boolean retarget()
+    public boolean retarget(){
+        return timer.get(timerTarget, target == null ? 40 : 90);
+    }
+
+// AIController.java : public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)
+    public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground){
+        return findTarget(x, y, range, air, ground);
+    }
+
+// AIController.java : public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+    public Teamc findTarget(float x, float y, float range, boolean air, boolean ground){
+        return target(x, y, range, air, ground);
+    }
+
+// AIController.java : public void commandTarget(Teamc moveTo)
+    public void commandTarget(Teamc moveTo){}
+
+// AIController.java : public void commandPosition(Vec2 pos)
+    public void commandPosition(Vec2 pos){}
+
+// AIController.java : public void init()
+    public void init(){
+
+    }
+
+// AIController.java : public Tile getClosestSpawner()
+    public @Nullable Tile getClosestSpawner(){
+        return Geometry.findClosest(unit.x, unit.y, Vars.spawner.getSpawns());
+    }
+
+// AIController.java : public void unloadPayloads()
+    public void unloadPayloads(){
+        if(unit instanceof Payloadc pay && pay.hasPayload() && target instanceof Building && pay.payloads().peek() instanceof UnitPayload){
+            if(target.within(unit, Math.max(unit.type().range + 1f, 75f))){
+                pay.dropLastPayload();
+            }
+        }
+    }
+
+// AIController.java : public void circle(Position target, float circleLength) / public void circle(Position target, float circleLength, float speed)
+    public void circle(Position target, float circleLength){
+        circle(target, circleLength, prefSpeed());
+    }
+
+// AIController.java : public void moveTo(Position target, float circleLength) / public void moveTo(Position target, float circleLength, float smooth) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset, boolean arrive)
+    public void moveTo(Position target, float circleLength){
+        moveTo(target, circleLength, 100f);
+    }
+
+// AIController.java : public float prefSpeed()
+    public float prefSpeed(){
+        return unit.speed();
+    }
+
+// AIController.java : public void unit(Unit unit) / public Unit unit()
+    @Override
+    public void unit(Unit unit){
+        if(this.unit == unit) return;
+
+        this.unit = unit;
+        init();
+    }
+
+// BuildPlan.java : public boolean placeable(Team team)
+    public boolean placeable(Team team){
+        return Build.validPlace(block, team, x, y, rotation);
+    }
+
+// BuildPlan.java : public boolean isRotation(Team team)
+    public boolean isRotation(Team team){
+        if(breaking) return false;
+        Tile tile = tile();
+        return tile != null && tile.team() == team && tile.block() == block && tile.build != null && tile.build.rotation != rotation;
+    }
+
+// BuildPlan.java : public boolean isDerelictRepair()
+    public boolean isDerelictRepair(){
+        if(breaking || !state.rules.derelictRepair) return false;
+        Tile tile = tile();
+        return tile != null && tile.team() == Team.derelict && tile.block() == block && tile.build != null;
+    }
+
+// BuildPlan.java : public boolean samePos(BuildPlan other)
+    public boolean samePos(BuildPlan other){
+        return x == other.x && y == other.y;
+    }
+
+// BuildPlan.java : public Rect bounds(Rect rect)
+    public Rect bounds(Rect rect){
+        if(breaking){
+            return rect.set(-100f, -100f, 0f, 0f);
+        }else{
+            return block.bounds(x, y, rect);
+        }
+    }
+
+// BuildPlan.java : public BuildPlan set(int x, int y, int rotation, Block block)
+    public BuildPlan set(int x, int y, int rotation, Block block){
+        this.x = x;
+        this.y = y;
+        if(block != null) this.rotation = block.planRotation(rotation);
+        this.block = block;
+        this.breaking = false;
+        return this;
+    }
+
+// BuildPlan.java : public float drawx()
+    public float drawx(){
+        return x*tilesize + (block == null ? 0 : block.offset);
+    }
+
+// BuildPlan.java : public float drawy()
+    public float drawy(){
+        return y*tilesize + (block == null ? 0 : block.offset);
+    }
+
+// BuildPlan.java : public boolean isDone()
+    public boolean isDone(){
+        Tile tile = world.tile(x, y);
+        if(tile == null) return true;
+        Block tblock = tile.block();
+        if(breaking){
+            return tblock == Blocks.air || tblock == tile.floor();
+        }else{
+            return tblock == block && (tile.build == null || tile.build.rotation == rotation);
+        }
+    }
+
+// BuildPlan.java : public Tile tile()
+    public @Nullable Tile tile(){
+        return world.tile(x, y);
+    }
+
+// BuildPlan.java : public Building build()
+    public @Nullable Building build(){
+        return world.build(x, y);
+    }
+
+// BuildPlan.java : public void hitbox(Rect out)
+    @Override
+    public void hitbox(Rect out){
+        if(block != null){
+            out.setCentered(x * tilesize + block.offset, y * tilesize + block.offset, block.size * tilesize);
+        }else{
+            out.setCentered(x * tilesize, y * tilesize, tilesize);
+        }
+    }
+
+// BuildPlan.java : public float getX()
+    @Override
+    public float getX(){
+        return drawx();
+    }
+
+// BuildPlan.java : public float getY()
+    @Override
+    public float getY(){
+        return drawy();
+    }
+
+// StatusEntry.java : public StatusEntry set(StatusEffect effect, float time)
+    public StatusEntry set(StatusEffect effect, float time){
+        this.effect = effect;
+        this.time = time;
+        return this;
+    }
+
+// UnitController.java : default void hit(Bullet bullet)
+    default void hit(Bullet bullet){
+
+    }
+
+// UnitController.java : default boolean isValidController()
+    default boolean isValidController(){
+        return true;
+    }
+
+// UnitController.java : default boolean isLogicControllable()
+    default boolean isLogicControllable(){
+        return false;
+    }
+
+// UnitController.java : default void updateUnit()
+    default void updateUnit(){
+
+    }
+
+// UnitController.java : default void removed(Unit unit)
+    default void removed(Unit unit){
+
+    }
+
+// UnitController.java : default void afterRead(Unit unit)
+    default void afterRead(Unit unit){
+
+    }
+

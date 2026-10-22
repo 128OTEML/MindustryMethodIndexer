@@ -1,0 +1,1959 @@
+[ {
+  "file" : "BaseTmxMapLoader.java",
+  "pkg" : "arc.maps.loaders",
+  "type" : "Java class (abstract) extends arc.assets.loaders.AsynchronousAssetLoader",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "protected static final int FLAG_FLIP_HORIZONTALLY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "FLAG_FLIP_HORIZONTALLY",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final int FLAG_FLIP_VERTICALLY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "FLAG_FLIP_VERTICALLY",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final int FLAG_FLIP_DIAGONALLY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "FLAG_FLIP_DIAGONALLY",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final int MASK_CLEAR",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MASK_CLEAR",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected XmlReader xml",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "xml",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Xml root",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "root",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean convertObjectToTileSpace",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "convertObjectToTileSpace",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean flipY",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flipY",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int mapTileWidth",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mapTileWidth",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int mapTileHeight",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mapTileHeight",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int mapWidthInPixels",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mapWidthInPixels",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected int mapHeightInPixels",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mapHeightInPixels",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected TiledMap map",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "map",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public BaseTmxMapLoader(FileHandleResolver resolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "BaseTmxMapLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resolver",
+      "type" : "FileHandleResolver"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static int[] getTileIds(Xml element, int width, int height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTileIds",
+    "returnType" : "int[]",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "element",
+      "type" : "Xml"
+    }, {
+      "name" : "width",
+      "type" : "int"
+    }, {
+      "name" : "height",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected static int unsignedByteToInt(byte b)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unsignedByteToInt",
+    "returnType" : "int",
+    "modifiers" : [ "protected", "static" ],
+    "parameters" : [ {
+      "name" : "b",
+      "type" : "byte"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected static Fi getRelativeFileHandle(Fi file, String path)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getRelativeFileHandle",
+    "returnType" : "Fi",
+    "modifiers" : [ "protected", "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "path",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 104,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadTileGroup(TiledMap map, Seq<MapLayer> parentLayers, Xml element, Fi tmxFile, ImageResolver imageResolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadTileGroup",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "parentLayers",
+      "type" : "Seq<MapLayer>"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "imageResolver",
+      "type" : "ImageResolver"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 118,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadLayer(TiledMap map, Seq<MapLayer> parentLayers, Xml element, Fi tmxFile, ImageResolver imageResolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadLayer",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "parentLayers",
+      "type" : "Seq<MapLayer>"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "imageResolver",
+      "type" : "ImageResolver"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 141,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadTileLayer(TiledMap map, Seq<MapLayer> parentLayers, Xml element)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadTileLayer",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "parentLayers",
+      "type" : "Seq<MapLayer>"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 154,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadObjectGroup(TiledMap map, Seq<MapLayer> parentLayers, Xml element)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadObjectGroup",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "parentLayers",
+      "type" : "Seq<MapLayer>"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 190,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadImageLayer(TiledMap map, Seq<MapLayer> parentLayers, Xml element, Fi tmxFile, ImageResolver imageResolver)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadImageLayer",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "parentLayers",
+      "type" : "Seq<MapLayer>"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "imageResolver",
+      "type" : "ImageResolver"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 207,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadBasicLayerInfo(MapLayer layer, Xml element)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadBasicLayerInfo",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "layer",
+      "type" : "MapLayer"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 247,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadObject(TiledMap map, MapLayer layer, Xml element) / protected void loadObject(TiledMap map, MapTile tile, Xml element) / protected void loadObject(TiledMap map, Seq<MapObject> objects, Xml element, float heightInPixels)",
+    "desc" : null,
+    "overloads" : [ "protected void loadObject(TiledMap map, MapLayer layer, Xml element)", "protected void loadObject(TiledMap map, MapTile tile, Xml element)", "protected void loadObject(TiledMap map, Seq<MapObject> objects, Xml element, float heightInPixels)" ],
+    "name" : "loadObject",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "layer",
+      "type" : "MapLayer"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 261,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadProperties(MapProperties properties, Xml element)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadProperties",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "properties",
+      "type" : "MapProperties"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 365,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Object castProperty(String name, String value, String type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "castProperty",
+    "returnType" : "Object",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "value",
+      "type" : "String"
+    }, {
+      "name" : "type",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 381,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected Cell createTileLayerCell(boolean flipHorizontally, boolean flipVertically, boolean flipDiagonally)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createTileLayerCell",
+    "returnType" : "Cell",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "flipHorizontally",
+      "type" : "boolean"
+    }, {
+      "name" : "flipVertically",
+      "type" : "boolean"
+    }, {
+      "name" : "flipDiagonally",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 401,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Parameters extends arc.assets.AssetLoaderParameters",
+    "simpleName" : "Parameters",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean generateMipMaps",
+      "desc" : "generate mipmaps? *",
+      "overloads" : null,
+      "name" : "generateMipMaps",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 425,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter textureMinFilter",
+      "desc" : "The TextureFilter to use for minification *",
+      "overloads" : null,
+      "name" : "textureMinFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 427,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter textureMagFilter",
+      "desc" : "The TextureFilter to use for magnification *",
+      "overloads" : null,
+      "name" : "textureMagFilter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 429,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean convertObjectToTileSpace",
+      "desc" : "Whether to convert the objects' pixel position and size to the equivalent in tile space.",
+      "overloads" : null,
+      "name" : "convertObjectToTileSpace",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 431,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean flipY",
+      "desc" : "Whether to flip all Y coordinates so that Y positive is down.",
+      "overloads" : null,
+      "name" : "flipY",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 436,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "ImageResolver.java",
+  "pkg" : "arc.maps.loaders",
+  "type" : "Java interface",
+  "typeDesc" : "Resolves an image by a string, wrapper around a Map or AssetManager to load maps either directly or via AssetManager.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "TextureRegion getImage(String name)",
+    "desc" : "@return the Texture for the given image name or null.",
+    "overloads" : null,
+    "name" : "getImage",
+    "returnType" : "TextureRegion",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "DirectImageResolver implements arc.maps.loaders.ImageResolver",
+    "simpleName" : "DirectImageResolver",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "private final ObjectMap<String,Texture> images",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "images",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 19,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public DirectImageResolver(ObjectMap<String,Texture> images)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "DirectImageResolver",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "images",
+        "type" : "ObjectMap<String,Texture>"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 21,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public TextureRegion getImage(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getImage",
+      "returnType" : "TextureRegion",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 25,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "AssetManagerImageResolver implements arc.maps.loaders.ImageResolver",
+    "simpleName" : "AssetManagerImageResolver",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "private final AssetManager assetManager",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "assetManager",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 32,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public AssetManagerImageResolver(AssetManager assetManager)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "AssetManagerImageResolver",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "assetManager",
+        "type" : "AssetManager"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 34,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public TextureRegion getImage(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getImage",
+      "returnType" : "TextureRegion",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 38,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "TextureAtlasImageResolver implements arc.maps.loaders.ImageResolver",
+    "simpleName" : "TextureAtlasImageResolver",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "private final TextureAtlas atlas",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "atlas",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 45,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public TextureAtlasImageResolver(TextureAtlas atlas)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "TextureAtlasImageResolver",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "atlas",
+        "type" : "TextureAtlas"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 47,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public TextureRegion getImage(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getImage",
+      "returnType" : "TextureRegion",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 51,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "TmxMapLoader.java",
+  "pkg" : "arc.maps.loaders",
+  "type" : "Java class extends arc.maps.loaders.BaseTmxMapLoader",
+  "typeDesc" : "synchronous loader for TMX maps created with the Tiled tool",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TmxMapLoader() / public TmxMapLoader(FileHandleResolver resolver)",
+    "desc" : "Creates loader",
+    "overloads" : [ "public TmxMapLoader()", "public TmxMapLoader(FileHandleResolver resolver)" ],
+    "name" : "TmxMapLoader",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public TiledMap load(String fileName) / public TiledMap load(String fileName, TmxMapLoader.Parameters parameters)",
+    "desc" : "Loads the {@link TiledMap} from the given file.",
+    "overloads" : [ "public TiledMap load(String fileName)", "public TiledMap load(String fileName, TmxMapLoader.Parameters parameters)" ],
+    "name" : "load",
+    "returnType" : "TiledMap",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void loadAsync(AssetManager manager, String fileName, Fi tmxFile, TmxMapLoader.Parameters parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadAsync",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TmxMapLoader.Parameters"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 80,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public TiledMap loadSync(AssetManager manager, String fileName, Fi file, TmxMapLoader.Parameters parameter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "loadSync",
+    "returnType" : "TiledMap",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "manager",
+      "type" : "AssetManager"
+    }, {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "TmxMapLoader.Parameters"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 98,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<AssetDescriptor> getDependencies(String fileName, Fi tmxFile, Parameters parameter)",
+    "desc" : "Retrieves TiledMap resource dependencies",
+    "overloads" : null,
+    "name" : "getDependencies",
+    "returnType" : "Seq<AssetDescriptor>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fileName",
+      "type" : "String"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "parameter",
+      "type" : "Parameters"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 108,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected TiledMap loadTilemap(Xml root, Fi tmxFile, ImageResolver imageResolver)",
+    "desc" : "Loads the map data, given the XML root element and an {@link ImageResolver} used to return the tileset Textures",
+    "overloads" : null,
+    "name" : "loadTilemap",
+    "returnType" : "TiledMap",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "imageResolver",
+      "type" : "ImageResolver"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 139,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected Seq<Fi> loadTilesets(Xml root, Fi tmxFile) throws IOException",
+    "desc" : "Loads the tilesets",
+    "overloads" : null,
+    "name" : "loadTilesets",
+    "returnType" : "Seq<Fi>",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 205,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected Seq<Fi> loadImages(Xml root, Fi tmxFile)",
+    "desc" : "Loads the images in image layers",
+    "overloads" : null,
+    "name" : "loadImages",
+    "returnType" : "Seq<Fi>",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 247,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void loadTileSet(TiledMap map, Xml element, Fi tmxFile, ImageResolver imageResolver)",
+    "desc" : "Loads the specified tileset data, adding it to the struct of the specified map, given the XML element, the tmxFile and",
+    "overloads" : null,
+    "name" : "loadTileSet",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "map",
+      "type" : "TiledMap"
+    }, {
+      "name" : "element",
+      "type" : "Xml"
+    }, {
+      "name" : "tmxFile",
+      "type" : "Fi"
+    }, {
+      "name" : "imageResolver",
+      "type" : "ImageResolver"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Parameters extends arc.maps.loaders.BaseTmxMapLoader.Parameters",
+    "simpleName" : "Parameters",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "XmlReader.java",
+  "pkg" : "arc.maps.loaders",
+  "type" : "Java class",
+  "typeDesc" : "Lightweight XML parser.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "static final int xml_start",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "xml_start",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_actions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_actions",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_key_offsets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_key_offsets",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final char _xml_trans_keys",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_trans_keys",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_single_lengths",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_single_lengths",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_range_lengths",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_range_lengths",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final short _xml_index_offsets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_index_offsets",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_indicies",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_indicies",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_trans_targs",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_trans_targs",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final byte _xml_trans_actions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "_xml_trans_actions",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<Xml> elements",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "elements",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final StringBuilder textBuffer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "textBuffer",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Xml root",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "root",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_actions_0()",
+    "desc" : "line 324 \"XmlReader.java\"",
+    "overloads" : null,
+    "name" : "init__xml_actions_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_key_offsets_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_key_offsets_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static char[] init__xml_trans_keys_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_trans_keys_0",
+    "returnType" : "char[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_single_lengths_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_single_lengths_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_range_lengths_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_range_lengths_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static short[] init__xml_index_offsets_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_index_offsets_0",
+    "returnType" : "short[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 67,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_indicies_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_indicies_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_trans_targs_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_trans_targs_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 80,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static byte[] init__xml_trans_actions_0()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init__xml_trans_actions_0",
+    "returnType" : "byte[]",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Xml parse(String xml) / public Xml parse(Reader reader) / public Xml parse(InputStream input) / public Xml parse(Fi file) / public Xml parse(char[] data, int offset, int length)",
+    "desc" : null,
+    "overloads" : [ "public Xml parse(String xml)", "public Xml parse(Reader reader)", "public Xml parse(InputStream input)", "public Xml parse(Fi file)", "public Xml parse(char[] data, int offset, int length)" ],
+    "name" : "parse",
+    "returnType" : "Xml",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "xml",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void open(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "open",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 389,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void attribute(String name, String value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "attribute",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "value",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 397,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected String entity(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "entity",
+    "returnType" : "String",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 401,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void text(String text)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "text",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 411,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void close()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "close",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 416,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Xml",
+    "simpleName" : "Xml",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "private final String name",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "name",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 422,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private ObjectMap<String,String> attributes",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "attributes",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 423,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private Seq<Xml> children",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "children",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 424,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private String text",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "text",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 425,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private Xml parent",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "parent",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 426,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Xml(String name, Xml parent)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Xml",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      }, {
+        "name" : "parent",
+        "type" : "Xml"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 428,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public String getName()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getName",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 433,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public ObjectMap<String,String> getAttributes()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getAttributes",
+      "returnType" : "ObjectMap<String,String>",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 437,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String getAttribute(String name) / public String getAttribute(String name, String defaultValue)",
+      "desc" : "@throws ArcRuntimeException if the attribute was not found.",
+      "overloads" : [ "public String getAttribute(String name)", "public String getAttribute(String name, String defaultValue)" ],
+      "name" : "getAttribute",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 442,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean hasAttribute(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "hasAttribute",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 458,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void setAttribute(String name, String value)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "setAttribute",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      }, {
+        "name" : "value",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 463,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int getChildCount()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getChildCount",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 468,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Xml getChild(int index)",
+      "desc" : "@throws ArcRuntimeException if the element has no children.",
+      "overloads" : null,
+      "name" : "getChild",
+      "returnType" : "Xml",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "index",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 474,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void addChild(Xml element)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "addChild",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "element",
+        "type" : "Xml"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 479,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String getText()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getText",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 484,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void setText(String text)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "setText",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "text",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 488,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void removeChild(int index) / public void removeChild(Xml child)",
+      "desc" : null,
+      "overloads" : [ "public void removeChild(int index)", "public void removeChild(Xml child)" ],
+      "name" : "removeChild",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "index",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 492,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void remove()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "remove",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 500,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Xml getParent()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getParent",
+      "returnType" : "Xml",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 504,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String toString() / public String toString(String indent)",
+      "desc" : null,
+      "overloads" : [ "public String toString()", "public String toString(String indent)" ],
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 508,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Xml getChildByName(String name)",
+      "desc" : "@param name the name of the child {@link Xml}",
+      "overloads" : null,
+      "name" : "getChildByName",
+      "returnType" : "Xml",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 554,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean hasChild(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "hasChild",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 563,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Xml getChildByNameRecursive(String name)",
+      "desc" : "@param name the name of the child {@link Xml}",
+      "overloads" : null,
+      "name" : "getChildByNameRecursive",
+      "returnType" : "Xml",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 572,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean hasChildRecursive(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "hasChildRecursive",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 583,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Seq<Xml> getChildrenByName(String name)",
+      "desc" : "@param name the name of the children",
+      "overloads" : null,
+      "name" : "getChildrenByName",
+      "returnType" : "Seq<Xml>",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 592,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Seq<Xml> getChildrenByNameRecursively(String name) / private void getChildrenByNameRecursively(String name, Seq<Xml> result)",
+      "desc" : "@param name the name of the children",
+      "overloads" : [ "public Seq<Xml> getChildrenByNameRecursively(String name)", "private void getChildrenByNameRecursively(String name, Seq<Xml> result)" ],
+      "name" : "getChildrenByNameRecursively",
+      "returnType" : "Seq<Xml>",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 606,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public float getFloatAttribute(String name) / public float getFloatAttribute(String name, float defaultValue)",
+      "desc" : "@throws ArcRuntimeException if the attribute was not found.",
+      "overloads" : [ "public float getFloatAttribute(String name)", "public float getFloatAttribute(String name, float defaultValue)" ],
+      "name" : "getFloatAttribute",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 622,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int getIntAttribute(String name) / public int getIntAttribute(String name, int defaultValue)",
+      "desc" : "@throws ArcRuntimeException if the attribute was not found.",
+      "overloads" : [ "public int getIntAttribute(String name)", "public int getIntAttribute(String name, int defaultValue)" ],
+      "name" : "getIntAttribute",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 633,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean getBooleanAttribute(String name) / public boolean getBooleanAttribute(String name, boolean defaultValue)",
+      "desc" : "@throws ArcRuntimeException if the attribute was not found.",
+      "overloads" : [ "public boolean getBooleanAttribute(String name)", "public boolean getBooleanAttribute(String name, boolean defaultValue)" ],
+      "name" : "getBooleanAttribute",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 644,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String get(String name) / public String get(String name, String defaultValue)",
+      "desc" : "Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.",
+      "overloads" : [ "public String get(String name)", "public String get(String name, String defaultValue)" ],
+      "name" : "get",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 658,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int getInt(String name) / public int getInt(String name, int defaultValue)",
+      "desc" : "Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.",
+      "overloads" : [ "public int getInt(String name)", "public int getInt(String name, int defaultValue)" ],
+      "name" : "getInt",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 685,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public float getFloat(String name) / public float getFloat(String name, float defaultValue)",
+      "desc" : "Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.",
+      "overloads" : [ "public float getFloat(String name)", "public float getFloat(String name, float defaultValue)" ],
+      "name" : "getFloat",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 706,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean getBoolean(String name) / public boolean getBoolean(String name, boolean defaultValue)",
+      "desc" : "Returns the attribute value with the specified name, or if no attribute is found, the text of a child with the name.",
+      "overloads" : [ "public boolean getBoolean(String name)", "public boolean getBoolean(String name, boolean defaultValue)" ],
+      "name" : "getBoolean",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 727,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+} ]

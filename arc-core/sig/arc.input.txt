@@ -1,0 +1,199 @@
+GestureDetector.java
+Java class implements arc.input.InputProcessor
+// {@link InputProcessor} implementation that detects gestures (tap, long press, fling, pan, zoom, pinch) and hands them to a
+fields:
+  final GestureListener listener
+  private final VelocityTracker tracker
+  private final Vec2 pointer2
+  private final Vec2 initialPointer1
+  private final Vec2 initialPointer2
+  boolean longPressFired
+  Vec2 pointer1
+  private final Task longPressTask
+  private float tapRectangleWidth
+  private float tapRectangleHeight
+  private long tapCountInterval
+  private float longPressSeconds
+  private long maxFlingDelay
+  private boolean inTapRectangle
+  private int tapCount
+  private long lastTapTime
+  private float lastTapX
+  private int lastTapPointer
+  private KeyCode lastTapButton
+  private boolean pinching
+  private boolean panning
+  private float tapRectangleCenterX
+  private long gestureStartTime
+ctors:
+  public GestureDetector(GestureListener listener) / public GestureDetector(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener) / public GestureDetector(float halfTapRectangleWidth, float halfTapRectangleHeight, float tapCountInterval, float longPressDuration, float maxFlingDelay, GestureListener listener)  // Creates a new GestureDetector with default values: halfTapSquareSize=20, tapCountInterval=0.4f, longPressDuration=1.1f,
+methods:
+  public GestureListener getListener()
+  public boolean touchDown(int x, int y, int pointer, KeyCode button) / public boolean touchDown(float x, float y, int pointer, KeyCode button)
+  public boolean touchDragged(int x, int y, int pointer) / public boolean touchDragged(float x, float y, int pointer)
+  public boolean touchUp(int x, int y, int pointer, KeyCode button) / public boolean touchUp(float x, float y, int pointer, KeyCode button)
+  public void cancel()  // No further gesture events will be triggered for the current touch, if any.
+  public boolean isLongPressed() / public boolean isLongPressed(float duration)  // @return whether the user touched the screen long enough to trigger a long press event.
+  public boolean isPanning()
+  public void reset()
+  private boolean isWithinTapRectangle(float x, float y, float centerX, float centerY)
+  public void invalidateTapSquare()  // The tap square will not longer be used for the current touch.
+  public void setTapSquareSize(float halfTapSquareSize)
+  public void setTapRectangleSize(float halfTapRectangleWidth, float halfTapRectangleHeight)
+  public void setTapCountInterval(float tapCountInterval)  // @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.
+  public void setLongPressSeconds(float longPressSeconds)
+  public void setMaxFlingDelay(long maxFlingDelay)
+inner-interface: GestureListener
+// Register an instance of this class with a {@link GestureDetector} to receive gestures such as taps, long presses, flings,
+  methods:
+    default boolean touchDown(float x, float y, int pointer, KeyCode button)
+    default boolean tap(float x, float y, int count, KeyCode button)  // Called when a tap occured.
+    default boolean longPress(float x, float y)
+    default boolean fling(float velocityX, float velocityY, KeyCode button)  // Called when the user dragged a finger over the screen and lifted it.
+    default boolean pan(float x, float y, float deltaX, float deltaY)  // Called when the user drags a finger over the screen.
+    default boolean panStop(float x, float y, int pointer, KeyCode button)  // Called when no longer panning.
+    default boolean zoom(float initialDistance, float distance)  // Called when the user performs a pinch zoom gesture.
+    default boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)  // Called when a user performs a pinch zoom gesture.
+    default void pinchStop()  // Called when no longer pinching.
+inner-class: VelocityTracker
+  fields:
+    int sampleSize
+    float lastX
+    float deltaX
+    long lastTime
+    int numSamples
+    float meanX
+    float meanY
+    long meanTime
+  methods:
+    public void start(float x, float y, long timeStamp)
+    public void update(float x, float y, long currTime)
+    public float getVelocityX()
+    public float getVelocityY()
+    private float getAverage(float[] values, int numSamples) / private long getAverage(long[] values, int numSamples)
+    private float getSum(float[] values, int numSamples)
+
+InputEventQueue.java
+Java class implements arc.input.InputProcessor
+// Queues events that are later passed to the wrapped {@link InputProcessor}.
+fields:
+  private static final int SKIP
+  private static final int KEY_DOWN
+  private static final int KEY_UP
+  private static final int KEY_TYPED
+  private static final int TOUCH_DOWN
+  private static final int TOUCH_UP
+  private static final int TOUCH_DRAGGED
+  private static final int MOUSE_MOVED
+  private static final int SCROLLED
+  private final IntSeq queue
+  private final IntSeq processingQueue
+  private InputProcessor processor
+  private long currentEventTime
+ctors:
+  public InputEventQueue() / public InputEventQueue(InputProcessor processor)
+methods:
+  public InputProcessor getProcessor()
+  public void setProcessor(InputProcessor processor)
+  public void drain()
+  private synchronized int next(int nextType, int i)
+  private void queueTime()
+  public synchronized boolean keyDown(KeyCode key)
+  public synchronized boolean keyUp(KeyCode key)
+  public synchronized boolean keyTyped(char character)
+  public synchronized boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+  public synchronized boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+  public synchronized boolean touchDragged(int screenX, int screenY, int pointer)
+  public synchronized boolean mouseMoved(int screenX, int screenY)
+  public synchronized boolean scrolled(float amountX, float amountY)
+  public long getCurrentEventTime()
+
+InputMultiplexer.java
+Java class implements arc.input.InputProcessor
+// An {@link InputProcessor} that delegates to an ordered list of other InputProcessors.
+fields:
+  private SnapshotSeq<InputProcessor> processors
+ctors:
+  public InputMultiplexer() / public InputMultiplexer(InputProcessor processors)
+methods:
+  public void addProcessor(int index, InputProcessor processor) / public void addProcessor(InputProcessor processor)
+  public void removeProcessor(int index) / public void removeProcessor(InputProcessor processor)
+  public int size()  // @return the number of processors in this multiplexer
+  public void clear()
+  public SnapshotSeq<InputProcessor> getProcessors()
+  public void setProcessors(InputProcessor processors) / public void setProcessors(Seq<InputProcessor> processors)
+  public boolean keyDown(KeyCode keycode)
+  public boolean keyUp(KeyCode keycode)
+  public boolean keyTyped(char character)
+  public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean touchDragged(int screenX, int screenY, int pointer)
+  public boolean mouseMoved(int screenX, int screenY)
+  public boolean scrolled(float amountX, float amountY)
+
+InputProcessor.java
+Java interface
+// An InputProcessor is used to receive input events from the keyboard and the touch screen (mouse on the desktop).
+methods:
+  default boolean keyDown(KeyCode keycode)  // Called when a key was pressed
+  default boolean keyUp(KeyCode keycode)  // Called when a key was released
+  default boolean keyTyped(char character)  // Called when a key was typed
+  default boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)  // @param screenX The x coordinate, origin is in the upper left corner
+  default boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)  // @param pointer the pointer for the event.
+  default boolean touchDragged(int screenX, int screenY, int pointer)  // Called when a finger or the mouse was dragged.
+  default boolean mouseMoved(int screenX, int screenY)  // @return whether the input was processed
+  default boolean scrolled(float amountX, float amountY)  // Called when the mouse wheel was scrolled.
+
+KeyBind.java
+Java class
+fields:
+  public static final Seq<KeyBind> all
+  public final String name
+  public final KeybindValue defaultValue
+  public final String category
+  public Axis value
+ctors:
+  protected KeyBind(String name, KeybindValue defaultValue, String category)
+methods:
+  public static KeyBind add(String name, KeybindValue defaultValue, String category) / public static KeyBind add(String name, KeybindValue defaultValue)  // Registers a new key binding.
+  public static void resetAll()
+  public void save()  // Saves this keybind to Settings.
+  public void load()  // Loads this keybind from settings.
+  public void resetToDefault()
+  public void unset()
+  public boolean isDefault()
+  public boolean isUnset()
+  String settingsKey()
+inner-interface: KeybindValue
+// Represents an Axis or a KeyCode.
+inner-class: Axis implements arc.input.KeyBind.KeybindValue
+  fields:
+    public KeyCode min
+    public KeyCode key
+  ctors:
+    public Axis(KeyCode key) / public Axis(KeyCode min, KeyCode max)  // Cosntructor for axis-type keys only.
+  methods:
+    public boolean equals(Object o)
+
+KeyCode.java
+(unknown)
+
+KeyboardDevice.java
+Java class implements arc.input.InputProcessor
+fields:
+  private final IntSet pressed
+  private final IntSet lastFramePressed
+  private final IntSet justPressed
+  private final IntFloatMap axes
+methods:
+  public void postUpdate()
+  public boolean isPressed(KeyCode key)
+  public boolean isTapped(KeyCode key)
+  public boolean isReleased(KeyCode key)
+  public float getAxis(KeyCode keyCode)
+  public boolean keyDown(KeyCode key)
+  public boolean keyUp(KeyCode key)
+  public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean scrolled(float amountX, float amountY)
+

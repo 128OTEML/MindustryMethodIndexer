@@ -1,0 +1,608 @@
+BannedContentDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private final ContentType type
+  private Table selectedTable
+  private Table deselectedTable
+  private ObjectSet<T> contentSet
+  private final Boolf<T> pred
+  private String contentSearch
+  private Category selectedCategory
+  private Seq<T> filteredContent
+ctors:
+  public BannedContentDialog(String title, ContentType type, Boolf<T> pred)
+methods:
+  public void show(ObjectSet<T> contentSet)
+  public void build()
+  private void rebuildTables()
+  private void rebuildTable(Table table, boolean isSelected)
+
+DrawOperation.java
+Java class
+fields:
+  static final byte opFloor
+  private LongSeq array
+methods:
+  public boolean isEmpty()
+  public int size()
+  public void remove(int amount)
+  public void addOperation(long op)
+  public void undo()
+  public void redo()
+  private void updateTile(int i)
+  int getTile(Tile tile, int type)
+  void setTile(Tile tile, int type, int to)
+inner-class: TileOpStruct
+  fields:
+    int x
+    int y
+    int type
+    int value
+inner-class: TileOpDataStruct
+  fields:
+    byte data
+
+EditorRenderer.java
+Java class implements arc.util.Disposable
+fields:
+  private static final float packPad
+  private static final int chunkSize
+  private static final Seq<Tile> tmpTiles
+  private EditorSpriteCache chunks
+  private IntSet recacheChunks
+  private int width
+  private float packWidth
+  private Shader shader
+methods:
+  public void resize(int width, int height)
+  public void draw(float tx, float ty, float tw, float th)
+  void updateStatic(int x, int y)
+  void updateBlock(Tile tile) / void updateBlock(int x, int y)
+  void recache()
+  void recacheTerrain()
+  void recacheShadows()
+  void recacheChunk(int cx, int cy)
+  public void dispose()
+
+EditorSpriteCache.java
+Java class implements arc.util.Disposable
+fields:
+  static final int vertexSize  // packed xy + color + packed uv
+  private Mesh mesh
+  private final Seq<Texture> textures
+  private final IntSeq counts
+  private final float packX
+  private float tmpVertices
+  private int index  // Index in tmpVertices of current vertex data.
+ctors:
+  public EditorSpriteCache(float[] tmpVertices, float packX, float packY, float packW, float packH)  // @param tmpVertices Temporary buffer to hold vertices while building up sprites.
+methods:
+  public boolean isEmpty()  // @return whether anything was added to the cache.
+  public void build(IndexData indices)  // Builds this cache into a mesh that can be used for rendering.
+  public void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation, float colorPacked)  // Adds the specified region to the cache.
+  private float pack(float x, float y)
+  public void render(Shader shader)  // Renders the cached mesh.
+  public void dispose()
+
+EditorTile.java
+Java class extends mindustry.world.Tile
+ctors:
+  public EditorTile(int x, int y, int floor, int overlay, int wall)
+methods:
+  public void setFloor(Floor type)
+  public boolean isEditorTile()
+  public void setBlock(Block type, Team team, int rotation, Prov<Building> entityprov)
+  public void setTeam(Team team)
+  public void setOverlay(Block overlay)
+  protected void fireChanged()
+  protected void firePreChanged()
+  public void recache()
+  protected void changed()
+  protected void changeBuild(Team team, Prov<Building> entityprov, int rotation)
+  public boolean isDarkened()
+  private boolean requiresBlockUpdate(Block block)
+  private void updateStatic()
+  private boolean skip()
+  private void op(int type, short value)
+
+EditorTool.java
+(unknown)
+
+MapEditor.java
+Java class
+fields:
+  public static final float brushSizes
+  public StringMap tags
+  public EditorRenderer renderer
+  private final Context context
+  private OperationStack stack
+  private DrawOperation currentOp
+  private boolean loading
+  public float brushSize
+  public int rotation
+  public Block drawBlock
+  public Team drawTeam
+  public boolean showTerrain
+methods:
+  public boolean isLoading()
+  public void beginEdit(int width, int height) / public void beginEdit(Map map) / public void beginEdit(Pixmap pixmap)
+  public void updateRenderer()
+  public void load(Runnable r)
+  private void createTiles(int width, int height)  // Creates a 2-D array of EditorTiles with stone as the floor block.
+  public Map createMap(Fi file)
+  private void reset()
+  public Tiles tiles()
+  public Tile tile(int x, int y)
+  public int width()
+  public int height()
+  public void drawBlocksReplace(int x, int y)
+  public void drawBlocks(int x, int y) / public void drawBlocks(int x, int y, Boolf<Tile> tester) / public void drawBlocks(int x, int y, boolean square, boolean forceOverlay, Boolf<Tile> tester)
+  boolean hasOverlap(int x, int y)
+  public void addCliffs()
+  public void drawCircle(int x, int y, Cons<Tile> drawer)
+  public void drawSquare(int x, int y, Cons<Tile> drawer)
+  public void resize(int width, int height, int shiftX, int shiftY)
+  public void clearOp()
+  public void undo()
+  public void redo()
+  public boolean canUndo()
+  public boolean canRedo()
+  public void flushOp()
+  public void addTileOp(long data)
+  public int ops()
+  public void removeLastOps(int amount)
+inner-class: Context implements mindustry.world.WorldContext
+  methods:
+    public Tile tile(int index)
+    public void resize(int width, int height)
+    public Tile create(int x, int y, int floorID, int overlayID, int wallID)
+    public boolean isGenerating()
+    public void begin()
+    public void end()
+
+MapEditorDialog.java
+Java class extends arc.scene.ui.Dialog implements arc.util.Disposable
+fields:
+  private MapView view
+  private MapInfoDialog infoDialog
+  private MapLoadDialog loadDialog
+  private MapResizeDialog resizeDialog
+  private MapGenerateDialog generateDialog
+  private SectorGenerateDialog sectorGenDialog
+  private MapPlayDialog playtestDialog
+  private ScrollPane pane
+  private BaseDialog menu
+  private Table blockSelection
+  private Rules lastSavedRules
+  private boolean saved  // currently never read
+  private boolean shownWithMap
+  private Seq<Block> blocksOut
+ctors:
+  public MapEditorDialog()
+methods:
+  public void resumeEditing()
+  private void editInGame()
+  public void resumeAfterPlaytest(Map map)
+  private void playtest()
+  public Map save()
+  protected void handleSaveBuiltin(Map map)  // Called when a built-in map save is attempted.
+  private void createDialog(String title, Object arguments)  // Argument format:
+  public Dialog show()
+  public void hide()
+  public void dispose()
+  public void beginEditMap(Fi file)
+  public MapView getView()
+  public MapGenerateDialog getGenerateDialog()
+  public void resetSaved()
+  public boolean hasPane()
+  public void build()
+  private void doInput()
+  private void tryExit()
+  private void addBlockSelection(Table cont)
+  public void rebuildBlockSelection() / private void rebuildBlockSelection(String searchText)
+
+MapGenerateDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  final boolean applied
+  Pixmap pixmap
+  Texture texture
+  GenerateInput input
+  Seq<GenerateFilter> filters
+  int scaling
+  Table filterTable
+  BorderImage preview
+  Future<?> result
+  boolean generating
+  boolean updateQueued
+  MirrorFilter dragging
+  Rect dragRect
+  Vec2 dragAxis
+  long lastDrag
+  long buffer1
+  Cons<Seq<GenerateFilter>> applier
+  CachedTile ctile
+ctors:
+  public MapGenerateDialog(boolean applied)  // @param applied whether or not to use the applied in-game mode.
+methods:
+  public void show(Seq<GenerateFilter> filters, Cons<Seq<GenerateFilter>> applier) / public void show(Cons<Seq<GenerateFilter>> applier)
+  public void applyToEditor(Seq<GenerateFilter> filters)  // Applies the specified filters to the editor.
+  MirrorFilter hit(float x, float y)
+  void drag(float x, float y)
+  void dragUpdate(boolean force)
+  void setup()
+  long[] create()
+  void rebuildFilters()
+  void showAdd()
+  long pack(Tile tile)
+  Tile unpack(long tile)
+  void apply()
+  void update()
+
+MapInfoDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private WaveInfoDialog waveInfo
+  private MapGenerateDialog generate
+  private CustomRulesDialog ruleInfo
+  private MapObjectivesDialog objectives
+  private MapLocalesDialog locales
+  private MapProcessorsDialog processors
+  private MapAssetsDialog patches
+ctors:
+  public MapInfoDialog()
+methods:
+  private void setup()
+
+MapLoadDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private Map selected
+ctors:
+  public MapLoadDialog(Cons<Map> loader)
+methods:
+  public void rebuild()
+
+MapLocalesDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private static final float cardWidth  // Width of UI property card.
+  private static final TextButtonStyle filterStyle  // Style for filter options buttons
+  private static final ContentType contentIcons  // Icons for use in map locales dialog.
+  private MapLocales locales
+  private MapLocales lastSaved
+  private boolean saved
+  private Table langs
+  private Table main
+  private Table propView
+  private String selectedLocale
+  private boolean applytoall
+  private boolean collapsed
+  private String searchString
+  private boolean searchByValue
+  private boolean showCorrect
+  private boolean showMissing
+  private boolean showSame
+ctors:
+  public MapLocalesDialog()
+methods:
+  public void show(MapLocales locales)
+  private void setup()
+  private void buildTables()
+  private void buildLocalesTable()
+  private void buildMain()
+  private void updateCard(Table table, String propKey, String propValue) / private void updateCard(Table table, String propKey, String propValue, String locale, boolean viewCard)
+  private PropertyStatus getPropertyStatus(String propKey, String propValue, String locale, boolean forView)  // Property statuses for main dialog and property view dialog are a bit different
+  private void addLocaleDialog()
+  private void propEditDialog(Table card, String key, String value)
+  private void localeEditDialog(String locale)
+  private void editDialog()
+  private void viewPropertyDialog(String key)
+  private void buildPropView(String key)
+  private void filterDialog(Runnable hidden)
+  private void addIconDialog(Cons<String> cons)
+  private void iconsTable(Table table, String search, Dialog dialog, Cons<String> cons)
+  private String writeBundles()
+  private String writeLocale(String key)
+  private MapLocales readBundles(String data)
+  private StringMap readLocale(String data)
+
+MapObjectivesCanvas.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+fields:
+  public static final int objWidth
+  public final float unitSize
+  public Seq<MapObjective> objectives
+  public ObjectiveTilemap tilemap
+  protected MapObjective query
+  private boolean pressed
+  private long visualPressed
+  private int queryX
+ctors:
+  public MapObjectivesCanvas()
+methods:
+  public void clearObjectives()
+  protected void stopQuery()
+  public void query(MapObjective obj)
+  public void placeQuery()
+  public boolean isQuerying()
+  public boolean isVisualPressed()
+inner-class: ObjectiveTilemap extends arc.scene.ui.layout.WidgetGroup
+  fields:
+    protected Connector connecting  // The connector button that is being pressed.
+    protected ObjectiveTile moving  // The current tile that is being moved.
+  ctors:
+    public ObjectiveTilemap()
+  methods:
+    public void draw()
+    protected void drawCurve(boolean remove, float x1, float y1, float x2, float y2)
+    public boolean validPlace(int x, int y, ObjectiveTile ignore)
+    public boolean createTile(MapObjective obj) / public boolean createTile(int x, int y, MapObjective obj) / public boolean createTile(int x, int y, MapObjective obj, boolean force)
+    public boolean moveTile(ObjectiveTile tile, int newX, int newY)
+    public void removeTile(ObjectiveTile tile)
+    public void clearTiles()
+    public float getPrefWidth()
+    public float getPrefHeight()
+  inner-class: ObjectiveTile extends arc.scene.ui.layout.Table
+    fields:
+      public final MapObjective obj
+      public final Mover mover
+      public final Connector conParent
+    ctors:
+      public ObjectiveTile(MapObjective obj, int x, int y)
+    methods:
+      public void pos(int x, int y)
+      public float getPrefWidth()
+      public float getPrefHeight()
+      public boolean remove()
+    inner-class: Mover extends arc.scene.event.InputListener
+      fields:
+        public int prevX
+        public float lastX
+      methods:
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+        public void touchDragged(InputEvent event, float x, float y, int pointer)
+        public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+    inner-class: Connector extends arc.scene.ui.Button
+      fields:
+        public float pointX
+        public final boolean findParent
+      ctors:
+        public Connector(boolean findParent)
+      methods:
+        public boolean canConnectTo(Connector other)
+        public void draw()
+        public ObjectiveTile tile()
+        public boolean isPressed()
+        public boolean isOver()
+inner-class: ObjectiveTile extends arc.scene.ui.layout.Table
+  fields:
+    public final MapObjective obj
+    public final Mover mover
+    public final Connector conParent
+  ctors:
+    public ObjectiveTile(MapObjective obj, int x, int y)
+  methods:
+    public void pos(int x, int y)
+    public float getPrefWidth()
+    public float getPrefHeight()
+    public boolean remove()
+  inner-class: Mover extends arc.scene.event.InputListener
+    fields:
+      public int prevX
+      public float lastX
+    methods:
+      public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+      public void touchDragged(InputEvent event, float x, float y, int pointer)
+      public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+  inner-class: Connector extends arc.scene.ui.Button
+    fields:
+      public float pointX
+      public final boolean findParent
+    ctors:
+      public Connector(boolean findParent)
+    methods:
+      public boolean canConnectTo(Connector other)
+      public void draw()
+      public ObjectiveTile tile()
+      public boolean isPressed()
+      public boolean isOver()
+inner-class: Mover extends arc.scene.event.InputListener
+  fields:
+    public int prevX
+    public float lastX
+  methods:
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public void touchDragged(InputEvent event, float x, float y, int pointer)
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+inner-class: Connector extends arc.scene.ui.Button
+  fields:
+    public float pointX
+    public final boolean findParent
+  ctors:
+    public Connector(boolean findParent)
+  methods:
+    public boolean canConnectTo(Connector other)
+    public void draw()
+    public ObjectiveTile tile()
+    public boolean isPressed()
+    public boolean isOver()
+
+MapObjectivesDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public MapObjectivesCanvas canvas
+  protected Cons<Seq<MapObjective>> out
+  private static final ObjectMap<Class<?>,FieldProvider<?>> providers  // Defines default value providers.
+  private static final ObjectMap<Class<? extends Annotation>,ObjectMap<Class<?>,FieldInterpreter<?>>> interpreters  // Maps annotation type with its field parsers.
+ctors:
+  public MapObjectivesDialog()
+methods:
+  public static FieldInterpreter<T> defaultInterpreter()
+  public static void name(Table cont, CharSequence name, Runnable remover, Boolc indexer)
+  private void doInput()
+  public void show(Seq<MapObjective> objectives, Cons<Seq<MapObjective>> out)
+  public void rebuildObjectives(Seq<MapObjective> objectives)
+  public static void showContentSelect(ContentType type, Cons<T> cons, Boolf<T> check)
+  public static void showTeamSelect(Cons<Team> cons) / public static void showTeamSelect(boolean allowNull, Cons<Team> cons)
+  public static Class<?> unbox(Class<?> boxed)
+  public static void setInterpreter(Class<T> type, FieldInterpreter<? super T> interpreter) / public static void setInterpreter(Class<? extends Annotation> anno, Class<T> type, FieldInterpreter<? super T> interpreter)
+  public static boolean hasInterpreter(Class<?> type) / public static boolean hasInterpreter(Class<? extends Annotation> anno, Class<?> type)
+  public static FieldInterpreter<T> getInterpreter(Class<T> type) / public static FieldInterpreter<T> getInterpreter(Class<? extends Annotation> anno, Class<T> type)
+  public static void setProvider(Class<T> type, FieldProvider<T> provider)
+  public static boolean hasProvider(Class<?> type)
+  public static FieldProvider<T> getProvider(Class<T> type)
+inner-interface: FieldInterpreter
+  methods:
+    void build(Table cont, CharSequence name, TypeInfo type, Field field, Runnable remover, Boolc indexer, Prov<T> get, Cons<T> set)  // Builds the interpreter for (not-necessarily) a possibly annotated field.
+inner-interface: FieldProvider
+  methods:
+    void get(TypeInfo type, Cons<T> cons)
+inner-class: TypeInfo
+// Stores parameterized or array type information for convenience.
+  fields:
+    public final Class<?> raw
+    public final TypeInfo element
+  ctors:
+    public TypeInfo(Field field) / public TypeInfo(Class<?> raw) / public TypeInfo(Class<?> raw, TypeInfo element) / public TypeInfo(Class<?> raw, Type generic)  // Use with care!
+  methods:
+    public static TypeInfo getParam(Type generic, int index)
+    public static Class<?> raw(Type type)
+
+MapProcessorsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  private IconSelectDialog iconSelect
+  private TextField search
+  private Seq<Building> processors
+  private Table list
+ctors:
+  public MapProcessorsDialog()
+methods:
+  private void rebuild()
+  private void setup()
+
+MapResizeDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public static int minSize
+  int width
+ctors:
+  public MapResizeDialog(ResizeListener cons)
+inner-interface: ResizeListener
+  methods:
+    void get(int width, int height, int shiftX, int shiftY)
+
+MapView.java
+Java class extends arc.scene.Element implements arc.input.GestureDetector.GestureListener
+fields:
+  EditorTool tool
+  private float offsetx
+  private float zoom
+  private boolean grid
+  private GridImage image
+  private Vec2 vec
+  private Rect rect
+  private Vec2 brushPolygons
+  boolean drawing
+  int lastx
+  int startx
+  float mousex
+  EditorTool lastTool
+ctors:
+  public MapView()
+methods:
+  public EditorTool getTool()
+  public void setTool(EditorTool tool)
+  public boolean isGrid()
+  public void setGrid(boolean grid)
+  public void center()
+  public void act(float delta)
+  private void clampZoom()
+  public Point2 project(float x, float y)
+  private Vec2 unproject(int x, int y)
+  public void draw()
+  private boolean active()
+  public boolean pan(float x, float y, float deltaX, float deltaY)
+  public boolean zoom(float initialDistance, float distance)
+  public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)
+  public void pinchStop()
+
+OperationStack.java
+Java class
+fields:
+  private static final int maxSize
+  private Seq<DrawOperation> stack
+  private int index
+ctors:
+  public OperationStack()
+methods:
+  public void clear()
+  public void add(DrawOperation action)
+  public boolean canUndo()
+  public boolean canRedo()
+  public void undo()
+  public void redo()
+
+SectorGenerateDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Planet planet
+  int sector
+ctors:
+  public SectorGenerateDialog()
+methods:
+  void setup()
+  void apply()
+
+WaveGraph.java
+Java class extends arc.scene.ui.layout.Table
+fields:
+  public Seq<SpawnGroup> groups
+  private Mode mode
+  private int values
+  private OrderedSet<UnitType> used
+  private int max
+  private float maxHealth
+  private Table colors
+  private ObjectSet<UnitType> hidden
+  private StringBuilder countStr
+  private float pan
+  private float zoom
+  private int from
+  private int lastFrom
+  private float lastZoom
+  private float defaultSpace
+  private FloatSeq points
+ctors:
+  public WaveGraph()
+methods:
+  private void clampZoom()
+  private void linePoint(float x, float y)
+  private void beginLine()
+  private void endLine()
+  public void rebuild()
+  Color color(UnitType type)
+  int nextStep(float value)
+
+WaveInfoDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  Seq<SpawnGroup> groups
+  private SpawnGroup expandedGroup
+  private Table table
+  private int search
+  private UnitType filterType
+  private Sort sort
+  private boolean reverseSort
+  private boolean checkedSpawns
+  private WaveGraph graph
+ctors:
+  public WaveInfoDialog()
+methods:
+  void setup()
+  void buildGroups()
+  void showUnits(Cons<UnitType> cons, boolean reset)
+  void showEffects(SpawnGroup group)
+  void updateWaves()
+

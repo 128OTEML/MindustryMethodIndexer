@@ -1,0 +1,67 @@
+// ItemSource.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        removeBar("items");
+    }
+
+// ItemSource.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.output, itemsPerSecond, StatUnit.itemsSecond);
+    }
+
+// ItemSource.java : protected TextureRegion[] icons()
+    @Override
+    protected TextureRegion[] icons(){
+        return new TextureRegion[]{Core.atlas.find("source-bottom"), region};
+    }
+
+// ItemSource.java : public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list){
+        drawPlanConfigCenter(plan, plan.config, "center", true);
+    }
+
+// ItemSource.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return true;
+    }
+
+// LiquidSource.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        removeBar("liquid");
+    }
+
+// LiquidSource.java : public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list){
+        drawPlanConfigCenter(plan, plan.config, "center", true);
+    }
+
+// LiquidSource.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{bottomRegion, region};
+    }
+
+// LiquidVoid.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        removeBar("liquid");
+    }
+
+// PowerVoid.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.remove(Stat.powerUse);
+    }
+

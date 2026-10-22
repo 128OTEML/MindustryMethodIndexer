@@ -1,0 +1,1094 @@
+// Action.java : public void restart()
+    public void restart(){
+    }
+
+// Action.java : public Element getActor()
+    public Element getActor(){
+        return actor;
+    }
+
+// Action.java : public void setActor(Element actor)
+    public void setActor(Element actor){
+        this.actor = actor;
+        if(target == null) setTarget(actor);
+        if(actor == null){
+            if(pool != null){
+                pool.free(this);
+                pool = null;
+            }
+        }
+    }
+
+// Action.java : public Element getTarget()
+    public Element getTarget(){
+        return target;
+    }
+
+// Action.java : public void setTarget(Element target)
+    public void setTarget(Element target){
+        this.target = target;
+    }
+
+// Action.java : public void reset()
+    @Override
+    public void reset(){
+        actor = null;
+        target = null;
+        pool = null;
+        restart();
+    }
+
+// Action.java : public Pool<Action> getPool()
+    public Pool<Action> getPool(){
+        return pool;
+    }
+
+// Action.java : public void setPool(Pool pool)
+    @SuppressWarnings("unchecked")
+    public void setPool(Pool pool){
+        this.pool = pool;
+    }
+
+// Action.java : public String toString()
+    @Override
+    public String toString(){
+        String name = super.toString().split("@")[0];
+        int dotIndex = name.lastIndexOf('.');
+        if(dotIndex != -1) name = name.substring(dotIndex + 1);
+        if(name.endsWith("Action")) name = name.substring(0, name.length() - 6);
+        return name;
+    }
+
+// Element.java : public void draw()
+    public void draw(){
+        validate();
+    }
+
+// Element.java : public void updateVisibility()
+    public void updateVisibility(){
+        if(visibility != null) this.visible = visibility.get();
+    }
+
+// Element.java : public boolean hasMouse()
+    public boolean hasMouse(){
+        Element e = Core.scene.hit(Core.input.mouseX(), Core.input.mouseY(), true);
+        return e == this || (e != null && e.isDescendantOf(this));
+    }
+
+// Element.java : public boolean hasKeyboard()
+    public boolean hasKeyboard(){
+        return Core.scene.getKeyboardFocus() == this;
+    }
+
+// Element.java : public boolean hasScroll()
+    public boolean hasScroll(){
+        return Core.scene.getScrollFocus() == this;
+    }
+
+// Element.java : public void requestKeyboard()
+    public void requestKeyboard(){
+        Core.scene.setKeyboardFocus(this);
+    }
+
+// Element.java : public void requestScroll()
+    public void requestScroll(){
+        Core.scene.setScrollFocus(this);
+    }
+
+// Element.java : public Element hit(float x, float y, boolean touchable)
+    public Element hit(float x, float y, boolean touchable){
+        if(touchable && this.touchable != Touchable.enabled) return null;
+        Element e = this;
+        return x >= e.translation.x && x < width + e.translation.x && y >= e.translation.y && y < height + e.translation.y ? this : null;
+    }
+
+// Element.java : public boolean remove()
+    public boolean remove(){
+        return parent != null && parent.removeChild(this, true);
+    }
+
+// Element.java : public void scrolled(Floatc cons)
+    public void scrolled(Floatc cons){
+        addListener(new InputListener(){
+            @Override
+            public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY){
+                cons.get(amountY);
+                return true;
+            }
+        });
+    }
+
+// Element.java : public boolean addListener(EventListener listener)
+    public boolean addListener(EventListener listener){
+        if(listener == null) throw new IllegalArgumentException("listener cannot be null.");
+        if(!listeners.contains(listener, true)){
+            listeners.add(listener);
+            return true;
+        }
+        return false;
+    }
+
+// Element.java : public boolean removeListener(EventListener listener)
+    public boolean removeListener(EventListener listener){
+        if(listener == null) throw new IllegalArgumentException("listener cannot be null.");
+        return listeners.remove(listener, true);
+    }
+
+// Element.java : public Seq<EventListener> getListeners()
+    public Seq<EventListener> getListeners(){
+        return listeners;
+    }
+
+// Element.java : public boolean addCaptureListener(EventListener listener)
+    public boolean addCaptureListener(EventListener listener){
+        if(listener == null) throw new IllegalArgumentException("listener cannot be null.");
+        if(!captureListeners.contains(listener, true)) captureListeners.add(listener);
+        return true;
+    }
+
+// Element.java : public boolean removeCaptureListener(EventListener listener)
+    public boolean removeCaptureListener(EventListener listener){
+        if(listener == null) throw new IllegalArgumentException("listener cannot be null.");
+        return captureListeners.remove(listener, true);
+    }
+
+// Element.java : public Seq<EventListener> getCaptureListeners()
+    public Seq<EventListener> getCaptureListeners(){
+        return captureListeners;
+    }
+
+// Element.java : public void addAction(Action action)
+    public void addAction(Action action){
+        action.setActor(this);
+        actions.add(action);
+
+        if(stage != null && stage.getActionsRequestRendering()) Core.graphics.requestRendering();
+    }
+
+// Element.java : public void actions(Action actions)
+    public void actions(Action... actions){
+        addAction(Actions.sequence(actions));
+    }
+
+// Element.java : public void removeAction(Action action)
+    public void removeAction(Action action){
+        if(actions.remove(action, true)) action.setActor(null);
+    }
+
+// Element.java : public Seq<Action> getActions()
+    public Seq<Action> getActions(){
+        return actions;
+    }
+
+// Element.java : public boolean hasActions()
+    public boolean hasActions(){
+        return actions.size > 0;
+    }
+
+// Element.java : public void clearActions()
+    public void clearActions(){
+        for(int i = actions.size - 1; i >= 0; i--)
+            actions.get(i).setActor(null);
+        actions.clear();
+    }
+
+// Element.java : public void clearListeners()
+    public void clearListeners(){
+        listeners.clear();
+        captureListeners.clear();
+    }
+
+// Element.java : public void clear()
+    public void clear(){
+        clearActions();
+        clearListeners();
+    }
+
+// Element.java : public Scene getScene()
+    public Scene getScene(){
+        return stage;
+    }
+
+// Element.java : protected void setScene(Scene stage)
+    protected void setScene(Scene stage){
+        this.stage = stage;
+    }
+
+// Element.java : public boolean isDescendantOf(Boolf<Element> actor) / public boolean isDescendantOf(Element actor)
+    public boolean isDescendantOf(Boolf<Element> actor){
+        Element parent = this;
+        while(parent != null){
+            if(actor.get(parent)) return true;
+            parent = parent.parent;
+        }
+        return false;
+    }
+
+// Element.java : public boolean isAscendantOf(Element actor)
+    public boolean isAscendantOf(Element actor){
+        if(actor == null) throw new IllegalArgumentException("actor cannot be null.");
+        while(true){
+            if(actor == null) return false;
+            if(actor == this) return true;
+            actor = actor.parent;
+        }
+    }
+
+// Element.java : public boolean hasParent()
+    public boolean hasParent(){
+        return parent != null;
+    }
+
+// Element.java : public boolean isTouchable()
+    public boolean isTouchable(){
+        return touchable == Touchable.enabled;
+    }
+
+// Element.java : public float getX(int alignment)
+    public float getX(int alignment){
+        float x = this.x;
+        if((alignment & right) != 0)
+            x += width;
+        else if((alignment & left) == 0) //
+            x += width / 2;
+        return x;
+    }
+
+// Element.java : public float getY(int alignment)
+    public float getY(int alignment){
+        float y = this.y;
+        if((alignment & top) != 0)
+            y += height;
+        else if((alignment & bottom) == 0) //
+            y += height / 2;
+        return y;
+    }
+
+// Element.java : public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)
+    public void setPosition(float x, float y){
+        if(this.x != x || this.y != y){
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+// Element.java : public void moveBy(float x, float y)
+    public void moveBy(float x, float y){
+        if(x != 0 || y != 0){
+            this.x += x;
+            this.y += y;
+        }
+    }
+
+// Element.java : public float getWidth()
+    public float getWidth(){
+        return width;
+    }
+
+// Element.java : public void setWidth(float width)
+    public void setWidth(float width){
+        if(this.width != width){
+            this.width = width;
+            sizeChanged();
+        }
+    }
+
+// Element.java : public float getHeight()
+    public float getHeight(){
+        return height;
+    }
+
+// Element.java : public void setHeight(float height)
+    public void setHeight(float height){
+        if(this.height != height){
+            this.height = height;
+            sizeChanged();
+        }
+    }
+
+// Element.java : public float getTop()
+    public float getTop(){
+        return y + height;
+    }
+
+// Element.java : public float getRight()
+    public float getRight(){
+        return x + width;
+    }
+
+// Element.java : protected void sizeChanged()
+    protected void sizeChanged(){
+        invalidate();
+    }
+
+// Element.java : protected void rotationChanged()
+    protected void rotationChanged(){
+    }
+
+// Element.java : public void setSize(float size) / public void setSize(float width, float height)
+    public void setSize(float size){
+        setSize(size, size);
+    }
+
+// Element.java : public void sizeBy(float size) / public void sizeBy(float width, float height)
+    public void sizeBy(float size){
+        if(size != 0){
+            width += size;
+            height += size;
+            sizeChanged();
+        }
+    }
+
+// Element.java : public void setBounds(float x, float y, float width, float height)
+    public void setBounds(float x, float y, float width, float height){
+        if(this.x != x || this.y != y){
+            this.x = x;
+            this.y = y;
+        }
+        if(this.width != width || this.height != height){
+            this.width = width;
+            this.height = height;
+            sizeChanged();
+        }
+    }
+
+// Element.java : public void setOrigin(float originX, float originY) / public void setOrigin(int alignment)
+    public void setOrigin(float originX, float originY){
+        this.originX = originX;
+        this.originY = originY;
+    }
+
+// Element.java : public void setScale(float scaleXY) / public void setScale(float scaleX, float scaleY)
+    public void setScale(float scaleXY){
+        this.scaleX = scaleXY;
+        this.scaleY = scaleXY;
+    }
+
+// Element.java : public void scaleBy(float scale) / public void scaleBy(float scaleX, float scaleY)
+    public void scaleBy(float scale){
+        scaleX += scale;
+        scaleY += scale;
+    }
+
+// Element.java : public float getRotation()
+    public float getRotation(){
+        return rotation;
+    }
+
+// Element.java : public void setRotation(float degrees)
+    public void setRotation(float degrees){
+        if(this.rotation != degrees){
+            this.rotation = degrees;
+            rotationChanged();
+        }
+    }
+
+// Element.java : public void setRotationOrigin(float degrees, int align)
+    public void setRotationOrigin(float degrees, int align){
+        setOrigin(align);
+        if(this.rotation != degrees){
+            this.rotation = degrees;
+            rotationChanged();
+        }
+    }
+
+// Element.java : public void rotateBy(float amountInDegrees)
+    public void rotateBy(float amountInDegrees){
+        if(amountInDegrees != 0){
+            rotation += amountInDegrees;
+            rotationChanged();
+        }
+    }
+
+// Element.java : public void setColor(float r, float g, float b, float a) / public void setColor(Color color)
+    public void setColor(float r, float g, float b, float a){
+        color.set(r, g, b, a);
+    }
+
+// Element.java : public void toFront()
+    public void toFront(){
+        setZIndex(Integer.MAX_VALUE);
+    }
+
+// Element.java : public void toBack()
+    public void toBack(){
+        setZIndex(0);
+    }
+
+// Element.java : public int getZIndex()
+    public int getZIndex(){
+        Group parent = this.parent;
+        if(parent == null) return -1;
+        return parent.children.indexOf(this, true);
+    }
+
+// Element.java : public void setZIndex(int index)
+    public void setZIndex(int index){
+        if(index < 0) throw new IllegalArgumentException("ZIndex cannot be < 0.");
+        Group parent = this.parent;
+        if(parent == null) return;
+        Seq<Element> children = parent.children;
+        if(children.size == 1) return;
+        index = Math.min(index, children.size - 1);
+        if(children.get(index) == this) return;
+        if(!children.remove(this, true)) return;
+        children.insert(index, this);
+    }
+
+// Element.java : public boolean clipBegin() / public boolean clipBegin(float x, float y, float width, float height)
+    public boolean clipBegin(){
+        return clipBegin(x, y, width, height);
+    }
+
+// Element.java : public void clipEnd()
+    public void clipEnd(){
+        Pools.free(ScissorStack.pop());
+    }
+
+// Element.java : public Vec2 screenToLocalCoordinates(Vec2 screenCoords)
+    public Vec2 screenToLocalCoordinates(Vec2 screenCoords){
+        Scene stage = this.stage;
+        if(stage == null) return screenCoords;
+        return stageToLocalCoordinates(stage.screenToStageCoordinates(screenCoords));
+    }
+
+// Element.java : public Vec2 stageToLocalCoordinates(Vec2 stageCoords)
+    public Vec2 stageToLocalCoordinates(Vec2 stageCoords){
+        if(parent != null) parent.stageToLocalCoordinates(stageCoords);
+        parentToLocalCoordinates(stageCoords);
+        return stageCoords;
+    }
+
+// Element.java : public Vec2 localToStageCoordinates(Vec2 localCoords)
+    public Vec2 localToStageCoordinates(Vec2 localCoords){
+        return localToAscendantCoordinates(null, localCoords);
+    }
+
+// Element.java : public Vec2 localToAscendantCoordinates(Element ascendant, Vec2 localCoords)
+    public Vec2 localToAscendantCoordinates(Element ascendant, Vec2 localCoords){
+        Element actor = this;
+        while(actor != null){
+            actor.localToParentCoordinates(localCoords);
+            actor = actor.parent;
+            if(actor == ascendant) break;
+        }
+        return localCoords;
+    }
+
+// Element.java : public float getMinWidth()
+    public float getMinWidth(){
+        return getPrefWidth();
+    }
+
+// Element.java : public float getMinHeight()
+    public float getMinHeight(){
+        return getPrefHeight();
+    }
+
+// Element.java : public float getPrefWidth()
+    public float getPrefWidth(){
+        return 0;
+    }
+
+// Element.java : public float getPrefHeight()
+    public float getPrefHeight(){
+        return 0;
+    }
+
+// Element.java : public float getMaxWidth()
+    public float getMaxWidth(){
+        return 0;
+    }
+
+// Element.java : public float getMaxHeight()
+    public float getMaxHeight(){
+        return 0;
+    }
+
+// Element.java : public void setLayoutEnabled(boolean enabled)
+    public void setLayoutEnabled(boolean enabled){
+        layoutEnabled = enabled;
+        if(enabled) invalidateHierarchy();
+    }
+
+// Element.java : public boolean needsLayout()
+    public boolean needsLayout(){
+        return needsLayout;
+    }
+
+// Element.java : public void invalidate()
+    public void invalidate(){
+        needsLayout = true;
+    }
+
+// Element.java : public void invalidateHierarchy()
+    public void invalidateHierarchy(){
+        if(!layoutEnabled) return;
+        invalidate();
+        Group parent = this.parent;
+        if(parent != null) parent.invalidateHierarchy();
+    }
+
+// Element.java : public void pack()
+    public void pack(){
+        setSize(getPrefWidth(), getPrefHeight());
+        validate();
+    }
+
+// Element.java : public void setFillParent(boolean fillParent)
+    public void setFillParent(boolean fillParent){
+        this.fillParent = fillParent;
+    }
+
+// Element.java : public void layout()
+    public void layout(){}
+
+// Element.java : public void setTranslation(float x, float y)
+    public void setTranslation(float x, float y){
+        translation.x = x;
+        translation.y = y;
+    }
+
+// Element.java : public void keyDown(KeyCode key, Runnable l) / public void keyDown(Cons<KeyCode> cons)
+    public void keyDown(KeyCode key, Runnable l){
+        keyDown(k -> {
+            if(k == key)
+                l.run();
+        });
+    }
+
+// Element.java : public void fireClick()
+    public void fireClick(){
+        for(EventListener listener : getListeners()){
+            if(listener instanceof ClickListener){
+                ((ClickListener)listener).clicked(new InputEvent(), -1, -1);
+            }
+        }
+    }
+
+// Element.java : public ClickListener clicked(Runnable r) / public ClickListener clicked(KeyCode button, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Cons<ClickListener> runner)
+    public ClickListener clicked(Runnable r){
+        return clicked(KeyCode.mouseLeft, r);
+    }
+
+// Element.java : public void hovered(Runnable r)
+    public void hovered(Runnable r){
+        addListener(new InputListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+                r.run();
+            }
+        });
+    }
+
+// Element.java : public void exited(Runnable r)
+    public void exited(Runnable r){
+        addListener(new InputListener(){
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Element fromActor){
+                r.run();
+            }
+        });
+    }
+
+// Element.java : public void released(Runnable r)
+    public void released(Runnable r){
+        addListener(new InputListener(){
+            @Override public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
+                return true;
+            }
+            @Override public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
+                r.run();
+            }
+        });
+    }
+
+// Element.java : public void change()
+    public void change(){
+        fire(new ChangeListener.ChangeEvent());
+    }
+
+// Element.java : public void changed(Runnable r)
+    public void changed(Runnable r){
+        Element elem = this;
+        addListener(new ChangeListener(){
+            @Override
+            public void changed(ChangeEvent event, Element actor){
+                if(!(elem instanceof Disableable && ((Disableable)elem).isDisabled())) r.run();
+            }
+        });
+    }
+
+// Element.java : public Element update(Runnable r)
+    public Element update(Runnable r){
+        update = r;
+        return this;
+    }
+
+// Element.java : public Element visible(Boolp vis)
+    public Element visible(Boolp vis){
+        visibility = vis;
+        return this;
+    }
+
+// Element.java : public void touchable(Prov<Touchable> touch)
+    public void touchable(Prov<Touchable> touch){
+        this.touchablility = touch;
+    }
+
+// Element.java : public String toString()
+    @Override
+    public String toString(){
+        String name = this.name;
+        if(name == null){
+            name = super.toString().split("@")[0];
+            int dotIndex = name.lastIndexOf('.');
+            if(dotIndex != -1) name = name.substring(dotIndex + 1);
+        }
+        return name;
+    }
+
+// Group.java : public void draw()
+    @Override
+    public void draw(){
+        if(transform) applyTransform(computeTransform());
+        drawChildren();
+        if(transform) resetTransform();
+    }
+
+// Group.java : protected void applyTransform(Mat transform)
+    protected void applyTransform(Mat transform){
+        oldTransform.set(Draw.trans());
+        Draw.trans(transform);
+    }
+
+// Group.java : protected void resetTransform()
+    protected void resetTransform(){
+        Draw.trans(oldTransform);
+    }
+
+// Group.java : public Rect getCullingArea()
+    public Rect getCullingArea(){
+        return cullingArea;
+    }
+
+// Group.java : public void setCullingArea(Rect cullingArea)
+    @Override
+    public void setCullingArea(Rect cullingArea){
+        this.cullingArea = cullingArea;
+    }
+
+// Group.java : protected void childrenChanged()
+    protected void childrenChanged(){
+    }
+
+// Group.java : public void forEach(Cons<Element> cons)
+    public void forEach(Cons<Element> cons){
+        for(Element e : getChildren()){
+            cons.get(e);
+            if(e instanceof Group){
+                ((Group)e).forEach(cons);
+            }
+        }
+    }
+
+// Group.java : public void addChild(Element actor)
+    public void addChild(Element actor){
+        if(actor.parent != null){
+            if(actor.parent == this) return;
+            actor.parent.removeChild(actor, false);
+        }
+        children.add(actor);
+        actor.parent = this;
+        actor.setScene(getScene());
+        childrenChanged();
+    }
+
+// Group.java : public void addChildBefore(Element actorBefore, Element actor)
+    public void addChildBefore(Element actorBefore, Element actor){
+        if(actor.parent != null){
+            if(actor.parent == this) return;
+            actor.parent.removeChild(actor, false);
+        }
+        int index = children.indexOf(actorBefore, true);
+        children.insert(index, actor);
+        actor.parent = this;
+        actor.setScene(getScene());
+        childrenChanged();
+    }
+
+// Group.java : public boolean removeChild(Element actor) / public boolean removeChild(Element actor, boolean unfocus)
+    public boolean removeChild(Element actor){
+        return removeChild(actor, true);
+    }
+
+// Group.java : public void clear()
+    @Override
+    public void clear(){
+        super.clear();
+        clearChildren();
+    }
+
+// Group.java : protected void setScene(Scene stage)
+    @Override
+    protected void setScene(Scene stage){
+        super.setScene(stage);
+        Element[] childrenArray = children.items;
+        for(int i = 0, n = children.size; i < n; i++)
+            childrenArray[i].setScene(stage); // StackOverflowError here means the group is its own ancestor.
+    }
+
+// Group.java : public boolean swapActor(int first, int second) / public boolean swapActor(Element first, Element second)
+    public boolean swapActor(int first, int second){
+        int maxIndex = children.size;
+        if(first < 0 || first >= maxIndex) return false;
+        if(second < 0 || second >= maxIndex) return false;
+        children.swap(first, second);
+        return true;
+    }
+
+// Group.java : public SnapshotSeq<Element> getChildren()
+    public SnapshotSeq<Element> getChildren(){
+        return children;
+    }
+
+// Group.java : public boolean hasChildren()
+    public boolean hasChildren(){
+        return children.size > 0;
+    }
+
+// Group.java : public boolean isTransform()
+    public boolean isTransform(){
+        return transform;
+    }
+
+// Group.java : public void setTransform(boolean transform)
+    public void setTransform(boolean transform){
+        this.transform = transform;
+    }
+
+// Group.java : public Vec2 localToDescendantCoordinates(Element descendant, Vec2 localCoords)
+    public Vec2 localToDescendantCoordinates(Element descendant, Vec2 localCoords){
+        Group parent = descendant.parent;
+        if(parent == null) throw new IllegalArgumentException("Child is not a descendant: " + descendant);
+        // First convert to the actor's parent coordinates.
+        if(parent != this) localToDescendantCoordinates(parent, localCoords);
+        // Then from each parent down to the descendant.
+        descendant.parentToLocalCoordinates(localCoords);
+        return localCoords;
+    }
+
+// Group.java : public String toString() / void toString(StringBuilder buffer, int indent)
+    @Override
+    public String toString(){
+        StringBuilder buffer = new StringBuilder(128);
+        toString(buffer, 1);
+        buffer.setLength(buffer.length() - 1);
+        return buffer.toString();
+    }
+
+// Scene.java : public T getStyle(Class<T> type)
+    @SuppressWarnings("unchecked")
+    public <T> T getStyle(Class<T> type){
+        return (T)styleDefaults.getThrow(type, () -> new IllegalArgumentException("No default style for type: " + type.getSimpleName()));
+    }
+
+// Scene.java : public boolean hasStyle(Class<T> type)
+    public <T> boolean hasStyle(Class<T> type){
+        return styleDefaults.containsKey(type);
+    }
+
+// Scene.java : public void addStyle(Class<T> type, T style)
+    public <T> void addStyle(Class<T> type, T style){
+        styleDefaults.put(type, style);
+    }
+
+// Scene.java : public void registerStyles(Class<?> type) / public void registerStyles(Object obj)
+    public void registerStyles(Class<?> type){
+        Seq.with(type.getFields()).each(f -> f.getName().startsWith("default"), f -> addStyle(f.getType(), Reflect.get(f)));
+    }
+
+// Scene.java : public Element getHoverElement()
+    public @Nullable Element getHoverElement(){
+        return mouseOverElement;
+    }
+
+// Scene.java : public boolean hasField()
+    public boolean hasField(){
+        return getKeyboardFocus() instanceof TextField;
+    }
+
+// Scene.java : public boolean hasMouse() / public boolean hasMouse(float mousex, float mousey)
+    public boolean hasMouse(){
+        return getHoverElement() != null;
+    }
+
+// Scene.java : public boolean hasDialog()
+    public boolean hasDialog(){
+        return getScrollFocus() instanceof Dialog || (getKeyboardFocus() != null && getKeyboardFocus().isDescendantOf(e -> e instanceof Dialog));
+    }
+
+// Scene.java : public boolean hasKeyboard()
+    public boolean hasKeyboard(){
+        return getKeyboardFocus() != null;
+    }
+
+// Scene.java : public boolean hasScroll()
+    public boolean hasScroll(){
+        return getScrollFocus() != null;
+    }
+
+// Scene.java : public Dialog getDialog()
+    public Dialog getDialog(){
+        if(getKeyboardFocus() instanceof Dialog){
+            return (Dialog)getKeyboardFocus();
+        }else if(getScrollFocus() instanceof Dialog){
+            return (Dialog)getScrollFocus();
+        }
+        return null;
+    }
+
+// Scene.java : public void draw()
+    public void draw(){
+        Camera camera = viewport.getCamera();
+        camera.update();
+
+        if(!root.visible) return;
+
+        Draw.proj(camera);
+
+        root.draw();
+        Draw.flush();
+    }
+
+// Scene.java : public void act() / public void act(float delta)
+    public void act(){
+        act(graphics.getDeltaTime());
+    }
+
+// Scene.java : public Element find(String name) / public Element find(Boolf<Element> pred)
+    public Element find(String name){
+        return root.find(name);
+    }
+
+// Scene.java : public Element findVisible(String name)
+    public Element findVisible(String name){
+        return root.findVisible(name);
+    }
+
+// Scene.java : public Table table() / public Table table(Cons<Table> cons) / public Table table(Drawable style, Cons<Table> cons)
+    public Table table(){
+        Table table = new Table();
+        table.setFillParent(true);
+        add(table);
+        return table;
+    }
+
+// Scene.java : public boolean keyDown(KeyCode keyCode)
+    @Override
+    public boolean keyDown(KeyCode keyCode){
+        Element target = keyboardFocus == null ? root : keyboardFocus;
+        InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
+        event.type = (InputEventType.keyDown);
+        event.keyCode = keyCode;
+        target.fire(event);
+        boolean handled = event.handled;
+        Pools.free(event);
+        return handled;
+    }
+
+// Scene.java : public boolean keyUp(KeyCode keyCode)
+    @Override
+    public boolean keyUp(KeyCode keyCode){
+        Element target = keyboardFocus == null ? root : keyboardFocus;
+        InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
+        event.type = (InputEventType.keyUp);
+        event.keyCode = keyCode;
+        target.fire(event);
+        boolean handled = event.handled;
+        Pools.free(event);
+        return handled;
+    }
+
+// Scene.java : public boolean keyTyped(char character)
+    @Override
+    public boolean keyTyped(char character){
+        Element target = keyboardFocus == null ? root : keyboardFocus;
+        InputEvent event = Pools.obtain(InputEvent.class, InputEvent::new);
+        event.type = (InputEventType.keyTyped);
+        event.character = character;
+        target.fire(event);
+        boolean handled = event.handled;
+        Pools.free(event);
+        return handled;
+    }
+
+// Scene.java : public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)
+    public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
+        TouchFocus focus = Pools.obtain(TouchFocus.class, TouchFocus::new);
+        focus.listenerActor = listenerActor;
+        focus.target = target;
+        focus.listener = listener;
+        focus.pointer = pointer;
+        focus.button = button;
+        touchFocuses.add(focus);
+    }
+
+// Scene.java : public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)
+    public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button){
+        SnapshotSeq<TouchFocus> touchFocuses = this.touchFocuses;
+        for(int i = touchFocuses.size - 1; i >= 0; i--){
+            TouchFocus focus = touchFocuses.get(i);
+            if(focus.listener == listener && focus.listenerActor == listenerActor && focus.target == target
+            && focus.pointer == pointer && focus.button == button){
+                touchFocuses.remove(i);
+                Pools.free(focus);
+            }
+        }
+    }
+
+// Scene.java : public void add(Element actor)
+    public void add(Element actor){
+        root.addChild(actor);
+    }
+
+// Scene.java : public void addAction(Action action)
+    public void addAction(Action action){
+        root.addAction(action);
+    }
+
+// Scene.java : public Seq<Element> getElements()
+    public Seq<Element> getElements(){
+        return root.children;
+    }
+
+// Scene.java : public boolean addListener(EventListener listener)
+    public boolean addListener(EventListener listener){
+        return root.addListener(listener);
+    }
+
+// Scene.java : public boolean removeListener(EventListener listener)
+    public boolean removeListener(EventListener listener){
+        return root.removeListener(listener);
+    }
+
+// Scene.java : public boolean addCaptureListener(EventListener listener)
+    public boolean addCaptureListener(EventListener listener){
+        return root.addCaptureListener(listener);
+    }
+
+// Scene.java : public boolean removeCaptureListener(EventListener listener)
+    public boolean removeCaptureListener(EventListener listener){
+        return root.removeCaptureListener(listener);
+    }
+
+// Scene.java : public void clear()
+    public void clear(){
+        unfocusAll();
+        root.clear();
+    }
+
+// Scene.java : public void unfocusAll()
+    public void unfocusAll(){
+        setScrollFocus(null);
+        setKeyboardFocus(null);
+        cancelTouchFocus();
+    }
+
+// Scene.java : public void unfocus(Element actor)
+    public void unfocus(Element actor){
+        cancelTouchFocus(actor);
+        if(scrollFocus != null && scrollFocus.isDescendantOf(actor)) setScrollFocus(null);
+        if(keyboardFocus != null && keyboardFocus.isDescendantOf(actor)) setKeyboardFocus(null);
+    }
+
+// Scene.java : public Element getKeyboardFocus()
+    public Element getKeyboardFocus(){
+        return keyboardFocus;
+    }
+
+// Scene.java : public Element getScrollFocus()
+    public Element getScrollFocus(){
+        return scrollFocus;
+    }
+
+// Scene.java : public Viewport getViewport()
+    public Viewport getViewport(){
+        return viewport;
+    }
+
+// Scene.java : public void setViewport(Viewport viewport)
+    public void setViewport(Viewport viewport){
+        this.viewport = viewport;
+    }
+
+// Scene.java : public float getWidth()
+    public float getWidth(){
+        return viewport.getWorldWidth();
+    }
+
+// Scene.java : public float getHeight()
+    public float getHeight(){
+        return viewport.getWorldHeight();
+    }
+
+// Scene.java : public Camera getCamera()
+    public Camera getCamera(){
+        return viewport.getCamera();
+    }
+
+// Scene.java : public Element hit(float stageX, float stageY, boolean touchable)
+    public Element hit(float stageX, float stageY, boolean touchable){
+        root.parentToLocalCoordinates(tempCoords.set(stageX, stageY));
+        return root.hit(tempCoords.x, tempCoords.y, touchable);
+    }
+
+// Scene.java : public Vec2 screenToStageCoordinates(Vec2 screenCoords)
+    public Vec2 screenToStageCoordinates(Vec2 screenCoords){
+        viewport.unproject(screenCoords);
+        return screenCoords;
+    }
+
+// Scene.java : public Vec2 stageToScreenCoordinates(Vec2 stageCoords)
+    public Vec2 stageToScreenCoordinates(Vec2 stageCoords){
+        viewport.project(stageCoords);
+        stageCoords.y = viewport.getScreenHeight() - stageCoords.y;
+        return stageCoords;
+    }
+
+// Scene.java : public Vec2 toScreenCoordinates(Vec2 coords, Mat transformMatrix)
+    public Vec2 toScreenCoordinates(Vec2 coords, Mat transformMatrix){
+        return viewport.toScreenCoordinates(coords, transformMatrix);
+    }
+
+// Scene.java : public void calculateScissors(Rect localRect, Rect scissorRect)
+    public void calculateScissors(Rect localRect, Rect scissorRect){
+        Mat transformMatrix = Draw.trans();
+        viewport.calculateScissors(transformMatrix, localRect, scissorRect);
+    }
+
+// Scene.java : public boolean getActionsRequestRendering()
+    public boolean getActionsRequestRendering(){
+        return actionsRequestRendering;
+    }
+
+// Scene.java : public void setActionsRequestRendering(boolean actionsRequestRendering)
+    public void setActionsRequestRendering(boolean actionsRequestRendering){
+        this.actionsRequestRendering = actionsRequestRendering;
+    }
+
+// Scene.java : protected boolean isInsideViewport(int screenX, int screenY)
+    protected boolean isInsideViewport(int screenX, int screenY){
+        int x0 = viewport.getScreenX();
+        int x1 = x0 + viewport.getScreenWidth();
+        int y0 = viewport.getScreenY();
+        int y1 = y0 + viewport.getScreenHeight();
+        screenY = graphics.getHeight() - screenY;
+        return screenX >= x0 && screenX < x1 && screenY >= y0 && screenY < y1;
+    }
+
+// Scene.java : public void resize(int width, int height)
+    public void resize(int width, int height){
+        viewport.update(width, height, true);
+    }
+

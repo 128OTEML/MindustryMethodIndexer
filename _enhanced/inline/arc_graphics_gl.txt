@@ -1,0 +1,1172 @@
+// FacedCubemapData.java : public void load(CubemapSide side, Fi file) / public void load(CubemapSide side, Pixmap pixmap)
+    public void load(CubemapSide side, Fi file){
+        data[side.index] = TextureData.load(file, false);
+    }
+
+// FacedCubemapData.java : public boolean isComplete()
+    public boolean isComplete(){
+        for(int i = 0; i < data.length; i++)
+            if(data[i] == null) return false;
+        return true;
+    }
+
+// FacedCubemapData.java : public TextureData getTextureData(CubemapSide side)
+    public TextureData getTextureData(CubemapSide side){
+        return data[side.index];
+    }
+
+// FacedCubemapData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return false;
+    }
+
+// FacedCubemapData.java : public void prepare()
+    @Override
+    public void prepare(){
+        if(!isComplete()) throw new ArcRuntimeException("You need to complete your cubemap data before using it");
+        for(TextureData datum : data) if(!datum.isPrepared()) datum.prepare();
+    }
+
+// FileTextureArrayData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return prepared;
+    }
+
+// FileTextureArrayData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return textureDatas[0].getWidth();
+    }
+
+// FileTextureArrayData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return textureDatas[0].getHeight();
+    }
+
+// FileTextureArrayData.java : public int getDepth()
+    @Override
+    public int getDepth(){
+        return depth;
+    }
+
+// FileTextureArrayData.java : public int getInternalFormat()
+    @Override
+    public int getInternalFormat(){
+        return Gl.unsignedByte;
+    }
+
+// FileTextureArrayData.java : public int getGLType()
+    @Override
+    public int getGLType(){
+        return Gl.rgba;
+    }
+
+// FileTextureData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return isPrepared;
+    }
+
+// FileTextureData.java : public void prepare()
+    @Override
+    public void prepare(){
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
+        if(pixmap == null){
+            pixmap = new Pixmap(file);
+            width = pixmap.width;
+            height = pixmap.height;
+        }
+        isPrepared = true;
+    }
+
+// FileTextureData.java : public Pixmap consumePixmap()
+    @Override
+    public Pixmap consumePixmap(){
+        if(!isPrepared) throw new ArcRuntimeException("Call prepare() before calling getPixmap()");
+        isPrepared = false;
+        Pixmap pixmap = this.pixmap;
+        this.pixmap = null;
+        return pixmap;
+    }
+
+// FileTextureData.java : public boolean disposePixmap()
+    @Override
+    public boolean disposePixmap(){
+        return true;
+    }
+
+// FileTextureData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return width;
+    }
+
+// FileTextureData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return height;
+    }
+
+// FileTextureData.java : public Format getFormat()
+    @Override
+    public Format getFormat(){
+        return Format.rgba8888;
+    }
+
+// FileTextureData.java : public boolean useMipMaps()
+    @Override
+    public boolean useMipMaps(){
+        return useMipMaps;
+    }
+
+// FileTextureData.java : public Fi getFileHandle()
+    public Fi getFileHandle(){
+        return file;
+    }
+
+// FileTextureData.java : public boolean isCustom()
+    @Override
+    public boolean isCustom(){
+        return false;
+    }
+
+// FileTextureData.java : public void consumeCustomData(int target)
+    @Override
+    public void consumeCustomData(int target){
+        throw new ArcRuntimeException("This TextureData implementation does not upload data itself");
+    }
+
+// FileTextureData.java : public String toString()
+    public String toString(){
+        return file.toString();
+    }
+
+// FloatFrameBuffer.java : protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)
+    @Override
+    protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil){
+        //does nothing
+    }
+
+// FloatFrameBuffer.java : public void resize(int width, int height)
+    @Override
+    public void resize(int width, int height){
+        throw new IllegalArgumentException("resize() is currently unsupported here.");
+    }
+
+// FloatTextureData.java : public boolean isCustom()
+    @Override
+    public boolean isCustom(){
+        return true;
+    }
+
+// FloatTextureData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return isPrepared;
+    }
+
+// FloatTextureData.java : public Pixmap consumePixmap()
+    @Override
+    public Pixmap consumePixmap(){
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+// FloatTextureData.java : public boolean disposePixmap()
+    @Override
+    public boolean disposePixmap(){
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+// FloatTextureData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return width;
+    }
+
+// FloatTextureData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return height;
+    }
+
+// FloatTextureData.java : public Format getFormat()
+    @Override
+    public Format getFormat(){
+        return Format.rgba8888; // it's not true, but FloatTextureData.getFormat() isn't used anywhere
+    }
+
+// FloatTextureData.java : public boolean useMipMaps()
+    @Override
+    public boolean useMipMaps(){
+        return false;
+    }
+
+// FloatTextureData.java : public FloatBuffer getBuffer()
+    public FloatBuffer getBuffer(){
+        return buffer;
+    }
+
+// FrameBuffer.java : protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil)
+    protected void create(Pixmap.Format format, int width, int height, boolean hasDepth, boolean hasStencil){
+        width = Math.max(width, 2);
+        height = Math.max(height, 2);
+        this.format = format;
+        FrameBufferBuilder frameBufferBuilder = new FrameBufferBuilder(width, height);
+        frameBufferBuilder.addBasicColorTextureAttachment(format);
+        if(hasDepth) frameBufferBuilder.addBasicDepthRenderBuffer();
+        if(hasStencil) frameBufferBuilder.addBasicStencilRenderBuffer();
+        this.bufferBuilder = frameBufferBuilder;
+        build();
+    }
+
+// FrameBuffer.java : public void blit(Shader shader)
+    public void blit(Shader shader){
+        Draw.blit(this, shader);
+    }
+
+// FrameBuffer.java : public boolean resizeCheck(int width, int height)
+    public boolean resizeCheck(int width, int height){
+        int lastWidth = getWidth(), lastHeight = getHeight();
+        resize(width, height);
+        return lastWidth != getWidth() || lastHeight != getHeight();
+    }
+
+// FrameBuffer.java : public static void unbind()
+    public static void unbind(){
+        GLFrameBuffer.unbind();
+    }
+
+// FrameBuffer.java : protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)
+    @Override
+    protected Texture createTexture(FrameBufferTextureAttachmentSpec attachmentSpec){
+        GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
+        Texture result = new Texture(data);
+        result.setFilter(TextureFilter.linear, TextureFilter.linear);
+        result.setWrap(TextureWrap.clampToEdge, TextureWrap.clampToEdge);
+        return result;
+    }
+
+// FrameBuffer.java : protected void disposeTexture(Texture colorTexture)
+    @Override
+    protected void disposeTexture(Texture colorTexture){
+        colorTexture.dispose();
+    }
+
+// FrameBuffer.java : protected void attachTexture(int attachment, Texture texture)
+    @Override
+    protected void attachTexture(int attachment, Texture texture){
+        Gl.framebufferTexture2D(Gl.framebuffer, attachment, Gl.texture2d, texture.getTextureObjectHandle(), 0);
+    }
+
+// FrameBufferCubemap.java : protected Cubemap createTexture(FrameBufferTextureAttachmentSpec attachmentSpec)
+    @Override
+    protected Cubemap createTexture(FrameBufferTextureAttachmentSpec attachmentSpec){
+        GLOnlyTextureData data = new GLOnlyTextureData(bufferBuilder.width, bufferBuilder.height, 0, attachmentSpec.internalFormat, attachmentSpec.format, attachmentSpec.type);
+        Cubemap result = new Cubemap(data, data, data, data, data, data);
+        result.setFilter(TextureFilter.linear, TextureFilter.linear);
+        result.setWrap(TextureWrap.clampToEdge, TextureWrap.clampToEdge);
+        return result;
+    }
+
+// FrameBufferCubemap.java : protected void disposeTexture(Cubemap colorTexture)
+    @Override
+    protected void disposeTexture(Cubemap colorTexture){
+        colorTexture.dispose();
+    }
+
+// FrameBufferCubemap.java : protected void attachTexture(int attachment, Cubemap texture)
+    @Override
+    protected void attachTexture(int attachment, Cubemap texture){
+        int glHandle = texture.getTextureObjectHandle();
+        for(CubemapSide side : CubemapSide.all){
+            Gl.framebufferTexture2D(Gl.framebuffer, attachment, side.glEnum, glHandle, 0);
+        }
+    }
+
+// FrameBufferCubemap.java : public void eachSide(Cons<CubemapSide> cons)
+    public void eachSide(Cons<CubemapSide> cons){
+        for(CubemapSide side : CubemapSide.all){
+            cons.get(side);
+        }
+    }
+
+// FrameBufferCubemap.java : public void bindSide(CubemapSide side)
+    public void bindSide(CubemapSide side){
+        Gl.framebufferTexture2D(Gl.framebuffer, Gl.colorAttachment0, side.glEnum, getTexture().getTextureObjectHandle(), 0);
+    }
+
+// GLFrameBuffer.java : public static int getBufferNesting()
+    public static int getBufferNesting(){
+        return bufferNesting;
+    }
+
+// GLFrameBuffer.java : public static void unbind()
+    public static void unbind(){
+        Gl.bindFramebuffer(Gl.framebuffer, defaultFramebufferHandle);
+    }
+
+// GLFrameBuffer.java : public T getTexture()
+    public T getTexture(){
+        return textureAttachments.first();
+    }
+
+// GLFrameBuffer.java : public Seq<T> getTextureAttachments()
+    public Seq<T> getTextureAttachments(){
+        return textureAttachments;
+    }
+
+// GLFrameBuffer.java : public void bind()
+    public void bind(){
+        Gl.bindFramebuffer(Gl.framebuffer, framebufferHandle);
+    }
+
+// GLFrameBuffer.java : public boolean isBound()
+    public boolean isBound(){
+        return currentBoundFramebuffer == this;
+    }
+
+// GLFrameBuffer.java : public void begin(Color clearColor) / public void begin()
+    public void begin(Color clearColor){
+        begin();
+        Gl.clearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+        Gl.clear(depthbufferHandle != 0 ? Gl.colorBufferBit | Gl.depthBufferBit : Gl.colorBufferBit);
+    }
+
+// GLFrameBuffer.java : public void beginBind()
+    public void beginBind(){
+        if(currentBoundFramebuffer == this) throw new IllegalArgumentException("Do not begin() twice.");
+        //save last buffer
+        lastBoundFramebuffer = currentBoundFramebuffer;
+        currentBoundFramebuffer = this;
+        bufferNesting ++;
+        bind();
+    }
+
+// GLFrameBuffer.java : protected void setFrameBufferViewport()
+    protected void setFrameBufferViewport(){
+        Gl.viewport(0, 0, bufferBuilder.width, bufferBuilder.height);
+    }
+
+// GLFrameBuffer.java : public int getFramebufferHandle()
+    public int getFramebufferHandle(){
+        return framebufferHandle;
+    }
+
+// GLFrameBuffer.java : public int getDepthBufferHandle()
+    public int getDepthBufferHandle(){
+        return depthbufferHandle;
+    }
+
+// GLFrameBuffer.java : public int getStencilBufferHandle()
+    public int getStencilBufferHandle(){
+        return stencilbufferHandle;
+    }
+
+// GLFrameBuffer.java : protected int getDepthStencilPackedBuffer()
+    protected int getDepthStencilPackedBuffer(){
+        return depthStencilPackedBufferHandle;
+    }
+
+// GLFrameBuffer.java : public int getHeight()
+    public int getHeight(){
+        return bufferBuilder.height;
+    }
+
+// GLFrameBuffer.java : public int getWidth()
+    public int getWidth(){
+        return bufferBuilder.width;
+    }
+
+// GLOnlyTextureData.java : public boolean isCustom()
+    @Override
+    public boolean isCustom(){
+        return true;
+    }
+
+// GLOnlyTextureData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return isPrepared;
+    }
+
+// GLOnlyTextureData.java : public void prepare()
+    @Override
+    public void prepare(){
+        if(isPrepared) throw new ArcRuntimeException("Already prepared");
+        isPrepared = true;
+    }
+
+// GLOnlyTextureData.java : public void consumeCustomData(int target)
+    @Override
+    public void consumeCustomData(int target){
+        Gl.texImage2D(target, mipLevel, internalFormat, width, height, 0, format, type, null);
+    }
+
+// GLOnlyTextureData.java : public Pixmap consumePixmap()
+    @Override
+    public Pixmap consumePixmap(){
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+// GLOnlyTextureData.java : public boolean disposePixmap()
+    @Override
+    public boolean disposePixmap(){
+        throw new ArcRuntimeException("This TextureData implementation does not return a Pixmap");
+    }
+
+// GLOnlyTextureData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return width;
+    }
+
+// GLOnlyTextureData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return height;
+    }
+
+// GLOnlyTextureData.java : public Format getFormat()
+    @Override
+    public Format getFormat(){
+        return Format.rgba8888;
+    }
+
+// GLOnlyTextureData.java : public boolean useMipMaps()
+    @Override
+    public boolean useMipMaps(){
+        return false;
+    }
+
+// GLVersion.java : private int parseInt(String v, int defaultValue)
+    private int parseInt(String v, int defaultValue){
+        try{
+            return Integer.parseInt(v);
+        }catch(NumberFormatException nfe){
+            Log.err("[Arc GL] Error parsing number: " + v + ", assuming: " + defaultValue);
+            return defaultValue;
+        }
+    }
+
+// GLVersion.java : public boolean atLeast(int testMajorVersion, int testMinorVersion)
+    public boolean atLeast(int testMajorVersion, int testMinorVersion){
+        return majorVersion > testMajorVersion || (majorVersion == testMajorVersion && minorVersion >= testMinorVersion);
+    }
+
+// GLVersion.java : public String getDebugVersionString()
+    public String getDebugVersionString(){
+        return "Type: " + type + "\n" +
+        "Version: " + majorVersion + ":" + minorVersion + ":" + releaseVersion + "\n" +
+        "Vendor: " + vendorString + "\n" +
+        "Renderer: " + rendererString;
+    }
+
+// GLVersion.java : public String toString()
+    @Override
+    public String toString(){
+        return type + " " + majorVersion + "." + minorVersion + "." + releaseVersion + " / " + vendorString + " / " + rendererString + " / " + versionString;
+    }
+
+// HdpiUtils.java : public static void setMode(HdpiMode mode)
+    public static void setMode(HdpiMode mode){
+        HdpiUtils.mode = mode;
+    }
+
+// HdpiUtils.java : public static void glScissor(int x, int y, int width, int height)
+    public static void glScissor(int x, int y, int width, int height){
+        if(mode == HdpiMode.logical && (Core.graphics.getWidth() != Core.graphics.getBackBufferWidth()
+        || Core.graphics.getHeight() != Core.graphics.getBackBufferHeight())){
+            Gl.scissor(toBackBufferX(x), toBackBufferY(y), toBackBufferX(width), toBackBufferY(height));
+        }else{
+            Gl.scissor(x, y, width, height);
+        }
+    }
+
+// HdpiUtils.java : public static void glViewport(int x, int y, int width, int height)
+    public static void glViewport(int x, int y, int width, int height){
+        if(mode == HdpiMode.logical && (Core.graphics.getWidth() != Core.graphics.getBackBufferWidth()
+        || Core.graphics.getHeight() != Core.graphics.getBackBufferHeight())){
+            Gl.viewport(toBackBufferX(x), toBackBufferY(y), toBackBufferX(width), toBackBufferY(height));
+        }else{
+            Gl.viewport(x, y, width, height);
+        }
+    }
+
+// HdpiUtils.java : public static int toLogicalX(int backBufferX)
+    public static int toLogicalX(int backBufferX){
+        return (int)(backBufferX * Core.graphics.getWidth() / (float)Core.graphics.getBackBufferWidth());
+    }
+
+// HdpiUtils.java : public static int toLogicalY(int backBufferY)
+    public static int toLogicalY(int backBufferY){
+        return (int)(backBufferY * Core.graphics.getHeight() / (float)Core.graphics.getBackBufferHeight());
+    }
+
+// HdpiUtils.java : public static int toBackBufferX(int logicalX)
+    public static int toBackBufferX(int logicalX){
+        return (int)(logicalX * Core.graphics.getBackBufferWidth() / (float)Core.graphics.getWidth());
+    }
+
+// HdpiUtils.java : public static int toBackBufferY(int logicalY)
+    public static int toBackBufferY(int logicalY){
+        return (int)(logicalY * Core.graphics.getBackBufferHeight() / (float)Core.graphics.getHeight());
+    }
+
+// IndexArray.java : public int size()
+    @Override
+    public int size(){
+        return empty ? 0 : buffer.limit();
+    }
+
+// IndexArray.java : public int max()
+    @Override
+    public int max(){
+        return empty ? 0 : buffer.capacity();
+    }
+
+// IndexArray.java : public void set(short[] indices, int offset, int count) / public void set(ShortBuffer indices)
+    @Override
+    public void set(short[] indices, int offset, int count){
+        buffer.clear();
+        buffer.put(indices, offset, count);
+        buffer.flip();
+        byteBuffer.position(0);
+        byteBuffer.limit(count << 1);
+    }
+
+// IndexArray.java : public void update(int targetOffset, short[] indices, int offset, int count)
+    @Override
+    public void update(int targetOffset, short[] indices, int offset, int count){
+        final int pos = byteBuffer.position();
+        byteBuffer.position(targetOffset * 2);
+        Buffers.copy(indices, offset, byteBuffer, count);
+        byteBuffer.position(pos);
+    }
+
+// IndexArray.java : public ShortBuffer buffer()
+    @Override
+    public ShortBuffer buffer(){
+        return buffer;
+    }
+
+// IndexArray.java : public void bind()
+    @Override
+    public void bind(){
+    }
+
+// IndexArray.java : public void unbind()
+    @Override
+    public void unbind(){
+    }
+
+// IndexArray.java : public void dispose()
+    @Override
+    public void dispose(){
+        Buffers.disposeUnsafeByteBuffer(byteBuffer);
+    }
+
+// IndexBufferObject.java : public int size()
+    @Override
+    public int size(){
+        return empty ? 0 : buffer.limit();
+    }
+
+// IndexBufferObject.java : public int max()
+    @Override
+    public int max(){
+        return empty ? 0 : buffer.capacity();
+    }
+
+// IndexBufferObject.java : public ShortBuffer buffer()
+    @Override
+    public ShortBuffer buffer(){
+        dirty = true;
+        return buffer;
+    }
+
+// IndexBufferObject.java : public void unbind()
+    @Override
+    public void unbind(){
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        bound = false;
+    }
+
+// IndexBufferObject.java : public void dispose()
+    @Override
+    public void dispose(){
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        Gl.deleteBuffer(bufferHandle);
+        bufferHandle = 0;
+
+        Buffers.disposeUnsafeByteBuffer(byteBuffer);
+    }
+
+// IndexBufferObjectSubData.java : private int createBufferObject()
+    private int createBufferObject(){
+        int result = Gl.genBuffer();
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, result);
+        Gl.bufferData(GL20.GL_ELEMENT_ARRAY_BUFFER, byteBuffer.capacity(), null, usage);
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        return result;
+    }
+
+// IndexBufferObjectSubData.java : public int size()
+    public int size(){
+        return buffer.limit();
+    }
+
+// IndexBufferObjectSubData.java : public int max()
+    public int max(){
+        return buffer.capacity();
+    }
+
+// IndexBufferObjectSubData.java : public ShortBuffer buffer()
+    public ShortBuffer buffer(){
+        isDirty = true;
+        return buffer;
+    }
+
+// IndexBufferObjectSubData.java : public void unbind()
+    public void unbind(){
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        isBound = false;
+    }
+
+// IndexBufferObjectSubData.java : public void dispose()
+    public void dispose(){
+        Gl.bindBuffer(GL20.GL_ELEMENT_ARRAY_BUFFER, 0);
+        Gl.deleteBuffer(bufferHandle);
+        bufferHandle = 0;
+    }
+
+// MipMapTextureData.java : public boolean isCustom()
+    @Override
+    public boolean isCustom(){
+        return true;
+    }
+
+// MipMapTextureData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return true;
+    }
+
+// MipMapTextureData.java : public void prepare()
+    @Override
+    public void prepare(){
+    }
+
+// MipMapTextureData.java : public Pixmap consumePixmap()
+    @Override
+    public Pixmap consumePixmap(){
+        throw new ArcRuntimeException("It's compressed, use the compressed method");
+    }
+
+// MipMapTextureData.java : public boolean disposePixmap()
+    @Override
+    public boolean disposePixmap(){
+        return false;
+    }
+
+// MipMapTextureData.java : public void consumeCustomData(int target)
+    @Override
+    public void consumeCustomData(int target){
+        for(int i = 0; i < mips.length; ++i){
+            GLTexture.uploadImageData(target, mips[i], i);
+        }
+    }
+
+// MipMapTextureData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return mips[0].getWidth();
+    }
+
+// MipMapTextureData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return mips[0].getHeight();
+    }
+
+// MipMapTextureData.java : public Format getFormat()
+    @Override
+    public Format getFormat(){
+        return mips[0].getFormat();
+    }
+
+// MipMapTextureData.java : public boolean useMipMaps()
+    @Override
+    public boolean useMipMaps(){
+        return false;
+    }
+
+// PixmapTextureData.java : public boolean disposePixmap()
+    @Override
+    public boolean disposePixmap(){
+        return disposePixmap;
+    }
+
+// PixmapTextureData.java : public Pixmap consumePixmap()
+    @Override
+    public Pixmap consumePixmap(){
+        return pixmap;
+    }
+
+// PixmapTextureData.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        return pixmap.width;
+    }
+
+// PixmapTextureData.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        return pixmap.height;
+    }
+
+// PixmapTextureData.java : public Format getFormat()
+    @Override
+    public Format getFormat(){
+        return Format.rgba8888;
+    }
+
+// PixmapTextureData.java : public boolean useMipMaps()
+    @Override
+    public boolean useMipMaps(){
+        return useMipMaps;
+    }
+
+// PixmapTextureData.java : public boolean isCustom()
+    @Override
+    public boolean isCustom(){
+        return false;
+    }
+
+// PixmapTextureData.java : public void consumeCustomData(int target)
+    @Override
+    public void consumeCustomData(int target){
+        throw new ArcRuntimeException("This TextureData implementation does not upload data itself");
+    }
+
+// PixmapTextureData.java : public boolean isPrepared()
+    @Override
+    public boolean isPrepared(){
+        return true;
+    }
+
+// PixmapTextureData.java : public void prepare()
+    @Override
+    public void prepare(){
+        throw new ArcRuntimeException("prepare() must not be called on a PixmapTextureData instance as it is already prepared.");
+    }
+
+// Shader.java : public void apply()
+    public void apply(){}
+
+// Shader.java : protected int createProgram()
+    protected int createProgram(){
+        int program = Gl.createProgram();
+        return program != 0 ? program : -1;
+    }
+
+// Shader.java : public String getLog()
+    public String getLog(){
+        if(isCompiled){
+            log = Gl.getProgramInfoLog(program);
+            return log;
+        }else{
+            return log;
+        }
+    }
+
+// Shader.java : public boolean isCompiled()
+    public boolean isCompiled(){
+        return isCompiled;
+    }
+
+// Shader.java : private int fetchAttributeLocation(String name)
+    private int fetchAttributeLocation(String name){
+        // -2 == not yet cached
+        // -1 == cached but not found
+        int location;
+        if((location = attributes.get(name, -2)) == -2){
+            location = Gl.getAttribLocation(program, name);
+            attributes.put(name, location);
+        }
+        return location;
+    }
+
+// Shader.java : private int fetchUniformLocation(String name) / public int fetchUniformLocation(String name, boolean pedantic)
+    private int fetchUniformLocation(String name){
+        return fetchUniformLocation(name, pedantic);
+    }
+
+// Shader.java : public void setUniformi(String name, int value) / public void setUniformi(int location, int value) / public void setUniformi(String name, int value1, int value2) / public void setUniformi(int location, int value1, int value2) / public void setUniformi(String name, int value1, int value2, int value3) / public void setUniformi(int location, int value1, int value2, int value3) / public void setUniformi(String name, int value1, int value2, int value3, int value4) / public void setUniformi(int location, int value1, int value2, int value3, int value4)
+    public void setUniformi(String name, int value){
+        int location = fetchUniformLocation(name);
+        Gl.uniform1i(location, value);
+    }
+
+// Shader.java : public void setUniformf(String name, float value) / public void setUniformf(int location, float value) / public void setUniformf(String name, float value1, float value2) / public void setUniformf(int location, float value1, float value2) / public void setUniformf(String name, float value1, float value2, float value3) / public void setUniformf(int location, float value1, float value2, float value3) / public void setUniformf(String name, float value1, float value2, float value3, float value4) / public void setUniformf(int location, float value1, float value2, float value3, float value4) / public void setUniformf(String name, Vec2 values) / public void setUniformf(int location, Vec2 values) / public void setUniformf(String name, Vec3 values) / public void setUniformf(int location, Vec3 values) / public void setUniformf(String name, Color values) / public void setUniformf(int location, Color values)
+    public void setUniformf(String name, float value){
+        int location = fetchUniformLocation(name);
+        Gl.uniform1f(location, value);
+    }
+
+// Shader.java : public void setUniform1fv(String name, float[] values, int offset, int length) / public void setUniform1fv(int location, float[] values, int offset, int length)
+    public void setUniform1fv(String name, float[] values, int offset, int length){
+        int location = fetchUniformLocation(name);
+        Gl.uniform1fv(location, length, values, offset);
+    }
+
+// Shader.java : public void setUniform2fv(String name, float[] values, int offset, int length) / public void setUniform2fv(int location, float[] values, int offset, int length)
+    public void setUniform2fv(String name, float[] values, int offset, int length){
+        int location = fetchUniformLocation(name);
+        Gl.uniform2fv(location, length / 2, values, offset);
+    }
+
+// Shader.java : public void setUniform3fv(String name, float[] values, int offset, int length) / public void setUniform3fv(int location, float[] values, int offset, int length)
+    public void setUniform3fv(String name, float[] values, int offset, int length){
+        int location = fetchUniformLocation(name);
+        Gl.uniform3fv(location, length / 3, values, offset);
+    }
+
+// Shader.java : public void setUniform4fv(String name, float[] values, int offset, int length) / public void setUniform4fv(int location, float[] values, int offset, int length)
+    public void setUniform4fv(String name, float[] values, int offset, int length){
+        int location = fetchUniformLocation(name);
+        Gl.uniform4fv(location, length / 4, values, offset);
+    }
+
+// Shader.java : public void setUniformMatrix(String name, Mat matrix) / public void setUniformMatrix(String name, Mat matrix, boolean transpose) / public void setUniformMatrix(int location, Mat matrix) / public void setUniformMatrix(int location, Mat matrix, boolean transpose)
+    public void setUniformMatrix(String name, Mat matrix){
+        setUniformMatrix(name, matrix, false);
+    }
+
+// Shader.java : public void setUniformMatrix4(String name, float[] val) / public void setUniformMatrix4(String name, Mat mat) / public void setUniformMatrix4(String name, Mat mat, float near, float far)
+    public void setUniformMatrix4(String name, float[] val){
+        Gl.uniformMatrix4fv(fetchUniformLocation(name), 1, false, val, 0);
+    }
+
+// Shader.java : public void setUniformMatrix3fv(String name, FloatBuffer buffer, int count, boolean transpose)
+    public void setUniformMatrix3fv(String name, FloatBuffer buffer, int count, boolean transpose){
+        buffer.position(0);
+        int location = fetchUniformLocation(name);
+        Gl.uniformMatrix3fv(location, count, transpose, buffer);
+    }
+
+// Shader.java : public void setUniformMatrix4fv(String name, FloatBuffer buffer, int count, boolean transpose) / public void setUniformMatrix4fv(int location, float[] values, int offset, int length) / public void setUniformMatrix4fv(String name, float[] values, int offset, int length)
+    public void setUniformMatrix4fv(String name, FloatBuffer buffer, int count, boolean transpose){
+        buffer.position(0);
+        int location = fetchUniformLocation(name);
+        Gl.uniformMatrix4fv(location, count, transpose, buffer);
+    }
+
+// Shader.java : public void bind()
+    public void bind(){
+        Gl.useProgram(program);
+    }
+
+// Shader.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(disposed) return;
+
+        Gl.useProgram(0);
+        Gl.deleteShader(vertexShaderHandle);
+        Gl.deleteShader(fragmentShaderHandle);
+        Gl.deleteProgram(program);
+        disposed = true;
+    }
+
+// Shader.java : public boolean isDisposed()
+    @Override
+    public boolean isDisposed(){
+        return disposed;
+    }
+
+// Shader.java : public void disableVertexAttribute(String name)
+    public void disableVertexAttribute(String name){
+        int location = fetchAttributeLocation(name);
+        if(location == -1) return;
+        Gl.disableVertexAttribArray(location);
+    }
+
+// Shader.java : public boolean hasAttribute(String name)
+    public boolean hasAttribute(String name){
+        return attributes.containsKey(name);
+    }
+
+// Shader.java : public int getAttributeType(String name)
+    public int getAttributeType(String name){
+        return attributeTypes.get(name, 0);
+    }
+
+// Shader.java : public int getAttributeLocation(String name)
+    public int getAttributeLocation(String name){
+        return attributes.get(name, -1);
+    }
+
+// Shader.java : public int getAttributeSize(String name)
+    public int getAttributeSize(String name){
+        return attributeSizes.get(name, 0);
+    }
+
+// Shader.java : public boolean hasUniform(String name)
+    public boolean hasUniform(String name){
+        return uniforms.containsKey(name);
+    }
+
+// Shader.java : public int getUniformType(String name)
+    public int getUniformType(String name){
+        return uniformTypes.get(name, 0);
+    }
+
+// Shader.java : public int getUniformLocation(String name)
+    public int getUniformLocation(String name){
+        return uniforms.get(name, -1);
+    }
+
+// Shader.java : public int getUniformSize(String name)
+    public int getUniformSize(String name){
+        return uniformSizes.get(name, 0);
+    }
+
+// Shader.java : public String[] getAttributes()
+    public String[] getAttributes(){
+        return attributeNames;
+    }
+
+// Shader.java : public String[] getUniforms()
+    public String[] getUniforms(){
+        return uniformNames;
+    }
+
+// Shader.java : public String getVertexShaderSource()
+    public String getVertexShaderSource(){
+        return vertexShaderSource;
+    }
+
+// Shader.java : public String getFragmentShaderSource()
+    public String getFragmentShaderSource(){
+        return fragmentShaderSource;
+    }
+
+// VertexArray.java : public void dispose()
+    @Override
+    public void dispose(){
+        Buffers.disposeUnsafeByteBuffer(byteBuffer);
+    }
+
+// VertexArray.java : public FloatBuffer buffer()
+    @Override
+    public FloatBuffer buffer(){
+        return buffer;
+    }
+
+// VertexArray.java : public int size()
+    @Override
+    public int size(){
+        return buffer.limit() * 4 / mesh.vertexSize;
+    }
+
+// VertexArray.java : public int max()
+    @Override
+    public int max(){
+        return byteBuffer.capacity() / mesh.vertexSize;
+    }
+
+// VertexArray.java : public void set(float[] vertices, int offset, int count)
+    @Override
+    public void set(float[] vertices, int offset, int count){
+        Buffers.copy(vertices, byteBuffer, count, offset);
+        buffer.position(0);
+        buffer.limit(count);
+    }
+
+// VertexArray.java : public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+    @Override
+    public void update(int targetOffset, float[] vertices, int sourceOffset, int count){
+        final int pos = byteBuffer.position();
+        byteBuffer.position(targetOffset * 4);
+        Buffers.copy(vertices, sourceOffset, count, byteBuffer);
+        byteBuffer.position(pos);
+    }
+
+// VertexArray.java : public void unbind(Shader shader)
+    @Override
+    public void unbind(Shader shader){
+        for(VertexAttribute attribute : mesh.attributes){
+            shader.disableVertexAttribute(attribute.alias);
+        }
+
+        isBound = false;
+    }
+
+// VertexBufferObject.java : public int size()
+    @Override
+    public int size(){
+        return buffer.limit() * 4 / mesh.vertexSize;
+    }
+
+// VertexBufferObject.java : public int max()
+    @Override
+    public int max(){
+        return byteBuffer.capacity() / mesh.vertexSize;
+    }
+
+// VertexBufferObject.java : public FloatBuffer buffer()
+    @Override
+    public FloatBuffer buffer(){
+        dirty = true;
+        return buffer;
+    }
+
+// VertexBufferObject.java : private void upload()
+    private void upload(){
+        Gl.bufferData(Gl.arrayBuffer, byteBuffer.limit(), byteBuffer, usage);
+    }
+
+// VertexBufferObject.java : private void bufferChanged()
+    private void bufferChanged(){
+        if(bound){
+            upload();
+            dirty = false;
+        }
+    }
+
+// VertexBufferObject.java : public void set(float[] vertices, int offset, int count)
+    @Override
+    public void set(float[] vertices, int offset, int count){
+        dirty = true;
+        Buffers.copy(vertices, byteBuffer, count, offset);
+        buffer.position(0);
+        buffer.limit(count);
+        bufferChanged();
+    }
+
+// VertexBufferObject.java : public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+    @Override
+    public void update(int targetOffset, float[] vertices, int sourceOffset, int count){
+        dirty = true;
+        final int pos = byteBuffer.position();
+        byteBuffer.position(targetOffset * 4);
+        Buffers.copy(vertices, sourceOffset, count, byteBuffer);
+        byteBuffer.position(pos);
+        buffer.position(0);
+        bufferChanged();
+    }
+
+// VertexBufferObject.java : public void unbind(Shader shader)
+    @Override
+    public void unbind(Shader shader){
+        for(VertexAttribute attribute : mesh.attributes){
+            shader.disableVertexAttribute(attribute.alias);
+        }
+        Gl.bindBuffer(Gl.arrayBuffer, 0);
+        bound = false;
+    }
+
+// VertexBufferObject.java : public void dispose()
+    @Override
+    public void dispose(){
+        Gl.bindBuffer(Gl.arrayBuffer, 0);
+        Gl.deleteBuffer(bufferHandle);
+        bufferHandle = 0;
+        if(ownsBuffer) Buffers.disposeUnsafeByteBuffer(byteBuffer);
+    }
+
+// VertexBufferObjectWithVAO.java : public int size()
+    @Override
+    public int size(){
+        return buffer.limit() * 4 / mesh.vertexSize;
+    }
+
+// VertexBufferObjectWithVAO.java : public int max()
+    @Override
+    public int max(){
+        return byteBuffer.capacity() / mesh.vertexSize;
+    }
+
+// VertexBufferObjectWithVAO.java : public FloatBuffer buffer()
+    @Override
+    public FloatBuffer buffer(){
+        isDirty = true;
+        return buffer;
+    }
+
+// VertexBufferObjectWithVAO.java : private void upload()
+    private void upload(){
+        Gl.bufferData(Gl.arrayBuffer, byteBuffer.limit(), byteBuffer, usage);
+    }
+
+// VertexBufferObjectWithVAO.java : private void bufferChanged()
+    private void bufferChanged(){
+        if(isBound){
+            upload();
+            isDirty = false;
+        }
+    }
+
+// VertexBufferObjectWithVAO.java : public void set(float[] vertices, int offset, int count)
+    @Override
+    public void set(float[] vertices, int offset, int count){
+        isDirty = true;
+        Buffers.copy(vertices, byteBuffer, count, offset);
+        buffer.position(0);
+        buffer.limit(count);
+        bufferChanged();
+    }
+
+// VertexBufferObjectWithVAO.java : public void update(int targetOffset, float[] vertices, int sourceOffset, int count)
+    @Override
+    public void update(int targetOffset, float[] vertices, int sourceOffset, int count){
+        isDirty = true;
+        final int pos = byteBuffer.position();
+        byteBuffer.position(targetOffset * 4);
+        Buffers.copy(vertices, sourceOffset, count, byteBuffer);
+        byteBuffer.position(pos);
+        buffer.position(0);
+        bufferChanged();
+    }
+
+// VertexBufferObjectWithVAO.java : private void bindData()
+    private void bindData(){
+        if(isDirty){
+            Gl.bindBuffer(Gl.arrayBuffer, bufferHandle);
+            byteBuffer.limit(buffer.limit() * 4);
+            upload();
+            isDirty = false;
+        }
+    }
+
+// VertexBufferObjectWithVAO.java : public void unbind(Shader shader)
+    @Override
+    public void unbind(Shader shader){
+        Core.gl30.glBindVertexArray(0);
+        isBound = false;
+    }
+
+// VertexBufferObjectWithVAO.java : public void dispose()
+    @Override
+    public void dispose(){
+        Gl.bindBuffer(Gl.arrayBuffer, 0);
+        Gl.deleteBuffer(bufferHandle);
+        bufferHandle = 0;
+        Buffers.disposeUnsafeByteBuffer(byteBuffer);
+        deleteVAO();
+    }
+
+// VertexBufferObjectWithVAO.java : private void deleteVAO()
+    private void deleteVAO(){
+        if(vaoHandle != -1){
+            tmpHandle.clear();
+            tmpHandle.put(vaoHandle);
+            tmpHandle.flip();
+            Core.gl30.glDeleteVertexArrays(1, tmpHandle);
+            vaoHandle = -1;
+        }
+    }
+

@@ -1,0 +1,965 @@
+apply
+  -> arc.graphics.Gl.enable(int)
+  -> arc.graphics.Gl.blendFuncSeparate(int, int, int, int)
+update
+  -> arc.math.Mat.setOrtho(float, float, float, float)
+  -> arc.math.Mat.inv()
+  -> arc.math.Mat.set(arc.math.Mat)
+resize
+  -> arc.graphics.Camera.update()
+unproject
+  -> arc.math.geom.Vec2.mul(arc.math.Mat)
+  -> arc.graphics.Camera.unproject(arc.math.geom.Vec2, float, float, float, float)
+  -> arc.Graphics.getWidth()
+  -> arc.Graphics.getHeight()
+  -> arc.math.geom.Vec2.set(float, float)
+project
+  -> arc.graphics.Camera.project(arc.math.geom.Vec2, float, float, float, float)
+  -> arc.Graphics.getWidth()
+  -> arc.Graphics.getHeight()
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.math.geom.Vec2.mul(arc.math.Mat)
+bounds
+  -> arc.math.geom.Rect.setCenter(arc.math.geom.Vec2)
+  -> arc.math.geom.Rect.setSize(float, float)
+Color
+  -> arc.graphics.Color.rgba8888(int)
+  -> arc.graphics.Color.clamp()
+  -> arc.graphics.Color.set(arc.graphics.Color)
+valueOf
+  -> arc.graphics.Color.valueOf(arc.graphics.Color, java.lang.String)
+  -> arc.graphics.Color.Color()
+  -> java.lang.String.charAt(int)
+  -> arc.graphics.Color.parseHex(java.lang.String, int, int)
+  -> java.lang.String.length()
+  -> arc.graphics.Color.set(float, float, float, float)
+parseHex
+  -> java.lang.String.charAt(int)
+  -> java.lang.Character.digit(char, int)
+toFloatBits
+  -> arc.graphics.Color.intToFloatColor(int)
+toDoubleBits
+  -> java.lang.Double.longBitsToDouble(long)
+  -> arc.graphics.Color.rgba8888(float, float, float, float)
+  -> arc.graphics.Color.toDoubleBits(float, float, float, float)
+fromDouble
+  -> arc.graphics.Color.rgba8888(int)
+  -> java.lang.Double.doubleToRawLongBits(double)
+abgr8888
+  -> arc.graphics.Color.floatToIntColor(float)
+grays
+  -> arc.graphics.Color.Color(float, float, float)
+rgb
+  -> arc.graphics.Color.Color(float, float, float)
+floatToIntColor
+  -> java.lang.Float.floatToRawIntBits(float)
+intToFloatColor
+  -> java.lang.Float.intBitsToFloat(int)
+rand
+  -> arc.graphics.Color.set(float, float, float, float)
+  -> arc.math.Mathf.random()
+randHue
+  -> arc.graphics.Color.fromHsv(float, float, float)
+  -> arc.math.Mathf.random(float)
+diff
+  -> java.lang.Math.abs(float)
+  -> arc.graphics.Color.hue()
+  -> arc.graphics.Color.value()
+  -> arc.graphics.Color.saturation()
+rgba
+  -> arc.graphics.Color.rgba8888()
+set
+  -> arc.graphics.Color.set(float, float, float)
+  -> arc.graphics.Color.clamp()
+  -> arc.graphics.Color.rgba8888(int)
+mul
+  -> arc.graphics.Color.clamp()
+mula
+  -> arc.graphics.Color.clamp()
+add
+  -> arc.graphics.Color.clamp()
+sub
+  -> arc.graphics.Color.clamp()
+lerp
+  -> arc.graphics.Color.clamp()
+  -> arc.math.Mathf.clamp(int, int, int)
+  -> arc.graphics.Color.set(float, float, float, float)
+dst
+  -> arc.math.geom.Vec3.dst(float, float, float, float, float, float)
+write
+  -> arc.graphics.Color.set(arc.graphics.Color)
+hue
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+saturation
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+value
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+shiftHue
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+shiftSaturation
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+shiftValue
+  -> arc.graphics.Color.toHsv(float[])
+  -> arc.graphics.Color.fromHsv(float[])
+equals
+  -> java.lang.Object.getClass()
+  -> arc.graphics.Color.abgr()
+hashCode
+  -> java.lang.Float.floatToIntBits(float)
+toString
+  -> arc.graphics.Color.toString(java.lang.StringBuilder)
+  -> java.lang.StringBuilder.toString()
+  -> java.lang.StringBuilder.StringBuilder()
+  -> java.lang.StringBuilder.append(java.lang.String)
+  -> java.lang.Integer.toHexString(int)
+  -> java.lang.AbstractStringBuilder.length()
+  -> java.lang.StringBuilder.insert(int, java.lang.String)
+fromHsv
+  -> arc.graphics.Color.clamp()
+  -> arc.graphics.Color.fromHsv(float, float, float)
+toHsv
+  -> java.lang.Math.max(float, float)
+  -> java.lang.Math.min(float, float)
+HSVtoRGB
+  -> arc.graphics.Color.HSVtoRGB(float, float, float)
+  -> arc.graphics.Color.HSVtoRGB(float, float, float, arc.graphics.Color)
+  -> arc.graphics.Color.Color(float, float, float, float)
+  -> java.lang.Math.max(double, double)
+  -> java.lang.Math.min(double, double)
+  -> arc.math.Mathf.floor(float)
+  -> arc.graphics.Color.set(float, float, float, float)
+RGBtoHSV
+  -> arc.graphics.Color.RGBtoHSV(float, float, float)
+  -> java.lang.Math.min(float, float)
+  -> java.lang.Math.max(float, float)
+  -> arc.math.Mathf.round(float)
+cpy
+  -> arc.graphics.Color.Color(arc.graphics.Color)
+clampf
+  -> java.lang.Math.min(int, int)
+  -> java.lang.Math.max(int, int)
+muli
+  -> arc.graphics.Color.clampf(float)
+get
+  -> arc.struct.ObjectMap.get(T)
+put
+  -> arc.struct.OrderedMap.put(K, V)
+reset
+  -> arc.struct.OrderedMap.clear()
+  -> arc.struct.OrderedMap.put(K, V)
+  -> arc.graphics.Color.valueOf(java.lang.String)
+  -> arc.struct.ObjectMap.each(arc.func.Cons2<K, V>)
+  -> arc.struct.ObjectMap.copy()
+  -> java.lang.String.replace(java.lang.CharSequence, java.lang.CharSequence)
+  -> java.lang.String.toLowerCase(java.util.Locale)
+Cubemap
+  -> arc.graphics.Cubemap.load(arc.graphics.CubemapData)
+  -> arc.Files.internal(java.lang.String)
+  -> arc.graphics.TextureData.load(arc.files.Fi, boolean)
+  -> arc.graphics.gl.PixmapTextureData.PixmapTextureData(arc.graphics.Pixmap, boolean, boolean)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.gl.FacedCubemapData.FacedCubemapData(arc.graphics.TextureData, arc.graphics.TextureData, arc.graphics.TextureData, arc.graphics.TextureData, arc.graphics.TextureData, arc.graphics.TextureData)
+load
+  -> arc.graphics.CubemapData.isPrepared()
+  -> arc.graphics.CubemapData.prepare()
+  -> arc.graphics.CubemapData.getWidth()
+  -> arc.graphics.CubemapData.getHeight()
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.GLTexture.unsafeSetFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter, boolean)
+  -> arc.graphics.GLTexture.unsafeSetWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap, boolean)
+  -> arc.graphics.CubemapData.consumeCubemapData()
+  -> arc.graphics.Gl.bindTexture(int, int)
+GLTexture
+  -> arc.graphics.Gl.genTexture()
+uploadImageData
+  -> arc.graphics.GLTexture.uploadImageData(int, arc.graphics.TextureData, int)
+  -> arc.graphics.TextureData.isPrepared()
+  -> arc.graphics.TextureData.prepare()
+  -> arc.graphics.TextureData.isCustom()
+  -> arc.graphics.TextureData.consumeCustomData(int)
+  -> arc.graphics.TextureData.consumePixmap()
+  -> arc.graphics.TextureData.disposePixmap()
+  -> arc.graphics.TextureData.useMipMaps()
+  -> arc.graphics.Gl.texImage2D(int, int, int, int, int, int, int, int, java.nio.Buffer)
+  -> arc.graphics.Pixmap.getGLInternalFormat()
+  -> arc.graphics.Pixmap.getGLFormat()
+  -> arc.graphics.Pixmap.getGLType()
+  -> arc.graphics.Gl.generateMipmap(int)
+  -> arc.graphics.Pixmap.dispose()
+bind
+  -> arc.graphics.Gl.bindTexture(int, int)
+  -> arc.graphics.Gl.activeTexture(int)
+unsafeSetWrap
+  -> arc.graphics.GLTexture.unsafeSetWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap, boolean)
+  -> arc.graphics.Gl.texParameteri(int, int, int)
+  -> arc.graphics.Texture.TextureWrap.getGLEnum()
+setWrap
+  -> arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap)
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.Gl.texParameteri(int, int, int)
+  -> arc.graphics.Texture.TextureWrap.getGLEnum()
+unsafeSetFilter
+  -> arc.graphics.GLTexture.unsafeSetFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter, boolean)
+  -> arc.graphics.Gl.texParameteri(int, int, int)
+setFilter
+  -> arc.graphics.GLTexture.setFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter)
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.Gl.texParameteri(int, int, int)
+dispose
+  -> arc.graphics.Gl.deleteTexture(int)
+reset
+  -> java.util.Arrays.fill(int[], int)
+  -> arc.struct.Bits.clear()
+activeTexture
+  -> arc.graphics.GL20.glActiveTexture(int)
+bindTexture
+  -> arc.graphics.GL20.glBindTexture(int, int)
+blendFunc
+  -> arc.graphics.GL20.glBlendFunc(int, int)
+clear
+  -> arc.graphics.GL20.glClear(int)
+clearColor
+  -> arc.graphics.GL20.glClearColor(float, float, float, float)
+clearDepthf
+  -> arc.graphics.GL20.glClearDepthf(float)
+clearStencil
+  -> arc.graphics.GL20.glClearStencil(int)
+colorMask
+  -> arc.graphics.GL20.glColorMask(boolean, boolean, boolean, boolean)
+compressedTexImage2D
+  -> arc.graphics.GL20.glCompressedTexImage2D(int, int, int, int, int, int, int, java.nio.Buffer)
+compressedTexSubImage2D
+  -> arc.graphics.GL20.glCompressedTexSubImage2D(int, int, int, int, int, int, int, int, java.nio.Buffer)
+copyTexImage2D
+  -> arc.graphics.GL20.glCopyTexImage2D(int, int, int, int, int, int, int, int)
+copyTexSubImage2D
+  -> arc.graphics.GL20.glCopyTexSubImage2D(int, int, int, int, int, int, int, int)
+cullFace
+  -> arc.graphics.GL20.glCullFace(int)
+deleteTexture
+  -> arc.graphics.GL20.glDeleteTexture(int)
+depthFunc
+  -> arc.graphics.GL20.glDepthFunc(int)
+depthMask
+  -> arc.graphics.GL20.glDepthMask(boolean)
+depthRangef
+  -> arc.graphics.GL20.glDepthRangef(float, float)
+disable
+  -> arc.struct.Bits.get(int)
+  -> arc.graphics.GL20.glDisable(int)
+  -> arc.struct.Bits.clear(int)
+drawArrays
+  -> arc.graphics.GL20.glDrawArrays(int, int, int)
+drawElements
+  -> arc.graphics.GL20.glDrawElements(int, int, int, java.nio.Buffer)
+  -> arc.graphics.GL20.glDrawElements(int, int, int, int)
+enable
+  -> arc.struct.Bits.get(int)
+  -> arc.graphics.GL20.glEnable(int)
+  -> arc.struct.Bits.set(int)
+finish
+  -> arc.graphics.GL20.glFinish()
+flush
+  -> arc.graphics.GL20.glFlush()
+frontFace
+  -> arc.graphics.GL20.glFrontFace(int)
+genTexture
+  -> arc.graphics.GL20.glGenTexture()
+getError
+  -> arc.graphics.GL20.glGetError()
+getIntegerv
+  -> arc.graphics.GL20.glGetIntegerv(int, java.nio.IntBuffer)
+getInt
+  -> java.nio.IntBuffer.position(int)
+  -> arc.graphics.Gl.getIntegerv(int, java.nio.IntBuffer)
+  -> java.nio.IntBuffer.get(int)
+getFloat
+  -> java.nio.FloatBuffer.position(int)
+  -> arc.graphics.Gl.getFloatv(int, java.nio.FloatBuffer)
+  -> java.nio.FloatBuffer.get(int)
+getString
+  -> arc.graphics.GL20.glGetString(int)
+hint
+  -> arc.graphics.GL20.glHint(int, int)
+pixelStorei
+  -> arc.graphics.GL20.glPixelStorei(int, int)
+polygonOffset
+  -> arc.graphics.GL20.glPolygonOffset(float, float)
+readPixels
+  -> arc.graphics.GL20.glReadPixels(int, int, int, int, int, int, java.nio.Buffer)
+scissor
+  -> arc.graphics.GL20.glScissor(int, int, int, int)
+stencilFunc
+  -> arc.graphics.GL20.glStencilFunc(int, int, int)
+stencilMask
+  -> arc.graphics.GL20.glStencilMask(int)
+stencilOp
+  -> arc.graphics.GL20.glStencilOp(int, int, int)
+texImage2D
+  -> arc.graphics.GL20.glTexImage2D(int, int, int, int, int, int, int, int, java.nio.Buffer)
+texParameterf
+  -> arc.graphics.GL20.glTexParameterf(int, int, float)
+texSubImage2D
+  -> arc.graphics.GL20.glTexSubImage2D(int, int, int, int, int, int, int, int, java.nio.Buffer)
+viewport
+  -> arc.graphics.GL20.glViewport(int, int, int, int)
+attachShader
+  -> arc.graphics.GL20.glAttachShader(int, int)
+bindAttribLocation
+  -> arc.graphics.GL20.glBindAttribLocation(int, int, java.lang.String)
+bindBuffer
+  -> arc.graphics.GL20.glBindBuffer(int, int)
+bindFramebuffer
+  -> arc.graphics.GL20.glBindFramebuffer(int, int)
+bindRenderbuffer
+  -> arc.graphics.GL20.glBindRenderbuffer(int, int)
+blendColor
+  -> arc.graphics.GL20.glBlendColor(float, float, float, float)
+blendEquation
+  -> arc.graphics.GL20.glBlendEquation(int)
+blendEquationSeparate
+  -> arc.graphics.GL20.glBlendEquationSeparate(int, int)
+blendFuncSeparate
+  -> arc.graphics.GL20.glBlendFuncSeparate(int, int, int, int)
+bufferData
+  -> arc.graphics.GL20.glBufferData(int, int, java.nio.Buffer, int)
+bufferSubData
+  -> arc.graphics.GL20.glBufferSubData(int, int, int, java.nio.Buffer)
+checkFramebufferStatus
+  -> arc.graphics.GL20.glCheckFramebufferStatus(int)
+compileShader
+  -> arc.graphics.GL20.glCompileShader(int)
+createProgram
+  -> arc.graphics.GL20.glCreateProgram()
+createShader
+  -> arc.graphics.GL20.glCreateShader(int)
+deleteBuffer
+  -> arc.graphics.GL20.glDeleteBuffer(int)
+deleteFramebuffer
+  -> arc.graphics.GL20.glDeleteFramebuffer(int)
+deleteProgram
+  -> arc.graphics.GL20.glDeleteProgram(int)
+deleteRenderbuffer
+  -> arc.graphics.GL20.glDeleteRenderbuffer(int)
+deleteShader
+  -> arc.graphics.GL20.glDeleteShader(int)
+detachShader
+  -> arc.graphics.GL20.glDetachShader(int, int)
+disableVertexAttribArray
+  -> arc.graphics.GL20.glDisableVertexAttribArray(int)
+enableVertexAttribArray
+  -> arc.graphics.GL20.glEnableVertexAttribArray(int)
+framebufferRenderbuffer
+  -> arc.graphics.GL20.glFramebufferRenderbuffer(int, int, int, int)
+framebufferTexture2D
+  -> arc.graphics.GL20.glFramebufferTexture2D(int, int, int, int, int)
+genBuffer
+  -> arc.graphics.GL20.glGenBuffer()
+generateMipmap
+  -> arc.graphics.GL20.glGenerateMipmap(int)
+genFramebuffer
+  -> arc.graphics.GL20.glGenFramebuffer()
+genRenderbuffer
+  -> arc.graphics.GL20.glGenRenderbuffer()
+getActiveAttrib
+  -> arc.graphics.GL20.glGetActiveAttrib(int, int, java.nio.IntBuffer, java.nio.IntBuffer)
+getActiveUniform
+  -> arc.graphics.GL20.glGetActiveUniform(int, int, java.nio.IntBuffer, java.nio.IntBuffer)
+getAttribLocation
+  -> arc.graphics.GL20.glGetAttribLocation(int, java.lang.String)
+getBooleanv
+  -> arc.graphics.GL20.glGetBooleanv(int, java.nio.Buffer)
+getBufferParameteriv
+  -> arc.graphics.GL20.glGetBufferParameteriv(int, int, java.nio.IntBuffer)
+getFloatv
+  -> arc.graphics.GL20.glGetFloatv(int, java.nio.FloatBuffer)
+getFramebufferAttachmentParameteriv
+  -> arc.graphics.GL20.glGetFramebufferAttachmentParameteriv(int, int, int, java.nio.IntBuffer)
+getProgramiv
+  -> arc.graphics.GL20.glGetProgramiv(int, int, java.nio.IntBuffer)
+getProgramInfoLog
+  -> arc.graphics.GL20.glGetProgramInfoLog(int)
+getRenderbufferParameteriv
+  -> arc.graphics.GL20.glGetRenderbufferParameteriv(int, int, java.nio.IntBuffer)
+getShaderiv
+  -> arc.graphics.GL20.glGetShaderiv(int, int, java.nio.IntBuffer)
+getShaderInfoLog
+  -> arc.graphics.GL20.glGetShaderInfoLog(int)
+getShaderPrecisionFormat
+  -> arc.graphics.GL20.glGetShaderPrecisionFormat(int, int, java.nio.IntBuffer, java.nio.IntBuffer)
+getTexParameterfv
+  -> arc.graphics.GL20.glGetTexParameterfv(int, int, java.nio.FloatBuffer)
+getTexParameteriv
+  -> arc.graphics.GL20.glGetTexParameteriv(int, int, java.nio.IntBuffer)
+getUniformfv
+  -> arc.graphics.GL20.glGetUniformfv(int, int, java.nio.FloatBuffer)
+getUniformiv
+  -> arc.graphics.GL20.glGetUniformiv(int, int, java.nio.IntBuffer)
+getUniformLocation
+  -> arc.graphics.GL20.glGetUniformLocation(int, java.lang.String)
+getVertexAttribfv
+  -> arc.graphics.GL20.glGetVertexAttribfv(int, int, java.nio.FloatBuffer)
+getVertexAttribiv
+  -> arc.graphics.GL20.glGetVertexAttribiv(int, int, java.nio.IntBuffer)
+isBuffer
+  -> arc.graphics.GL20.glIsBuffer(int)
+isEnabled
+  -> arc.graphics.GL20.glIsEnabled(int)
+isFramebuffer
+  -> arc.graphics.GL20.glIsFramebuffer(int)
+isProgram
+  -> arc.graphics.GL20.glIsProgram(int)
+isRenderbuffer
+  -> arc.graphics.GL20.glIsRenderbuffer(int)
+isShader
+  -> arc.graphics.GL20.glIsShader(int)
+isTexture
+  -> arc.graphics.GL20.glIsTexture(int)
+linkProgram
+  -> arc.graphics.GL20.glLinkProgram(int)
+releaseShaderCompiler
+  -> arc.graphics.GL20.glReleaseShaderCompiler()
+renderbufferStorage
+  -> arc.graphics.GL20.glRenderbufferStorage(int, int, int, int)
+sampleCoverage
+  -> arc.graphics.GL20.glSampleCoverage(float, boolean)
+shaderSource
+  -> arc.graphics.GL20.glShaderSource(int, java.lang.String)
+stencilFuncSeparate
+  -> arc.graphics.GL20.glStencilFuncSeparate(int, int, int, int)
+stencilMaskSeparate
+  -> arc.graphics.GL20.glStencilMaskSeparate(int, int)
+stencilOpSeparate
+  -> arc.graphics.GL20.glStencilOpSeparate(int, int, int, int)
+texParameterfv
+  -> arc.graphics.GL20.glTexParameterfv(int, int, java.nio.FloatBuffer)
+texParameteri
+  -> arc.graphics.GL20.glTexParameteri(int, int, int)
+texParameteriv
+  -> arc.graphics.GL20.glTexParameteriv(int, int, java.nio.IntBuffer)
+uniform1f
+  -> arc.graphics.GL20.glUniform1f(int, float)
+uniform1fv
+  -> arc.graphics.GL20.glUniform1fv(int, int, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniform1fv(int, int, float[], int)
+uniform1i
+  -> arc.graphics.GL20.glUniform1i(int, int)
+uniform1iv
+  -> arc.graphics.GL20.glUniform1iv(int, int, java.nio.IntBuffer)
+  -> arc.graphics.GL20.glUniform1iv(int, int, int[], int)
+uniform2f
+  -> arc.graphics.GL20.glUniform2f(int, float, float)
+uniform2fv
+  -> arc.graphics.GL20.glUniform2fv(int, int, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniform2fv(int, int, float[], int)
+uniform2i
+  -> arc.graphics.GL20.glUniform2i(int, int, int)
+uniform2iv
+  -> arc.graphics.GL20.glUniform2iv(int, int, java.nio.IntBuffer)
+  -> arc.graphics.GL20.glUniform2iv(int, int, int[], int)
+uniform3f
+  -> arc.graphics.GL20.glUniform3f(int, float, float, float)
+uniform3fv
+  -> arc.graphics.GL20.glUniform3fv(int, int, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniform3fv(int, int, float[], int)
+uniform3i
+  -> arc.graphics.GL20.glUniform3i(int, int, int, int)
+uniform3iv
+  -> arc.graphics.GL20.glUniform3iv(int, int, java.nio.IntBuffer)
+  -> arc.graphics.GL20.glUniform3iv(int, int, int[], int)
+uniform4f
+  -> arc.graphics.GL20.glUniform4f(int, float, float, float, float)
+uniform4fv
+  -> arc.graphics.GL20.glUniform4fv(int, int, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniform4fv(int, int, float[], int)
+uniform4i
+  -> arc.graphics.GL20.glUniform4i(int, int, int, int, int)
+uniform4iv
+  -> arc.graphics.GL20.glUniform4iv(int, int, java.nio.IntBuffer)
+  -> arc.graphics.GL20.glUniform4iv(int, int, int[], int)
+uniformMatrix2fv
+  -> arc.graphics.GL20.glUniformMatrix2fv(int, int, boolean, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniformMatrix2fv(int, int, boolean, float[], int)
+uniformMatrix3fv
+  -> arc.graphics.GL20.glUniformMatrix3fv(int, int, boolean, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniformMatrix3fv(int, int, boolean, float[], int)
+uniformMatrix4fv
+  -> arc.graphics.GL20.glUniformMatrix4fv(int, int, boolean, java.nio.FloatBuffer)
+  -> arc.graphics.GL20.glUniformMatrix4fv(int, int, boolean, float[], int)
+useProgram
+  -> arc.graphics.GL20.glUseProgram(int)
+validateProgram
+  -> arc.graphics.GL20.glValidateProgram(int)
+vertexAttrib1f
+  -> arc.graphics.GL20.glVertexAttrib1f(int, float)
+vertexAttrib1fv
+  -> arc.graphics.GL20.glVertexAttrib1fv(int, java.nio.FloatBuffer)
+vertexAttrib2f
+  -> arc.graphics.GL20.glVertexAttrib2f(int, float, float)
+vertexAttrib2fv
+  -> arc.graphics.GL20.glVertexAttrib2fv(int, java.nio.FloatBuffer)
+vertexAttrib3f
+  -> arc.graphics.GL20.glVertexAttrib3f(int, float, float, float)
+vertexAttrib3fv
+  -> arc.graphics.GL20.glVertexAttrib3fv(int, java.nio.FloatBuffer)
+vertexAttrib4f
+  -> arc.graphics.GL20.glVertexAttrib4f(int, float, float, float, float)
+vertexAttrib4fv
+  -> arc.graphics.GL20.glVertexAttrib4fv(int, java.nio.FloatBuffer)
+vertexAttribPointer
+  -> arc.graphics.GL20.glVertexAttribPointer(int, int, int, boolean, int, java.nio.Buffer)
+  -> arc.graphics.GL20.glVertexAttribPointer(int, int, int, boolean, int, int)
+Mesh
+  -> arc.graphics.gl.VertexArray.VertexArray(int, arc.graphics.Mesh)
+  -> arc.graphics.gl.IndexArray.IndexArray(int)
+  -> arc.graphics.gl.VertexBufferObjectWithVAO.VertexBufferObjectWithVAO(boolean, int, arc.graphics.Mesh)
+  -> arc.graphics.gl.IndexBufferObject.IndexBufferObject(boolean, int)
+  -> arc.graphics.gl.VertexBufferObject.VertexBufferObject(boolean, int, arc.graphics.Mesh)
+setVertices
+  -> arc.graphics.gl.VertexData.set(float[], int, int)
+updateVertices
+  -> arc.graphics.Mesh.updateVertices(int, float[], int, int)
+  -> arc.graphics.gl.VertexData.update(int, float[], int, int)
+setIndices
+  -> arc.graphics.gl.IndexData.set(short[], int, int)
+getIndices
+  -> arc.graphics.Mesh.getIndices(short[], int)
+  -> arc.graphics.Mesh.getIndices(int, short[], int)
+  -> arc.graphics.Mesh.getIndices(int, int, short[], int)
+  -> arc.graphics.Mesh.getNumIndices()
+  -> java.nio.Buffer.position()
+  -> arc.graphics.Mesh.getIndicesBuffer()
+  -> java.nio.ShortBuffer.position(int)
+  -> java.nio.ShortBuffer.get(short[], int, int)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+getNumIndices
+  -> arc.graphics.gl.IndexData.size()
+getNumVertices
+  -> arc.graphics.gl.VertexData.size()
+getMaxVertices
+  -> arc.graphics.gl.VertexData.max()
+getMaxIndices
+  -> arc.graphics.gl.IndexData.max()
+bind
+  -> arc.graphics.gl.VertexData.bind(arc.graphics.gl.Shader)
+  -> arc.graphics.gl.IndexData.size()
+  -> arc.graphics.gl.IndexData.bind()
+unbind
+  -> arc.graphics.gl.VertexData.unbind(arc.graphics.gl.Shader)
+  -> arc.graphics.gl.IndexData.size()
+  -> arc.graphics.gl.IndexData.unbind()
+render
+  -> arc.graphics.Mesh.render(arc.graphics.gl.Shader, int, int, int, boolean)
+  -> arc.graphics.gl.IndexData.max()
+  -> arc.graphics.Mesh.getNumIndices()
+  -> arc.graphics.Mesh.getNumVertices()
+  -> arc.graphics.Mesh.bind(arc.graphics.gl.Shader)
+  -> arc.graphics.gl.VertexData.render(arc.graphics.gl.IndexData, int, int, int)
+  -> arc.graphics.Mesh.unbind(arc.graphics.gl.Shader)
+dispose
+  -> arc.util.Disposable.dispose()
+  -> arc.graphics.gl.IndexData.dispose()
+getVerticesBuffer
+  -> arc.graphics.gl.VertexData.buffer()
+getIndicesBuffer
+  -> arc.graphics.gl.IndexData.buffer()
+Pixmap
+  -> arc.graphics.Pixmap.load(int, int)
+  -> arc.graphics.Pixmap.load(byte[], int, int, java.lang.String)
+  -> arc.files.Fi.get(java.lang.String)
+  -> arc.Files.internal(java.lang.String)
+  -> arc.files.Fi.readBytes()
+  -> arc.files.Fi.toString()
+  -> java.nio.ByteBuffer.isDirect()
+  -> java.nio.ByteBuffer.limit(int)
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.Buffer.capacity()
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+copy
+  -> arc.graphics.Pixmap.copyMem(java.nio.ByteBuffer, int, java.nio.ByteBuffer, int, int)
+  -> java.nio.Buffer.capacity()
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+each
+  -> arc.func.Intc2.get(int, int)
+replace
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.func.IntIntf.get(int)
+  -> arc.graphics.Pixmap.getRaw(int, int)
+fill
+  -> java.nio.ByteBuffer.putInt(int, int)
+  -> arc.graphics.Pixmap.fill(int)
+  -> arc.graphics.Color.rgba()
+crop
+  -> arc.graphics.Pixmap.isDisposed()
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int)
+  -> java.lang.IllegalStateException.IllegalStateException(java.lang.String)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+flipY
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Pixmap.getRaw(int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+flipX
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Pixmap.getRaw(int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+outline
+  -> arc.graphics.Pixmap.outline(int, int)
+  -> arc.graphics.Color.rgba()
+  -> arc.graphics.Pixmap.copy()
+  -> arc.graphics.Pixmap.getA(int, int)
+  -> arc.graphics.Pixmap.empty(int)
+  -> arc.graphics.Pixmap.get(int, int)
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+drawLine
+  -> java.lang.Math.abs(int)
+  -> arc.graphics.Pixmap.set(int, int, int)
+drawRect
+  -> arc.graphics.Pixmap.hline(int, int, int, int)
+  -> arc.graphics.Pixmap.vline(int, int, int, int)
+circlePoints
+  -> arc.graphics.Pixmap.set(int, int, int)
+drawCircle
+  -> arc.graphics.Pixmap.circlePoints(int, int, int, int, int)
+draw
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int, int, int)
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int, int, int, boolean, boolean)
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int)
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int)
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, boolean)
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int, int, int, boolean)
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Pixmap.blend(int, int)
+  -> arc.graphics.Pixmap.getRaw(int, int)
+  -> java.lang.Math.max(int, int)
+  -> java.lang.Math.min(int, int)
+  -> arc.graphics.Pixmap.copyMem(java.nio.ByteBuffer, int, java.nio.ByteBuffer, int, int)
+  -> arc.math.Mathf.round(float)
+  -> java.nio.ByteBuffer.getInt(int)
+fillRect
+  -> arc.graphics.Pixmap.hline(int, int, int, int)
+fillCircle
+  -> arc.graphics.Pixmap.hline(int, int, int, int)
+get
+  -> arc.graphics.Pixmap.in(int, int)
+  -> java.nio.ByteBuffer.getInt(int)
+getClamp
+  -> arc.graphics.Pixmap.getRaw(int, int)
+  -> java.lang.Math.max(int, int)
+  -> java.lang.Math.min(int, int)
+getRaw
+  -> java.nio.ByteBuffer.getInt(int)
+getA
+  -> java.nio.ByteBuffer.get(int)
+empty
+  -> java.nio.ByteBuffer.get(int)
+dispose
+  -> arc.graphics.Pixmap.free(long)
+set
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Color.rgba()
+  -> arc.graphics.Pixmap.in(int, int)
+  -> java.nio.ByteBuffer.putInt(int, int)
+setRaw
+  -> java.nio.ByteBuffer.putInt(int, int)
+getPixels
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+hline
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+vline
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+load
+  -> arc.graphics.Pixmap.loadJni(long[], byte[], int, int)
+  -> arc.graphics.Pixmap.getFailureReason()
+  -> java.nio.ByteBuffer.limit(int)
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.Buffer.capacity()
+  -> java.lang.Throwable.getMessage()
+  -> java.lang.String.contains(java.lang.CharSequence)
+  -> arc.graphics.Pixmap.loadJava(byte[], int, int, java.lang.String)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+  -> arc.graphics.Pixmap.createJni(long[], int, int)
+  -> java.nio.ByteBuffer.allocateDirect(int)
+loadJava
+  -> arc.graphics.PixmapIO.PngReader.read(java.io.InputStream)
+  -> java.nio.ByteBuffer.limit(int)
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.Buffer.capacity()
+  -> arc.graphics.PixmapIO.PngReader.PngReader()
+  -> java.io.ByteArrayInputStream.ByteArrayInputStream(byte[], int, int)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String, java.lang.Throwable)
+copyMem
+  -> arc.util.Java16Buffers.copy(java.nio.ByteBuffer, int, java.nio.ByteBuffer, int, int)
+  -> arc.util.UnsafeBuffers.copy(java.nio.Buffer, int, java.nio.Buffer, int, int)
+  -> arc.util.Buffers.copyJni(java.nio.Buffer, int, java.nio.Buffer, int, int)
+writePng
+  -> arc.graphics.PixmapIO.PngWriter.setFlipY(boolean)
+  -> arc.graphics.PixmapIO.PngWriter.write(arc.files.Fi, arc.graphics.Pixmap)
+  -> arc.graphics.PixmapIO.PngWriter.dispose()
+  -> arc.graphics.PixmapIO.PngWriter.PngWriter(int)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String, java.lang.Throwable)
+writePngBytes
+  -> arc.graphics.PixmapIO.PngWriter.setFlipY(boolean)
+  -> arc.graphics.PixmapIO.PngWriter.write(java.io.OutputStream, arc.graphics.Pixmap)
+  -> java.io.ByteArrayOutputStream.toByteArray()
+  -> arc.graphics.PixmapIO.PngWriter.dispose()
+  -> arc.graphics.PixmapIO.PngWriter.PngWriter(int)
+  -> java.io.ByteArrayOutputStream.ByteArrayOutputStream()
+readPNG
+  -> arc.graphics.PixmapIO.PngReader.read(java.io.InputStream)
+  -> arc.files.Fi.readBytes()
+  -> arc.graphics.PixmapIO.PngReader.PngReader()
+  -> java.io.ByteArrayInputStream.ByteArrayInputStream(byte[])
+  -> arc.graphics.Pixmap.Pixmap(java.nio.ByteBuffer, int, int)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String, java.lang.Throwable)
+PngWriter implements arc.util.Disposable::PngWriter
+  -> arc.graphics.PixmapIO.PngWriter.ChunkBuffer.ChunkBuffer(int)
+  -> java.util.zip.Deflater.Deflater()
+PngWriter implements arc.util.Disposable::setCompression
+  -> java.util.zip.Deflater.setLevel(int)
+PngWriter implements arc.util.Disposable::write
+  -> arc.files.Fi.write(boolean)
+  -> arc.graphics.PixmapIO.PngWriter.write(java.io.OutputStream, arc.graphics.Pixmap)
+  -> arc.util.io.Streams.close(java.io.Closeable)
+  -> java.io.FilterOutputStream.write(byte[])
+  -> java.io.DataOutputStream.writeInt(int)
+  -> java.io.DataOutputStream.writeByte(int)
+  -> arc.graphics.PixmapIO.PngWriter.ChunkBuffer.endChunk(java.io.DataOutputStream)
+  -> java.util.zip.Deflater.reset()
+  -> java.nio.Buffer.position()
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.ByteBuffer.get(byte[], int, int)
+  -> java.util.zip.DeflaterOutputStream.write(byte[], int, int)
+  -> java.util.zip.DeflaterOutputStream.finish()
+  -> java.io.OutputStream.flush()
+  -> java.util.zip.DeflaterOutputStream.DeflaterOutputStream(java.io.OutputStream, java.util.zip.Deflater)
+  -> java.io.DataOutputStream.DataOutputStream(java.io.OutputStream)
+PngWriter implements arc.util.Disposable::dispose
+  -> java.util.zip.Deflater.end()
+PngWriter implements arc.util.Disposable.ChunkBuffer extends java.io.DataOutputStream::ChunkBuffer
+  -> java.io.ByteArrayOutputStream.ByteArrayOutputStream(int)
+  -> java.util.zip.CRC32.CRC32()
+  -> java.util.zip.CheckedOutputStream.CheckedOutputStream(java.io.OutputStream, java.util.zip.Checksum)
+PngWriter implements arc.util.Disposable.ChunkBuffer extends java.io.DataOutputStream::endChunk
+  -> java.io.DataOutputStream.flush()
+  -> java.io.DataOutputStream.writeInt(int)
+  -> java.io.ByteArrayOutputStream.size()
+  -> java.io.ByteArrayOutputStream.writeTo(java.io.OutputStream)
+  -> java.util.zip.CRC32.getValue()
+  -> java.io.ByteArrayOutputStream.reset()
+  -> java.util.zip.CRC32.reset()
+ChunkBuffer extends java.io.DataOutputStream::ChunkBuffer
+  -> java.io.ByteArrayOutputStream.ByteArrayOutputStream(int)
+  -> java.util.zip.CRC32.CRC32()
+  -> java.util.zip.CheckedOutputStream.CheckedOutputStream(java.io.OutputStream, java.util.zip.Checksum)
+ChunkBuffer extends java.io.DataOutputStream::endChunk
+  -> java.io.DataOutputStream.flush()
+  -> java.io.DataOutputStream.writeInt(int)
+  -> java.io.ByteArrayOutputStream.size()
+  -> java.io.ByteArrayOutputStream.writeTo(java.io.OutputStream)
+  -> java.util.zip.CRC32.getValue()
+  -> java.io.ByteArrayOutputStream.reset()
+  -> java.util.zip.CRC32.reset()
+PngReader::read
+  -> arc.graphics.PixmapIO.PngReader.readChunks(java.io.DataInputStream)
+  -> java.nio.ByteBuffer.clear()
+  -> java.nio.ByteBuffer.allocateDirect(int)
+  -> arc.graphics.PixmapIO.PngReader.getImage(java.nio.ByteBuffer)
+  -> java.nio.ByteBuffer.flip()
+  -> java.io.DataInputStream.DataInputStream(java.io.InputStream)
+  -> java.io.IOException.IOException(java.lang.Throwable)
+PngReader::readChunks
+  -> java.io.FilterInputStream.available()
+  -> java.io.DataInputStream.readLong()
+  -> java.lang.Long.toHexString(long)
+  -> java.lang.String.startsWith(java.lang.String)
+  -> java.io.DataInputStream.readInt()
+  -> java.io.DataInputStream.readFully(byte[], int, int)
+  -> java.io.DataInputStream.readByte()
+  -> arc.graphics.Color.packRgba(int, int, int, int)
+  -> java.io.DataInputStream.readUnsignedByte()
+  -> java.io.DataInputStream.skipBytes(int)
+  -> java.io.IOException.IOException(java.lang.String)
+PngReader::getImage
+  -> java.util.zip.Inflater.setInput(byte[], int, int)
+  -> java.util.zip.Inflater.inflate(byte[], int, int)
+  -> arc.graphics.PixmapIO.PngReader.paeth(int, int, int)
+  -> java.nio.ByteBuffer.wrap(byte[])
+  -> java.nio.ByteBuffer.putInt(int)
+  -> java.nio.ByteBuffer.getInt(int)
+  -> arc.util.Pack.leftByte(byte)
+  -> arc.util.Pack.rightByte(byte)
+  -> java.nio.ByteBuffer.put(byte[], int, int)
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.Buffer.capacity()
+  -> java.util.zip.Inflater.Inflater()
+PngReader::paeth
+  -> arc.graphics.PixmapIO.PngReader.ab(int)
+noise
+  -> arc.graphics.Pixmap.set(int, int, arc.graphics.Color)
+  -> arc.graphics.Color.rand()
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+noiseTex
+  -> arc.graphics.Pixmaps.noise(int, int)
+  -> arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap)
+  -> arc.graphics.Pixmap.dispose()
+  -> arc.graphics.Texture.Texture(arc.graphics.Pixmap)
+flip
+  -> java.nio.ByteBuffer.position(int)
+  -> java.nio.ByteBuffer.get(byte[], int, int)
+  -> java.nio.ByteBuffer.clear()
+  -> java.nio.ByteBuffer.put(byte[])
+blend
+  -> arc.graphics.Color.rgba()
+  -> arc.graphics.Color.lerp(arc.graphics.Color, float)
+  -> arc.graphics.Color.set(int)
+  -> arc.graphics.g2d.PixmapRegion.getRaw(int, int)
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Color.Color()
+median
+  -> arc.graphics.Pixmaps.median(arc.graphics.Pixmap, int, double, arc.struct.IntSeq)
+  -> arc.graphics.Pixmap.each(arc.func.Intc2)
+  -> arc.struct.IntSeq.clear()
+  -> arc.math.geom.Geometry.circle(int, int, int, int, int, arc.func.Intc2)
+  -> arc.struct.IntSeq.add(int)
+  -> arc.graphics.Pixmap.get(int, int)
+  -> arc.struct.IntSeq.sort()
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.struct.IntSeq.get(int)
+  -> arc.math.Mathf.clamp(int, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+scale
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int, int, int, boolean)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Pixmaps.scale(arc.graphics.Pixmap, float, float)
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Pixmap.getRaw(int, int)
+outline
+  -> arc.graphics.Pixmaps.outline(arc.graphics.g2d.PixmapRegion, arc.graphics.Color, int, int)
+  -> arc.graphics.Color.rgba8888()
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int)
+  -> arc.graphics.g2d.PixmapRegion.getA(int, int)
+  -> arc.util.Structs.inBounds(int, int, int, int)
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Pixmap.copy()
+  -> arc.graphics.Color.rgba()
+  -> arc.graphics.Pixmap.empty(int, int)
+zoom
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Pixmap.get(int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+resize
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Pixmap.fill(int)
+crop
+  -> arc.graphics.Pixmap.isDisposed()
+  -> arc.graphics.Pixmap.draw(arc.graphics.Pixmap, int, int, int, int, int, int)
+  -> java.lang.IllegalStateException.IllegalStateException(java.lang.String)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+rotate
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.math.geom.Vec2.rotate(float)
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Pixmap.get(int, int)
+  -> arc.math.geom.Vec2.Vec2()
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+huePixmap
+  -> arc.graphics.Color.fromHsv(float, float, float)
+  -> arc.graphics.Color.rgba()
+  -> arc.graphics.Pixmap.set(int, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Color.Color(float, float, float, float)
+hueTexture
+  -> arc.graphics.Pixmaps.huePixmap(int, int)
+  -> arc.graphics.Texture.Texture(arc.graphics.Pixmap)
+blankPixmap
+  -> arc.graphics.Pixmap.fill(int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+blankTexture
+  -> arc.graphics.Pixmaps.blankPixmap()
+  -> arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap)
+  -> arc.graphics.Texture.Texture(arc.graphics.Pixmap)
+blankTextureRegion
+  -> arc.graphics.Pixmaps.blankTexture()
+  -> arc.graphics.g2d.TextureRegion.TextureRegion(arc.graphics.Texture)
+drawPixel
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Texture.draw(arc.graphics.Pixmap, int, int)
+  -> arc.math.Mathf.clamp(int, int, int)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+bleed
+  -> arc.graphics.Pixmap.empty(int, int)
+  -> java.nio.ByteBuffer.get(int)
+  -> java.nio.ByteBuffer.put(int, byte)
+antialias
+  -> arc.graphics.Pixmap.copy()
+  -> arc.graphics.Pixmap.getClamp(int, int)
+  -> java.util.Arrays.fill(int[], int)
+  -> arc.graphics.Pixmap.setRaw(int, int, int)
+  -> arc.graphics.Color.rgba8888(float, float, float, float)
+  -> arc.graphics.Pixmap.dispose()
+Texture
+  -> arc.Files.internal(java.lang.String)
+  -> arc.graphics.TextureData.load(arc.files.Fi, boolean)
+  -> arc.graphics.gl.PixmapTextureData.PixmapTextureData(arc.graphics.Pixmap, boolean, boolean)
+  -> arc.graphics.Pixmap.Pixmap(int, int)
+  -> arc.graphics.Gl.genTexture()
+  -> arc.graphics.Texture.load(arc.graphics.TextureData)
+createEmpty
+  -> arc.graphics.Texture.Texture()
+load
+  -> arc.graphics.TextureData.getWidth()
+  -> arc.graphics.TextureData.getHeight()
+  -> arc.graphics.TextureData.isPrepared()
+  -> arc.graphics.TextureData.prepare()
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.GLTexture.uploadImageData(int, arc.graphics.TextureData)
+  -> arc.graphics.GLTexture.unsafeSetFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter, boolean)
+  -> arc.graphics.GLTexture.unsafeSetWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap, boolean)
+  -> arc.graphics.Gl.bindTexture(int, int)
+draw
+  -> arc.graphics.Texture.draw(arc.graphics.Pixmap, int, int)
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.Gl.texSubImage2D(int, int, int, int, int, int, int, int, java.nio.Buffer)
+  -> arc.graphics.Pixmap.getGLFormat()
+  -> arc.graphics.Pixmap.getGLType()
+toString
+  -> java.lang.Object.toString()
+TextureArray
+  -> arc.graphics.TextureArray.getInternalHandles(java.lang.String...)
+  -> arc.graphics.gl.FileTextureArrayData.FileTextureArrayData(boolean, arc.files.Fi[])
+  -> arc.graphics.Gl.genTexture()
+  -> arc.graphics.TextureArray.load(arc.graphics.TextureArrayData)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+getInternalHandles
+  -> arc.Files.internal(java.lang.String)
+load
+  -> arc.graphics.TextureArrayData.getWidth()
+  -> arc.graphics.TextureArrayData.getHeight()
+  -> arc.graphics.GLTexture.bind()
+  -> arc.graphics.GL30.glTexImage3D(int, int, int, int, int, int, int, int, int, java.nio.Buffer)
+  -> arc.graphics.TextureArrayData.getInternalFormat()
+  -> arc.graphics.TextureArrayData.getDepth()
+  -> arc.graphics.TextureArrayData.getGLType()
+  -> arc.graphics.TextureArrayData.isPrepared()
+  -> arc.graphics.TextureArrayData.prepare()
+  -> arc.graphics.TextureArrayData.consumeTextureArrayData()
+  -> arc.graphics.GLTexture.setFilter(arc.graphics.Texture.TextureFilter, arc.graphics.Texture.TextureFilter)
+  -> arc.graphics.GLTexture.setWrap(arc.graphics.Texture.TextureWrap, arc.graphics.Texture.TextureWrap)
+  -> arc.graphics.Gl.bindTexture(int, int)
+getDepth
+  -> arc.graphics.TextureArrayData.getDepth()
+getPixmap
+  -> arc.graphics.TextureData.isPrepared()
+  -> arc.graphics.TextureData.prepare()
+  -> arc.graphics.TextureData.consumePixmap()
+load
+  -> arc.graphics.gl.FileTextureData.FileTextureData(arc.files.Fi, arc.graphics.Pixmap, boolean)
+  -> arc.graphics.Pixmap.Pixmap(arc.files.Fi)

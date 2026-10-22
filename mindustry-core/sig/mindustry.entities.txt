@@ -1,0 +1,346 @@
+Damage.java
+Java class
+// Utility class for damaging in an area.
+fields:
+  private static final UnitDamageEvent bulletDamageEvent
+  private static final Rect rect
+  private static final Rect hitrect
+  private static final Vec2 vec
+  private static final IntSet collidedBlocks
+  private static final IntFloatMap damages
+  private static final Seq<Collided> collided
+  private static final Pool<Collided> collidePool
+  private static final Seq<Building> builds
+  private static final FloatSeq distances
+  private static Tile furthest
+  private static float maxDst
+  private static Building tmpBuilding
+  private static Unit tmpUnit
+methods:
+  public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source) / public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source, Color effectColor)
+  public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx, float baseShake) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx, float baseShake)
+  public static void createIncend(float x, float y, float range, int amount)
+  public static Building findAbsorber(Team team, float x1, float y1, float x2, float y2)
+  public static float findLength(Bullet b, float length, boolean laser, int pierceCap)
+  public static float findLaserLength(Bullet b, float length)
+  public static float findPierceLength(Bullet b, int pierceCap, float length) / public static float findPierceLength(Bullet b, int pierceCap, boolean laser, float length)
+  public static float collideLaser(Bullet b, float length, boolean large, boolean laser, int pierceCap)  // Collides a bullet with blocks in a laser, taking into account absorption blocks.
+  public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser, int pierceCap)  // Damages entities in a line.
+  public static void collidePoint(Bullet hitter, Team team, Effect effect, float x, float y)  // Damages entities on a point.
+  public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length)  // Casts forward in a line.
+  public static void damageUnits(Team team, float x, float y, float size, float damage, Boolf<Unit> predicate, Cons<Unit> acceptor)  // Damages all entities and blocks in a radius that are enemies of the team.
+  public static void damage(float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source, float armorMult)  // Damages everything in a radius.
+  public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground) / public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground, float chance)
+  public static void tileDamage(Team team, int x, int y, float baseRadius, float damage) / public static void tileDamage(Team team, int tx, int ty, float baseRadius, float damage, Bullet source)
+  private static void completeDamage(Team team, float x, float y, float radius, float damage)
+  private static float calculateDamage(float dist, float radius, float damage)
+  public static float applyArmor(float damage, float armor)  // @return resulting armor calculated based off of damage
+inner-class: Collided implements arc.util.pooling.Pool.Poolable
+  fields:
+    public float x
+    public Teamc target
+  methods:
+    public Collided set(float x, float y, Teamc target)
+    public void reset()
+
+Effect.java
+Java class
+fields:
+  private static final float shakeFalloff
+  private static final EffectContainer container
+  public static final Seq<Effect> all
+  private transient boolean initialized
+  public final int id
+  public Cons<EffectContainer> renderer
+  public float lifetime
+  public float clip  // Clip size.
+  public float startDelay  // Time delay before the effect starts
+  public float baseRotation  // Amount added to rotation
+  public boolean followParent  // If true, parent unit is data are followed.
+  public boolean rotWithParent  // If this and followParent are true, the effect will offset and rotate with the parent's rotation.
+  public float layer
+  public float layerDuration
+ctors:
+  public Effect(float life, float clipsize, Cons<EffectContainer> renderer) / public Effect(float life, Cons<EffectContainer> renderer) / public Effect()  // for custom implementations
+methods:
+  public Effect startDelay(float d)
+  public void init()
+  public Effect followParent(boolean follow)
+  public Effect rotWithParent(boolean follow)
+  public Effect layer(float l) / public Effect layer(float l, float duration)
+  public Effect baseRotation(float d)
+  public WrapEffect wrap(Color color) / public WrapEffect wrap(Color color, float rotation)
+  public void at(Position pos) / public void at(Position pos, boolean parentize) / public void at(Position pos, float rotation) / public void at(float x, float y) / public void at(float x, float y, float rotation) / public void at(float x, float y, float rotation, Color color) / public void at(float x, float y, Color color) / public void at(float x, float y, float rotation, Color color, Object data) / public void at(float x, float y, float rotation, Object data)
+  public boolean shouldCreate()
+  public void create(float x, float y, float rotation, Color color, Object data)
+  protected void add(float x, float y, float rotation, Color color, Object data)
+  public float render(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data) / public void render(EffectContainer e)
+  public static Effect get(int id)
+  private static void shake(float intensity, float duration) / public static void shake(float intensity, float duration, float x, float y) / public static void shake(float intensity, float duration, Position loc)
+  public static void floorDust(float x, float y, float size)
+  public static void floorDustAngle(Effect effect, float x, float y, float angle)
+  public static void decal(TextureRegion region, float x, float y, float rotation) / public static void decal(TextureRegion region, float x, float y, float rotation, float lifetime, Color color)
+  public static void scorch(float x, float y, int size)
+  public static void rubble(float x, float y, int blockSize)
+  public static void shockwaveDust(float x, float y, float rad) / public static void shockwaveDust(float x, float y, float rad, float density)
+inner-class: EffectContainer implements arc.math.Scaled
+  fields:
+    public float x
+    public Color color
+    public int id
+    public Object data
+    private EffectContainer innerContainer
+  methods:
+    public void set(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data)
+    public T data()
+    public EffectContainer inner()
+    public void scaled(float lifetime, Cons<EffectContainer> cons)
+    public float fin()
+
+EntityCollisions.java
+Java class
+fields:
+  private static final float seg  // move in 1-unit chunks (can this be made more efficient?)
+  private Vec2 vector  // tile collisions
+  private Rect r1
+  private Seq<Hitboxc> arrOut  // entity collisions
+  private Cons<Hitboxc> hitCons
+  private Cons<QuadTree> treeCons
+methods:
+  public void moveCheck(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)
+  public void move(Hitboxc entity, float deltax, float deltay) / public void move(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)
+  public void moveDelta(Hitboxc entity, float deltax, float deltay, int r, boolean x, SolidPred solidCheck)
+  public boolean overlapsTile(Rect rect, SolidPred solidChecker)
+  public void updatePhysics(EntityGroup<T> group)
+  public static boolean legsSolid(int x, int y)
+  public static boolean waterSolid(int x, int y)
+  public static boolean solid(int x, int y)
+  private void checkCollide(Hitboxc a, Hitboxc b)
+  public static boolean collide(float x1, float y1, float w1, float h1, float vx1, float vy1, float x2, float y2, float w2, float h2, float vx2, float vy2, Vec2 out) / public void collide(EntityGroup<T> groupa)
+  private void updateCollision(Hitboxc solid)
+inner-interface: SolidPred
+  methods:
+    boolean solid(int x, int y)
+
+EntityGroup.java
+Java class implements java.lang.Iterable
+// Represents a group of a certain type of entity.
+fields:
+  private static int lastId
+  private final Seq<T> array
+  private final Seq<T> intersectArray
+  private final Rect viewport
+  private final Rect intersectRect
+  private final EntityIndexer indexer
+  private IntMap<T> map
+  private QuadTree tree
+  private boolean clearing
+  private int index
+  private double fixedCounter
+  private long lastTimeAccess
+  private Seq<DelayRun> timeRuns
+ctors:
+  public EntityGroup(Class<T> type, boolean spatial, boolean mapping) / public EntityGroup(Class<T> type, boolean spatial, boolean mapping, EntityIndexer indexer)
+methods:
+  public static int nextId()
+  public static void checkNextId(int id)  // Makes sure the next ID counter is higher than this number, so future entities cannot possibly use this ID.
+  public Seq<T> checkIDCollisions()  // @return entities with colliding IDs, or an empty array.
+  public void sort(Comparator<? super T> comp)
+  public void collide()
+  public void updatePhysics()
+  public void update() / public void update(Boolf<T> filter)
+  public void fixedUpdate(int targetFps) / public void fixedUpdate(int targetUps, int maxUpdatesPerFrame)  // Calls {@link #fixedUpdate(int, int)} with a maximum of 10 updates per frame.
+  public Seq<T> copy() / public Seq<T> copy(Seq<T> arr)
+  public void each(Cons<T> cons) / public void each(Boolf<T> filter, Cons<T> cons)
+  public void draw(Cons<T> cons)
+  public boolean useTree()
+  public boolean mappingEnabled()
+  public T getByID(int id)
+  public void removeByID(int id)
+  public void intersect(float x, float y, float width, float height, Cons<? super T> out) / public boolean intersect(float x, float y, float width, float height, Boolf<? super T> out) / public Seq<T> intersect(float x, float y, float width, float height)
+  public QuadTree tree()
+  public Seq<T> rawSeq()
+  public void resize(float x, float y, float w, float h)  // Resizes the internal quadtree, if it is enabled.
+  public boolean isEmpty()
+  public T index(int i)
+  public int size()
+  public boolean contains(Boolf<T> pred)
+  public int count(Boolf<T> pred)
+  public void add(T type)
+  public int addIndex(T type)
+  public void remove(T type)
+  public void removeIndex(T type, int position)
+  public void clear()
+  public T find(Boolf<T> pred)
+  public T first()
+  public Iterator<T> iterator()
+  public String toString()
+
+EntityIndexer.java
+Java interface
+methods:
+  void change(Entityc t, int index)
+
+Fires.java
+Java class
+fields:
+  private static final float baseLifetime
+methods:
+  public static void create(Tile tile)  // Start a fire on the tile.
+  public static Fire get(Tile tile) / public static Fire get(int x, int y)
+  private static void set(Tile tile, Fire fire)
+  public static boolean has(int x, int y)
+  public static void extinguish(Tile tile, float intensity)  // Attempts to extinguish a fire by shortening its life.
+  public static void remove(Tile tile)
+  public static void register(Fire fire)
+
+GroupDefs.java
+Java class
+fields:
+  G all
+  G effect
+  G player
+  G bullet
+  G unit
+  G build
+  G sync
+  G draw
+  G weather
+  G powerGraph
+
+Leg.java
+Java class
+fields:
+  public final Vec2 joint
+  public int group
+  public boolean moving
+  public float stage
+
+LegDestroyData.java
+Java class
+fields:
+  public Vec2 a
+  public TextureRegion region
+ctors:
+  public LegDestroyData(Vec2 a, Vec2 b, TextureRegion region)
+
+Lightning.java
+Java class
+fields:
+  private static final Rand random
+  private static final Rect rect
+  private static final Seq<Unit> entities
+  private static final IntSet hit
+  private static final int maxChain
+  private static final float hitRange
+  private static boolean bhit
+  private static int lastSeed
+methods:
+  public static void create(BulletType bulletCreated, Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Bullet bullet, Color color, float damage, float x, float y, float targetAngle, int length)  // Create a lighting branch at a location.
+  private static void createLightningInternal(Bullet hitter, BulletType hitCreate, int seed, Team team, Color color, float damage, float x, float y, float rotation, int length)
+
+Mover.java
+Java interface
+// Applies custom movement to a bullet.
+methods:
+  void move(Bullet bullet)
+
+Predict.java
+Java class
+// Class for predicting shoot angles based on velocities of targets.
+fields:
+  private static final Vec2 vec
+  private static final Vec2 vresult
+methods:
+  public static Vec2 intercept(float srcx, float srcy, float dstx, float dsty, float dstvx, float dstvy, float v) / public static Vec2 intercept(Position src, Position dst, float v) / public static Vec2 intercept(Position src, Position dst, BulletType bullet) / public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, float v) / public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, boolean useSrcVelocity, float v) / public static Vec2 intercept(Hitboxc src, Hitboxc dst, float v)  // Calculates of intercept of a stationary and moving target.
+  private static Vec2 quad(float a, float b, float c)
+
+Puddles.java
+Java class
+fields:
+  public static final float maxLiquid
+methods:
+  public static void deposit(Tile tile, Tile source, Liquid liquid, float amount) / public static void deposit(Tile tile, Liquid liquid, float amount) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial, boolean cap)  // Deposits a Puddle between tile and source.
+  public static Puddle get(Tile tile)  // Returns the Puddle on the specified tile.
+  public static boolean hasLiquid(Tile tile, Liquid liquid)
+  public static void remove(Tile tile)
+  public static void register(Puddle puddle)
+  private static float reactPuddle(Liquid dest, Liquid liquid, float amount, Tile tile, float x, float y)  // Reacts two liquids together at a location.
+  private static boolean canStayOn(Liquid liquid, Liquid other)  // Returns whether the first liquid can 'stay' on the second one.
+
+Sized.java
+Java interface extends arc.math.geom.Position
+methods:
+  float hitSize()
+
+TargetPriority.java
+Java class
+// Higher priority blocks will always get targeted over those of lower priority, regardless of distance.
+fields:
+  public static final float wall
+
+UnitSorts.java
+Java class
+fields:
+  public static Sortf closest
+  public static BuildingPriorityf buildingDefault
+methods:
+  public static Sortf grouped(float dstWeight)  // @param dstWeight higher values make distance more important.
+
+Units.java
+Java class
+// Utility class for unit and team interactions.
+fields:
+  private static final Rect hitrect
+  private static Unit result
+  private static float cdist
+  private static int intResult
+  private static Building buildResult
+  private static boolean anyEntityGround  // prevents allocations in anyEntities
+  private static float aeX
+  private static final Boolf<Unit> anyEntityLambda
+methods:
+  public static void notifyUnitSpawn(Unit unit)
+  public static void unitSpawn(UnitSyncContainer container)  // syncs a unit spawn so that it appears immediately without waiting for a snapshot
+  public static void unitCapDeath(Unit unit)
+  public static void unitEnvDeath(Unit unit)
+  public static void unitDeath(int uid)
+  public static void unitDestroy(int uid)  // destroys immediately
+  public static void unitDespawn(Unit unit)
+  public static void unitSafeDeath(Unit unit)  // Removes a unit after spawning the death effects.
+  public static boolean canCreate(Team team, UnitType type)  // @return whether a new instance of a unit of this team can be created.
+  public static int getCap(Team team)
+  public static String getStringCap(Team team)  // @return unit cap as a string, substituting the infinity symbol instead of MAX_VALUE
+  public static boolean canInteract(Player player, Building tile)  // @return whether this player can interact with a specific tile.
+  public static boolean isHittable(Posc target, boolean air, boolean ground)
+  public static boolean invalidateTarget(Posc target, Team team, float x, float y, float range) / public static boolean invalidateTarget(Posc target, Team team, float x, float y) / public static boolean invalidateTarget(Teamc target, Unit targeter, float range)  // Validates a target.
+  public static boolean anyEntities(Tile tile, boolean ground) / public static boolean anyEntities(Tile tile) / public static boolean anyEntities(float x, float y, float size) / public static boolean anyEntities(float x, float y, float width, float height) / public static boolean anyEntities(float x, float y, float width, float height, boolean ground) / public static boolean anyEntities(float x, float y, float width, float height, Boolf<Unit> check)  // Returns whether there are any entities on this tile.
+  public static Building findDamagedTile(Team team, float x, float y)  // Returns the nearest damaged tile.
+  public static Building findAllyTile(Team team, float x, float y, float range, Boolf<Building> pred)  // Returns the nearest ally tile in a range.
+  public static Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred)  // Returns the nearest enemy tile in a range.
+  public static Building closestBuilding(Team team, float wx, float wy, float range, Boolf<Building> pred)  // @return the closest building of the provided team that matches the predicate.
+  public static void nearbyBuildings(float x, float y, float range, Cons<Building> cons)  // Iterates through all buildings in a range.
+  public static Teamc closestTarget(Team team, float x, float y, float range) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred) / public static Teamc closestTarget(Team team, float x, float y, float range, Team sourceTeam, Boolf<Unit> unitPred, Boolf<Building> tilePred)  // Returns the closest target enemy.
+  public static Teamc bestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred, Sortf sort)  // Returns the closest target enemy.
+  public static Unit closestEnemy(Team team, float x, float y, float range, Boolf<Unit> predicate)  // Returns the closest enemy of this team.
+  public static Unit bestEnemy(Team team, float x, float y, float range, Boolf<Unit> predicate, Sortf sort)  // Returns the closest enemy of this team using a custom comparison function.
+  public static Unit closest(Team team, float x, float y, Boolf<Unit> predicate) / public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate) / public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate, Sortf sort)  // Returns the closest ally of this team.
+  public static Unit closestOverlap(Team team, float x, float y, float range, Boolf<Unit> predicate)  // Returns the closest ally of this team.
+  public static int count(float x, float y, float size, Boolf<Unit> filter) / public static int count(float x, float y, float width, float height, Boolf<Unit> filter)  // @return whether any units exist in this square (centered)
+  public static boolean any(float x, float y, float width, float height, Boolf<Unit> filter)  // @return whether any units exist in this rectangle
+  public static void nearby(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearby(float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Rect rect, Cons<Unit> cons)  // Iterates over all units in a rectangle.
+  public static boolean nearbyCheck(float x, float y, float width, float height, Boolf<Unit> cons)  // Iterates over all units in a rectangle.
+  public static void nearbyEnemies(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearbyEnemies(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearbyEnemies(Team team, Rect rect, Cons<Unit> cons)  // Iterates over all units that are enemies of this team.
+  public static boolean nearEnemy(Team team, float x, float y, float width, float height)  // @return whether there is an enemy in this rectangle.
+inner-interface: Sortf
+  methods:
+    float cost(Unit unit, float x, float y)
+inner-interface: BuildingPriorityf
+  methods:
+    float priority(Building build)
+inner-class: UnitSyncContainer
+  fields:
+    public Unit unit
+  ctors:
+    public UnitSyncContainer() / public UnitSyncContainer(Unit unit)
+

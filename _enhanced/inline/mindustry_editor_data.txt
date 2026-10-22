@@ -1,0 +1,63 @@
+// MapAssetsDialog.java : void rebuild()
+    void rebuild(){
+        list.center().top();
+        list.clearChildren();
+        list.marginBottom(70f);
+
+        views[currentType.ordinal()].build(this, list);
+    }
+
+// MapContentView.java : public void buildButtons(MapAssetsDialog diag, Table buttons)
+    @Override
+    public void buildButtons(MapAssetsDialog diag, Table buttons){
+        buttons.button("@add", Icon.add, () -> showImport(diag)).size(190f, 64f);
+    }
+
+// MapContentView.java : void addContent(MapAssetsDialog diag, ContentType type, String path, String data)
+    void addContent(MapAssetsDialog diag, ContentType type, String path, String data){
+        ui.loadAnd(() -> {
+            ContentAsset asset = new ContentAsset(path, type, data);
+            state.data.getContent().add(asset);
+            state.data.reloadContent(false);
+            state.data.regenerateContentSprites(false);
+            diag.rebuild();
+        });
+    }
+
+// MapContentView.java : static boolean isSafeContentName(String name)
+    static boolean isSafeContentName(String name){
+        return Strings.isSafeFilename(name) && !unsafeNamePattern.matcher(name).find();
+    }
+
+// MapImagesView.java : private Seq<ImageAsset> getImages()
+    private Seq<ImageAsset> getImages(){
+        return Vars.state.data.getImages();
+    }
+
+// MapPatchesView.java : public void buildButtons(MapAssetsDialog diag, Table buttons)
+    @Override
+    public void buildButtons(MapAssetsDialog diag, Table buttons){
+        buttons.button("@add", Icon.add, () -> showImport(s -> {
+            addPatch(s);
+            diag.rebuild();
+        })).size(190f, 64f);
+    }
+
+// MapPatchesView.java : void addPatch(String patch) / void addPatch(String patch, int replaceIndex)
+    void addPatch(String patch){
+        addPatch(patch, -1);
+    }
+
+// MapPatchesView.java : int countFields(JsonValue value)
+    int countFields(JsonValue value){
+        if(value.isObject() || value.isArray()){
+            int sum = 0;
+            for(var child : value){
+                sum += countFields(child);
+            }
+            return Math.max(sum, 1);
+        }else{
+            return 1;
+        }
+    }
+

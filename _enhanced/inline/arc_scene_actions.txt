@@ -1,0 +1,1249 @@
+// Actions.java : public static T action(Class<T> type, Prov<T> sup)
+    public static <T extends Action> T action(Class<T> type, Prov<T> sup){
+        T action = Pools.obtain(type, sup);
+        action.setPool(Pools.get(type, sup));
+        return action;
+    }
+
+// Actions.java : public static AddAction addAction(Action action) / public static AddAction addAction(Action action, Element targetActor)
+    public static AddAction addAction(Action action){
+        AddAction addAction = action(AddAction.class, AddAction::new);
+        addAction.setAction(action);
+        return addAction;
+    }
+
+// Actions.java : public static RemoveAction removeAction(Action action) / public static RemoveAction removeAction(Action action, Element targetActor)
+    public static RemoveAction removeAction(Action action){
+        RemoveAction removeAction = action(RemoveAction.class, RemoveAction::new);
+        removeAction.setAction(action);
+        return removeAction;
+    }
+
+// Actions.java : public static Action originCenter()
+    public static Action originCenter(){
+        return new OriginAction();
+    }
+
+// Actions.java : public static MoveToAction moveTo(float x, float y) / public static MoveToAction moveTo(float x, float y, float duration) / public static MoveToAction moveTo(float x, float y, float duration, Interp interpolation)
+    public static MoveToAction moveTo(float x, float y){
+        return moveTo(x, y, 0, null);
+    }
+
+// Actions.java : public static MoveToAction moveToAligned(float x, float y, int alignment) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration, Interp interpolation)
+    public static MoveToAction moveToAligned(float x, float y, int alignment){
+        return moveToAligned(x, y, alignment, 0, null);
+    }
+
+// Actions.java : public static MoveByAction moveBy(float amountX, float amountY) / public static MoveByAction moveBy(float amountX, float amountY, float duration) / public static MoveByAction moveBy(float amountX, float amountY, float duration, Interp interpolation)
+    public static MoveByAction moveBy(float amountX, float amountY){
+        return moveBy(amountX, amountY, 0, null);
+    }
+
+// Actions.java : public static RunnableAction translateTo(float amountX, float amountY)
+    public static RunnableAction translateTo(float amountX, float amountY){
+        RunnableAction action = action(RunnableAction.class, RunnableAction::new);
+        action.setRunnable(() -> action.getActor().setTranslation(amountX, amountY));
+        return action;
+    }
+
+// Actions.java : public static TranslateByAction translateBy(float amountX, float amountY, float duration, Interp interpolation) / public static TranslateByAction translateBy(float amountX, float amountY) / public static TranslateByAction translateBy(float amountX, float amountY, float duration)
+    public static TranslateByAction translateBy(float amountX, float amountY, float duration, Interp interpolation){
+        TranslateByAction action = action(TranslateByAction.class, TranslateByAction::new);
+        action.setAmount(amountX, amountY);
+        action.setDuration(duration);
+        action.setInterpolation(interpolation);
+        return action;
+    }
+
+// Actions.java : public static SizeToAction sizeTo(float x, float y) / public static SizeToAction sizeTo(float x, float y, float duration) / public static SizeToAction sizeTo(float x, float y, float duration, Interp interpolation)
+    public static SizeToAction sizeTo(float x, float y){
+        return sizeTo(x, y, 0, null);
+    }
+
+// Actions.java : public static SizeByAction sizeBy(float amountX, float amountY) / public static SizeByAction sizeBy(float amountX, float amountY, float duration) / public static SizeByAction sizeBy(float amountX, float amountY, float duration, Interp interpolation)
+    public static SizeByAction sizeBy(float amountX, float amountY){
+        return sizeBy(amountX, amountY, 0, null);
+    }
+
+// Actions.java : public static ScaleToAction scaleTo(float x, float y) / public static ScaleToAction scaleTo(float x, float y, float duration) / public static ScaleToAction scaleTo(float x, float y, float duration, Interp interpolation)
+    public static ScaleToAction scaleTo(float x, float y){
+        return scaleTo(x, y, 0, null);
+    }
+
+// Actions.java : public static ScaleByAction scaleBy(float amountX, float amountY) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration, Interp interpolation)
+    public static ScaleByAction scaleBy(float amountX, float amountY){
+        return scaleBy(amountX, amountY, 0, null);
+    }
+
+// Actions.java : public static RotateToAction rotateTo(float rotation) / public static RotateToAction rotateTo(float rotation, float duration) / public static RotateToAction rotateTo(float rotation, float duration, Interp interpolation)
+    public static RotateToAction rotateTo(float rotation){
+        return rotateTo(rotation, 0, null);
+    }
+
+// Actions.java : public static RotateByAction rotateBy(float rotationAmount) / public static RotateByAction rotateBy(float rotationAmount, float duration) / public static RotateByAction rotateBy(float rotationAmount, float duration, Interp interpolation)
+    public static RotateByAction rotateBy(float rotationAmount){
+        return rotateBy(rotationAmount, 0, null);
+    }
+
+// Actions.java : public static ColorAction color(Color color) / public static ColorAction color(Color color, float duration) / public static ColorAction color(Color color, float duration, Interp interpolation)
+    public static ColorAction color(Color color){
+        return color(color, 0, null);
+    }
+
+// Actions.java : public static AlphaAction alpha(float a) / public static AlphaAction alpha(float a, float duration) / public static AlphaAction alpha(float a, float duration, Interp interpolation)
+    public static AlphaAction alpha(float a){
+        return alpha(a, 0, null);
+    }
+
+// Actions.java : public static AlphaAction fadeOut(float duration) / public static AlphaAction fadeOut(float duration, Interp interpolation)
+    public static AlphaAction fadeOut(float duration){
+        return alpha(0, duration, null);
+    }
+
+// Actions.java : public static AlphaAction fadeIn(float duration) / public static AlphaAction fadeIn(float duration, Interp interpolation)
+    public static AlphaAction fadeIn(float duration){
+        return alpha(1, duration, null);
+    }
+
+// Actions.java : public static VisibleAction show()
+    public static VisibleAction show(){
+        return visible(true);
+    }
+
+// Actions.java : public static VisibleAction hide()
+    public static VisibleAction hide(){
+        return visible(false);
+    }
+
+// Actions.java : public static VisibleAction visible(boolean visible)
+    public static VisibleAction visible(boolean visible){
+        VisibleAction action = action(VisibleAction.class, VisibleAction::new);
+        action.setVisible(visible);
+        return action;
+    }
+
+// Actions.java : public static TouchableAction touchable(Touchable touchable)
+    public static TouchableAction touchable(Touchable touchable){
+        TouchableAction action = action(TouchableAction.class, TouchableAction::new);
+        action.touchable(touchable);
+        return action;
+    }
+
+// Actions.java : public static RemoveActorAction remove() / public static RemoveActorAction remove(Element removeActor)
+    public static RemoveActorAction remove(){
+        return action(RemoveActorAction.class, RemoveActorAction::new);
+    }
+
+// Actions.java : public static DelayAction delay(float duration) / public static DelayAction delay(float duration, Action delayedAction)
+    public static DelayAction delay(float duration){
+        DelayAction action = action(DelayAction.class, DelayAction::new);
+        action.setDuration(duration);
+        return action;
+    }
+
+// Actions.java : public static TimeScaleAction timeScale(float scale, Action scaledAction)
+    public static TimeScaleAction timeScale(float scale, Action scaledAction){
+        TimeScaleAction action = action(TimeScaleAction.class, TimeScaleAction::new);
+        action.setScale(scale);
+        action.setAction(scaledAction);
+        return action;
+    }
+
+// Actions.java : public static SequenceAction sequence(Action action1) / public static SequenceAction sequence(Action action1, Action action2) / public static SequenceAction sequence(Action action1, Action action2, Action action3) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4, Action action5) / public static SequenceAction sequence(Action actions) / public static SequenceAction sequence()
+    public static SequenceAction sequence(Action action1){
+        SequenceAction action = action(SequenceAction.class, SequenceAction::new);
+        action.addAction(action1);
+        return action;
+    }
+
+// Actions.java : public static ParallelAction parallel(Action action1) / public static ParallelAction parallel(Action action1, Action action2) / public static ParallelAction parallel(Action action1, Action action2, Action action3) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4, Action action5) / public static ParallelAction parallel(Action actions) / public static ParallelAction parallel()
+    public static ParallelAction parallel(Action action1){
+        ParallelAction action = action(ParallelAction.class, ParallelAction::new);
+        action.addAction(action1);
+        return action;
+    }
+
+// Actions.java : public static RepeatAction repeat(int count, Action repeatedAction)
+    public static RepeatAction repeat(int count, Action repeatedAction){
+        RepeatAction action = action(RepeatAction.class, RepeatAction::new);
+        action.setCount(count);
+        action.setAction(repeatedAction);
+        return action;
+    }
+
+// Actions.java : public static RepeatAction forever(Action repeatedAction)
+    public static RepeatAction forever(Action repeatedAction){
+        RepeatAction action = action(RepeatAction.class, RepeatAction::new);
+        action.setCount(RepeatAction.FOREVER);
+        action.setAction(repeatedAction);
+        return action;
+    }
+
+// Actions.java : public static RunnableAction run(Runnable runnable)
+    public static RunnableAction run(Runnable runnable){
+        RunnableAction action = action(RunnableAction.class, RunnableAction::new);
+        action.setRunnable(runnable);
+        return action;
+    }
+
+// Actions.java : public static LayoutAction layout(boolean enabled)
+    public static LayoutAction layout(boolean enabled){
+        LayoutAction action = action(LayoutAction.class, LayoutAction::new);
+        action.setLayoutEnabled(enabled);
+        return action;
+    }
+
+// Actions.java : public static AfterAction after(Action action)
+    public static AfterAction after(Action action){
+        AfterAction afterAction = action(AfterAction.class, AfterAction::new);
+        afterAction.setAction(action);
+        return afterAction;
+    }
+
+// Actions.java : public static AddListenerAction addListener(EventListener listener, boolean capture) / public static AddListenerAction addListener(EventListener listener, boolean capture, Element targetActor)
+    public static AddListenerAction addListener(EventListener listener, boolean capture){
+        AddListenerAction addAction = action(AddListenerAction.class, AddListenerAction::new);
+        addAction.setListener(listener);
+        addAction.setCapture(capture);
+        return addAction;
+    }
+
+// Actions.java : public static RemoveListenerAction removeListener(EventListener listener, boolean capture) / public static RemoveListenerAction removeListener(EventListener listener, boolean capture, Element targetActor)
+    public static RemoveListenerAction removeListener(EventListener listener, boolean capture){
+        RemoveListenerAction addAction = action(RemoveListenerAction.class, RemoveListenerAction::new);
+        addAction.setListener(listener);
+        addAction.setCapture(capture);
+        return addAction;
+    }
+
+// AddAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        target.addAction(action);
+        return true;
+    }
+
+// AddAction.java : public Action getAction()
+    public Action getAction(){
+        return action;
+    }
+
+// AddAction.java : public void setAction(Action action)
+    public void setAction(Action action){
+        this.action = action;
+    }
+
+// AddAction.java : public void restart()
+    @Override
+    public void restart(){
+        if(action != null) action.restart();
+    }
+
+// AddAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        action = null;
+    }
+
+// AddListenerAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        if(capture)
+            target.addCaptureListener(listener);
+        else
+            target.addListener(listener);
+        return true;
+    }
+
+// AddListenerAction.java : public EventListener getListener()
+    public EventListener getListener(){
+        return listener;
+    }
+
+// AddListenerAction.java : public void setListener(EventListener listener)
+    public void setListener(EventListener listener){
+        this.listener = listener;
+    }
+
+// AddListenerAction.java : public boolean getCapture()
+    public boolean getCapture(){
+        return capture;
+    }
+
+// AddListenerAction.java : public void setCapture(boolean capture)
+    public void setCapture(boolean capture){
+        this.capture = capture;
+    }
+
+// AddListenerAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        listener = null;
+    }
+
+// AfterAction.java : public void setTarget(Element target)
+    @Override
+    public void setTarget(Element target){
+        if(target != null) waitForActions.addAll(target.getActions());
+        super.setTarget(target);
+    }
+
+// AfterAction.java : public void restart()
+    @Override
+    public void restart(){
+        super.restart();
+        waitForActions.clear();
+    }
+
+// AfterAction.java : protected boolean delegate(float delta)
+    @Override
+    protected boolean delegate(float delta){
+        Seq<Action> currentActions = target.getActions();
+        if(currentActions.size == 1) waitForActions.clear();
+        for(int i = waitForActions.size - 1; i >= 0; i--){
+            Action action = waitForActions.get(i);
+            int index = currentActions.indexOf(action, true);
+            if(index == -1) waitForActions.remove(i);
+        }
+        return waitForActions.size <= 0 && action.act(delta);
+    }
+
+// AlphaAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        if(color == null) color = target.color;
+        start = color.a;
+    }
+
+// AlphaAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        color.a = start + (end - start) * percent;
+    }
+
+// AlphaAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        color = null;
+    }
+
+// AlphaAction.java : public Color getColor()
+    public Color getColor(){
+        return color;
+    }
+
+// AlphaAction.java : public void setColor(Color color)
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+// AlphaAction.java : public float getAlpha()
+    public float getAlpha(){
+        return end;
+    }
+
+// AlphaAction.java : public void setAlpha(float alpha)
+    public void setAlpha(float alpha){
+        this.end = alpha;
+    }
+
+// ColorAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        if(color == null) color = target.color;
+        startR = color.r;
+        startG = color.g;
+        startB = color.b;
+        startA = color.a;
+    }
+
+// ColorAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        float r = startR + (end.r - startR) * percent;
+        float g = startG + (end.g - startG) * percent;
+        float b = startB + (end.b - startB) * percent;
+        float a = startA + (end.a - startA) * percent;
+        color.set(r, g, b, a);
+    }
+
+// ColorAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        color = null;
+    }
+
+// ColorAction.java : public Color getColor()
+    public Color getColor(){
+        return color;
+    }
+
+// ColorAction.java : public void setColor(Color color)
+    public void setColor(Color color){
+        this.color = color;
+    }
+
+// ColorAction.java : public Color getEndColor()
+    public Color getEndColor(){
+        return end;
+    }
+
+// ColorAction.java : public void setEndColor(Color color)
+    public void setEndColor(Color color){
+        end.set(color);
+    }
+
+// DelayAction.java : protected boolean delegate(float delta)
+    @Override
+    protected boolean delegate(float delta){
+        if(time < duration){
+            time += delta;
+            if(time < duration) return false;
+            delta = time - duration;
+        }
+        return action == null || action.act(delta);
+    }
+
+// DelayAction.java : public void finish()
+    public void finish(){
+        time = duration;
+    }
+
+// DelayAction.java : public void restart()
+    @Override
+    public void restart(){
+        super.restart();
+        time = 0;
+    }
+
+// DelayAction.java : public float getTime()
+    public float getTime(){
+        return time;
+    }
+
+// DelayAction.java : public void setTime(float time)
+    public void setTime(float time){
+        this.time = time;
+    }
+
+// DelayAction.java : public float getDuration()
+    public float getDuration(){
+        return duration;
+    }
+
+// DelayAction.java : public void setDuration(float duration)
+    public void setDuration(float duration){
+        this.duration = duration;
+    }
+
+// DelegateAction.java : public Action getAction()
+    public Action getAction(){
+        return action;
+    }
+
+// DelegateAction.java : public void setAction(Action action)
+    public void setAction(Action action){
+        this.action = action;
+    }
+
+// DelegateAction.java : public final boolean act(float delta)
+    @Override
+    public final boolean act(float delta){
+        Pool pool = getPool();
+        setPool(null); // Ensure this action can't be returned to the pool inside the delegate action.
+        try{
+            return delegate(delta);
+        }finally{
+            setPool(pool);
+        }
+    }
+
+// DelegateAction.java : public void restart()
+    @Override
+    public void restart(){
+        if(action != null) action.restart();
+    }
+
+// DelegateAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        action = null;
+    }
+
+// DelegateAction.java : public void setActor(Element actor)
+    @Override
+    public void setActor(Element actor){
+        if(action != null) action.setActor(actor);
+        super.setActor(actor);
+    }
+
+// DelegateAction.java : public void setTarget(Element target)
+    @Override
+    public void setTarget(Element target){
+        if(action != null) action.setTarget(target);
+        super.setTarget(target);
+    }
+
+// DelegateAction.java : public String toString()
+    public String toString(){
+        return super.toString() + (action == null ? "" : "(" + action + ")");
+    }
+
+// FloatAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        value = start;
+    }
+
+// FloatAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        value = start + (end - start) * percent;
+    }
+
+// FloatAction.java : public float getValue()
+    public float getValue(){
+        return value;
+    }
+
+// FloatAction.java : public void setValue(float value)
+    public void setValue(float value){
+        this.value = value;
+    }
+
+// FloatAction.java : public float getStart()
+    public float getStart(){
+        return start;
+    }
+
+// FloatAction.java : public void setStart(float start)
+    public void setStart(float start){
+        this.start = start;
+    }
+
+// FloatAction.java : public float getEnd()
+    public float getEnd(){
+        return end;
+    }
+
+// FloatAction.java : public void setEnd(float end)
+    public void setEnd(float end){
+        this.end = end;
+    }
+
+// IntAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        value = start;
+    }
+
+// IntAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        value = (int)(start + (end - start) * percent);
+    }
+
+// IntAction.java : public int getValue()
+    public int getValue(){
+        return value;
+    }
+
+// IntAction.java : public void setValue(int value)
+    public void setValue(int value){
+        this.value = value;
+    }
+
+// IntAction.java : public int getStart()
+    public int getStart(){
+        return start;
+    }
+
+// IntAction.java : public void setStart(int start)
+    public void setStart(int start){
+        this.start = start;
+    }
+
+// IntAction.java : public int getEnd()
+    public int getEnd(){
+        return end;
+    }
+
+// IntAction.java : public void setEnd(int end)
+    public void setEnd(int end){
+        this.end = end;
+    }
+
+// LayoutAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        target.setLayoutEnabled(enabled);
+        return true;
+    }
+
+// LayoutAction.java : public boolean isEnabled()
+    public boolean isEnabled(){
+        return enabled;
+    }
+
+// LayoutAction.java : public void setLayoutEnabled(boolean enabled)
+    public void setLayoutEnabled(boolean enabled){
+        this.enabled = enabled;
+    }
+
+// MoveByAction.java : protected void updateRelative(float percentDelta)
+    @Override
+    protected void updateRelative(float percentDelta){
+        target.moveBy(amountX * percentDelta, amountY * percentDelta);
+    }
+
+// MoveByAction.java : public void setAmount(float x, float y)
+    public void setAmount(float x, float y){
+        amountX = x;
+        amountY = y;
+    }
+
+// MoveByAction.java : public float getAmountX()
+    public float getAmountX(){
+        return amountX;
+    }
+
+// MoveByAction.java : public void setAmountX(float x)
+    public void setAmountX(float x){
+        amountX = x;
+    }
+
+// MoveByAction.java : public float getAmountY()
+    public float getAmountY(){
+        return amountY;
+    }
+
+// MoveByAction.java : public void setAmountY(float y)
+    public void setAmountY(float y){
+        amountY = y;
+    }
+
+// MoveToAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        startX = target.getX(alignment);
+        startY = target.getY(alignment);
+    }
+
+// MoveToAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        target.setPosition(startX + (endX - startX) * percent, startY + (endY - startY) * percent, alignment);
+    }
+
+// MoveToAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        alignment = Align.bottomLeft;
+    }
+
+// MoveToAction.java : public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)
+    public void setPosition(float x, float y){
+        endX = x;
+        endY = y;
+    }
+
+// MoveToAction.java : public float getX()
+    public float getX(){
+        return endX;
+    }
+
+// MoveToAction.java : public void setX(float x)
+    public void setX(float x){
+        endX = x;
+    }
+
+// MoveToAction.java : public float getY()
+    public float getY(){
+        return endY;
+    }
+
+// MoveToAction.java : public void setY(float y)
+    public void setY(float y){
+        endY = y;
+    }
+
+// MoveToAction.java : public int getAlignment()
+    public int getAlignment(){
+        return alignment;
+    }
+
+// MoveToAction.java : public void setAlignment(int alignment)
+    public void setAlignment(int alignment){
+        this.alignment = alignment;
+    }
+
+// OriginAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        actor.setOrigin(Align.center);
+        return true;
+    }
+
+// ParallelAction.java : public void restart()
+    @Override
+    public void restart(){
+        complete = false;
+        Seq<Action> actions = this.actions;
+        for(int i = 0, n = actions.size; i < n; i++)
+            actions.get(i).restart();
+    }
+
+// ParallelAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        actions.clear();
+    }
+
+// ParallelAction.java : public void addAction(Action action)
+    public void addAction(Action action){
+        actions.add(action);
+        if(actor != null) action.setActor(actor);
+    }
+
+// ParallelAction.java : public void setActor(Element actor)
+    @Override
+    public void setActor(Element actor){
+        Seq<Action> actions = this.actions;
+        for(int i = 0, n = actions.size; i < n; i++)
+            actions.get(i).setActor(actor);
+        super.setActor(actor);
+    }
+
+// ParallelAction.java : public Seq<Action> getActions()
+    public Seq<Action> getActions(){
+        return actions;
+    }
+
+// RelativeTemporalAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        lastPercent = 0;
+    }
+
+// RelativeTemporalAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        updateRelative(percent - lastPercent);
+        lastPercent = percent;
+    }
+
+// RemoveAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        target.removeAction(action);
+        return true;
+    }
+
+// RemoveAction.java : public Action getAction()
+    public Action getAction(){
+        return action;
+    }
+
+// RemoveAction.java : public void setAction(Action action)
+    public void setAction(Action action){
+        this.action = action;
+    }
+
+// RemoveAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        action = null;
+    }
+
+// RemoveActorAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        if(!removed){
+            removed = true;
+            target.remove();
+        }
+        return true;
+    }
+
+// RemoveActorAction.java : public void restart()
+    @Override
+    public void restart(){
+        removed = false;
+    }
+
+// RemoveListenerAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        if(capture)
+            target.removeCaptureListener(listener);
+        else
+            target.removeListener(listener);
+        return true;
+    }
+
+// RemoveListenerAction.java : public EventListener getListener()
+    public EventListener getListener(){
+        return listener;
+    }
+
+// RemoveListenerAction.java : public void setListener(EventListener listener)
+    public void setListener(EventListener listener){
+        this.listener = listener;
+    }
+
+// RemoveListenerAction.java : public boolean getCapture()
+    public boolean getCapture(){
+        return capture;
+    }
+
+// RemoveListenerAction.java : public void setCapture(boolean capture)
+    public void setCapture(boolean capture){
+        this.capture = capture;
+    }
+
+// RemoveListenerAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        listener = null;
+    }
+
+// RepeatAction.java : protected boolean delegate(float delta)
+    @Override
+    protected boolean delegate(float delta){
+        if(executedCount == repeatCount) return true;
+        if(action.act(delta)){
+            if(finished) return true;
+            if(repeatCount > 0) executedCount++;
+            if(executedCount == repeatCount) return true;
+            if(action != null) action.restart();
+        }
+        return false;
+    }
+
+// RepeatAction.java : public void finish()
+    public void finish(){
+        finished = true;
+    }
+
+// RepeatAction.java : public void restart()
+    @Override
+    public void restart(){
+        super.restart();
+        executedCount = 0;
+        finished = false;
+    }
+
+// RepeatAction.java : public int getCount()
+    public int getCount(){
+        return repeatCount;
+    }
+
+// RepeatAction.java : public void setCount(int count)
+    public void setCount(int count){
+        this.repeatCount = count;
+    }
+
+// RotateByAction.java : protected void updateRelative(float percentDelta)
+    @Override
+    protected void updateRelative(float percentDelta){
+        target.rotateBy(amount * percentDelta);
+    }
+
+// RotateByAction.java : public float getAmount()
+    public float getAmount(){
+        return amount;
+    }
+
+// RotateByAction.java : public void setAmount(float rotationAmount)
+    public void setAmount(float rotationAmount){
+        amount = rotationAmount;
+    }
+
+// RotateToAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        start = target.getRotation();
+    }
+
+// RotateToAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        if(useShortestDirection)
+            target.setRotation(Mathf.slerp(this.start, this.end, percent));
+        else
+            target.setRotation(start + (end - start) * percent);
+    }
+
+// RotateToAction.java : public float getRotation()
+    public float getRotation(){
+        return end;
+    }
+
+// RotateToAction.java : public void setRotation(float rotation)
+    public void setRotation(float rotation){
+        this.end = rotation;
+    }
+
+// RotateToAction.java : public boolean isUseShortestDirection()
+    public boolean isUseShortestDirection(){
+        return useShortestDirection;
+    }
+
+// RotateToAction.java : public void setUseShortestDirection(boolean useShortestDirection)
+    public void setUseShortestDirection(boolean useShortestDirection){
+        this.useShortestDirection = useShortestDirection;
+    }
+
+// RunnableAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        if(!ran){
+            ran = true;
+            run();
+        }
+        return true;
+    }
+
+// RunnableAction.java : public void run()
+    public void run(){
+        Pool pool = getPool();
+        setPool(null); // Ensure this action can't be returned to the pool inside the runnable.
+        try{
+            runnable.run();
+        }finally{
+            setPool(pool);
+        }
+    }
+
+// RunnableAction.java : public void restart()
+    @Override
+    public void restart(){
+        ran = false;
+    }
+
+// RunnableAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        runnable = null;
+    }
+
+// RunnableAction.java : public Runnable getRunnable()
+    public Runnable getRunnable(){
+        return runnable;
+    }
+
+// RunnableAction.java : public void setRunnable(Runnable runnable)
+    public void setRunnable(Runnable runnable){
+        this.runnable = runnable;
+    }
+
+// ScaleByAction.java : protected void updateRelative(float percentDelta)
+    @Override
+    protected void updateRelative(float percentDelta){
+        target.scaleBy(amountX * percentDelta, amountY * percentDelta);
+    }
+
+// ScaleByAction.java : public void setAmount(float x, float y) / public void setAmount(float scale)
+    public void setAmount(float x, float y){
+        amountX = x;
+        amountY = y;
+    }
+
+// ScaleByAction.java : public float getAmountX()
+    public float getAmountX(){
+        return amountX;
+    }
+
+// ScaleByAction.java : public void setAmountX(float x)
+    public void setAmountX(float x){
+        this.amountX = x;
+    }
+
+// ScaleByAction.java : public float getAmountY()
+    public float getAmountY(){
+        return amountY;
+    }
+
+// ScaleByAction.java : public void setAmountY(float y)
+    public void setAmountY(float y){
+        this.amountY = y;
+    }
+
+// ScaleToAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        startX = target.scaleX;
+        startY = target.scaleY;
+    }
+
+// ScaleToAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        target.setScale(startX + (endX - startX) * percent, startY + (endY - startY) * percent);
+    }
+
+// ScaleToAction.java : public void setScale(float x, float y) / public void setScale(float scale)
+    public void setScale(float x, float y){
+        endX = x;
+        endY = y;
+    }
+
+// ScaleToAction.java : public float getX()
+    public float getX(){
+        return endX;
+    }
+
+// ScaleToAction.java : public void setX(float x)
+    public void setX(float x){
+        this.endX = x;
+    }
+
+// ScaleToAction.java : public float getY()
+    public float getY(){
+        return endY;
+    }
+
+// ScaleToAction.java : public void setY(float y)
+    public void setY(float y){
+        this.endY = y;
+    }
+
+// SequenceAction.java : public void restart()
+    @Override
+    public void restart(){
+        super.restart();
+        index = 0;
+    }
+
+// SizeByAction.java : protected void updateRelative(float percentDelta)
+    @Override
+    protected void updateRelative(float percentDelta){
+        target.sizeBy(amountWidth * percentDelta, amountHeight * percentDelta);
+    }
+
+// SizeByAction.java : public void setAmount(float width, float height)
+    public void setAmount(float width, float height){
+        amountWidth = width;
+        amountHeight = height;
+    }
+
+// SizeByAction.java : public float getAmountWidth()
+    public float getAmountWidth(){
+        return amountWidth;
+    }
+
+// SizeByAction.java : public void setAmountWidth(float width)
+    public void setAmountWidth(float width){
+        amountWidth = width;
+    }
+
+// SizeByAction.java : public float getAmountHeight()
+    public float getAmountHeight(){
+        return amountHeight;
+    }
+
+// SizeByAction.java : public void setAmountHeight(float height)
+    public void setAmountHeight(float height){
+        amountHeight = height;
+    }
+
+// SizeToAction.java : protected void begin()
+    @Override
+    protected void begin(){
+        startWidth = target.getWidth();
+        startHeight = target.getHeight();
+    }
+
+// SizeToAction.java : protected void update(float percent)
+    @Override
+    protected void update(float percent){
+        target.setSize(startWidth + (endWidth - startWidth) * percent, startHeight + (endHeight - startHeight) * percent);
+    }
+
+// SizeToAction.java : public void setSize(float width, float height)
+    public void setSize(float width, float height){
+        endWidth = width;
+        endHeight = height;
+    }
+
+// SizeToAction.java : public float getWidth()
+    public float getWidth(){
+        return endWidth;
+    }
+
+// SizeToAction.java : public void setWidth(float width)
+    public void setWidth(float width){
+        endWidth = width;
+    }
+
+// SizeToAction.java : public float getHeight()
+    public float getHeight(){
+        return endHeight;
+    }
+
+// SizeToAction.java : public void setHeight(float height)
+    public void setHeight(float height){
+        endHeight = height;
+    }
+
+// TemporalAction.java : protected void begin()
+    protected void begin(){
+    }
+
+// TemporalAction.java : protected void end()
+    protected void end(){
+    }
+
+// TemporalAction.java : public void finish()
+    public void finish(){
+        time = duration;
+    }
+
+// TemporalAction.java : public void restart()
+    @Override
+    public void restart(){
+        time = 0;
+        began = false;
+        complete = false;
+    }
+
+// TemporalAction.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        reverse = false;
+        interpolation = null;
+    }
+
+// TemporalAction.java : public float getTime()
+    public float getTime(){
+        return time;
+    }
+
+// TemporalAction.java : public void setTime(float time)
+    public void setTime(float time){
+        this.time = time;
+    }
+
+// TemporalAction.java : public float getDuration()
+    public float getDuration(){
+        return duration;
+    }
+
+// TemporalAction.java : public void setDuration(float duration)
+    public void setDuration(float duration){
+        this.duration = duration;
+    }
+
+// TemporalAction.java : public Interp getInterpolation()
+    public Interp getInterpolation(){
+        return interpolation;
+    }
+
+// TemporalAction.java : public void setInterpolation(Interp interpolation)
+    public void setInterpolation(Interp interpolation){
+        this.interpolation = interpolation;
+    }
+
+// TemporalAction.java : public boolean isReverse()
+    public boolean isReverse(){
+        return reverse;
+    }
+
+// TemporalAction.java : public void setReverse(boolean reverse)
+    public void setReverse(boolean reverse){
+        this.reverse = reverse;
+    }
+
+// TimeScaleAction.java : protected boolean delegate(float delta)
+    @Override
+    protected boolean delegate(float delta){
+        return action == null || action.act(delta * scale);
+    }
+
+// TimeScaleAction.java : public float getScale()
+    public float getScale(){
+        return scale;
+    }
+
+// TimeScaleAction.java : public void setScale(float scale)
+    public void setScale(float scale){
+        this.scale = scale;
+    }
+
+// TouchableAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        target.touchable = touchable;
+        return true;
+    }
+
+// TouchableAction.java : public Touchable getTouchable()
+    public Touchable getTouchable(){
+        return touchable;
+    }
+
+// TouchableAction.java : public void touchable(Touchable touchable)
+    public void touchable(Touchable touchable){
+        this.touchable = touchable;
+    }
+
+// TranslateByAction.java : protected void updateRelative(float percentDelta)
+    @Override
+    protected void updateRelative(float percentDelta){
+        target.translation.add(amountX * percentDelta, amountY * percentDelta);
+    }
+
+// TranslateByAction.java : public void setAmount(float x, float y)
+    public void setAmount(float x, float y){
+        amountX = x;
+        amountY = y;
+    }
+
+// TranslateByAction.java : public float getAmountX()
+    public float getAmountX(){
+        return amountX;
+    }
+
+// TranslateByAction.java : public void setAmountX(float x)
+    public void setAmountX(float x){
+        amountX = x;
+    }
+
+// TranslateByAction.java : public float getAmountY()
+    public float getAmountY(){
+        return amountY;
+    }
+
+// TranslateByAction.java : public void setAmountY(float y)
+    public void setAmountY(float y){
+        amountY = y;
+    }
+
+// VisibleAction.java : public boolean act(float delta)
+    @Override
+    public boolean act(float delta){
+        target.visible = visible;
+        return true;
+    }
+
+// VisibleAction.java : public boolean isVisible()
+    public boolean isVisible(){
+        return visible;
+    }
+
+// VisibleAction.java : public void setVisible(boolean visible)
+    public void setVisible(boolean visible){
+        this.visible = visible;
+    }
+

@@ -1,0 +1,76 @@
+FxFilter.java
+Java class (abstract) implements arc.util.Disposable
+// Base class for any single-pass filter.
+fields:
+  protected static final int u_texture0
+  protected static final int u_texture1
+  protected static final int u_texture2
+  protected static final int u_texture3
+  protected final Shader shader
+  protected Texture inputTexture
+  protected FrameBuffer outputBuffer
+  protected boolean disabled
+  public float time
+ctors:
+  public FxFilter() / public FxFilter(String vert, String frag) / public FxFilter(Shader shader)
+methods:
+  public static Shader compileShader(Fi vertexFile, Fi fragmentFile) / public static Shader compileShader(Fi vertexFile, Fi fragmentFile, String defines)
+  public FxFilter setInput(Texture input) / public FxFilter setInput(FrameBuffer input)
+  public FxFilter setOutput(FrameBuffer output)
+  public void dispose()
+  public void resize(int width, int height)  // This method should be called once filter will be added.
+  public void rebind()
+  protected void setParams()  // Concrete objects shall be responsible to recreate or rebind its own resources whenever its needed, usually when the OpenGL
+  public void render() / public void render(FrameBuffer src, FrameBuffer dst)  // * Sets the parameter to the specified value for this filter.
+  protected void onBeforeRender()  // This method gets called just before rendering.
+  public boolean isDisabled()  // Whether or not this effect is disabled and shouldn't be processed
+  public void setDisabled(boolean enabled)  // Sets this effect disabled or not
+  public void update()
+
+FxProcessor.java
+Java class (final) implements arc.util.Disposable
+// Provides a way to beginCapture the rendered scene to an off-screen buffer and to apply a chain of effects on it before rendering to
+fields:
+  private final ObjectIntMap<FxFilter> priorities
+  private final Seq<FxFilter> effectsAll  // All effects ever added.
+  private final Seq<FxFilter> effectsEnabled  // Maintains a per-frame updated list of enabled effects
+  private final FxBufferRenderer bufferRenderer  // A mesh that is shared among basic filters to draw to full screen.
+  private final Format fboFormat
+  private final PingPongBuffer pingPongBuffer
+  private boolean disabled
+  private boolean capturing
+  private boolean hasCaptured
+  private boolean applyingEffects
+  private boolean blendingEnabled
+  private int width
+ctors:
+  public FxProcessor() / public FxProcessor(int w, int h) / public FxProcessor(Format fboFormat, int bufferWidth, int bufferHeight) / public FxProcessor(Format fboFormat, int bufferWidth, int bufferHeight, boolean depth, boolean stencil)
+methods:
+  public void dispose()
+  public void resize(int width, int height)
+  public void rebind()
+  public int getWidth()
+  public int getHeight()
+  public boolean isDisabled()
+  public void setDisabled(boolean disabled)  // Sets whether or not the post-processor should be disabled
+  public boolean isBlendingEnabled()
+  public void setBlendingEnabled(boolean blendingEnabled)  // Enables OpenGL blending for the effect chain rendering stage.
+  public Format getFramebufferFormat()  // Returns the internal framebuffer format, computed from the parameters specified during construction.
+  public void setBufferTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+  public void setTextureFilter(TextureFilter filter)
+  public boolean isCapturing()
+  public boolean isApplyingEffects()
+  public boolean hasResult()
+  public FrameBuffer getResultBuffer()  // @return the last active destination buffer.
+  public PingPongBuffer getPingPongBuffer()  // @return the internal ping-pong buffer.
+  public boolean hasEnabledEffects()
+  public void addEffect(FxFilter effect) / public void addEffect(FxFilter effect, int priority)  // Adds an effect to the effect chain and transfers ownership to the VfxManager.
+  public void removeEffect(FxFilter effect)  // Removes the specified effect from the effect chain.
+  public void removeAllEffects()  // Removes all effects from the effect chain.
+  public void setEffectPriority(FxFilter effect, int priority)  // Changes the order of the effect in the effect chain.
+  public void clear() / public void clear(Color color)  // Cleans up managed {@link PingPongBuffer}s' with {@link Color#clear}.
+  public boolean begin()  // Starts capturing the scene.
+  public boolean end()  // Stops capturing the scene.
+  public void applyEffects()  // Applies the effect chain, if there is one.
+  public void render() / public void render(int x, int y, int width, int height) / public void render(FrameBuffer output)
+

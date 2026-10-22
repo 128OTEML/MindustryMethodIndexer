@@ -1,0 +1,2947 @@
+// Frustum.java : public boolean containsPoint(Vec3 point) / public boolean containsPoint(float x, float y, float z)
+    public boolean containsPoint(Vec3 point){
+        for(Plane plane : planes){
+            if(plane.testPoint(point) == PlaneSide.back) return false;
+        }
+        return true;
+    }
+
+// Frustum.java : public boolean containsSphere(Vec3 center, float radius) / public boolean containsSphere(float x, float y, float z, float radius)
+    public boolean containsSphere(Vec3 center, float radius){
+        for(int i = 0; i < 6; i++)
+            if((planes[i].normal.x * center.x + planes[i].normal.y * center.y + planes[i].normal.z * center.z) < (-radius - planes[i].d))
+                return false;
+        return true;
+    }
+
+// Frustum.java : public boolean containsSphereWithoutNearFar(Vec3 center, float radius) / public boolean containsSphereWithoutNearFar(float x, float y, float z, float radius)
+    public boolean containsSphereWithoutNearFar(Vec3 center, float radius){
+        for(int i = 2; i < 6; i++)
+            if((planes[i].normal.x * center.x + planes[i].normal.y * center.y + planes[i].normal.z * center.z) < (-radius - planes[i].d))
+                return false;
+        return true;
+    }
+
+// Icosphere.java : private static Vec3 v(float x, float y, float z)
+    private static Vec3 v(float x, float y, float z){
+        return new Vec3(x, y, z).nor();
+    }
+
+// Intersector3D.java : public static boolean intersectRayBoundsFast(Ray ray, BoundingBox box) / public static boolean intersectRayBoundsFast(Ray ray, Vec3 center, Vec3 dimensions)
+    public static boolean intersectRayBoundsFast(Ray ray, BoundingBox box){
+        return intersectRayBoundsFast(ray, box.getCenter(tmp1), box.getDimensions(tmp2));
+    }
+
+// Intersector3D.java : public static boolean intersectSegmentPlane(Vec3 start, Vec3 end, Plane plane, Vec3 intersection)
+    public static boolean intersectSegmentPlane(Vec3 start, Vec3 end, Plane plane, Vec3 intersection){
+        Vec3 dir = v0.set(end).sub(start);
+        float denom = dir.dot(plane.normal);
+        if(denom == 0f) return false;
+        float t = -(start.dot(plane.normal) + plane.d) / denom;
+        if(t < 0 || t > 1) return false;
+
+        intersection.set(start).add(dir.scl(t));
+        return true;
+    }
+
+// Mat3D.java : public Mat3D set(Mat3D matrix) / public Mat3D set(float[] values) / public Mat3D set(Quat quat) / public Mat3D set(float quaternionX, float quaternionY, float quaternionZ, float quaternionW) / public Mat3D set(Vec3 position, Quat orientation) / public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW) / public Mat3D set(Vec3 position, Quat orientation, Vec3 scale) / public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW, float scaleX, float scaleY, float scaleZ) / public Mat3D set(Vec3 xAxis, Vec3 yAxis, Vec3 zAxis, Vec3 pos) / public Mat3D set(Mat mat) / public Mat3D set(Affine2 affine)
+    public Mat3D set(Mat3D matrix){
+        return this.set(matrix.val);
+    }
+
+// Mat3D.java : public Mat3D cpy()
+    public Mat3D cpy(){
+        return new Mat3D(this);
+    }
+
+// Mat3D.java : public Mat3D trn(Vec3 vector) / public Mat3D trn(float x, float y, float z)
+    public Mat3D trn(Vec3 vector){
+        val[M03] += vector.x;
+        val[M13] += vector.y;
+        val[M23] += vector.z;
+        return this;
+    }
+
+// Mat3D.java : public float[] getValues()
+    public float[] getValues(){
+        return val;
+    }
+
+// Mat3D.java : public Mat3D mul(Mat3D matrix) / public static void mul(float[] mata, float[] matb)
+    public Mat3D mul(Mat3D matrix){
+        mul(val, matrix.val);
+        return this;
+    }
+
+// Mat3D.java : public Mat3D mulLeft(Mat3D matrix)
+    public Mat3D mulLeft(Mat3D matrix){
+        tmpMat.set(matrix);
+        mul(tmpMat.val, this.val);
+        return set(tmpMat);
+    }
+
+// Mat3D.java : public float det() / public static float det(float[] val)
+    public float det(){
+        return val[M30] * val[M21] * val[M12] * val[M03] - val[M20] * val[M31] * val[M12] * val[M03] - val[M30] * val[M11]
+        * val[M22] * val[M03] + val[M10] * val[M31] * val[M22] * val[M03] + val[M20] * val[M11] * val[M32] * val[M03] - val[M10]
+        * val[M21] * val[M32] * val[M03] - val[M30] * val[M21] * val[M02] * val[M13] + val[M20] * val[M31] * val[M02] * val[M13]
+        + val[M30] * val[M01] * val[M22] * val[M13] - val[M00] * val[M31] * val[M22] * val[M13] - val[M20] * val[M01] * val[M32]
+        * val[M13] + val[M00] * val[M21] * val[M32] * val[M13] + val[M30] * val[M11] * val[M02] * val[M23] - val[M10] * val[M31]
+        * val[M02] * val[M23] - val[M30] * val[M01] * val[M12] * val[M23] + val[M00] * val[M31] * val[M12] * val[M23] + val[M10]
+        * val[M01] * val[M32] * val[M23] - val[M00] * val[M11] * val[M32] * val[M23] - val[M20] * val[M11] * val[M02] * val[M33]
+        + val[M10] * val[M21] * val[M02] * val[M33] + val[M20] * val[M01] * val[M12] * val[M33] - val[M00] * val[M21] * val[M12]
+        * val[M33] - val[M10] * val[M01] * val[M22] * val[M33] + val[M00] * val[M11] * val[M22] * val[M33];
+    }
+
+// Mat3D.java : public float det3x3()
+    public float det3x3(){
+        return val[M00] * val[M11] * val[M22] + val[M01] * val[M12] * val[M20] + val[M02] * val[M10] * val[M21] - val[M00]
+        * val[M12] * val[M21] - val[M01] * val[M10] * val[M22] - val[M02] * val[M11] * val[M20];
+    }
+
+// Mat3D.java : public Mat3D setToOrtho2D(float x, float y, float width, float height) / public Mat3D setToOrtho2D(float x, float y, float width, float height, float near, float far)
+    public Mat3D setToOrtho2D(float x, float y, float width, float height){
+        setToOrtho(x, x + width, y, y + height, 0, 1);
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setTranslation(Vec3 vector) / public Mat3D setTranslation(float x, float y, float z)
+    public Mat3D setTranslation(Vec3 vector){
+        val[M03] = vector.x;
+        val[M13] = vector.y;
+        val[M23] = vector.z;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setToTranslation(Vec3 vector) / public Mat3D setToTranslation(float x, float y, float z)
+    public Mat3D setToTranslation(Vec3 vector){
+        idt();
+        val[M03] = vector.x;
+        val[M13] = vector.y;
+        val[M23] = vector.z;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setToTranslationAndScaling(Vec3 translation, Vec3 scaling) / public Mat3D setToTranslationAndScaling(float translationX, float translationY, float translationZ, float scalingX, float scalingY, float scalingZ)
+    public Mat3D setToTranslationAndScaling(Vec3 translation, Vec3 scaling){
+        idt();
+        val[M03] = translation.x;
+        val[M13] = translation.y;
+        val[M23] = translation.z;
+        val[M00] = scaling.x;
+        val[M11] = scaling.y;
+        val[M22] = scaling.z;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setToRotation(Vec3 axis, float degrees) / public Mat3D setToRotation(float axisX, float axisY, float axisZ, float degrees) / public Mat3D setToRotation(Vec3 v1, Vec3 v2) / public Mat3D setToRotation(float x1, float y1, float z1, float x2, float y2, float z2)
+    public Mat3D setToRotation(Vec3 axis, float degrees){
+        if(degrees == 0){
+            idt();
+            return this;
+        }
+        return set(quat.set(axis, degrees));
+    }
+
+// Mat3D.java : public Mat3D setToRotationRad(Vec3 axis, float radians) / public Mat3D setToRotationRad(float axisX, float axisY, float axisZ, float radians)
+    public Mat3D setToRotationRad(Vec3 axis, float radians){
+        if(radians == 0){
+            idt();
+            return this;
+        }
+        return set(quat.setFromAxisRad(axis, radians));
+    }
+
+// Mat3D.java : public Mat3D setFromEulerAngles(float yaw, float pitch, float roll)
+    public Mat3D setFromEulerAngles(float yaw, float pitch, float roll){
+        quat.setEulerAngles(yaw, pitch, roll);
+        return set(quat);
+    }
+
+// Mat3D.java : public Mat3D setFromEulerAnglesRad(float yaw, float pitch, float roll)
+    public Mat3D setFromEulerAnglesRad(float yaw, float pitch, float roll){
+        quat.setEulerAnglesRad(yaw, pitch, roll);
+        return set(quat);
+    }
+
+// Mat3D.java : public Mat3D setToScaling(Vec3 vector) / public Mat3D setToScaling(float x, float y, float z)
+    public Mat3D setToScaling(Vec3 vector){
+        idt();
+        val[M00] = vector.x;
+        val[M11] = vector.y;
+        val[M22] = vector.z;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setToWorld(Vec3 position, Vec3 forward, Vec3 up)
+    public Mat3D setToWorld(Vec3 position, Vec3 forward, Vec3 up){
+        tmpForward.set(forward).nor();
+        right.set(tmpForward).crs(up).nor();
+        tmpUp.set(right).crs(tmpForward).nor();
+
+        this.set(right, tmpUp, tmpForward.scl(-1), position);
+        return this;
+    }
+
+// Mat3D.java : public String toString()
+    public String toString(){
+        return "[" + val[M00] + "|" + val[M01] + "|" + val[M02] + "|" + val[M03] + "]\n" + "[" + val[M10] + "|" + val[M11] + "|"
+        + val[M12] + "|" + val[M13] + "]\n" + "[" + val[M20] + "|" + val[M21] + "|" + val[M22] + "|" + val[M23] + "]\n" + "["
+        + val[M30] + "|" + val[M31] + "|" + val[M32] + "|" + val[M33] + "]\n";
+    }
+
+// Mat3D.java : public Mat3D lerp(Mat3D matrix, float alpha)
+    public Mat3D lerp(Mat3D matrix, float alpha){
+        for(int i = 0; i < 16; i++)
+            this.val[i] = this.val[i] * (1 - alpha) + matrix.val[i] * alpha;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D setAsAffine(Affine2 affine) / public Mat3D setAsAffine(Mat3D mat)
+    public Mat3D setAsAffine(Affine2 affine){
+        val[M00] = affine.m00;
+        val[M10] = affine.m10;
+        val[M01] = affine.m01;
+        val[M11] = affine.m11;
+        val[M03] = affine.m02;
+        val[M13] = affine.m12;
+        return this;
+    }
+
+// Mat3D.java : public Mat3D scl(Vec3 scale) / public Mat3D scl(float x, float y, float z) / public Mat3D scl(float scale)
+    public Mat3D scl(Vec3 scale){
+        val[M00] *= scale.x;
+        val[M11] *= scale.y;
+        val[M22] *= scale.z;
+        return this;
+    }
+
+// Mat3D.java : public Vec3 getTranslation(Vec3 position)
+    public Vec3 getTranslation(Vec3 position){
+        position.x = val[M03];
+        position.y = val[M13];
+        position.z = val[M23];
+        return position;
+    }
+
+// Mat3D.java : public Quat getRotation(Quat rotation, boolean normalizeAxes) / public Quat getRotation(Quat rotation)
+    public Quat getRotation(Quat rotation, boolean normalizeAxes){
+        return rotation.setFromMatrix(normalizeAxes, this);
+    }
+
+// Mat3D.java : public float getScaleXSquared()
+    public float getScaleXSquared(){
+        return val[M00] * val[M00] + val[M01] * val[M01] + val[M02] * val[M02];
+    }
+
+// Mat3D.java : public float getScaleYSquared()
+    public float getScaleYSquared(){
+        return val[M10] * val[M10] + val[M11] * val[M11] + val[M12] * val[M12];
+    }
+
+// Mat3D.java : public float getScaleZSquared()
+    public float getScaleZSquared(){
+        return val[M20] * val[M20] + val[M21] * val[M21] + val[M22] * val[M22];
+    }
+
+// Mat3D.java : public float getScaleX()
+    public float getScaleX(){
+        return (Mathf.zero(val[M01]) && Mathf.zero(val[M02])) ? Math.abs(val[M00])
+        : (float)Math.sqrt(getScaleXSquared());
+    }
+
+// Mat3D.java : public float getScaleY()
+    public float getScaleY(){
+        return (Mathf.zero(val[M10]) && Mathf.zero(val[M12])) ? Math.abs(val[M11])
+        : (float)Math.sqrt(getScaleYSquared());
+    }
+
+// Mat3D.java : public float getScaleZ()
+    public float getScaleZ(){
+        return (Mathf.zero(val[M20]) && Mathf.zero(val[M21])) ? Math.abs(val[M22])
+        : (float)Math.sqrt(getScaleZSquared());
+    }
+
+// Mat3D.java : public Vec3 getScale(Vec3 scale)
+    public Vec3 getScale(Vec3 scale){
+        return scale.set(getScaleX(), getScaleY(), getScaleZ());
+    }
+
+// Mat3D.java : public Mat3D toNormalMatrix()
+    public Mat3D toNormalMatrix(){
+        val[M03] = 0;
+        val[M13] = 0;
+        val[M23] = 0;
+        return inv().tra();
+    }
+
+// Mat3D.java : public static void mulVec(float[] mat, float[] vec)
+    public static void mulVec(float[] mat, float[] vec){
+        float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03];
+        float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13];
+        float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23];
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
+    }
+
+// Mat3D.java : public static void prj(float[] mat, float[] vec) / public static void prj(float[] mat, float[] vecs, int offset, int numVecs, int stride) / public static Vec3 prj(Vec3 v, Mat3D matrix)
+    public static void prj(float[] mat, float[] vec){
+        float invw = 1.0f / (vec[0] * mat[M30] + vec[1] * mat[M31] + vec[2] * mat[M32] + mat[M33]);
+        float x = (vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02] + mat[M03]) * invw;
+        float y = (vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12] + mat[M13]) * invw;
+        float z = (vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22] + mat[M23]) * invw;
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
+    }
+
+// Mat3D.java : public static void rot(float[] mat, float[] vec) / public static Vec3 rot(Vec3 v, Mat3D matrix)
+    public static void rot(float[] mat, float[] vec){
+        float x = vec[0] * mat[M00] + vec[1] * mat[M01] + vec[2] * mat[M02];
+        float y = vec[0] * mat[M10] + vec[1] * mat[M11] + vec[2] * mat[M12];
+        float z = vec[0] * mat[M20] + vec[1] * mat[M21] + vec[2] * mat[M22];
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
+    }
+
+// Mat3D.java : public Mat3D translate(Vec3 translation) / public Mat3D translate(float x, float y, float z)
+    public Mat3D translate(Vec3 translation){
+        return translate(translation.x, translation.y, translation.z);
+    }
+
+// Mat3D.java : public Mat3D rotate(Vec3 axis, float degrees) / public Mat3D rotate(float axisX, float axisY, float axisZ, float degrees) / public Mat3D rotate(Quat rotation) / public Mat3D rotate(Vec3 v1, Vec3 v2)
+    public Mat3D rotate(Vec3 axis, float degrees){
+        if(degrees == 0) return this;
+        quat.set(axis, degrees);
+        return rotate(quat);
+    }
+
+// Mat3D.java : public Mat3D rotateRad(Vec3 axis, float radians) / public Mat3D rotateRad(float axisX, float axisY, float axisZ, float radians)
+    public Mat3D rotateRad(Vec3 axis, float radians){
+        if(radians == 0) return this;
+        quat.setFromAxisRad(axis, radians);
+        return rotate(quat);
+    }
+
+// Mat3D.java : public Mat3D scale(Vec3 vec) / public Mat3D scale(float scaleX, float scaleY, float scaleZ)
+    public Mat3D scale(Vec3 vec){
+        return scale(vec.x, vec.y, vec.z);
+    }
+
+// Mat3D.java : public boolean hasRotationOrScaling()
+    public boolean hasRotationOrScaling(){
+        return !(Mathf.equal(val[M00], 1) && Mathf.equal(val[M11], 1) && Mathf.equal(val[M22], 1)
+        && Mathf.zero(val[M01]) && Mathf.zero(val[M02]) && Mathf.zero(val[M10]) && Mathf.zero(val[M12])
+        && Mathf.zero(val[M20]) && Mathf.zero(val[M21]));
+    }
+
+// Mat3D.java : public static Vec3 unrotate(Vec3 v, Mat3D matrix)
+    public static Vec3 unrotate(Vec3 v, Mat3D matrix){
+        final float[] lmat = matrix.val;
+        return v.set(v.x * lmat[M00] + v.y * lmat[M10] + v.z * lmat[M20], v.x * lmat[M01] + v.y
+        * lmat[M11] + v.z * lmat[M21], v.x * lmat[M02] + v.y * lmat[M12] + v.z * lmat[M22]);
+    }
+
+// Mat3D.java : public static Vec3 untransform(Vec3 v, Mat3D matrix)
+    public static Vec3 untransform(Vec3 v, Mat3D matrix){
+        final float[] lmat = matrix.val;
+        v.x -= lmat[M03];
+        v.y -= lmat[M03];
+        v.z -= lmat[M03];
+        return v.set(v.x * lmat[M00] + v.y * lmat[M10] + v.z * lmat[M20], v.x * lmat[M01] + v.y
+        * lmat[M11] + v.z * lmat[M21], v.x * lmat[M02] + v.y * lmat[M12] + v.z * lmat[M22]);
+    }
+
+// Plane.java : public void set(Vec3 point1, Vec3 point2, Vec3 point3) / public void set(float nx, float ny, float nz, float d) / public void set(Vec3 point, Vec3 normal) / public void set(float pointX, float pointY, float pointZ, float norX, float norY, float norZ) / public void set(Plane plane)
+    public void set(Vec3 point1, Vec3 point2, Vec3 point3){
+        normal.set(point1).sub(point2).crs(point2.x - point3.x, point2.y - point3.y, point2.z - point3.z).nor();
+        d = -point1.dot(normal);
+    }
+
+// Plane.java : public Vec3 project(Vec3 v)
+    public Vec3 project(Vec3 v){
+        float npd = normal.dot(v) + d;
+        return v.sub(npd * normal.x, npd * normal.y, npd * normal.z);
+    }
+
+// Plane.java : public float distance(Vec3 point)
+    public float distance(Vec3 point){
+        return normal.dot(point) + d;
+    }
+
+// Plane.java : public PlaneSide testPoint(Vec3 point) / public PlaneSide testPoint(float x, float y, float z)
+    public PlaneSide testPoint(Vec3 point){
+        float dist = normal.dot(point) + d;
+
+        if(dist == 0)
+            return PlaneSide.onPlane;
+        else if(dist < 0)
+            return PlaneSide.back;
+        else
+            return PlaneSide.front;
+    }
+
+// Plane.java : public boolean isFrontFacing(Vec3 direction)
+    public boolean isFrontFacing(Vec3 direction){
+        float dot = normal.dot(direction);
+        return dot <= 0;
+    }
+
+// Plane.java : public Vec3 getNormal()
+    public Vec3 getNormal(){
+        return normal;
+    }
+
+// Plane.java : public float getD()
+    public float getD(){
+        return d;
+    }
+
+// Plane.java : public String toString()
+    @Override
+    public String toString(){
+        return normal.toString() + ", " + d;
+    }
+
+// Quat.java : public static float len(float x, float y, float z, float w) / public float len()
+    public static float len(final float x, final float y, final float z, final float w){
+        return (float)Math.sqrt(x * x + y * y + z * z + w * w);
+    }
+
+// Quat.java : public static float len2(float x, float y, float z, float w) / public float len2()
+    public static float len2(final float x, final float y, final float z, final float w){
+        return x * x + y * y + z * z + w * w;
+    }
+
+// Quat.java : public static float dot(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) / public float dot(Quat other) / public float dot(float x, float y, float z, float w)
+    public static float dot(final float x1, final float y1, final float z1, final float w1, final float x2, final float y2,
+                            final float z2, final float w2){
+        return x1 * x2 + y1 * y2 + z1 * z2 + w1 * w2;
+    }
+
+// Quat.java : public Quat set(float x, float y, float z, float w) / public Quat set(Quat quat) / public Quat set(Vec3 axis, float angle)
+    public Quat set(float x, float y, float z, float w){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
+        return this;
+    }
+
+// Quat.java : public Quat cpy()
+    public Quat cpy(){
+        return new Quat(this);
+    }
+
+// Quat.java : public String toString()
+    @Override
+    public String toString(){
+        return "[" + x + "|" + y + "|" + z + "|" + w + "]";
+    }
+
+// Quat.java : public Quat setEulerAngles(float yaw, float pitch, float roll)
+    public Quat setEulerAngles(float yaw, float pitch, float roll){
+        return setEulerAnglesRad(yaw * Mathf.degreesToRadians, pitch * Mathf.degreesToRadians, roll
+        * Mathf.degreesToRadians);
+    }
+
+// Quat.java : public int getGimbalPole()
+    public int getGimbalPole(){
+        final float t = y * x + z * w;
+        return t > 0.499f ? 1 : (t < -0.499f ? -1 : 0);
+    }
+
+// Quat.java : public float getRollRad()
+    public float getRollRad(){
+        final int pole = getGimbalPole();
+        return pole == 0 ? Mathf.atan2(1f - 2f * (x * x + z * z), 2f * (w * z + y * x)) : (float)pole * 2f
+        * Mathf.atan2(w, y);
+    }
+
+// Quat.java : public float getRoll()
+    public float getRoll(){
+        return getRollRad() * Mathf.radiansToDegrees;
+    }
+
+// Quat.java : public float getPitchRad()
+    public float getPitchRad(){
+        final int pole = getGimbalPole();
+        return pole == 0 ? (float)Math.asin(Mathf.clamp(2f * (w * x - z * y), -1f, 1f)) : (float)pole * Mathf.PI * 0.5f;
+    }
+
+// Quat.java : public float getPitch()
+    public float getPitch(){
+        return getPitchRad() * Mathf.radiansToDegrees;
+    }
+
+// Quat.java : public float getYawRad()
+    public float getYawRad(){
+        return getGimbalPole() == 0 ? Mathf.atan2(1f - 2f * (y * y + x * x), 2f * (y * w + x * z)) : 0f;
+    }
+
+// Quat.java : public float getYaw()
+    public float getYaw(){
+        return getYawRad() * Mathf.radiansToDegrees;
+    }
+
+// Quat.java : public Quat nor()
+    public Quat nor(){
+        float len = len2();
+        if(len != 0.f && !Mathf.equal(len, 1f)){
+            len = (float)Math.sqrt(len);
+            w /= len;
+            x /= len;
+            y /= len;
+            z /= len;
+        }
+        return this;
+    }
+
+// Quat.java : public Quat conjugate()
+    public Quat conjugate(){
+        x = -x;
+        y = -y;
+        z = -z;
+        return this;
+    }
+
+// Quat.java : public Vec3 transform(Vec3 v)
+    public Vec3 transform(Vec3 v){
+        tmp2.set(this);
+        tmp2.conjugate();
+        tmp2.mulLeft(tmp1.set(v.x, v.y, v.z, 0)).mulLeft(this);
+
+        v.x = tmp2.x;
+        v.y = tmp2.y;
+        v.z = tmp2.z;
+        return v;
+    }
+
+// Quat.java : public Quat mul(Quat other) / public Quat mul(float x, float y, float z, float w) / public Quat mul(float scalar)
+    public Quat mul(final Quat other){
+        final float newX = this.w * other.x + this.x * other.w + this.y * other.z - this.z * other.y;
+        final float newY = this.w * other.y + this.y * other.w + this.z * other.x - this.x * other.z;
+        final float newZ = this.w * other.z + this.z * other.w + this.x * other.y - this.y * other.x;
+        final float newW = this.w * other.w - this.x * other.x - this.y * other.y - this.z * other.z;
+        this.x = newX;
+        this.y = newY;
+        this.z = newZ;
+        this.w = newW;
+        return this;
+    }
+
+// Quat.java : public Quat mulLeft(Quat other) / public Quat mulLeft(float x, float y, float z, float w)
+    public Quat mulLeft(Quat other){
+        final float newX = other.w * this.x + other.x * this.w + other.y * this.z - other.z * this.y;
+        final float newY = other.w * this.y + other.y * this.w + other.z * this.x - other.x * this.z;
+        final float newZ = other.w * this.z + other.z * this.w + other.x * this.y - other.y * this.x;
+        final float newW = other.w * this.w - other.x * this.x - other.y * this.y - other.z * this.z;
+        this.x = newX;
+        this.y = newY;
+        this.z = newZ;
+        this.w = newW;
+        return this;
+    }
+
+// Quat.java : public Quat add(Quat quat) / public Quat add(float qx, float qy, float qz, float qw)
+    public Quat add(Quat quat){
+        this.x += quat.x;
+        this.y += quat.y;
+        this.z += quat.z;
+        this.w += quat.w;
+        return this;
+    }
+
+// Quat.java : public Quat idt()
+    public Quat idt(){
+        return this.set(0, 0, 0, 1);
+    }
+
+// Quat.java : public boolean isIdentity() / public boolean isIdentity(float tolerance)
+    public boolean isIdentity(){
+        return Mathf.zero(x) && Mathf.zero(y) && Mathf.zero(z) && Mathf.equal(w, 1f);
+    }
+
+// Quat.java : public Quat setFromAxis(Vec3 axis, float degrees) / public Quat setFromAxis(float x, float y, float z, float degrees)
+    public Quat setFromAxis(final Vec3 axis, final float degrees){
+        return setFromAxis(axis.x, axis.y, axis.z, degrees);
+    }
+
+// Quat.java : public Quat setFromAxisRad(Vec3 axis, float radians) / public Quat setFromAxisRad(float x, float y, float z, float radians)
+    public Quat setFromAxisRad(final Vec3 axis, final float radians){
+        return setFromAxisRad(axis.x, axis.y, axis.z, radians);
+    }
+
+// Quat.java : public Quat setFromMatrix(boolean normalizeAxes, Mat3D matrix) / public Quat setFromMatrix(Mat3D matrix) / public Quat setFromMatrix(boolean normalizeAxes, Mat matrix) / public Quat setFromMatrix(Mat matrix)
+    public Quat setFromMatrix (boolean normalizeAxes, Mat3D matrix) {
+        return setFromAxes(normalizeAxes, matrix.val[Mat3D.M00], matrix.val[Mat3D.M01], matrix.val[Mat3D.M02],
+        matrix.val[Mat3D.M10], matrix.val[Mat3D.M11], matrix.val[Mat3D.M12], matrix.val[Mat3D.M20],
+        matrix.val[Mat3D.M21], matrix.val[Mat3D.M22]);
+    }
+
+// Quat.java : public Quat setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) / public Quat setFromAxes(boolean normalizeAxes, float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz)
+    public Quat setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz){
+        return setFromAxes(false, xx, xy, xz, yx, yy, yz, zx, zy, zz);
+    }
+
+// Quat.java : public Quat setFromCross(Vec3 v1, Vec3 v2) / public Quat setFromCross(float x1, float y1, float z1, float x2, float y2, float z2)
+    public Quat setFromCross(final Vec3 v1, final Vec3 v2){
+        final float dot = Mathf.clamp(v1.dot(v2), -1f, 1f);
+        final float angle = (float)Math.acos(dot);
+        return setFromAxisRad(v1.y * v2.z - v1.z * v2.y, v1.z * v2.x - v1.x * v2.z, v1.x * v2.y - v1.y * v2.x, angle);
+    }
+
+// Quat.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToRawIntBits(w);
+        result = prime * result + Float.floatToRawIntBits(x);
+        result = prime * result + Float.floatToRawIntBits(y);
+        result = prime * result + Float.floatToRawIntBits(z);
+        return result;
+    }
+
+// Quat.java : public float getAxisAngle(Vec3 axis)
+    public float getAxisAngle(Vec3 axis){
+        return getAxisAngleRad(axis) * Mathf.radiansToDegrees;
+    }
+
+// Quat.java : public float getAngleRad()
+    public float getAngleRad(){
+        return (float)(2.0 * Math.acos((this.w > 1) ? (this.w / len()) : this.w));
+    }
+
+// Quat.java : public float getAngle()
+    public float getAngle(){
+        return getAngleRad() * Mathf.radiansToDegrees;
+    }
+
+// Quat.java : public void getSwingTwist(float axisX, float axisY, float axisZ, Quat swing, Quat twist) / public void getSwingTwist(Vec3 axis, Quat swing, Quat twist)
+    public void getSwingTwist(final float axisX, final float axisY, final float axisZ, final Quat swing,
+                              final Quat twist){
+        final float d = Vec3.dot(this.x, this.y, this.z, axisX, axisY, axisZ);
+        twist.set(axisX * d, axisY * d, axisZ * d, this.w).nor();
+        if(d < 0) twist.mul(-1f);
+        swing.set(twist).conjugate().mulLeft(this);
+    }
+
+// Quat.java : public float getAngleAroundRad(float axisX, float axisY, float axisZ) / public float getAngleAroundRad(Vec3 axis)
+    public float getAngleAroundRad(final float axisX, final float axisY, final float axisZ){
+        final float d = Vec3.dot(this.x, this.y, this.z, axisX, axisY, axisZ);
+        final float l2 = Quat.len2(axisX * d, axisY * d, axisZ * d, this.w);
+        return Mathf.zero(l2) ? 0f : (float)(2.0 * Math.acos(Mathf.clamp(
+        (float)((d < 0 ? -this.w : this.w) / Math.sqrt(l2)), -1f, 1f)));
+    }
+
+// Quat.java : public float getAngleAround(float axisX, float axisY, float axisZ) / public float getAngleAround(Vec3 axis)
+    public float getAngleAround(final float axisX, final float axisY, final float axisZ){
+        return getAngleAroundRad(axisX, axisY, axisZ) * Mathf.radiansToDegrees;
+    }
+
+// Ray.java : public Ray cpy()
+    public Ray cpy(){
+        return new Ray(this.origin, this.direction);
+    }
+
+// Ray.java : public Vec3 getEndPoint(Vec3 out, float distance)
+    public Vec3 getEndPoint(final Vec3 out, final float distance){
+        return out.set(direction).scl(distance).add(origin);
+    }
+
+// Ray.java : public Ray set(Vec3 origin, Vec3 direction) / public Ray set(float x, float y, float z, float dx, float dy, float dz) / public Ray set(Ray ray)
+    public Ray set(Vec3 origin, Vec3 direction){
+        this.origin.set(origin);
+        this.direction.set(direction);
+        return this;
+    }
+
+// Ray.java : public String toString()
+    @Override
+    public String toString(){
+        return "ray [" + origin + ":" + direction + "]";
+    }
+
+// Ray.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Ray r = (Ray)o;
+        return this.direction.equals(r.direction) && this.origin.equals(r.origin);
+    }
+
+// Ray.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 73;
+        int result = 1;
+        result = prime * result + this.direction.hashCode();
+        result = prime * result + this.origin.hashCode();
+        return result;
+    }
+
+// Segment.java : public float len()
+    public float len(){
+        return a.dst(b);
+    }
+
+// Segment.java : public float len2()
+    public float len2(){
+        return a.dst2(b);
+    }
+
+// Segment.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Segment s = (Segment)o;
+        return this.a.equals(s.a) && this.b.equals(s.b);
+    }
+
+// Segment.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 71;
+        int result = 1;
+        result = prime * result + this.a.hashCode();
+        result = prime * result + this.b.hashCode();
+        return result;
+    }
+
+// Sphere.java : public boolean overlaps(Sphere sphere)
+    public boolean overlaps(Sphere sphere){
+        return center.dst2(sphere.center) < (radius + sphere.radius) * (radius + sphere.radius);
+    }
+
+// Sphere.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 71;
+        int result = 1;
+        result = prime * result + this.center.hashCode();
+        result = prime * result + Float.floatToRawIntBits(this.radius);
+        return result;
+    }
+
+// Sphere.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Sphere s = (Sphere)o;
+        return this.radius == s.radius && this.center.equals(s.center);
+    }
+
+// Sphere.java : public float volume()
+    public float volume(){
+        return PI_4_3 * this.radius * this.radius * this.radius;
+    }
+
+// Sphere.java : public float surfaceArea()
+    public float surfaceArea(){
+        return 4 * Mathf.PI * this.radius * this.radius;
+    }
+
+// BSpline.java : public static T cubic(T out, float t, T[] points, boolean continuous, T tmp) / public static T cubic(T out, int i, float u, T[] points, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T cubic(final T out, final float t, final T[] points, final boolean continuous,
+                                                final T tmp){
+        final int n = continuous ? points.length : points.length - 3;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return cubic(out, i, u, points, continuous, tmp);
+    }
+
+// BSpline.java : public static T cubic_derivative(T out, float t, T[] points, boolean continuous, T tmp) / public static T cubic_derivative(T out, int i, float u, T[] points, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T cubic_derivative(final T out, final float t, final T[] points,
+                                                           final boolean continuous, final T tmp){
+        final int n = continuous ? points.length : points.length - 3;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return cubic(out, i, u, points, continuous, tmp);
+    }
+
+// BSpline.java : public static T calculate(T out, float t, T[] points, int degree, boolean continuous, T tmp) / public static T calculate(T out, int i, float u, T[] points, int degree, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points, final int degree,
+                                                    final boolean continuous, final T tmp){
+        final int n = continuous ? points.length : points.length - degree;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return calculate(out, i, u, points, degree, continuous, tmp);
+    }
+
+// BSpline.java : public static T derivative(T out, float t, T[] points, int degree, boolean continuous, T tmp) / public static T derivative(T out, int i, float u, T[] points, int degree, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points, final int degree,
+                                                     final boolean continuous, final T tmp){
+        final int n = continuous ? points.length : points.length - degree;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return derivative(out, i, u, points, degree, continuous, tmp);
+    }
+
+// BSpline.java : public T valueAt(T out, float t) / public T valueAt(T out, int span, float u)
+    @Override
+    public T valueAt(T out, float t){
+        final int n = spanCount;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return valueAt(out, i, u);
+    }
+
+// BSpline.java : public T derivativeAt(T out, float t) / public T derivativeAt(T out, int span, float u)
+    @Override
+    public T derivativeAt(final T out, final float t){
+        final int n = spanCount;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return derivativeAt(out, i, u);
+    }
+
+// BSpline.java : public int nearest(T in) / public int nearest(T in, int start, int count)
+    public int nearest(final T in){
+        return nearest(in, 0, spanCount);
+    }
+
+// BSpline.java : public float approximate(T v) / public float approximate(T in, int start, int count) / public float approximate(T in, int near)
+    @Override
+    public float approximate(T v){
+        return approximate(v, nearest(v));
+    }
+
+// BSpline.java : public float locate(T v)
+    @Override
+    public float locate(T v){
+        // TODO Add a precise method
+        return approximate(v);
+    }
+
+// BSpline.java : public float approxLength(int samples)
+    @Override
+    public float approxLength(int samples){
+        float tempLength = 0;
+        for(int i = 0; i < samples; ++i){
+            tmp2.set(tmp3);
+            valueAt(tmp3, (i) / ((float)samples - 1));
+            if(i > 0) tempLength += tmp2.dst(tmp3);
+        }
+        return tempLength;
+    }
+
+// Bezier.java : public static T linear(T out, float t, T p0, T p1, T tmp)
+    public static <T extends Vector<T>> T linear(final T out, final float t, final T p0, final T p1, final T tmp){
+        // B1(t) = p0 + (p1-p0)*t
+        return out.set(p0).scl(1f - t).add(tmp.set(p1).scl(t)); // Could just use lerp...
+    }
+
+// Bezier.java : public static T linearDerivative(T out, float t, T p0, T p1, T tmp)
+    public static <T extends Vector<T>> T linearDerivative(final T out, final float t, final T p0, final T p1, final T tmp){
+        // B1'(t) = p1-p0
+        return out.set(p1).sub(p0);
+    }
+
+// Bezier.java : public static T quadratic(T out, float t, T p0, T p1, T p2, T tmp)
+    public static <T extends Vector<T>> T quadratic(final T out, final float t, final T p0, final T p1, final T p2, final T tmp){
+        // B2(t) = (1 - t) * (1 - t) * p0 + 2 * (1-t) * t * p1 + t*t*p2
+        final float dt = 1f - t;
+        return out.set(p0).scl(dt * dt).add(tmp.set(p1).scl(2 * dt * t)).add(tmp.set(p2).scl(t * t));
+    }
+
+// Bezier.java : public static T quadraticDerivative(T out, float t, T p0, T p1, T p2, T tmp)
+    public static <T extends Vector<T>> T quadraticDerivative(final T out, final float t, final T p0, final T p1, final T p2,
+                                                              final T tmp){
+        // B2'(t) = 2 * (1 - t) * (p1 - p0) + 2 * t * (p2 - p1)
+        final float dt = 1f - t;
+        return out.set(p1).sub(p0).scl(2).scl(1 - t).add(tmp.set(p2).sub(p1).scl(t).scl(2));
+    }
+
+// Bezier.java : public static T cubic(T out, float t, T p0, T p1, T p2, T p3, T tmp)
+    public static <T extends Vector<T>> T cubic(final T out, final float t, final T p0, final T p1, final T p2, final T p3,
+                                                final T tmp){
+        // B3(t) = (1-t) * (1-t) * (1-t) * p0 + 3 * (1-t) * (1-t) * t * p1 + 3 * (1-t) * t * t * p2 + t * t * t * p3
+        final float dt = 1f - t;
+        final float dt2 = dt * dt;
+        final float t2 = t * t;
+        return out.set(p0).scl(dt2 * dt).add(tmp.set(p1).scl(3 * dt2 * t)).add(tmp.set(p2).scl(3 * dt * t2))
+        .add(tmp.set(p3).scl(t2 * t));
+    }
+
+// Bezier.java : public static T cubicDerivative(T out, float t, T p0, T p1, T p2, T p3, T tmp)
+    public static <T extends Vector<T>> T cubicDerivative(final T out, final float t, final T p0, final T p1, final T p2,
+                                                          final T p3, final T tmp){
+        // B3'(t) = 3 * (1-t) * (1-t) * (p1 - p0) + 6 * (1 - t) * t * (p2 - p1) + 3 * t * t * (p3 - p2)
+        final float dt = 1f - t;
+        final float dt2 = dt * dt;
+        final float t2 = t * t;
+        return out.set(p1).sub(p0).scl(dt2 * 3).add(tmp.set(p2).sub(p1).scl(dt * t * 6)).add(tmp.set(p3).sub(p2).scl(t2 * 3));
+    }
+
+// Bezier.java : public Bezier<T> set(T points) / public Bezier<T> set(T[] points, int offset, int length) / public Bezier<T> set(T p1, T p2, T p3) / public Bezier<T> set(Seq<T> points) / public Bezier<T> set(Seq<T> points, int offset, int length)
+    public Bezier<T> set(final T... points){
+        return set(points, 0, points.length);
+    }
+
+// Bezier.java : public T valueAt(T out, float t)
+    @Override
+    public T valueAt(final T out, final float t){
+        final int n = points.size;
+        if(n == 2)
+            linear(out, t, points.get(0), points.get(1), tmp);
+        else if(n == 3)
+            quadratic(out, t, points.get(0), points.get(1), points.get(2), tmp);
+        else if(n == 4) cubic(out, t, points.get(0), points.get(1), points.get(2), points.get(3), tmp);
+        return out;
+    }
+
+// Bezier.java : public T derivativeAt(T out, float t)
+    @Override
+    public T derivativeAt(final T out, final float t){
+        final int n = points.size;
+        if(n == 2)
+            linearDerivative(out, t, points.get(0), points.get(1), tmp);
+        else if(n == 3)
+            quadraticDerivative(out, t, points.get(0), points.get(1), points.get(2), tmp);
+        else if(n == 4) cubicDerivative(out, t, points.get(0), points.get(1), points.get(2), points.get(3), tmp);
+        return out;
+    }
+
+// Bezier.java : public float locate(T v)
+    @Override
+    public float locate(T v){
+        // TODO implement a precise method
+        return approximate(v);
+    }
+
+// Bezier.java : public float approxLength(int samples)
+    @Override
+    public float approxLength(int samples){
+        float tempLength = 0;
+        for(int i = 0; i < samples; ++i){
+            tmp2.set(tmp3);
+            valueAt(tmp3, (i) / ((float)samples - 1));
+            if(i > 0) tempLength += tmp2.dst(tmp3);
+        }
+        return tempLength;
+    }
+
+// BoundingBox.java : static float min(float a, float b)
+    static float min(final float a, final float b){
+        return a > b ? b : a;
+    }
+
+// BoundingBox.java : static float max(float a, float b)
+    static float max(final float a, final float b){
+        return a > b ? a : b;
+    }
+
+// BoundingBox.java : public Vec3 getCenter(Vec3 out)
+    public Vec3 getCenter(Vec3 out){
+        return out.set(cnt);
+    }
+
+// BoundingBox.java : public float getCenterX()
+    public float getCenterX(){
+        return cnt.x;
+    }
+
+// BoundingBox.java : public float getCenterY()
+    public float getCenterY(){
+        return cnt.y;
+    }
+
+// BoundingBox.java : public float getCenterZ()
+    public float getCenterZ(){
+        return cnt.z;
+    }
+
+// BoundingBox.java : public Vec3 getCorner000(Vec3 out)
+    public Vec3 getCorner000(final Vec3 out){
+        return out.set(min.x, min.y, min.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner001(Vec3 out)
+    public Vec3 getCorner001(final Vec3 out){
+        return out.set(min.x, min.y, max.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner010(Vec3 out)
+    public Vec3 getCorner010(final Vec3 out){
+        return out.set(min.x, max.y, min.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner011(Vec3 out)
+    public Vec3 getCorner011(final Vec3 out){
+        return out.set(min.x, max.y, max.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner100(Vec3 out)
+    public Vec3 getCorner100(final Vec3 out){
+        return out.set(max.x, min.y, min.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner101(Vec3 out)
+    public Vec3 getCorner101(final Vec3 out){
+        return out.set(max.x, min.y, max.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner110(Vec3 out)
+    public Vec3 getCorner110(final Vec3 out){
+        return out.set(max.x, max.y, min.z);
+    }
+
+// BoundingBox.java : public Vec3 getCorner111(Vec3 out)
+    public Vec3 getCorner111(final Vec3 out){
+        return out.set(max.x, max.y, max.z);
+    }
+
+// BoundingBox.java : public Vec3 getDimensions(Vec3 out)
+    public Vec3 getDimensions(final Vec3 out){
+        return out.set(dim);
+    }
+
+// BoundingBox.java : public float getWidth()
+    public float getWidth(){
+        return dim.x;
+    }
+
+// BoundingBox.java : public float getHeight()
+    public float getHeight(){
+        return dim.y;
+    }
+
+// BoundingBox.java : public float getDepth()
+    public float getDepth(){
+        return dim.z;
+    }
+
+// BoundingBox.java : public Vec3 getMin(Vec3 out)
+    public Vec3 getMin(final Vec3 out){
+        return out.set(min);
+    }
+
+// BoundingBox.java : public Vec3 getMax(Vec3 out)
+    public Vec3 getMax(final Vec3 out){
+        return out.set(max);
+    }
+
+// BoundingBox.java : public BoundingBox set(BoundingBox bounds) / public BoundingBox set(Vec3 minimum, Vec3 maximum) / public BoundingBox set(Vec3[] points) / public BoundingBox set(Seq<Vec3> points)
+    public BoundingBox set(BoundingBox bounds){
+        return this.set(bounds.min, bounds.max);
+    }
+
+// BoundingBox.java : public BoundingBox inf()
+    public BoundingBox inf(){
+        min.set(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+        max.set(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        cnt.set(0, 0, 0);
+        dim.set(0, 0, 0);
+        return this;
+    }
+
+// BoundingBox.java : public BoundingBox ext(Vec3 point) / public BoundingBox ext(BoundingBox a_bounds) / public BoundingBox ext(Vec3 center, float radius) / public BoundingBox ext(float x, float y, float z)
+    public BoundingBox ext(Vec3 point){
+        return this.set(min.set(min(min.x, point.x), min(min.y, point.y), min(min.z, point.z)),
+        max.set(Math.max(max.x, point.x), Math.max(max.y, point.y), Math.max(max.z, point.z)));
+    }
+
+// BoundingBox.java : public BoundingBox clr()
+    public BoundingBox clr(){
+        return this.set(min.set(0, 0, 0), max.set(0, 0, 0));
+    }
+
+// BoundingBox.java : public boolean isValid()
+    public boolean isValid(){
+        return min.x <= max.x && min.y <= max.y && min.z <= max.z;
+    }
+
+// BoundingBox.java : public boolean contains(BoundingBox b) / public boolean contains(Vec3 v)
+    public boolean contains(BoundingBox b){
+        return !isValid()
+        || (min.x <= b.min.x && min.y <= b.min.y && min.z <= b.min.z && max.x >= b.max.x && max.y >= b.max.y && max.z >= b.max.z);
+    }
+
+// BoundingBox.java : public String toString()
+    @Override
+    public String toString(){
+        return "[" + min + "|" + max + "]";
+    }
+
+// CatmullRomSpline.java : public static T calculate(T out, float t, T[] points, boolean continuous, T tmp) / public static T calculate(T out, int i, float u, T[] points, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T calculate(final T out, final float t, final T[] points, final boolean continuous,
+                                                    final T tmp){
+        final int n = continuous ? points.length : points.length - 3;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return calculate(out, i, u, points, continuous, tmp);
+    }
+
+// CatmullRomSpline.java : public static T derivative(T out, float t, T[] points, boolean continuous, T tmp) / public static T derivative(T out, int i, float u, T[] points, boolean continuous, T tmp)
+    public static <T extends Vector<T>> T derivative(final T out, final float t, final T[] points, final boolean continuous,
+                                                     final T tmp){
+        final int n = continuous ? points.length : points.length - 3;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return derivative(out, i, u, points, continuous, tmp);
+    }
+
+// CatmullRomSpline.java : public CatmullRomSpline set(T[] controlPoints, boolean continuous)
+    public CatmullRomSpline set(final T[] controlPoints, final boolean continuous){
+        if(tmp == null) tmp = controlPoints[0].cpy();
+        if(tmp2 == null) tmp2 = controlPoints[0].cpy();
+        if(tmp3 == null) tmp3 = controlPoints[0].cpy();
+        this.controlPoints = controlPoints;
+        this.continuous = continuous;
+        this.spanCount = continuous ? controlPoints.length : controlPoints.length - 3;
+        return this;
+    }
+
+// CatmullRomSpline.java : public T valueAt(T out, float t) / public T valueAt(T out, int span, float u)
+    @Override
+    public T valueAt(T out, float t){
+        final int n = spanCount;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return valueAt(out, i, u);
+    }
+
+// CatmullRomSpline.java : public T derivativeAt(T out, float t) / public T derivativeAt(T out, int span, float u)
+    @Override
+    public T derivativeAt(T out, float t){
+        final int n = spanCount;
+        float u = t * n;
+        int i = (t >= 1f) ? (n - 1) : (int)u;
+        u -= i;
+        return derivativeAt(out, i, u);
+    }
+
+// CatmullRomSpline.java : public int nearest(T in) / public int nearest(T in, int start, int count)
+    public int nearest(final T in){
+        return nearest(in, 0, spanCount);
+    }
+
+// CatmullRomSpline.java : public float approximate(T v) / public float approximate(T in, int start, int count) / public float approximate(T in, int near)
+    @Override
+    public float approximate(T v){
+        return approximate(v, nearest(v));
+    }
+
+// CatmullRomSpline.java : public float locate(T v)
+    @Override
+    public float locate(T v){
+        return approximate(v);
+    }
+
+// CatmullRomSpline.java : public float approxLength(int samples)
+    @Override
+    public float approxLength(int samples){
+        float tempLength = 0;
+        for(int i = 0; i < samples; ++i){
+            tmp2.set(tmp3);
+            valueAt(tmp3, (i) / ((float)samples - 1));
+            if(i > 0) tempLength += tmp2.dst(tmp3);
+        }
+        return tempLength;
+    }
+
+// Circle.java : public Circle set(float x, float y, float radius) / public Circle set(Vec2 position, float radius) / public Circle set(Circle circle) / public Circle set(Vec2 center, Vec2 edge)
+    public Circle set(float x, float y, float radius){
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        return this;
+    }
+
+// Circle.java : public Circle setPosition(Vec2 position) / public Circle setPosition(float x, float y)
+    public Circle setPosition(Vec2 position){
+        this.x = position.x;
+        this.y = position.y;
+        return this;
+    }
+
+// Circle.java : public void setX(float x)
+    public void setX(float x){
+        this.x = x;
+    }
+
+// Circle.java : public void setY(float y)
+    public void setY(float y){
+        this.y = y;
+    }
+
+// Circle.java : public void setRadius(float radius)
+    public void setRadius(float radius){
+        this.radius = radius;
+    }
+
+// Circle.java : public boolean contains(float x, float y) / public boolean contains(Vec2 point) / public boolean contains(Circle c)
+    public boolean contains(float x, float y){
+        x = this.x - x;
+        y = this.y - y;
+        return x * x + y * y <= radius * radius;
+    }
+
+// Circle.java : public boolean overlaps(Circle c)
+    public boolean overlaps(Circle c){
+        float dx = x - c.x;
+        float dy = y - c.y;
+        float distance = dx * dx + dy * dy;
+        float radiusSum = radius + c.radius;
+        return distance < radiusSum * radiusSum;
+    }
+
+// Circle.java : public String toString()
+    @Override
+    public String toString(){
+        return x + "," + y + "," + radius;
+    }
+
+// Circle.java : public float circumference()
+    public float circumference(){
+        return this.radius * Mathf.PI2;
+    }
+
+// Circle.java : public float area()
+    public float area(){
+        return this.radius * this.radius * Mathf.PI;
+    }
+
+// Circle.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Circle c = (Circle)o;
+        return this.x == c.x && this.y == c.y && this.radius == c.radius;
+    }
+
+// Circle.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 41;
+        int result = 1;
+        result = prime * result + Float.floatToRawIntBits(radius);
+        result = prime * result + Float.floatToRawIntBits(x);
+        result = prime * result + Float.floatToRawIntBits(y);
+        return result;
+    }
+
+// ConvexHull.java : public FloatSeq computePolygon(FloatSeq points, boolean sorted) / public FloatSeq computePolygon(float[] polygon, boolean sorted) / public FloatSeq computePolygon(float[] points, int offset, int count, boolean sorted)
+    public FloatSeq computePolygon(FloatSeq points, boolean sorted){
+        return computePolygon(points.items, 0, points.size, sorted);
+    }
+
+// ConvexHull.java : public IntSeq computeIndices(FloatSeq points, boolean sorted, boolean yDown) / public IntSeq computeIndices(float[] polygon, boolean sorted, boolean yDown) / public IntSeq computeIndices(float[] points, int offset, int count, boolean sorted, boolean yDown)
+    public IntSeq computeIndices(FloatSeq points, boolean sorted, boolean yDown){
+        return computeIndices(points.items, 0, points.size, sorted, yDown);
+    }
+
+// ConvexHull.java : private float ccw(float p3x, float p3y)
+    private float ccw(float p3x, float p3y){
+        FloatSeq hull = this.hull;
+        int size = hull.size;
+        float p1x = hull.get(size - 4);
+        float p1y = hull.get(size - 3);
+        float p2x = hull.get(size - 2);
+        float p2y = hull.peek();
+        return (p2x - p1x) * (p3y - p1y) - (p2y - p1y) * (p3x - p1x);
+    }
+
+// Ellipse.java : public boolean contains(float x, float y) / public boolean contains(Vec2 point)
+    public boolean contains(float x, float y){
+        x = x - this.x;
+        y = y - this.y;
+
+        return (x * x) / (width * 0.5f * width * 0.5f) + (y * y) / (height * 0.5f * height * 0.5f) <= 1.0f;
+    }
+
+// Ellipse.java : public void set(float x, float y, float width, float height) / public void set(Ellipse ellipse) / public void set(Circle circle) / public void set(Vec2 position, Vec2 size)
+    public void set(float x, float y, float width, float height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+// Ellipse.java : public Ellipse setPosition(Vec2 position) / public Ellipse setPosition(float x, float y)
+    public Ellipse setPosition(Vec2 position){
+        this.x = position.x;
+        this.y = position.y;
+
+        return this;
+    }
+
+// Ellipse.java : public Ellipse setSize(float width, float height)
+    public Ellipse setSize(float width, float height){
+        this.width = width;
+        this.height = height;
+
+        return this;
+    }
+
+// Ellipse.java : public float area()
+    public float area(){
+        return Mathf.PI * (this.width * this.height) / 4;
+    }
+
+// Ellipse.java : public float circumference()
+    public float circumference(){
+        float a = this.width / 2;
+        float b = this.height / 2;
+        if(a * 3 > b || b * 3 > a){
+            // If one dimension is three times as long as the other...
+            return (float)(Mathf.PI * ((3 * (a + b)) - Math.sqrt((3 * a + b) * (a + 3 * b))));
+        }else{
+            // We can use the simpler approximation, then
+            return (float)(Mathf.PI2 * Math.sqrt((a * a + b * b) / 2));
+        }
+    }
+
+// Ellipse.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(o == this) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Ellipse e = (Ellipse)o;
+        return this.x == e.x && this.y == e.y && this.width == e.width && this.height == e.height;
+    }
+
+// Ellipse.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 53;
+        int result = 1;
+        result = prime * result + Float.floatToRawIntBits(this.height);
+        result = prime * result + Float.floatToRawIntBits(this.width);
+        result = prime * result + Float.floatToRawIntBits(this.x);
+        result = prime * result + Float.floatToRawIntBits(this.y);
+        return result;
+    }
+
+// Geometry.java : public static Point2 d4(int i)
+    public static Point2 d4(int i){
+        return d4[Mathf.mod(i, 4)];
+    }
+
+// Geometry.java : public static int d4x(int i)
+    public static int d4x(int i){
+        return d4x[Mathf.mod(i, 4)];
+    }
+
+// Geometry.java : public static int d4y(int i)
+    public static int d4y(int i){
+        return d4y[Mathf.mod(i, 4)];
+    }
+
+// Geometry.java : public static Point2 d8(int i)
+    public static Point2 d8(int i){
+        return d8[Mathf.mod(i, 8)];
+    }
+
+// Geometry.java : public static Point2 d8edge(int i)
+    public static Point2 d8edge(int i){
+        return d8edge[Mathf.mod(i, 4)];
+    }
+
+// Geometry.java : public static void circle(int x, int y, int radius, Intc2 cons) / public static void circle(int x, int y, int width, int height, int radius, Intc2 cons)
+    public static void circle(int x, int y, int radius, Intc2 cons){
+        for(int dx = -radius; dx <= radius; dx++){
+            for(int dy = -radius; dy <= radius; dy++){
+                if(Mathf.within(dx, dy, radius)){
+                    cons.get(dx + x, dy + y);
+                }
+            }
+        }
+    }
+
+// Geometry.java : public static FloatSeq vectorsToFloats(Seq<Vec2> result)
+    public static FloatSeq vectorsToFloats(Seq<Vec2> result){
+        FloatSeq out = new FloatSeq(result.size * 2);
+        result.each(v -> out.add(v.x, v.y));
+        return out;
+    }
+
+// Geometry.java : public static Vec2[] pixelCircle(float tindex) / public static Vec2[] pixelCircle(float index, SolidChecker checker)
+    public static Vec2[] pixelCircle(float tindex){
+        return pixelCircle(tindex, (index, x, y) -> Mathf.dst(x, y, index, index) < index - 0.5f);
+    }
+
+// Geometry.java : public static float[] regPoly(int amount, float size)
+    public static float[] regPoly(int amount, float size){
+        float[] v = new float[amount * 2];
+        Vec2 vec = new Vec2(1, 1);
+        vec.setLength(size);
+        for(int i = 0; i < amount; i++){
+            vec.setAngle((360f / amount) * i + 90);
+            v[i * 2] = vec.x;
+            v[i * 2 + 1] = vec.y;
+        }
+        return v;
+    }
+
+// Geometry.java : public static void iteratePolygon(Floatc2 path, float[] vertices)
+    public static void iteratePolygon(Floatc2 path, float[] vertices){
+        for(int i = 0; i < vertices.length; i += 2){
+            float x = vertices[i];
+            float y = vertices[i + 1];
+            path.get(x, y);
+        }
+    }
+
+// Geometry.java : public static Point2[] getD4Points()
+    public static Point2[] getD4Points(){
+        return d4;
+    }
+
+// Geometry.java : public static Point2[] getD8Points()
+    public static Point2[] getD8Points(){
+        return d8;
+    }
+
+// Geometry.java : public static Point2[] getD8EdgePoints()
+    public static Point2[] getD8EdgePoints(){
+        return d8edge;
+    }
+
+// Geometry.java : public static Vec2 raycastRect(float startx, float starty, float endx, float endy, Rect rect) / public static Vec2 raycastRect(float startx, float starty, float endx, float endy, float x, float y, float halfx, float halfy)
+    public static Vec2 raycastRect(float startx, float starty, float endx, float endy, Rect rect){
+        return raycastRect(startx, starty, endx, endy, rect.x + rect.width / 2, rect.y + rect.height / 2, rect.width / 2f, rect.height / 2f);
+    }
+
+// Geometry.java : public static boolean barycoordInsideTriangle(Vec2 barycentric)
+    public static boolean barycoordInsideTriangle(Vec2 barycentric){
+        return barycentric.x >= 0 && barycentric.y >= 0 && barycentric.x + barycentric.y <= 1;
+    }
+
+// Geometry.java : public static Vec2 fromBarycoord(Vec2 barycentric, Vec2 a, Vec2 b, Vec2 c, Vec2 interpolatedOut) / public static float fromBarycoord(Vec2 barycentric, float a, float b, float c)
+    public static Vec2 fromBarycoord(Vec2 barycentric, Vec2 a, Vec2 b, Vec2 c, Vec2 interpolatedOut){
+        float u = 1 - barycentric.x - barycentric.y;
+        interpolatedOut.x = u * a.x + barycentric.x * b.x + barycentric.y * c.x;
+        interpolatedOut.y = u * a.y + barycentric.x * b.y + barycentric.y * c.y;
+        return interpolatedOut;
+    }
+
+// Geometry.java : public static boolean colinear(float x1, float y1, float x2, float y2, float x3, float y3)
+    public static boolean colinear(float x1, float y1, float x2, float y2, float x3, float y3){
+        float dx21 = x2 - x1, dy21 = y2 - y1;
+        float dx32 = x3 - x2, dy32 = y3 - y2;
+        float det = dx32 * dy21 - dx21 * dy32;
+        return Math.abs(det) < Mathf.FLOAT_ROUNDING_ERROR;
+    }
+
+// Geometry.java : public static Vec2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3, Vec2 centroid)
+    public static Vec2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3, Vec2 centroid){
+        centroid.x = (x1 + x2 + x3) / 3;
+        centroid.y = (y1 + y2 + y3) / 3;
+        return centroid;
+    }
+
+// Geometry.java : public static float triangleQuality(float x1, float y1, float x2, float y2, float x3, float y3)
+    public static float triangleQuality(float x1, float y1, float x2, float y2, float x3, float y3){
+        float length1 = (float)Math.sqrt(x1 * x1 + y1 * y1);
+        float length2 = (float)Math.sqrt(x2 * x2 + y2 * y2);
+        float length3 = (float)Math.sqrt(x3 * x3 + y3 * y3);
+        return Math.min(length1, Math.min(length2, length3)) / triangleCircumradius(x1, y1, x2, y2, x3, y3);
+    }
+
+// Geometry.java : public static float triangleArea(float x1, float y1, float x2, float y2, float x3, float y3)
+    public static float triangleArea(float x1, float y1, float x2, float y2, float x3, float y3){
+        return Math.abs((x1 - x3) * (y2 - y1) - (x1 - x2) * (y3 - y1)) * 0.5f;
+    }
+
+// Geometry.java : public static Vec2 quadrilateralCentroid(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Vec2 centroid)
+    public static Vec2 quadrilateralCentroid(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,
+                                             Vec2 centroid){
+        float avgX1 = (x1 + x2 + x3) / 3;
+        float avgY1 = (y1 + y2 + y3) / 3;
+        float avgX2 = (x1 + x4 + x3) / 3;
+        float avgY2 = (y1 + y4 + y3) / 3;
+        centroid.x = avgX1 - (avgX1 - avgX2) / 2;
+        centroid.y = avgY1 - (avgY1 - avgY2) / 2;
+        return centroid;
+    }
+
+// Geometry.java : public static void ensureCCW(float[] polygon) / public static void ensureCCW(float[] polygon, int offset, int count)
+    public static void ensureCCW(float[] polygon){
+        ensureCCW(polygon, 0, polygon.length);
+    }
+
+// IntQuadTree.java : public void clear()
+    public void clear(){
+        objects.clear();
+        totalObjects = 0;
+        if(!leaf){
+            topLeft.clear();
+            topRight.clear();
+            botLeft.clear();
+            botRight.clear();
+        }
+        leaf = true;
+    }
+
+// IntQuadTree.java : public void getObjects(IntSeq out)
+    public void getObjects(IntSeq out){
+        out.addAll(objects);
+
+        if(!leaf){
+            topLeft.getObjects(out);
+            topRight.getObjects(out);
+            botLeft.getObjects(out);
+            botRight.getObjects(out);
+        }
+    }
+
+// IntQuadTree.java : protected IntQuadTree newChild(Rect rect)
+    protected IntQuadTree newChild(Rect rect){
+        return new IntQuadTree(rect, prov);
+    }
+
+// IntQuadTree.java : protected void hitbox(int t)
+    protected void hitbox(int t){
+        prov.hitbox(t, tmp);
+    }
+
+// Intersector.java : public static boolean isInsideHexagon(float cx, float cy, float d, float x, float y)
+    public static boolean isInsideHexagon(float cx, float cy, float d, float x, float y){
+        float dx = Math.abs(x - cx) / d;
+        float dy = Math.abs(y - cy) / d;
+        float a = 0.25f * Mathf.sqrt3;
+        return (dy <= a) && (a * dx + 0.25 * dy <= 0.5 * a);
+    }
+
+// Intersector.java : public static boolean isInRegularPolygon(int sides, float cx, float cy, float radius, float rotation, float x, float y)
+    public static boolean isInRegularPolygon(int sides, float cx, float cy, float radius, float rotation, float x, float y){
+        floatArray.clear();
+        for(int i = 0; i < sides; i++){
+            s.trns(i * 360f / sides + rotation, radius);
+            floatArray.add(cx + s.x, cy + s.y);
+        }
+
+        return isInPolygon(floatArray.items, 0, floatArray.size, x, y);
+    }
+
+// Intersector.java : public static int pointLineSide(Vec2 linePoint1, Vec2 linePoint2, Vec2 point) / public static int pointLineSide(float linePoint1X, float linePoint1Y, float linePoint2X, float linePoint2Y, float pointX, float pointY)
+    public static int pointLineSide(Vec2 linePoint1, Vec2 linePoint2, Vec2 point){
+        return (int)Math.signum(
+        (linePoint2.x - linePoint1.x) * (point.y - linePoint1.y) - (linePoint2.y - linePoint1.y) * (point.x - linePoint1.x));
+    }
+
+// Intersector.java : public static float distanceLinePoint(Vec2 start, Vec2 end, Vec2 point) / public static float distanceLinePoint(float startX, float startY, float endX, float endY, float pointX, float pointY)
+    public static float distanceLinePoint(Vec2 start, Vec2 end, Vec2 point){
+        return distanceLinePoint(start.x, start.y, end.x, end.y, point.x, point.y);
+    }
+
+// Intersector.java : public static float distanceSegmentPoint(float startX, float startY, float endX, float endY, float pointX, float pointY) / public static float distanceSegmentPoint(Vec2 start, Vec2 end, Vec2 point)
+    public static float distanceSegmentPoint(float startX, float startY, float endX, float endY, float pointX, float pointY){
+        return nearestSegmentPoint(startX, startY, endX, endY, pointX, pointY, v2tmp).dst(pointX, pointY);
+    }
+
+// Intersector.java : public static Vec2 nearestSegmentPoint(Vec2 start, Vec2 end, Vec2 point, Vec2 nearest) / public static Vec2 nearestSegmentPoint(float startX, float startY, float endX, float endY, float pointX, float pointY, Vec2 nearest)
+    public static Vec2 nearestSegmentPoint(Vec2 start, Vec2 end, Vec2 point, Vec2 nearest){
+        float length2 = start.dst2(end);
+        if(length2 == 0) return nearest.set(start);
+        float t = ((point.x - start.x) * (end.x - start.x) + (point.y - start.y) * (end.y - start.y)) / length2;
+        if(t < 0) return nearest.set(start);
+        if(t > 1) return nearest.set(end);
+        return nearest.set(start.x + t * (end.x - start.x), start.y + t * (end.y - start.y));
+    }
+
+// Intersector.java : public static float intersectRayRay(Vec2 start1, Vec2 direction1, Vec2 start2, Vec2 direction2)
+    public static float intersectRayRay(Vec2 start1, Vec2 direction1, Vec2 start2, Vec2 direction2){
+        float difx = start2.x - start1.x;
+        float dify = start2.y - start1.y;
+        float d1xd2 = direction1.x * direction2.y - direction1.y * direction2.x;
+        if(d1xd2 == 0.0f){
+            return Float.POSITIVE_INFINITY; // collinear
+        }
+        float d2sx = direction2.x / d1xd2;
+        float d2sy = direction2.y / d1xd2;
+        return difx * d2sy - dify * d2sx;
+    }
+
+// Intersector.java : public static boolean intersectRectangles(Rect rect1, Rect rect2, Rect intersection)
+    public static boolean intersectRectangles(Rect rect1, Rect rect2, Rect intersection){
+        if(rect1.overlaps(rect2)){
+            intersection.x = Math.max(rect1.x, rect2.x);
+            intersection.width = Math.min(rect1.x + rect1.width, rect2.x + rect2.width) - intersection.x;
+            intersection.y = Math.max(rect1.y, rect2.y);
+            intersection.height = Math.min(rect1.y + rect1.height, rect2.y + rect2.height) - intersection.y;
+            return true;
+        }
+        return false;
+    }
+
+// Intersector.java : public static boolean intersectSegmentRectangle(float startX, float startY, float endX, float endY, float rectX, float rectY, float rectW, float rectH) / public static boolean intersectSegmentRectangle(float startX, float startY, float endX, float endY, Rect rect) / public static boolean intersectSegmentRectangle(Vec2 start, Vec2 end, Rect rect)
+    public static boolean intersectSegmentRectangle(float startX, float startY, float endX, float endY, float rectX, float rectY, float rectW, float rectH){
+        float rectangleEndX = rectX + rectW;
+        float rectangleEndY = rectY + rectH;
+
+        return
+            intersectSegments(startX, startY, endX, endY, rectX, rectY, rectX, rectangleEndY, null) ||
+            intersectSegments(startX, startY, endX, endY, rectX, rectY, rectangleEndX, rectY, null) ||
+            intersectSegments(startX, startY, endX, endY, rectangleEndX, rectY, rectangleEndX, rectangleEndY, null) ||
+            intersectSegments(startX, startY, endX, endY, rectX, rectangleEndY, rectangleEndX, rectangleEndY, null) ||
+            Rect.contains(rectX, rectY, rectW, rectH, startX, startY);
+    }
+
+// Intersector.java : static float det(float a, float b, float c, float d)
+    static float det(float a, float b, float c, float d){
+        return a * d - b * c;
+    }
+
+// Intersector.java : static double detd(double a, double b, double c, double d)
+    static double detd(double a, double b, double c, double d){
+        return a * d - b * c;
+    }
+
+// Intersector.java : public static boolean overlapsRect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
+    public static boolean overlapsRect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2){
+        return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
+    }
+
+// Intersector.java : public static boolean overlaps(Circle c1, Circle c2) / public static boolean overlaps(Rect r1, Rect r2) / public static boolean overlaps(Circle c, Rect r)
+    public static boolean overlaps(Circle c1, Circle c2){
+        return c1.overlaps(c2);
+    }
+
+// Intersector.java : public static boolean overlapConvexPolygons(Polygon p1, Polygon p2) / public static boolean overlapConvexPolygons(Polygon p1, Polygon p2, MinimumTranslationVector mtv) / public static boolean overlapConvexPolygons(float[] verts1, float[] verts2, MinimumTranslationVector mtv) / public static boolean overlapConvexPolygons(float[] verts1, int offset1, int count1, float[] verts2, int offset2, int count2, MinimumTranslationVector mtv)
+    public static boolean overlapConvexPolygons(Polygon p1, Polygon p2){
+        return overlapConvexPolygons(p1, p2, null);
+    }
+
+// Point2.java : public static Point2 unpack(int pos)
+    public static Point2 unpack(int pos){
+        return new Point2((short)(pos >>> 16), (short)(pos & 0xFFFF));
+    }
+
+// Point2.java : public static int pack(int x, int y) / public int pack()
+    public static int pack(int x, int y){
+        return (((short)x) << 16) | (((short)y) & 0xFFFF);
+    }
+
+// Point2.java : public static short x(int pos)
+    public static short x(int pos){
+        return (short)(pos >>> 16);
+    }
+
+// Point2.java : public static short y(int pos)
+    public static short y(int pos){
+        return (short)(pos & 0xFFFF);
+    }
+
+// Point2.java : public Point2 set(Point2 point) / public Point2 set(int x, int y)
+    public Point2 set(Point2 point){
+        this.x = point.x;
+        this.y = point.y;
+        return this;
+    }
+
+// Point2.java : public float dst2(Point2 other) / public float dst2(int x, int y)
+    public float dst2(Point2 other){
+        int xd = other.x - x;
+        int yd = other.y - y;
+
+        return xd * xd + yd * yd;
+    }
+
+// Point2.java : public float dst(Point2 other) / public float dst(int x, int y)
+    public float dst(Point2 other){
+        int xd = other.x - x;
+        int yd = other.y - y;
+
+        return (float)Math.sqrt(xd * xd + yd * yd);
+    }
+
+// Point2.java : public Point2 add(Point2 other) / public Point2 add(int x, int y)
+    public Point2 add(Point2 other){
+        x += other.x;
+        y += other.y;
+        return this;
+    }
+
+// Point2.java : public Point2 sub(Point2 other) / public Point2 sub(int x, int y)
+    public Point2 sub(Point2 other){
+        x -= other.x;
+        y -= other.y;
+        return this;
+    }
+
+// Point2.java : public Point2 cpy()
+    public Point2 cpy(){
+        return new Point2(this);
+    }
+
+// Point2.java : public boolean equals(int x, int y) / public static boolean equals(int x, int y, int ox, int oy) / public boolean equals(Object o)
+    public boolean equals(int x, int y){
+        return this.x == x && this.y == y;
+    }
+
+// Point2.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        return x * 0xC13F + y * 0x91E1;
+    }
+
+// Point2.java : public String toString()
+    @Override
+    public String toString(){
+        return "(" + x + ", " + y + ")";
+    }
+
+// Point3.java : public Point3 set(Point3 point) / public Point3 set(int x, int y, int z)
+    public Point3 set(Point3 point){
+        this.x = point.x;
+        this.y = point.y;
+        this.z = point.z;
+        return this;
+    }
+
+// Point3.java : public float dst2(Point3 other) / public float dst2(int x, int y, int z)
+    public float dst2(Point3 other){
+        int xd = other.x - x;
+        int yd = other.y - y;
+        int zd = other.z - z;
+
+        return xd * xd + yd * yd + zd * zd;
+    }
+
+// Point3.java : public float dst(Point3 other) / public float dst(int x, int y, int z)
+    public float dst(Point3 other){
+        int xd = other.x - x;
+        int yd = other.y - y;
+        int zd = other.z - z;
+
+        return (float)Math.sqrt(xd * xd + yd * yd + zd * zd);
+    }
+
+// Point3.java : public Point3 add(Point3 other) / public Point3 add(int x, int y, int z)
+    public Point3 add(Point3 other){
+        x += other.x;
+        y += other.y;
+        z += other.z;
+        return this;
+    }
+
+// Point3.java : public Point3 sub(Point3 other) / public Point3 sub(int x, int y, int z)
+    public Point3 sub(Point3 other){
+        x -= other.x;
+        y -= other.y;
+        z -= other.z;
+        return this;
+    }
+
+// Point3.java : public Point3 cpy()
+    public Point3 cpy(){
+        return new Point3(this);
+    }
+
+// Point3.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || o.getClass() != this.getClass()) return false;
+        Point3 g = (Point3)o;
+        return this.x == g.x && this.y == g.y && this.z == g.z;
+    }
+
+// Point3.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 17;
+        int result = 1;
+        result = prime * result + this.x;
+        result = prime * result + this.y;
+        result = prime * result + this.z;
+        return result;
+    }
+
+// Point3.java : public String toString()
+    @Override
+    public String toString(){
+        return "(" + x + ", " + y + ", " + z + ")";
+    }
+
+// Polygon.java : public float[] getVertices()
+    public float[] getVertices(){
+        return localVertices;
+    }
+
+// Polygon.java : public void setVertices(float[] vertices)
+    public void setVertices(float[] vertices){
+        if(vertices.length < 6) throw new IllegalArgumentException("polygons must contain at least 3 points.");
+        localVertices = vertices;
+        dirty = true;
+    }
+
+// Polygon.java : public void setOrigin(float originX, float originY)
+    public void setOrigin(float originX, float originY){
+        this.originX = originX;
+        this.originY = originY;
+        dirty = true;
+    }
+
+// Polygon.java : public void setPosition(float x, float y)
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+        dirty = true;
+    }
+
+// Polygon.java : public void translate(float x, float y)
+    public void translate(float x, float y){
+        this.x += x;
+        this.y += y;
+        dirty = true;
+    }
+
+// Polygon.java : public void rotate(float degrees)
+    public void rotate(float degrees){
+        rotation += degrees;
+        dirty = true;
+    }
+
+// Polygon.java : public void setScale(float scaleX, float scaleY)
+    public void setScale(float scaleX, float scaleY){
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        dirty = true;
+    }
+
+// Polygon.java : public void scale(float amount)
+    public void scale(float amount){
+        this.scaleX += amount;
+        this.scaleY += amount;
+        dirty = true;
+    }
+
+// Polygon.java : public void dirty()
+    public void dirty(){
+        dirty = true;
+    }
+
+// Polygon.java : public float area()
+    public float area(){
+        float[] vertices = getTransformedVertices();
+        return Geometry.polygonArea(vertices, 0, vertices.length);
+    }
+
+// Polygon.java : public float getX()
+    public float getX(){
+        return x;
+    }
+
+// Polygon.java : public float getY()
+    public float getY(){
+        return y;
+    }
+
+// Polygon.java : public float getOriginX()
+    public float getOriginX(){
+        return originX;
+    }
+
+// Polygon.java : public float getOriginY()
+    public float getOriginY(){
+        return originY;
+    }
+
+// Polygon.java : public float getRotation()
+    public float getRotation(){
+        return rotation;
+    }
+
+// Polygon.java : public void setRotation(float degrees)
+    public void setRotation(float degrees){
+        this.rotation = degrees;
+        dirty = true;
+    }
+
+// Polygon.java : public float getScaleX()
+    public float getScaleX(){
+        return scaleX;
+    }
+
+// Polygon.java : public float getScaleY()
+    public float getScaleY(){
+        return scaleY;
+    }
+
+// Polyline.java : public float[] getVertices()
+    public float[] getVertices(){
+        return localVertices;
+    }
+
+// Polyline.java : public void setVertices(float[] vertices)
+    public void setVertices(float[] vertices){
+        if(vertices.length < 4) throw new IllegalArgumentException("polylines must contain at least 2 points.");
+        this.localVertices = vertices;
+        dirty = true;
+    }
+
+// Polyline.java : public float getX()
+    public float getX(){
+        return x;
+    }
+
+// Polyline.java : public float getY()
+    public float getY(){
+        return y;
+    }
+
+// Polyline.java : public float getOriginX()
+    public float getOriginX(){
+        return originX;
+    }
+
+// Polyline.java : public float getOriginY()
+    public float getOriginY(){
+        return originY;
+    }
+
+// Polyline.java : public float getRotation()
+    public float getRotation(){
+        return rotation;
+    }
+
+// Polyline.java : public void setRotation(float degrees)
+    public void setRotation(float degrees){
+        this.rotation = degrees;
+        dirty = true;
+    }
+
+// Polyline.java : public float getScaleX()
+    public float getScaleX(){
+        return scaleX;
+    }
+
+// Polyline.java : public float getScaleY()
+    public float getScaleY(){
+        return scaleY;
+    }
+
+// Polyline.java : public void setOrigin(float originX, float originY)
+    public void setOrigin(float originX, float originY){
+        this.originX = originX;
+        this.originY = originY;
+        dirty = true;
+    }
+
+// Polyline.java : public void setPosition(float x, float y)
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+        dirty = true;
+    }
+
+// Polyline.java : public void rotate(float degrees)
+    public void rotate(float degrees){
+        rotation += degrees;
+        dirty = true;
+    }
+
+// Polyline.java : public void setScale(float scaleX, float scaleY)
+    public void setScale(float scaleX, float scaleY){
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+        dirty = true;
+        calculateScaledLength = true;
+    }
+
+// Polyline.java : public void scale(float amount)
+    public void scale(float amount){
+        this.scaleX += amount;
+        this.scaleY += amount;
+        dirty = true;
+        calculateScaledLength = true;
+    }
+
+// Polyline.java : public void calculateLength()
+    public void calculateLength(){
+        calculateLength = true;
+    }
+
+// Polyline.java : public void calculateScaledLength()
+    public void calculateScaledLength(){
+        calculateScaledLength = true;
+    }
+
+// Polyline.java : public void dirty()
+    public void dirty(){
+        dirty = true;
+    }
+
+// Polyline.java : public void translate(float x, float y)
+    public void translate(float x, float y){
+        this.x += x;
+        this.y += y;
+        dirty = true;
+    }
+
+// Polyline.java : public boolean contains(Vec2 point) / public boolean contains(float x, float y)
+    @Override
+    public boolean contains(Vec2 point){
+        return false;
+    }
+
+// Position.java : default float angleTo(Position other) / default float angleTo(float x, float y)
+    default float angleTo(Position other){
+        return Angles.angle(getX(), getY(), other.getX(), other.getY());
+    }
+
+// Position.java : default float dst2(Position other) / default float dst2(float x, float y)
+    default float dst2(Position other){
+        return dst2(other.getX(), other.getY());
+    }
+
+// Position.java : default float dst(Position other) / default float dst(float x, float y)
+    default float dst(Position other){
+        return dst(other.getX(), other.getY());
+    }
+
+// Position.java : default boolean within(Position other, float dst) / default boolean within(float x, float y, float dst)
+    default boolean within(Position other, float dst){
+        return within(other.getX(), other.getY(), dst);
+    }
+
+// QuadTree.java : public void clear()
+    public void clear(){
+        objects.clear();
+        totalObjects = 0;
+        if(!leaf){
+            topLeft.clear();
+            topRight.clear();
+            botLeft.clear();
+            botRight.clear();
+        }
+        leaf = true;
+    }
+
+// QuadTree.java : public void getObjects(Seq<T> out)
+    public void getObjects(Seq<T> out){
+        out.addAll(objects);
+
+        if(!leaf){
+            topLeft.getObjects(out);
+            topRight.getObjects(out);
+            botLeft.getObjects(out);
+            botRight.getObjects(out);
+        }
+    }
+
+// QuadTree.java : protected QuadTree<T> newChild(Rect rect)
+    protected QuadTree<T> newChild(Rect rect){
+        return new QuadTree<>(rect);
+    }
+
+// QuadTree.java : protected void hitbox(T t)
+    protected void hitbox(T t){
+        t.hitbox(tmp);
+    }
+
+// Rect.java : public Rect setCentered(float x, float y, float size) / public Rect setCentered(float x, float y, float width, float height)
+    public Rect setCentered(float x, float y, float size){
+        return set(x - size/2f, y - size/2f, size, size);
+    }
+
+// Rect.java : public Rect set(float x, float y, float width, float height) / public Rect set(Rect rect)
+    public Rect set(float x, float y, float width, float height){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+
+        return this;
+    }
+
+// Rect.java : public float getX()
+    public float getX(){
+        return x;
+    }
+
+// Rect.java : public Rect setX(float x)
+    public Rect setX(float x){
+        this.x = x;
+
+        return this;
+    }
+
+// Rect.java : public float getY()
+    public float getY(){
+        return y;
+    }
+
+// Rect.java : public Rect setY(float y)
+    public Rect setY(float y){
+        this.y = y;
+
+        return this;
+    }
+
+// Rect.java : public float getWidth()
+    public float getWidth(){
+        return width;
+    }
+
+// Rect.java : public Rect setWidth(float width)
+    public Rect setWidth(float width){
+        this.width = width;
+
+        return this;
+    }
+
+// Rect.java : public float getHeight()
+    public float getHeight(){
+        return height;
+    }
+
+// Rect.java : public Rect setHeight(float height)
+    public Rect setHeight(float height){
+        this.height = height;
+
+        return this;
+    }
+
+// Rect.java : public Vec2 getPosition(Vec2 position)
+    public Vec2 getPosition(Vec2 position){
+        return position.set(x, y);
+    }
+
+// Rect.java : public Rect setPosition(Vec2 position) / public Rect setPosition(float x, float y)
+    public Rect setPosition(Vec2 position){
+        this.x = position.x;
+        this.y = position.y;
+
+        return this;
+    }
+
+// Rect.java : public Rect move(float cx, float cy)
+    public Rect move(float cx, float cy){
+        x += cx;
+        y += cy;
+        return this;
+    }
+
+// Rect.java : public Rect setSize(float width, float height) / public Rect setSize(float sizeXY)
+    public Rect setSize(float width, float height){
+        this.width = width;
+        this.height = height;
+
+        return this;
+    }
+
+// Rect.java : public Vec2 getSize(Vec2 size)
+    public Vec2 getSize(Vec2 size){
+        return size.set(width, height);
+    }
+
+// Rect.java : public static boolean contains(float x, float y, float width, float height, float px, float py) / public static boolean contains(float x, float y, float width, float height, float rx, float ry, float rwidth, float rheight) / public boolean contains(float x, float y) / public boolean contains(Vec2 point) / public boolean contains(Circle circle) / public boolean contains(Rect rect)
+    public static boolean contains(float x, float y, float width, float height, float px, float py){
+        return x <= px && x + width >= px && y <= py && y + height >= py;
+    }
+
+// Rect.java : public boolean overlaps(Rect r) / public boolean overlaps(float rx, float ry, float rwidth, float rheight)
+    public boolean overlaps(Rect r){
+        return x < r.x + r.width && x + width > r.x && y < r.y + r.height && y + height > r.y;
+    }
+
+// Rect.java : public Rect grow(float amount) / public Rect grow(float amountX, float amountY)
+    public Rect grow(float amount){
+        return grow(amount, amount);
+    }
+
+// Rect.java : public float getAspectRatio()
+    public float getAspectRatio(){
+        return (height == 0) ? Float.NaN : width / height;
+    }
+
+// Rect.java : public Vec2 getCenter(Vec2 vector)
+    public Vec2 getCenter(Vec2 vector){
+        vector.x = x + width / 2;
+        vector.y = y + height / 2;
+        return vector;
+    }
+
+// Rect.java : public Rect setCenter(float x, float y) / public Rect setCenter(Vec2 position)
+    public Rect setCenter(float x, float y){
+        setPosition(x - width / 2, y - height / 2);
+        return this;
+    }
+
+// Rect.java : public String toString()
+    public String toString(){
+        return "[" + x + "," + y + "," + width + "," + height + "]";
+    }
+
+// Rect.java : public float area()
+    public float area(){
+        return this.width * this.height;
+    }
+
+// Rect.java : public float perimeter()
+    public float perimeter(){
+        return 2 * (this.width + this.height);
+    }
+
+// Rect.java : public int hashCode()
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToRawIntBits(height);
+        result = prime * result + Float.floatToRawIntBits(width);
+        result = prime * result + Float.floatToRawIntBits(x);
+        result = prime * result + Float.floatToRawIntBits(y);
+        return result;
+    }
+
+// Rect.java : public boolean equals(Object obj)
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(getClass() != obj.getClass()) return false;
+        Rect other = (Rect)obj;
+        if(Float.floatToRawIntBits(height) != Float.floatToRawIntBits(other.height)) return false;
+        if(Float.floatToRawIntBits(width) != Float.floatToRawIntBits(other.width)) return false;
+        if(Float.floatToRawIntBits(x) != Float.floatToRawIntBits(other.x)) return false;
+        return Float.floatToRawIntBits(y) == Float.floatToRawIntBits(other.y);
+    }
+
+// Vec2.java : public Vec2 trns(float angle, float amount) / public Vec2 trns(float angle, float x, float y)
+    public Vec2 trns(float angle, float amount){
+        return set(amount, 0).rotate(angle);
+    }
+
+// Vec2.java : public Vec2 trnsExact(float angle, float amount)
+    public Vec2 trnsExact(float angle, float amount){
+        return set(amount, 0).rotateRadExact(angle * Mathf.degreesToRadians);
+    }
+
+// Vec2.java : public Vec2 snap()
+    public Vec2 snap(){
+        return set((int)x, (int)y);
+    }
+
+// Vec2.java : public Vec2 div(Vec2 other)
+    @Override
+    public Vec2 div(Vec2 other){
+        x /= other.x;
+        y /= other.y;
+        return this;
+    }
+
+// Vec2.java : public Vec2 cpy()
+    @Override
+    public Vec2 cpy(){
+        return new Vec2(this);
+    }
+
+// Vec2.java : public float len()
+    @Override
+    public float len(){
+        return (float)Math.sqrt(x * x + y * y);
+    }
+
+// Vec2.java : public float len2()
+    @Override
+    public float len2(){
+        return x * x + y * y;
+    }
+
+// Vec2.java : public Vec2 set(Vec2 v) / public Vec2 set(Position v) / public Vec2 set(float x, float y) / public Vec2 set(Vec3 other)
+    @Override
+    public Vec2 set(Vec2 v){
+        x = v.x;
+        y = v.y;
+        return this;
+    }
+
+// Vec2.java : public Vec2 sub(Position v) / public Vec2 sub(Vec2 v) / public Vec2 sub(float x, float y) / public Vec2 sub(Vec3 v)
+    public Vec2 sub(Position v){
+        return sub(v.getX(), v.getY());
+    }
+
+// Vec2.java : public Vec2 nor()
+    @Override
+    public Vec2 nor(){
+        float len = len();
+        if(len != 0){
+            x /= len;
+            y /= len;
+        }
+        return this;
+    }
+
+// Vec2.java : public Vec2 add(Vec2 v) / public Vec2 add(Position pos) / public Vec2 add(Vec2 vec, float scl) / public Vec2 add(float x, float y)
+    @Override
+    public Vec2 add(Vec2 v){
+        x += v.x;
+        y += v.y;
+        return this;
+    }
+
+// Vec2.java : public float dot(Vec2 v) / public float dot(float ox, float oy)
+    @Override
+    public float dot(Vec2 v){
+        return x * v.x + y * v.y;
+    }
+
+// Vec2.java : public Vec2 scl(float scalar) / public Vec2 scl(float x, float y) / public Vec2 scl(Vec2 v)
+    @Override
+    public Vec2 scl(float scalar){
+        x *= scalar;
+        y *= scalar;
+        return this;
+    }
+
+// Vec2.java : public Vec2 inv()
+    public Vec2 inv(){
+        return scl(-1f);
+    }
+
+// Vec2.java : public Vec2 mulAdd(Vec2 vec, float scalar) / public Vec2 mulAdd(Vec2 vec, Vec2 mulVec)
+    @Override
+    public Vec2 mulAdd(Vec2 vec, float scalar){
+        this.x += vec.x * scalar;
+        this.y += vec.y * scalar;
+        return this;
+    }
+
+// Vec2.java : public float dst(Vec2 v) / public float dst(float x, float y)
+    @Override
+    public float dst(Vec2 v){
+        final float x_d = v.x - x;
+        final float y_d = v.y - y;
+        return (float)Math.sqrt(x_d * x_d + y_d * y_d);
+    }
+
+// Vec2.java : public float dst2(Vec2 v) / public float dst2(float x, float y)
+    @Override
+    public float dst2(Vec2 v){
+        final float x_d = v.x - x;
+        final float y_d = v.y - y;
+        return x_d * x_d + y_d * y_d;
+    }
+
+// Vec2.java : public Vec2 clampLength(float min, float max)
+    public Vec2 clampLength(float min, float max){
+        float len2 = len2();
+        if(len2 >= max * max){
+            return limit(max);
+        }else if(len2 <= min * min){
+            return setLength(min);
+        }
+        return this;
+    }
+
+// Vec2.java : public Vec2 limit(float limit)
+    @Override
+    public Vec2 limit(float limit){
+        return limit2(limit * limit);
+    }
+
+// Vec2.java : public Vec2 limit2(float limit2)
+    @Override
+    public Vec2 limit2(float limit2){
+        float len2 = len2();
+        if(len2 > limit2){
+            return scl((float)Math.sqrt(limit2 / len2));
+        }
+        return this;
+    }
+
+// Vec2.java : public Vec2 clamp(float min, float max) / public Vec2 clamp(float minx, float miny, float maxx, float maxy)
+    @Override
+    public Vec2 clamp(float min, float max){
+        final float len2 = len2();
+        if(len2 == 0f) return this;
+        float max2 = max * max;
+        if(len2 > max2) return scl((float)Math.sqrt(max2 / len2));
+        float min2 = min * min;
+        if(len2 < min2) return scl((float)Math.sqrt(min2 / len2));
+        return this;
+    }
+
+// Vec2.java : public Vec2 setLength(float len)
+    @Override
+    public Vec2 setLength(float len){
+        return setLength2(len * len);
+    }
+
+// Vec2.java : public Vec2 setLength2(float len2)
+    @Override
+    public Vec2 setLength2(float len2){
+        float oldLen2 = len2();
+        return (oldLen2 == 0 || oldLen2 == len2) ? this : scl((float)Math.sqrt(len2 / oldLen2));
+    }
+
+// Vec2.java : public String toString()
+    @Override
+    public String toString(){
+        return "(" + x + "," + y + ")";
+    }
+
+// Vec2.java : public Vec2 mul(Mat mat)
+    public Vec2 mul(Mat mat){
+        float x = this.x * mat.val[0] + this.y * mat.val[3] + mat.val[6];
+        float y = this.x * mat.val[1] + this.y * mat.val[4] + mat.val[7];
+        this.x = x;
+        this.y = y;
+        return this;
+    }
+
+// Vec2.java : public float crs(Vec2 v) / public float crs(float x, float y)
+    public float crs(Vec2 v){
+        return this.x * v.y - this.y * v.x;
+    }
+
+// Vec2.java : public float angle() / public float angle(Vec2 reference)
+    public float angle(){
+        float angle = Mathf.atan2(x, y) * Mathf.radiansToDegrees;
+        if(angle < 0) angle += 360;
+        return angle;
+    }
+
+// Vec2.java : public Vec2 rnd(float length)
+    public Vec2 rnd(float length){
+        setToRandomDirection().scl(length);
+        return this;
+    }
+
+// Vec2.java : public float angleRad() / public float angleRad(Vec2 reference)
+    public float angleRad(){
+        return (float)Math.atan2(y, x);
+    }
+
+// Vec2.java : public Vec2 setAngle(float degrees)
+    public Vec2 setAngle(float degrees){
+        return setAngleRad(degrees * Mathf.degreesToRadians);
+    }
+
+// Vec2.java : public Vec2 setAngleRad(float radians)
+    public Vec2 setAngleRad(float radians){
+        this.set(len(), 0f);
+        this.rotateRad(radians);
+
+        return this;
+    }
+
+// Vec2.java : public Vec2 rotateTo(float angle, float speed)
+    public Vec2 rotateTo(float angle, float speed){
+        return setAngle(Angles.moveToward(angle(), angle, speed));
+    }
+
+// Vec2.java : public Vec2 rotate(float degrees)
+    public Vec2 rotate(float degrees){
+        return rotateRad(degrees * Mathf.degreesToRadians);
+    }
+
+// Vec2.java : public Vec2 rotateAround(Vec2 reference, float degrees)
+    public Vec2 rotateAround(Vec2 reference, float degrees){
+        return this.sub(reference).rotate(degrees).add(reference);
+    }
+
+// Vec2.java : public Vec2 rotateAroundRad(Vec2 reference, float radians)
+    public Vec2 rotateAroundRad(Vec2 reference, float radians){
+        return this.sub(reference).rotateRad(radians).add(reference);
+    }
+
+// Vec2.java : public Vec2 rotate90(int dir)
+    public Vec2 rotate90(int dir){
+        float x = this.x;
+        if(dir >= 0){
+            this.x = -y;
+            y = x;
+        }else{
+            this.x = y;
+            y = -x;
+        }
+        return this;
+    }
+
+// Vec2.java : public Vec2 approachDelta(Vec2 target, float alpha)
+    public Vec2 approachDelta(Vec2 target, float alpha){
+        return approach(target, Time.delta * alpha);
+    }
+
+// Vec2.java : public Vec2 lerpPast(Vec2 target, float alpha)
+    public Vec2 lerpPast(Vec2 target, float alpha){
+        x = (x) + ((target.x - x) * alpha);
+        y = (y) + ((target.y - y) * alpha);
+        return this;
+    }
+
+// Vec2.java : public Vec2 lerpDelta(float tx, float ty, float alpha) / public Vec2 lerpDelta(Position target, float alpha)
+    public Vec2 lerpDelta(float tx, float ty, float alpha){
+        alpha = Mathf.clamp(alpha * Time.delta);
+        final float invAlpha = 1.0f - alpha;
+        this.x = (x * invAlpha) + (tx * alpha);
+        this.y = (y * invAlpha) + (ty * alpha);
+        return this;
+    }
+
+// Vec2.java : public Vec2 lerp(Position target, float alpha) / public Vec2 lerp(float tx, float ty, float alpha) / public Vec2 lerp(Vec2 target, float alpha)
+    public Vec2 lerp(Position target, float alpha){
+        final float invAlpha = 1.0f - alpha;
+        this.x = (x * invAlpha) + (target.getX() * alpha);
+        this.y = (y * invAlpha) + (target.getY() * alpha);
+        return this;
+    }
+
+// Vec2.java : public Vec2 interpolate(Vec2 target, float alpha, Interp interpolation)
+    @Override
+    public Vec2 interpolate(Vec2 target, float alpha, Interp interpolation){
+        return lerp(target, interpolation.apply(alpha));
+    }
+
+// Vec2.java : public Vec2 setToRandomDirection() / public Vec2 setToRandomDirection(Rand rand)
+    @Override
+    public Vec2 setToRandomDirection(){
+        float theta = Mathf.random(0f, Mathf.PI2);
+        return this.set(Mathf.cos(theta), Mathf.sin(theta));
+    }
+
+// Vec2.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToIntBits(x);
+        result = prime * result + Float.floatToIntBits(y);
+        return result;
+    }
+
+// Vec2.java : public boolean equals(Object obj)
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(getClass() != obj.getClass()) return false;
+        Vec2 other = (Vec2)obj;
+        if(Float.floatToIntBits(x) != Float.floatToIntBits(other.x)) return false;
+        return Float.floatToIntBits(y) == Float.floatToIntBits(other.y);
+    }
+
+// Vec2.java : public boolean epsilonEquals(Vec2 other, float epsilon) / public boolean epsilonEquals(float x, float y, float epsilon) / public boolean epsilonEquals(Vec2 other) / public boolean epsilonEquals(float x, float y)
+    @Override
+    public boolean epsilonEquals(Vec2 other, float epsilon){
+        if(other == null) return false;
+        if(Math.abs(other.x - x) > epsilon) return false;
+        return !(Math.abs(other.y - y) > epsilon);
+    }
+
+// Vec2.java : public boolean isNaN()
+    public boolean isNaN(){
+        return Float.isNaN(x) || Float.isNaN(y);
+    }
+
+// Vec2.java : public boolean isInfinite()
+    public boolean isInfinite(){
+        return Float.isInfinite(x) || Float.isInfinite(y);
+    }
+
+// Vec2.java : public boolean isUnit() / public boolean isUnit(float margin)
+    @Override
+    public boolean isUnit(){
+        return isUnit(0.000000001f);
+    }
+
+// Vec2.java : public boolean isZero() / public boolean isZero(float margin)
+    @Override
+    public boolean isZero(){
+        return x == 0 && y == 0;
+    }
+
+// Vec2.java : public boolean isOnLine(Vec2 other) / public boolean isOnLine(Vec2 other, float epsilon)
+    @Override
+    public boolean isOnLine(Vec2 other){
+        return Mathf.zero(x * other.y - y * other.x);
+    }
+
+// Vec2.java : public boolean isCollinear(Vec2 other, float epsilon) / public boolean isCollinear(Vec2 other)
+    @Override
+    public boolean isCollinear(Vec2 other, float epsilon){
+        return isOnLine(other, epsilon) && dot(other) > 0f;
+    }
+
+// Vec2.java : public boolean isCollinearOpposite(Vec2 other, float epsilon) / public boolean isCollinearOpposite(Vec2 other)
+    @Override
+    public boolean isCollinearOpposite(Vec2 other, float epsilon){
+        return isOnLine(other, epsilon) && dot(other) < 0f;
+    }
+
+// Vec2.java : public boolean isPerpendicular(Vec2 vector) / public boolean isPerpendicular(Vec2 vector, float epsilon)
+    @Override
+    public boolean isPerpendicular(Vec2 vector){
+        return Mathf.zero(dot(vector));
+    }
+
+// Vec2.java : public boolean hasSameDirection(Vec2 vector)
+    @Override
+    public boolean hasSameDirection(Vec2 vector){
+        return dot(vector) > 0;
+    }
+
+// Vec2.java : public boolean hasOppositeDirection(Vec2 vector)
+    @Override
+    public boolean hasOppositeDirection(Vec2 vector){
+        return dot(vector) < 0;
+    }
+
+// Vec2.java : public Vec2 setZero()
+    @Override
+    public Vec2 setZero(){
+        this.x = 0;
+        this.y = 0;
+        return this;
+    }
+
+// Vec2.java : public float getX()
+    @Override
+    public float getX(){
+        return x;
+    }
+
+// Vec2.java : public float getY()
+    @Override
+    public float getY(){
+        return y;
+    }
+
+// Vec3.java : public static float len(float x, float y, float z) / public float len()
+    public static float len(float x, float y, float z){
+        return (float)Math.sqrt(x * x + y * y + z * z);
+    }
+
+// Vec3.java : public static float len2(float x, float y, float z) / public float len2()
+    public static float len2(final float x, final float y, final float z){
+        return x * x + y * y + z * z;
+    }
+
+// Vec3.java : public static float dst(float x1, float y1, float z1, float x2, float y2, float z2) / public float dst(Vec3 vector) / public float dst(float x, float y, float z)
+    public static float dst(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
+        final float a = x2 - x1;
+        final float b = y2 - y1;
+        final float c = z2 - z1;
+        return (float)Math.sqrt(a * a + b * b + c * c);
+    }
+
+// Vec3.java : public static float dst2(float x1, float y1, float z1, float x2, float y2, float z2) / public float dst2(Vec3 point) / public float dst2(float x, float y, float z)
+    public static float dst2(final float x1, final float y1, final float z1, final float x2, final float y2, final float z2){
+        final float a = x2 - x1;
+        final float b = y2 - y1;
+        final float c = z2 - z1;
+        return a * a + b * b + c * c;
+    }
+
+// Vec3.java : public static float dot(float x1, float y1, float z1, float x2, float y2, float z2) / public float dot(Vec3 vector) / public float dot(float x, float y, float z)
+    public static float dot(float x1, float y1, float z1, float x2, float y2, float z2){
+        return x1 * x2 + y1 * y2 + z1 * z2;
+    }
+
+// Vec3.java : public Vec3 set(float x, float y, float z) / public Vec3 set(Vec3 vector) / public Vec3 set(float[] values) / public Vec3 set(float[] values, int offset) / public Vec3 set(Vec2 vector, float z)
+    public Vec3 set(float x, float y, float z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        return this;
+    }
+
+// Vec3.java : public Vec3 div(Vec3 other)
+    @Override
+    public Vec3 div(Vec3 other){
+        x /= other.x;
+        y /= other.y;
+        z /= other.z;
+
+        return this;
+    }
+
+// Vec3.java : public Vec3 setFromSpherical(float azimuthalAngle, float polarAngle)
+    public Vec3 setFromSpherical(float azimuthalAngle, float polarAngle){
+        float cosPolar = Mathf.cos(polarAngle);
+        float sinPolar = Mathf.sin(polarAngle);
+
+        float cosAzim = Mathf.cos(azimuthalAngle);
+        float sinAzim = Mathf.sin(azimuthalAngle);
+
+        return this.set(cosAzim * sinPolar, sinAzim * sinPolar, cosPolar);
+    }
+
+// Vec3.java : public Vec3 setToRandomDirection() / public Vec3 setToRandomDirection(Rand rand)
+    @Override
+    public Vec3 setToRandomDirection(){
+        return setToRandomDirection(Mathf.rand);
+    }
+
+// Vec3.java : public Vec3 cpy() / public Vec3 cpy(Vec3 dest)
+    @Override
+    public Vec3 cpy(){
+        return new Vec3(this);
+    }
+
+// Vec3.java : public Vec3 add(Vec3 vector) / public Vec3 add(Vec3 vector, float scale) / public Vec3 add(float x, float y, float z) / public Vec3 add(float values)
+    @Override
+    public Vec3 add(final Vec3 vector){
+        return this.add(vector.x, vector.y, vector.z);
+    }
+
+// Vec3.java : public Vec3 sub(Vec3 vector, float scale) / public Vec3 sub(Vec3 a_vec) / public Vec3 sub(float x, float y, float z) / public Vec3 sub(float value)
+    public Vec3 sub(Vec3 vector, float scale){
+        return this.sub(vector.x * scale, vector.y * scale, vector.z * scale);
+    }
+
+// Vec3.java : public Vec3 scl(float scalar) / public Vec3 scl(Vec3 other) / public Vec3 scl(float vx, float vy, float vz)
+    @Override
+    public Vec3 scl(float scalar){
+        return this.set(this.x * scalar, this.y * scalar, this.z * scalar);
+    }
+
+// Vec3.java : public Vec3 mulAdd(Vec3 vec, float scalar) / public Vec3 mulAdd(Vec3 vec, Vec3 mulVec)
+    @Override
+    public Vec3 mulAdd(Vec3 vec, float scalar){
+        this.x += vec.x * scalar;
+        this.y += vec.y * scalar;
+        this.z += vec.z * scalar;
+        return this;
+    }
+
+// Vec3.java : public boolean idt(Vec3 vector)
+    public boolean idt(final Vec3 vector){
+        return x == vector.x && y == vector.y && z == vector.z;
+    }
+
+// Vec3.java : public boolean within(Vec3 v, float dst)
+    public boolean within(Vec3 v, float dst){
+        return dst2(v) < dst * dst;
+    }
+
+// Vec3.java : public Vec3 nor()
+    @Override
+    public Vec3 nor(){
+        final float len2 = this.len2();
+        if(len2 == 0f || len2 == 1f) return this;
+        return this.scl(1f / (float)Math.sqrt(len2));
+    }
+
+// Vec3.java : public float angleRad(Vec3 vector)
+    public float angleRad(final Vec3 vector){
+        float l = len();
+        float l2 = vector.len();
+        return (float)Math.acos(dot(x / l, y / l, z / l, vector.x / l2, vector.y / l2, vector.z / l2));
+    }
+
+// Vec3.java : public float angle(Vec3 vector)
+    public float angle(final Vec3 vector){
+        return angleRad(vector) * Mathf.radDeg;
+    }
+
+// Vec3.java : public Vec3 crs(Vec3 vector) / public Vec3 crs(float x, float y, float z)
+    public Vec3 crs(final Vec3 vector){
+        return this.set(y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x);
+    }
+
+// Vec3.java : public Vec3 mul4x3(float[] matrix)
+    public Vec3 mul4x3(float[] matrix){
+        return set(x * matrix[0] + y * matrix[3] + z * matrix[6] + matrix[9], x * matrix[1] + y * matrix[4] + z * matrix[7]
+        + matrix[10], x * matrix[2] + y * matrix[5] + z * matrix[8] + matrix[11]);
+    }
+
+// Vec3.java : public Vec3 mul(Mat matrix)
+    public Vec3 mul(Mat matrix){
+        final float[] l_mat = matrix.val;
+        return set(x * l_mat[Mat.M00] + y * l_mat[Mat.M01] + z * l_mat[Mat.M02], x * l_mat[Mat.M10] + y
+        * l_mat[Mat.M11] + z * l_mat[Mat.M12], x * l_mat[Mat.M20] + y * l_mat[Mat.M21] + z * l_mat[Mat.M22]);
+    }
+
+// Vec3.java : public Vec3 traMul(Mat matrix)
+    public Vec3 traMul(Mat matrix){
+        final float[] l_mat = matrix.val;
+        return set(x * l_mat[Mat.M00] + y * l_mat[Mat.M10] + z * l_mat[Mat.M20], x * l_mat[Mat.M01] + y
+        * l_mat[Mat.M11] + z * l_mat[Mat.M21], x * l_mat[Mat.M02] + y * l_mat[Mat.M12] + z * l_mat[Mat.M22]);
+    }
+
+// Vec3.java : public Vec3 rotate(Vec3 axis, float degrees)
+    public Vec3 rotate(final Vec3 axis, float degrees){
+        tmpMat.setToRotation(axis, degrees);
+        return this.mul(tmpMat);
+    }
+
+// Vec3.java : public boolean isUnit() / public boolean isUnit(float margin)
+    @Override
+    public boolean isUnit(){
+        return isUnit(0.000000001f);
+    }
+
+// Vec3.java : public boolean isZero() / public boolean isZero(float margin)
+    @Override
+    public boolean isZero(){
+        return x == 0 && y == 0 && z == 0;
+    }
+
+// Vec3.java : public boolean isOnLine(Vec3 other, float epsilon) / public boolean isOnLine(Vec3 other)
+    @Override
+    public boolean isOnLine(Vec3 other, float epsilon){
+        return len2(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x) <= epsilon;
+    }
+
+// Vec3.java : public boolean isCollinear(Vec3 other, float epsilon) / public boolean isCollinear(Vec3 other)
+    @Override
+    public boolean isCollinear(Vec3 other, float epsilon){
+        return isOnLine(other, epsilon) && hasSameDirection(other);
+    }
+
+// Vec3.java : public boolean isCollinearOpposite(Vec3 other, float epsilon) / public boolean isCollinearOpposite(Vec3 other)
+    @Override
+    public boolean isCollinearOpposite(Vec3 other, float epsilon){
+        return isOnLine(other, epsilon) && hasOppositeDirection(other);
+    }
+
+// Vec3.java : public boolean isPerpendicular(Vec3 vector) / public boolean isPerpendicular(Vec3 vector, float epsilon)
+    @Override
+    public boolean isPerpendicular(Vec3 vector){
+        return Mathf.zero(dot(vector));
+    }
+
+// Vec3.java : public boolean hasSameDirection(Vec3 vector)
+    @Override
+    public boolean hasSameDirection(Vec3 vector){
+        return dot(vector) > 0;
+    }
+
+// Vec3.java : public boolean hasOppositeDirection(Vec3 vector)
+    @Override
+    public boolean hasOppositeDirection(Vec3 vector){
+        return dot(vector) < 0;
+    }
+
+// Vec3.java : public Vec3 lerp(Vec3 target, float alpha)
+    @Override
+    public Vec3 lerp(final Vec3 target, float alpha){
+        x += alpha * (target.x - x);
+        y += alpha * (target.y - y);
+        z += alpha * (target.z - z);
+        return this;
+    }
+
+// Vec3.java : public Vec3 interpolate(Vec3 target, float alpha, Interp interpolator)
+    @Override
+    public Vec3 interpolate(Vec3 target, float alpha, Interp interpolator){
+        return lerp(target, interpolator.apply(0f, 1f, alpha));
+    }
+
+// Vec3.java : public String toString()
+    @Override
+    public String toString(){
+        return "(" + x + "," + y + "," + z + ")";
+    }
+
+// Vec3.java : public Vec3 limit(float limit)
+    @Override
+    public Vec3 limit(float limit){
+        return limit2(limit * limit);
+    }
+
+// Vec3.java : public Vec3 limit2(float limit2)
+    @Override
+    public Vec3 limit2(float limit2){
+        float len2 = len2();
+        if(len2 > limit2){
+            scl((float)Math.sqrt(limit2 / len2));
+        }
+        return this;
+    }
+
+// Vec3.java : public Vec3 setLength(float len)
+    @Override
+    public Vec3 setLength(float len){
+        return setLength2(len * len);
+    }
+
+// Vec3.java : public Vec3 setLength2(float len2)
+    @Override
+    public Vec3 setLength2(float len2){
+        float oldLen2 = len2();
+        return (oldLen2 == 0 || oldLen2 == len2) ? this : scl((float)Math.sqrt(len2 / oldLen2));
+    }
+
+// Vec3.java : public Vec3 clamp(float min, float max)
+    @Override
+    public Vec3 clamp(float min, float max){
+        final float len2 = len2();
+        if(len2 == 0f) return this;
+        float max2 = max * max;
+        if(len2 > max2) return scl((float)Math.sqrt(max2 / len2));
+        float min2 = min * min;
+        if(len2 < min2) return scl((float)Math.sqrt(min2 / len2));
+        return this;
+    }
+
+// Vec3.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Float.floatToIntBits(x);
+        result = prime * result + Float.floatToIntBits(y);
+        result = prime * result + Float.floatToIntBits(z);
+        return result;
+    }
+
+// Vec3.java : public boolean equals(Object obj)
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(getClass() != obj.getClass()) return false;
+        Vec3 other = (Vec3)obj;
+        return Float.floatToIntBits(x) == Float.floatToIntBits(other.x) && Float.floatToIntBits(y) == Float.floatToIntBits(other.y) && Float.floatToIntBits(z) == Float.floatToIntBits(other.z);
+    }
+
+// Vec3.java : public boolean epsilonEquals(Vec3 other, float epsilon) / public boolean epsilonEquals(float x, float y, float z, float epsilon) / public boolean epsilonEquals(Vec3 other) / public boolean epsilonEquals(float x, float y, float z)
+    @Override
+    public boolean epsilonEquals(final Vec3 other, float epsilon){
+        if(other == null) return false;
+        if(Math.abs(other.x - x) > epsilon) return false;
+        if(Math.abs(other.y - y) > epsilon) return false;
+        return !(Math.abs(other.z - z) > epsilon);
+    }
+
+// Vec3.java : public Vec3 setZero()
+    @Override
+    public Vec3 setZero(){
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+        return this;
+    }
+
+// Vector.java : default T plus(T other)
+    default T plus(T other){
+        return add(other);
+    }
+
+// Vector.java : default T minus(T other)
+    default T minus(T other){
+        return sub(other);
+    }
+
+// Vector.java : default T unaryMinus()
+    default T unaryMinus(){
+        return scl(-1);
+    }
+
+// Vector.java : default T times(T other)
+    default T times(T other){
+        return scl(other);
+    }
+

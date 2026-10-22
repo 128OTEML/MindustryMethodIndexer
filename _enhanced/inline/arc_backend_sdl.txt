@@ -1,0 +1,2784 @@
+// SdlApplication.java : private void listen(Cons<ApplicationListener> cons)
+    private void listen(Cons<ApplicationListener> cons){
+        synchronized(listeners){
+            for(ApplicationListener l : listeners){
+                cons.get(l);
+            }
+        }
+    }
+
+// SdlApplication.java : private void check(int code)
+    private void check(int code){
+        if(code != 0){
+            throw new SdlError();
+        }
+    }
+
+// SdlApplication.java : public long getWindow()
+    public long getWindow(){
+        return window;
+    }
+
+// SdlApplication.java : public Thread getMainThread()
+    @Override
+    public Thread getMainThread(){
+        return mainThread;
+    }
+
+// SdlApplication.java : public Seq<ApplicationListener> getListeners()
+    @Override
+    public Seq<ApplicationListener> getListeners(){
+        return listeners;
+    }
+
+// SdlApplication.java : public ApplicationType getType()
+    @Override
+    public ApplicationType getType(){
+        return ApplicationType.desktop;
+    }
+
+// SdlApplication.java : public String getClipboardText()
+    @Override
+    public String getClipboardText(){
+        return SDL_GetClipboardText();
+    }
+
+// SdlApplication.java : public void setClipboardText(String text)
+    @Override
+    public void setClipboardText(String text){
+        SDL_SetClipboardText(text);
+    }
+
+// SdlApplication.java : public void post(Runnable runnable)
+    @Override
+    public void post(Runnable runnable){
+        runnables.post(runnable);
+    }
+
+// SdlApplication.java : public void exit()
+    @Override
+    public void exit(){
+        running = false;
+    }
+
+// SdlConfig.java : public void setWindowIcon(FileType fileType, String filePaths)
+    public void setWindowIcon(FileType fileType, String... filePaths){
+        windowIconFileType = fileType;
+        windowIconPaths = filePaths;
+    }
+
+// SdlFiles.java : public Fi get(String fileName, FileType type)
+    @Override
+    public Fi get(String fileName, FileType type){
+        return new SdlFi(fileName, type);
+    }
+
+// SdlFiles.java : public String getExternalStoragePath()
+    @Override
+    public String getExternalStoragePath(){
+        return externalPath;
+    }
+
+// SdlFiles.java : public boolean isExternalStorageAvailable()
+    @Override
+    public boolean isExternalStorageAvailable(){
+        return true;
+    }
+
+// SdlFiles.java : public String getLocalStoragePath()
+    @Override
+    public String getLocalStoragePath(){
+        return localPath;
+    }
+
+// SdlFiles.java : public boolean isLocalStorageAvailable()
+    @Override
+    public boolean isLocalStorageAvailable(){
+        return true;
+    }
+
+// SdlGL20.java : public void glActiveTexture(int texture)
+    @Override public void glActiveTexture(int texture){ SDLGL.glActiveTexture(texture);}
+
+// SdlGL20.java : public void glBindTexture(int target, int texture)
+    @Override public void glBindTexture(int target, int texture){ SDLGL.glBindTexture(target, texture);}
+
+// SdlGL20.java : public void glBlendFunc(int sfactor, int dfactor)
+    @Override public void glBlendFunc(int sfactor, int dfactor){ SDLGL.glBlendFunc(sfactor, dfactor);}
+
+// SdlGL20.java : public void glClear(int mask)
+    @Override public void glClear(int mask){ SDLGL.glClear(mask);}
+
+// SdlGL20.java : public void glClearColor(float red, float green, float blue, float alpha)
+    @Override public void glClearColor(float red, float green, float blue, float alpha){ SDLGL.glClearColor(red, green, blue, alpha);}
+
+// SdlGL20.java : public void glClearDepthf(float depth)
+    @Override public void glClearDepthf(float depth){ SDLGL.glClearDepthf(depth);}
+
+// SdlGL20.java : public void glClearStencil(int s)
+    @Override public void glClearStencil(int s){ SDLGL.glClearStencil(s);}
+
+// SdlGL20.java : public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha)
+    @Override public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha){ SDLGL.glColorMask(red, green, blue, alpha);}
+
+// SdlGL20.java : public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data)
+    @Override public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data){ SDLGL.glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);}
+
+// SdlGL20.java : public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data)
+    @Override public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data){ SDLGL.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);}
+
+// SdlGL20.java : public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border)
+    @Override public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border){ SDLGL.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border);}
+
+// SdlGL20.java : public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height)
+    @Override public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height){ SDLGL.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);}
+
+// SdlGL20.java : public void glCullFace(int mode)
+    @Override public void glCullFace(int mode){ SDLGL.glCullFace(mode);}
+
+// SdlGL20.java : public void glDeleteTexture(int texture)
+    @Override public void glDeleteTexture(int texture){ SDLGL.glDeleteTexture(texture);}
+
+// SdlGL20.java : public void glDepthFunc(int func)
+    @Override public void glDepthFunc(int func){ SDLGL.glDepthFunc(func);}
+
+// SdlGL20.java : public void glDepthMask(boolean flag)
+    @Override public void glDepthMask(boolean flag){ SDLGL.glDepthMask(flag);}
+
+// SdlGL20.java : public void glDepthRangef(float zNear, float zFar)
+    @Override public void glDepthRangef(float zNear, float zFar){ SDLGL.glDepthRangef(zNear, zFar);}
+
+// SdlGL20.java : public void glDisable(int cap)
+    @Override public void glDisable(int cap){ SDLGL.glDisable(cap);}
+
+// SdlGL20.java : public void glDrawArrays(int mode, int first, int count)
+    @Override public void glDrawArrays(int mode, int first, int count){ SDLGL.glDrawArrays(mode, first, count);}
+
+// SdlGL20.java : public void glDrawElements(int mode, int count, int type, Buffer indices) / public void glDrawElements(int mode, int count, int type, int indices)
+    @Override public void glDrawElements(int mode, int count, int type, Buffer indices){ SDLGL.glDrawElements(mode, count, type, indices);}
+
+// SdlGL20.java : public void glEnable(int cap)
+    @Override public void glEnable(int cap){ SDLGL.glEnable(cap);}
+
+// SdlGL20.java : public void glFinish()
+    @Override public void glFinish(){ SDLGL.glFinish();}
+
+// SdlGL20.java : public void glFlush()
+    @Override public void glFlush(){ SDLGL.glFlush();}
+
+// SdlGL20.java : public void glFrontFace(int mode)
+    @Override public void glFrontFace(int mode){ SDLGL.glFrontFace(mode);}
+
+// SdlGL20.java : public int glGenTexture()
+    @Override public int glGenTexture(){return SDLGL.glGenTexture();}
+
+// SdlGL20.java : public int glGetError()
+    @Override public int glGetError(){return SDLGL.glGetError();}
+
+// SdlGL20.java : public void glGetIntegerv(int pname, IntBuffer params)
+    @Override public void glGetIntegerv(int pname, IntBuffer params){ SDLGL.glGetIntegerv(pname, params);}
+
+// SdlGL20.java : public String glGetString(int name)
+    @Override public String glGetString(int name){return SDLGL.glGetString(name);}
+
+// SdlGL20.java : public void glHint(int target, int mode)
+    @Override public void glHint(int target, int mode){ SDLGL.glHint(target, mode);}
+
+// SdlGL20.java : public void glLineWidth(float width)
+    @Override public void glLineWidth(float width){ SDLGL.glLineWidth(width);}
+
+// SdlGL20.java : public void glPixelStorei(int pname, int param)
+    @Override public void glPixelStorei(int pname, int param){ SDLGL.glPixelStorei(pname, param);}
+
+// SdlGL20.java : public void glPolygonOffset(float factor, float units)
+    @Override public void glPolygonOffset(float factor, float units){ SDLGL.glPolygonOffset(factor, units);}
+
+// SdlGL20.java : public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
+    @Override public void glReadPixels(int x, int y, int width, int height, int format, int type, Buffer pixels){ SDLGL.glReadPixels(x, y, width, height, format, type, pixels);}
+
+// SdlGL20.java : public void glScissor(int x, int y, int width, int height)
+    @Override public void glScissor(int x, int y, int width, int height){ SDLGL.glScissor(x, y, width, height);}
+
+// SdlGL20.java : public void glStencilFunc(int func, int ref, int mask)
+    @Override public void glStencilFunc(int func, int ref, int mask){ SDLGL.glStencilFunc(func, ref, mask);}
+
+// SdlGL20.java : public void glStencilMask(int mask)
+    @Override public void glStencilMask(int mask){ SDLGL.glStencilMask(mask);}
+
+// SdlGL20.java : public void glStencilOp(int fail, int zfail, int zpass)
+    @Override public void glStencilOp(int fail, int zfail, int zpass){ SDLGL.glStencilOp(fail, zfail, zpass);}
+
+// SdlGL20.java : public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels)
+    @Override public void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels){ SDLGL.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);}
+
+// SdlGL20.java : public void glTexParameterf(int target, int pname, float param)
+    @Override public void glTexParameterf(int target, int pname, float param){ SDLGL.glTexParameterf(target, pname, param);}
+
+// SdlGL20.java : public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels)
+    @Override public void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels){ SDLGL.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);}
+
+// SdlGL20.java : public void glViewport(int x, int y, int width, int height)
+    @Override public void glViewport(int x, int y, int width, int height){ SDLGL.glViewport(x, y, width, height);}
+
+// SdlGL20.java : public void glAttachShader(int program, int shader)
+    @Override public void glAttachShader(int program, int shader){ SDLGL.glAttachShader(program, shader);}
+
+// SdlGL20.java : public void glBindAttribLocation(int program, int index, String name)
+    @Override public void glBindAttribLocation(int program, int index, String name){ SDLGL.glBindAttribLocation(program, index, name);}
+
+// SdlGL20.java : public void glBindBuffer(int target, int buffer)
+    @Override public void glBindBuffer(int target, int buffer){ SDLGL.glBindBuffer(target, buffer);}
+
+// SdlGL20.java : public void glBindFramebuffer(int target, int framebuffer)
+    @Override public void glBindFramebuffer(int target, int framebuffer){ SDLGL.glBindFramebuffer(target, framebuffer);}
+
+// SdlGL20.java : public void glBindRenderbuffer(int target, int renderbuffer)
+    @Override public void glBindRenderbuffer(int target, int renderbuffer){ SDLGL.glBindRenderbuffer(target, renderbuffer);}
+
+// SdlGL20.java : public void glBlendColor(float red, float green, float blue, float alpha)
+    @Override public void glBlendColor(float red, float green, float blue, float alpha){ SDLGL.glBlendColor(red, green, blue, alpha);}
+
+// SdlGL20.java : public void glBlendEquation(int mode)
+    @Override public void glBlendEquation(int mode){ SDLGL.glBlendEquation(mode);}
+
+// SdlGL20.java : public void glBlendEquationSeparate(int modeRGB, int modeAlpha)
+    @Override public void glBlendEquationSeparate(int modeRGB, int modeAlpha){ SDLGL.glBlendEquationSeparate(modeRGB, modeAlpha);}
+
+// SdlGL20.java : public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+    @Override public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha){ SDLGL.glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);}
+
+// SdlGL20.java : public void glBufferData(int target, int size, Buffer data, int usage)
+    @Override public void glBufferData(int target, int size, Buffer data, int usage){ SDLGL.glBufferData(target, size, data, usage);}
+
+// SdlGL20.java : public void glBufferSubData(int target, int offset, int size, Buffer data)
+    @Override public void glBufferSubData(int target, int offset, int size, Buffer data){ SDLGL.glBufferSubData(target, offset, size, data);}
+
+// SdlGL20.java : public int glCheckFramebufferStatus(int target)
+    @Override public int glCheckFramebufferStatus(int target){return SDLGL.glCheckFramebufferStatus(target);}
+
+// SdlGL20.java : public void glCompileShader(int shader)
+    @Override public void glCompileShader(int shader){ SDLGL.glCompileShader(shader);}
+
+// SdlGL20.java : public int glCreateProgram()
+    @Override public int glCreateProgram(){return SDLGL.glCreateProgram();}
+
+// SdlGL20.java : public int glCreateShader(int type)
+    @Override public int glCreateShader(int type){return SDLGL.glCreateShader(type);}
+
+// SdlGL20.java : public void glDeleteBuffer(int buffer)
+    @Override public void glDeleteBuffer(int buffer){ SDLGL.glDeleteBuffer(buffer);}
+
+// SdlGL20.java : public void glDeleteFramebuffer(int framebuffer)
+    @Override public void glDeleteFramebuffer(int framebuffer){ SDLGL.glDeleteFramebuffer(framebuffer);}
+
+// SdlGL20.java : public void glDeleteProgram(int program)
+    @Override public void glDeleteProgram(int program){ SDLGL.glDeleteProgram(program);}
+
+// SdlGL20.java : public void glDeleteRenderbuffer(int renderbuffer)
+    @Override public void glDeleteRenderbuffer(int renderbuffer){ SDLGL.glDeleteRenderbuffer(renderbuffer);}
+
+// SdlGL20.java : public void glDeleteShader(int shader)
+    @Override public void glDeleteShader(int shader){ SDLGL.glDeleteShader(shader);}
+
+// SdlGL20.java : public void glDetachShader(int program, int shader)
+    @Override public void glDetachShader(int program, int shader){ SDLGL.glDetachShader(program, shader);}
+
+// SdlGL20.java : public void glDisableVertexAttribArray(int index)
+    @Override public void glDisableVertexAttribArray(int index){ SDLGL.glDisableVertexAttribArray(index);}
+
+// SdlGL20.java : public void glEnableVertexAttribArray(int index)
+    @Override public void glEnableVertexAttribArray(int index){ SDLGL.glEnableVertexAttribArray(index);}
+
+// SdlGL20.java : public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+    @Override public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer){ SDLGL.glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);}
+
+// SdlGL20.java : public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+    @Override public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level){ SDLGL.glFramebufferTexture2D(target, attachment, textarget, texture, level);}
+
+// SdlGL20.java : public int glGenBuffer()
+    @Override public int glGenBuffer(){return SDLGL.glGenBuffer();}
+
+// SdlGL20.java : public void glGenerateMipmap(int target)
+    @Override public void glGenerateMipmap(int target){ SDLGL.glGenerateMipmap(target);}
+
+// SdlGL20.java : public int glGenFramebuffer()
+    @Override public int glGenFramebuffer(){return SDLGL.glGenFramebuffer();}
+
+// SdlGL20.java : public int glGenRenderbuffer()
+    @Override public int glGenRenderbuffer(){return SDLGL.glGenRenderbuffer();}
+
+// SdlGL20.java : public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+    @Override public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type){return SDLGL.glGetActiveAttrib(program, index, size, type);}
+
+// SdlGL20.java : public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+    @Override public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type){return SDLGL.glGetActiveUniform(program, index, size, type);}
+
+// SdlGL20.java : public int glGetAttribLocation(int program, String name)
+    @Override public int glGetAttribLocation(int program, String name){return SDLGL.glGetAttribLocation(program, name);}
+
+// SdlGL20.java : public void glGetBooleanv(int pname, Buffer params)
+    @Override public void glGetBooleanv(int pname, Buffer params){ SDLGL.glGetBooleanv(pname, params);}
+
+// SdlGL20.java : public void glGetBufferParameteriv(int target, int pname, IntBuffer params)
+    @Override public void glGetBufferParameteriv(int target, int pname, IntBuffer params){ SDLGL.glGetBufferParameteriv(target, pname, params);}
+
+// SdlGL20.java : public void glGetFloatv(int pname, FloatBuffer params)
+    @Override public void glGetFloatv(int pname, FloatBuffer params){ SDLGL.glGetFloatv(pname, params);}
+
+// SdlGL20.java : public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params)
+    @Override public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params){ SDLGL.glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);}
+
+// SdlGL20.java : public void glGetProgramiv(int program, int pname, IntBuffer params)
+    @Override public void glGetProgramiv(int program, int pname, IntBuffer params){ SDLGL.glGetProgramiv(program, pname, params);}
+
+// SdlGL20.java : public String glGetProgramInfoLog(int program)
+    @Override public String glGetProgramInfoLog(int program){return SDLGL.glGetProgramInfoLog(program);}
+
+// SdlGL20.java : public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params)
+    @Override public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params){ SDLGL.glGetRenderbufferParameteriv(target, pname, params);}
+
+// SdlGL20.java : public void glGetShaderiv(int shader, int pname, IntBuffer params)
+    @Override public void glGetShaderiv(int shader, int pname, IntBuffer params){ SDLGL.glGetShaderiv(shader, pname, params);}
+
+// SdlGL20.java : public String glGetShaderInfoLog(int shader)
+    @Override public String glGetShaderInfoLog(int shader){return SDLGL.glGetShaderInfoLog(shader);}
+
+// SdlGL20.java : public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+    @Override public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision){ SDLGL.glGetShaderPrecisionFormat(shadertype, precisiontype, range, precision);}
+
+// SdlGL20.java : public void glGetTexParameterfv(int target, int pname, FloatBuffer params)
+    @Override public void glGetTexParameterfv(int target, int pname, FloatBuffer params){ SDLGL.glGetTexParameterfv(target, pname, params);}
+
+// SdlGL20.java : public void glGetTexParameteriv(int target, int pname, IntBuffer params)
+    @Override public void glGetTexParameteriv(int target, int pname, IntBuffer params){ SDLGL.glGetTexParameteriv(target, pname, params);}
+
+// SdlGL20.java : public void glGetUniformfv(int program, int location, FloatBuffer params)
+    @Override public void glGetUniformfv(int program, int location, FloatBuffer params){ SDLGL.glGetUniformfv(program, location, params);}
+
+// SdlGL20.java : public void glGetUniformiv(int program, int location, IntBuffer params)
+    @Override public void glGetUniformiv(int program, int location, IntBuffer params){ SDLGL.glGetUniformiv(program, location, params);}
+
+// SdlGL20.java : public int glGetUniformLocation(int program, String name)
+    @Override public int glGetUniformLocation(int program, String name){return SDLGL.glGetUniformLocation(program, name);}
+
+// SdlGL20.java : public void glGetVertexAttribfv(int index, int pname, FloatBuffer params)
+    @Override public void glGetVertexAttribfv(int index, int pname, FloatBuffer params){ SDLGL.glGetVertexAttribfv(index, pname, params);}
+
+// SdlGL20.java : public void glGetVertexAttribiv(int index, int pname, IntBuffer params)
+    @Override public void glGetVertexAttribiv(int index, int pname, IntBuffer params){ SDLGL.glGetVertexAttribiv(index, pname, params);}
+
+// SdlGL20.java : public boolean glIsBuffer(int buffer)
+    @Override public boolean glIsBuffer(int buffer){return SDLGL.glIsBuffer(buffer);}
+
+// SdlGL20.java : public boolean glIsEnabled(int cap)
+    @Override public boolean glIsEnabled(int cap){return SDLGL.glIsEnabled(cap);}
+
+// SdlGL20.java : public boolean glIsFramebuffer(int framebuffer)
+    @Override public boolean glIsFramebuffer(int framebuffer){return SDLGL.glIsFramebuffer(framebuffer);}
+
+// SdlGL20.java : public boolean glIsProgram(int program)
+    @Override public boolean glIsProgram(int program){return SDLGL.glIsProgram(program);}
+
+// SdlGL20.java : public boolean glIsRenderbuffer(int renderbuffer)
+    @Override public boolean glIsRenderbuffer(int renderbuffer){return SDLGL.glIsRenderbuffer(renderbuffer);}
+
+// SdlGL20.java : public boolean glIsShader(int shader)
+    @Override public boolean glIsShader(int shader){return SDLGL.glIsShader(shader);}
+
+// SdlGL20.java : public boolean glIsTexture(int texture)
+    @Override public boolean glIsTexture(int texture){return SDLGL.glIsTexture(texture);}
+
+// SdlGL20.java : public void glLinkProgram(int program)
+    @Override public void glLinkProgram(int program){ SDLGL.glLinkProgram(program);}
+
+// SdlGL20.java : public void glReleaseShaderCompiler()
+    @Override public void glReleaseShaderCompiler(){ SDLGL.glReleaseShaderCompiler();}
+
+// SdlGL20.java : public void glRenderbufferStorage(int target, int internalformat, int width, int height)
+    @Override public void glRenderbufferStorage(int target, int internalformat, int width, int height){ SDLGL.glRenderbufferStorage(target, internalformat, width, height);}
+
+// SdlGL20.java : public void glSampleCoverage(float value, boolean invert)
+    @Override public void glSampleCoverage(float value, boolean invert){ SDLGL.glSampleCoverage(value, invert);}
+
+// SdlGL20.java : public void glShaderSource(int shader, String string)
+    @Override public void glShaderSource(int shader, String string){ SDLGL.glShaderSource(shader, string);}
+
+// SdlGL20.java : public void glStencilFuncSeparate(int face, int func, int ref, int mask)
+    @Override public void glStencilFuncSeparate(int face, int func, int ref, int mask){ SDLGL.glStencilFuncSeparate(face, func, ref, mask);}
+
+// SdlGL20.java : public void glStencilMaskSeparate(int face, int mask)
+    @Override public void glStencilMaskSeparate(int face, int mask){ SDLGL.glStencilMaskSeparate(face, mask);}
+
+// SdlGL20.java : public void glStencilOpSeparate(int face, int fail, int zfail, int zpass)
+    @Override public void glStencilOpSeparate(int face, int fail, int zfail, int zpass){ SDLGL.glStencilOpSeparate(face, fail, zfail, zpass);}
+
+// SdlGL20.java : public void glTexParameterfv(int target, int pname, FloatBuffer params)
+    @Override public void glTexParameterfv(int target, int pname, FloatBuffer params){ SDLGL.glTexParameterfv(target, pname, params);}
+
+// SdlGL20.java : public void glTexParameteri(int target, int pname, int param)
+    @Override public void glTexParameteri(int target, int pname, int param){ SDLGL.glTexParameteri(target, pname, param);}
+
+// SdlGL20.java : public void glTexParameteriv(int target, int pname, IntBuffer params)
+    @Override public void glTexParameteriv(int target, int pname, IntBuffer params){ SDLGL.glTexParameteriv(target, pname, params);}
+
+// SdlGL20.java : public void glUniform1f(int location, float x)
+    @Override public void glUniform1f(int location, float x){ SDLGL.glUniform1f(location, x);}
+
+// SdlGL20.java : public void glUniform1fv(int location, int count, FloatBuffer v) / public void glUniform1fv(int location, int count, float[] v, int offset)
+    @Override public void glUniform1fv(int location, int count, FloatBuffer v){ SDLGL.glUniform1fv(location, count, v);}
+
+// SdlGL20.java : public void glUniform1i(int location, int x)
+    @Override public void glUniform1i(int location, int x){ SDLGL.glUniform1i(location, x);}
+
+// SdlGL20.java : public void glUniform1iv(int location, int count, IntBuffer v) / public void glUniform1iv(int location, int count, int[] v, int offset)
+    @Override public void glUniform1iv(int location, int count, IntBuffer v){ SDLGL.glUniform1iv(location, count, v);}
+
+// SdlGL20.java : public void glUniform2f(int location, float x, float y)
+    @Override public void glUniform2f(int location, float x, float y){ SDLGL.glUniform2f(location, x, y);}
+
+// SdlGL20.java : public void glUniform2fv(int location, int count, FloatBuffer v) / public void glUniform2fv(int location, int count, float[] v, int offset)
+    @Override public void glUniform2fv(int location, int count, FloatBuffer v){ SDLGL.glUniform2fv(location, count, v);}
+
+// SdlGL20.java : public void glUniform2i(int location, int x, int y)
+    @Override public void glUniform2i(int location, int x, int y){ SDLGL.glUniform2i(location, x, y);}
+
+// SdlGL20.java : public void glUniform2iv(int location, int count, IntBuffer v) / public void glUniform2iv(int location, int count, int[] v, int offset)
+    @Override public void glUniform2iv(int location, int count, IntBuffer v){ SDLGL.glUniform2iv(location, count, v);}
+
+// SdlGL20.java : public void glUniform3f(int location, float x, float y, float z)
+    @Override public void glUniform3f(int location, float x, float y, float z){ SDLGL.glUniform3f(location, x, y, z);}
+
+// SdlGL20.java : public void glUniform3fv(int location, int count, FloatBuffer v) / public void glUniform3fv(int location, int count, float[] v, int offset)
+    @Override public void glUniform3fv(int location, int count, FloatBuffer v){ SDLGL.glUniform3fv(location, count, v);}
+
+// SdlGL20.java : public void glUniform3i(int location, int x, int y, int z)
+    @Override public void glUniform3i(int location, int x, int y, int z){ SDLGL.glUniform3i(location, x, y, z);}
+
+// SdlGL20.java : public void glUniform3iv(int location, int count, IntBuffer v) / public void glUniform3iv(int location, int count, int[] v, int offset)
+    @Override public void glUniform3iv(int location, int count, IntBuffer v){ SDLGL.glUniform3iv(location, count, v);}
+
+// SdlGL20.java : public void glUniform4f(int location, float x, float y, float z, float w)
+    @Override public void glUniform4f(int location, float x, float y, float z, float w){ SDLGL.glUniform4f(location, x, y, z, w);}
+
+// SdlGL20.java : public void glUniform4fv(int location, int count, FloatBuffer v) / public void glUniform4fv(int location, int count, float[] v, int offset)
+    @Override public void glUniform4fv(int location, int count, FloatBuffer v){ SDLGL.glUniform4fv(location, count, v);}
+
+// SdlGL20.java : public void glUniform4i(int location, int x, int y, int z, int w)
+    @Override public void glUniform4i(int location, int x, int y, int z, int w){ SDLGL.glUniform4i(location, x, y, z, w);}
+
+// SdlGL20.java : public void glUniform4iv(int location, int count, IntBuffer v) / public void glUniform4iv(int location, int count, int[] v, int offset)
+    @Override public void glUniform4iv(int location, int count, IntBuffer v){ SDLGL.glUniform4iv(location, count, v);}
+
+// SdlGL20.java : public void glUniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset)
+    @Override public void glUniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix2fv(location, count, transpose, value);}
+
+// SdlGL20.java : public void glUniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset)
+    @Override public void glUniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix3fv(location, count, transpose, value);}
+
+// SdlGL20.java : public void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset)
+    @Override public void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix4fv(location, count, transpose, value);}
+
+// SdlGL20.java : public void glUseProgram(int program)
+    @Override public void glUseProgram(int program){ SDLGL.glUseProgram(program);}
+
+// SdlGL20.java : public void glValidateProgram(int program)
+    @Override public void glValidateProgram(int program){ SDLGL.glValidateProgram(program);}
+
+// SdlGL20.java : public void glVertexAttrib1f(int indx, float x)
+    @Override public void glVertexAttrib1f(int indx, float x){ SDLGL.glVertexAttrib1f(indx, x);}
+
+// SdlGL20.java : public void glVertexAttrib1fv(int indx, FloatBuffer values)
+    @Override public void glVertexAttrib1fv(int indx, FloatBuffer values){ SDLGL.glVertexAttrib1fv(indx, values);}
+
+// SdlGL20.java : public void glVertexAttrib2f(int indx, float x, float y)
+    @Override public void glVertexAttrib2f(int indx, float x, float y){ SDLGL.glVertexAttrib2f(indx, x, y);}
+
+// SdlGL20.java : public void glVertexAttrib2fv(int indx, FloatBuffer values)
+    @Override public void glVertexAttrib2fv(int indx, FloatBuffer values){ SDLGL.glVertexAttrib2fv(indx, values);}
+
+// SdlGL20.java : public void glVertexAttrib3f(int indx, float x, float y, float z)
+    @Override public void glVertexAttrib3f(int indx, float x, float y, float z){ SDLGL.glVertexAttrib3f(indx, x, y, z);}
+
+// SdlGL20.java : public void glVertexAttrib3fv(int indx, FloatBuffer values)
+    @Override public void glVertexAttrib3fv(int indx, FloatBuffer values){ SDLGL.glVertexAttrib3fv(indx, values);}
+
+// SdlGL20.java : public void glVertexAttrib4f(int indx, float x, float y, float z, float w)
+    @Override public void glVertexAttrib4f(int indx, float x, float y, float z, float w){ SDLGL.glVertexAttrib4f(indx, x, y, z, w);}
+
+// SdlGL20.java : public void glVertexAttrib4fv(int indx, FloatBuffer values)
+    @Override public void glVertexAttrib4fv(int indx, FloatBuffer values){ SDLGL.glVertexAttrib4fv(indx, values);}
+
+// SdlGL20.java : public void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr) / public void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, int ptr)
+    @Override public void glVertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr){ SDLGL.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);}
+
+// SdlGL30.java : public void glReadBuffer(int mode)
+    @Override public void glReadBuffer(int mode){ SDLGL.glReadBuffer(mode); }
+
+// SdlGL30.java : public void glDrawRangeElements(int mode, int start, int end, int count, int type, int offset) / public void glDrawRangeElements(int mode, int start, int end, int count, int type, Buffer indices)
+    @Override public void glDrawRangeElements(int mode, int start, int end, int count, int type, int offset){ SDLGL.glDrawRangeElements(mode, start, end, count, type, offset); }
+
+// SdlGL30.java : public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int offset) / public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, Buffer pixels)
+    @Override public void glTexImage3D(int target, int level, int internalformat, int width, int height, int depth, int border, int format, int type, int offset){ SDLGL.glTexImage3D(target, level, internalformat, width, height, depth, border, format, type, offset); }
+
+// SdlGL30.java : public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int offset) / public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, Buffer pixels)
+    @Override public void glTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, int offset){ SDLGL.glTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, offset); }
+
+// SdlGL30.java : public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
+    @Override public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height){ SDLGL.glCopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height); }
+
+// SdlGL30.java : public void glGenQueries(int n, IntBuffer ids)
+    @Override public void glGenQueries(int n, IntBuffer ids){ SDLGL.glGenQueries(n, ids); }
+
+// SdlGL30.java : public void glDeleteQueries(int n, IntBuffer ids)
+    @Override public void glDeleteQueries(int n, IntBuffer ids){ SDLGL.glDeleteQueries(n, ids); }
+
+// SdlGL30.java : public boolean glIsQuery(int id)
+    @Override public boolean glIsQuery(int id){ return SDLGL.glIsQuery(id); }
+
+// SdlGL30.java : public void glBeginQuery(int target, int id)
+    @Override public void glBeginQuery(int target, int id){ SDLGL.glBeginQuery(target, id); }
+
+// SdlGL30.java : public void glEndQuery(int target)
+    @Override public void glEndQuery(int target){ SDLGL.glEndQuery(target); }
+
+// SdlGL30.java : public void glGetQueryiv(int target, int pname, IntBuffer params)
+    @Override public void glGetQueryiv(int target, int pname, IntBuffer params){ SDLGL.glGetQueryiv(target, pname, params); }
+
+// SdlGL30.java : public void glGetQueryObjectuiv(int id, int pname, IntBuffer params)
+    @Override public void glGetQueryObjectuiv(int id, int pname, IntBuffer params){ SDLGL.glGetQueryObjectuiv(id, pname, params); }
+
+// SdlGL30.java : public boolean glUnmapBuffer(int target)
+    @Override public boolean glUnmapBuffer(int target){ return SDLGL.glUnmapBuffer(target); }
+
+// SdlGL30.java : public Buffer glGetBufferPointerv(int target, int pname)
+    @Override public Buffer glGetBufferPointerv(int target, int pname){ return SDLGL.glGetBufferPointerv(target, pname); }
+
+// SdlGL30.java : public void glDrawBuffers(int n, IntBuffer bufs)
+    @Override public void glDrawBuffers(int n, IntBuffer bufs){ SDLGL.glDrawBuffers(n, bufs); }
+
+// SdlGL30.java : public void glUniformMatrix2x3fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix2x3fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix2x3fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glUniformMatrix3x2fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix3x2fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix3x2fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glUniformMatrix2x4fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix2x4fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix2x4fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glUniformMatrix4x2fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix4x2fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix4x2fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glUniformMatrix3x4fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix3x4fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix3x4fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glUniformMatrix4x3fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override public void glUniformMatrix4x3fv(int location, int count, boolean transpose, FloatBuffer value){ SDLGL.glUniformMatrix4x3fv(location, count, transpose, value); }
+
+// SdlGL30.java : public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter)
+    @Override public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter){ SDLGL.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter); }
+
+// SdlGL30.java : public void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height)
+    @Override public void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height){ SDLGL.glRenderbufferStorageMultisample(target, samples, internalformat, width, height); }
+
+// SdlGL30.java : public void glFramebufferTextureLayer(int target, int attachment, int texture, int level, int layer)
+    @Override public void glFramebufferTextureLayer(int target, int attachment, int texture, int level, int layer){ SDLGL.glFramebufferTextureLayer(target, attachment, texture, level, layer); }
+
+// SdlGL30.java : public void glFlushMappedBufferRange(int target, int offset, int length)
+    @Override public void glFlushMappedBufferRange(int target, int offset, int length){ SDLGL.glFlushMappedBufferRange(target, offset, length); }
+
+// SdlGL30.java : public void glBindVertexArray(int array)
+    @Override public void glBindVertexArray(int array){ SDLGL.glBindVertexArray(array); }
+
+// SdlGL30.java : public void glDeleteVertexArrays(int n, IntBuffer arrays)
+    @Override public void glDeleteVertexArrays(int n, IntBuffer arrays){ SDLGL.glDeleteVertexArrays(n, arrays); }
+
+// SdlGL30.java : public void glGenVertexArrays(int n, IntBuffer arrays)
+    @Override public void glGenVertexArrays(int n, IntBuffer arrays){ SDLGL.glGenVertexArrays(n, arrays); }
+
+// SdlGL30.java : public boolean glIsVertexArray(int array)
+    @Override public boolean glIsVertexArray(int array){ return SDLGL.glIsVertexArray(array); }
+
+// SdlGL30.java : public void glBeginTransformFeedback(int primitiveMode)
+    @Override public void glBeginTransformFeedback(int primitiveMode){ SDLGL.glBeginTransformFeedback(primitiveMode); }
+
+// SdlGL30.java : public void glEndTransformFeedback()
+    @Override public void glEndTransformFeedback(){ SDLGL.glEndTransformFeedback(); }
+
+// SdlGL30.java : public void glBindBufferRange(int target, int index, int buffer, int offset, int size)
+    @Override public void glBindBufferRange(int target, int index, int buffer, int offset, int size){ SDLGL.glBindBufferRange(target, index, buffer, offset, size); }
+
+// SdlGL30.java : public void glBindBufferBase(int target, int index, int buffer)
+    @Override public void glBindBufferBase(int target, int index, int buffer){ SDLGL.glBindBufferBase(target, index, buffer); }
+
+// SdlGL30.java : public void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode)
+    @Override public void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode){ SDLGL.glTransformFeedbackVaryings(program, varyings, bufferMode); }
+
+// SdlGL30.java : public void glVertexAttribIPointer(int index, int size, int type, int stride, int offset)
+    @Override public void glVertexAttribIPointer(int index, int size, int type, int stride, int offset){ SDLGL.glVertexAttribIPointer(index, size, type, stride, offset); }
+
+// SdlGL30.java : public void glGetVertexAttribIiv(int index, int pname, IntBuffer params)
+    @Override public void glGetVertexAttribIiv(int index, int pname, IntBuffer params){ SDLGL.glGetVertexAttribIiv(index, pname, params); }
+
+// SdlGL30.java : public void glGetVertexAttribIuiv(int index, int pname, IntBuffer params)
+    @Override public void glGetVertexAttribIuiv(int index, int pname, IntBuffer params){ SDLGL.glGetVertexAttribIuiv(index, pname, params); }
+
+// SdlGL30.java : public void glVertexAttribI4i(int index, int x, int y, int z, int w)
+    @Override public void glVertexAttribI4i(int index, int x, int y, int z, int w){ SDLGL.glVertexAttribI4i(index, x, y, z, w); }
+
+// SdlGL30.java : public void glVertexAttribI4ui(int index, int x, int y, int z, int w)
+    @Override public void glVertexAttribI4ui(int index, int x, int y, int z, int w){ SDLGL.glVertexAttribI4ui(index, x, y, z, w); }
+
+// SdlGL30.java : public void glGetUniformuiv(int program, int location, IntBuffer params)
+    @Override public void glGetUniformuiv(int program, int location, IntBuffer params){ SDLGL.glGetUniformuiv(program, location, params); }
+
+// SdlGL30.java : public int glGetFragDataLocation(int program, String name)
+    @Override public int glGetFragDataLocation(int program, String name){ return SDLGL.glGetFragDataLocation(program, name); }
+
+// SdlGL30.java : public void glUniform1uiv(int location, int count, IntBuffer value)
+    @Override public void glUniform1uiv(int location, int count, IntBuffer value){ SDLGL.glUniform1uiv(location, count, value); }
+
+// SdlGL30.java : public void glUniform3uiv(int location, int count, IntBuffer value)
+    @Override public void glUniform3uiv(int location, int count, IntBuffer value){ SDLGL.glUniform3uiv(location, count, value); }
+
+// SdlGL30.java : public void glUniform4uiv(int location, int count, IntBuffer value)
+    @Override public void glUniform4uiv(int location, int count, IntBuffer value){ SDLGL.glUniform4uiv(location, count, value); }
+
+// SdlGL30.java : public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value)
+    @Override public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value){ SDLGL.glClearBufferiv(buffer, drawbuffer, value); }
+
+// SdlGL30.java : public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value)
+    @Override public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value){ SDLGL.glClearBufferuiv(buffer, drawbuffer, value); }
+
+// SdlGL30.java : public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value)
+    @Override public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value){ SDLGL.glClearBufferfv(buffer, drawbuffer, value); }
+
+// SdlGL30.java : public void glClearBufferfi(int buffer, int drawbuffer, float depth, int stencil)
+    @Override public void glClearBufferfi(int buffer, int drawbuffer, float depth, int stencil){ SDLGL.glClearBufferfi(buffer, drawbuffer, depth, stencil); }
+
+// SdlGL30.java : public String glGetStringi(int name, int index)
+    @Override public String glGetStringi(int name, int index){ return SDLGL.glGetStringi(name, index); }
+
+// SdlGL30.java : public void glCopyBufferSubData(int readTarget, int writeTarget, int readOffset, int writeOffset, int size)
+    @Override public void glCopyBufferSubData(int readTarget, int writeTarget, int readOffset, int writeOffset, int size){ SDLGL.glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size); }
+
+// SdlGL30.java : public void glGetUniformIndices(int program, String[] uniformNames, IntBuffer uniformIndices)
+    @Override public void glGetUniformIndices(int program, String[] uniformNames, IntBuffer uniformIndices){ SDLGL.glGetUniformIndices(program, uniformNames, uniformIndices); }
+
+// SdlGL30.java : public void glGetActiveUniformsiv(int program, int uniformCount, IntBuffer uniformIndices, int pname, IntBuffer params)
+    @Override public void glGetActiveUniformsiv(int program, int uniformCount, IntBuffer uniformIndices, int pname, IntBuffer params){ SDLGL.glGetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params); }
+
+// SdlGL30.java : public int glGetUniformBlockIndex(int program, String uniformBlockName)
+    @Override public int glGetUniformBlockIndex(int program, String uniformBlockName){ return SDLGL.glGetUniformBlockIndex(program, uniformBlockName); }
+
+// SdlGL30.java : public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, IntBuffer params)
+    @Override public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, IntBuffer params){ SDLGL.glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params); }
+
+// SdlGL30.java : public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName)
+    @Override public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName){ SDLGL.glGetActiveUniformBlockName(program, uniformBlockIndex, length, uniformBlockName); }
+
+// SdlGL30.java : public void glUniformBlockBinding(int program, int uniformBlockIndex, int uniformBlockBinding)
+    @Override public void glUniformBlockBinding(int program, int uniformBlockIndex, int uniformBlockBinding){ SDLGL.glUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding); }
+
+// SdlGL30.java : public void glDrawArraysInstanced(int mode, int first, int count, int instanceCount)
+    @Override public void glDrawArraysInstanced(int mode, int first, int count, int instanceCount){ SDLGL.glDrawArraysInstanced(mode, first, count, instanceCount); }
+
+// SdlGL30.java : public void glDrawElementsInstanced(int mode, int count, int type, int indicesOffset, int instanceCount)
+    @Override public void glDrawElementsInstanced(int mode, int count, int type, int indicesOffset, int instanceCount){ SDLGL.glDrawElementsInstanced(mode, count, type, indicesOffset, instanceCount); }
+
+// SdlGL30.java : public void glGetInteger64v(int pname, LongBuffer params)
+    @Override public void glGetInteger64v(int pname, LongBuffer params){ SDLGL.glGetInteger64v(pname, params); }
+
+// SdlGL30.java : public void glGetBufferParameteri64v(int target, int pname, LongBuffer params)
+    @Override public void glGetBufferParameteri64v(int target, int pname, LongBuffer params){ SDLGL.glGetBufferParameteri64v(target, pname, params); }
+
+// SdlGL30.java : public void glGenSamplers(int count, IntBuffer samplers)
+    @Override public void glGenSamplers(int count, IntBuffer samplers){ SDLGL.glGenSamplers(count, samplers); }
+
+// SdlGL30.java : public void glDeleteSamplers(int count, IntBuffer samplers)
+    @Override public void glDeleteSamplers(int count, IntBuffer samplers){ SDLGL.glDeleteSamplers(count, samplers); }
+
+// SdlGL30.java : public boolean glIsSampler(int sampler)
+    @Override public boolean glIsSampler(int sampler){ return SDLGL.glIsSampler(sampler); }
+
+// SdlGL30.java : public void glBindSampler(int unit, int sampler)
+    @Override public void glBindSampler(int unit, int sampler){ SDLGL.glBindSampler(unit, sampler); }
+
+// SdlGL30.java : public void glSamplerParameteri(int sampler, int pname, int param)
+    @Override public void glSamplerParameteri(int sampler, int pname, int param){ SDLGL.glSamplerParameteri(sampler, pname, param); }
+
+// SdlGL30.java : public void glSamplerParameteriv(int sampler, int pname, IntBuffer param)
+    @Override public void glSamplerParameteriv(int sampler, int pname, IntBuffer param){ SDLGL.glSamplerParameteriv(sampler, pname, param); }
+
+// SdlGL30.java : public void glSamplerParameterf(int sampler, int pname, float param)
+    @Override public void glSamplerParameterf(int sampler, int pname, float param){ SDLGL.glSamplerParameterf(sampler, pname, param); }
+
+// SdlGL30.java : public void glSamplerParameterfv(int sampler, int pname, FloatBuffer param)
+    @Override public void glSamplerParameterfv(int sampler, int pname, FloatBuffer param){ SDLGL.glSamplerParameterfv(sampler, pname, param); }
+
+// SdlGL30.java : public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer params)
+    @Override public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer params){ SDLGL.glGetSamplerParameteriv(sampler, pname, params); }
+
+// SdlGL30.java : public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer params)
+    @Override public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer params){ SDLGL.glGetSamplerParameterfv(sampler, pname, params); }
+
+// SdlGL30.java : public void glVertexAttribDivisor(int index, int divisor)
+    @Override public void glVertexAttribDivisor(int index, int divisor){ SDLGL.glVertexAttribDivisor(index, divisor); }
+
+// SdlGL30.java : public void glBindTransformFeedback(int target, int id)
+    @Override public void glBindTransformFeedback(int target, int id){ SDLGL.glBindTransformFeedback(target, id); }
+
+// SdlGL30.java : public void glDeleteTransformFeedbacks(int n, IntBuffer ids)
+    @Override public void glDeleteTransformFeedbacks(int n, IntBuffer ids){ SDLGL.glDeleteTransformFeedbacks(n, ids); }
+
+// SdlGL30.java : public void glGenTransformFeedbacks(int n, IntBuffer ids)
+    @Override public void glGenTransformFeedbacks(int n, IntBuffer ids){ SDLGL.glGenTransformFeedbacks(n, ids); }
+
+// SdlGL30.java : public boolean glIsTransformFeedback(int id)
+    @Override public boolean glIsTransformFeedback(int id){ return SDLGL.glIsTransformFeedback(id); }
+
+// SdlGL30.java : public void glPauseTransformFeedback()
+    @Override public void glPauseTransformFeedback(){ SDLGL.glPauseTransformFeedback(); }
+
+// SdlGL30.java : public void glResumeTransformFeedback()
+    @Override public void glResumeTransformFeedback(){ SDLGL.glResumeTransformFeedback(); }
+
+// SdlGL30.java : public void glProgramParameteri(int program, int pname, int value)
+    @Override public void glProgramParameteri(int program, int pname, int value){ SDLGL.glProgramParameteri(program, pname, value); }
+
+// SdlGL30.java : public void glInvalidateFramebuffer(int target, int numAttachments, IntBuffer attachments)
+    @Override public void glInvalidateFramebuffer(int target, int numAttachments, IntBuffer attachments){ SDLGL.glInvalidateFramebuffer(target, numAttachments, attachments); }
+
+// SdlGL30.java : public void glInvalidateSubFramebuffer(int target, int numAttachments, IntBuffer attachments, int x, int y, int width, int height)
+    @Override public void glInvalidateSubFramebuffer(int target, int numAttachments, IntBuffer attachments, int x, int y, int width, int height){ SDLGL.glInvalidateSubFramebuffer(target, numAttachments, attachments, x, y, width, height); }
+
+// SdlGraphics.java : boolean supportsFBO()
+    boolean supportsFBO(){
+        return glVersion.atLeast(3, 0) || SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object");
+    }
+
+// SdlGraphics.java : void updateSize(int width, int height)
+    void updateSize(int width, int height){
+        logicalWidth = width;
+        logicalHeight = height;
+
+        SDL_GL_GetDrawableSize(app.window, wh);
+        backBufferWidth = wh[0];
+        backBufferHeight = wh[1];
+
+        gl20.glViewport(0, 0, backBufferWidth, backBufferHeight);
+    }
+
+// SdlGraphics.java : public boolean isGL30Available()
+    @Override
+    public boolean isGL30Available(){
+        return gl30 != null;
+    }
+
+// SdlGraphics.java : public GL20 getGL20()
+    @Override
+    public GL20 getGL20(){
+        return gl20;
+    }
+
+// SdlGraphics.java : public void setGL20(GL20 gl20)
+    @Override
+    public void setGL20(GL20 gl20){
+        this.gl20 = gl20;
+        Core.gl = Core.gl20 = gl20;
+    }
+
+// SdlGraphics.java : public GL30 getGL30()
+    @Override
+    public GL30 getGL30(){
+        return gl30;
+    }
+
+// SdlGraphics.java : public void setGL30(GL30 gl30)
+    @Override
+    public void setGL30(GL30 gl30){
+        this.gl20 = this.gl30 = gl30;
+        Core.gl = Core.gl20 = gl30;
+    }
+
+// SdlGraphics.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        if(app.config.hdpiMode == HdpiMode.pixels){
+            return backBufferWidth;
+        }else{
+            return logicalWidth;
+        }
+    }
+
+// SdlGraphics.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        if(app.config.hdpiMode == HdpiMode.pixels){
+            return backBufferHeight;
+        }else{
+            return logicalHeight;
+        }
+    }
+
+// SdlGraphics.java : public int getBackBufferWidth()
+    @Override
+    public int getBackBufferWidth(){
+        return backBufferWidth;
+    }
+
+// SdlGraphics.java : public int getBackBufferHeight()
+    @Override
+    public int getBackBufferHeight(){
+        return backBufferHeight;
+    }
+
+// SdlGraphics.java : public long getFrameId()
+    @Override
+    public long getFrameId(){
+        return frameId;
+    }
+
+// SdlGraphics.java : public float getDeltaTime()
+    @Override
+    public float getDeltaTime(){
+        return deltaTime;
+    }
+
+// SdlGraphics.java : public int getFramesPerSecond()
+    @Override
+    public int getFramesPerSecond(){
+        return fps;
+    }
+
+// SdlGraphics.java : public GLVersion getGLVersion()
+    @Override
+    public GLVersion getGLVersion(){
+        return glVersion;
+    }
+
+// SdlGraphics.java : public float getPpiX()
+    @Override
+    public float getPpiX(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpiY()
+    @Override
+    public float getPpiY(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpcX()
+    @Override
+    public float getPpcX(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpcY()
+    @Override
+    public float getPpcY(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getDensity()
+    @Override
+    public float getDensity(){
+        return 0;
+    }
+
+// SdlGraphics.java : public boolean setFullscreen(boolean fullscreen)
+    @Override
+    public boolean setFullscreen(boolean fullscreen){
+        return SDL_SetWindowFullscreen(app.window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0) == 0;
+    }
+
+// SdlGraphics.java : public void setTitle(String title)
+    @Override
+    public void setTitle(String title){
+        SDL_SetWindowTitle(app.window, title);
+    }
+
+// SdlGraphics.java : public void setWindowPosition(int x, int y)
+    @Override
+    public void setWindowPosition(int x, int y){
+        SDL_SetWindowPosition(app.window, x, y);
+    }
+
+// SdlGraphics.java : public void setWindowSize(int width, int height)
+    @Override
+    public void setWindowSize(int width, int height){
+        SDL_SetWindowSize(app.window, width, height);
+    }
+
+// SdlGraphics.java : public void setVSync(boolean vsync)
+    @Override
+    public void setVSync(boolean vsync){
+        SDL_GL_SetSwapInterval(vsync ? 1 : 0);
+    }
+
+// SdlGraphics.java : public BufferFormat getBufferFormat()
+    @Override
+    public BufferFormat getBufferFormat(){
+        return bufferFormat;
+    }
+
+// SdlGraphics.java : public boolean supportsExtension(String extension)
+    @Override
+    public boolean supportsExtension(String extension){
+        return SDL_GL_ExtensionSupported(extension);
+    }
+
+// SdlGraphics.java : public boolean isContinuousRendering()
+    @Override
+    public boolean isContinuousRendering(){
+        return true;
+    }
+
+// SdlGraphics.java : public void setContinuousRendering(boolean isContinuous)
+    @Override
+    public void setContinuousRendering(boolean isContinuous){
+
+    }
+
+// SdlGraphics.java : public void requestRendering()
+    @Override
+    public void requestRendering(){
+
+    }
+
+// SdlGraphics.java : public boolean isFullscreen()
+    @Override
+    public boolean isFullscreen(){
+        return (SDL_GetWindowFlags(app.window) & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN;
+    }
+
+// SdlGraphics.java : public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
+    @Override
+    public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot){
+        long surface = SDL_CreateRGBSurfaceFrom(pixmap.pixels, pixmap.width, pixmap.height);
+        long cursor = SDL_CreateColorCursor(surface, xHotspot, yHotspot);
+        return new SdlCursor(surface, cursor);
+    }
+
+// SdlGraphics.java : protected void setCursor(Cursor cursor)
+    @Override
+    protected void setCursor(Cursor cursor){
+        SDL_SetCursor(((SdlCursor)cursor).cursorHandle);
+    }
+
+// SdlGraphics.java : protected void setSystemCursor(SystemCursor cursor)
+    @Override
+    protected void setSystemCursor(SystemCursor cursor){
+        if(!cursors.containsKey(cursor)){
+            long handle = SDL_CreateSystemCursor(mapCursor(cursor));
+            cursors.put(cursor, new SdlCursor(0, handle));
+        }
+        SDL_SetCursor(cursors.get(cursor).cursorHandle);
+    }
+
+// SdlGraphics.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+
+        cursors.each((ignored, value) -> value.dispose());
+    }
+
+// SdlGraphics.java : private int mapCursor(SystemCursor cursor)
+    private int mapCursor(SystemCursor cursor){
+        switch(cursor){
+            case arrow: return SDL_SYSTEM_CURSOR_ARROW;
+            case ibeam: return SDL_SYSTEM_CURSOR_IBEAM;
+            case crosshair: return SDL_SYSTEM_CURSOR_CROSSHAIR;
+            case hand: return SDL_SYSTEM_CURSOR_HAND;
+            case horizontalResize: return SDL_SYSTEM_CURSOR_SIZEWE;
+            case verticalResize: return SDL_SYSTEM_CURSOR_SIZENS;
+        }
+        throw new IllegalArgumentException("this is impossible.");
+    }
+
+// SdlInput.java : void update()
+    void update(){
+        queue.setProcessor(inputMultiplexer);
+        queue.drain();
+
+        for(EditEvent e : stringEditEvents){
+            handleFieldCandidate(e);
+        }
+        stringEditEvents.clear();
+    }
+
+// SdlInput.java : void postUpdate()
+    void postUpdate(){
+        keyboard.postUpdate();
+        deltaX = deltaY = 0;
+    }
+
+// SdlInput.java : public int mouseX() / public int mouseX(int pointer)
+    @Override
+    public int mouseX(){
+        return mouseX;
+    }
+
+// SdlInput.java : public int deltaX() / public int deltaX(int pointer)
+    @Override
+    public int deltaX(){
+        return deltaX;
+    }
+
+// SdlInput.java : public int mouseY() / public int mouseY(int pointer)
+    @Override
+    public int mouseY(){
+        return mouseY;
+    }
+
+// SdlInput.java : public int deltaY() / public int deltaY(int pointer)
+    @Override
+    public int deltaY(){
+        return deltaY;
+    }
+
+// SdlInput.java : public boolean isTouched() / public boolean isTouched(int pointer)
+    @Override
+    public boolean isTouched(){
+        return keyDown(KeyCode.mouseLeft) || keyDown(KeyCode.mouseRight);
+    }
+
+// SdlInput.java : public boolean justTouched()
+    @Override
+    public boolean justTouched(){
+        return keyTap(KeyCode.mouseLeft) || keyTap(KeyCode.mouseRight);
+    }
+
+// SdlInput.java : public long getCurrentEventTime()
+    @Override
+    public long getCurrentEventTime(){
+        return queue.getCurrentEventTime();
+    }
+
+// SdlApplication.java : private void listen(Cons<ApplicationListener> cons)
+    private void listen(Cons<ApplicationListener> cons){
+        synchronized(listeners){
+            for(ApplicationListener l : listeners){
+                cons.get(l);
+            }
+        }
+    }
+
+// SdlApplication.java : private void check(boolean code)
+    private void check(boolean code){
+        if(!code){
+            throw new SdlError();
+        }
+    }
+
+// SdlApplication.java : public long getWindow()
+    public long getWindow(){
+        return window;
+    }
+
+// SdlApplication.java : public Thread getMainThread()
+    @Override
+    public Thread getMainThread(){
+        return mainThread;
+    }
+
+// SdlApplication.java : public Seq<ApplicationListener> getListeners()
+    @Override
+    public Seq<ApplicationListener> getListeners(){
+        return listeners;
+    }
+
+// SdlApplication.java : public ApplicationType getType()
+    @Override
+    public ApplicationType getType(){
+        return ApplicationType.desktop;
+    }
+
+// SdlApplication.java : public String getClipboardText()
+    @Override
+    public String getClipboardText(){
+        return SDLClipboard.SDL_GetClipboardText();
+    }
+
+// SdlApplication.java : public void setClipboardText(String text)
+    @Override
+    public void setClipboardText(String text){
+        SDLClipboard.SDL_SetClipboardText(text);
+    }
+
+// SdlApplication.java : public void post(Runnable runnable)
+    @Override
+    public void post(Runnable runnable){
+        runnables.post(runnable);
+    }
+
+// SdlApplication.java : public void exit()
+    @Override
+    public void exit(){
+        running = false;
+    }
+
+// SdlConfig.java : public void setWindowIcon(FileType fileType, String filePaths)
+    public void setWindowIcon(FileType fileType, String... filePaths){
+        windowIconFileType = fileType;
+        windowIconPaths = filePaths;
+    }
+
+// SdlFiles.java : public Fi get(String fileName, FileType type)
+    @Override
+    public Fi get(String fileName, FileType type){
+        return new SdlFi(fileName, type);
+    }
+
+// SdlFiles.java : public String getExternalStoragePath()
+    @Override
+    public String getExternalStoragePath(){
+        return externalPath;
+    }
+
+// SdlFiles.java : public boolean isExternalStorageAvailable()
+    @Override
+    public boolean isExternalStorageAvailable(){
+        return true;
+    }
+
+// SdlFiles.java : public String getLocalStoragePath()
+    @Override
+    public String getLocalStoragePath(){
+        return localPath;
+    }
+
+// SdlFiles.java : public boolean isLocalStorageAvailable()
+    @Override
+    public boolean isLocalStorageAvailable(){
+        return true;
+    }
+
+// SdlGL20.java : private void ensureBufferCapacity(int numBytes)
+    private void ensureBufferCapacity(int numBytes){
+        if(buffer == null || buffer.capacity() < numBytes){
+            buffer = Buffers.newByteBuffer(numBytes);
+            floatBuffer = buffer.asFloatBuffer();
+            intBuffer = buffer.asIntBuffer();
+        }
+    }
+
+// SdlGL20.java : private FloatBuffer toFloatBuffer(float[] v, int offset, int count)
+    private FloatBuffer toFloatBuffer(float v[], int offset, int count){
+        ensureBufferCapacity(count << 2);
+        floatBuffer.clear();
+        floatBuffer.limit(count);
+        floatBuffer.put(v, offset, count);
+        floatBuffer.position(0);
+        return floatBuffer;
+    }
+
+// SdlGL20.java : private IntBuffer toIntBuffer(int[] v, int offset, int count)
+    private IntBuffer toIntBuffer(int v[], int offset, int count){
+        ensureBufferCapacity(count << 2);
+        intBuffer.clear();
+        intBuffer.limit(count);
+        intBuffer.put(v, offset, count);
+        intBuffer.position(0);
+        return intBuffer;
+    }
+
+// SdlGL20.java : public void glActiveTexture(int texture)
+    public void glActiveTexture(int texture){
+        GL13.glActiveTexture(texture);
+    }
+
+// SdlGL20.java : public void glAttachShader(int program, int shader)
+    public void glAttachShader(int program, int shader){
+        GL20.glAttachShader(program, shader);
+    }
+
+// SdlGL20.java : public void glBindAttribLocation(int program, int index, String name)
+    public void glBindAttribLocation(int program, int index, String name){
+        GL20.glBindAttribLocation(program, index, name);
+    }
+
+// SdlGL20.java : public void glBindBuffer(int target, int buffer)
+    public void glBindBuffer(int target, int buffer){
+        GL15.glBindBuffer(target, buffer);
+    }
+
+// SdlGL20.java : public void glBindFramebuffer(int target, int framebuffer)
+    public void glBindFramebuffer(int target, int framebuffer){
+        EXTFramebufferObject.glBindFramebufferEXT(target, framebuffer);
+    }
+
+// SdlGL20.java : public void glBindRenderbuffer(int target, int renderbuffer)
+    public void glBindRenderbuffer(int target, int renderbuffer){
+        EXTFramebufferObject.glBindRenderbufferEXT(target, renderbuffer);
+    }
+
+// SdlGL20.java : public void glBindTexture(int target, int texture)
+    public void glBindTexture(int target, int texture){
+        GL11.glBindTexture(target, texture);
+    }
+
+// SdlGL20.java : public void glBlendColor(float red, float green, float blue, float alpha)
+    public void glBlendColor(float red, float green, float blue, float alpha){
+        GL14.glBlendColor(red, green, blue, alpha);
+    }
+
+// SdlGL20.java : public void glBlendEquation(int mode)
+    public void glBlendEquation(int mode){
+        GL14.glBlendEquation(mode);
+    }
+
+// SdlGL20.java : public void glBlendEquationSeparate(int modeRGB, int modeAlpha)
+    public void glBlendEquationSeparate(int modeRGB, int modeAlpha){
+        GL20.glBlendEquationSeparate(modeRGB, modeAlpha);
+    }
+
+// SdlGL20.java : public void glBlendFunc(int sfactor, int dfactor)
+    public void glBlendFunc(int sfactor, int dfactor){
+        GL11.glBlendFunc(sfactor, dfactor);
+    }
+
+// SdlGL20.java : public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+    public void glBlendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha){
+        GL14.glBlendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha);
+    }
+
+// SdlGL20.java : public int glCheckFramebufferStatus(int target)
+    public int glCheckFramebufferStatus(int target){
+        return EXTFramebufferObject.glCheckFramebufferStatusEXT(target);
+    }
+
+// SdlGL20.java : public void glClear(int mask)
+    public void glClear(int mask){
+        GL11.glClear(mask);
+    }
+
+// SdlGL20.java : public void glClearColor(float red, float green, float blue, float alpha)
+    public void glClearColor(float red, float green, float blue, float alpha){
+        GL11.glClearColor(red, green, blue, alpha);
+    }
+
+// SdlGL20.java : public void glClearDepthf(float depth)
+    public void glClearDepthf(float depth){
+        GL11.glClearDepth(depth);
+    }
+
+// SdlGL20.java : public void glClearStencil(int s)
+    public void glClearStencil(int s){
+        GL11.glClearStencil(s);
+    }
+
+// SdlGL20.java : public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha)
+    public void glColorMask(boolean red, boolean green, boolean blue, boolean alpha){
+        GL11.glColorMask(red, green, blue, alpha);
+    }
+
+// SdlGL20.java : public void glCompileShader(int shader)
+    public void glCompileShader(int shader){
+        GL20.glCompileShader(shader);
+    }
+
+// SdlGL20.java : public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data)
+    public void glCompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border,
+                                       int imageSize, Buffer data){
+        if(data instanceof ByteBuffer){
+            GL13.glCompressedTexImage2D(target, level, internalformat, width, height, border, (ByteBuffer)data);
+        }else{
+            throw new ArcRuntimeException("Can't use " + data.getClass().getName() + " with this method. Use ByteBuffer instead.");
+        }
+    }
+
+// SdlGL20.java : public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data)
+    public void glCompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format,
+                                          int imageSize, Buffer data){
+        throw new ArcRuntimeException("not implemented");
+    }
+
+// SdlGL20.java : public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border)
+    public void glCopyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border){
+        GL11.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border);
+    }
+
+// SdlGL20.java : public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height)
+    public void glCopyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height){
+        GL11.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+    }
+
+// SdlGL20.java : public int glCreateProgram()
+    public int glCreateProgram(){
+        return GL20.glCreateProgram();
+    }
+
+// SdlGL20.java : public int glCreateShader(int type)
+    public int glCreateShader(int type){
+        return GL20.glCreateShader(type);
+    }
+
+// SdlGL20.java : public void glCullFace(int mode)
+    public void glCullFace(int mode){
+        GL11.glCullFace(mode);
+    }
+
+// SdlGL20.java : public void glDeleteBuffers(int n, IntBuffer buffers)
+    public void glDeleteBuffers(int n, IntBuffer buffers){
+        GL15.glDeleteBuffers(buffers);
+    }
+
+// SdlGL20.java : public void glDeleteBuffer(int buffer)
+    @Override
+    public void glDeleteBuffer(int buffer){
+        GL15.glDeleteBuffers(buffer);
+    }
+
+// SdlGL20.java : public void glDeleteFramebuffers(int n, IntBuffer framebuffers)
+    public void glDeleteFramebuffers(int n, IntBuffer framebuffers){
+        EXTFramebufferObject.glDeleteFramebuffersEXT(framebuffers);
+    }
+
+// SdlGL20.java : public void glDeleteFramebuffer(int framebuffer)
+    @Override
+    public void glDeleteFramebuffer(int framebuffer){
+        EXTFramebufferObject.glDeleteFramebuffersEXT(framebuffer);
+    }
+
+// SdlGL20.java : public void glDeleteProgram(int program)
+    public void glDeleteProgram(int program){
+        GL20.glDeleteProgram(program);
+    }
+
+// SdlGL20.java : public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers)
+    public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers){
+        EXTFramebufferObject.glDeleteRenderbuffersEXT(renderbuffers);
+    }
+
+// SdlGL20.java : public void glDeleteRenderbuffer(int renderbuffer)
+    public void glDeleteRenderbuffer(int renderbuffer){
+        EXTFramebufferObject.glDeleteRenderbuffersEXT(renderbuffer);
+    }
+
+// SdlGL20.java : public void glDeleteShader(int shader)
+    public void glDeleteShader(int shader){
+        GL20.glDeleteShader(shader);
+    }
+
+// SdlGL20.java : public void glDeleteTextures(int n, IntBuffer textures)
+    public void glDeleteTextures(int n, IntBuffer textures){
+        GL11.glDeleteTextures(textures);
+    }
+
+// SdlGL20.java : public void glDeleteTexture(int texture)
+    @Override
+    public void glDeleteTexture(int texture){
+        GL11.glDeleteTextures(texture);
+    }
+
+// SdlGL20.java : public void glDepthFunc(int func)
+    public void glDepthFunc(int func){
+        GL11.glDepthFunc(func);
+    }
+
+// SdlGL20.java : public void glDepthMask(boolean flag)
+    public void glDepthMask(boolean flag){
+        GL11.glDepthMask(flag);
+    }
+
+// SdlGL20.java : public void glDepthRangef(float zNear, float zFar)
+    public void glDepthRangef(float zNear, float zFar){
+        GL11.glDepthRange(zNear, zFar);
+    }
+
+// SdlGL20.java : public void glDetachShader(int program, int shader)
+    public void glDetachShader(int program, int shader){
+        GL20.glDetachShader(program, shader);
+    }
+
+// SdlGL20.java : public void glDisable(int cap)
+    public void glDisable(int cap){
+        GL11.glDisable(cap);
+    }
+
+// SdlGL20.java : public void glDisableVertexAttribArray(int index)
+    public void glDisableVertexAttribArray(int index){
+        GL20.glDisableVertexAttribArray(index);
+    }
+
+// SdlGL20.java : public void glDrawArrays(int mode, int first, int count)
+    public void glDrawArrays(int mode, int first, int count){
+        GL11.glDrawArrays(mode, first, count);
+    }
+
+// SdlGL20.java : public void glEnable(int cap)
+    public void glEnable(int cap){
+        GL11.glEnable(cap);
+    }
+
+// SdlGL20.java : public void glEnableVertexAttribArray(int index)
+    public void glEnableVertexAttribArray(int index){
+        GL20.glEnableVertexAttribArray(index);
+    }
+
+// SdlGL20.java : public void glFinish()
+    public void glFinish(){
+        GL11.glFinish();
+    }
+
+// SdlGL20.java : public void glFlush()
+    public void glFlush(){
+        GL11.glFlush();
+    }
+
+// SdlGL20.java : public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+    public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer){
+        EXTFramebufferObject.glFramebufferRenderbufferEXT(target, attachment, renderbuffertarget, renderbuffer);
+    }
+
+// SdlGL20.java : public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+    public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level){
+        EXTFramebufferObject.glFramebufferTexture2DEXT(target, attachment, textarget, texture, level);
+    }
+
+// SdlGL20.java : public void glFrontFace(int mode)
+    public void glFrontFace(int mode){
+        GL11.glFrontFace(mode);
+    }
+
+// SdlGL20.java : public void glGenBuffers(int n, IntBuffer buffers)
+    public void glGenBuffers(int n, IntBuffer buffers){
+        GL15.glGenBuffers(buffers);
+    }
+
+// SdlGL20.java : public int glGenBuffer()
+    public int glGenBuffer(){
+        return GL15.glGenBuffers();
+    }
+
+// SdlGL20.java : public void glGenFramebuffers(int n, IntBuffer framebuffers)
+    public void glGenFramebuffers(int n, IntBuffer framebuffers){
+        EXTFramebufferObject.glGenFramebuffersEXT(framebuffers);
+    }
+
+// SdlGL20.java : public int glGenFramebuffer()
+    public int glGenFramebuffer(){
+        return EXTFramebufferObject.glGenFramebuffersEXT();
+    }
+
+// SdlGL20.java : public void glGenRenderbuffers(int n, IntBuffer renderbuffers)
+    public void glGenRenderbuffers(int n, IntBuffer renderbuffers){
+        EXTFramebufferObject.glGenRenderbuffersEXT(renderbuffers);
+    }
+
+// SdlGL20.java : public int glGenRenderbuffer()
+    public int glGenRenderbuffer(){
+        return EXTFramebufferObject.glGenRenderbuffersEXT();
+    }
+
+// SdlGL20.java : public void glGenTextures(int n, IntBuffer textures)
+    public void glGenTextures(int n, IntBuffer textures){
+        GL11.glGenTextures(textures);
+    }
+
+// SdlGL20.java : public int glGenTexture()
+    public int glGenTexture(){
+        return GL11.glGenTextures();
+    }
+
+// SdlGL20.java : public void glGenerateMipmap(int target)
+    public void glGenerateMipmap(int target){
+        EXTFramebufferObject.glGenerateMipmapEXT(target);
+    }
+
+// SdlGL20.java : public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+    public String glGetActiveAttrib(int program, int index, IntBuffer size, IntBuffer type){
+        return GL20.glGetActiveAttrib(program, index, 256, size, type);
+    }
+
+// SdlGL20.java : public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+    public String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type){
+        return GL20.glGetActiveUniform(program, index, 256, size, type);
+    }
+
+// SdlGL20.java : public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders)
+    public void glGetAttachedShaders(int program, int maxcount, Buffer count, IntBuffer shaders){
+        GL20.glGetAttachedShaders(program, (IntBuffer)count, shaders);
+    }
+
+// SdlGL20.java : public int glGetAttribLocation(int program, String name)
+    public int glGetAttribLocation(int program, String name){
+        return GL20.glGetAttribLocation(program, name);
+    }
+
+// SdlGL20.java : public void glGetBooleanv(int pname, Buffer params)
+    public void glGetBooleanv(int pname, Buffer params){
+        GL11.glGetBooleanv(pname, (ByteBuffer)params);
+    }
+
+// SdlGL20.java : public void glGetBufferParameteriv(int target, int pname, IntBuffer params)
+    public void glGetBufferParameteriv(int target, int pname, IntBuffer params){
+        GL15.glGetBufferParameteriv(target, pname, params);
+    }
+
+// SdlGL20.java : public int glGetError()
+    public int glGetError(){
+        return GL11.glGetError();
+    }
+
+// SdlGL20.java : public void glGetFloatv(int pname, FloatBuffer params)
+    public void glGetFloatv(int pname, FloatBuffer params){
+        GL11.glGetFloatv(pname, params);
+    }
+
+// SdlGL20.java : public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params)
+    public void glGetFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params){
+        EXTFramebufferObject.glGetFramebufferAttachmentParameterivEXT(target, attachment, pname, params);
+    }
+
+// SdlGL20.java : public void glGetIntegerv(int pname, IntBuffer params)
+    public void glGetIntegerv(int pname, IntBuffer params){
+        GL11.glGetIntegerv(pname, params);
+    }
+
+// SdlGL20.java : public void glGetProgramiv(int program, int pname, IntBuffer params)
+    public void glGetProgramiv(int program, int pname, IntBuffer params){
+        GL20.glGetProgramiv(program, pname, params);
+    }
+
+// SdlGL20.java : public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params)
+    public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params){
+        EXTFramebufferObject.glGetRenderbufferParameterivEXT(target, pname, params);
+    }
+
+// SdlGL20.java : public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+    public void glGetShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision){
+        throw new UnsupportedOperationException("unsupported, won't implement");
+    }
+
+// SdlGL20.java : public void glGetShaderiv(int shader, int pname, IntBuffer params)
+    public void glGetShaderiv(int shader, int pname, IntBuffer params){
+        GL20.glGetShaderiv(shader, pname, params);
+    }
+
+// SdlGL20.java : public String glGetString(int name)
+    public String glGetString(int name){
+        return GL11.glGetString(name);
+    }
+
+// SdlGL20.java : public void glGetTexParameterfv(int target, int pname, FloatBuffer params)
+    public void glGetTexParameterfv(int target, int pname, FloatBuffer params){
+        GL11.glGetTexParameterfv(target, pname, params);
+    }
+
+// SdlGL20.java : public void glGetTexParameteriv(int target, int pname, IntBuffer params)
+    public void glGetTexParameteriv(int target, int pname, IntBuffer params){
+        GL11.glGetTexParameteriv(target, pname, params);
+    }
+
+// SdlGL20.java : public int glGetUniformLocation(int program, String name)
+    public int glGetUniformLocation(int program, String name){
+        return GL20.glGetUniformLocation(program, name);
+    }
+
+// SdlGL20.java : public void glGetUniformfv(int program, int location, FloatBuffer params)
+    public void glGetUniformfv(int program, int location, FloatBuffer params){
+        GL20.glGetUniformfv(program, location, params);
+    }
+
+// SdlGL20.java : public void glGetUniformiv(int program, int location, IntBuffer params)
+    public void glGetUniformiv(int program, int location, IntBuffer params){
+        GL20.glGetUniformiv(program, location, params);
+    }
+
+// SdlGL20.java : public void glGetVertexAttribPointerv(int index, int pname, Buffer pointer)
+    public void glGetVertexAttribPointerv(int index, int pname, Buffer pointer){
+        throw new UnsupportedOperationException("unsupported, won't implement");
+    }
+
+// SdlGL20.java : public void glGetVertexAttribfv(int index, int pname, FloatBuffer params)
+    public void glGetVertexAttribfv(int index, int pname, FloatBuffer params){
+        GL20.glGetVertexAttribfv(index, pname, params);
+    }
+
+// SdlGL20.java : public void glGetVertexAttribiv(int index, int pname, IntBuffer params)
+    public void glGetVertexAttribiv(int index, int pname, IntBuffer params){
+        GL20.glGetVertexAttribiv(index, pname, params);
+    }
+
+// SdlGL20.java : public void glHint(int target, int mode)
+    public void glHint(int target, int mode){
+        GL11.glHint(target, mode);
+    }
+
+// SdlGL20.java : public boolean glIsBuffer(int buffer)
+    public boolean glIsBuffer(int buffer){
+        return GL15.glIsBuffer(buffer);
+    }
+
+// SdlGL20.java : public boolean glIsEnabled(int cap)
+    public boolean glIsEnabled(int cap){
+        return GL11.glIsEnabled(cap);
+    }
+
+// SdlGL20.java : public boolean glIsFramebuffer(int framebuffer)
+    public boolean glIsFramebuffer(int framebuffer){
+        return EXTFramebufferObject.glIsFramebufferEXT(framebuffer);
+    }
+
+// SdlGL20.java : public boolean glIsProgram(int program)
+    public boolean glIsProgram(int program){
+        return GL20.glIsProgram(program);
+    }
+
+// SdlGL20.java : public boolean glIsRenderbuffer(int renderbuffer)
+    public boolean glIsRenderbuffer(int renderbuffer){
+        return EXTFramebufferObject.glIsRenderbufferEXT(renderbuffer);
+    }
+
+// SdlGL20.java : public boolean glIsShader(int shader)
+    public boolean glIsShader(int shader){
+        return GL20.glIsShader(shader);
+    }
+
+// SdlGL20.java : public boolean glIsTexture(int texture)
+    public boolean glIsTexture(int texture){
+        return GL11.glIsTexture(texture);
+    }
+
+// SdlGL20.java : public void glLineWidth(float width)
+    public void glLineWidth(float width){
+        GL11.glLineWidth(width);
+    }
+
+// SdlGL20.java : public void glLinkProgram(int program)
+    public void glLinkProgram(int program){
+        GL20.glLinkProgram(program);
+    }
+
+// SdlGL20.java : public void glPixelStorei(int pname, int param)
+    public void glPixelStorei(int pname, int param){
+        GL11.glPixelStorei(pname, param);
+    }
+
+// SdlGL20.java : public void glPolygonOffset(float factor, float units)
+    public void glPolygonOffset(float factor, float units){
+        GL11.glPolygonOffset(factor, units);
+    }
+
+// SdlGL20.java : public void glReleaseShaderCompiler()
+    public void glReleaseShaderCompiler(){
+        // nothing to do here
+    }
+
+// SdlGL20.java : public void glRenderbufferStorage(int target, int internalformat, int width, int height)
+    public void glRenderbufferStorage(int target, int internalformat, int width, int height){
+        EXTFramebufferObject.glRenderbufferStorageEXT(target, internalformat, width, height);
+    }
+
+// SdlGL20.java : public void glSampleCoverage(float value, boolean invert)
+    public void glSampleCoverage(float value, boolean invert){
+        GL13.glSampleCoverage(value, invert);
+    }
+
+// SdlGL20.java : public void glScissor(int x, int y, int width, int height)
+    public void glScissor(int x, int y, int width, int height){
+        GL11.glScissor(x, y, width, height);
+    }
+
+// SdlGL20.java : public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length)
+    public void glShaderBinary(int n, IntBuffer shaders, int binaryformat, Buffer binary, int length){
+        throw new UnsupportedOperationException("unsupported, won't implement");
+    }
+
+// SdlGL20.java : public void glShaderSource(int shader, String string)
+    public void glShaderSource(int shader, String string){
+        GL20.glShaderSource(shader, string);
+    }
+
+// SdlGL20.java : public void glStencilFunc(int func, int ref, int mask)
+    public void glStencilFunc(int func, int ref, int mask){
+        GL11.glStencilFunc(func, ref, mask);
+    }
+
+// SdlGL20.java : public void glStencilFuncSeparate(int face, int func, int ref, int mask)
+    public void glStencilFuncSeparate(int face, int func, int ref, int mask){
+        GL20.glStencilFuncSeparate(face, func, ref, mask);
+    }
+
+// SdlGL20.java : public void glStencilMask(int mask)
+    public void glStencilMask(int mask){
+        GL11.glStencilMask(mask);
+    }
+
+// SdlGL20.java : public void glStencilMaskSeparate(int face, int mask)
+    public void glStencilMaskSeparate(int face, int mask){
+        GL20.glStencilMaskSeparate(face, mask);
+    }
+
+// SdlGL20.java : public void glStencilOp(int fail, int zfail, int zpass)
+    public void glStencilOp(int fail, int zfail, int zpass){
+        GL11.glStencilOp(fail, zfail, zpass);
+    }
+
+// SdlGL20.java : public void glStencilOpSeparate(int face, int fail, int zfail, int zpass)
+    public void glStencilOpSeparate(int face, int fail, int zfail, int zpass){
+        GL20.glStencilOpSeparate(face, fail, zfail, zpass);
+    }
+
+// SdlGL20.java : public void glTexParameterf(int target, int pname, float param)
+    public void glTexParameterf(int target, int pname, float param){
+        GL11.glTexParameterf(target, pname, param);
+    }
+
+// SdlGL20.java : public void glTexParameterfv(int target, int pname, FloatBuffer params)
+    public void glTexParameterfv(int target, int pname, FloatBuffer params){
+        GL11.glTexParameterfv(target, pname, params);
+    }
+
+// SdlGL20.java : public void glTexParameteri(int target, int pname, int param)
+    public void glTexParameteri(int target, int pname, int param){
+        GL11.glTexParameteri(target, pname, param);
+    }
+
+// SdlGL20.java : public void glTexParameteriv(int target, int pname, IntBuffer params)
+    public void glTexParameteriv(int target, int pname, IntBuffer params){
+        GL11.glTexParameteriv(target, pname, params);
+    }
+
+// SdlGL20.java : public void glUniform1f(int location, float x)
+    public void glUniform1f(int location, float x){
+        GL20.glUniform1f(location, x);
+    }
+
+// SdlGL20.java : public void glUniform1fv(int location, int count, FloatBuffer v) / public void glUniform1fv(int location, int count, float[] v, int offset)
+    public void glUniform1fv(int location, int count, FloatBuffer v){
+        GL20.glUniform1fv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform1i(int location, int x)
+    public void glUniform1i(int location, int x){
+        GL20.glUniform1i(location, x);
+    }
+
+// SdlGL20.java : public void glUniform1iv(int location, int count, IntBuffer v) / public void glUniform1iv(int location, int count, int[] v, int offset)
+    public void glUniform1iv(int location, int count, IntBuffer v){
+        GL20.glUniform1iv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform2f(int location, float x, float y)
+    public void glUniform2f(int location, float x, float y){
+        GL20.glUniform2f(location, x, y);
+    }
+
+// SdlGL20.java : public void glUniform2fv(int location, int count, FloatBuffer v) / public void glUniform2fv(int location, int count, float[] v, int offset)
+    public void glUniform2fv(int location, int count, FloatBuffer v){
+        GL20.glUniform2fv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform2i(int location, int x, int y)
+    public void glUniform2i(int location, int x, int y){
+        GL20.glUniform2i(location, x, y);
+    }
+
+// SdlGL20.java : public void glUniform2iv(int location, int count, IntBuffer v) / public void glUniform2iv(int location, int count, int[] v, int offset)
+    public void glUniform2iv(int location, int count, IntBuffer v){
+        GL20.glUniform2iv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform3f(int location, float x, float y, float z)
+    public void glUniform3f(int location, float x, float y, float z){
+        GL20.glUniform3f(location, x, y, z);
+    }
+
+// SdlGL20.java : public void glUniform3fv(int location, int count, FloatBuffer v) / public void glUniform3fv(int location, int count, float[] v, int offset)
+    public void glUniform3fv(int location, int count, FloatBuffer v){
+        GL20.glUniform3fv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform3i(int location, int x, int y, int z)
+    public void glUniform3i(int location, int x, int y, int z){
+        GL20.glUniform3i(location, x, y, z);
+    }
+
+// SdlGL20.java : public void glUniform3iv(int location, int count, IntBuffer v) / public void glUniform3iv(int location, int count, int[] v, int offset)
+    public void glUniform3iv(int location, int count, IntBuffer v){
+        GL20.glUniform3iv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform4f(int location, float x, float y, float z, float w)
+    public void glUniform4f(int location, float x, float y, float z, float w){
+        GL20.glUniform4f(location, x, y, z, w);
+    }
+
+// SdlGL20.java : public void glUniform4fv(int location, int count, FloatBuffer v) / public void glUniform4fv(int location, int count, float[] v, int offset)
+    public void glUniform4fv(int location, int count, FloatBuffer v){
+        GL20.glUniform4fv(location, v);
+    }
+
+// SdlGL20.java : public void glUniform4i(int location, int x, int y, int z, int w)
+    public void glUniform4i(int location, int x, int y, int z, int w){
+        GL20.glUniform4i(location, x, y, z, w);
+    }
+
+// SdlGL20.java : public void glUniform4iv(int location, int count, IntBuffer v) / public void glUniform4iv(int location, int count, int[] v, int offset)
+    public void glUniform4iv(int location, int count, IntBuffer v){
+        GL20.glUniform4iv(location, v);
+    }
+
+// SdlGL20.java : public void glUniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset)
+    public void glUniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL20.glUniformMatrix2fv(location, transpose, value);
+    }
+
+// SdlGL20.java : public void glUniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset)
+    public void glUniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL20.glUniformMatrix3fv(location, transpose, value);
+    }
+
+// SdlGL20.java : public void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) / public void glUniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset)
+    public void glUniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL20.glUniformMatrix4fv(location, transpose, value);
+    }
+
+// SdlGL20.java : public void glUseProgram(int program)
+    public void glUseProgram(int program){
+        GL20.glUseProgram(program);
+    }
+
+// SdlGL20.java : public void glValidateProgram(int program)
+    public void glValidateProgram(int program){
+        GL20.glValidateProgram(program);
+    }
+
+// SdlGL20.java : public void glVertexAttrib1f(int indx, float x)
+    public void glVertexAttrib1f(int indx, float x){
+        GL20.glVertexAttrib1f(indx, x);
+    }
+
+// SdlGL20.java : public void glVertexAttrib1fv(int indx, FloatBuffer values)
+    public void glVertexAttrib1fv(int indx, FloatBuffer values){
+        GL20.glVertexAttrib1f(indx, values.get());
+    }
+
+// SdlGL20.java : public void glVertexAttrib2f(int indx, float x, float y)
+    public void glVertexAttrib2f(int indx, float x, float y){
+        GL20.glVertexAttrib2f(indx, x, y);
+    }
+
+// SdlGL20.java : public void glVertexAttrib2fv(int indx, FloatBuffer values)
+    public void glVertexAttrib2fv(int indx, FloatBuffer values){
+        GL20.glVertexAttrib2f(indx, values.get(), values.get());
+    }
+
+// SdlGL20.java : public void glVertexAttrib3f(int indx, float x, float y, float z)
+    public void glVertexAttrib3f(int indx, float x, float y, float z){
+        GL20.glVertexAttrib3f(indx, x, y, z);
+    }
+
+// SdlGL20.java : public void glVertexAttrib3fv(int indx, FloatBuffer values)
+    public void glVertexAttrib3fv(int indx, FloatBuffer values){
+        GL20.glVertexAttrib3f(indx, values.get(), values.get(), values.get());
+    }
+
+// SdlGL20.java : public void glVertexAttrib4f(int indx, float x, float y, float z, float w)
+    public void glVertexAttrib4f(int indx, float x, float y, float z, float w){
+        GL20.glVertexAttrib4f(indx, x, y, z, w);
+    }
+
+// SdlGL20.java : public void glVertexAttrib4fv(int indx, FloatBuffer values)
+    public void glVertexAttrib4fv(int indx, FloatBuffer values){
+        GL20.glVertexAttrib4f(indx, values.get(), values.get(), values.get(), values.get());
+    }
+
+// SdlGL20.java : public void glViewport(int x, int y, int width, int height)
+    public void glViewport(int x, int y, int width, int height){
+        GL11.glViewport(x, y, width, height);
+    }
+
+// SdlGL30.java : public void glReadBuffer(int mode)
+    @Override
+    public void glReadBuffer(int mode){
+        GL11.glReadBuffer(mode);
+    }
+
+// SdlGL30.java : public void glDrawRangeElements(int mode, int start, int end, int count, int type, Buffer indices) / public void glDrawRangeElements(int mode, int start, int end, int count, int type, int offset)
+    @Override
+    public void glDrawRangeElements(int mode, int start, int end, int count, int type, Buffer indices){
+        if(indices instanceof ByteBuffer)
+            GL12.glDrawRangeElements(mode, start, end, (ByteBuffer)indices);
+        else if(indices instanceof ShortBuffer)
+            GL12.glDrawRangeElements(mode, start, end, (ShortBuffer)indices);
+        else if(indices instanceof IntBuffer)
+            GL12.glDrawRangeElements(mode, start, end, (IntBuffer)indices);
+        else
+            throw new ArcRuntimeException("indices must be byte, short or int buffer");
+    }
+
+// SdlGL30.java : public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
+    @Override
+    public void glCopyTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width,
+                                    int height){
+        GL12.glCopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height);
+    }
+
+// SdlGL30.java : public void glGenQueries(int n, IntBuffer ids)
+    @Override
+    public void glGenQueries(int n, IntBuffer ids){
+        for(int i = 0; i < n; i++){
+            ids.put(GL15.glGenQueries());
+        }
+    }
+
+// SdlGL30.java : public void glDeleteQueries(int n, IntBuffer ids)
+    @Override
+    public void glDeleteQueries(int n, IntBuffer ids){
+        for(int i = 0; i < n; i++){
+            GL15.glDeleteQueries(ids.get());
+        }
+    }
+
+// SdlGL30.java : public boolean glIsQuery(int id)
+    @Override
+    public boolean glIsQuery(int id){
+        return GL15.glIsQuery(id);
+    }
+
+// SdlGL30.java : public void glBeginQuery(int target, int id)
+    @Override
+    public void glBeginQuery(int target, int id){
+        GL15.glBeginQuery(target, id);
+    }
+
+// SdlGL30.java : public void glEndQuery(int target)
+    @Override
+    public void glEndQuery(int target){
+        GL15.glEndQuery(target);
+    }
+
+// SdlGL30.java : public void glGetQueryiv(int target, int pname, IntBuffer params)
+    @Override
+    public void glGetQueryiv(int target, int pname, IntBuffer params){
+        GL15.glGetQueryiv(target, pname, params);
+    }
+
+// SdlGL30.java : public void glGetQueryObjectuiv(int id, int pname, IntBuffer params)
+    @Override
+    public void glGetQueryObjectuiv(int id, int pname, IntBuffer params){
+        GL15.glGetQueryObjectuiv(id, pname, params);
+    }
+
+// SdlGL30.java : public boolean glUnmapBuffer(int target)
+    @Override
+    public boolean glUnmapBuffer(int target){
+        return GL15.glUnmapBuffer(target);
+    }
+
+// SdlGL30.java : public Buffer glGetBufferPointerv(int target, int pname)
+    @Override
+    public Buffer glGetBufferPointerv(int target, int pname){
+        // FIXME glGetBufferPointerv needs a proper translation
+        // return GL15.glGetBufferPointer(target, pname);
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+// SdlGL30.java : public void glDrawBuffers(int n, IntBuffer bufs)
+    @Override
+    public void glDrawBuffers(int n, IntBuffer bufs){
+        int limit = bufs.limit();
+        ((Buffer)bufs).limit(n);
+        GL20.glDrawBuffers(bufs);
+        ((Buffer)bufs).limit(limit);
+    }
+
+// SdlGL30.java : public void glUniformMatrix2x3fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix2x3fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix2x3fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glUniformMatrix3x2fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix3x2fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix3x2fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glUniformMatrix2x4fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix2x4fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix2x4fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glUniformMatrix4x2fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix4x2fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix4x2fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glUniformMatrix3x4fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix3x4fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix3x4fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glUniformMatrix4x3fv(int location, int count, boolean transpose, FloatBuffer value)
+    @Override
+    public void glUniformMatrix4x3fv(int location, int count, boolean transpose, FloatBuffer value){
+        GL21.glUniformMatrix4x3fv(location, transpose, value);
+    }
+
+// SdlGL30.java : public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, int mask, int filter)
+    @Override
+    public void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1,
+                                  int mask, int filter){
+        GL30.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+    }
+
+// SdlGL30.java : public void glBindFramebuffer(int target, int framebuffer)
+    @Override
+    public void glBindFramebuffer(int target, int framebuffer){
+        GL30.glBindFramebuffer(target, framebuffer);
+    }
+
+// SdlGL30.java : public void glBindRenderbuffer(int target, int renderbuffer)
+    @Override
+    public void glBindRenderbuffer(int target, int renderbuffer){
+        GL30.glBindRenderbuffer(target, renderbuffer);
+    }
+
+// SdlGL30.java : public int glCheckFramebufferStatus(int target)
+    @Override
+    public int glCheckFramebufferStatus(int target){
+        return GL30.glCheckFramebufferStatus(target);
+    }
+
+// SdlGL30.java : public void glDeleteFramebuffers(int n, IntBuffer framebuffers)
+    @Override
+    public void glDeleteFramebuffers(int n, IntBuffer framebuffers){
+        GL30.glDeleteFramebuffers(framebuffers);
+    }
+
+// SdlGL30.java : public void glDeleteFramebuffer(int framebuffer)
+    @Override
+    public void glDeleteFramebuffer(int framebuffer){
+        GL30.glDeleteFramebuffers(framebuffer);
+    }
+
+// SdlGL30.java : public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers)
+    @Override
+    public void glDeleteRenderbuffers(int n, IntBuffer renderbuffers){
+        GL30.glDeleteRenderbuffers(renderbuffers);
+    }
+
+// SdlGL30.java : public void glDeleteRenderbuffer(int renderbuffer)
+    @Override
+    public void glDeleteRenderbuffer(int renderbuffer){
+        GL30.glDeleteRenderbuffers(renderbuffer);
+    }
+
+// SdlGL30.java : public void glGenerateMipmap(int target)
+    @Override
+    public void glGenerateMipmap(int target){
+        GL30.glGenerateMipmap(target);
+    }
+
+// SdlGL30.java : public void glGenFramebuffers(int n, IntBuffer framebuffers)
+    @Override
+    public void glGenFramebuffers(int n, IntBuffer framebuffers){
+        GL30.glGenFramebuffers(framebuffers);
+    }
+
+// SdlGL30.java : public int glGenFramebuffer()
+    @Override
+    public int glGenFramebuffer(){
+        return GL30.glGenFramebuffers();
+    }
+
+// SdlGL30.java : public void glGenRenderbuffers(int n, IntBuffer renderbuffers)
+    @Override
+    public void glGenRenderbuffers(int n, IntBuffer renderbuffers){
+        GL30.glGenRenderbuffers(renderbuffers);
+    }
+
+// SdlGL30.java : public int glGenRenderbuffer()
+    @Override
+    public int glGenRenderbuffer(){
+        return GL30.glGenRenderbuffers();
+    }
+
+// SdlGL30.java : public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params)
+    @Override
+    public void glGetRenderbufferParameteriv(int target, int pname, IntBuffer params){
+        GL30.glGetRenderbufferParameteriv(target, pname, params);
+    }
+
+// SdlGL30.java : public boolean glIsFramebuffer(int framebuffer)
+    @Override
+    public boolean glIsFramebuffer(int framebuffer){
+        return GL30.glIsFramebuffer(framebuffer);
+    }
+
+// SdlGL30.java : public boolean glIsRenderbuffer(int renderbuffer)
+    @Override
+    public boolean glIsRenderbuffer(int renderbuffer){
+        return GL30.glIsRenderbuffer(renderbuffer);
+    }
+
+// SdlGL30.java : public void glRenderbufferStorage(int target, int internalformat, int width, int height)
+    @Override
+    public void glRenderbufferStorage(int target, int internalformat, int width, int height){
+        GL30.glRenderbufferStorage(target, internalformat, width, height);
+    }
+
+// SdlGL30.java : public void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height)
+    @Override
+    public void glRenderbufferStorageMultisample(int target, int samples, int internalformat, int width, int height){
+        GL30.glRenderbufferStorageMultisample(target, samples, internalformat, width, height);
+    }
+
+// SdlGL30.java : public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+    @Override
+    public void glFramebufferTexture2D(int target, int attachment, int textarget, int texture, int level){
+        GL30.glFramebufferTexture2D(target, attachment, textarget, texture, level);
+    }
+
+// SdlGL30.java : public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+    @Override
+    public void glFramebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer){
+        GL30.glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+    }
+
+// SdlGL30.java : public void glFramebufferTextureLayer(int target, int attachment, int texture, int level, int layer)
+    @Override
+    public void glFramebufferTextureLayer(int target, int attachment, int texture, int level, int layer){
+        GL30.glFramebufferTextureLayer(target, attachment, texture, level, layer);
+    }
+
+// SdlGL30.java : public void glFlushMappedBufferRange(int target, int offset, int length)
+    @Override
+    public void glFlushMappedBufferRange(int target, int offset, int length){
+        GL30.glFlushMappedBufferRange(target, offset, length);
+    }
+
+// SdlGL30.java : public void glBindVertexArray(int array)
+    @Override
+    public void glBindVertexArray(int array){
+        GL30.glBindVertexArray(array);
+    }
+
+// SdlGL30.java : public void glDeleteVertexArrays(int n, IntBuffer arrays)
+    @Override
+    public void glDeleteVertexArrays(int n, IntBuffer arrays){
+        GL30.glDeleteVertexArrays(arrays);
+    }
+
+// SdlGL30.java : public void glGenVertexArrays(int n, IntBuffer arrays)
+    @Override
+    public void glGenVertexArrays(int n, IntBuffer arrays){
+        GL30.glGenVertexArrays(arrays);
+    }
+
+// SdlGL30.java : public boolean glIsVertexArray(int array)
+    @Override
+    public boolean glIsVertexArray(int array){
+        return GL30.glIsVertexArray(array);
+    }
+
+// SdlGL30.java : public void glBeginTransformFeedback(int primitiveMode)
+    @Override
+    public void glBeginTransformFeedback(int primitiveMode){
+        GL30.glBeginTransformFeedback(primitiveMode);
+    }
+
+// SdlGL30.java : public void glEndTransformFeedback()
+    @Override
+    public void glEndTransformFeedback(){
+        GL30.glEndTransformFeedback();
+    }
+
+// SdlGL30.java : public void glBindBufferRange(int target, int index, int buffer, int offset, int size)
+    @Override
+    public void glBindBufferRange(int target, int index, int buffer, int offset, int size){
+        GL30.glBindBufferRange(target, index, buffer, offset, size);
+    }
+
+// SdlGL30.java : public void glBindBufferBase(int target, int index, int buffer)
+    @Override
+    public void glBindBufferBase(int target, int index, int buffer){
+        GL30.glBindBufferBase(target, index, buffer);
+    }
+
+// SdlGL30.java : public void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode)
+    @Override
+    public void glTransformFeedbackVaryings(int program, String[] varyings, int bufferMode){
+        GL30.glTransformFeedbackVaryings(program, varyings, bufferMode);
+    }
+
+// SdlGL30.java : public void glVertexAttribIPointer(int index, int size, int type, int stride, int offset)
+    @Override
+    public void glVertexAttribIPointer(int index, int size, int type, int stride, int offset){
+        GL30.glVertexAttribIPointer(index, size, type, stride, offset);
+    }
+
+// SdlGL30.java : public void glGetVertexAttribIiv(int index, int pname, IntBuffer params)
+    @Override
+    public void glGetVertexAttribIiv(int index, int pname, IntBuffer params){
+        GL30.glGetVertexAttribIiv(index, pname, params);
+    }
+
+// SdlGL30.java : public void glGetVertexAttribIuiv(int index, int pname, IntBuffer params)
+    @Override
+    public void glGetVertexAttribIuiv(int index, int pname, IntBuffer params){
+        GL30.glGetVertexAttribIuiv(index, pname, params);
+    }
+
+// SdlGL30.java : public void glVertexAttribI4i(int index, int x, int y, int z, int w)
+    @Override
+    public void glVertexAttribI4i(int index, int x, int y, int z, int w){
+        GL30.glVertexAttribI4i(index, x, y, z, w);
+    }
+
+// SdlGL30.java : public void glVertexAttribI4ui(int index, int x, int y, int z, int w)
+    @Override
+    public void glVertexAttribI4ui(int index, int x, int y, int z, int w){
+        GL30.glVertexAttribI4ui(index, x, y, z, w);
+    }
+
+// SdlGL30.java : public void glGetUniformuiv(int program, int location, IntBuffer params)
+    @Override
+    public void glGetUniformuiv(int program, int location, IntBuffer params){
+        GL30.glGetUniformuiv(program, location, params);
+    }
+
+// SdlGL30.java : public int glGetFragDataLocation(int program, String name)
+    @Override
+    public int glGetFragDataLocation(int program, String name){
+        return GL30.glGetFragDataLocation(program, name);
+    }
+
+// SdlGL30.java : public void glUniform1uiv(int location, int count, IntBuffer value)
+    @Override
+    public void glUniform1uiv(int location, int count, IntBuffer value){
+        GL30.glUniform1uiv(location, value);
+    }
+
+// SdlGL30.java : public void glUniform3uiv(int location, int count, IntBuffer value)
+    @Override
+    public void glUniform3uiv(int location, int count, IntBuffer value){
+        GL30.glUniform3uiv(location, value);
+    }
+
+// SdlGL30.java : public void glUniform4uiv(int location, int count, IntBuffer value)
+    @Override
+    public void glUniform4uiv(int location, int count, IntBuffer value){
+        GL30.glUniform4uiv(location, value);
+    }
+
+// SdlGL30.java : public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value)
+    @Override
+    public void glClearBufferiv(int buffer, int drawbuffer, IntBuffer value){
+        GL30.glClearBufferiv(buffer, drawbuffer, value);
+    }
+
+// SdlGL30.java : public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value)
+    @Override
+    public void glClearBufferuiv(int buffer, int drawbuffer, IntBuffer value){
+        GL30.glClearBufferuiv(buffer, drawbuffer, value);
+    }
+
+// SdlGL30.java : public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value)
+    @Override
+    public void glClearBufferfv(int buffer, int drawbuffer, FloatBuffer value){
+        GL30.glClearBufferfv(buffer, drawbuffer, value);
+    }
+
+// SdlGL30.java : public void glClearBufferfi(int buffer, int drawbuffer, float depth, int stencil)
+    @Override
+    public void glClearBufferfi(int buffer, int drawbuffer, float depth, int stencil){
+        GL30.glClearBufferfi(buffer, drawbuffer, depth, stencil);
+    }
+
+// SdlGL30.java : public String glGetStringi(int name, int index)
+    @Override
+    public String glGetStringi(int name, int index){
+        return GL30.glGetStringi(name, index);
+    }
+
+// SdlGL30.java : public void glCopyBufferSubData(int readTarget, int writeTarget, int readOffset, int writeOffset, int size)
+    @Override
+    public void glCopyBufferSubData(int readTarget, int writeTarget, int readOffset, int writeOffset, int size){
+        GL31.glCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
+    }
+
+// SdlGL30.java : public void glGetUniformIndices(int program, String[] uniformNames, IntBuffer uniformIndices)
+    @Override
+    public void glGetUniformIndices(int program, String[] uniformNames, IntBuffer uniformIndices){
+        GL31.glGetUniformIndices(program, uniformNames, uniformIndices);
+    }
+
+// SdlGL30.java : public void glGetActiveUniformsiv(int program, int uniformCount, IntBuffer uniformIndices, int pname, IntBuffer params)
+    @Override
+    public void glGetActiveUniformsiv(int program, int uniformCount, IntBuffer uniformIndices, int pname, IntBuffer params){
+        GL31.glGetActiveUniformsiv(program, uniformIndices, pname, params);
+    }
+
+// SdlGL30.java : public int glGetUniformBlockIndex(int program, String uniformBlockName)
+    @Override
+    public int glGetUniformBlockIndex(int program, String uniformBlockName){
+        return GL31.glGetUniformBlockIndex(program, uniformBlockName);
+    }
+
+// SdlGL30.java : public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, IntBuffer params)
+    @Override
+    public void glGetActiveUniformBlockiv(int program, int uniformBlockIndex, int pname, IntBuffer params){
+        GL31.glGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
+    }
+
+// SdlGL30.java : public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName)
+    @Override
+    public void glGetActiveUniformBlockName(int program, int uniformBlockIndex, Buffer length, Buffer uniformBlockName){
+        GL31.glGetActiveUniformBlockName(program, uniformBlockIndex, (IntBuffer)length, (ByteBuffer)uniformBlockName);
+    }
+
+// SdlGL30.java : public void glUniformBlockBinding(int program, int uniformBlockIndex, int uniformBlockBinding)
+    @Override
+    public void glUniformBlockBinding(int program, int uniformBlockIndex, int uniformBlockBinding){
+        GL31.glUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+    }
+
+// SdlGL30.java : public void glDrawArraysInstanced(int mode, int first, int count, int instanceCount)
+    @Override
+    public void glDrawArraysInstanced(int mode, int first, int count, int instanceCount){
+        GL31.glDrawArraysInstanced(mode, first, count, instanceCount);
+    }
+
+// SdlGL30.java : public void glDrawElementsInstanced(int mode, int count, int type, int indicesOffset, int instanceCount)
+    @Override
+    public void glDrawElementsInstanced(int mode, int count, int type, int indicesOffset, int instanceCount){
+        GL31.glDrawElementsInstanced(mode, count, type, indicesOffset, instanceCount);
+
+    }
+
+// SdlGL30.java : public void glGetInteger64v(int pname, LongBuffer params)
+    @Override
+    public void glGetInteger64v(int pname, LongBuffer params){
+        GL32.glGetInteger64v(pname, params);
+    }
+
+// SdlGL30.java : public void glGetBufferParameteri64v(int target, int pname, LongBuffer params)
+    @Override
+    public void glGetBufferParameteri64v(int target, int pname, LongBuffer params){
+        params.put(GL32.glGetBufferParameteri64(target, pname));
+    }
+
+// SdlGL30.java : public void glGenSamplers(int count, IntBuffer samplers)
+    @Override
+    public void glGenSamplers(int count, IntBuffer samplers){
+        GL33.glGenSamplers(samplers);
+    }
+
+// SdlGL30.java : public void glDeleteSamplers(int count, IntBuffer samplers)
+    @Override
+    public void glDeleteSamplers(int count, IntBuffer samplers){
+        GL33.glDeleteSamplers(samplers);
+    }
+
+// SdlGL30.java : public boolean glIsSampler(int sampler)
+    @Override
+    public boolean glIsSampler(int sampler){
+        return GL33.glIsSampler(sampler);
+    }
+
+// SdlGL30.java : public void glBindSampler(int unit, int sampler)
+    @Override
+    public void glBindSampler(int unit, int sampler){
+        GL33.glBindSampler(unit, sampler);
+    }
+
+// SdlGL30.java : public void glSamplerParameteri(int sampler, int pname, int param)
+    @Override
+    public void glSamplerParameteri(int sampler, int pname, int param){
+        GL33.glSamplerParameteri(sampler, pname, param);
+    }
+
+// SdlGL30.java : public void glSamplerParameteriv(int sampler, int pname, IntBuffer param)
+    @Override
+    public void glSamplerParameteriv(int sampler, int pname, IntBuffer param){
+        GL33.glSamplerParameteriv(sampler, pname, param);
+    }
+
+// SdlGL30.java : public void glSamplerParameterf(int sampler, int pname, float param)
+    @Override
+    public void glSamplerParameterf(int sampler, int pname, float param){
+        GL33.glSamplerParameterf(sampler, pname, param);
+    }
+
+// SdlGL30.java : public void glSamplerParameterfv(int sampler, int pname, FloatBuffer param)
+    @Override
+    public void glSamplerParameterfv(int sampler, int pname, FloatBuffer param){
+        GL33.glSamplerParameterfv(sampler, pname, param);
+    }
+
+// SdlGL30.java : public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer params)
+    @Override
+    public void glGetSamplerParameteriv(int sampler, int pname, IntBuffer params){
+        GL33.glGetSamplerParameterIiv(sampler, pname, params);
+    }
+
+// SdlGL30.java : public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer params)
+    @Override
+    public void glGetSamplerParameterfv(int sampler, int pname, FloatBuffer params){
+        GL33.glGetSamplerParameterfv(sampler, pname, params);
+    }
+
+// SdlGL30.java : public void glVertexAttribDivisor(int index, int divisor)
+    @Override
+    public void glVertexAttribDivisor(int index, int divisor){
+        GL33.glVertexAttribDivisor(index, divisor);
+    }
+
+// SdlGL30.java : public void glBindTransformFeedback(int target, int id)
+    @Override
+    public void glBindTransformFeedback(int target, int id){
+        GL40.glBindTransformFeedback(target, id);
+    }
+
+// SdlGL30.java : public void glDeleteTransformFeedbacks(int n, IntBuffer ids)
+    @Override
+    public void glDeleteTransformFeedbacks(int n, IntBuffer ids){
+        GL40.glDeleteTransformFeedbacks(ids);
+    }
+
+// SdlGL30.java : public void glGenTransformFeedbacks(int n, IntBuffer ids)
+    @Override
+    public void glGenTransformFeedbacks(int n, IntBuffer ids){
+        GL40.glGenTransformFeedbacks(ids);
+    }
+
+// SdlGL30.java : public boolean glIsTransformFeedback(int id)
+    @Override
+    public boolean glIsTransformFeedback(int id){
+        return GL40.glIsTransformFeedback(id);
+    }
+
+// SdlGL30.java : public void glPauseTransformFeedback()
+    @Override
+    public void glPauseTransformFeedback(){
+        GL40.glPauseTransformFeedback();
+    }
+
+// SdlGL30.java : public void glResumeTransformFeedback()
+    @Override
+    public void glResumeTransformFeedback(){
+        GL40.glResumeTransformFeedback();
+    }
+
+// SdlGL30.java : public void glProgramParameteri(int program, int pname, int value)
+    @Override
+    public void glProgramParameteri(int program, int pname, int value){
+        GL41.glProgramParameteri(program, pname, value);
+    }
+
+// SdlGL30.java : public void glInvalidateFramebuffer(int target, int numAttachments, IntBuffer attachments)
+    @Override
+    public void glInvalidateFramebuffer(int target, int numAttachments, IntBuffer attachments){
+        GL43.glInvalidateFramebuffer(target, attachments);
+    }
+
+// SdlGL30.java : public void glInvalidateSubFramebuffer(int target, int numAttachments, IntBuffer attachments, int x, int y, int width, int height)
+    @Override
+    public void glInvalidateSubFramebuffer(int target, int numAttachments, IntBuffer attachments, int x, int y, int width,
+                                           int height){
+        GL43.glInvalidateSubFramebuffer(target, attachments, x, y, width, height);
+    }
+
+// SdlGraphics.java : public boolean isGL30Available()
+    @Override
+    public boolean isGL30Available(){
+        return gl30 != null;
+    }
+
+// SdlGraphics.java : public GL20 getGL20()
+    @Override
+    public GL20 getGL20(){
+        return gl20;
+    }
+
+// SdlGraphics.java : public void setGL20(GL20 gl20)
+    @Override
+    public void setGL20(GL20 gl20){
+        this.gl20 = gl20;
+        Core.gl = Core.gl20 = gl20;
+    }
+
+// SdlGraphics.java : public GL30 getGL30()
+    @Override
+    public GL30 getGL30(){
+        return gl30;
+    }
+
+// SdlGraphics.java : public void setGL30(GL30 gl30)
+    @Override
+    public void setGL30(GL30 gl30){
+        this.gl20 = this.gl30 = gl30;
+        Core.gl = Core.gl20 = gl30;
+    }
+
+// SdlGraphics.java : public int getWidth()
+    @Override
+    public int getWidth(){
+        if(app.config.hdpiMode == HdpiMode.pixels){
+            return backBufferWidth;
+        }else{
+            return logicalWidth;
+        }
+    }
+
+// SdlGraphics.java : public int getHeight()
+    @Override
+    public int getHeight(){
+        if(app.config.hdpiMode == HdpiMode.pixels){
+            return backBufferHeight;
+        }else{
+            return logicalHeight;
+        }
+    }
+
+// SdlGraphics.java : public int getBackBufferWidth()
+    @Override
+    public int getBackBufferWidth(){
+        return backBufferWidth;
+    }
+
+// SdlGraphics.java : public int getBackBufferHeight()
+    @Override
+    public int getBackBufferHeight(){
+        return backBufferHeight;
+    }
+
+// SdlGraphics.java : public long getFrameId()
+    @Override
+    public long getFrameId(){
+        return frameId;
+    }
+
+// SdlGraphics.java : public float getDeltaTime()
+    @Override
+    public float getDeltaTime(){
+        return deltaTime;
+    }
+
+// SdlGraphics.java : public int getFramesPerSecond()
+    @Override
+    public int getFramesPerSecond(){
+        return fps;
+    }
+
+// SdlGraphics.java : public GLVersion getGLVersion()
+    @Override
+    public GLVersion getGLVersion(){
+        return glVersion;
+    }
+
+// SdlGraphics.java : public float getPpiX()
+    @Override
+    public float getPpiX(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpiY()
+    @Override
+    public float getPpiY(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpcX()
+    @Override
+    public float getPpcX(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getPpcY()
+    @Override
+    public float getPpcY(){
+        return 0;
+    }
+
+// SdlGraphics.java : public float getDensity()
+    @Override
+    public float getDensity(){
+        return 0;
+    }
+
+// SdlGraphics.java : public void setTitle(String title)
+    @Override
+    public void setTitle(String title){
+        SDLVideo.SDL_SetWindowTitle(app.window, title);
+    }
+
+// SdlGraphics.java : public boolean setFullscreen(boolean fullscreen)
+    @Override
+    public boolean setFullscreen(boolean fullscreen){
+        return SDLVideo.SDL_SetWindowFullscreen(app.window, fullscreen);
+    }
+
+// SdlGraphics.java : public void setWindowPosition(int x, int y)
+    @Override
+    public void setWindowPosition(int x, int y){
+        SDLVideo.SDL_SetWindowPosition(app.window, x, y);
+    }
+
+// SdlGraphics.java : public void setWindowSize(int width, int height)
+    @Override
+    public void setWindowSize(int width, int height){
+        SDLVideo.SDL_SetWindowSize(app.window, width, height);
+    }
+
+// SdlGraphics.java : public void setVSync(boolean vsync)
+    @Override
+    public void setVSync(boolean vsync){
+        SDLVideo.SDL_GL_SetSwapInterval(vsync ? 1 : 0);
+    }
+
+// SdlGraphics.java : public BufferFormat getBufferFormat()
+    @Override
+    public BufferFormat getBufferFormat(){
+        return bufferFormat;
+    }
+
+// SdlGraphics.java : public boolean supportsExtension(String extension)
+    @Override
+    public boolean supportsExtension(String extension){
+        return SDLVideo.SDL_GL_ExtensionSupported(extension);
+    }
+
+// SdlGraphics.java : public boolean isContinuousRendering()
+    @Override
+    public boolean isContinuousRendering(){
+        return true;
+    }
+
+// SdlGraphics.java : public void setContinuousRendering(boolean isContinuous)
+    @Override
+    public void setContinuousRendering(boolean isContinuous){
+
+    }
+
+// SdlGraphics.java : public void requestRendering()
+    @Override
+    public void requestRendering(){
+
+    }
+
+// SdlGraphics.java : public boolean isFullscreen()
+    @Override
+    public boolean isFullscreen(){
+        return (SDLVideo.SDL_GetWindowFlags(app.window) & SDLVideo.SDL_WINDOW_FULLSCREEN) == SDLVideo.SDL_WINDOW_FULLSCREEN;
+    }
+
+// SdlGraphics.java : public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot)
+    @Override
+    public Cursor newCursor(Pixmap pixmap, int xHotspot, int yHotspot){
+        SDL_Surface surface = SDLSurface.SDL_CreateSurfaceFrom(pixmap.width, pixmap.height, SDLPixels.SDL_PIXELFORMAT_RGBA32, pixmap.pixels, 4 * pixmap.width);
+        long cursor = SDLMouse.SDL_CreateColorCursor(surface, xHotspot, yHotspot);
+        return new SdlCursor(surface, cursor);
+    }
+
+// SdlGraphics.java : protected void setCursor(Cursor cursor)
+    @Override
+    protected void setCursor(Cursor cursor){
+        SDLMouse.SDL_SetCursor(((SdlCursor)cursor).cursorHandle);
+    }
+
+// SdlGraphics.java : protected void setSystemCursor(SystemCursor cursor)
+    @Override
+    protected void setSystemCursor(SystemCursor cursor){
+        if(!cursors.containsKey(cursor)){
+            long handle = SDLMouse.SDL_CreateSystemCursor(mapCursor(cursor));
+            cursors.put(cursor, new SdlCursor(null, handle));
+        }
+        SDLMouse.SDL_SetCursor(cursors.get(cursor).cursorHandle);
+    }
+
+// SdlGraphics.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+
+        cursors.each((ignored, value) -> value.dispose());
+    }
+
+// SdlGraphics.java : private int mapCursor(SystemCursor cursor)
+    private int mapCursor(SystemCursor cursor){
+        switch(cursor){
+            case arrow: return SDLMouse.SDL_SYSTEM_CURSOR_DEFAULT;
+            case ibeam: return SDLMouse.SDL_SYSTEM_CURSOR_TEXT;
+            case crosshair: return SDLMouse.SDL_SYSTEM_CURSOR_CROSSHAIR;
+            case hand: return SDLMouse.SDL_SYSTEM_CURSOR_POINTER;
+            case horizontalResize: return SDLMouse.SDL_SYSTEM_CURSOR_EW_RESIZE;
+            case verticalResize: return SDLMouse.SDL_SYSTEM_CURSOR_NS_RESIZE;
+        }
+        throw new IllegalArgumentException("this is impossible.");
+    }
+
+// SdlInput.java : static float fixSign(float scroll)
+    static float fixSign(float scroll){
+        return Mathf.equal(scroll, 0f) ? 0f : Mathf.sign(scroll);
+    }
+
+// SdlInput.java : void update()
+    void update(){
+        queue.setProcessor(inputMultiplexer);
+        queue.drain();
+
+        for(EditEvent e : stringEditEvents){
+            handleFieldCandidate(e);
+        }
+        stringEditEvents.clear();
+    }
+
+// SdlInput.java : void postUpdate()
+    void postUpdate(){
+        keyboard.postUpdate();
+        deltaX = deltaY = 0;
+    }
+
+// SdlInput.java : public int mouseX() / public int mouseX(int pointer)
+    @Override
+    public int mouseX(){
+        return mouseX;
+    }
+
+// SdlInput.java : public int deltaX() / public int deltaX(int pointer)
+    @Override
+    public int deltaX(){
+        return deltaX;
+    }
+
+// SdlInput.java : public int mouseY() / public int mouseY(int pointer)
+    @Override
+    public int mouseY(){
+        return mouseY;
+    }
+
+// SdlInput.java : public int deltaY() / public int deltaY(int pointer)
+    @Override
+    public int deltaY(){
+        return deltaY;
+    }
+
+// SdlInput.java : public boolean isTouched() / public boolean isTouched(int pointer)
+    @Override
+    public boolean isTouched(){
+        return keyDown(KeyCode.mouseLeft) || keyDown(KeyCode.mouseRight);
+    }
+
+// SdlInput.java : public boolean justTouched()
+    @Override
+    public boolean justTouched(){
+        return keyTap(KeyCode.mouseLeft) || keyTap(KeyCode.mouseRight);
+    }
+
+// SdlInput.java : public long getCurrentEventTime()
+    @Override
+    public long getCurrentEventTime(){
+        return queue.getCurrentEventTime();
+    }
+

@@ -1,0 +1,355 @@
+BiasFilter.java
+Java class (final) extends arc.fx.FxFilter
+// Bias filter.
+fields:
+  public float bias
+ctors:
+  public BiasFilter()
+methods:
+  public void setParams()
+
+BloomFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public final PingPongBuffer buffer
+  public final GaussianBlurFilter blur
+  public final ThresholdFilter threshold
+  public final CombineFilter combine
+  public Blending blending
+  public int scaling
+ctors:
+  public BloomFilter()
+methods:
+  public void rebind()
+  public void resize(int width, int height)
+  public void dispose()
+  public void render(FrameBuffer src, FrameBuffer dst)
+
+BlurFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public final GaussianBlurFilter blur
+  private final PingPongBuffer pingPongBuffer
+  private final CopyFilter copy
+  public Blending blending
+  private boolean firstRender  // To keep track of the first render call.
+ctors:
+  public BlurFilter() / public BlurFilter(int blurPasses, GaussianBlurFilter.BlurType blurType)
+methods:
+  public void dispose()
+  public void resize(int width, int height)
+  public void rebind()
+  public void render(FrameBuffer src, FrameBuffer dst)
+
+ChromaticAberrationFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public float maxDistortion
+ctors:
+  public ChromaticAberrationFilter(int passes)
+methods:
+  public void setParams()
+
+CombineFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  public float src1int
+  public Texture inputTexture2
+ctors:
+  public CombineFilter()
+methods:
+  public CombineFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2) / public CombineFilter setInput(Texture texture1, Texture texture2)
+  public void setParams()
+  protected void onBeforeRender()
+
+Convolve1dFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  public int length
+  public float weights
+  public float offsets
+ctors:
+  public Convolve1dFilter(int length) / public Convolve1dFilter(int length, float[] weights_data) / public Convolve1dFilter(int length, float[] weights_data, float[] offsets)
+methods:
+  public void setWeights(int length, float[] weights, float[] offsets)
+  public void dispose()
+  public void setParams()
+
+Convolve2dFilter.java
+Java class (final) extends arc.fx.filters.MultipassVfxFilter
+// Encapsulates a separable 2D convolution kernel filter
+fields:
+  public final int radius
+  public final int length  // NxN taps filter, w/ N=length
+  public final float weights
+  public Convolve1dFilter hor
+ctors:
+  public Convolve2dFilter(int radius)
+methods:
+  public void dispose()
+  public void setParams()
+  public void render(PingPongBuffer buffer)
+
+CopyFilter.java
+Java class extends arc.fx.FxFilter
+ctors:
+  public CopyFilter()
+
+CrtFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public final Vec2 viewportSize
+  public SizeSource sizeSource
+ctors:
+  public CrtFilter() / public CrtFilter(LineStyle lineStyle, float brightnessMin, float brightnessMax)  // Brightness is a value between [0..2] (default is 1.0).
+methods:
+  public void resize(int width, int height)
+  public void setParams()
+
+FilmGrainFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public float seed
+ctors:
+  public FilmGrainFilter()
+methods:
+  public void setSeed(float seed)
+  public void setParams()
+  public void update()
+
+FisheyeDistortionFilter.java
+Java class extends arc.fx.FxFilter
+// Fisheye distortion filter
+ctors:
+  public FisheyeDistortionFilter()
+
+FxaaFilter.java
+Java class (final) extends arc.fx.FxFilter
+// Fast approximate anti-aliasing filter.
+fields:
+  public final Vec2 viewportInverse
+  public float fxaaReduceMin
+  public float fxaaReduceMul
+  public float fxaaSpanMax
+ctors:
+  public FxaaFilter() / public FxaaFilter(float fxaaReduceMin, float fxaaReduceMul, float fxaaSpanMax, boolean supportAlpha)
+methods:
+  public void resize(int width, int height)
+  public void setParams()
+
+GaussianBlurFilter.java
+Java class extends arc.fx.filters.MultipassVfxFilter
+fields:
+  private BlurType type
+  private float amount
+  private int passes
+  private float invWidth
+  private Convolve2dFilter convolve
+ctors:
+  public GaussianBlurFilter() / public GaussianBlurFilter(BlurType blurType)
+methods:
+  public void dispose()
+  public void resize(int width, int height)
+  public void setParams()
+  public void render(PingPongBuffer buffer)
+  public BlurType getType()
+  public void setType(BlurType type)
+  public float getAmount()  // Warning: Not all blur types support custom amounts at this time
+  public void setAmount(float amount)  // Warning: Not all blur types support custom amounts at this time
+  public int getPasses()
+  public void setPasses(int passes)
+  private void computeBlurWeightings()
+  private void computeKernel(int blurRadius, float blurAmount, float[] outKernel)
+  private void computeOffsets(int blurRadius, float dx, float dy, float[] outOffsetH, float[] outOffsetV)
+
+HdrFilter.java
+Java class (final) extends arc.fx.FxFilter
+// HDR filter.
+fields:
+  public float exposure
+  public float gamma
+ctors:
+  public HdrFilter() / public HdrFilter(float exposure, float gamma)
+methods:
+  public void setParams()
+
+LensFlareFilter.java
+Java class (final) extends arc.fx.FxFilter
+// Lens flare effect.
+fields:
+  private final Vec2 viewport
+  public final Vec2 lightPosition
+  public final Color color
+  public float intensity
+ctors:
+  public LensFlareFilter()
+methods:
+  public void resize(int width, int height)
+  public void setParams()
+
+LevelsFilter.java
+Java class extends arc.fx.FxFilter
+// Controls levels of brightness and contrast
+fields:
+  public float brightness
+  public float contrast
+  public float saturation
+  public float hue
+  public float gamma
+ctors:
+  public LevelsFilter()
+methods:
+  public void setParams()
+
+MixFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  private Texture inputTexture2
+  public float mix
+ctors:
+  public MixFilter()
+methods:
+  public MixFilter setInput(FrameBuffer buffer1, FrameBuffer buffer2) / public MixFilter setInput(Texture texture1, Texture texture2) / public MixFilter setInput(FrameBuffer input) / public MixFilter setInput(Texture input)
+  public void resize(int width, int height)
+  public void setParams()
+  protected void onBeforeRender()
+
+MotionBlurFilter.java
+Java class extends arc.fx.FxFilter
+// Motion blur filter that draws the last frame (motion filter included) with a lower opacity.
+fields:
+  private final CopyFilter copyFilter
+  private final FxBufferQueue localBuffer
+  public float blurOpacity
+  public Texture lastFrameTex
+ctors:
+  public MotionBlurFilter(BlurFunction blurFunction)
+methods:
+  public void resize(int width, int height)
+  public void dispose()
+  public void rebind()
+  public void setParams()
+  protected void onBeforeRender()
+  public void render(FrameBuffer src, FrameBuffer dst)
+
+MultipassVfxFilter.java
+Java class (abstract) implements arc.util.Disposable
+// The base class for any multi-pass filter.
+methods:
+  public void resize(int width, int height)  // @see FxFilter#resize(int, int)
+  public abstract void setParams()  // @see FxFilter#rebind()
+  public abstract void render(PingPongBuffer pingPongBuffer)
+
+NfaaFilter.java
+Java class (final) extends arc.fx.FxFilter
+// Normal filtered anti-aliasing filter.
+fields:
+  private final Vec2 viewportInverse
+ctors:
+  public NfaaFilter() / public NfaaFilter(boolean supportAlpha)
+methods:
+  public void resize(int width, int height)
+  public void setParams()
+
+NoiseFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public float amount
+  public float speed
+ctors:
+  public NoiseFilter(float amount, float speed)
+methods:
+  public void setParams()
+
+OldTvFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  private final Vec2 resolution
+ctors:
+  public OldTvFilter()
+methods:
+  public void resize(int width, int height)
+  public void setParams()
+
+RadialBlurFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  public final int passes
+  public float strength
+  public float originX
+  public float originY
+  public float zoom
+ctors:
+  public RadialBlurFilter(int passes)
+methods:
+  public float getOriginX()
+  public float getOriginY()
+  public void setOrigin(int align) / public void setOrigin(float originX, float originY)  // Specify the zoom origin in {@link Align} bits.
+  public void setParams()
+
+RadialDistortionFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  public float zoom
+  public float distortion
+ctors:
+  public RadialDistortionFilter()
+methods:
+  public void setParams()
+
+RippleFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public float amount
+ctors:
+  public RippleFilter(float amount, float speed)
+methods:
+  public void setParams()
+
+ThresholdFilter.java
+Java class extends arc.fx.FxFilter
+fields:
+  public float gamma
+ctors:
+  public ThresholdFilter()
+methods:
+  public void setParams()
+
+VignettingFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  private Texture lutTexture
+  public float vignetteX
+  public float vignetteY
+  public float centerX
+  public float centerY
+  public float intensity
+  public float saturation
+  public float saturationMul
+  public boolean saturationEnabled
+  public boolean lutEnabled
+  public float lutIntensity
+  public int lutIndex1
+  public int lutIndex2
+  public float lutStep
+  public float lutStepOffset
+  public float lutIndexOffset
+ctors:
+  public VignettingFilter(boolean controlSaturation)
+methods:
+  public void setLut(Texture texture)  // Sets the texture with which gradient mapping will be performed.
+  public void setParams()
+  protected void onBeforeRender()
+
+ZoomFilter.java
+Java class (final) extends arc.fx.FxFilter
+fields:
+  public float originX
+  public float originY
+  public float zoom
+ctors:
+  public ZoomFilter()
+methods:
+  public void setOrigin(int align)  // Specify the zoom origin in {@link Align} bits.
+  public void setParams()
+

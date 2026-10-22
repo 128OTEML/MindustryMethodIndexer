@@ -1,0 +1,212 @@
+touchDown
+  -> arc.input.GestureDetector.touchDown(float, float, int, arc.input.KeyCode)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.Input.getCurrentEventTime()
+  -> arc.input.GestureDetector.VelocityTracker.start(float, float, long)
+  -> arc.Input.isTouched(int)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Vec2)
+  -> arc.util.Timer.Task.cancel()
+  -> arc.util.Timer.Task.isScheduled()
+  -> arc.util.Timer.schedule(arc.util.Timer.Task, float)
+  -> arc.input.GestureDetector.GestureListener.touchDown(float, float, int, arc.input.KeyCode)
+touchDragged
+  -> arc.input.GestureDetector.touchDragged(float, float, int)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.input.GestureDetector.GestureListener.pinch(arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Vec2)
+  -> arc.input.GestureDetector.GestureListener.zoom(float, float)
+  -> arc.math.geom.Vec2.dst(arc.math.geom.Vec2)
+  -> arc.input.GestureDetector.VelocityTracker.update(float, float, long)
+  -> arc.Input.getCurrentEventTime()
+  -> arc.input.GestureDetector.isWithinTapRectangle(float, float, float, float)
+  -> arc.util.Timer.Task.cancel()
+  -> arc.input.GestureDetector.GestureListener.pan(float, float, float, float)
+touchUp
+  -> arc.input.GestureDetector.touchUp(float, float, int, arc.input.KeyCode)
+  -> arc.input.GestureDetector.isWithinTapRectangle(float, float, float, float)
+  -> arc.util.Timer.Task.cancel()
+  -> arc.util.Time.nanos()
+  -> arc.input.GestureDetector.GestureListener.tap(float, float, int, arc.input.KeyCode)
+  -> arc.input.GestureDetector.GestureListener.pinchStop()
+  -> arc.input.GestureDetector.VelocityTracker.start(float, float, long)
+  -> arc.Input.getCurrentEventTime()
+  -> arc.input.GestureDetector.GestureListener.panStop(float, float, int, arc.input.KeyCode)
+  -> arc.input.GestureDetector.VelocityTracker.update(float, float, long)
+  -> arc.input.GestureDetector.GestureListener.fling(float, float, arc.input.KeyCode)
+  -> arc.input.GestureDetector.VelocityTracker.getVelocityX()
+  -> arc.input.GestureDetector.VelocityTracker.getVelocityY()
+cancel
+  -> arc.util.Timer.Task.cancel()
+isLongPressed
+  -> arc.input.GestureDetector.isLongPressed(float)
+  -> arc.util.Time.nanos()
+isWithinTapRectangle
+  -> java.lang.Math.abs(float)
+setTapSquareSize
+  -> arc.input.GestureDetector.setTapRectangleSize(float, float)
+VelocityTracker::getVelocityX
+  -> arc.input.GestureDetector.VelocityTracker.getAverage(float[], int)
+  -> arc.input.GestureDetector.VelocityTracker.getAverage(long[], int)
+VelocityTracker::getVelocityY
+  -> arc.input.GestureDetector.VelocityTracker.getAverage(float[], int)
+  -> arc.input.GestureDetector.VelocityTracker.getAverage(long[], int)
+VelocityTracker::getAverage
+  -> java.lang.Math.min(int, int)
+VelocityTracker::getSum
+  -> java.lang.Math.min(int, int)
+drain
+  -> arc.struct.IntSeq.clear()
+  -> arc.struct.IntSeq.addAll(arc.struct.IntSeq)
+  -> arc.input.InputProcessor.keyDown(arc.input.KeyCode)
+  -> arc.input.KeyCode.byOrdinal(int)
+  -> arc.input.InputProcessor.keyUp(arc.input.KeyCode)
+  -> arc.input.InputProcessor.keyTyped(char)
+  -> arc.input.InputProcessor.touchDown(int, int, int, arc.input.KeyCode)
+  -> arc.input.InputProcessor.touchUp(int, int, int, arc.input.KeyCode)
+  -> arc.input.InputProcessor.touchDragged(int, int, int)
+  -> arc.input.InputProcessor.mouseMoved(int, int)
+  -> arc.input.InputProcessor.scrolled(float, float)
+  -> java.lang.RuntimeException.RuntimeException()
+next
+  -> java.lang.RuntimeException.RuntimeException()
+queueTime
+  -> arc.util.Time.nanos()
+  -> arc.struct.IntSeq.add(int)
+keyDown
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+  -> java.lang.Enum.ordinal()
+keyUp
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+  -> java.lang.Enum.ordinal()
+keyTyped
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+touchDown
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+  -> java.lang.Enum.ordinal()
+touchUp
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+  -> java.lang.Enum.ordinal()
+touchDragged
+  -> arc.input.InputEventQueue.next(int, int)
+  -> arc.struct.IntSeq.get(int)
+  -> arc.struct.IntSeq.set(int, int)
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+mouseMoved
+  -> arc.input.InputEventQueue.next(int, int)
+  -> arc.struct.IntSeq.set(int, int)
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+scrolled
+  -> arc.struct.IntSeq.add(int)
+  -> arc.input.InputEventQueue.queueTime()
+InputMultiplexer
+  -> arc.struct.Seq.addAll(T...)
+addProcessor
+  -> arc.struct.SnapshotSeq.insert(int, T)
+  -> java.lang.NullPointerException.NullPointerException(java.lang.String)
+  -> arc.struct.Seq.add(T)
+removeProcessor
+  -> arc.struct.SnapshotSeq.remove(int)
+  -> arc.struct.SnapshotSeq.remove(T, boolean)
+clear
+  -> arc.struct.SnapshotSeq.clear()
+setProcessors
+  -> arc.struct.SnapshotSeq.clear()
+  -> arc.struct.Seq.addAll(T...)
+  -> arc.struct.Seq.addAll(arc.struct.Seq<? extends T>)
+keyDown
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.keyDown(arc.input.KeyCode)
+  -> arc.struct.SnapshotSeq.end()
+keyUp
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.keyUp(arc.input.KeyCode)
+  -> arc.struct.SnapshotSeq.end()
+keyTyped
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.keyTyped(char)
+  -> arc.struct.SnapshotSeq.end()
+touchDown
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.touchDown(int, int, int, arc.input.KeyCode)
+  -> arc.struct.SnapshotSeq.end()
+touchUp
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.touchUp(int, int, int, arc.input.KeyCode)
+  -> arc.struct.SnapshotSeq.end()
+touchDragged
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.touchDragged(int, int, int)
+  -> arc.struct.SnapshotSeq.end()
+mouseMoved
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.mouseMoved(int, int)
+  -> arc.struct.SnapshotSeq.end()
+scrolled
+  -> arc.struct.SnapshotSeq.begin()
+  -> arc.input.InputProcessor.scrolled(float, float)
+  -> arc.struct.SnapshotSeq.end()
+KeyBind
+  -> arc.struct.Seq.add(T)
+  -> arc.input.KeyBind.load()
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)
+add
+  -> arc.input.KeyBind.KeyBind(java.lang.String, arc.input.KeyBind.KeybindValue, java.lang.String)
+resetAll
+  -> arc.input.KeyBind.resetToDefault()
+save
+  -> arc.input.KeyBind.settingsKey()
+  -> arc.Settings.put(java.lang.String, java.lang.Object)
+  -> java.lang.Enum.ordinal()
+load
+  -> arc.input.KeyBind.settingsKey()
+  -> arc.Settings.getBool(java.lang.String, boolean)
+  -> arc.Settings.getInt(java.lang.String, int)
+  -> arc.input.KeyCode.byOrdinal(int)
+  -> java.lang.Enum.ordinal()
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode, arc.input.KeyCode)
+resetToDefault
+  -> arc.input.KeyBind.settingsKey()
+  -> arc.Settings.remove(java.lang.String)
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode, arc.input.KeyCode)
+unset
+  -> arc.input.KeyBind.Axis.Axis(arc.input.KeyCode)
+Axis implements arc.input.KeyBind.KeybindValue::equals
+  -> java.lang.Object.getClass()
+postUpdate
+  -> arc.struct.IntSet.clear()
+  -> arc.struct.IntSet.addAll(arc.struct.IntSet)
+  -> arc.struct.IntFloatMap.clear()
+isPressed
+  -> arc.struct.IntSet.contains(int)
+  -> java.lang.Enum.ordinal()
+isTapped
+  -> arc.struct.IntSet.contains(int)
+  -> java.lang.Enum.ordinal()
+isReleased
+  -> arc.struct.IntSet.contains(int)
+  -> java.lang.Enum.ordinal()
+getAxis
+  -> arc.struct.IntFloatMap.get(int, float)
+  -> java.lang.Enum.ordinal()
+keyDown
+  -> arc.struct.IntSet.add(int)
+  -> java.lang.Enum.ordinal()
+keyUp
+  -> arc.struct.IntSet.remove(int)
+  -> java.lang.Enum.ordinal()
+  -> arc.struct.IntSet.add(int)
+touchDown
+  -> arc.input.KeyboardDevice.keyDown(arc.input.KeyCode)
+touchUp
+  -> arc.input.KeyboardDevice.keyUp(arc.input.KeyCode)
+scrolled
+  -> arc.struct.IntFloatMap.put(int, float)
+  -> java.lang.Enum.ordinal()

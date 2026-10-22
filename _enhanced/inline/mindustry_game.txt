@@ -1,0 +1,1107 @@
+// AttackIndicators.java : public LongSeq list()
+    public LongSeq list(){
+        return indicators;
+    }
+
+// AttackIndicators.java : public void clear()
+    public void clear(){
+        indicators.clear();
+        posToIndex.clear();
+    }
+
+// FogControl.java : public Bits getDiscovered(Team team)
+    public @Nullable Bits getDiscovered(Team team){
+        return fog == null || fog[team.id] == null ? null : fog[team.id].staticData;
+    }
+
+// FogControl.java : public boolean isDiscovered(Team team, int x, int y)
+    public boolean isDiscovered(Team team, int x, int y){
+        if(!state.rules.staticFog || !state.rules.fog || team == null || team.isAI()) return true;
+
+        var data = getDiscovered(team);
+        if(data == null) return false;
+        if(x < 0 || y < 0 || x >= ww || y >= wh) return false;
+        return data.get(x + y * ww);
+    }
+
+// FogControl.java : public boolean isVisible(Team team, float x, float y)
+    public boolean isVisible(Team team, float x, float y){
+        return isVisibleTile(team, World.toTile(x), World.toTile(y));
+    }
+
+// FogControl.java : public boolean isVisibleTile(Team team, int x, int y)
+    public boolean isVisibleTile(Team team, int x, int y){
+        if(!state.rules.fog|| team == null || team.isAI()) return true;
+
+        var data = data(team);
+        if(data == null) return false;
+        return data.read.get(Mathf.clamp(x, 0, ww - 1) + Mathf.clamp(y, 0, wh - 1) * ww);
+    }
+
+// FogControl.java : public void resetFog()
+    public void resetFog(){
+        fog = null;
+    }
+
+// FogControl.java : FogData data(Team team)
+    @Nullable FogData data(Team team){
+        return fog == null || fog[team.id] == null ? null : fog[team.id];
+    }
+
+// FogControl.java : void pushEvent(long event, boolean skipRender)
+    void pushEvent(long event, boolean skipRender){
+        if(!state.rules.staticFog) return;
+
+        staticEvents.add(event);
+        if(!skipRender && !headless && FogEvent.team(event) == Vars.player.team().id){
+            renderer.fog.handleEvent(event);
+        }
+    }
+
+// FogControl.java : public void forceUpdate(Team team, Building build)
+    public void forceUpdate(Team team, Building build){
+        if(state.rules.fog && fog[team.id] != null){
+            fog[team.id].dynamicUpdated = true;
+
+            if(state.rules.staticFog){
+                synchronized(staticEvents){
+                    pushEvent(FogEvent.get(build.tile.x, build.tile.y, Mathf.round(build.fogRadius()), build.team.id), false);
+                }
+            }
+        }
+    }
+
+// FogControl.java : public boolean shouldWrite()
+    @Override
+    public boolean shouldWrite(){
+        return state.rules.fog && state.rules.staticFog && fog != null;
+    }
+
+// GameStats.java : public int getPlaced(Block block)
+    public int getPlaced(Block block){
+        return placedBlockCount.get(block, 0);
+    }
+
+// GameStats.java : public int getDestroyed(Block block)
+    public int getDestroyed(Block block){
+        return destroyedBlockCount.get(block, 0);
+    }
+
+// MapMarkers.java : public void clear()
+    public void clear(){
+        worldMarkers.clear();
+        mapMarkers.clear();
+        lightMarkers.clear();
+        map.clear();
+    }
+
+// MapMarkers.java : public void add(int id, ObjectiveMarker marker)
+    public void add(int id, ObjectiveMarker marker){
+        if(marker == null) return;
+        var prev = map.put(id, marker);
+        setMarker(worldMarkers, marker, prev, m -> m.world, (m, i) -> m.world = i);
+        setMarker(mapMarkers, marker, prev, m -> m.minimap, (m, i) -> m.minimap = i);
+        setMarker(lightMarkers, marker, prev, m -> m.light, (m, i) -> m.light = i);
+    }
+
+// MapMarkers.java : public void remove(int id) / private void remove(Seq<ObjectiveMarker> markers, int index, MarkerSetter setter)
+    public void remove(int id){
+        var prev = map.remove(id);
+
+        if(prev != null){
+            remove(worldMarkers, prev.world, (m, i) -> m.world = i);
+            remove(mapMarkers, prev.minimap, (m, i) -> m.minimap = i);
+            remove(lightMarkers, prev.light, (m, i) -> m.light = i);
+        }
+    }
+
+// MapMarkers.java : public ObjectiveMarker get(int id)
+    public @Nullable ObjectiveMarker get(int id){
+        return map.get(id);
+    }
+
+// MapMarkers.java : public boolean has(int id)
+    public boolean has(int id){
+        return get(id) != null;
+    }
+
+// MapMarkers.java : public int size()
+    public int size(){
+        return map.size;
+    }
+
+// MapMarkers.java : public void write(DataOutput stream) throws IOException
+    public void write(DataOutput stream) throws IOException{
+        JsonIO.writeBytes(map, ObjectiveMarker.class, (DataOutputStream)stream);
+    }
+
+// MapMarkers.java : public Iterator<ObjectiveMarker> iterator()
+    @Deprecated
+    @Override
+    public Iterator<ObjectiveMarker> iterator(){
+        return worldMarkers.iterator();
+    }
+
+// MapObjectives.java : public static void registerObjective(Prov<? extends MapObjective> providers)
+    @SafeVarargs
+    public static void registerObjective(Prov<? extends MapObjective>... providers){
+        for(var prov : providers){
+            allObjectiveTypes.add(prov);
+
+            Class<? extends MapObjective> type = prov.get().getClass();
+            String name = type.getSimpleName().replace("Objective", "");
+            JsonIO.classTag(Strings.camelize(name), type);
+            JsonIO.classTag(name, type);
+        }
+    }
+
+// MapObjectives.java : public static void registerLegacyMarker(String name, Prov<? extends ObjectiveMarker> prov)
+    public static void registerLegacyMarker(String name, Prov<? extends ObjectiveMarker> prov){
+        Class<?> type = prov.get().getClass();
+
+        markerNameToType.put(name, prov);
+        markerNameToType.put(Strings.camelize(name), prov);
+        JsonIO.classTag(Strings.camelize(name), type);
+        JsonIO.classTag(name, type);
+    }
+
+// MapObjectives.java : public void add(MapObjective objectives)
+    public void add(MapObjective... objectives){
+        for(var objective : objectives) flatten(objective);
+    }
+
+// MapObjectives.java : private void flatten(MapObjective objective)
+    private void flatten(MapObjective objective){
+        for(var child : objective.children) flatten(child);
+
+        objective.children.clear();
+        all.add(objective);
+    }
+
+// MapObjectives.java : public void update()
+    public void update(){
+        eachRunning(obj -> {
+            //objectives cannot get completed on the client, but they do try to update for timers and such
+            if(obj.update() && !net.client()){
+                Call.completeObjective(all.indexOf(obj));
+            }
+        });
+    }
+
+// MapObjectives.java : public MapObjective get(int index)
+    public @Nullable MapObjective get(int index){
+        return index < 0 || index >= all.size ? null : all.get(index);
+    }
+
+// MapObjectives.java : public boolean any()
+    public boolean any(){
+        return all.count(MapObjective::qualified) > 0;
+    }
+
+// MapObjectives.java : public void clear()
+    public void clear(){
+        all.clear();
+    }
+
+// MapObjectives.java : public void eachRunning(Cons<MapObjective> cons) / public void eachRunning(Boolf<? super MapObjective> pred, Cons<T> cons)
+    public void eachRunning(Cons<MapObjective> cons){
+        all.each(MapObjective::qualified, cons);
+    }
+
+// MapObjectives.java : public Iterator<MapObjective> iterator()
+    @Override
+    public Iterator<MapObjective> iterator(){
+        return all.iterator();
+    }
+
+// MapObjectives.java : public void each(Cons<? super MapObjective> cons)
+    @Override
+    public void each(Cons<? super MapObjective> cons){
+        all.each(cons);
+    }
+
+// Rules.java : public Rules copy()
+    public Rules copy(){
+        return JsonIO.copy(this);
+    }
+
+// Rules.java : public void retainContentFields(Rules source)
+    public void retainContentFields(Rules source){
+        //these fields can't be modified in the custom rules anyway, so force-overwriting them is fine
+        spawns = source.spawns;
+        objectives = source.objectives;
+        weather = source.weather;
+
+        //TODO: this overwrites banned blocks/units and loadouts if someone set it in custom rules when playing; there isn't a good way to avoid this
+        if(Seq.with(source.bannedBlocks).contains(Content::isPatchContent)) bannedBlocks = source.bannedBlocks;
+        if(Seq.with(source.bannedUnits).contains(Content::isPatchContent)) bannedUnits = source.bannedUnits;
+        if(source.loadout.contains(i -> i.item.isPatchContent())) loadout = source.loadout;
+    }
+
+// Rules.java : public boolean hasEnv(int env)
+    public boolean hasEnv(int env){
+        return (this.env & env) != 0;
+    }
+
+// Rules.java : public float buildRadius(Team team)
+    public float buildRadius(Team team){
+        return !teams.get(team).protectCores ? 0f : enemyCoreBuildRadius + teams.get(team).extraCoreBuildRadius;
+    }
+
+// Rules.java : public float unitBuildSpeed(Team team)
+    public float unitBuildSpeed(Team team){
+        return unitBuildSpeedMultiplier * teams.get(team).unitBuildSpeedMultiplier;
+    }
+
+// Rules.java : public float unitCost(Team team)
+    public float unitCost(Team team){
+        return unitCostMultiplier * teams.get(team).unitCostMultiplier;
+    }
+
+// Rules.java : public float unitDamage(Team team)
+    public float unitDamage(Team team){
+        return unitDamageMultiplier * teams.get(team).unitDamageMultiplier;
+    }
+
+// Rules.java : public float unitHealth(Team team)
+    public float unitHealth(Team team){
+        //a 0 here would be a very bad idea.
+        return Math.max(unitHealthMultiplier * teams.get(team).unitHealthMultiplier, 0.000001f);
+    }
+
+// Rules.java : public float unitCrashDamage(Team team)
+    public float unitCrashDamage(Team team){
+        return unitDamage(team) * unitCrashDamageMultiplier * teams.get(team).unitCrashDamageMultiplier;
+    }
+
+// Rules.java : public float unitMineSpeed(Team team)
+    public float unitMineSpeed(Team team){
+        return unitMineSpeedMultiplier * teams.get(team).unitMineSpeedMultiplier;
+    }
+
+// Rules.java : public float blockHealth(Team team)
+    public float blockHealth(Team team){
+        return blockHealthMultiplier * teams.get(team).blockHealthMultiplier;
+    }
+
+// Rules.java : public float blockDamage(Team team)
+    public float blockDamage(Team team){
+        return blockDamageMultiplier * teams.get(team).blockDamageMultiplier;
+    }
+
+// Rules.java : public float buildSpeed(Team team)
+    public float buildSpeed(Team team){
+        return buildSpeedMultiplier * teams.get(team).buildSpeedMultiplier;
+    }
+
+// Rules.java : public boolean isBanned(Block block) / public boolean isBanned(UnitType unit)
+    public boolean isBanned(Block block){
+        return blockWhitelist != bannedBlocks.contains(block);
+    }
+
+// Rules.java : public float unitActivationDelay(Team team)
+    public float unitActivationDelay(Team team){
+        return unitFactoryActivationDelay + teams.get(team).unitFactoryActivationDelay;
+    }
+
+// Rules.java : public boolean isInfiniteResources(Team team)
+    public boolean isInfiniteResources(Team team){
+        return infiniteResources || teams.get(team).infiniteResources;
+    }
+
+// Saves.java : public SaveSlot getLastSector()
+    public @Nullable SaveSlot getLastSector(){
+        return lastSectorSave;
+    }
+
+// Saves.java : public SaveSlot getCurrent()
+    public @Nullable SaveSlot getCurrent(){
+        return current;
+    }
+
+// Saves.java : public long getTotalPlaytime()
+    public long getTotalPlaytime(){
+        return totalPlaytime;
+    }
+
+// Saves.java : public void resetSave()
+    public void resetSave(){
+        current = null;
+    }
+
+// Saves.java : public boolean isSaving()
+    public boolean isSaving(){
+        return saving;
+    }
+
+// Saves.java : public Fi getSectorFile(Sector sector)
+    public Fi getSectorFile(Sector sector){
+        return saveDirectory.child("sector-" + sector.planet.name + "-" + sector.id + "." + saveExtension);
+    }
+
+// Saves.java : public void saveSector(Sector sector)
+    public void saveSector(Sector sector){
+        if(sector.save == null){
+            sector.save = new SaveSlot(getSectorFile(sector));
+            sector.save.setName(sector.save.file.nameWithoutExtension());
+            saves.add(sector.save);
+        }
+        sector.save.setAutosave(true);
+        sector.save.save();
+        lastSectorSave = sector.save;
+        Core.settings.put("last-sector-save", sector.save.getName());
+    }
+
+// Saves.java : public SaveSlot addSave(String name)
+    public SaveSlot addSave(String name){
+        SaveSlot slot = new SaveSlot(getNextSlotFile());
+        slot.setName(name);
+        saves.add(slot);
+        slot.save();
+        return slot;
+    }
+
+// Saves.java : public SaveSlot importSave(Fi file) throws IOException
+    public SaveSlot importSave(Fi file) throws IOException{
+        SaveSlot slot = new SaveSlot(getNextSlotFile());
+        slot.importFile(file);
+        slot.setName(file.nameWithoutExtension());
+
+        saves.add(slot);
+        slot.meta = SaveIO.getMeta(slot.file);
+        current = slot;
+        return slot;
+    }
+
+// Saves.java : public Fi getNextSlotFile()
+    public Fi getNextSlotFile(){
+        int i = 0;
+        Fi file;
+        while((file = saveDirectory.child(i + "." + saveExtension)).exists()){
+            i ++;
+        }
+        return file;
+    }
+
+// Saves.java : public Seq<SaveSlot> getSaveSlots()
+    public Seq<SaveSlot> getSaveSlots(){
+        return saves;
+    }
+
+// Saves.java : public void deleteAll()
+    public void deleteAll(){
+        for(SaveSlot slot : saves.copy()){
+            if(!slot.isSector()){
+                slot.delete();
+            }
+        }
+    }
+
+// Schematic.java : public float powerProduction()
+    public float powerProduction(){
+        return tiles.sumf(s -> s.block instanceof PowerGenerator p ? p.getDisplayedPowerProduction() : 0f);
+    }
+
+// Schematic.java : public float powerConsumption()
+    public float powerConsumption(){
+        return tiles.sumf(s -> s.block.consPower != null ? s.block.consPower.usage : 0f);
+    }
+
+// Schematic.java : public ItemSeq requirements()
+    public ItemSeq requirements(){
+        ItemSeq requirements = new ItemSeq();
+
+        tiles.each(t -> {
+            for(ItemStack stack : t.block.requirements){
+                requirements.add(stack.item, stack.amount);
+            }
+        });
+
+        return requirements;
+    }
+
+// Schematic.java : public boolean hasCore()
+    public boolean hasCore(){
+        return tiles.contains(s -> s.block instanceof CoreBlock);
+    }
+
+// Schematic.java : public CoreBlock findCore()
+    public CoreBlock findCore(){
+        Stile tile = tiles.find(s -> s.block instanceof CoreBlock);
+        if(tile == null) throw new IllegalArgumentException("Schematic is missing a core!");
+        return (CoreBlock)tile.block;
+    }
+
+// Schematic.java : public String name()
+    public String name(){
+        return tags.get("name", "unknown");
+    }
+
+// Schematic.java : public String description()
+    public String description(){
+        return tags.get("description", "");
+    }
+
+// Schematic.java : public void save()
+    public void save(){
+        schematics.saveChanges(this);
+    }
+
+// Schematic.java : public String getSteamID()
+    @Override
+    public String getSteamID(){
+        return tags.get("steamid");
+    }
+
+// Schematic.java : public void addSteamID(String id)
+    @Override
+    public void addSteamID(String id){
+        tags.put("steamid", id);
+        save();
+    }
+
+// Schematic.java : public void removeSteamID()
+    @Override
+    public void removeSteamID(){
+        tags.remove("steamid");
+        save();
+    }
+
+// Schematic.java : public String steamTitle()
+    @Override
+    public String steamTitle(){
+        return name();
+    }
+
+// Schematic.java : public String steamDescription()
+    @Override
+    public String steamDescription(){
+        return description();
+    }
+
+// Schematic.java : public String steamTag()
+    @Override
+    public String steamTag(){
+        return "schematic";
+    }
+
+// Schematic.java : public Fi createSteamFolder(String id)
+    @Override
+    public Fi createSteamFolder(String id){
+        Fi directory = tmpDirectory.child("schematic_" + id).child("schematic." + schematicExtension);
+        file.copyTo(directory);
+        return directory;
+    }
+
+// Schematic.java : public Fi createSteamPreview(String id)
+    @Override
+    public Fi createSteamPreview(String id){
+        Fi preview = tmpDirectory.child("schematic_preview_" + id + ".png");
+        schematics.savePreview(this, preview);
+        return preview;
+    }
+
+// Schematic.java : public int compareTo(Schematic schematic)
+    @Override
+    public int compareTo(Schematic schematic){
+        return name().compareTo(schematic.name());
+    }
+
+// Schematics.java : public void loadSync()
+    @Override
+    public void loadSync(){
+        load();
+    }
+
+// Schematics.java : private void loadLoadouts()
+    private void loadLoadouts(){
+        Seq.with(Loadouts.basicShard, Loadouts.basicFoundation, Loadouts.basicNucleus, Loadouts.basicBastion).each(s -> checkLoadout(s, false));
+    }
+
+// Schematics.java : public Seq<Schematic> all()
+    public Seq<Schematic> all(){
+        return all;
+    }
+
+// Schematics.java : public void saveChanges(Schematic s)
+    public void saveChanges(Schematic s){
+        if(s.file != null){
+            try{
+                write(s, s.file);
+            }catch(Exception e){
+                ui.showException(e);
+            }
+        }
+        all.sort();
+    }
+
+// Schematics.java : public void savePreview(Schematic schematic, Fi file)
+    public void savePreview(Schematic schematic, Fi file){
+        FrameBuffer buffer = getBuffer(schematic);
+        Draw.flush();
+        buffer.begin();
+        Pixmap pixmap = ScreenUtils.getFrameBufferPixmap(0, 0, buffer.getWidth(), buffer.getHeight());
+        file.writePng(pixmap);
+        buffer.end();
+    }
+
+// Schematics.java : public boolean hasPreview(Schematic schematic)
+    public boolean hasPreview(Schematic schematic){
+        return previews.containsKey(schematic);
+    }
+
+// Schematics.java : public Seq<BuildPlan> toPlans(Schematic schem, int x, int y) / public Seq<BuildPlan> toPlans(Schematic schem, int x, int y, boolean checkHidden)
+    public Seq<BuildPlan> toPlans(Schematic schem, int x, int y){
+        return toPlans(schem, x, y, true);
+    }
+
+// Schematics.java : public Seq<Schematic> getLoadouts(CoreBlock block) / public ObjectMap<CoreBlock,Seq<Schematic>> getLoadouts()
+    public Seq<Schematic> getLoadouts(CoreBlock block){
+        return loadouts.get(block, Seq::new);
+    }
+
+// Schematics.java : public Schematic getDefaultLoadout(CoreBlock block)
+    public @Nullable Schematic getDefaultLoadout(CoreBlock block){
+        return defaultLoadouts.get(block);
+    }
+
+// Schematics.java : public boolean isDefaultLoadout(Schematic schem)
+    public boolean isDefaultLoadout(Schematic schem){
+        return defaultLoadouts.containsValue(schem, true);
+    }
+
+// Schematics.java : public int getMaxLaunchSize(Block block)
+    public int getMaxLaunchSize(Block block){
+        return block.size + maxLoadoutSchematicPad*2;
+    }
+
+// Schematics.java : public String writeBase64(Schematic schematic)
+    public String writeBase64(Schematic schematic){
+        try{
+            out.reset();
+            write(schematic, out);
+            return new String(Base64Coder.encode(out.getBuffer(), out.size()));
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Schematics.java : public static void placeLaunchLoadout(int x, int y)
+    public static void placeLaunchLoadout(int x, int y){
+        placeLoadout(universe.getLastLoadout(), x, y, state.rules.defaultTeam);
+        if(world.tile(x, y).build == null) throw new RuntimeException("No core at loadout coordinates!");
+        world.tile(x, y).build.items.add(universe.getLaunchResources());
+    }
+
+// Schematics.java : public static void placeLoadout(Schematic schem, int x, int y) / public static void placeLoadout(Schematic schem, int x, int y, Team team) / public static void placeLoadout(Schematic schem, int x, int y, Team team, boolean check)
+    public static void placeLoadout(Schematic schem, int x, int y){
+        placeLoadout(schem, x, y, state.rules.defaultTeam);
+    }
+
+// Schematics.java : public static void place(Schematic schem, int x, int y, Team team) / public static void place(Schematic schem, int x, int y, Team team, boolean overwrite)
+    public static void place(Schematic schem, int x, int y, Team team){
+        place(schem, x, y, team, true);
+    }
+
+// Schematics.java : public static Schematic readBase64(String schematic)
+    public static Schematic readBase64(String schematic){
+        try{
+            return read(new ByteArrayInputStream(Base64Coder.decode(schematic.trim())));
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Schematics.java : public static Schematic read(Fi file) throws IOException / public static Schematic read(InputStream input) throws IOException
+    public static Schematic read(Fi file) throws IOException{
+        Schematic s = read(new DataInputStream(file.read(1024)));
+        if(!s.tags.containsKey("name")){
+            s.tags.put("name", file.nameWithoutExtension());
+        }
+        s.file = file;
+        return s;
+    }
+
+// Schematics.java : public static void write(Schematic schematic, Fi file) throws IOException / public static void write(Schematic schematic, OutputStream output) throws IOException
+    public static void write(Schematic schematic, Fi file) throws IOException{
+        write(schematic, file.write(false, 1024));
+    }
+
+// Schematics.java : private static Object mapConfig(Block block, int value, int position)
+    private static Object mapConfig(Block block, int value, int position){
+        if(block instanceof Sorter || block instanceof Unloader || block instanceof ItemSource) return content.item(value);
+        if(block instanceof LiquidSource) return content.liquid(value);
+        if(block instanceof MassDriver || block instanceof ItemBridge) return Point2.unpack(value).sub(Point2.x(position), Point2.y(position));
+        if(block instanceof LightBlock) return value;
+
+        return null;
+    }
+
+// Schematics.java : public static Schematic rotate(Schematic input, int times)
+    public static Schematic rotate(Schematic input, int times){
+        if(times == 0) return input;
+
+        boolean sign = times > 0;
+        for(int i = 0; i < Math.abs(times); i++){
+            input = rotated(input, sign);
+        }
+        return input;
+    }
+
+// SectorInfo.java : public boolean sectorDataMatches(Sector sector)
+    public boolean sectorDataMatches(Sector sector){
+        if(sector.preset != null && (sector.preset.generator.map.width != lastWidth || sector.preset.generator.map.height != lastHeight)){
+            return false;
+        }
+        return Structs.eq(sector.preset == null ? null : sector.preset.name, lastPresetName);
+    }
+
+// SectorInfo.java : public void handleCoreItem(Item item, int amount)
+    public void handleCoreItem(Item item, int amount){
+        if(coreDeltas == null) coreDeltas = new int[content.items().size];
+        coreDeltas[item.id] += amount;
+    }
+
+// SectorInfo.java : public void handleProduction(Item item, int amount)
+    public void handleProduction(Item item, int amount){
+        if(productionDeltas == null) productionDeltas = new int[content.items().size];
+        productionDeltas[item.id] += amount;
+    }
+
+// SectorInfo.java : public void handleItemExport(ItemStack stack) / public void handleItemExport(Item item, int amount)
+    public void handleItemExport(ItemStack stack){
+        handleItemExport(stack.item, stack.amount);
+    }
+
+// SectorInfo.java : public void handleItemImport(Item item, int amount)
+    public void handleItemImport(Item item, int amount){
+        imports.get(item, ExportStat::new).counter += amount;
+    }
+
+// SectorInfo.java : public float getExport(Item item)
+    public float getExport(Item item){
+        return export.get(item, ExportStat::new).mean;
+    }
+
+// SectorInfo.java : public boolean hasExport(Item item)
+    public boolean hasExport(Item item){
+        var exp = export.get(item);
+        return exp != null && exp.mean > 0f;
+    }
+
+// SectorInfo.java : public void refreshImportRates(Planet planet)
+    public void refreshImportRates(Planet planet){
+        if(importRateCache == null || importRateCache.length != content.items().size){
+            importRateCache = new float[content.items().size];
+        }else{
+            Arrays.fill(importRateCache, 0f);
+        }
+        eachImport(planet, sector -> sector.info.export.each((item, stat) -> {
+            importRateCache[item.id] += stat.mean;
+        }));
+    }
+
+// SectorInfo.java : public float[] getImportRates(Planet planet)
+    public float[] getImportRates(Planet planet){
+        if(importRateCache == null){
+            refreshImportRates(planet);
+        }
+        return importRateCache;
+    }
+
+// SectorInfo.java : public float getImportRate(Planet planet, Item item)
+    public float getImportRate(Planet planet, Item item){
+        return getImportRates(planet)[item.id];
+    }
+
+// SectorInfo.java : void updateDelta(Item item, ObjectMap<Item,ExportStat> map, int[] deltas)
+    void updateDelta(Item item, ObjectMap<Item, ExportStat> map, int[] deltas){
+        ExportStat stat = map.get(item, ExportStat::new);
+        if(!stat.loaded){
+            stat.means.fill(stat.mean);
+            stat.loaded = true;
+        }
+
+        //store means
+        stat.means.add(deltas[item.id]);
+        stat.mean = stat.means.rawMean();
+    }
+
+// SectorInfo.java : public ObjectFloatMap<Item> exportRates()
+    public ObjectFloatMap<Item> exportRates(){
+        ObjectFloatMap<Item> map = new ObjectFloatMap<>();
+        export.each((item, value) -> map.put(item, value.mean));
+        return map;
+    }
+
+// SectorInfo.java : public boolean anyExports()
+    public boolean anyExports(){
+        if(export.size == 0) return false;
+        returnf = 0f;
+        export.each((i, e) -> returnf += e.mean);
+        return returnf >= 0.01f;
+    }
+
+// SectorInfo.java : public ObjectMap<Item,ExportStat> importStats(Planet planet)
+    public ObjectMap<Item, ExportStat> importStats(Planet planet){
+        ObjectMap<Item, ExportStat> imports = new ObjectMap<>();
+        eachImport(planet, sector -> sector.info.export.each((item, stat) -> imports.get(item, ExportStat::new).mean += stat.mean));
+        return imports;
+    }
+
+// SectorInfo.java : public void eachImport(Planet planet, Cons<Sector> cons)
+    public void eachImport(Planet planet, Cons<Sector> cons){
+        for(Sector sector : planet.sectors){
+            Sector dest = sector.info.destination;
+            if(sector.hasBase() && sector.info != this && dest != null && dest.info == this && sector.info.anyExports()){
+                cons.get(sector);
+            }
+        }
+    }
+
+// SpawnGroup.java : public boolean canSpawn(int position)
+    public boolean canSpawn(int position){
+        return spawn == -1 || spawn == position;
+    }
+
+// SpawnGroup.java : public int getSpawned(int wave)
+    public int getSpawned(int wave){
+        if(spacing == 0) spacing = 1;
+        if(wave < begin || wave > end || (wave - begin) % spacing != 0){
+            return 0;
+        }
+        return Math.min(unitAmount + (int)(((wave - begin) / spacing) / unitScaling), max);
+    }
+
+// SpawnGroup.java : public float getShield(int wave)
+    public float getShield(int wave){
+        return Math.max(shields + shieldScaling*(wave - begin), 0);
+    }
+
+// SpawnGroup.java : public SpawnGroup copy()
+    public SpawnGroup copy(){
+        try{
+            return (SpawnGroup)clone();
+        }catch(CloneNotSupportedException how){
+            throw new RuntimeException("If you see this, what did you even do?", how);
+        }
+    }
+
+// SpawnGroup.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        SpawnGroup group = (SpawnGroup)o;
+        return end == group.end && begin == group.begin && spacing == group.spacing && max == group.max
+            && Float.compare(group.unitScaling, unitScaling) == 0 && Float.compare(group.shields, shields) == 0
+            && Float.compare(group.shieldScaling, shieldScaling) == 0 && unitAmount == group.unitAmount &&
+            type == group.type && effect == group.effect && Structs.eq(items, group.items);
+    }
+
+// SpawnGroup.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        return Arrays.hashCode(new Object[]{type, end, begin, spacing, max, unitScaling, shields, shieldScaling, unitAmount, effect, items});
+    }
+
+// Team.java : public static Team get(int id)
+    public static Team get(int id){
+        return all[((byte)id) & 0xff];
+    }
+
+// Team.java : public ItemModule items()
+    public ItemModule items(){
+        return core() == null ? ItemModule.empty : core().items;
+    }
+
+// Team.java : public TeamRule rules()
+    public TeamRule rules(){
+        return state.rules.teams.get(this);
+    }
+
+// Team.java : public TeamData data()
+    public TeamData data(){
+        return state.teams.get(this);
+    }
+
+// Team.java : public CoreBuild core()
+    @Nullable
+    public CoreBuild core(){
+        return data().core();
+    }
+
+// Team.java : public boolean active()
+    public boolean active(){
+        return state.teams.isActive(this);
+    }
+
+// Team.java : public boolean isAlive()
+    public boolean isAlive(){
+        return data().isAlive();
+    }
+
+// Team.java : public boolean isAI()
+    public boolean isAI(){
+        return (state.rules.waves || state.rules.attackMode || state.isCampaign()) && this != state.rules.defaultTeam && !state.rules.pvp;
+    }
+
+// Team.java : public boolean isOnlyAI()
+    public boolean isOnlyAI(){
+        return isAI() && data().players.size == 0;
+    }
+
+// Team.java : public boolean needsFlowField()
+    public boolean needsFlowField(){
+        return isAI() && !rules().rtsAi;
+    }
+
+// Team.java : public boolean activateUnitFactories()
+    public boolean activateUnitFactories(){
+        return state.tick >= state.rules.unitActivationDelay(this);
+    }
+
+// Team.java : public Seq<CoreBuild> cores()
+    public Seq<CoreBuild> cores(){
+        return state.teams.cores(this);
+    }
+
+// Team.java : public String localized()
+    public String localized(){
+        return Core.bundle.get("team." + name + ".name", name);
+    }
+
+// Team.java : public String coloredName()
+    public String coloredName(){
+        return emoji + "[#" + color + "]" + localized() + "[]";
+    }
+
+// Team.java : public void setPalette(Color color) / public void setPalette(Color pal1, Color pal2, Color pal3)
+    public void setPalette(Color color){
+        setPalette(color, color.cpy().mul(0.75f), color.cpy().mul(0.5f));
+        hasPalette = false;
+    }
+
+// Team.java : public int compareTo(Team team)
+    @Override
+    public int compareTo(Team team){
+        return Integer.compare(id, team.id);
+    }
+
+// Team.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// Team.java : public double sense(LAccess sensor)
+    @Override
+    public double sense(LAccess sensor){
+        return switch(sensor){
+            case id -> id;
+            case color -> color.toDoubleBits();
+            default -> Double.NaN;
+        };
+    }
+
+// Team.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        if(sensor == LAccess.name) return name;
+        return Senseable.noSensed;
+    }
+
+// Teams.java : public CoreBuild closestCore(float x, float y, Team team)
+    @Nullable
+    public CoreBuild closestCore(float x, float y, Team team){
+        return Geometry.findClosest(x, y, get(team).cores);
+    }
+
+// Teams.java : public void eachEnemyCore(Team team, Cons<Building> ret)
+    public void eachEnemyCore(Team team, Cons<Building> ret){
+        for(TeamData data : active){
+            if(team != data.team){
+                for(Building tile : data.cores){
+                    ret.get(tile);
+                }
+            }
+        }
+    }
+
+// Teams.java : public TeamData get(Team team)
+    public TeamData get(Team team){
+        var data = map[team.id];
+        if(data != null){
+            return data;
+        }else{
+            return map[team.id] = new TeamData(team);
+        }
+    }
+
+// Teams.java : public TeamData getOrNull(Team team)
+    public @Nullable TeamData getOrNull(Team team){
+        return map[team.id];
+    }
+
+// Teams.java : public Seq<CoreBuild> playerCores()
+    public Seq<CoreBuild> playerCores(){
+        return get(state.rules.defaultTeam).cores;
+    }
+
+// Teams.java : public Seq<CoreBuild> cores(Team team)
+    public Seq<CoreBuild> cores(Team team){
+        return get(team).cores;
+    }
+
+// Teams.java : public boolean isActive(Team team)
+    public boolean isActive(Team team){
+        //the enemy wave team is always active
+        return get(team).active();
+    }
+
+// Teams.java : public boolean canInteract(Team team, Team other)
+    public boolean canInteract(Team team, Team other){
+        return team == other || other == Team.derelict;
+    }
+
+// Teams.java : public Seq<TeamData> getActive()
+    public Seq<TeamData> getActive(){
+        active.removeAll(t -> !t.active());
+        return active;
+    }
+
+// Teams.java : public void updateActive(Team team)
+    public void updateActive(Team team){
+        TeamData data = get(team);
+        //register in active list if needed
+        if(data.active() && !active.contains(data)){
+            active.add(data);
+            updateEnemies();
+        }
+    }
+
+// Teams.java : public void unregisterCore(CoreBuild entity)
+    public void unregisterCore(CoreBuild entity){
+        TeamData data = get(entity.team);
+        data.cores.remove(entity);
+        //unregister in active list
+        if(!data.active()){
+            active.remove(data);
+            updateEnemies();
+        }
+    }
+
+// Teams.java : public static void destroyPayload(Building build)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void destroyPayload(Building build){
+        if(build != null && build.getPayload() instanceof UnitPayload && build.takePayload() instanceof UnitPayload unit){
+            unit.dump();
+            unit.unit.killed();
+        }
+    }
+
+// Universe.java : public void updateGlobal()
+    public void updateGlobal(){
+        for(Planet planet : content.planets()){
+            //update all parentless planets (solar system root), regardless of which one the player is in
+            if(planet.parent == null) updatePlanet(planet);
+        }
+    }
+
+// Universe.java : public int turn()
+    public int turn(){
+        return turn;
+    }
+
+// Universe.java : private void updatePlanet(Planet planet)
+    private void updatePlanet(Planet planet){
+        planet.position.setZero();
+        planet.addParentOffset(planet.position);
+        if(planet.parent != null){
+            planet.position.add(planet.parent.position);
+        }
+        for(Planet child : planet.children){
+            updatePlanet(child);
+        }
+    }
+
+// Universe.java : public void clearLoadoutInfo()
+    public void clearLoadoutInfo(){
+        lastLoadout = null;
+        lastLaunchResources = new ItemSeq();
+        Core.settings.remove("launch-resources-seq");
+        Core.settings.remove("lastloadout-core-shard");
+        Core.settings.remove("lastloadout-core-nucleus");
+        Core.settings.remove("lastloadout-core-foundation");
+    }
+
+// Universe.java : public ItemSeq getLaunchResources()
+    public ItemSeq getLaunchResources(){
+        lastLaunchResources = Core.settings.getJson("launch-resources-seq", ItemSeq.class, ItemSeq::new);
+        return lastLaunchResources;
+    }
+
+// Universe.java : public void updateLaunchResources(ItemSeq stacks)
+    public void updateLaunchResources(ItemSeq stacks){
+        this.lastLaunchResources = stacks;
+        Core.settings.putJson("launch-resources-seq", lastLaunchResources);
+    }
+
+// Universe.java : public void updateLoadout(CoreBlock block) / public void updateLoadout(CoreBlock block, Schematic schem)
+    public void updateLoadout(CoreBlock block){
+        updateLoadout(block, new Schematic(Seq.with(new Stile(block, 0, 0, null, (byte)0)), new StringMap(), block.size, block.size));
+    }
+
+// Universe.java : public Schematic getLastLoadout()
+    public Schematic getLastLoadout(){
+        if(lastLoadout == null) lastLoadout = state.rules.sector == null || state.rules.sector.planet.generator == null ? Loadouts.basicShard : state.rules.sector.planet.generator.defaultLoadout;
+        return lastLoadout;
+    }
+
+// Universe.java : public void updateNetSeconds(int value)
+    public void updateNetSeconds(int value){
+        netSeconds = value;
+    }
+
+// Universe.java : public float secondsMod(float mod, float scale)
+    public float secondsMod(float mod, float scale){
+        return (seconds() / scale) % mod;
+    }
+
+// Universe.java : public int seconds()
+    public int seconds(){
+        //use networked seconds when playing as client
+        return net.client() ? netSeconds : seconds;
+    }
+
+// Universe.java : public void setSeconds(float seconds)
+    public void setSeconds(float seconds){
+        this.seconds = (int)seconds;
+        this.secondCounter = seconds - this.seconds;
+
+        save();
+    }
+
+// Universe.java : public float secondsf()
+    public float secondsf(){
+        return seconds() + secondCounter;
+    }
+
+// Universe.java : private void save()
+    private void save(){
+        Core.settings.put("utimei", seconds);
+        Core.settings.put("turn", turn);
+    }
+
+// Universe.java : private void load()
+    private void load(){
+        seconds = Core.settings.getInt("utimei");
+        turn = Core.settings.getInt("turn");
+    }
+
+// Waves.java : public static Seq<SpawnGroup> generate(float difficulty) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack, boolean airOnly) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack, boolean airOnly, boolean naval)
+    public static Seq<SpawnGroup> generate(float difficulty){
+        //apply power curve to make starting sectors easier
+        return generate(Mathf.pow(difficulty, 1.12f), new Rand(), false);
+    }
+

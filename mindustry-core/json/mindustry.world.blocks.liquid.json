@@ -1,0 +1,997 @@
+[ {
+  "file" : "ArmoredConduit.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.blocks.liquid.Conduit",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ArmoredConduit(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ArmoredConduit",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blends",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "otherx",
+      "type" : "int"
+    }, {
+      "name" : "othery",
+      "type" : "int"
+    }, {
+      "name" : "otherrot",
+      "type" : "int"
+    }, {
+      "name" : "otherblock",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "mindustry.world.blocks.Autotiler.blendsArmored(mindustry.world.Tile, int, int, int, int, mindustry.world.Block)", "mindustry.world.blocks.Autotiler.lookingAt(mindustry.world.Tile, int, int, int, mindustry.world.Block)" ],
+    "callCount" : 2
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "ArmoredConduitBuild extends mindustry.world.blocks.liquid.Conduit.ConduitBuild",
+    "simpleName" : "ArmoredConduitBuild",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public boolean acceptLiquid(Building source, Liquid liquid)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "acceptLiquid",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "source",
+        "type" : "Building"
+      }, {
+        "name" : "liquid",
+        "type" : "Liquid"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 22,
+      "calls" : [ "mindustry.world.blocks.liquid.Conduit.ConduitBuild.acceptLiquid(mindustry.gen.Building, mindustry.type.Liquid)", "mindustry.world.Tile.absoluteRelativeTo(int, int)", "arc.struct.Seq.contains(T)" ],
+      "callCount" : 3
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Conduit.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.blocks.liquid.LiquidBlock implements mindustry.world.blocks.Autotiler",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "static final float rotatePad",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rotatePad",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final float rotateOffsets",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rotateOffsets",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final int timerFlow",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timerFlow",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Color botColor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "botColor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion topRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "topRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion botRegions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "botRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion capRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "capRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion rotateRegions",
+    "desc" : "indices: [rotation] [fluid type] [frame]",
+    "overloads" : null,
+    "name" : "rotateRegions",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean padCorners",
+    "desc" : "If true, the liquid region is padded at corners, so it doesn't stick out.",
+    "overloads" : null,
+    "name" : "padCorners",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 42,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean leaks",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "leaks",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block junctionReplacement",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "junctionReplacement",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Conduit(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Conduit",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 60,
+    "calls" : [ "mindustry.world.Block.init()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void load()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "load",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 68,
+    "calls" : [ "mindustry.world.Block.load()", "mindustry.core.Renderer.getFluidFrames()", "arc.graphics.g2d.TextureRegion.set(arc.graphics.g2d.TextureRegion)", "arc.graphics.g2d.TextureRegion.setX(float)", "arc.graphics.g2d.TextureRegion.getX()", "arc.graphics.g2d.TextureRegion.setHeight(float)", "arc.graphics.g2d.TextureRegion.setWidth(float)", "arc.graphics.g2d.TextureRegion.setY(float)", "arc.graphics.g2d.TextureRegion.getY()", "arc.graphics.g2d.TextureRegion.TextureRegion()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawPlanRegion",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plan",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "list",
+      "type" : "Eachable<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 106,
+    "calls" : [ "mindustry.world.blocks.Autotiler.getTiling(mindustry.entities.units.BuildPlan, arc.util.Eachable<mindustry.entities.units.BuildPlan>)", "arc.graphics.g2d.Draw.getColorAlpha()", "arc.graphics.g2d.Draw.scl(float, float)", "arc.graphics.g2d.Draw.color(arc.graphics.Color, float)", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.entities.units.BuildPlan.drawx()", "mindustry.entities.units.BuildPlan.drawy()", "arc.graphics.g2d.Draw.scl()" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getReplacement",
+    "returnType" : "Block",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "req",
+      "type" : "BuildPlan"
+    }, {
+      "name" : "plans",
+      "type" : "Seq<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 122,
+    "calls" : [ "arc.struct.Seq.contains(arc.func.Boolf<T>)", "arc.func.Boolf.get(T)", "arc.math.geom.Geometry.d4(int)", "mindustry.entities.units.BuildPlan.tile()", "mindustry.world.Tile.block()", "arc.math.Mathf.mod(int, int)", "mindustry.entities.units.BuildPlan.build()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "blends",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "otherx",
+      "type" : "int"
+    }, {
+      "name" : "othery",
+      "type" : "int"
+    }, {
+      "name" : "otherrot",
+      "type" : "int"
+    }, {
+      "name" : "otherblock",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 134,
+    "calls" : [ "mindustry.world.blocks.Autotiler.lookingAt(mindustry.world.Tile, int, int, int, mindustry.world.Block)", "mindustry.world.blocks.Autotiler.lookingAtEither(mindustry.world.Tile, int, int, int, int, mindustry.world.Block)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void handlePlacementLine(Seq<BuildPlan> plans)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "handlePlacementLine",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "plans",
+      "type" : "Seq<BuildPlan>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 139,
+    "calls" : [ "mindustry.input.Placement.calculateBridges(arc.struct.Seq<mindustry.entities.units.BuildPlan>, mindustry.world.blocks.distribution.DirectionBridge, boolean, arc.func.Boolf<mindustry.world.Block>)", "mindustry.input.Placement.calculateBridges(arc.struct.Seq<mindustry.entities.units.BuildPlan>, mindustry.world.blocks.distribution.ItemBridge, boolean, arc.func.Boolf<mindustry.world.Block>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 150,
+    "calls" : [ "arc.graphics.g2d.TextureAtlas.find(java.lang.String)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "ConduitBuild extends mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild implements mindustry.world.blocks.distribution.ChainedBuilding",
+    "simpleName" : "ConduitBuild",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public float smoothLiquid",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "smoothLiquid",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 156,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int blendbits",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "blendbits",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 157,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean capped",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "capped",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 158,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void drawCached()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "drawCached",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 160,
+      "calls" : [ "mindustry.world.blocks.liquid.Conduit.ConduitBuild.draw(boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public void draw() / public void draw(boolean under)",
+      "desc" : null,
+      "overloads" : [ "public void draw()", "public void draw(boolean under)" ],
+      "name" : "draw",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 165,
+      "calls" : [ "mindustry.world.blocks.liquid.Conduit.ConduitBuild.draw(boolean)", "arc.graphics.g2d.Draw.color(arc.graphics.Color)", "arc.graphics.g2d.Draw.z(float)", "mindustry.world.blocks.liquid.Conduit.ConduitBuild.drawAt(float, float, int, int, mindustry.world.blocks.Autotiler.SliceMode, boolean)", "arc.math.geom.Geometry.d4x(int)", "arc.math.geom.Geometry.d4y(int)", "arc.graphics.g2d.Draw.scl(float, float)", "arc.graphics.g2d.Draw.reset()", "arc.graphics.g2d.TextureRegion.found()", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.gen.Building.rotdeg()" ],
+      "callCount" : 11
+    }, {
+      "kind" : "method",
+      "signature" : "protected void drawAt(float x, float y, int bits, int rotation, SliceMode slice, boolean under)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "drawAt",
+      "returnType" : "void",
+      "modifiers" : [ "protected" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "bits",
+        "type" : "int"
+      }, {
+        "name" : "rotation",
+        "type" : "int"
+      }, {
+        "name" : "slice",
+        "type" : "SliceMode"
+      }, {
+        "name" : "under",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 196,
+      "calls" : [ "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.world.blocks.Autotiler.sliced(arc.graphics.g2d.TextureRegion, mindustry.world.blocks.Autotiler.SliceMode)", "mindustry.type.Liquid.getAnimationFrame()", "mindustry.world.modules.LiquidModule.current()", "arc.graphics.g2d.Draw.scl(float, float)", "mindustry.graphics.Drawf.liquid(arc.graphics.g2d.TextureRegion, float, float, float, arc.graphics.Color)", "arc.graphics.Color.a(float)", "arc.graphics.Color.write(arc.graphics.Color)" ],
+      "callCount" : 8
+    }, {
+      "kind" : "method",
+      "signature" : "public void onProximityUpdate()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "onProximityUpdate",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 224,
+      "calls" : [ "mindustry.gen.Building.onProximityUpdate()", "mindustry.gen.Building.recache()", "mindustry.world.blocks.Autotiler.buildBlending(mindustry.world.Tile, int, mindustry.entities.units.BuildPlan[], boolean)", "mindustry.gen.Building.front()", "mindustry.gen.Building.back()" ],
+      "callCount" : 5
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean acceptLiquid(Building source, Liquid liquid)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "acceptLiquid",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "source",
+        "type" : "Building"
+      }, {
+        "name" : "liquid",
+        "type" : "Liquid"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 240,
+      "calls" : [ "mindustry.gen.Building.noSleep()", "mindustry.world.modules.LiquidModule.current()", "mindustry.world.modules.LiquidModule.currentAmount()", "mindustry.gen.Building.relativeTo(int, int)" ],
+      "callCount" : 4
+    }, {
+      "kind" : "method",
+      "signature" : "public void updateTile()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "updateTile",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 247,
+      "calls" : [ "arc.math.Mathf.lerpDelta(float, float, float)", "mindustry.world.modules.LiquidModule.currentAmount()", "mindustry.gen.Building.timer(int, float)", "mindustry.gen.Building.moveLiquidForward(boolean, mindustry.type.Liquid)", "mindustry.world.modules.LiquidModule.current()", "mindustry.gen.Building.noSleep()", "mindustry.gen.Building.sleep()" ],
+      "callCount" : 7
+    }, {
+      "kind" : "method",
+      "signature" : "public Building next()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "next",
+      "returnType" : "Building",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Nullable", "Override" ],
+      "line" : 259,
+      "calls" : [ "mindustry.world.Tile.nearby(int)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "LiquidBlock.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.Block",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public TextureRegion liquidRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion topRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "topRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion bottomRegion",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bottomRegion",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LiquidBlock(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LiquidBlock",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void drawTiledFrames(int size, float x, float y, float padding, Liquid liquid, float alpha) / public static void drawTiledFrames(int size, float x, float y, float padLeft, float padRight, float padTop, float padBottom, Liquid liquid, float alpha)",
+    "desc" : null,
+    "overloads" : [ "public static void drawTiledFrames(int size, float x, float y, float padding, Liquid liquid, float alpha)", "public static void drawTiledFrames(int size, float x, float y, float padLeft, float padRight, float padTop, float padBottom, Liquid liquid, float alpha)" ],
+    "name" : "drawTiledFrames",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "size",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "padding",
+      "type" : "float"
+    }, {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ "mindustry.world.blocks.liquid.LiquidBlock.drawTiledFrames(int, float, float, float, float, float, float, mindustry.type.Liquid, float)", "mindustry.type.Liquid.getAnimationFrame()", "arc.graphics.Color.a(float)", "arc.graphics.Color.set(arc.graphics.Color)", "arc.graphics.g2d.TextureRegion.set(arc.graphics.g2d.TextureRegion)", "arc.graphics.g2d.TextureRegion.setWidth(float)", "arc.graphics.g2d.TextureRegion.setY(float)", "arc.graphics.g2d.TextureRegion.getY()", "mindustry.graphics.Drawf.liquid(arc.graphics.g2d.TextureRegion, float, float, float, arc.graphics.Color)" ],
+    "callCount" : 9
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "LiquidBuild extends mindustry.gen.Building",
+    "simpleName" : "LiquidBuild",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void draw()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "draw",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 77,
+      "calls" : [ "mindustry.gen.Building.rotdeg()", "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float, float)", "mindustry.world.modules.LiquidModule.currentAmount()", "mindustry.graphics.Drawf.liquid(arc.graphics.g2d.TextureRegion, float, float, float, arc.graphics.Color)", "mindustry.world.modules.LiquidModule.current()" ],
+      "callCount" : 5
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "LiquidBridge.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.blocks.distribution.ItemBridge",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LiquidBridge(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LiquidBridge",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "LiquidBridgeBuild extends mindustry.world.blocks.distribution.ItemBridge.ItemBridgeBuild",
+    "simpleName" : "LiquidBridgeBuild",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void updateTransport(Building other)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "updateTransport",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "other",
+        "type" : "Building"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 21,
+      "calls" : [ "mindustry.gen.Building.moveLiquid(mindustry.gen.Building, mindustry.type.Liquid)", "mindustry.world.modules.LiquidModule.current()" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "public void doDump()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "doDump",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 28,
+      "calls" : [ "mindustry.gen.Building.dumpLiquid(mindustry.type.Liquid, float)", "mindustry.world.modules.LiquidModule.current()" ],
+      "callCount" : 2
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "LiquidJunction.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.blocks.liquid.LiquidBlock",
+  "typeDesc" : "TODO should leak!",
+  "fields" : [ ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LiquidJunction(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LiquidJunction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setStats()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setStats",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "mindustry.world.Block.setStats()", "mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void setBars()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setBars",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "mindustry.world.Block.setBars()", "mindustry.world.Block.removeBar(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "LiquidJunctionBuild extends mindustry.gen.Building",
+    "simpleName" : "LiquidJunctionBuild",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void draw()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "draw",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 38,
+      "calls" : [ "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public Building getLiquidDestination(Building source, Liquid liquid)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getLiquidDestination",
+      "returnType" : "Building",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "source",
+        "type" : "Building"
+      }, {
+        "name" : "liquid",
+        "type" : "Liquid"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 43,
+      "calls" : [ "mindustry.gen.Building.relativeTo(int, int)", "mindustry.gen.Building.nearby(int)", "mindustry.gen.Building.acceptLiquid(mindustry.gen.Building, mindustry.type.Liquid)", "mindustry.gen.Building.getLiquidDestination(mindustry.gen.Building, mindustry.type.Liquid)" ],
+      "callCount" : 4
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "LiquidRouter.java",
+  "pkg" : "mindustry.world.blocks.liquid",
+  "type" : "Java class extends mindustry.world.blocks.liquid.LiquidBlock",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public float liquidPadding",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "liquidPadding",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LiquidRouter(String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LiquidRouter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public TextureRegion[] icons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "icons",
+    "returnType" : "TextureRegion[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "LiquidRouterBuild extends mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild",
+    "simpleName" : "LiquidRouterBuild",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void updateTile()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "updateTile",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 24,
+      "calls" : [ "mindustry.gen.Building.dumpLiquid(mindustry.type.Liquid)", "mindustry.world.modules.LiquidModule.current()" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "public void draw()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "draw",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 29,
+      "calls" : [ "arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)", "mindustry.world.modules.LiquidModule.currentAmount()", "mindustry.world.blocks.liquid.LiquidBlock.drawTiledFrames(int, float, float, float, mindustry.type.Liquid, float)", "mindustry.world.modules.LiquidModule.current()" ],
+      "callCount" : 4
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean acceptLiquid(Building source, Liquid liquid)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "acceptLiquid",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "source",
+        "type" : "Building"
+      }, {
+        "name" : "liquid",
+        "type" : "Liquid"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 40,
+      "calls" : [ "mindustry.world.modules.LiquidModule.current()", "mindustry.world.modules.LiquidModule.currentAmount()" ],
+      "callCount" : 2
+    } ],
+    "inner" : [ ]
+  } ]
+} ]

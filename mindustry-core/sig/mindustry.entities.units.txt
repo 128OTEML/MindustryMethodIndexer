@@ -1,0 +1,137 @@
+AIController.java
+Java class implements mindustry.entities.units.UnitController
+fields:
+  protected static final Vec2 vec
+  protected static final float rotateBackTimer
+  protected static final int timerTarget
+  protected Unit unit
+  protected Interval timer
+  protected AIController fallback
+  protected float noTargetTime
+  protected Teamc target  // main target that is being faced
+  protected Teamc bomberTarget
+  protected boolean turningAway
+methods:
+  protected void resetTimers()
+  public void updateUnit()
+  public boolean hasStance(UnitStance stance)
+  public void stanceChanged()  // Called when the parent CommandAI changes its stance.
+  public boolean keepState()  // @return whether controller state should not be reset after reading.
+  public void afterRead(Unit unit)
+  public boolean isLogicControllable()
+  public void stopShooting()
+  public AIController fallback()
+  public boolean useFallback()
+  public void updateVisuals()
+  public void updateMovement()
+  public void updateTargeting()
+  public void faceTarget()  // For ground units: Looks at the target, or the movement position.
+  public void faceMovement()
+  public boolean invalid(Teamc target)
+  public void pathfind(int pathTarget) / public void pathfind(int pathTarget, boolean stopAtTargetTile) / public void pathfind(int pathTarget, boolean stopAtTargetTile, boolean avoidance)
+  public Vec2 alterPathfind(Vec2 vec)
+  public void targetInvalidated()
+  public void updateWeapons()
+  public boolean checkTarget(Teamc target, float x, float y, float range)
+  public boolean shouldFire()  // @return whether the unit should actually fire bullets (as opposed to just targeting something)
+  public boolean shouldShoot()
+  public Teamc targetFlag(float x, float y, BlockFlag flag, boolean enemy)
+  public Teamc targetFlagActive(float x, float y, BlockFlag flag, boolean enemy)
+  public Teamc target(float x, float y, float range, boolean air, boolean ground)
+  public boolean retarget()
+  public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)
+  public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+  public void commandTarget(Teamc moveTo)
+  public void commandPosition(Vec2 pos)
+  public void init()  // Called after this controller is assigned a unit.
+  public Tile getClosestSpawner()
+  public void unloadPayloads()
+  public void circleAttack(float circleLength)
+  public void circle(Position target, float circleLength) / public void circle(Position target, float circleLength, float speed)
+  public void moveTo(Position target, float circleLength) / public void moveTo(Position target, float circleLength, float smooth) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset, boolean arrive)
+  public float prefSpeed()
+  public void unit(Unit unit) / public Unit unit()
+
+BuildPlan.java
+Java class implements arc.math.geom.Position, arc.math.geom.QuadTree.QuadTreeObject
+// Class for storing build plans.
+fields:
+  public int x  // Position and rotation of this plan.
+  public Block block  // Block being placed.
+  public boolean breaking  // Whether this is a break plan.
+  public Object config  // Config int.
+  public float progress  // Last progress.
+  public boolean initialized  // Whether construction has started for this plan.
+  public boolean worldContext  // If true, this plan is in the world.
+  public float animScale  // Visual scale.
+ctors:
+  public BuildPlan(int x, int y, int rotation, Block block) / public BuildPlan(int x, int y, int rotation, Block block, Object config) / public BuildPlan(int x, int y) / public BuildPlan()  // This creates a build plan.
+methods:
+  public boolean placeable(Team team)
+  public boolean isRotation(Team team)
+  public boolean isDerelictRepair()
+  public boolean samePos(BuildPlan other)
+  public static Object pointConfig(Block block, Object config, Cons<Point2> cons) / public void pointConfig(Cons<Point2> cons)  // Transforms the internal position of this config using the specified function, and return the result.
+  public BuildPlan copy()
+  public Rect bounds(Rect rect)
+  public BuildPlan set(int x, int y, int rotation, Block block)
+  public float drawx()
+  public float drawy()
+  public boolean isDone()
+  public Tile tile()
+  public Building build()
+  public void hitbox(Rect out)
+  public float getX()
+  public float getY()
+  public String toString()
+
+StatusEntry.java
+Java class
+fields:
+  public StatusEffect effect
+  public float time
+  public float damageTime  // for interval damage
+  public float damageMultiplier  // all of these are for the dynamic effect only!
+methods:
+  public StatusEntry set(StatusEffect effect, float time)
+
+UnitController.java
+Java interface
+methods:
+  void unit(Unit unit) / Unit unit()
+  default void hit(Bullet bullet)
+  default boolean isValidController()
+  default boolean isLogicControllable()  // @return whether logic AI can take over
+  default void updateUnit()
+  default void removed(Unit unit)
+  default void afterRead(Unit unit)
+
+WeaponMount.java
+Java class
+fields:
+  public final Weapon weapon  // weapon associated with this mount
+  public float reload  // reload in frames; 0 means ready to fire
+  public float rotation  // rotation relative to the unit this mount is on
+  public float recoil  // weapon recoil
+  public float recoils  // weapon barrel recoil
+  public float targetRotation  // destination rotation; do not modify!
+  public float heat  // current heat, 0 to 1
+  public float warmup  // lerps to 1 when shooting, 0 when not
+  public boolean charging  // is the weapon actively charging
+  public float charge  // counts up to 1 when charging, 0 when not
+  public float smoothReload  // lerps to reload time
+  public float aimX  // aiming position in world coordinates
+  public boolean shoot  // whether to shoot right now
+  public boolean allowShootEffects  // whether to allow any shooting effects
+  public boolean rotate  // whether to rotate to face the target right now
+  public boolean side  // extra state for alternating weapons
+  public int totalShots  // total bullets fired from this mount
+  public int barrelCounter  // counter for which barrel bullets have been fired from; used for alternating patterns
+  public float lastLength  // Last aim length of weapon.
+  public Bullet bullet  // current bullet for continuous weapons
+  public SoundLoop sound  // sound loop for continuous weapons
+  public Teamc target  // current target; used for autonomous weapons and AI
+  public float retarget  // retarget counter
+ctors:
+  public WeaponMount(Weapon weapon)
+

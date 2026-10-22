@@ -1,0 +1,271 @@
+Bar.java
+Java class extends arc.scene.Element
+fields:
+  private static Rect scissor
+  private Floatp fraction
+  private CharSequence name
+  private float value
+  private Color blinkColor
+ctors:
+  public Bar(String name, Color color, Floatp fraction) / public Bar(Prov<CharSequence> name, Prov<Color> color, Floatp fraction) / public Bar()
+methods:
+  public void reset(float value)
+  public void set(Prov<String> name, Floatp fraction, Color color)
+  public void snap()
+  public Bar outline(Color color, float stroke)
+  public void flash()
+  public Bar blink(Color color)
+  public void draw()
+
+BorderImage.java
+Java class extends arc.scene.ui.Image
+fields:
+  public float thickness
+  public Color borderColor
+  public boolean forceNearest
+  public Color alphaColor
+ctors:
+  public BorderImage() / public BorderImage(Texture texture) / public BorderImage(Texture texture, float thick) / public BorderImage(TextureRegion region, float thick) / public BorderImage(Drawable region)
+methods:
+  public BorderImage border(Color color)
+  public void draw()
+
+CoreItemsDisplay.java
+Java class extends arc.scene.ui.layout.Table
+fields:
+  private final ObjectSet<Item> usedItems
+  private CoreBuild core
+ctors:
+  public CoreItemsDisplay()
+methods:
+  public void resetUsed()
+  void rebuild()
+
+Displayable.java
+Java interface
+// An interface for things that can be displayed when hovered over.
+methods:
+  default boolean displayable()
+  void display(Table table)
+
+Elems.java
+Java class
+methods:
+  public static Button check(String text, Boolp checked, Boolc listener) / public static Button check(String text, boolean checked, Boolc listener) / public static Button check(String text, boolean currentChecked, Boolp checked, Boolc listener)  // Fancy check box with a background.
+
+FileChooser.java
+Java class
+methods:
+  public static void export(String name, String extension, FileWriter writer)
+  public static FileChooserParams open(String extensions)
+  public static FileChooserParams save(String extensions)
+  public static FileChooserDialog createFallbackFileChooser(FileChooserParams params)
+  public static void showFallbackFileChooser(FileChooserParams params)
+inner-class: FileChooserParams
+  fields:
+    public boolean open
+    public boolean allowMultiple
+    public String title
+    public String fileName
+    public String extensions
+    public Cons<Fi> handler
+    public Cons<Fi[]> multipleHandler
+  methods:
+    private void checkParams()
+    public void submit(Cons<Fi> handler)  // Submits the request to handle a single file.
+    public void submitMulti(Cons<Fi[]> multipleHandler)  // Submits the request to handle multiple files.
+    public FileChooserParams name(String fileName)
+    public FileChooserParams extensions(String extensions)
+    public FileChooserParams open(boolean open)
+    public FileChooserParams title(String title)
+    public void handleChooseResult(Fi files)
+
+Fonts.java
+Java class
+fields:
+  private static final String mainFont
+  private static final ObjectSet<String> unscaled
+  private static ObjectIntMap<String> unicodeIcons
+  private static IntMap<String> unicodeToName
+  private static ObjectMap<String,String> stringIcons
+  private static ObjectMap<String,TextureRegion> largeIcons
+  public static Font def
+methods:
+  public static int getUnicode(String content)
+  public static String getUnicodeStr(String content)
+  public static boolean hasUnicodeStr(String content)
+  public static void loadSystemCursors()  // Called from a static context to make the cursor appear immediately upon startup.
+  public static int cursorScale()
+  public static void loadFonts()
+  public static void loadExtraFonts()
+  public static String unicodeToName(int unicode)
+  public static TextureRegion getLargeIcon(String name)
+  public static void registerIcon(String name, String regionName, int ch, TextureRegion region)
+  public static void loadContentIcons()
+  public static void loadContentIconsHeadless()
+  public static void loadDefaultFont()  // Called from a static context for use in the loading screen.
+  public static void mergeFontAtlas(TextureAtlas atlas)  // Merges the UI and font atlas together for better performance.
+  public static TextureRegionDrawable getGlyph(Font font, char glyph)
+  static FreeTypeFontParameter fontParameter()
+
+GridImage.java
+Java class extends arc.scene.Element
+fields:
+  private int imageWidth
+ctors:
+  public GridImage(int w, int h)
+methods:
+  public void draw()
+  public void setImageSize(int w, int h)
+
+IntFormat.java
+Java class
+// A low-garbage way to format bundle strings.
+fields:
+  private final StringBuilder builder
+  private final String text
+  private int lastValue
+  private Func<Integer,String> converter
+ctors:
+  public IntFormat(String text) / public IntFormat(String text, Func<Integer,String> converter)
+methods:
+  public CharSequence get(int value) / public CharSequence get(int value1, int value2)
+
+ItemsDisplay.java
+Java class extends arc.scene.ui.layout.Table
+// Displays a list of items, e.g.
+fields:
+  boolean collapsed
+ctors:
+  public ItemsDisplay()
+methods:
+  public void rebuild(ItemSeq items) / public void rebuild(ItemSeq items, boolean[] shine)
+
+Links.java
+Java class
+fields:
+  private static LinkEntry links
+methods:
+  private static void createLinks()
+  public static LinkEntry[] getLinks()
+inner-class: LinkEntry
+  fields:
+    public final String name
+    public final Color color
+    public final Drawable icon
+  ctors:
+    public LinkEntry(String name, String link, Drawable icon, Color color)
+
+Menus.java
+Java class
+// Class for handling menus and notifications across the network.
+fields:
+  private static IntMap<Dialog> followUpMenus
+  private static IntMap<MenuDialog> menuDialogs
+  private static final Seq<MenuListener> menuListeners
+  private static final Seq<MenuBuilderListener> menuBuilderListeners
+  private static final Seq<TextInputListener> textInputListeners
+methods:
+  public static int registerMenu(MenuListener listener)  // Register a global menu listener.
+  public static int registerMenuBuilder(MenuBuilderListener listener)  // Register a global menu builder listener.
+  public static int registerTextInput(TextInputListener listener)  // Register a *global* text input listener.
+  public static void menuBuilder(int id, long token, String title, boolean hideOnClick, boolean hidePrevious, boolean fillScreen, NodeBuilder<?> builder)  // use the MenuBuilder version instead of invoking this with Call
+  public static void menuBuilderUpdate(int id, String tableId, NodeBuilder<?> builder)
+  public static void hideMenuBuilder(int menuId)
+  public static void menuBuilderChoose(Player player, int menuId, MenuResult results)
+  public static void menu(int menuId, String title, String message, String[][] options)
+  public static void followUpMenu(int menuId, String title, String message, String[][] options)
+  public static void hideFollowUpMenu(int menuId)
+  static Dialog newMenuDialog(String title, String message, String[][] options, Cons2<Integer,Dialog> buttonListener)
+  static void showMenu(String title, String message, String[][] options, Intc callback)  // Shows a menu that fires a callback when an option is selected.
+  static void showFollowUpMenu(int menuId, String title, String message, String[][] options, Intc callback)  // Shows a menu that hides when another followUp-menu is shown or when nothing is selected.
+  public static void menuChoose(Player player, int menuId, int option)
+  public static void textInput(int textInputId, String title, String message, int textLength, String def, boolean numeric) / public static void textInput(int textInputId, String title, String message, int textLength, String def, boolean numeric, boolean allowEmpty)
+  public static void textInputResult(Player player, int textInputId, String text)
+  public static void setHudText(String message)
+  public static void hideHudText()
+  public static void setHudTextReliable(String message)  // TCP version
+  public static void announce(String message)
+  public static void infoMessage(String message)
+  public static void infoPopup(String message, String id, float duration, int align, int top, int left, int bottom, int right) / public static void infoPopup(String message, float duration, int align, int top, int left, int bottom, int right)
+  public static void infoPopupReliable(String message, String id, float duration, int align, int top, int left, int bottom, int right) / public static void infoPopupReliable(String message, float duration, int align, int top, int left, int bottom, int right)
+  public static void label(String message, int id, float duration, float worldx, float worldy, int flags) / public static void label(String message, int id, float duration, float worldx, float worldy) / public static void label(String message, float duration, float worldx, float worldy)
+  public static void labelReliable(String message, int id, float duration, float worldx, float worldy, int flags) / public static void labelReliable(String message, int id, float duration, float worldx, float worldy) / public static void labelReliable(String message, float duration, float worldx, float worldy)
+  public static void infoToast(String message, float duration)
+  public static void warningToast(int unicode, String text)
+  public static void openURI(String uri)
+  public static void copyToClipboard(String text)
+  public static void removeWorldLabel(int id)  // internal use only
+inner-class: MenuDialog extends mindustry.ui.dialogs.BaseDialog
+  fields:
+    ObjectMap<String,Element> idToElement  // retained for easy lookup if an element needs to be replaced
+    ObjectMap<String,Seq<Image>> images  // every streamed image built into this dialog, keyed by the region name
+    Cons<MenuResult> originalListener
+    boolean wasHidden
+  ctors:
+    public MenuDialog()
+  methods:
+    void addImages(ObjectMap<String,Seq<Image>> images)
+inner-interface: MenuListener
+  methods:
+    void get(Player player, int option)
+inner-interface: MenuBuilderListener
+  methods:
+    void get(Player player, MenuResult result)
+inner-interface: TextInputListener
+  methods:
+    void get(Player player, String text)
+
+Minimap.java
+Java class extends arc.scene.ui.layout.Table
+ctors:
+  public Minimap()
+
+MobileButton.java
+Java class extends arc.scene.ui.ImageButton
+ctors:
+  public MobileButton(Drawable icon, String text, Runnable listener)
+
+MultiReqImage.java
+Java class extends arc.scene.ui.layout.Stack
+fields:
+  private Seq<ReqImage> displays
+  private float time
+methods:
+  public void add(ReqImage display)
+  public void act(float delta)
+
+ReqImage.java
+Java class extends arc.scene.ui.layout.Stack
+fields:
+  private final Boolp valid
+ctors:
+  public ReqImage(Element image, Boolp valid) / public ReqImage(TextureRegion region, Boolp valid)
+methods:
+  public boolean valid()
+
+Styles.java
+Java class
+fields:
+  public static Drawable black  // TODO all these names are inconsistent and not descriptive
+  public static ButtonStyle defaultb
+  public static TextButtonStyle defaultt  // Default text button style - gray corners at 45 degrees.
+  public static ImageButtonStyle defaulti  // Default image button style - gray corners at 45 degrees.
+  public static ScrollPaneStyle defaultPane
+  public static SliderStyle defaultSlider
+  public static LabelStyle defaultLabel
+  public static TextFieldStyle defaultField
+  public static CheckBoxStyle defaultCheck
+  public static DialogStyle defaultDialog
+  public static TreeStyle defaultTree
+methods:
+  public static void load()
+  private static Drawable createFlatDown()
+
+WarningBar.java
+Java class extends arc.scene.Element
+fields:
+  public float barWidth
+methods:
+  public void draw()
+

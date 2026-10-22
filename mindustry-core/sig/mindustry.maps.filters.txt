@@ -1,0 +1,265 @@
+BlendFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float radius
+  public Block block
+methods:
+  public FilterOption[] options()
+  public boolean isBuffered()
+  public char icon()
+  public void apply(GenerateInput in)
+
+ClearFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public Block target
+  public Block replace
+  public Block ignore
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+
+CoreSpawnFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+// Selects X spawns from the core spawn pool.
+fields:
+  public int amount
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(Tiles tiles, GenerateInput in)
+  public boolean isPost()
+
+DistortFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float scl
+methods:
+  public FilterOption[] options()
+  public boolean isBuffered()
+  public char icon()
+  public void apply(GenerateInput in)
+
+EnemySpawnFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+// Selects X spawns from the spawn pool.
+fields:
+  public int amount
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(Tiles tiles, GenerateInput in)
+  public boolean isPost()
+
+FilterOption.java
+Java class (abstract)
+fields:
+  public static final Boolf<Block> floorsOnly
+  public static final Boolf<Block> wallsOnly
+  public static final Boolf<Block> floorsOptional
+  public static final Boolf<Block> wallsOptional
+  public static final Boolf<Block> wallsOresOptional
+  public static final Boolf<Block> oresOnly
+  public static final Boolf<Block> oresFloorsOptional
+  public static final Boolf<Block> anyOptional
+  public Runnable changed
+methods:
+  public abstract void build(Table table)
+inner-class: SliderOption extends mindustry.maps.filters.FilterOption
+  fields:
+    final String name
+    final Floatp getter
+    final Floatc setter
+    final float min
+    boolean display
+  ctors:
+    SliderOption(String name, Floatp getter, Floatc setter, float min, float max) / SliderOption(String name, Floatp getter, Floatc setter, float min, float max, float step)
+  methods:
+    public SliderOption display()
+    public void build(Table table)
+inner-class: BlockOption extends mindustry.maps.filters.FilterOption
+  fields:
+    final String name
+    final Prov<Block> supplier
+    final Cons<Block> consumer
+    final Boolf<Block> filter
+  ctors:
+    BlockOption(String name, Prov<Block> supplier, Cons<Block> consumer, Boolf<Block> filter)
+  methods:
+    public void build(Table table)
+inner-class: ToggleOption extends mindustry.maps.filters.FilterOption
+  fields:
+    final String name
+    final Boolp getter
+    final Boolc setter
+  ctors:
+    ToggleOption(String name, Boolp getter, Boolc setter)
+  methods:
+    public void build(Table table)
+
+GenerateFilter.java
+Java class (abstract) implements java.lang.Cloneable, arc.util.serialization.AllowSerialization
+fields:
+  public int seed
+methods:
+  public void apply(Tiles tiles, GenerateInput in) / public void apply(GenerateInput in)  // apply the actual filter on the input
+  public abstract FilterOption[] options()  // @return a new array of options for configuring this filter
+  public void draw(Image image)  // draw any additional guides
+  public String simpleName()
+  public String name()  // localized display name
+  public char icon()
+  public void randomize()  // set the seed to a random number
+  public boolean isBuffered()  // @return whether this filter needs a read/write buffer (e.g.
+  public boolean isPost()  // @return whether this filter can *only* be used while generating the map, e.g.
+  protected float noise(int seedOffset, GenerateInput in, float scl, float mag) / protected float noise(GenerateInput in, float scl, float mag) / protected float noise(GenerateInput in, float scl, float mag, float octaves, float persistence) / protected float noise(float x, float y, float scl, float mag, float octaves, float persistence)
+  protected float rnoise(float x, float y, float scl, float mag) / protected float rnoise(float x, float y, int octaves, float scl, float falloff, float mag)
+  protected float chance(int x, int y)
+  public GenerateFilter copy()
+inner-class: GenerateInput
+// an input for generating at a certain coordinate.
+  fields:
+    public int x  // input size parameters
+    public Block floor  // output parameters
+    public long packedData
+    TileProvider buffer
+  methods:
+    public void set(int x, int y, Block block, Block floor, Block overlay, long packedData) / public void set(Tile tile)
+    public void begin(int width, int height, TileProvider buffer)
+    public Tile tile(float x, float y)
+  inner-interface: TileProvider
+    methods:
+      Tile get(int x, int y)
+inner-interface: TileProvider
+  methods:
+    Tile get(int x, int y)
+inner-class: PackTileStruct
+  fields:
+    short block
+
+LogicFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public static int maxInstructionsExecution  // max available execution for logic filter
+  public String code
+  public boolean loop
+methods:
+  public FilterOption[] options()
+  public void apply(Tiles tiles, GenerateInput in)
+  public char icon()
+  public boolean isPost()
+
+MedianFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  private static final IntSeq blocks
+  public float radius
+  public float percentile
+methods:
+  public FilterOption[] options()
+  public boolean isBuffered()
+  public char icon()
+  public void apply(GenerateInput in)
+
+MirrorFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  private static final Vec2 v1
+  public int angle
+  public boolean rotate
+  public float axisX
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+  public void draw(Image image)
+  public static void getDrawRect(Image image, Rect out)
+  float coord(float axis, int size)
+  void mirror(int width, int height, Vec2 p, float x0, float y0, float x1, float y1)
+  boolean left(Vec2 a, Vec2 b, Vec2 c)
+  void clipHalfLine(Vec2 v, float xmin, float ymin, float xmax, float ymax)
+
+NoiseFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float scl
+  public Block floor
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+
+OreFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float scl
+  public Block ore
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+
+OreMedianFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  private static IntSeq blocks
+  public float radius
+  public float percentile
+methods:
+  public FilterOption[] options()
+  public boolean isBuffered()
+  public char icon()
+  public void apply(GenerateInput in)
+
+RandomItemFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public Seq<ItemStack> drops
+  public float chance
+methods:
+  public FilterOption[] options()
+  public void apply(Tiles tiles, GenerateInput in)
+  public boolean isPost()
+
+RiverNoiseFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float scl
+  public Block floor
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+
+ScatterFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float chance
+  public Block flooronto
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+
+SpawnPathFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+// Selects X spawns from the spawn pool.
+fields:
+  public int radius
+  public Block block
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(Tiles tiles, GenerateInput in)
+  public boolean isPost()
+
+TerrainFilter.java
+Java class extends mindustry.maps.filters.GenerateFilter
+fields:
+  public float scl
+  public Block floor
+methods:
+  public FilterOption[] options()
+  public char icon()
+  public void apply(GenerateInput in)
+

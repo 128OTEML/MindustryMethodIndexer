@@ -1,0 +1,241 @@
+ChangeListener.java
+Java class (abstract) implements arc.scene.event.EventListener
+// Listener for {@link ChangeEvent}.
+methods:
+  public boolean handle(SceneEvent event)
+  abstract public void changed(ChangeEvent event, Element actor)  // @param actor The event target, which is the actor that emitted the change event.
+inner-class: ChangeEvent extends arc.scene.event.SceneEvent
+// Fired when something in an actor has changed.
+
+ClickListener.java
+Java class extends arc.scene.event.InputListener
+// Detects mouse over, mouse or finger touch presses, and clicks on an element.
+fields:
+  public static float visualPressedDuration  // Time in seconds {@link #isVisualPressed()} reports true after a press resulting in a click is released.
+  public static Runnable clicked
+  protected float tapSquareSize
+  protected int pressedPointer
+  protected KeyCode pressedButton
+  protected KeyCode button
+  protected boolean pressed
+  protected long visualPressedTime
+  protected long tapCountInterval
+  protected int tapCount
+  protected long lastTapTime
+  protected boolean stop
+ctors:
+  public ClickListener() / public ClickListener(KeyCode button)  // Create a listener where {@link #clicked(InputEvent, float, float)} is only called for left clicks.
+methods:
+  public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public void touchDragged(InputEvent event, float x, float y, int pointer)
+  public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+  public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+  public void cancel()  // If a touch down is being monitored, the drag and touch up events are ignored until the next touch up.
+  public void clicked(InputEvent event, float x, float y)
+  public boolean isOver(Element element, float x, float y) / public boolean isOver()  // Returns true if the specified position is over the specified element or within the tap square.
+  public boolean inTapSquare(float x, float y) / public boolean inTapSquare()  // Returns true if a touch is within the tap square.
+  public void invalidateTapSquare()  // The tap square will not longer be used for the current touch.
+  public boolean isPressed()  // Returns true if a touch is over the element or within the tap square.
+  public boolean isVisualPressed()  // Returns true if a touch is over the element or within the tap square or has been very recently.
+  public float getTapSquareSize()
+  public void setTapSquareSize(float halfTapSquareSize)
+  public void setTapCountInterval(float tapCountInterval)  // @param tapCountInterval time in seconds that must pass for two touch down/up sequences to be detected as consecutive taps.
+  public int getTapCount()  // Returns the number of taps within the tap count interval for the most recent click event.
+  public void setTapCount(int tapCount)
+  public float getTouchDownX()
+  public float getTouchDownY()
+  public KeyCode getPressedButton()  // The button that initially pressed this button or -1 if the button is not pressed.
+  public int getPressedPointer()  // The pointer that initially pressed this button or -1 if the button is not pressed.
+  public KeyCode getButton()
+  public void setButton(KeyCode button)  // Sets the button to listen for, all other buttons are ignored.
+
+DragListener.java
+Java class extends arc.scene.event.InputListener
+// Detects mouse or finger touch drags on an element.
+fields:
+  private float tapSquareSize
+  private int pressedPointer
+  private int button
+  private boolean dragging
+  private float deltaX
+methods:
+  public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+  public void touchDragged(InputEvent event, float x, float y, int pointer)
+  public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+  public void dragStart(InputEvent event, float x, float y, int pointer)
+  public void drag(InputEvent event, float x, float y, int pointer)
+  public void dragStop(InputEvent event, float x, float y, int pointer)
+  public void cancel()  // If a drag is in progress, no further drag methods will be called until a new drag is started.
+  public boolean isDragging()  // Returns true if a touch has been dragged outside the tap square.
+  public float getTapSquareSize()
+  public void setTapSquareSize(float halfTapSquareSize)
+  public float getTouchDownX()
+  public float getTouchDownY()
+  public float getStageTouchDownX()
+  public float getStageTouchDownY()
+  public float getDeltaX()  // Returns the amount on the x axis that the touch has been dragged since the last drag event.
+  public float getDeltaY()  // Returns the amount on the y axis that the touch has been dragged since the last drag event.
+  public int getButton()
+  public void setButton(int button)  // Sets the button to listen for, all other buttons are ignored.
+
+DragScrollListener.java
+Java class extends arc.scene.event.DragListener
+// Causes a scroll pane to scroll when a drag goes outside the bounds of the scroll pane.
+fields:
+  Interp interpolation
+  float minSpeed
+  long startTime
+  private ScrollPane scroll
+  private Task scrollUp
+ctors:
+  public DragScrollListener(ScrollPane scroll)
+methods:
+  public void setup(float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs)
+  float getScrollPixels()
+  public void drag(InputEvent event, float x, float y, int pointer)
+  public void dragStop(InputEvent event, float x, float y, int pointer)
+
+ElementGestureListener.java
+Java class implements arc.scene.event.EventListener
+// Detects tap, long press, fling, pan, zoom, and pinch gestures on an actor.
+fields:
+  static final Vec2 tmpCoords
+  private final GestureDetector detector
+  InputEvent event
+  Element actor
+ctors:
+  public ElementGestureListener() / public ElementGestureListener(float halfTapSquareSize, float tapCountInterval, float longPressDuration, float maxFlingDelay)  // @see GestureDetector#GestureDetector(arc.input.GestureDetector.GestureListener)
+methods:
+  public boolean handle(SceneEvent e)
+  public void touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+  public void tap(InputEvent event, float x, float y, int count, KeyCode button)
+  public boolean longPress(Element actor, float x, float y)  // If true is returned, additional gestures will not be triggered.
+  public void fling(InputEvent event, float velocityX, float velocityY, KeyCode button)
+  public void pan(InputEvent event, float x, float y, float deltaX, float deltaY)  // The delta is the difference in stage coordinates since the last pan.
+  public void zoom(InputEvent event, float initialDistance, float distance)
+  public void pinch(InputEvent event, Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)
+  public GestureDetector getGestureDetector()
+  public Element getTouchDownTarget()
+
+EventListener.java
+Java interface
+// Low level interface for receiving events.
+methods:
+  boolean handle(SceneEvent event)  // Try to handle the given event, if it is applicable.
+
+FocusListener.java
+Java class (abstract) implements arc.scene.event.EventListener
+// Listener for {@link FocusEvent}.
+methods:
+  public boolean handle(SceneEvent event)
+  public void keyboardFocusChanged(FocusEvent event, Element element, boolean focused)  // @param element The event target, which is the element that emitted the focus event.
+  public void scrollFocusChanged(FocusEvent event, Element element, boolean focused)  // @param element The event target, which is the element that emitted the focus event.
+inner-class: FocusEvent extends arc.scene.event.SceneEvent
+// Fired when an element gains or loses keyboard or scroll focus.
+  fields:
+    public boolean focused
+    public Type type
+    public Element relatedActor
+  methods:
+    public void reset()
+
+HandCursorListener.java
+Java class extends arc.scene.event.ClickListener
+fields:
+  public Boolp enabled
+  public boolean checkEnabled
+ctors:
+  public HandCursorListener(Boolp enabled, boolean check) / public HandCursorListener()
+methods:
+  public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+  public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+  static boolean isDisabled(Element element)
+
+IbeamCursorListener.java
+Java class extends arc.scene.event.ClickListener
+methods:
+  public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+  public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+
+InputEvent.java
+Java class extends arc.scene.event.SceneEvent
+// Event for actor input: touch, mouse, keyboard, and scroll.
+fields:
+  public InputEventType type
+  public float stageX
+  public int pointer
+  public float scrollAmountX
+  public KeyCode keyCode
+  public char character
+  public Element relatedActor
+methods:
+  public void reset()
+  public Vec2 toCoordinates(Element actor, Vec2 actorCoords)  // Sets actorCoords to this event's coordinates relative to the specified actor.
+  public boolean isTouchFocusCancel()  // Returns true of this event is a touchUp triggered by {@link Scene#cancelTouchFocus()}.
+  public String toString()
+
+InputListener.java
+Java class implements arc.scene.event.EventListener
+// EventListener for low-level input events.
+fields:
+  private static final Vec2 tmpCoords
+methods:
+  public boolean handle(SceneEvent e)
+  public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)  // Called when a mouse button or a finger touch goes down on the element.
+  public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)  // Called when a mouse button or a finger touch goes up anywhere, but only if touchDown previously returned true for the mouse
+  public void touchDragged(InputEvent event, float x, float y, int pointer)  // Called when a mouse button or a finger touch is moved anywhere, but only if touchDown previously returned true for the mouse
+  public boolean mouseMoved(InputEvent event, float x, float y)  // Called any time the mouse is moved when a button is not down.
+  public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)  // Called any time the mouse cursor or a finger touch is moved over an element.
+  public void exit(InputEvent event, float x, float y, int pointer, Element toActor)  // Called any time the mouse cursor or a finger touch is moved out of an element.
+  public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY)  // Called when the mouse wheel has been scrolled.
+  public boolean keyDown(InputEvent event, KeyCode keycode)  // Called when a key goes down.
+  public boolean keyUp(InputEvent event, KeyCode keycode)  // Called when a key goes up.
+  public boolean keyTyped(InputEvent event, char character)  // Called when a key is typed.
+
+ResizeListener.java
+Java class implements arc.scene.event.EventListener
+methods:
+  public boolean handle(SceneEvent event)
+  public void resized()
+
+SceneEvent.java
+Java class implements arc.util.pooling.Pool.Poolable
+// The base class for all events.
+fields:
+  public Element targetActor
+  public Element listenerActor
+  public boolean capture  // true means event occurred during the capture phase
+  public boolean bubbles  // true means propagate to target's parents
+  public boolean handled  // true means the event was handled (the stage will eat the input)
+  public boolean stopped  // true means event propagation was stopped
+  public boolean cancelled  // true means propagation was stopped and any action that this event would cause should not happen
+methods:
+  public void handle()  // Marks this event as handled.
+  public void cancel()  // Marks this event cancelled.
+  public void stop()  // Marks this event has being stopped.
+  public void reset()
+
+SceneResizeEvent.java
+Java class extends arc.scene.event.SceneEvent
+
+Touchable.java
+(unknown)
+
+VisibilityEvent.java
+Java class extends arc.scene.event.SceneEvent
+fields:
+  private boolean hide
+ctors:
+  public VisibilityEvent() / public VisibilityEvent(boolean hide)
+methods:
+  public boolean isHide()
+
+VisibilityListener.java
+Java class implements arc.scene.event.EventListener
+methods:
+  public boolean handle(SceneEvent event)
+  public boolean shown()
+  public boolean hidden()
+

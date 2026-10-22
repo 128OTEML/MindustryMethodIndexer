@@ -1,0 +1,134 @@
+AssetDescriptor.java
+Java class
+// Describes an asset to be loaded by its filename, type and {@link AssetLoaderParameters}.
+fields:
+  public final String fileName
+  public final Class<T> type
+  public final AssetLoaderParameters params
+  public Fi file  // The resolved file.
+  public Cons<T> loaded  // Callback for when this asset is loaded.
+  public Cons<Throwable> errored  // Callback for when this asset has an error.
+ctors:
+  public AssetDescriptor(Class<T> assetType) / public AssetDescriptor(String fileName, Class<T> assetType) / public AssetDescriptor(Fi file, Class<T> assetType) / public AssetDescriptor(String fileName, Class<T> assetType, AssetLoaderParameters<T> params) / public AssetDescriptor(Fi file, Class<T> assetType, AssetLoaderParameters<T> params)  // Creates an AssetDescriptor with an already resolved name.
+methods:
+  public String toString()
+
+AssetErrorListener.java
+Java interface
+methods:
+  void error(AssetDescriptor asset, Throwable throwable)
+
+AssetLoaderParameters.java
+Java class
+fields:
+  public LoadedCallback loadedCallback
+ctors:
+  public AssetLoaderParameters() / public AssetLoaderParameters(LoadedCallback loadedCallback)
+inner-interface: LoadedCallback
+// Callback interface that will be invoked when the {@link AssetManager} loaded an asset.
+  methods:
+    void finishedLoading(AssetManager assetManager, String fileName, Class type)
+
+AssetLoadingTask.java
+Java class implements java.util.concurrent.Callable
+// Responsible for loading an asset through an {@link AssetLoader} based on an {@link AssetDescriptor}.
+fields:
+  final AssetDescriptor assetDesc
+  final AssetLoader loader
+  final ExecutorService executor
+  final long startTime
+  AssetManager manager
+  volatile boolean asyncDone
+  volatile boolean dependenciesLoaded
+  volatile Seq<AssetDescriptor> dependencies
+  volatile Future<Void> depsFuture
+  volatile Future<Void> loadFuture
+  volatile Object asset
+  int ticks
+  volatile boolean cancel
+ctors:
+  public AssetLoadingTask(AssetManager manager, AssetDescriptor assetDesc, AssetLoader loader, ExecutorService threadPool)
+methods:
+  public Void call()  // Loads parts of the asset asynchronously if the loader is an {@link AsynchronousAssetLoader}.
+  public boolean update()  // Updates the loading of the asset.
+  private void handleSyncLoader()
+  private void handleAsyncLoader()
+  private Fi resolve(AssetLoader loader, AssetDescriptor assetDesc)
+  public Object getAsset()
+  private void removeDuplicates(Seq<AssetDescriptor> array)
+
+AssetManager.java
+Java class implements arc.util.Disposable
+// Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music and so on.
+fields:
+  final ObjectMap<Class,ObjectMap<String,RefCountedContainer>> assets
+  final ObjectMap<String,Class> assetTypes
+  final ObjectMap<String,Seq<String>> assetDependencies
+  final ObjectSet<String> injected
+  final ObjectMap<Class,ObjectMap<String,AssetLoader>> loaders
+  final Seq<AssetDescriptor> loadQueue
+  final ExecutorService executor
+  final Seq<AssetLoadingTask> tasks
+  final FileHandleResolver resolver
+  AssetErrorListener listener
+  int loaded
+  int toLoad
+  int peakTasks
+ctors:
+  public AssetManager() / public AssetManager(FileHandleResolver resolver) / public AssetManager(FileHandleResolver resolver, boolean defaultLoaders)  // Creates a new AssetManager with all default loaders.
+methods:
+  public FileHandleResolver getFileHandleResolver()  // Returns the {@link FileHandleResolver} for which this AssetManager was loaded with.
+  public synchronized T get(String fileName) / public synchronized T get(String fileName, Class<T> type) / public synchronized T get(AssetDescriptor<T> assetDescriptor)  // @param fileName the asset file name
+  public synchronized T getOrNull(String fileName, Class<T> type)  // @param fileName the asset file name
+  public synchronized Seq<T> getAll(Class<T> type, Seq<T> out)  // @param type the asset type
+  public synchronized Seq<Entry<String,T>> getAllEntries(Class<T> type, Seq<Entry<String,T>> out)  // @param type the asset type
+  public synchronized boolean contains(String fileName) / public synchronized boolean contains(String fileName, Class type)  // Returns true if an asset with the specified name is loading, queued to be loaded, or has been loaded.
+  public synchronized void unload(String fileName)  // Removes the asset and all its dependencies, if they are not used by other assets.
+  public synchronized boolean containsAsset(T asset)  // @param asset the asset
+  public synchronized String getAssetFileName(T asset)  // @param asset the asset
+  public synchronized boolean isLoaded(AssetDescriptor assetDesc) / public synchronized boolean isLoaded(String fileName) / public synchronized boolean isLoaded(String fileName, Class type)  // @param assetDesc the AssetDescriptor of the asset
+  public AssetLoader getLoader(Class<T> type) / public AssetLoader getLoader(Class<T> type, String fileName)  // Returns the default loader for the given type
+  public synchronized AssetDescriptor<T> load(String fileName, Class<T> type) / public synchronized AssetDescriptor load(Loadable load) / public synchronized AssetDescriptor<T> load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter) / public synchronized AssetDescriptor<T> load(AssetDescriptor<T> desc)  // Adds the given asset to the loading queue of the AssetManager.
+  public synchronized AssetDescriptor loadRun(String name, Class<?> type, Runnable loadasync) / public synchronized AssetDescriptor loadRun(String name, Class<?> type, Runnable loadasync, Runnable loadsync)  // Loads a custom one-time 'asset' that knows how to load itself.
+  public synchronized boolean update() / public boolean update(int millis)  // Updates the AssetManager, keeping it loading any assets in the preload queue.
+  public synchronized AssetDescriptor getCurrentLoading()  // @return the asset loading task that is currently being processed.
+  public synchronized boolean isFinished()  // Returns true when all assets are loaded.
+  public void finishLoading()  // Blocks until all assets are loaded.
+  public void finishLoadingAsset(AssetDescriptor assetDesc) / public void finishLoadingAsset(String fileName)  // Blocks until the specified asset is loaded.
+  synchronized void injectDependencies(String parentAssetFilename, Seq<AssetDescriptor> dependendAssetDescs)
+  private synchronized void injectDependency(String parentAssetFilename, AssetDescriptor dependendAssetDesc)
+  private void nextTask()  // Removes a task from the loadQueue and adds it to the task stack.
+  private void addTask(AssetDescriptor assetDesc)  // Adds a {@link AssetLoadingTask} to the task stack for the given asset.
+  public void addAsset(String fileName, Class<T> type, T asset)  // Adds an asset to this AssetManager
+  private boolean updateTask()  // Updates the current task on the top of the task stack.
+  protected void taskFailed(AssetDescriptor assetDesc, RuntimeException ex)  // Called when a task throws an exception during loading.
+  private void incrementRefCountedDependencies(String parent)
+  private void handleTaskError(Throwable t)  // Handles a runtime/loading error in {@link #update()} by optionally invoking the {@link AssetErrorListener}.
+  public synchronized void setLoader(Class<T> type, AssetLoader<T,P> loader) / public synchronized void setLoader(Class<T> type, String suffix, AssetLoader<T,P> loader)  // Sets a new {@link AssetLoader} for the given type.
+  public synchronized int getLoadedAssets()  // @return the number of loaded assets
+  public synchronized int getQueuedAssets()  // @return the number of currently queued assets
+  public synchronized float getProgress()  // @return the progress in percent of completion.
+  public synchronized void setErrorListener(AssetErrorListener listener)  // Sets an {@link AssetErrorListener} to be invoked in case loading an asset failed.
+  public synchronized void dispose()  // Disposes all assets in the manager and stops all asynchronous loading.
+  public synchronized void clear()  // Clears and disposes all assets and the preloading queue.
+  public synchronized int getReferenceCount(String fileName)  // Returns the reference count of an asset.
+  public synchronized void setReferenceCount(String fileName, int refCount)  // Sets the reference count of an asset.
+  public synchronized String getDiagnostics()  // @return a string containing ref count and dependency information for all assets.
+  public synchronized Seq<String> getAssetNames()  // @return the file names of all loaded assets.
+  public synchronized Seq<String> getDependencies(String fileName)  // @return the dependencies of an asset or null if the asset has no dependencies.
+  public synchronized Class getAssetType(String fileName)  // @return the type of a loaded asset.
+inner-class: RefCountedContainer
+  fields:
+    Object object
+    int count
+  ctors:
+    public RefCountedContainer(Object object)
+
+Loadable.java
+Java interface
+methods:
+  default void loadAsync()
+  default void loadSync()
+  default String getName()
+  default Seq<AssetDescriptor> getDependencies()
+

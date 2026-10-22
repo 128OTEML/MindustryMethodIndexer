@@ -1,0 +1,101 @@
+Content.java
+Java class (abstract) implements java.lang.Comparable
+// Base class for a content type that is loaded in {@link mindustry.core.ContentLoader}.
+fields:
+  public short id
+  public ModContentInfo minfo  // Info on which mod this content was loaded from.
+  public boolean removed  // If true, this content is invalid (added in a data patch and then removed).
+ctors:
+  public Content()
+methods:
+  public abstract ContentType getContentType()  // Returns the type name of this piece of content.
+  public void removeContent()  // Called when this content is removed in a data patch.
+  public void init()  // Called after all content and modules are created.
+  public void postInit()  // Called after init().
+  public void afterPatch()  // Called after being patched.
+  public void load()  // Called after all content is created, only on non-headless versions.
+  public void loadIcon()  // Called right before load().
+  public boolean hasErrored()  // @return whether an error occurred during mod loading.
+  public boolean isVanilla()  // @return whether this is content from the base game.
+  public boolean isModded()  // @return whether this content is from a mod.
+  public boolean isPatchContent()  // @return whether this content is from a map data patch.
+  public int compareTo(Content c)
+  public String toString()
+inner-class: ModContentInfo
+  fields:
+    public LoadedMod mod  // The mod that loaded this piece of content.
+    public Fi sourceFile  // File that this content was loaded from.
+    public String error  // The error that occurred during loading, if applicable.
+    public Throwable baseError  // Base throwable that caused the error.
+    public ContentAsset asset  // If this was loaded as part of a save, this is the associated content asset.
+
+ContentType.java
+(unknown)
+
+MappableContent.java
+Java class (abstract) extends mindustry.ctype.Content
+fields:
+  public final String name
+ctors:
+  public MappableContent(String name)
+methods:
+  public String toString()
+
+UnlockableContent.java
+Java class (abstract) extends mindustry.ctype.MappableContent
+// Base interface for an unlockable content type.
+fields:
+  public Stats stats  // Stat storage for this content.
+  public String localizedName  // Localized, formal name.
+  public String description  // Localized description & details.
+  public boolean alwaysUnlocked  // Whether this content is always unlocked in the tech tree.
+  public boolean inlineDescription  // Whether to show the description in the research dialog preview.
+  public boolean hideDetails  // Whether details are hidden in custom games if this hasn't been unlocked in campaign mode.
+  public boolean hideDatabase  // Whether this is hidden from the Core Database.
+  public boolean generateIcons  // If false, all icon generation is disabled for this content; createIcons is not called.
+  public float selectionSize  // How big the content appears in certain selection menus
+  public TextureRegion uiIcon  // Icon of the content to use in UI.
+  public TextureRegion fullIcon  // Icon of the full content.
+  public String fullOverride  // Override for the full icon.
+  public boolean allDatabaseTabs  // If true, this content will appear in all database tabs.
+  public ObjectSet<Planet> shownPlanets  // Planets that this content is made for.
+  public ObjectSet<UnlockableContent> databaseTabs  // Content - usually a planet - that dictates which database tab(s) this content will appear in.
+  public String databaseCategory  // Content category.
+  public String databaseTag  // Category tags.
+  public TechNode techNode  // The tech tree node for this content, if applicable.
+  public Seq<TechNode> techNodes  // Tech nodes for all trees that this content is part of.
+  protected boolean unlocked  // Unlock state.
+ctors:
+  public UnlockableContent(String name)
+methods:
+  public void postInit()
+  public void loadIcon()
+  public void afterPatch()
+  public boolean isBanned()
+  public boolean isOnPlanet(Planet planet)
+  public int getLogicId()
+  public String displayDescription()
+  public void checkStats()  // @deprecated just call computeStats() every time, there's no reason to cache it.
+  public void setStats()  // Initializes stats on demand.
+  public Stats computeStats()
+  public void displayExtra(Table table)  // Display any extra info after details.
+  public void createIcons(MultiPacker packer)  // Generate any special icons for this content.
+  protected void makeOutline(PageType page, MultiPacker packer, TextureRegion region, boolean makeNew, Color outlineColor, int outlineRadius) / protected void makeOutline(PageType page, MultiPacker packer, TextureRegion region, boolean makeNew, Color outlineColor, int outlineRadius, int padding) / protected void makeOutline(MultiPacker packer, TextureRegion region, String name, Color outlineColor, int outlineRadius) / protected void makeOutline(MultiPacker packer, TextureRegion region, String name, Color outlineColor)
+  public ItemStack[] researchRequirements()  // @return items needed to research this content
+  public String emoji()
+  public int emojiChar()
+  public boolean hasEmoji()
+  public void getDependencies(Cons<UnlockableContent> cons)  // Iterates through any implicit dependencies of this content.
+  public void onUnlock()  // Called when this content is unlocked.
+  public boolean isHidden()  // Whether this content is always hidden in the content database dialog.
+  public boolean showUnlock()  // @return whether to show a notification toast when this is unlocked
+  public boolean logicVisible()
+  public void unlock()  // Makes this piece of content unlocked; if it already unlocked, nothing happens.
+  public void quietUnlock()  // Unlocks this content, but does not fire any events.
+  public boolean unlockedNowHost()
+  public boolean unlockedHost()  // @return in multiplayer, whether this is unlocked for the host player, otherwise, whether it is unlocked for the local player (same as unlocked())
+  public boolean unlockedNow()  // @return whether this content is unlocked, or the player is in a custom (non-campaign) game.
+  public boolean unlocked()
+  public void clearUnlock()  // Locks this content again.
+  public boolean locked()
+

@@ -1,0 +1,17 @@
+// AssetsProcess.java : public void process(RoundEnvironment env) throws Exception
+    @Override
+    public void process(RoundEnvironment env) throws Exception{
+        processSounds("Sounds", rootDirectory + "/core/assets/sounds", "arc.audio.Sound", true);
+        processSounds("Musics", rootDirectory + "/core/assets/music", "arc.audio.Music", false);
+        processUI(env.getElementsAnnotatedWith(StyleDefaults.class));
+    }
+
+// StructProcess.java : static String bitString(int offset, int size, int totalSize) / static String bitString(int size, int totalSize)
+    static String bitString(int offset, int size, int totalSize){
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < offset; i++) builder.append('0');
+        for(int i = 0; i < size; i++) builder.append('1');
+        for(int i = 0; i < totalSize - size - offset; i++) builder.append('0');
+        return "0b" + builder.reverse().toString() + "L";
+    }
+

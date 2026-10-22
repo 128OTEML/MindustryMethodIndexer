@@ -1,0 +1,272 @@
+Action.java
+Java class (abstract) implements arc.util.pooling.Pool.Poolable
+// Actions attach to an {@link Element} and perform some task, often over time.
+fields:
+  protected Element actor  // The actor this action is attached to, or null if it is not attached.
+  protected Element target  // The actor this action targets, or null if a target has not been set.
+  private Pool<Action> pool
+methods:
+  abstract public boolean act(float delta)  // Updates the action based on time.
+  public void restart()  // Sets the state of the action so it can be run again.
+  public Element getActor()  // @return null if the action is not attached to an actor.
+  public void setActor(Element actor)  // Sets the actor this action is attached to.
+  public Element getTarget()  // @return null if the action has no target.
+  public void setTarget(Element target)  // Sets the actor this action will manipulate.
+  public void reset()  // Resets the optional state of this action to as if it were newly created, allowing the action to be pooled and reused.
+  public Pool<Action> getPool()
+  public void setPool(Pool pool)  // Sets the pool that the action will be returned to when removed from the actor.
+  public String toString()
+
+Element.java
+Java class
+fields:
+  public final Color color
+  public float originX
+  public String name
+  public boolean fillParent
+  public Vec2 translation
+  public boolean visible
+  public Object userObject
+  public Touchable touchable
+  public Group parent
+  public Boolp visibility
+  public Prov<Touchable> touchablility
+  public boolean cullable
+  private final DelayedRemovalSeq<EventListener> listeners
+  private final Seq<Action> actions
+  public float x
+  protected float width  // DO NOT modify without calling sizeChanged.
+  protected float parentAlpha  // Alpha value of the parent.
+  private Scene stage
+  private boolean needsLayout
+  private boolean layoutEnabled
+  private Runnable update
+methods:
+  public void draw()  // Draws the element.
+  public void act(float delta)  // Updates the actor based on time.
+  public void updateVisibility()
+  public boolean hasMouse()
+  public boolean hasKeyboard()
+  public boolean hasScroll()
+  public void requestKeyboard()
+  public void requestScroll()
+  public boolean fire(SceneEvent event)
+  public boolean notify(SceneEvent event, boolean capture)
+  public Element hit(float x, float y, boolean touchable)  // Returns the deepest actor that contains the specified point and is {@link #getTouchable() touchable} and
+  public boolean remove()  // Removes this actor from its parent, if it has a parent.
+  public void dragged(Floatc2 cons)  // Adds a listener which listens for drag (touch down and move) events.
+  public void scrolled(Floatc cons)
+  public boolean addListener(EventListener listener)  // Add a listener to receive events that {@link #hit(float, float, boolean) hit} this actor.
+  public boolean removeListener(EventListener listener)
+  public Seq<EventListener> getListeners()
+  public boolean addCaptureListener(EventListener listener)  // Adds a listener that is only notified during the capture phase.
+  public boolean removeCaptureListener(EventListener listener)
+  public Seq<EventListener> getCaptureListeners()
+  public void addAction(Action action)
+  public void actions(Action actions)
+  public void removeAction(Action action)
+  public Seq<Action> getActions()
+  public boolean hasActions()  // Returns true if the actor has one or more actions.
+  public void clearActions()  // Removes all actions on this actor.
+  public void clearListeners()  // Removes all listeners on this actor.
+  public void clear()  // Removes all actions and listeners on this actor.
+  public Scene getScene()  // Returns the stage that this actor is currently in, or null if not in a stage.
+  protected void setScene(Scene stage)  // Called by the framework when this actor or any parent is added to a group that is in the stage.
+  public boolean isDescendantOf(Boolf<Element> actor) / public boolean isDescendantOf(Element actor)  // Returns true if this actor is the same as or is the descendant of the specified actor.
+  public boolean isAscendantOf(Element actor)  // Returns true if this actor is the same as or is the ascendant of the specified actor.
+  public boolean hasParent()  // Returns true if the actor's parent is not null.
+  public boolean isTouchable()  // Returns true if input events are processed by this actor.
+  public float getX(int alignment)  // Returns the X position of the specified {@link Align alignment}.
+  public float getY(int alignment)  // Returns the Y position of the specified {@link Align alignment}.
+  public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)  // Sets the position of the actor's bottom left corner.
+  public void moveBy(float x, float y)  // Add x and y to current position
+  public float getWidth()
+  public void setWidth(float width)
+  public float getHeight()
+  public void setHeight(float height)
+  public float getTop()  // Returns y plus height.
+  public float getRight()  // Returns x plus width.
+  protected void sizeChanged()  // Called when the actor's size has been changed.
+  protected void rotationChanged()  // Called when the actor's rotation has been changed.
+  public void setSize(float size) / public void setSize(float width, float height)  // Sets the width and height.
+  public void sizeBy(float size) / public void sizeBy(float width, float height)  // Adds the specified size to the current size.
+  public void setBounds(float x, float y, float width, float height)  // Set bounds the x, y, width, and height.
+  public void setOrigin(float originX, float originY) / public void setOrigin(int alignment)  // Sets the origin position which is relative to the actor's bottom left corner.
+  public void setScale(float scaleXY) / public void setScale(float scaleX, float scaleY)  // Sets the scale for both X and Y
+  public void scaleBy(float scale) / public void scaleBy(float scaleX, float scaleY)  // Adds the specified scale to the current scale.
+  public float getRotation()
+  public void setRotation(float degrees)
+  public void setRotationOrigin(float degrees, int align)
+  public void rotateBy(float amountInDegrees)  // Adds the specified rotation to the current rotation.
+  public void setColor(float r, float g, float b, float a) / public void setColor(Color color)
+  public void toFront()  // Changes the z-order for this actor so it is in front of all siblings.
+  public void toBack()  // Changes the z-order for this actor so it is in back of all siblings.
+  public int getZIndex()  // Returns the z-index of this actor.
+  public void setZIndex(int index)  // Sets the z-index of this actor.
+  public boolean clipBegin() / public boolean clipBegin(float x, float y, float width, float height)  // Calls {@link #clipBegin(float, float, float, float)} to clip this actor's bounds.
+  public void clipEnd()  // Ends clipping begun by {@link #clipBegin(float, float, float, float)}.
+  public Vec2 screenToLocalCoordinates(Vec2 screenCoords)  // Transforms the specified point in screen coordinates to the actor's local coordinate system.
+  public Vec2 stageToLocalCoordinates(Vec2 stageCoords)  // Transforms the specified point in the stage's coordinates to the actor's local coordinate system.
+  public Vec2 localToStageCoordinates(Vec2 localCoords)  // Transforms the specified point in the actor's coordinates to be in the stage's coordinates.
+  public Vec2 localToParentCoordinates(Vec2 localCoords)  // Transforms the specified point in the actor's coordinates to be in the parent's coordinates.
+  public Vec2 localToAscendantCoordinates(Element ascendant, Vec2 localCoords)  // Converts coordinates for this actor to those of a parent actor.
+  public Vec2 parentToLocalCoordinates(Vec2 parentCoords)  // Converts the coordinates given in the parent's coordinate system to this actor's coordinate system.
+  public float getMinWidth()
+  public float getMinHeight()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMaxWidth()
+  public float getMaxHeight()
+  public void setLayoutEnabled(boolean enabled)
+  public void validate()  // Ensures the actor has been laid out.
+  public boolean needsLayout()  // Returns true if the widget's layout has been {@link #invalidate() invalidated}.
+  public void invalidate()  // Invalidates this actor's layout, causing {@link #layout()} to happen the next time {@link #validate()} is called.
+  public void invalidateHierarchy()  // Invalidates this actor and its ascendants, calling {@link #invalidate()} on each.
+  public void pack()  // Sizes this actor to its preferred width and height, then calls {@link #validate()}.
+  public void setFillParent(boolean fillParent)  // If true, this actor will be sized to the parent in {@link #validate()}.
+  public void layout()  // Computes and caches any information needed for drawing and, if this actor has children, positions and sizes each child,
+  public void keepInStage()
+  public void setTranslation(float x, float y)
+  public void keyDown(KeyCode key, Runnable l) / public void keyDown(Cons<KeyCode> cons)  // Adds a keydown input listener.
+  public void fireClick()  // Fakes a click event on all ClickListeners.
+  public ClickListener clicked(Runnable r) / public ClickListener clicked(KeyCode button, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Runnable r) / public ClickListener clicked(Cons<ClickListener> tweaker, Cons<ClickListener> runner)  // Adds a click listener.
+  public InputListener tapped(Runnable r)  // Adds a touch listener.
+  public void hovered(Runnable r)  // Adds a hover/mouse enter listener.
+  public void exited(Runnable r)  // Adds a hover/mouse exit listener.
+  public void released(Runnable r)  // Adds a mouse up listener.
+  public void change()  // Fires a change event on all listeners.
+  public void changed(Runnable r)  // Adds a click listener.
+  public Element update(Runnable r)
+  public Element visible(Boolp vis)
+  public void touchable(Prov<Touchable> touch)
+  public String toString()
+
+Group.java
+Java class (abstract) extends arc.scene.Element implements arc.scene.utils.Cullable
+// 2D scene graph node that may contain other actors.
+fields:
+  private static final Vec2 tmp
+  protected final SnapshotSeq<Element> children
+  private final Affine2 worldTransform
+  private final Mat computedTransform
+  private final Mat oldTransform
+  protected boolean transform
+  protected Rect cullingArea
+methods:
+  public void act(float delta)
+  public void draw()
+  protected void drawChildren()
+  protected Mat computeTransform()  // Returns the transform for this group's coordinate system.
+  protected void applyTransform(Mat transform)  // Set the batch's transformation matrix, often with the result of {@link #computeTransform()}.
+  protected void resetTransform()  // Restores the batch transform to what it was before {@link #applyTransform(Mat)}.
+  public Rect getCullingArea()  // @return May be null.
+  public void setCullingArea(Rect cullingArea)  // Children completely outside of this rectangle will not be drawn.
+  public Element hit(float x, float y, boolean touchable)
+  protected void childrenChanged()  // Called when actors are added to or removed from the group.
+  public void forEach(Cons<Element> cons)  // Recursively iterates through every child of this group.
+  public Element fill(DrawRect rect) / public void fill(Cons<Table> cons) / public void fill(Drawable background, Cons<Table> cons)  // Adds and returns a table.
+  public void addChild(Element actor)  // Adds an actor as a child of this group, removing it from its previous parent.
+  public void addChildAt(int index, Element actor)  // Adds an actor as a child of this group at a specific index, removing it from its previous parent.
+  public void addChildBefore(Element actorBefore, Element actor)  // Adds an actor as a child of this group immediately before another child actor, removing it from its previous parent.
+  public void addChildAfter(Element actorAfter, Element actor)  // Adds an actor as a child of this group immediately after another child actor, removing it from its previous parent.
+  public boolean removeChild(Element actor) / public boolean removeChild(Element actor, boolean unfocus)  // Removes an actor from this group and unfocuses it.
+  public void clearChildren()  // Removes all actors from this group.
+  public void clear()  // Removes all children, actions, and listeners from this group.
+  public T find(String name) / public T find(Boolf<Element> pred)  // Returns the first actor found with the specified name.
+  public T findVisible(String name)  // Finds only visible elements.
+  protected void setScene(Scene stage)
+  public boolean swapActor(int first, int second) / public boolean swapActor(Element first, Element second)  // Swaps two actors by index.
+  public SnapshotSeq<Element> getChildren()  // Returns an ordered list of child actors in this group.
+  public boolean hasChildren()
+  public boolean isTransform()
+  public void setTransform(boolean transform)  // When true (the default), the Batch is transformed so children are drawn in their parent's coordinate system.
+  public Vec2 localToDescendantCoordinates(Element descendant, Vec2 localCoords)  // Converts coordinates for this group to those of a descendant actor.
+  public String toString() / void toString(StringBuilder buffer, int indent)  // Returns a description of the actor hierarchy, recursively.
+
+Scene.java
+Java class implements arc.input.InputProcessor
+fields:
+  public final Group root
+  public float marginLeft  // Margins for fill layouts.
+  private final ObjectMap<Class,Object> styleDefaults
+  private final Vec2 tempCoords
+  private final Element pointerOverActors
+  private final boolean pointerTouched
+  private final int pointerScreenX
+  private final int pointerScreenY
+  private final SnapshotSeq<TouchFocus> touchFocuses
+  private Viewport viewport
+  private int mouseScreenX
+  private Element mouseOverElement
+  private Element keyboardFocus
+  private boolean actionsRequestRendering
+ctors:
+  public Scene() / public Scene(Viewport viewport)
+methods:
+  public T getStyle(Class<T> type)
+  public boolean hasStyle(Class<T> type)
+  public void addStyle(Class<T> type, T style)
+  public void registerStyles(Class<?> type) / public void registerStyles(Object obj)
+  public Element getHoverElement()
+  public boolean hasField()
+  public boolean hasMouse() / public boolean hasMouse(float mousex, float mousey)
+  public boolean hasDialog()
+  public boolean hasKeyboard()
+  public boolean hasScroll()
+  public Dialog getDialog()
+  public void draw()
+  public void act() / public void act(float delta)  // Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}.
+  public Element find(String name) / public Element find(Boolf<Element> pred)
+  public Element findVisible(String name)
+  public Table table() / public Table table(Cons<Table> cons) / public Table table(Drawable style, Cons<Table> cons)  // Adds and returns a table.
+  private Element fireEnterAndExit(Element overLast, int screenX, int screenY, int pointer)
+  public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)  // Applies a touch down event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the
+  public boolean touchDragged(int screenX, int screenY, int pointer)  // Applies a touch moved event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the
+  public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)  // Applies a touch up event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the event.
+  public boolean mouseMoved(int screenX, int screenY)  // Applies a mouse moved event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the
+  public boolean scrolled(float amountX, float amountY)  // Applies a mouse scroll event to the stage and returns true if an actor in the scene {@link SceneEvent#handle() handled} the
+  public boolean keyDown(KeyCode keyCode)  // Applies a key down event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns
+  public boolean keyUp(KeyCode keyCode)  // Applies a key up event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns true
+  public boolean keyTyped(char character)  // Applies a key typed event to the actor that has {@link Scene#setKeyboardFocus(Element) keyboard focus}, if any, and returns
+  public void addTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)  // Adds the listener to be notified for all touchDragged and touchUp events for the specified pointer and button.
+  public void removeTouchFocus(EventListener listener, Element listenerActor, Element target, int pointer, KeyCode button)  // Removes the listener from being notified for all touchDragged and touchUp events for the specified pointer and button.
+  public void cancelTouchFocus(Element actor) / public void cancelTouchFocus()  // Cancels touch focus for the specified actor.
+  public void cancelTouchFocusExcept(EventListener exceptListener, Element exceptActor)  // Cancels touch focus for all listeners except the specified listener.
+  public void add(Element actor)  // Adds an actor to the root of the stage.
+  public void addAction(Action action)  // Adds an action to the root of the stage.
+  public Seq<Element> getElements()  // Returns the root's child actors.
+  public boolean addListener(EventListener listener)  // Adds a listener to the root.
+  public boolean removeListener(EventListener listener)  // Removes a listener from the root.
+  public boolean addCaptureListener(EventListener listener)  // Adds a capture listener to the root.
+  public boolean removeCaptureListener(EventListener listener)  // Removes a listener from the root.
+  public void clear()  // Removes the root's children, actions, and listeners.
+  public void unfocusAll()  // Removes the touch, keyboard, and scroll focused actors.
+  public void unfocus(Element actor)  // Removes the touch, keyboard, and scroll focus for the specified actor and any descendants.
+  public boolean setKeyboardFocus(Element actor)  // Sets the actor that will receive key events.
+  public Element getKeyboardFocus()  // Gets the actor that will receive key events.
+  public boolean setScrollFocus(Element actor)  // Sets the actor that will receive scroll events.
+  public Element getScrollFocus()  // Gets the actor that will receive scroll events.
+  public Viewport getViewport()
+  public void setViewport(Viewport viewport)
+  public float getWidth()  // The viewport's world width.
+  public float getHeight()  // The viewport's world height.
+  public Camera getCamera()  // The viewport's camera.
+  public Element hit(float stageX, float stageY, boolean touchable)  // Returns the {@link Element} at the specified location in stage coordinates.
+  public Vec2 screenToStageCoordinates(Vec2 screenCoords)  // Transforms the screen coordinates to stage coordinates.
+  public Vec2 stageToScreenCoordinates(Vec2 stageCoords)  // Transforms the stage coordinates to screen coordinates.
+  public Vec2 toScreenCoordinates(Vec2 coords, Mat transformMatrix)  // Transforms the coordinates to screen coordinates.
+  public void calculateScissors(Rect localRect, Rect scissorRect)  // Calculates window scissor coordinates from local coordinates using the batch's current transformation matrix.
+  public boolean getActionsRequestRendering()
+  public void setActionsRequestRendering(boolean actionsRequestRendering)  // If true, any actions executed during a call to {@link #act()}) will result in a call to {@link Graphics#requestRendering()}
+  protected boolean isInsideViewport(int screenX, int screenY)  // Check if screen coordinates are inside the viewport's screen area.
+  public void resize(int width, int height)  // Updates the viewport.
+inner-class: TouchFocus implements arc.util.pooling.Pool.Poolable
+// Internal class for managing touch focus.
+  fields:
+    EventListener listener
+    Element listenerActor
+    int pointer
+    KeyCode button
+  methods:
+    public void reset()
+

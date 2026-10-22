@@ -1,0 +1,242 @@
+// HexMesh.java : public void preRender(PlanetParams params)
+    @Override
+    public void preRender(PlanetParams params){
+        Shaders.planet.planet = planet;
+        Shaders.planet.emissive = planet.generator != null && planet.generator.isEmissive();
+        Shaders.planet.lightDir.set(planet.solarSystem.position).sub(planet.position).rotate(Vec3.Y, planet.getRotation()).nor();
+        Shaders.planet.ambientColor.set(planet.solarSystem.lightColor);
+    }
+
+// HexMesher.java : default float getHeight(Vec3 position)
+    default float getHeight(Vec3 position){
+        return 0f;
+    }
+
+// HexMesher.java : default void getColor(Vec3 position, Color out)
+    default void getColor(Vec3 position, Color out){
+
+    }
+
+// HexMesher.java : default void getEmissiveColor(Vec3 position, Color out)
+    default void getEmissiveColor(Vec3 position, Color out){
+
+    }
+
+// HexMesher.java : default boolean isEmissive()
+    default boolean isEmissive(){
+        return false;
+    }
+
+// HexMesher.java : default boolean skip(Vec3 position)
+    default boolean skip(Vec3 position){
+        return false;
+    }
+
+// HexSkyMesh.java : public float relRot()
+    public float relRot(){
+        return Time.globalTime * speed / 40f;
+    }
+
+// HexSkyMesh.java : public void preRender(PlanetParams params)
+    @Override
+    public void preRender(PlanetParams params){
+        Shaders.clouds.planet = planet;
+        Shaders.clouds.lightDir.set(planet.solarSystem.position).sub(planet.position).rotate(Vec3.Y, planet.getRotation() + relRot()).nor();
+        Shaders.clouds.ambientColor.set(planet.solarSystem.lightColor);
+        Shaders.clouds.alpha = params.planet == planet ? 1f - params.uiAlpha : 1f;
+    }
+
+// MatMesh.java : public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+    @Override
+    public void render(PlanetParams params, Mat3D projection, Mat3D transform){
+        mesh.render(params, projection, tmp.set(transform).mul(mat));
+    }
+
+// MatMesh.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+    }
+
+// MeshBuilder.java : private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive) / private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive, boolean color)
+    private static Mesh begin(int vertices, int indices, boolean normal, boolean emissive){
+        return begin(vertices, indices, normal, emissive, true);
+    }
+
+// MeshBuilder.java : private static Mesh end(Mesh mesh)
+    private static Mesh end(Mesh mesh){
+        mesh.getVerticesBuffer().limit(mesh.getVerticesBuffer().position());
+        if(mesh.getNumIndices() > 0){
+            mesh.getIndicesBuffer().limit(mesh.getIndicesBuffer().position());
+        }
+
+        return mesh;
+    }
+
+// MeshBuilder.java : private static Vec3 normal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 out) / private static void normal(float v1x, float v1y, float v1z, float v2x, float v2y, float v2z, float v3x, float v3y, float v3z, Vec3 out)
+    private static Vec3 normal(Vec3 v1, Vec3 v2, Vec3 v3, Vec3 out){
+        return out.set(v2).sub(v1).crs(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z).nor();
+    }
+
+// MeshBuilder.java : private static void verts(Mesh mesh, float[] floats, Vec3 a, float h1, Vec3 b, float h2, Vec3 c, float h3, Vec3 normal, float color, float emissive)
+    private static void verts(Mesh mesh, float[] floats, Vec3 a, float h1, Vec3 b, float h2, Vec3 c, float h3, Vec3 normal, float color, float emissive){
+        vert(mesh, floats, a.x * h1, a.y * h1, a.z * h1, normal, color, emissive);
+        vert(mesh, floats, b.x * h2, b.y * h2, b.z * h2, normal, color, emissive);
+        vert(mesh, floats, c.x * h3, c.y * h3, c.z * h3, normal, color, emissive);
+    }
+
+// MeshBuilder.java : private static float packNormals(float x, float y, float z)
+    private static float packNormals(float x, float y, float z){
+        int xs = x < -1f/512f ? 1 : 0;
+        int ys = y < -1f/512f ? 1 : 0;
+        int zs = z < -1f/512f ? 1 : 0;
+
+        int vi =
+        zs << 29 | ((int)(z * 511 + (zs << 9)) & 511) << 20 |
+        ys << 19 | ((int)(y * 511 + (ys << 9)) & 511) << 10 |
+        xs << 9  | ((int)(x * 511 + (xs << 9)) & 511);
+        return Float.intBitsToFloat(vi);
+    }
+
+// MultiMesh.java : public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+    @Override
+    public void render(PlanetParams params, Mat3D projection, Mat3D transform){
+        for(var v : meshes){
+            v.render(params, projection, transform);
+        }
+    }
+
+// MultiMesh.java : public void dispose()
+    @Override
+    public void dispose(){
+        for(var mesh : meshes){
+            mesh.dispose();
+        }
+    }
+
+// PlanetGrid.java : static void addCorner(int id, PlanetGrid grid, int t1, int t2, int t3)
+    static void addCorner(int id, PlanetGrid grid, int t1, int t2, int t3){
+        Corner c = grid.corners[id];
+        Ptile[] t = {grid.tiles[t1], grid.tiles[t2], grid.tiles[t3]};
+        c.v.set(t[0].v).add(t[1].v).add(t[2].v).nor();
+        for(int i = 0; i < 3; i++){
+            t[i].corners[pos(t[i], t[(i + 2) % 3])] = c;
+            c.tiles[i] = t[i];
+        }
+    }
+
+// PlanetGrid.java : static int pos(Ptile t, Ptile n) / static int pos(Ptile t, Corner c) / static int pos(Corner c, Corner n)
+    static int pos(Ptile t, Ptile n){
+        for(int i = 0; i < t.edgeCount; i++){
+            if(t.tiles[i] == n) return i;
+        }
+        return -1;
+    }
+
+// PlanetGrid.java : static int tileCount(int size)
+    static int tileCount(int size){
+        return 10 * Mathf.pow(3, size) + 2;
+    }
+
+// PlanetGrid.java : static int cornerCount(int size)
+    static int cornerCount(int size){
+        return 20 * Mathf.pow(3, size);
+    }
+
+// PlanetGrid.java : static int edgeCount(int size)
+    static int edgeCount(int size){
+        return 30 * Mathf.pow(3, size);
+    }
+
+// PlanetMesh.java : public void preRender(PlanetParams params)
+    public void preRender(PlanetParams params){
+
+    }
+
+// PlanetMesh.java : public void render(PlanetParams params, Mat3D projection, Mat3D transform)
+    @Override
+    public void render(PlanetParams params, Mat3D projection, Mat3D transform){
+        if(mesh.isDisposed()) return;
+
+        preRender(params);
+        shader.bind();
+        shader.setUniformMatrix4("u_proj", projection.val);
+        shader.setUniformMatrix4("u_trans", transform.val);
+        shader.apply();
+        mesh.render(shader, Gl.triangles);
+    }
+
+// PlanetMesh.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+    }
+
+// PlanetRenderer.java : public void renderOrbit(Planet planet, PlanetParams params)
+    public void renderOrbit(Planet planet, PlanetParams params){
+        if(planet.parent == null || !planet.visible() || params.uiAlpha <= 0.02f || !planet.drawOrbit) return;
+
+        Vec3 center = planet.parent.position;
+        float radius = planet.orbitRadius;
+        int points = (int)(radius * 10);
+        Angles.circleVectors(points, radius, (cx, cy) -> batch.vertex(Tmp.v32.set(center).add(cx, 0, cy), Pal.gray.write(Tmp.c1).a(params.uiAlpha)));
+        batch.flush(Gl.lineLoop);
+    }
+
+// PlanetRenderer.java : public void renderSectors(Planet planet, PlanetParams params)
+    public void renderSectors(Planet planet, PlanetParams params){
+        if(params.uiAlpha <= 0.02f) return;
+        planet.renderSectors(batch, cam, params);
+    }
+
+// PlanetRenderer.java : public void drawArcLine(Planet planet, Vec3 a, Vec3 b) / public void drawArcLine(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount, float stroke)
+    public void drawArcLine(Planet planet, Vec3 a, Vec3 b){
+        drawArcLine(planet, a, b, Pal.accent, Tmp.c3.set(Pal.accent).a(0f), 1f, 80f, 25, 0.006f);
+    }
+
+// PlanetRenderer.java : public void drawArc(Planet planet, Vec3 a, Vec3 b) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length) / public void drawArc(Planet planet, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount)
+    public void drawArc(Planet planet, Vec3 a, Vec3 b){
+        drawArc(planet, a, b, Pal.accent, Color.clear, 1f);
+    }
+
+// PlanetRenderer.java : public void drawBorders(Sector sector, Color base, float alpha)
+    public void drawBorders(Sector sector, Color base, float alpha){
+        sector.planet.drawBorders(batch, sector, base, alpha);
+        if(batch.getNumVertices() >= batch.getMaxVertices() - 6 * 6){
+            batch.flush(Gl.triangles);
+        }
+    }
+
+// PlanetRenderer.java : public void drawPlane(Sector sector, Runnable run)
+    public void drawPlane(Sector sector, Runnable run){
+        Draw.batch(projector, () -> {
+            setPlane(sector);
+            run.run();
+        });
+    }
+
+// PlanetRenderer.java : public void setPlane(Sector sector)
+    public void setPlane(Sector sector){
+        sector.planet.setPlane(sector, projector);
+    }
+
+// PlanetRenderer.java : public void fill(Sector sector, Color color, float offset)
+    public void fill(Sector sector, Color color, float offset){
+        sector.planet.fill(batch, sector, color, offset);
+    }
+
+// PlanetRenderer.java : public void drawSelection(Sector sector, float alpha) / public void drawSelection(Sector sector, Color color, float stroke, float length)
+    public void drawSelection(Sector sector, float alpha){
+        drawSelection(sector, Tmp.c1.set(Pal.accent).a(alpha), 0.04f, 0.001f);
+    }
+
+// PlanetRenderer.java : public void dispose()
+    @Override
+    public void dispose(){
+        skybox.dispose();
+        batch.dispose();
+        projector.dispose();
+        atmosphere.dispose();
+        bloom.dispose();
+    }
+

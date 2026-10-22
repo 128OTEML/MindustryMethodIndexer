@@ -1,0 +1,198 @@
+// FConfig.java : public static void registerEffect(String tokenName, Prov<FEffect> effect)
+    public static void registerEffect(String tokenName, Prov<FEffect> effect){
+        effects.put(tokenName, effect);
+        dirtyEffectMaps = true;
+    }
+
+// FConfig.java : public static void unregisterEffect(String tokenName)
+    public static void unregisterEffect(String tokenName){
+        effects.remove(tokenName);
+        dirtyEffectMaps = true;
+    }
+
+// FEffect.java : public void applyParams(String[] params)
+    public void applyParams(String[] params){
+
+    }
+
+// FEffect.java : public void update(float delta)
+    public void update(float delta){
+        totalTime += delta;
+    }
+
+// FEffect.java : public final void apply(FLabel label, FGlyph glyph, int glyphIndex, float delta)
+    public final void apply(FLabel label, FGlyph glyph, int glyphIndex, float delta){
+        int localIndex = glyphIndex - indexStart;
+        onApply(label, glyph, localIndex, delta);
+    }
+
+// FEffect.java : public boolean isFinished()
+    public boolean isFinished(){
+        return totalTime > duration;
+    }
+
+// FEffect.java : protected float calculateProgress(float modifier) / protected float calculateProgress(float modifier, float offset) / protected float calculateProgress(float modifier, float offset, boolean pingpong)
+    protected float calculateProgress(float modifier){
+        return calculateProgress(modifier, 0, true);
+    }
+
+// FEffect.java : protected float getLineHeight(FLabel label)
+    protected float getLineHeight(FLabel label){
+        return label.getFontCache().getFont().getLineHeight() * label.getFontScaleY();
+    }
+
+// FLabel.java : public void setText(CharSequence newText) / protected void setText(CharSequence newText, boolean modifyOriginalText)
+    @Override
+    public void setText(CharSequence newText){
+        this.setText(newText, true);
+    }
+
+// FLabel.java : public StringBuilder getOriginalText()
+    public StringBuilder getOriginalText(){
+        return originalText;
+    }
+
+// FLabel.java : protected void saveOriginalText()
+    protected void saveOriginalText(){
+        originalText.setLength(0);
+        originalText.insert(0, this.getText());
+        originalText.trimToSize();
+    }
+
+// FLabel.java : protected void restoreOriginalText()
+    protected void restoreOriginalText(){
+        super.setText(originalText);
+        this.parsed = false;
+    }
+
+// FLabel.java : public FListener getTypingListener()
+    public FListener getTypingListener(){
+        return listener;
+    }
+
+// FLabel.java : public void setTypingListener(FListener listener)
+    public void setTypingListener(FListener listener){
+        this.listener = listener;
+    }
+
+// FLabel.java : public Color getClearColor()
+    public Color getClearColor(){
+        return clearColor;
+    }
+
+// FLabel.java : public void setForceMarkupColor(boolean forceMarkupColor)
+    public void setForceMarkupColor(boolean forceMarkupColor){
+        this.forceMarkupColor = forceMarkupColor;
+    }
+
+// FLabel.java : public String getDefaultToken()
+    public String getDefaultToken(){
+        return defaultToken;
+    }
+
+// FLabel.java : public void setDefaultToken(String defaultToken)
+    public void setDefaultToken(String defaultToken){
+        this.defaultToken = defaultToken == null ? "" : defaultToken;
+        this.parsed = false;
+    }
+
+// FLabel.java : public void parseTokens()
+    public void parseTokens(){
+        this.setText(getDefaultToken() + getText(), false);
+        FParser.parseTokens(this);
+        parsed = true;
+    }
+
+// FLabel.java : public void skipToTheEnd() / public void skipToTheEnd(boolean ignoreEvents) / public void skipToTheEnd(boolean ignoreEvents, boolean ignoreEffects)
+    public void skipToTheEnd(){
+        skipToTheEnd(true);
+    }
+
+// FLabel.java : public void cancelSkipping()
+    public void cancelSkipping(){
+        if(skipping){
+            skipping = false;
+            ignoringEvents = false;
+            ignoringEffects = false;
+        }
+    }
+
+// FLabel.java : public boolean isPaused()
+    public boolean isPaused(){
+        return paused;
+    }
+
+// FLabel.java : public void pause()
+    public void pause(){
+        paused = true;
+    }
+
+// FLabel.java : public void resume()
+    public void resume(){
+        paused = false;
+    }
+
+// FLabel.java : public boolean hasEnded()
+    public boolean hasEnded(){
+        return ended;
+    }
+
+// FLabel.java : public void restart() / public void restart(CharSequence newText)
+    public void restart(){
+        restart(getOriginalText());
+    }
+
+// FLabel.java : public ObjectMap<String,String> getVariables()
+    public ObjectMap<String, String> getVariables(){
+        return variables;
+    }
+
+// FLabel.java : public void setVariable(String var, String value)
+    public void setVariable(String var, String value){
+        variables.put(var.toUpperCase(), value);
+    }
+
+// FLabel.java : public void setVariables(ObjectMap<String,String> variableMap)
+    public void setVariables(ObjectMap<String, String> variableMap){
+        this.variables.clear();
+        variableMap.each((key, val) -> variables.put(key.toUpperCase(), val));
+    }
+
+// FLabel.java : public void clearVariables()
+    public void clearVariables(){
+        this.variables.clear();
+    }
+
+// FLabel.java : public boolean remove()
+    @Override
+    public boolean remove(){
+        Pools.freeAll(glyphCache);
+        glyphCache.clear();
+        return super.remove();
+    }
+
+// FListener.java : default void event(String event)
+    default void event(String event){
+    }
+
+// FListener.java : default void end()
+    default void end(){
+    }
+
+// FListener.java : default String replaceVariable(String variable)
+    default String replaceVariable(String variable){
+        return variable;
+    }
+
+// FListener.java : default void onChar(char ch)
+    default void onChar(char ch){
+    }
+
+// FParser.java : private static void stripTokens(FLabel label)
+    private static void stripTokens(FLabel label){
+        baseParse(label, (text, index) -> "");
+
+        //must be a square token
+        parseAllTokens(label, true, (from, to) -> {});
+    }
+

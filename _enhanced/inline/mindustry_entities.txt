@@ -1,0 +1,712 @@
+// Damage.java : public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source) / public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source, Color effectColor)
+    public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, @Nullable Position source){
+        applySuppression(team, x, y, range, reload, maxDelay, applyParticleChance, source, Pal.sapBullet);
+    }
+
+// Damage.java : public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx, float baseShake) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx, float baseShake)
+    public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage){
+        dynamicExplosion(x, y, flammability, explosiveness, power, radius, damage, true, null, Fx.dynamicExplosion);
+    }
+
+// Damage.java : public static void createIncend(float x, float y, float range, int amount)
+    public static void createIncend(float x, float y, float range, int amount){
+        for(int i = 0; i < amount; i++){
+            float cx = x + Mathf.range(range);
+            float cy = y + Mathf.range(range);
+            Tile tile = world.tileWorld(cx, cy);
+            if(tile != null){
+                Fires.create(tile);
+            }
+        }
+    }
+
+// Damage.java : public static Building findAbsorber(Team team, float x1, float y1, float x2, float y2)
+    public static @Nullable Building findAbsorber(Team team, float x1, float y1, float x2, float y2){
+        tmpBuilding = null;
+
+        boolean found = World.raycast(World.toTile(x1), World.toTile(y1), World.toTile(x2), World.toTile(y2),
+        (x, y) -> (tmpBuilding = world.build(x, y)) != null && tmpBuilding.team != team && tmpBuilding.block.absorbLasers);
+
+        return found ? tmpBuilding : null;
+    }
+
+// Damage.java : public static float findLength(Bullet b, float length, boolean laser, int pierceCap)
+    public static float findLength(Bullet b, float length, boolean laser, int pierceCap){
+        if(pierceCap > 0){
+            length = findPierceLength(b, pierceCap, laser, length);
+        }else if(laser){
+            length = findLaserLength(b, length);
+        }
+
+        return length;
+    }
+
+// Damage.java : public static float findLaserLength(Bullet b, float length)
+    public static float findLaserLength(Bullet b, float length){
+        vec.trnsExact(b.rotation(), length);
+
+        furthest = null;
+
+        boolean found = World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + vec.x), World.toTile(b.y + vec.y),
+        (x, y) -> (furthest = world.tile(x, y)) != null && furthest.team() != b.team && (furthest.build != null && furthest.build.absorbLasers()));
+
+        return found && furthest != null ? Math.max(6f, b.dst(furthest.worldx(), furthest.worldy())) : length;
+    }
+
+// Damage.java : public static float findPierceLength(Bullet b, int pierceCap, float length) / public static float findPierceLength(Bullet b, int pierceCap, boolean laser, float length)
+    public static float findPierceLength(Bullet b, int pierceCap, float length){
+        return findPierceLength(b, pierceCap, b.type.laserAbsorb, length);
+    }
+
+// Damage.java : public static float collideLaser(Bullet b, float length, boolean large, boolean laser, int pierceCap)
+    public static float collideLaser(Bullet b, float length, boolean large, boolean laser, int pierceCap){
+        float resultLength = findPierceLength(b, pierceCap, laser, length);
+
+        collideLine(b, b.team, b.x, b.y, b.rotation(), resultLength, large, laser, pierceCap);
+
+        b.fdata = resultLength;
+
+        return resultLength;
+    }
+
+// Damage.java : public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser, int pierceCap)
+    public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length){
+        collideLine(hitter, team, x, y, angle, length, false);
+    }
+
+// Damage.java : public static void damage(float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source, float armorMult)
+    public static void damage(float x, float y, float radius, float damage){
+        damage(null, x, y, radius, damage, false);
+    }
+
+// Damage.java : public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground) / public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground, float chance)
+    public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground){
+        status(team, x, y, radius, effect, duration, air, ground, 1f);
+    }
+
+// Damage.java : public static void tileDamage(Team team, int x, int y, float baseRadius, float damage) / public static void tileDamage(Team team, int tx, int ty, float baseRadius, float damage, Bullet source)
+    public static void tileDamage(Team team, int x, int y, float baseRadius, float damage){
+        tileDamage(team, x, y, baseRadius, damage, null);
+    }
+
+// Damage.java : private static float calculateDamage(float dist, float radius, float damage)
+    private static float calculateDamage(float dist, float radius, float damage){
+        float falloff = 0.4f;
+        float scaled = radius <= 0.00001f ? 1f : Mathf.lerp(1f - dist / radius, 1f, falloff);
+        return damage * scaled;
+    }
+
+// Damage.java : public static float applyArmor(float damage, float armor)
+    public static float applyArmor(float damage, float armor){
+        return Math.max(damage - armor, minArmorDamage * damage);
+    }
+
+// Effect.java : public Effect startDelay(float d)
+    public Effect startDelay(float d){
+        startDelay = d;
+        return this;
+    }
+
+// Effect.java : public void init()
+    public void init(){}
+
+// Effect.java : public Effect followParent(boolean follow)
+    public Effect followParent(boolean follow){
+        followParent = follow;
+        return this;
+    }
+
+// Effect.java : public Effect rotWithParent(boolean follow)
+    public Effect rotWithParent(boolean follow){
+        rotWithParent = follow;
+        return this;
+    }
+
+// Effect.java : public Effect layer(float l) / public Effect layer(float l, float duration)
+    public Effect layer(float l){
+        layer = l;
+        return this;
+    }
+
+// Effect.java : public Effect baseRotation(float d)
+    public Effect baseRotation(float d){
+        baseRotation = d;
+        return this;
+    }
+
+// Effect.java : public WrapEffect wrap(Color color) / public WrapEffect wrap(Color color, float rotation)
+    public WrapEffect wrap(Color color){
+        return new WrapEffect(this, color);
+    }
+
+// Effect.java : public void at(Position pos) / public void at(Position pos, boolean parentize) / public void at(Position pos, float rotation) / public void at(float x, float y) / public void at(float x, float y, float rotation) / public void at(float x, float y, float rotation, Color color) / public void at(float x, float y, Color color) / public void at(float x, float y, float rotation, Color color, Object data) / public void at(float x, float y, float rotation, Object data)
+    public void at(Position pos){
+        create(pos.getX(), pos.getY(), 0, Color.white, null);
+    }
+
+// Effect.java : public boolean shouldCreate()
+    public boolean shouldCreate(){
+        return !headless && this != Fx.none && Vars.renderer.enableEffects;
+    }
+
+// Effect.java : public float render(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data) / public void render(EffectContainer e)
+    public float render(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data){
+        container.set(id, color, life, lifetime, rotation, x, y, data);
+        Draw.z(layer);
+        Draw.reset();
+        render(container);
+        Draw.reset();
+
+        return container.lifetime;
+    }
+
+// Effect.java : public static Effect get(int id)
+    public static @Nullable Effect get(int id){
+        return id >= all.size || id < 0 ? null : all.get(id);
+    }
+
+// Effect.java : private static void shake(float intensity, float duration) / public static void shake(float intensity, float duration, float x, float y) / public static void shake(float intensity, float duration, Position loc)
+    private static void shake(float intensity, float duration){
+        if(!headless){
+            Vars.renderer.shake(intensity, duration);
+        }
+    }
+
+// Effect.java : public static void floorDust(float x, float y, float size)
+    public static void floorDust(float x, float y, float size){
+        Tile tile = world.tileWorld(x, y);
+        if(tile != null){
+            Color color = tile.getFloorColor();
+            Fx.unitLand.at(x, y, size, color);
+        }
+    }
+
+// Effect.java : public static void floorDustAngle(Effect effect, float x, float y, float angle)
+    public static void floorDustAngle(Effect effect, float x, float y, float angle){
+        Tile tile = world.tileWorld(x, y);
+        if(tile != null){
+            Color color = tile.getFloorColor();
+            effect.at(x, y, angle, color);
+        }
+    }
+
+// Effect.java : public static void decal(TextureRegion region, float x, float y, float rotation) / public static void decal(TextureRegion region, float x, float y, float rotation, float lifetime, Color color)
+    public static void decal(TextureRegion region, float x, float y, float rotation){
+        decal(region, x, y, rotation, 3600f, Pal.rubble);
+    }
+
+// Effect.java : public static void scorch(float x, float y, int size)
+    public static void scorch(float x, float y, int size){
+        if(headless) return;
+
+        size = Mathf.clamp(size, 0, 9);
+
+        TextureRegion region = Core.atlas.find("scorch-" + size + "-" + Mathf.random(2));
+        decal(region, x, y, Mathf.random(4) * 90, 3600, Pal.rubble);
+    }
+
+// Effect.java : public static void rubble(float x, float y, int blockSize)
+    public static void rubble(float x, float y, int blockSize){
+        if(headless) return;
+
+        TextureRegion region = Core.atlas.find("rubble-" + blockSize + "-" + (Core.atlas.has("rubble-" + blockSize + "-1") ? Mathf.random(0, 1) : "0"));
+        decal(region, x, y, Mathf.random(4) * 90, 3600, Pal.rubble);
+    }
+
+// Effect.java : public static void shockwaveDust(float x, float y, float rad) / public static void shockwaveDust(float x, float y, float rad, float density)
+    public static void shockwaveDust(float x, float y, float rad){
+        shockwaveDust(x, y, rad, 1f);
+    }
+
+// EntityCollisions.java : public void moveCheck(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)
+    public void moveCheck(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck){
+        if(!solidCheck.solid(entity.tileX(), entity.tileY())){
+            move(entity, deltax, deltay, solidCheck);
+        }
+    }
+
+// EntityCollisions.java : public void move(Hitboxc entity, float deltax, float deltay) / public void move(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)
+    public void move(Hitboxc entity, float deltax, float deltay){
+        move(entity, deltax, deltay, EntityCollisions::solid);
+    }
+
+// EntityCollisions.java : public void updatePhysics(EntityGroup<T> group)
+    @SuppressWarnings("unchecked")
+    public <T extends Hitboxc> void updatePhysics(EntityGroup<T> group){
+        group.tree().fill(group.rawSeq());
+
+        group.each(Hitboxc::updateLastPosition);
+    }
+
+// EntityCollisions.java : public static boolean legsSolid(int x, int y)
+    public static boolean legsSolid(int x, int y){
+        Tile tile = world.tile(x, y);
+        return tile == null || tile.legSolid();
+    }
+
+// EntityCollisions.java : public static boolean waterSolid(int x, int y)
+    public static boolean waterSolid(int x, int y){
+        Tile tile = world.tile(x, y);
+        return tile == null || tile.solid() || !tile.floor().isLiquid;
+    }
+
+// EntityCollisions.java : public static boolean solid(int x, int y)
+    public static boolean solid(int x, int y){
+        Tile tile = world.tile(x, y);
+        return tile == null || tile.solid();
+    }
+
+// EntityGroup.java : public static int nextId()
+    public static int nextId(){
+        if(lastId >= Integer.MAX_VALUE - 2) lastId = 0;
+        return lastId++;
+    }
+
+// EntityGroup.java : public static void checkNextId(int id)
+    public static void checkNextId(int id){
+        lastId = Math.max(lastId, id + 1);
+    }
+
+// EntityGroup.java : public Seq<T> checkIDCollisions()
+    public Seq<T> checkIDCollisions(){
+        Seq<T> out = new Seq<>();
+        IntSet ints = new IntSet();
+        each(u -> {
+            if(!ints.add(u.id())){
+                out.add(u);
+            }
+        });
+        return out;
+    }
+
+// EntityGroup.java : public void sort(Comparator<? super T> comp)
+    public void sort(Comparator<? super T> comp){
+        array.sort(comp);
+    }
+
+// EntityGroup.java : public void collide()
+    public void collide(){
+        collisions.collide((EntityGroup<? extends Hitboxc>)this);
+    }
+
+// EntityGroup.java : public void updatePhysics()
+    public void updatePhysics(){
+        collisions.updatePhysics((EntityGroup<? extends Hitboxc>)this);
+    }
+
+// EntityGroup.java : public void update() / public void update(Boolf<T> filter)
+    public void update(){
+        for(index = 0; index < array.size; index++){
+            array.items[index].update();
+        }
+    }
+
+// EntityGroup.java : public void fixedUpdate(int targetFps) / public void fixedUpdate(int targetUps, int maxUpdatesPerFrame)
+    public void fixedUpdate(int targetFps){
+        fixedUpdate(targetFps, 10);
+    }
+
+// EntityGroup.java : public Seq<T> copy() / public Seq<T> copy(Seq<T> arr)
+    public Seq<T> copy(){
+        return copy(new Seq<>());
+    }
+
+// EntityGroup.java : public void each(Cons<T> cons) / public void each(Boolf<T> filter, Cons<T> cons)
+    public void each(Cons<T> cons){
+        for(index = 0; index < array.size; index++){
+            cons.get(array.items[index]);
+        }
+    }
+
+// EntityGroup.java : public void draw(Cons<T> cons)
+    public void draw(Cons<T> cons){
+        Core.camera.bounds(viewport);
+
+        for(index = 0; index < array.size; index++){
+            Drawc draw = (Drawc)array.items[index];
+            float clip = draw.clipSize();
+            if(viewport.overlaps(draw.x() - clip/2f, draw.y() - clip/2f, clip, clip)){
+                cons.get((T)draw);
+            }
+        }
+    }
+
+// EntityGroup.java : public boolean useTree()
+    public boolean useTree(){
+        return tree != null;
+    }
+
+// EntityGroup.java : public boolean mappingEnabled()
+    public boolean mappingEnabled(){
+        return map != null;
+    }
+
+// EntityGroup.java : public T getByID(int id)
+    @Nullable
+    public T getByID(int id){
+        if(map == null) throw new RuntimeException("Mapping is not enabled for group " + id + "!");
+        return map.get(id);
+    }
+
+// EntityGroup.java : public void removeByID(int id)
+    public void removeByID(int id){
+        if(map == null) throw new RuntimeException("Mapping is not enabled for group " + id + "!");
+        T t = map.get(id);
+        if(t != null){ //remove if present in map already
+            t.remove();
+        }
+    }
+
+// EntityGroup.java : public void intersect(float x, float y, float width, float height, Cons<? super T> out) / public boolean intersect(float x, float y, float width, float height, Boolf<? super T> out) / public Seq<T> intersect(float x, float y, float width, float height)
+    public void intersect(float x, float y, float width, float height, Cons<? super T> out){
+        //don't waste time for empty groups
+        if(isEmpty()) return;
+        tree.intersect(x, y, width, height, out);
+    }
+
+// EntityGroup.java : public QuadTree tree()
+    public QuadTree tree(){
+        if(tree == null) throw new RuntimeException("This group does not support quadtrees! Enable quadtrees when creating it.");
+        return tree;
+    }
+
+// EntityGroup.java : public Seq<T> rawSeq()
+    public Seq<T> rawSeq(){
+        return array;
+    }
+
+// EntityGroup.java : public void resize(float x, float y, float w, float h)
+    public void resize(float x, float y, float w, float h){
+        if(tree != null){
+            tree = new QuadTree<>(new Rect(x, y, w, h));
+        }
+    }
+
+// EntityGroup.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return array.size == 0;
+    }
+
+// EntityGroup.java : public T index(int i)
+    public T index(int i){
+        return array.get(i);
+    }
+
+// EntityGroup.java : public int size()
+    public int size(){
+        return array.size;
+    }
+
+// EntityGroup.java : public boolean contains(Boolf<T> pred)
+    public boolean contains(Boolf<T> pred){
+        return array.contains(pred);
+    }
+
+// EntityGroup.java : public int count(Boolf<T> pred)
+    public int count(Boolf<T> pred){
+        return array.count(pred);
+    }
+
+// EntityGroup.java : public void add(T type)
+    public void add(T type){
+        if(type == null) throw new RuntimeException("Cannot add a null entity!");
+        array.add(type);
+
+        if(mappingEnabled()){
+            map.put(type.id(), type);
+        }
+    }
+
+// EntityGroup.java : public int addIndex(T type)
+    public int addIndex(T type){
+        int index = array.size;
+        add(type);
+        return index;
+    }
+
+// EntityGroup.java : public void clear()
+    public void clear(){
+        clearing = true;
+
+        array.each(Entityc::remove);
+        array.clear();
+        if(map != null) map.clear();
+        Pools.freeAll(timeRuns, true);
+        timeRuns.clear();
+
+        clearing = false;
+    }
+
+// EntityGroup.java : public T find(Boolf<T> pred)
+    @Nullable
+    public T find(Boolf<T> pred){
+        return array.find(pred);
+    }
+
+// EntityGroup.java : public T first()
+    @Nullable
+    public T first(){
+        return array.first();
+    }
+
+// EntityGroup.java : public Iterator<T> iterator()
+    @Override
+    public Iterator<T> iterator(){
+        return array.iterator();
+    }
+
+// EntityGroup.java : public String toString()
+    @Override
+    public String toString(){
+        return array.toString();
+    }
+
+// Fires.java : public static Fire get(Tile tile) / public static Fire get(int x, int y)
+    public static @Nullable Fire get(Tile tile){
+        return tile == null ? null : world.tiles.getFire(tile.array());
+    }
+
+// Fires.java : private static void set(Tile tile, Fire fire)
+    private static void set(Tile tile, Fire fire){
+        world.tiles.setFire(tile.array(), fire);
+    }
+
+// Fires.java : public static boolean has(int x, int y)
+    public static boolean has(int x, int y){
+        if(!Structs.inBounds(x, y, world.width(), world.height())){
+            return false;
+        }
+        Fire fire = get(x, y);
+        return fire != null && fire.isAdded() && fire.fin() < 1f && fire.tile != null && fire.tile.x == x && fire.tile.y == y;
+    }
+
+// Fires.java : public static void remove(Tile tile)
+    public static void remove(Tile tile){
+        if(tile != null){
+            set(tile, null);
+        }
+    }
+
+// Fires.java : public static void register(Fire fire)
+    public static void register(Fire fire){
+        if(fire.tile != null){
+            set(fire.tile, fire);
+        }
+    }
+
+// Lightning.java : public static void create(BulletType bulletCreated, Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Bullet bullet, Color color, float damage, float x, float y, float targetAngle, int length)
+    public static void create(BulletType bulletCreated, Team team, Color color, float damage, float x, float y, float targetAngle, int length){
+        createLightningInternal(null, bulletCreated, lastSeed++, team, color, damage, x, y, targetAngle, length);
+    }
+
+// Puddles.java : public static void deposit(Tile tile, Tile source, Liquid liquid, float amount) / public static void deposit(Tile tile, Liquid liquid, float amount) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial, boolean cap)
+    public static void deposit(Tile tile, Tile source, Liquid liquid, float amount){
+        deposit(tile, source, liquid, amount, true);
+    }
+
+// Puddles.java : public static Puddle get(Tile tile)
+    public static @Nullable Puddle get(Tile tile){
+        return tile == null ? null : world.tiles.getPuddle(tile.array());
+    }
+
+// Puddles.java : public static boolean hasLiquid(Tile tile, Liquid liquid)
+    public static boolean hasLiquid(Tile tile, Liquid liquid){
+        if(tile == null) return false;
+        var p = get(tile);
+        return p != null && p.liquid == liquid && p.amount >= 0.5f;
+    }
+
+// Puddles.java : public static void remove(Tile tile)
+    public static void remove(Tile tile){
+        if(tile == null) return;
+
+        world.tiles.setPuddle(tile.array(), null);
+    }
+
+// Puddles.java : public static void register(Puddle puddle)
+    public static void register(Puddle puddle){
+        world.tiles.setPuddle(puddle.tile.array(), puddle);
+    }
+
+// Puddles.java : private static boolean canStayOn(Liquid liquid, Liquid other)
+    private static boolean canStayOn(Liquid liquid, Liquid other){
+        return liquid.canStayOn.contains(other);
+    }
+
+// UnitSorts.java : public static Sortf grouped(float dstWeight)
+    public static Sortf grouped(float dstWeight){
+        return (u, x, y) -> -u.team.data().getClustered(u.x, u.y) + (dstWeight > 0 ? Mathf.dst(u.x, u.y, x, y) * dstWeight : 0f);
+    }
+
+// Units.java : public static void notifyUnitSpawn(Unit unit)
+    public static void notifyUnitSpawn(Unit unit){
+        if(net.server()){
+            Call.unitSpawn(new UnitSyncContainer(unit));
+        }
+    }
+
+// Units.java : public static void unitSpawn(UnitSyncContainer container)
+    @Remote(unreliable = true, priority = PacketPriority.low)
+    public static void unitSpawn(UnitSyncContainer container){
+        //doesn't actually do anything, reading calls add()
+    }
+
+// Units.java : public static void unitCapDeath(Unit unit)
+    @Remote(called = Loc.server)
+    public static void unitCapDeath(Unit unit){
+        if(unit != null){
+            unit.dead = true;
+            Fx.unitCapKill.at(unit);
+            Core.app.post(() -> Call.unitDestroy(unit.id));
+        }
+    }
+
+// Units.java : public static void unitEnvDeath(Unit unit)
+    @Remote(called = Loc.server)
+    public static void unitEnvDeath(Unit unit){
+        if(unit != null){
+            unit.dead = true;
+            Fx.unitEnvKill.at(unit);
+            Core.app.post(() -> Call.unitDestroy(unit.id));
+        }
+    }
+
+// Units.java : public static void unitDespawn(Unit unit)
+    @Remote(called = Loc.server)
+    public static void unitDespawn(Unit unit){
+        if(unit == null) return;
+        Fx.unitDespawn.at(unit.x, unit.y, 0, unit);
+        unit.remove();
+    }
+
+// Units.java : public static void unitSafeDeath(Unit unit)
+    @Remote(called = Loc.server)
+    public static void unitSafeDeath(Unit unit){
+        if(unit == null) return;
+        unit.type.deathExplosionEffect.at(unit.x, unit.y, unit.hitSize / 8f);
+        float shake = unit.type.deathShake < 0 ? unit.hitSize / 3f : unit.type.deathShake;
+        Effect.shake(shake, shake, unit);
+        unit.type.deathSound.at(unit, 1f, unit.type.deathSoundVolume);
+        unit.remove();
+    }
+
+// Units.java : public static boolean canCreate(Team team, UnitType type)
+    public static boolean canCreate(Team team, UnitType type){
+        return !type.useUnitCap || (team.data().countType(type) < getCap(team) && !type.isBanned());
+    }
+
+// Units.java : public static int getCap(Team team)
+    public static int getCap(Team team){
+        //wave team has no cap
+        if((team == state.rules.waveTeam && !state.rules.pvp) || (state.isCampaign() && team == state.rules.waveTeam) || state.rules.disableUnitCap || team.ignoreUnitCap){
+            return Integer.MAX_VALUE;
+        }
+        return Math.max(0, state.rules.unitCapVariable ? state.rules.unitCap + team.data().unitCap : state.rules.unitCap);
+    }
+
+// Units.java : public static String getStringCap(Team team)
+    public static String getStringCap(Team team){
+        int cap = getCap(team);
+        return cap >= Integer.MAX_VALUE - 1 ? "∞" : cap + "";
+    }
+
+// Units.java : public static boolean canInteract(Player player, Building tile)
+    public static boolean canInteract(Player player, Building tile){
+        return player == null || tile == null || tile.interactable(player.team()) || state.rules.editor;
+    }
+
+// Units.java : public static boolean isHittable(Posc target, boolean air, boolean ground)
+    public static boolean isHittable(@Nullable Posc target, boolean air, boolean ground){
+        return target != null && (target instanceof Buildingc ? ground : (target instanceof Unit u && u.checkTarget(air, ground)));
+    }
+
+// Units.java : public static boolean invalidateTarget(Posc target, Team team, float x, float y, float range) / public static boolean invalidateTarget(Posc target, Team team, float x, float y) / public static boolean invalidateTarget(Teamc target, Unit targeter, float range)
+    public static boolean invalidateTarget(Posc target, Team team, float x, float y, float range){
+        return target == null ||
+            (range != Float.MAX_VALUE && !target.within(x, y, range + (target instanceof Sized hb ? hb.hitSize()/2f : 0f))) ||
+            (target instanceof Teamc t && t.team() == team) ||
+            (target instanceof Healthc h && !h.isValid()) ||
+            (target instanceof Unit u && !u.targetable(team));
+    }
+
+// Units.java : public static boolean anyEntities(Tile tile, boolean ground) / public static boolean anyEntities(Tile tile) / public static boolean anyEntities(float x, float y, float size) / public static boolean anyEntities(float x, float y, float width, float height) / public static boolean anyEntities(float x, float y, float width, float height, boolean ground) / public static boolean anyEntities(float x, float y, float width, float height, Boolf<Unit> check)
+    public static boolean anyEntities(Tile tile, boolean ground){
+        float size = tile.block().size * tilesize;
+        return anyEntities(tile.drawx() - size/2f, tile.drawy() - size/2f, size, size, ground);
+    }
+
+// Units.java : public static Building findDamagedTile(Team team, float x, float y)
+    public static Building findDamagedTile(Team team, float x, float y){
+        return indexer.getDamaged(team).min(b -> b.dst2(x, y));
+    }
+
+// Units.java : public static Building findAllyTile(Team team, float x, float y, float range, Boolf<Building> pred)
+    public static Building findAllyTile(Team team, float x, float y, float range, Boolf<Building> pred){
+        return indexer.findTile(team, x, y, range, pred);
+    }
+
+// Units.java : public static Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred)
+    public static Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred){
+        if(team == Team.derelict) return null;
+
+        return indexer.findEnemyTile(team, x, y, range, pred);
+    }
+
+// Units.java : public static void nearbyBuildings(float x, float y, float range, Cons<Building> cons)
+    public static void nearbyBuildings(float x, float y, float range, Cons<Building> cons){
+        indexer.allBuildings(x, y, range, cons);
+    }
+
+// Units.java : public static Teamc closestTarget(Team team, float x, float y, float range) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred) / public static Teamc closestTarget(Team team, float x, float y, float range, Team sourceTeam, Boolf<Unit> unitPred, Boolf<Building> tilePred)
+    public static Teamc closestTarget(Team team, float x, float y, float range){
+        return closestTarget(team, x, y, range, Unit::isValid);
+    }
+
+// Units.java : public static Teamc bestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred, Sortf sort)
+    public static Teamc bestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred, Sortf sort){
+        if(team == Team.derelict) return null;
+
+        Unit unit = bestEnemy(team, x, y, range, unitPred, sort);
+        if(unit != null){
+            return unit;
+        }else{
+            return findEnemyTile(team, x, y, range, tilePred);
+        }
+    }
+
+// Units.java : public static int count(float x, float y, float size, Boolf<Unit> filter) / public static int count(float x, float y, float width, float height, Boolf<Unit> filter)
+    public static int count(float x, float y, float size, Boolf<Unit> filter){
+        return count(x - size/2f, y - size/2f, size, size, filter);
+    }
+
+// Units.java : public static boolean any(float x, float y, float width, float height, Boolf<Unit> filter)
+    public static boolean any(float x, float y, float width, float height, Boolf<Unit> filter){
+        return Groups.unit.intersect(x, y, width, height, filter);
+    }
+
+// Units.java : public static void nearby(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearby(float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Rect rect, Cons<Unit> cons)
+    public static void nearby(@Nullable Team team, float x, float y, float width, float height, Cons<Unit> cons){
+        if(team != null){
+            team.data().tree().intersect(x, y, width, height, cons);
+        }else{
+            for(var other : state.teams.present){
+                other.tree().intersect(x, y, width, height, cons);
+            }
+        }
+    }
+
+// Units.java : public static boolean nearbyCheck(float x, float y, float width, float height, Boolf<Unit> cons)
+    public static boolean nearbyCheck(float x, float y, float width, float height, Boolf<Unit> cons){
+        return Groups.unit.intersect(x, y, width, height, cons);
+    }
+
+// Units.java : public static void nearbyEnemies(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearbyEnemies(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearbyEnemies(Team team, Rect rect, Cons<Unit> cons)
+    public static void nearbyEnemies(Team team, float x, float y, float width, float height, Cons<Unit> cons){
+        Seq<TeamData> data = state.teams.present;
+        for(int i = 0; i < data.size; i++){
+            if(data.items[i].team != team){
+                nearby(data.items[i].team, x, y, width, height, cons);
+            }
+        }
+    }
+

@@ -1,0 +1,165 @@
+CoreBlock.java
+Java class extends mindustry.world.blocks.storage.StorageBlock
+fields:
+  public static final float cloudScaling
+  public static final float cloudAlphas
+  private static ItemModule nextItems  // hacky way to pass item modules between methods
+  public static final float thrusterSizes
+  public TextureRegion thruster1  // top right
+  public TextureRegion thruster2  // bot left
+  public float thrusterLength
+  public boolean isFirstTier
+  public boolean allowSpawn  // If false, players can't respawn at this core.
+  public boolean requiresCoreZone  // If true, this core type requires a core zone to upgrade.
+  public boolean incinerateNonBuildable
+  public UnitType unitType
+  public float landDuration
+  public Music landMusic
+  public float launchSoundVolume
+  public Sound launchSound
+  public Sound landSound
+  public Effect launchEffect
+  public Interp landZoomInterp
+  public float landZoomFrom
+  public float captureInvicibility
+ctors:
+  public CoreBlock(String name)
+methods:
+  public static void playerSpawn(Tile tile, Player player)
+  public void setStats()
+  public void setBars()
+  public void init()
+  public void postInit()
+  public boolean canBreak(Tile tile)
+  public boolean canReplace(Block other)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void placeBegan(Tile tile, Block previous, Unit builder)
+  public void beforePlaceBegan(Tile tile, Block previous)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: CoreBuild extends mindustry.gen.Building implements mindustry.world.blocks.LaunchAnimator
+  fields:
+    public int storageCapacity
+    public boolean noEffect
+    public Team lastDamage
+    public float iframes
+    public float thrusterTime
+    public Vec2 commandPos
+    protected float cloudSeed
+  methods:
+    public boolean isCommandable()
+    public Vec2 getCommandPosition()
+    public void onCommand(Vec2 target)
+    public boolean canUnload()
+    public void buildConfiguration(Table table)
+    public void configured(Unit builder, Object value)
+    public boolean shouldHideConfigure(Player player)
+    public void draw()
+    public float launchDuration()
+    public Music landMusic()
+    public void beginLaunch(boolean launching)
+    public void endLaunch()
+    public void drawLaunch()
+    public void drawLanding(float x, float y)
+    protected void drawLandingThrusters(float x, float y, float rotation, float frame)
+    public void drawThrusters(float frame)
+    public void damage(Team source, float damage) / public void damage(float amount)
+    public void created()
+    public void changeTeam(Team next)
+    public double sense(LAccess sensor) / public double sense(Content content)
+    public boolean canControlSelect(Unit player)
+    public void onControlSelect(Unit unit)
+    public void requestSpawn(Player player)
+    public void updateTile()
+    public float zoomLaunch()  // @return Camera zoom while landing or launching.
+    public void updateLaunch()
+    public void onDestroyed()
+    public void playDestroySound()
+    public void afterDestroyed()
+    public void drawLight()
+    public boolean acceptItem(Building source, Item item)
+    public int getMaximumAccepted(Item item)
+    public void onProximityUpdate()
+    public void handleStack(Item item, int amount, Teamc source)
+    public int removeStack(Item item, int amount)
+    public void drawSelect()
+    public boolean owns(Building tile) / public boolean owns(Building core, Building tile)
+    public void onRemoved()
+    public void placed()
+    public void itemTaken(Item item)
+    public void handleItem(Building source, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+StorageBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public boolean coreMerge
+ctors:
+  public StorageBlock(String name)
+methods:
+  public boolean outputsItems()
+  public static void incinerateEffect(Building self, Building source)
+inner-class: StorageBuild extends mindustry.gen.Building
+  fields:
+    public Building linkedCore
+  methods:
+    public boolean acceptItem(Building source, Item item)
+    public boolean canUnload()
+    public void handleItem(Building source, Item item)
+    public void itemTaken(Item item)
+    public int removeStack(Item item, int amount)
+    public int getMaximumAccepted(Item item)
+    public int explosionItemCap()
+    public void drawSelect()
+    public double sense(LAccess sensor)
+    public void overwrote(Seq<Building> previous)
+    public boolean canPickup()
+    public boolean allowDeposit()
+
+Unloader.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion centerRegion
+  public float speed
+  public boolean allowCoreUnload
+  static Item allItems  // Cached result of content.items()
+ctors:
+  public Unloader(String name)
+methods:
+  public void init()
+  public void setStats()
+  public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list)
+  public void setBars()
+inner-class: ContainerStat implements arc.util.pooling.Pool.Poolable
+  fields:
+    Building building
+    float loadFactor
+    boolean canLoad
+    boolean canUnload
+    boolean notStorage  // Cached !(building instanceof StorageBuild)
+    int lastUsed
+  methods:
+    public void reset()
+inner-class: UnloaderBuild extends mindustry.gen.Building
+  fields:
+    public float unloadTimer
+    public int rotations
+    public Item sortItem
+    public ContainerStat dumpingFrom
+    public final Seq<ContainerStat> possibleBlocks
+    protected final Comparator<ContainerStat> comparator
+  methods:
+    private boolean isPossibleItem(Item item)
+    public void onProximityUpdate()
+    public void updateTile()
+    public void unloadAccumulate(Item item)  // allow dumping regardless of framerate.
+    public void draw()
+    public void drawSelect()
+    public void configured(Unit builder, Object value)
+    public void buildConfiguration(Table table)
+    public Item config()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+

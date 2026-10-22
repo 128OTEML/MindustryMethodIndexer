@@ -1,0 +1,751 @@
+Align.java
+Java class
+// Provides bit flag constants for alignment.
+fields:
+  public static final int center
+  public static final int top
+  public static final int bottom
+  public static final int left
+  public static final int right
+  public static final int topLeft
+  public static final int topRight
+  public static final int bottomLeft
+  public static final int bottomRight
+methods:
+  public static boolean isLeft(int align)
+  public static boolean isRight(int align)
+  public static boolean isTop(int align)
+  public static boolean isBottom(int align)
+  public static boolean isCenterVertical(int align)
+  public static boolean isCenterHorizontal(int align)
+  public static String toString(int align)
+
+ArcNativesLoader.java
+Java class
+fields:
+  public static boolean disableNativesLoading
+  public static boolean loaded
+methods:
+  public static synchronized void load()  // Loads the arc native libraries if they have not already been loaded.
+
+ArcRuntimeException.java
+Java class extends java.lang.RuntimeException
+fields:
+  private static final long serialVersionUID
+ctors:
+  public ArcRuntimeException(String message) / public ArcRuntimeException(Throwable t) / public ArcRuntimeException(String message, Throwable t)
+
+Bench.java
+Java class
+fields:
+  private static long totalStart
+  private static String lastName
+  private static ObjectMap<String,Long> times
+  private static long last
+methods:
+  public static void begin(String name)
+  public static void end()
+  private static void endi()
+
+Buffers.java
+Java class (final)
+// Class with static helper methods to increase the speed of array/direct buffer and direct buffer/direct buffer transfers
+fields:
+  static final Seq<ByteBuffer> unsafeBuffers
+  static int allocatedUnsafe
+methods:
+  public static void copy(float[] src, Buffer dst, int numFloats, int offset) / public static void copy(byte[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(short[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(float[] src, int srcOffset, int numElements, Buffer dst) / public static void copy(int[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(float[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(Buffer src, Buffer dst, int numElements)  // Copies numFloats floats from src starting at offset to dst.
+  private static int positionInBytes(Buffer dst)
+  private static int bytesToElements(Buffer dst, int bytes)
+  private static int elementsToBytes(Buffer dst, int elements)
+  private static int elementShift(Buffer dst)
+  public static FloatBuffer newFloatBuffer(int numFloats)
+  public static ShortBuffer newShortBuffer(int numShorts)
+  public static ByteBuffer newByteBuffer(int numBytes)
+  public static IntBuffer newIntBuffer(int numInts)
+  public static void disposeUnsafeByteBuffer(ByteBuffer buffer)
+  public static boolean isUnsafeByteBuffer(ByteBuffer buffer)
+  public static ByteBuffer newUnsafeByteBuffer(int numBytes) / public static ByteBuffer newUnsafeByteBuffer(ByteBuffer buffer)  // Allocates a new direct ByteBuffer from native heap memory using the native byte order.
+  public static long getUnsafeBufferAddress(Buffer buffer)  // Returns the address of the Buffer, it assumes it is an unsafe buffer.
+  public static int getAllocatedBytesUnsafe()  // @return the number of bytes allocated with {@link #newUnsafeByteBuffer(int)}
+  private static native void freeMemory(ByteBuffer buffer)  // Frees the memory allocated for the ByteBuffer, which MUST have been allocated via {@link #newUnsafeByteBuffer(ByteBuffer)}
+  private static native ByteBuffer newDisposableByteBuffer(int numBytes)
+  private static native long getBufferAddress(Buffer buffer)
+  private static native void clear(ByteBuffer buffer, int numBytes)  // Writes the specified number of zeros to the buffer.
+  private native static void copyJni(float[] src, Buffer dst, int numFloats, int offset) / private native static void copyJni(byte[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes) / private native static void copyJni(short[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes) / private native static void copyJni(int[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes) / private native static void copyJni(float[] src, int srcOffset, Buffer dst, int dstOffset, int numBytes) / public native static void copyJni(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes)
+
+ColorCodes.java
+Java class
+// Note that these color codes will only work on linux or mac terminals.
+fields:
+  public static String flush
+  public static final String codes
+
+CommandHandler.java
+Java class
+// Parses command syntax.
+fields:
+  public String prefix
+  private final ObjectMap<String,Command> commands
+  private final Seq<Command> orderedCommands
+ctors:
+  public CommandHandler(String prefix)  // Creates a command handler with a specific command prefix.
+methods:
+  public void setPrefix(String prefix)
+  public String getPrefix()
+  public CommandResponse handleMessage(String message) / public CommandResponse handleMessage(String message, Object params)  // Handles a message with no additional parameters.
+  public void removeCommand(String text)
+  public Command register(String text, String description, CommandRunner<T> runner) / public Command register(String text, String params, String description, CommandRunner<T> runner) / public Command register(String text, String description, Cons<String[]> runner) / public Command register(String text, String params, String description, Cons<String[]> runner)  // Register a command which handles a zero-sized list of arguments and one parameter.
+  public Seq<Command> getCommandList()
+inner-class: Command
+  fields:
+    public final String text
+    public final String paramText
+    public final String description
+    public final CommandParam params
+    final CommandRunner runner
+  ctors:
+    public Command(String text, String paramText, String description, CommandRunner runner)
+inner-interface: CommandRunner
+  methods:
+    void accept(String[] args, T parameter)
+inner-class: CommandParam
+  fields:
+    public final String name
+    public final boolean optional
+    public final boolean variadic
+  ctors:
+    public CommandParam(String name, boolean optional, boolean variadic)
+inner-class: CommandResponse
+  fields:
+    public final ResponseType type
+    public final Command command
+    public final String runCommand
+  ctors:
+    public CommandResponse(ResponseType type, Command command, String runCommand)
+
+Disposable.java
+Java interface
+// Interface for disposable resources.
+methods:
+  void dispose()  // Releases all resources of this object.
+  default boolean isDisposed()
+
+Eachable.java
+Java interface
+methods:
+  void each(Cons<? super T> cons)
+
+Http.java
+Java class
+// Utility class for making HTTP requests.
+fields:
+  protected static ExecutorService exec
+methods:
+  public static HttpRequest request(HttpMethod method, String url)  // @return a new HttpRequest that must be configured & submitted.
+  public static HttpRequest get(String url) / public static void get(String url, ConsT<HttpResponse,Exception> callback) / public static void get(String url, ConsT<HttpResponse,Exception> callback, Cons<Throwable> error)  // @return a new GET HttpRequest that must be configured & submitted.
+  public static HttpRequest post(String url) / public static void post(String url, ConsT<HttpResponse,Exception> callback) / public static HttpRequest post(String url, String content)  // @return a new POST HttpRequest that must be configured & submitted.
+inner-class: HttpResponse
+  fields:
+    private final HttpURLConnection connection
+    private HttpStatus status
+  ctors:
+    protected HttpResponse(HttpURLConnection connection)
+  methods:
+    public long getContentLength()  // @return the length of received content in bytes as a long.
+    public byte[] getResult()  // Returns the data of the HTTP response as a byte[].
+    public String getResultAsString()  // Returns the data of the HTTP response as a {@link String}.
+    public InputStream getResultAsStream()  // Returns the data of the HTTP response as an {@link InputStream}.
+    public HttpStatus getStatus()  // @return the {@link HttpStatus} containing the statusCode of the HTTP response.
+    public String getHeader(String name)  // @return the value of the header with the given name as a {@link String}, or null if the header is not set.
+    public ObjectMap<String,Seq<String>> getHeaders()  // Returns a Map of the headers.
+inner-class: HttpRequest
+  fields:
+    public HttpMethod method
+    public String url  // The URL to send this request to.
+    public ObjectMap<String,String> headers
+    public int timeout  // The time to wait for the HTTP request to be processed, use 0 to block until it is done.
+    public String content  // The content to be used in the HTTP request: A string encoded in the corresponding Content-Encoding set in the headers, with the data to send with the
+    public InputStream contentStream  // The content as a stream to be used for a POST for example, to transmit custom data.
+    public boolean followRedirects  // Sets whether 301 and 302 redirects are followed.
+    public boolean includeCredentials  // Whether a cross-origin request will include credentials.
+    public Cons<Throwable> errorHandler  // Handler for 4xx + 5xx errors, as well as exceptions thrown during connection.
+  ctors:
+    protected HttpRequest() / protected HttpRequest(HttpMethod method)
+  methods:
+    public HttpRequest error(Cons<Throwable> failed)
+    public HttpRequest method(HttpMethod method)
+    public HttpRequest url(String url)
+    public HttpRequest timeout(int timeout)
+    public HttpRequest redirects(boolean followRedirects)
+    public HttpRequest credentials(boolean includeCredentials)
+    public HttpRequest header(String name, String value)
+    public HttpRequest content(String content) / public HttpRequest content(InputStream contentStream)
+    public void submit(ConsT<HttpResponse,Exception> success)  // Submits this request asynchronously.
+    public void block(ConsT<HttpResponse,Exception> success)  // Blocks until this request is done.
+inner-class: HttpStatusException extends java.lang.RuntimeException
+// Exception returned when a 4xx or 5xx error is encountered.
+  fields:
+    public HttpStatus status  // The 4xx or 5xx error code.
+    public HttpResponse response  // The response that was sent along with the status code.
+  ctors:
+    public HttpStatusException(String message, HttpStatus status, HttpResponse response)
+
+I18NBundle.java
+Java class
+// A {@code I18NBundle} provides {@code Locale}-specific resources loaded from property files.
+fields:
+  private static final String DEFAULT_ENCODING
+  private static final Locale ROOT_LOCALE  // Locale.ROOT does not exist in Android API level 8
+  private static boolean simpleFormatter
+  private I18NBundle parent  // The parent of this {@code I18NBundle} that is used if this bundle doesn't include the requested resource.
+  private Locale locale  // The locale for this bundle.
+  private ObjectMap<String,String> properties  // The properties for this bundle.
+  private TextFormatter formatter  // The formatter used for argument replacement.
+methods:
+  public static boolean getSimpleFormatter()  // Returns the flag indicating whether to use the simplified message pattern syntax (default is false).
+  public static void setSimpleFormatter(boolean enabled)  // Sets the flag indicating whether to use the simplified message pattern.
+  public static I18NBundle createEmptyBundle()  // Returns an empty bundle with no keys.
+  public static I18NBundle createBundle(Fi baseFileHandle) / public static I18NBundle createBundle(Fi baseFileHandle, Locale locale) / public static I18NBundle createBundle(Fi baseFileHandle, String encoding) / public static I18NBundle createBundle(Fi baseFileHandle, Locale locale, String encoding)  // Creates a new bundle using the specified <code>baseFileHandle</code>, the default locale and the default encoding "UTF-8".
+  private static I18NBundle createBundleImpl(Fi baseFileHandle, Locale locale, String encoding)
+  private static Seq<Locale> getCandidateLocales(Locale locale)  // Returns a <code>List</code> of <code>Locale</code>s as candidate locales for the given <code>locale</code>.
+  private static Locale getFallbackLocale(Locale locale)  // Returns a <code>Locale</code> to be used as a fallback locale for further bundle searches by the <code>createBundle</code>
+  private static I18NBundle loadBundleChain(Fi baseFileHandle, String encoding, Seq<Locale> candidateLocales, int candidateIndex, I18NBundle baseBundle)
+  private static I18NBundle loadBundle(Fi baseFileHandle, String encoding, Locale targetLocale)  // Tries to load the bundle for the given locale.
+  private static boolean checkFileExistence(Fi fh)  // Fixes some problems with fh.exists(), see #2342 / #2345
+  private static Fi toFileHandle(Fi baseFileHandle, Locale locale)  // Converts the given <code>baseFileHandle</code> and <code>locale</code> to the corresponding file handle.
+  private void load(Reader reader)  // Load the properties from the specified reader.
+  public Locale getLocale()  // Returns the locale of this bundle.
+  private void setLocale(Locale locale)  // Sets the bundle locale.
+  public final String get(String key) / public String get(String key, String def)  // Gets a string for the given key from this bundle or one of its parents.
+  public String getOrNull(String key)
+  public String getNotNull(String key)
+  public Iterable<String> getKeys()  // Returns all keys in this bundle.
+  public ObjectMap<String,String> getProperties()  // @return the internal property map.
+  public void setProperties(ObjectMap<String,String> properties)
+  public boolean has(String key)  // Checks whether a specified key is present in this bundle.
+  public String format(String key, Object args)  // Gets the string with the specified key from this bundle or one of its parent after replacing the given arguments if they
+  public String formatString(String string, Object args)
+  public String formatFloat(String key, float value, int places)  // Format, but with a number with fixed decimal places.
+  public void debug(String placeholder)  // Sets the value of all localized strings to String placeholder so hardcoded, unlocalized values can be easily spotted.
+  public I18NBundle getParent()  // @return the parent bundle.
+
+Interval.java
+Java class
+fields:
+  float times
+ctors:
+  public Interval(int capacity) / public Interval()
+methods:
+  public boolean get(float time) / public boolean get(int id, float time)
+  public boolean check(int id, float time)
+  public void reset(int id, float time)
+  public void clear()
+  public float getTime(int id)
+  public float[] getTimes()
+
+Log.java
+Java class
+fields:
+  private static final Object empty
+  public static boolean useColors
+  public static LogLevel level
+  public static LogHandler logger
+  public static LogFormatter formatter
+methods:
+  public static void log(LogLevel level, String text, Object args)
+  public static void debug(String text, Object args) / public static void debug(Object object)
+  public static void infoList(Object args)
+  public static void infoTag(String tag, String text)
+  public static void info(String text, Object args) / public static void info(Object object)
+  public static void warn(String text, Object args)
+  public static void errTag(String tag, String text)
+  public static void err(String text, Object args) / public static void err(Throwable th) / public static void err(String text, Throwable th)
+  public static String format(String text, Object args)
+  public static String formatColors(String text, boolean useColors, Object args)
+  public static String removeColors(String text)
+  public static String addColors(String text)
+inner-interface: LogFormatter
+  methods:
+    String format(String text, boolean useColors, Object args)
+inner-class: DefaultLogFormatter implements arc.util.Log.LogFormatter
+  methods:
+    public String format(String text, boolean useColors, Object args)
+inner-interface: LogHandler
+  methods:
+    void log(LogLevel level, String text)
+inner-class: DefaultLogHandler implements arc.util.Log.LogHandler
+  methods:
+    public void log(LogLevel level, String text)
+inner-class: NoopLogHandler implements arc.util.Log.LogHandler
+  methods:
+    public void log(LogLevel level, String text)
+
+NativeUtils.java
+Java class
+methods:
+  public static native int setEnv(String name, String value, boolean overwrite)  // @return 0 on success, -1 on failure (errno set on the native side).
+  public static native int unsetEnv(String name)  // @return 0 on success, -1 on failure.
+  public static native String getEnv(String name)  // Wraps getenv.
+  public static void forceUtf8Locale()  // Fixes LC_ALL and LANG on Steam to avoid issues with Zenity.
+
+Nullable.java
+(unknown)
+
+OS.java
+Java class
+fields:
+  public static final int cores
+  public static final String username  // User's account name.
+  public static final String userHome  // User's home directory.
+  public static final String osName  // Name of the OS being used.
+  public static final String osVersion  // Version of the OS being used; format varies based on OS.
+  public static final String osArch  // Operating system architecture, e.g.
+  public static final String osArchBits  // Either 32 or 64.
+  public static final String javaVersion  // JVM version; may contain underscores.
+  public static final int javaVersionNumber  // Java version as a single number; 0 on iOS or Android.
+  public static boolean isWindows
+  public static boolean isLinux
+  public static boolean isMac
+  public static boolean isIos
+  public static boolean isAndroid
+  public static boolean isARM
+  public static boolean is64Bit
+  public static boolean isMobile
+  public static boolean isDesktop
+methods:
+  public static String getAppDataDirectoryString(String appname)
+  public static String getWindowsTmpDir()
+  public static String exec(boolean logErr, String args) / public static String exec(String args)  // Executes, returns the result output string with the err output optionally tacked on.
+  public static boolean execSafe(String command) / public static boolean execSafe(String command)
+  public static Fi getAppDataDirectory(String appname)
+  public static boolean hasProp(String name)
+  public static String prop(String name)
+  public static boolean hasEnvFlag(String name)  // @return whether the specified environment variable exists and is set to "1".
+  public static boolean hasEnv(String name)
+  public static String env(String name)
+  public static String propNoNull(String name)
+
+Pack.java
+Java class
+methods:
+  public static float packUv(float x, float y)  // Packs [0-1] texture coordinates or positions into a single float.
+  public static int u(byte b) / public static int u(short b) / public static long u(int b)  // byte -> unsigned byte
+  public static byte byteValue(boolean b)
+  public static int shortInt(short left, short right)
+  public static long longInt(int x, int y)
+  public static byte byteByte(byte left, byte right)  // Packs two bytes with values 0-15 into one byte.
+  public static byte leftByte(byte value) / public static byte leftByte(short field)
+  public static byte rightByte(byte value) / public static byte rightByte(short field)
+  public static short leftShort(int field)
+  public static short rightShort(int field)
+  public static int leftInt(long field)
+  public static int rightInt(long field)
+  public static short shortByte(byte left, byte right)
+  public static byte[] bytes(int i, byte[] result)  // The same array instance is returned each call.
+  public static short[] shorts(long i, short[] resultShort)  // The same array instance is returned each call.
+  public static long longShorts(short[] s)
+  public static int intBytes(byte b1, byte b2, byte b3, byte b4) / public static int intBytes(byte[] array)  // Packs 4 bytes into an int.
+  public static int bitmask(int bits, int mask, boolean b)
+
+PerformanceCounter.java
+Java class
+// Class to keep track of the time and load (percentage of total time) a specific task takes.
+fields:
+  private static final float nano2seconds
+  public final FloatCounter time  // The time value of this counter (seconds)
+  public final FloatCounter load  // The load value of this counter
+  public final String name  // The name of this counter
+  public float current  // The current value in seconds, you can manually increase this using your own timing mechanism if needed, if you do so, you also need to
+  public boolean valid  // Flag to indicate that the current value is valid, you need to set this to true if using your own timing mechanism
+  private long startTime
+  private long lastTick
+ctors:
+  public PerformanceCounter(String name) / public PerformanceCounter(String name, int windowSize)
+methods:
+  public void tick() / public void tick(float delta)  // Updates the time and load counters and resets the time.
+  public void start()  // Start counting, call this method just before performing the task you want to keep track of.
+  public void stop()  // Stop counting, call this method right after you performed the task you want to keep track of.
+  public void reset()  // Resets this performance counter to its defaults values.
+  public String toString() / public StringBuilder toString(StringBuilder sb)  // {@inheritDoc}
+  private void commas(StringBuilder builder, int number)
+
+PerformanceCounters.java
+Java class
+// @author xoppa
+fields:
+  private static final float nano2seconds
+  public final Seq<PerformanceCounter> counters
+  private long lastTick
+methods:
+  public PerformanceCounter add(String name, int windowSize) / public PerformanceCounter add(String name)
+  public void tick() / public void tick(float deltaTime)
+  public String toString()
+
+QuickSelect.java
+Java class
+// Implementation of Tony Hoare's quickselect algorithm.
+fields:
+  private T array
+  private Comparator<? super T> comp
+methods:
+  public int select(T[] items, Comparator<T> comp, int n, int size)
+  private int partition(int left, int right, int pivot)
+  private int recursiveSelect(int left, int right, int k)
+  private int medianOfThreePivot(int leftIdx, int rightIdx)  // Median of Three has the potential to outperform a random pivot, especially for partially sorted arrays
+  private void swap(int left, int right)
+
+Ratekeeper.java
+Java class
+// Keeps track of X actions in Y units of time.
+fields:
+  public int occurences
+  public long lastTime
+methods:
+  public boolean allow(long spacing, int cap)  // @return whether an action is allowed.
+  public void reset()
+
+Reflect.java
+Java class
+methods:
+  public static T[] newArray(Class<T> type, int length) / public static T[] newArray(T[] oldType, int length)
+  public static boolean isWrapper(Class<?> type)
+  public static Prov<T> cons(Class<T> type)
+  public static T get(Field field) / public static T get(Object object, Field field) / public static T get(Class<?> type, Object object, String name) / public static T get(Object object, String name) / public static T get(Class<?> type, String name)
+  public static void set(Class<?> type, Object object, String name, Object value) / public static void set(Object object, Field field, Object value) / public static void set(Object object, String name, Object value) / public static void set(Class<?> type, String name, Object value)
+  public static T invoke(Class<?> type, Object object, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Class<?> type, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Class<?> type, String name) / public static T invoke(Object object, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Object object, String name)
+  public static T make(String type)
+
+Scaling.java
+(unknown)
+
+ScreenRecorder.java
+Java class
+// Wrapper for GifRecorder utility that attempts to dynamically resolve the class.
+fields:
+  private static Runnable record
+methods:
+  public static void record()
+
+ScreenUtils.java
+Java class (final)
+// Class with static helper methods that provide access to the default OpenGL FrameBuffer.
+methods:
+  public static void saveScreenshot(Fi file) / public static void saveScreenshot(Fi file, int x, int y, int width, int height)
+  public static TextureRegion getFrameBufferTexture() / public static TextureRegion getFrameBufferTexture(int x, int y, int w, int h)  // Returns the default framebuffer contents as a {@link TextureRegion} with a width and height equal to the current screen
+  public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h) / public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h, boolean flip)
+  public static byte[] getFrameBufferPixels(boolean flipY) / public static byte[] getFrameBufferPixels(int x, int y, int w, int h, boolean flipY)  // Returns the default framebuffer contents as a byte[] array with a length equal to screen width * height * 4.
+
+Select.java
+Java class
+// This class is for selecting a ranked element (kth ordered statistic) from an unordered list in faster time than sorting the
+fields:
+  private static Select instance
+  private QuickSelect quickSelect
+methods:
+  public static Select instance()  // Provided for convenience
+  public T select(T[] items, Comparator<T> comp, int kthLowest, int size)
+  public int selectIndex(T[] items, Comparator<T> comp, int kthLowest, int size)
+  private int fastMin(T[] items, Comparator<T> comp, int size)  // Faster than quickselect for n = min
+  private int fastMax(T[] items, Comparator<T> comp, int size)  // Faster than quickselect for n = max
+
+SharedLibraryLoader.java
+Java class
+// Loads shared libraries from a natives jar file (desktop) or arm folders (Android).
+fields:
+  private static final HashSet<String> loadedLibraries
+  private String nativesJar
+ctors:
+  public SharedLibraryLoader() / public SharedLibraryLoader(String nativesJar)  // Fetches the natives from the given natives jar file.
+methods:
+  public static synchronized void setLoaded(String libraryName)  // Sets the library as loaded, for when application code wants to handle libary loading itself.
+  public static synchronized boolean isLoaded(String libraryName)
+  public String crc(InputStream input)  // Returns a CRC of the remaining bytes in the stream.
+  public String mapLibraryName(String libraryName)  // Maps a platform independent library name to a platform dependent name.
+  public void load(String libraryName)  // Loads a shared library for the platform the application is running on.
+  protected InputStream readFile(String path)
+  public File extractFile(String sourcePath, String dirName) throws IOException / protected File extractFile(String sourcePath, String sourceCrc, File extractedFile) throws IOException  // Extracts the specified file to the specified directory if it does not already exist or the CRC does not match.
+  public void extractFileTo(String sourcePath, File dir) throws IOException  // Extracts the specified file into the temp directory if it does not already exist or the CRC does not match.
+  private File getExtractedFile(String dirName, String fileName)  // Returns a path to a file that can be written.
+  private boolean canWrite(File file)  // Returns true if the parent directories of the file can be created and the file can be written.
+  private boolean canExecute(File file)
+  private void loadFile(String sourcePath) / protected Throwable loadFile(String sourcePath, String sourceCrc, File extractedFile)  // Extracts the source file and calls System.load.
+
+Strings.java
+Java class
+fields:
+  public static final Charset utf8
+  public static final Charset ascii
+  private static final byte hexArray
+  private static StringBuilder tmp1
+  private static Pattern filenamePattern
+methods:
+  public static byte[] sha256(String str)  // @return sha256 hash of the given string
+  public static String formatByteCount(long bytes)  // https://stackoverflow.com/a/3758880
+  public static String bytesToHex(byte[] bytes)  // https://stackoverflow.com/a/9855338
+  public static String getFileExtension(String path)
+  public static String getFileName(String path)
+  public static String getFileNameWithoutExtension(String path)
+  public static boolean matches(String query, String name)  // @return whether the name matches the query; case-insensitive.
+  public static int count(CharSequence s, char c) / public static int count(String str, String substring)
+  public static String truncate(String s, int length) / public static String truncate(String s, int length, String ellipsis)
+  public static Seq<Throwable> getCauses(Throwable e)
+  public static String getSimpleMessage(Throwable e)
+  public static String getSimpleMessages(Throwable e)
+  public static String getFinalMessage(Throwable e)
+  public static Throwable getFinalCause(Throwable e)
+  public static String getStackTrace(Throwable e)
+  public static String neatError(Throwable e) / public static String neatError(Throwable e, boolean stacktrace)  // @return a neat error message of a throwable, with stack trace.
+  public static String stripColors(CharSequence str)
+  public static String stripGlyphs(CharSequence str)
+  private static int parseColorMarkup(CharSequence str, int start, int end)
+  public static String sanitizeFilename(String str)  // Replaces non-safe filename characters with '_'.
+  public static boolean isSafeFilename(String name)
+  public static String encode(String str)
+  public static String format(String text, Object args)
+  static String stringify(Object o)
+  public static String join(String separator, String strings) / public static String join(String separator, Iterable<String> strings)
+  public static int levenshtein(String x, String y)  // Returns the levenshtein distance between two strings.
+  public static float biasedLevenshtein(String x, String y)  // Returns the case-independent biased levenshtein distance between two strings.
+  public static String animated(float time, int length, float scale, String replacement)
+  public static String kebabToCamel(String s)
+  public static String camelToKebab(String s)
+  public static String capitalize(String s)  // Converts a snake_case or kebab-case string to Upper Case.
+  public static String insertSpaces(String s)  // Adds spaces to a camel/pascal case string.
+  public static String camelize(String s)  // Converts a Space Separated string to camelCase.
+  public static boolean canParseInt(String s)
+  public static boolean canParsePositiveInt(String s)
+  public static int parseInt(String s, int defaultValue) / public static int parseInt(String s, int radix, int defaultValue) / public static int parseInt(String s, int radix, int defaultValue, int start, int end) / public static int parseInt(String s)  // Returns Integer.MIN_VALUE if parsing failed.
+  public static long parseLong(String s, long defaultValue) / public static long parseLong(String s, int radix, long defaultValue) / public static long parseLong(String s, int radix, int start, int end, long defaultValue)
+  public static double parseDouble(String value, double defaultValue)  // Faster double parser that doesn't throw exceptions.
+  public static boolean canParseFloat(String s)
+  public static boolean canParsePositiveFloat(String s)
+  public static float parseFloat(String s) / public static float parseFloat(String value, float defaultValue)  // Returns Float.NEGATIVE_INFINITY if parsing failed.
+  public static Color parseColor(String s) / public static Color parseColor(String s, Color defaultValue)  // Returns a new, blank color if parsing failed.
+  public static Color parseColorOrNull(Color color, String hex)
+  private static int parseHex(String string, int from, int to)
+  public static String autoFixed(float value, int max)
+  public static String fixed(float d, int decimalPlaces)
+  public static StringBuilder fixedBuilder(float d, int decimalPlaces)
+  public static String formatMillis(long val)
+  private static void append(StringBuilder tgt, String pfx, int dgt, long val)
+  public static StringBuilder replace(StringBuilder builder, String find, String replace) / public static StringBuilder replace(StringBuilder builder, char find, String replace)  // Replaces all instances of {@code find} with {@code replace}.
+  private static boolean isDigitsOnly(String part)
+  public static int[] sanitizeVersion(String raw)  // Strips leading/trailing non-numeric, non-dot characters, normalizes a loose version string (e.g.
+  public static boolean checkNewerSemver(String version, String target)  // @return true if semver {@param version} > {@param target}.
+  public static byte[] deflate(String str)
+  public static String undeflate(byte[] bytes)
+
+Structs.java
+Java class
+methods:
+  public static boolean eq(Object a, Object b)
+  public static T[] arr(T array)
+  public static void filter(Iterable<T> iterable, Boolf<T> removal) / public static void filter(Iterator<T> it, Boolf<T> removal) / public static T[] filter(Class<T> type, T[] array, Boolf<T> value)  // Remove all values that match this predicate.
+  public static T random(T array) / public static T random(Rand rand, T array)
+  public static int count(T[] array, Boolf<T> value)
+  public static boolean contains(T[] array, T value) / public static boolean contains(T[] array, Boolf<T> value)  // Uses identity comparisons.
+  public static T find(T[] array, Boolf<T> value)
+  public static int indexOf(Iterable<T> array, Boolf<T> value) / public static int indexOf(T[] array, T value) / public static int indexOf(T[] array, Boolf<T> value)
+  public static T[] remove(T[] array, T value) / public static T[] remove(T[] array, int index)
+  public static T[] add(T[] array, T item)
+  public static void swap(T[] array, int a, int b)
+  public static Comparator<T> comps(Comparator<T> first, Comparator<T> second)  // Equivalent to Comparator#thenComparsing, but more compatible.
+  public static Comparator<T> comparing(Func<? super T,? extends U> keyExtractor, Comparator<? super U> keyComparator) / public static Comparator<T> comparing(Func<? super T,? extends U> keyExtractor)
+  public static Comparator<T> comparingFloat(Floatf<? super T> keyExtractor)
+  public static Comparator<T> comparingInt(Intf<? super T> keyExtractor)
+  public static Comparator<T> comparingLong(Longf<? super T> keyExtractor)
+  public static Comparator<T> comparingBool(Boolf<? super T> keyExtractor)
+  public static void each(Cons<T> cons, T objects)
+  public static void forEach(Iterable<T> i, Cons<T> cons)
+  public static T findMin(T[] arr, Comparator<T> comp) / public static T findMin(T[] arr, Floatf<T> proc) / public static T findMin(Iterable<T> arr, Comparator<T> comp) / public static T findMin(Iterable<T> arr, Boolf<T> allow, Comparator<T> comp)
+  public static boolean inBounds(int x, int y, T[][] array) / public static boolean inBounds(int x, int y, int[][] array) / public static boolean inBounds(int x, int y, float[][] array) / public static boolean inBounds(int x, int y, boolean[][] array) / public static boolean inBounds(int x, int y, int z, T[][][] array) / public static boolean inBounds(int x, int y, int z, int[][][] array) / public static boolean inBounds(int x, int y, int z, int size, int padding) / public static boolean inBounds(int x, int y, int width, int height)
+
+TaskQueue.java
+Java class
+fields:
+  private final Seq<Runnable> runnables
+  private final Seq<Runnable> executedRunnables
+methods:
+  public void run()
+  public int size()
+  public void clear()
+  public void post(Runnable runnable)
+
+TextFormatter.java
+Java class
+// {@code TextFormatter} is used by {@link I18NBundle} to perform argument replacement.
+fields:
+  private MessageFormat messageFormat
+  private StringBuilder buffer
+ctors:
+  public TextFormatter(Locale locale, boolean useMessageFormat)
+methods:
+  public String format(String pattern, Object args)  // Formats the given {@code pattern} replacing its placeholders with the actual arguments specified by {@code args}.
+  private String replaceEscapeChars(String pattern)  // Also this code is optimized since a new string is returned only if something has been replaced.
+  private String simpleFormat(String pattern, Object args)  // Formats the given {@code pattern} replacing any placeholder of the form {0}, {1}, {2} and so on with the corresponding
+
+Threads.java
+Java class
+// Utilities for threaded programming.
+methods:
+  public static ThreadLocal<T> local(Prov<T> prov)
+  public static T await(Future<T> future) / public static void await(ExecutorService exec)  // Shuts down the executor and waits for its termination indefinitely.
+  public static void awaitAll(Seq<? extends Future<?>> futures)
+  public static ExecutorService executor(String name, int threads) / public static ExecutorService executor(int threads) / public static ExecutorService executor(String name) / public static ExecutorService executor()  // @return an executor with a fixed number of threads which do not expire
+  public static ExecutorService unboundedExecutor(String name, int min) / public static ExecutorService unboundedExecutor(String name) / public static ExecutorService unboundedExecutor()  // @return an executor with no max thread count.
+  public static ExecutorService boundedExecutor(String name, int max)  // @return an executor with a max thread count.
+  public static void sleep(long ms) / public static void sleep(long ms, int ns)
+  public static void throwAppException(Throwable t)  // Throws an exception in the main game thread.
+  public static Thread thread(Runnable runnable) / public static Thread thread(String name, Runnable runnable)  // Starts a new non-daemon thread.
+  public static Thread daemon(Runnable runnable) / public static Thread daemon(String name, Runnable runnable)  // Starts a new daemon thread.
+  private static Thread newThread(Runnable r, String name, boolean daemon)
+
+Time.java
+Java class
+fields:
+  public static final float toSeconds  // Conversion factors for ticks to other unit values.
+  public static float delta  // Global delta value.
+  public static float time  // Global time values.
+  public static final long nanosPerMilli
+  private static double timeRaw
+  private static Seq<DelayRun> runs
+  private static Seq<DelayRun> removal
+  private static LongSeq marks
+  private static Floatp deltaimpl
+methods:
+  public static Seq<DelayRun> getRuns()
+  public static void setRuns(Seq<DelayRun> runs)
+  public static void run(float delay, Runnable r)  // Runs a task with a delay of several ticks.
+  public static Task runTask(float delay, Runnable r)  // Runs a task with a delay of several ticks.
+  public static void mark()
+  public static float elapsed()  // A value of -1 means mark() wasn't called beforehand.
+  public static void updateGlobal()
+  public static void update()
+  public static double getInternalTime()
+  public static void setInternalTime(double timeInternal)
+  public static void clear()
+  public static void setDeltaProvider(Floatp impl)
+  public static long nanos()  // @return The current value of the system timer, in nanoseconds.
+  public static long millis()  // @return the difference, measured in milliseconds, between the current time and midnight, January 1, 1970 UTC.
+  public static long nanosToMillis(long nanos)  // Convert nanoseconds time to milliseconds
+  public static long millisToNanos(long millis)  // Convert milliseconds time to nanoseconds
+  public static long timeSinceNanos(long prevTime)  // Get the time in nanos passed since a previous time
+  public static long timeSinceMillis(long prevTime)  // Get the time in millis passed since a previous time
+inner-class: DelayRun implements arc.util.pooling.Pool.Poolable
+  fields:
+    float delay
+    Runnable finish
+  methods:
+    public void reset()
+
+Timekeeper.java
+Java class
+// Keeps track of a time interval.
+fields:
+  private final long intervalMs
+  private long lastTime
+ctors:
+  Timekeeper(long ms)
+methods:
+  public static Timekeeper ofMillis(long ms)
+  public static Timekeeper ofTicks(float ticks)
+  public static Timekeeper ofSeconds(float seconds)
+  public boolean poll()  // @return true if the interval has passed since the last reset(); resets the timer if true
+  public boolean get()  // @return true if the interval has passed since the last reset().
+  public void reset()  // resets the timer; the interval will need to pass until get() returns true again.
+
+Timer.java
+Java class
+// Task access is synchronized using the Task instance.
+fields:
+  static final Object threadLock
+  static TimerThread thread
+  final Seq<Task> tasks
+ctors:
+  public Timer()
+methods:
+  public static Timer instance()  // Timer instance singleton for general application wide usage.
+  private static TimerThread thread()
+  public static Task post(Task task)  // Schedules a task on {@link #instance}.
+  public static Task schedule(Task task, float delaySeconds) / public static Task schedule(Task task, float delaySeconds, float intervalSeconds) / public static Task schedule(Task task, float delaySeconds, float intervalSeconds, int repeatCount) / public static Task schedule(Runnable task, float delaySeconds) / public static Task schedule(Runnable task, float delaySeconds, float intervalSeconds) / public static Task schedule(Runnable task, float delaySeconds, float intervalSeconds, int repeatCount)  // Schedules a task on {@link #instance}.
+  public Task postTask(Task task)  // Schedules a task to occur once as soon as possible, but not sooner than the start of the next frame.
+  public Task scheduleTask(Task task, float delaySeconds) / public Task scheduleTask(Task task, float delaySeconds, float intervalSeconds) / public Task scheduleTask(Task task, float delaySeconds, float intervalSeconds, int repeatCount)  // Schedules a task to occur once after the specified delay.
+  public void stop()  // Stops the timer, tasks will not be executed and time that passes will not be applied to the task delays.
+  public void start()  // Starts the timer if it was stopped.
+  public synchronized void clear()  // Cancels all tasks.
+  public synchronized boolean isEmpty()  // Returns true if the timer has no tasks in the queue.
+  synchronized long update(long timeMillis, long waitMillis)
+  public synchronized void delay(long delayMillis)  // Adds the specified delay to all tasks.
+inner-class: Task implements java.lang.Runnable
+// Runnable that can be scheduled on a {@link Timer}.
+  fields:
+    final Application app
+    long executeTimeMillis
+    int repeatCount
+    volatile Timer timer
+  ctors:
+    public Task()
+  methods:
+    abstract public void run()  // If this is the last time the task will be ran or the task is first cancelled, it may be scheduled again in this
+    public void cancel()  // Cancels the task.
+    public boolean isScheduled()  // Returns true if this task is scheduled to be executed in the future by a timer.
+    public synchronized long getExecuteTimeMillis()  // Returns the time in milliseconds when this task will be executed next.
+inner-class: TimerThread implements java.lang.Runnable, arc.ApplicationListener
+// Manages a single thread for updating timers.
+  fields:
+    final Files files
+    final Seq<Timer> instances
+    Timer instance
+    private long pauseMillis
+  ctors:
+    public TimerThread()
+  methods:
+    public void run()
+    public void resume()
+    public void pause()
+    public void dispose()
+
+Tmp.java
+Java class
+// Temporary stuff.
+fields:
+  public static final Vec2 v1
+  public static final Vec2 v2
+  public static final Vec2 v3
+  public static final Vec2 v4
+  public static final Vec2 v5
+  public static final Vec2 v6
+  public static final Vec3 v31
+  public static final Vec3 v32
+  public static final Vec3 v33
+  public static final Vec3 v34
+  public static final Rect r1
+  public static final Rect r2
+  public static final Rect r3
+  public static final Circle cr1
+  public static final Circle cr2
+  public static final Circle cr3
+  public static final Vec2 t1
+  public static final Color c1
+  public static final Color c2
+  public static final Color c3
+  public static final Color c4
+  public static final Point2 p1
+  public static final Point2 p2
+  public static final Point2 p3
+  public static final TextureRegion tr1
+  public static final TextureRegion tr2
+  public static final Mat m1
+  public static final Mat m2
+  public static final Mat m3
+  public static final Mat m4
+  public static final Bezier<Vec2> bz2
+  public static final Bezier<Vec3> bz3
+
+UnsafeRunnable.java
+Java interface
+// A runnable where anything might happen.
+methods:
+  void run() throws Throwable
+

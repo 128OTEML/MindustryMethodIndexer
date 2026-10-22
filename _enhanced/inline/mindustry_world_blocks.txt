@@ -1,0 +1,222 @@
+// Attributes.java : public void clear()
+    public void clear(){
+        Arrays.fill(arr, 0);
+    }
+
+// Attributes.java : public float get(Attribute attr)
+    public float get(Attribute attr){
+        check();
+        return arr[attr.id];
+    }
+
+// Attributes.java : public void set(Attribute attr, float value)
+    public void set(Attribute attr, float value){
+        check();
+        arr[attr.id] = value;
+    }
+
+// Attributes.java : public void add(Attributes other) / public void add(Attributes other, float scl)
+    public void add(Attributes other){
+        check();
+        other.check();
+        for(int i = 0; i < arr.length; i++){
+            arr[i] += other.arr[i];
+        }
+    }
+
+// Attributes.java : public void write(Json json)
+    @Override
+    public void write(Json json){
+        check();
+        for(Attribute at : Attribute.all){
+            if(arr[at.id] != 0){
+                json.writeValue(at.name, arr[at.id]);
+            }
+        }
+    }
+
+// Attributes.java : public void read(Json json, JsonValue data)
+    @Override
+    public void read(Json json, JsonValue data){
+        check();
+        for(Attribute at : Attribute.all){
+            arr[at.id] = data.getFloat(at.name, 0);
+        }
+    }
+
+// Attributes.java : private void check()
+    private void check(){
+        if(arr.length != Attribute.all.length){
+            var last = arr;
+            arr = new float[Attribute.all.length];
+            System.arraycopy(last, 0, arr, 0, Math.min(last.length, arr.length));
+        }
+    }
+
+// Autotiler.java : default TextureRegion sliced(TextureRegion input, SliceMode mode)
+    default TextureRegion sliced(TextureRegion input, SliceMode mode){
+        return mode == SliceMode.none ? input : mode == SliceMode.bottom ? botHalf(input) : topHalf(input);
+    }
+
+// Autotiler.java : default TextureRegion topHalf(TextureRegion input)
+    default TextureRegion topHalf(TextureRegion input){
+        TextureRegion region = Tmp.tr1;
+        region.set(input);
+        region.setWidth(region.width / 2);
+        return region;
+    }
+
+// Autotiler.java : default TextureRegion botHalf(TextureRegion input)
+    default TextureRegion botHalf(TextureRegion input){
+        TextureRegion region = Tmp.tr1;
+        region.set(input);
+        int width = region.width;
+        region.setWidth(width / 2);
+        region.setX(region.getX() + width);
+        return region;
+    }
+
+// Autotiler.java : default int[] getTiling(BuildPlan plan, Eachable<BuildPlan> list)
+    default @Nullable int[] getTiling(BuildPlan plan, Eachable<BuildPlan> list){
+        if(plan.tile() == null) return null;
+        BuildPlan[] directionals = AutotilerHolder.directionals;
+
+        Arrays.fill(directionals, null);
+        AutotilerHolder.plan = plan;
+        Block.findPlan(list, plan.x, plan.y, plan.block.size + 2, AutotilerHolder.blendFinder);
+
+        return buildBlending(plan.tile(), plan.rotation, directionals, plan.worldContext);
+    }
+
+// Autotiler.java : default boolean facing(int x, int y, int rotation, int x2, int y2)
+    default boolean facing(int x, int y, int rotation, int x2, int y2){
+        return Point2.equals(x + Geometry.d4(rotation).x,y + Geometry.d4(rotation).y, x2, y2);
+    }
+
+// Autotiler.java : default boolean blends(Tile tile, int rotation, BuildPlan[] directional, int direction, boolean checkWorld) / default boolean blends(Tile tile, int rotation, int direction) / boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    default boolean blends(Tile tile, int rotation, @Nullable BuildPlan[] directional, int direction, boolean checkWorld){
+        int realDir = Mathf.mod(rotation - direction, 4);
+        if(directional != null && directional[realDir] != null){
+            BuildPlan req = directional[realDir];
+            if(blends(tile, rotation, req.x, req.y, req.rotation, req.block)){
+                return true;
+            }
+        }
+        return checkWorld && blends(tile, rotation, direction);
+    }
+
+// Autotiler.java : default boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    default boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
+        return Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery)
+                || ((!otherblock.rotatedOutput(otherx, othery, tile) && Edges.getFacingEdge(otherblock, otherx, othery, tile) != null &&
+                Edges.getFacingEdge(otherblock, otherx, othery, tile).relativeTo(tile) == rotation) ||
+                (otherblock.rotatedOutput(otherx, othery, tile) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y)));
+    }
+
+// Autotiler.java : default boolean notLookingAt(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    default boolean notLookingAt(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
+        return !(otherblock.rotatedOutput(otherx, othery, tile) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y));
+    }
+
+// Autotiler.java : default boolean lookingAtEither(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+    default boolean lookingAtEither(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock){
+        return
+            //block is facing the other
+            Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery) ||
+            //does not output to rotated direction
+            !otherblock.rotatedOutput(otherx, othery, tile) ||
+            //other block is facing this one
+            Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y);
+    }
+
+// Autotiler.java : default boolean lookingAt(Tile tile, int rotation, int otherx, int othery, Block otherblock)
+    default boolean lookingAt(Tile tile, int rotation, int otherx, int othery, Block otherblock){
+        Tile facing = Edges.getFacingEdge(otherblock, otherx, othery, tile);
+        return facing != null &&
+            Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, facing.x, facing.y);
+    }
+
+// ConstructBlock.java : public static ConstructBlock get(int size)
+    public static ConstructBlock get(int size){
+        if(size > maxBlockSize) throw new IllegalArgumentException("No. Don't place ConstructBlocks of size greater than " + maxBlockSize);
+        return consBlocks[size - 1];
+    }
+
+// ConstructBlock.java : static boolean shouldPlay()
+    static boolean shouldPlay(){
+        if(Time.timeSinceMillis(lastPlayed) >= 32){
+            lastPlayed = Time.millis();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+// ConstructBlock.java : public static void playRepairSound(Team team, Tile tile)
+    public static void playRepairSound(Team team, Tile tile){
+        if(!headless && shouldPlay() && fogControl.isVisibleTile(team, tile.x, tile.y)) Sounds.blockRepair.at(tile, calcPitch(true));
+    }
+
+// ConstructBlock.java : public static void constructed(Tile tile, Block block, Unit builder, byte rotation, Team team, Object config)
+    public static void constructed(Tile tile, Block block, Unit builder, byte rotation, Team team, Object config){
+        Call.constructFinish(tile, block, builder, rotation, team, config);
+        if(tile.build != null){
+            tile.build.placed();
+        }
+    }
+
+// ConstructBlock.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return true;
+    }
+
+// ControlBlock.java : default boolean isControlled()
+    default boolean isControlled(){
+        return unit().isPlayer();
+    }
+
+// ControlBlock.java : default boolean canControl()
+    default boolean canControl(){
+        return true;
+    }
+
+// ControlBlock.java : default boolean shouldAutoTarget()
+    default boolean shouldAutoTarget(){
+        return true;
+    }
+
+// ItemSelection.java : public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int columns) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int rows, int columns) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int rows, int columns) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect, int rows, int columns)
+    public static <T extends UnlockableContent> void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer){
+        buildTable(table, items, holder, consumer, true);
+    }
+
+// LaunchAnimator.java : default void drawLaunchGlobalZ()
+    default void drawLaunchGlobalZ(){}
+
+// LaunchAnimator.java : default Music landMusic()
+    default @Nullable Music landMusic(){
+        return Musics.land;
+    }
+
+// TileBitmask.java : public static TextureRegion[] load(String name)
+    public static TextureRegion[] load(String name){
+        var regions = new TextureRegion[47];
+        for(int i = 0; i < 47; i++){
+            regions[i] = Core.atlas.find(name + "-" + i);
+        }
+        return regions;
+    }
+
+// TileBitmask.java : public static TextureRegion[][] loadVariants(String name, int variants)
+    public static TextureRegion[][] loadVariants(String name, int variants){
+        var regions = new TextureRegion[variants][47];
+        for(int v = 0; v < variants; v++){
+            for(int i = 0; i < 47; i++){
+                regions[v][i] = Core.atlas.find(name + "-" + (v+1) + "-" + i);
+            }
+        }
+
+        return regions;
+    }
+

@@ -1,0 +1,105 @@
+// BranchTreeLayout.java : public void layout(TreeNode root)
+    @Override
+    public void layout(TreeNode root){
+        firstWalk(root, null);
+        calcSizeOfLevels(root, 0);
+        secondWalk(root, -root.prelim, 0, 0);
+    }
+
+// BranchTreeLayout.java : private float getWidthOrHeightOfNode(TreeNode treeNode, boolean returnWidth)
+    private float getWidthOrHeightOfNode(TreeNode treeNode, boolean returnWidth){
+        return returnWidth ? treeNode.calcWidth() : treeNode.height;
+    }
+
+// BranchTreeLayout.java : private float getNodeThickness(TreeNode treeNode)
+    private float getNodeThickness(TreeNode treeNode){
+        return getWidthOrHeightOfNode(treeNode, !isLevelChangeInYAxis());
+    }
+
+// BranchTreeLayout.java : private float getNodeSize(TreeNode treeNode)
+    private float getNodeSize(TreeNode treeNode){
+        return getWidthOrHeightOfNode(treeNode, isLevelChangeInYAxis());
+    }
+
+// BranchTreeLayout.java : private boolean isLevelChangeInYAxis()
+    private boolean isLevelChangeInYAxis(){
+        return rootLocation == TreeLocation.top || rootLocation == TreeLocation.bottom;
+    }
+
+// BranchTreeLayout.java : private int getLevelChangeSign()
+    private int getLevelChangeSign(){
+        return rootLocation == TreeLocation.bottom || rootLocation == TreeLocation.right ? -1 : 1;
+    }
+
+// BranchTreeLayout.java : public Rect getBounds()
+    public Rect getBounds(){
+        return new Rect(boundsLeft, boundsBottom, boundsRight - boundsLeft, boundsTop - boundsBottom);
+    }
+
+// BranchTreeLayout.java : public int getLevelCount()
+    public int getLevelCount(){
+        return sizeOfLevel.size;
+    }
+
+// BranchTreeLayout.java : public float getGapBetweenNodes(TreeNode a, TreeNode b)
+    public float getGapBetweenNodes(TreeNode a, TreeNode b){
+        return gapBetweenNodes;
+    }
+
+// BranchTreeLayout.java : public float getSizeOfLevel(int level)
+    public float getSizeOfLevel(int level){
+        if(!(level >= 0)) throw new IllegalArgumentException("level must be >= 0");
+        if(!(level < getLevelCount())) throw new IllegalArgumentException("level must be < levelCount");
+
+        return sizeOfLevel.get(level);
+    }
+
+// BranchTreeLayout.java : private TreeNode getAncestor(TreeNode node)
+    private TreeNode getAncestor(TreeNode node){
+        return node.ancestor != null ? node.ancestor : node;
+    }
+
+// BranchTreeLayout.java : private float getDistance(TreeNode v, TreeNode w)
+    private float getDistance(TreeNode v, TreeNode w){
+        float sizeOfNodes = getNodeSize(v) + getNodeSize(w);
+
+        return sizeOfNodes / 2 + getGapBetweenNodes(v, w);
+    }
+
+// BranchTreeLayout.java : private TreeNode nextLeft(TreeNode v)
+    private TreeNode nextLeft(TreeNode v){
+        return v.isLeaf() ? v.thread : v.children[0];
+    }
+
+// BranchTreeLayout.java : private TreeNode nextRight(TreeNode v)
+    private TreeNode nextRight(TreeNode v){
+        return v.isLeaf() ? v.thread : v.children[v.children.length - 1];
+    }
+
+// BranchTreeLayout.java : private int getNumber(TreeNode node, TreeNode parentNode)
+    private int getNumber(TreeNode node, TreeNode parentNode){
+        if(node.number == -1){
+            int number = 1;
+            for(TreeNode child : parentNode.children){
+                child.number = number++;
+            }
+        }
+        return node.number;
+    }
+
+// BranchTreeLayout.java : private TreeNode ancestor(TreeNode vIMinus, TreeNode parentOfV, TreeNode defaultAncestor)
+    private TreeNode ancestor(TreeNode vIMinus, TreeNode parentOfV, TreeNode defaultAncestor){
+        TreeNode ancestor = getAncestor(vIMinus);
+        return ancestor.parent == parentOfV ? ancestor : defaultAncestor;
+    }
+
+// BranchTreeLayout.java : private void moveSubtree(TreeNode wMinus, TreeNode wPlus, TreeNode parent, float shift)
+    private void moveSubtree(TreeNode wMinus, TreeNode wPlus, TreeNode parent, float shift){
+        int subtrees = getNumber(wPlus, parent) - getNumber(wMinus, parent);
+        wPlus.change = wPlus.change - shift / subtrees;
+        wPlus.shift = wPlus.shift + shift;
+        wMinus.change = wMinus.change + shift / subtrees;
+        wPlus.prelim = wPlus.prelim + shift;
+        wPlus.mode = wPlus.mode + shift;
+    }
+

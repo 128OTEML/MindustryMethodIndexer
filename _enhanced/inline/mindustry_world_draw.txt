@@ -1,0 +1,534 @@
+// DrawBlock.java : public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+    public void getRegionsToOutline(Block block, Seq<TextureRegion> out){
+
+    }
+
+// DrawBlock.java : public void draw(Building build)
+    public void draw(Building build){
+
+    }
+
+// DrawBlock.java : public void drawLight(Building build)
+    public void drawLight(Building build){
+
+    }
+
+// DrawBlock.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+
+    }
+
+// DrawBlock.java : public void load(Block block)
+    public void load(Block block){
+
+    }
+
+// DrawBlock.java : public TextureRegion[] icons(Block block)
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{};
+    }
+
+// DrawBlock.java : public final TextureRegion[] finalIcons(Block block)
+    public final TextureRegion[] finalIcons(Block block){
+        if(iconOverride != null){
+            var out = new TextureRegion[iconOverride.length];
+            for(int i = 0; i < out.length; i++){
+                out[i] = Core.atlas.find(block.name + iconOverride[i]);
+            }
+            return out;
+        }
+        TextureRegion[] icons = icons(block);
+        return icons.length == 0 ? new TextureRegion[]{Core.atlas.find("error")} : icons;
+    }
+
+// DrawBlock.java : public GenericCrafter expectCrafter(Block block)
+    public GenericCrafter expectCrafter(Block block){
+        if(!(block instanceof GenericCrafter crafter)) throw new ClassCastException("This drawer requires the block to be a GenericCrafter. Use a different drawer.");
+        return crafter;
+    }
+
+// DrawBlockParts.java : public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+    @Override
+    public void getRegionsToOutline(Block block, Seq<TextureRegion> out){
+        for(var part : parts){
+            part.getOutlines(out);
+        }
+    }
+
+// DrawBlockParts.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        if(preview.found()){
+            Draw.rect(preview, plan.drawx(), plan.drawy(), block.rotate ? plan.rotation * 90f - 90f : 0f);
+        }
+    }
+
+// DrawBlockParts.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        preview = Core.atlas.find(block.name + "-preview");
+
+        for(var part : parts){
+            part.load(block.name);
+        }
+    }
+
+// DrawBlockParts.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return preview.found() ? new TextureRegion[]{preview} : super.icons(block);
+    }
+
+// DrawBlurSpin.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Drawf.spinSprite(build.warmup() > blurThresh ? blurRegion : region, build.x + x, build.y + y, build.totalProgress() * rotateSpeed);
+    }
+
+// DrawBlurSpin.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{region};
+    }
+
+// DrawBlurSpin.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        region = Core.atlas.find(block.name + suffix);
+        blurRegion = Core.atlas.find(block.name + suffix + "-blur");
+    }
+
+// DrawCells.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        middle = Core.atlas.find(block.name + "-middle");
+    }
+
+// DrawCultivator.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        middle = Core.atlas.find(block.name + "-middle");
+    }
+
+// DrawDefault.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Draw.rect(build.block.region, build.x, build.y, build.drawrot());
+    }
+
+// DrawDefault.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        block.drawDefaultPlanRegion(plan, list);
+    }
+
+// DrawDefault.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{block.region};
+    }
+
+// DrawFade.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Draw.alpha(Mathf.absin(build.totalProgress(), scale, alpha) * build.warmup());
+        Draw.rect(region, build.x + x, build.y + y);
+        Draw.reset();
+    }
+
+// DrawFade.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        region = Core.atlas.find(block.name + suffix);
+    }
+
+// DrawFlame.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        block.emitLight = true;
+        top = Core.atlas.find(block.name + "-top");
+        block.lightClipSize = Math.max(block.lightClipSize, (lightRadius + lightSinMag) * 2f * block.size);
+    }
+
+// DrawFlame.java : public void drawLight(Building build)
+    @Override
+    public void drawLight(Building build){
+        Drawf.light(build.x + flameX, build.y + flameY, (lightRadius + Mathf.absin(lightSinScl, lightSinMag)) * build.warmup() * build.block.size, flameColor, lightAlpha);
+    }
+
+// DrawFrames.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Draw.rect(
+            sine ?
+                regions[(int)Mathf.absin(build.totalProgress(), interval, frames - 0.001f)] :
+                regions[(int)((build.totalProgress() / interval) % frames)],
+            build.x, build.y);
+    }
+
+// DrawFrames.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{regions[0]};
+    }
+
+// DrawFrames.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        regions = new TextureRegion[frames];
+        for(int i = 0; i < frames; i++){
+            regions[i] = Core.atlas.find(block.name + "-frame" + i);
+        }
+    }
+
+// DrawGlowRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        region = Core.atlas.find(block.name + suffix);
+    }
+
+// DrawHeatInput.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+    }
+
+// DrawHeatInput.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        heat = Core.atlas.find(block.name + suffix);
+    }
+
+// DrawHeatOutput.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(Mathf.mod((plan.rotation + rotOffset), 4) > 1 ? top2 : top1, plan.drawx(), plan.drawy(), (plan.rotation + rotOffset) * 90);
+    }
+
+// DrawHeatOutput.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        heat = Core.atlas.find(block.name + "-heat");
+        glow = Core.atlas.find(block.name + "-glow");
+        top1 = Core.atlas.find(block.name + "-top1");
+        top2 = Core.atlas.find(block.name + "-top2");
+    }
+
+// DrawHeatRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        heat = Core.atlas.find(block.name + suffix);
+    }
+
+// DrawLiquidRegion.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Liquid drawn = drawLiquid != null ? drawLiquid : build.liquids.current();
+        Drawf.liquid(liquid, build.x, build.y,
+            build.liquids.get(drawn) / build.block.liquidCapacity * alpha,
+            drawn.color
+        );
+    }
+
+// DrawLiquidRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        if(!block.hasLiquids){
+            throw new RuntimeException("Block '" + block + "' has a DrawLiquidRegion, but hasLiquids is false! Make sure it is true.");
+        }
+
+        liquid = Core.atlas.find(block.name + suffix);
+    }
+
+// DrawLiquidTile.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Liquid drawn = drawLiquid != null ? drawLiquid : build.liquids.current();
+        LiquidBlock.drawTiledFrames(build.block.size, build.x, build.y, padLeft, padRight, padTop, padBottom, drawn, build.liquids.get(drawn) / build.block.liquidCapacity * alpha);
+    }
+
+// DrawLiquidTile.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        if(padLeft < 0) padLeft = padding;
+        if(padRight < 0) padRight = padding;
+        if(padTop < 0) padTop = padding;
+        if(padBottom < 0) padBottom = padding;
+    }
+
+// DrawMulti.java : public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+    @Override
+    public void getRegionsToOutline(Block block, Seq<TextureRegion> out){
+        for(var draw : drawers){
+            draw.getRegionsToOutline(block, out);
+        }
+    }
+
+// DrawMulti.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        for(var draw : drawers){
+            draw.draw(build);
+        }
+    }
+
+// DrawMulti.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        for(var draw : drawers){
+            draw.drawPlan(block, plan, list);
+        }
+    }
+
+// DrawMulti.java : public void drawLight(Building build)
+    @Override
+    public void drawLight(Building build){
+        for(var draw : drawers){
+            draw.drawLight(build);
+        }
+    }
+
+// DrawMulti.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        for(var draw : drawers){
+            draw.load(block);
+        }
+    }
+
+// DrawMulti.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        var result = new Seq<TextureRegion>();
+        for(var draw : drawers){
+            result.addAll(draw.icons(block));
+        }
+        return result.toArray(TextureRegion.class);
+    }
+
+// DrawMultiWeave.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return fadeWeave ? new TextureRegion[0] : new TextureRegion[]{weave};
+    }
+
+// DrawMultiWeave.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        weave = Core.atlas.find(block.name + "-weave");
+        glow = Core.atlas.find(block.name + "-weave-glow");
+    }
+
+// DrawPistons.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        if(iconRegion.found()){
+            Draw.rect(iconRegion, plan.drawx(), plan.drawy());
+        }
+    }
+
+// DrawPistons.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        super.load(block);
+
+        region1 = Core.atlas.find(block.name + suffix + "0", block.name + suffix);
+        region2 = Core.atlas.find(block.name + suffix + "1", block.name + suffix);
+        regiont = Core.atlas.find(block.name + suffix + "-t");
+        iconRegion = Core.atlas.find(block.name + suffix + "-icon");
+    }
+
+// DrawPistons.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{iconRegion};
+    }
+
+// DrawPlasma.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        block.emitLight = true;
+
+        regions = new TextureRegion[plasmas];
+        for(int i = 0; i < regions.length; i++){
+            regions[i] = Core.atlas.find(block.name + suffix + i);
+        }
+    }
+
+// DrawPlasma.java : public void drawLight(Building build)
+    @Override
+    public void drawLight(Building build){
+        Drawf.light(build.x, build.y, (110f + Mathf.absin(5, 5f)) * build.warmup(), Tmp.c1.set(plasma2).lerp(plasma1, Mathf.absin(7f, 0.2f)), 0.8f * build.warmup());
+    }
+
+// DrawPower.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        if(!drawPlan || mixcol || !emptyRegion.found()) return;
+        Draw.rect(emptyRegion, plan.drawx(), plan.drawy());
+    }
+
+// DrawPower.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return !mixcol && emptyRegion.found() ? new TextureRegion[]{emptyRegion} : new TextureRegion[]{};
+    }
+
+// DrawPower.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        if(mixcol){
+            emptyRegion = Core.atlas.find(block.name + suffix);
+        }else{
+            emptyRegion = Core.atlas.find(block.name + suffix + "-empty");
+            fullRegion = Core.atlas.find(block.name + suffix + "-full");
+        }
+    }
+
+// DrawPumpLiquid.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        if(!(build instanceof PumpBuild pump) || pump.liquidDrop == null) return;
+
+        Drawf.liquid(liquid, build.x, build.y, build.liquids.get(pump.liquidDrop) / build.block.liquidCapacity, pump.liquidDrop.color);
+    }
+
+// DrawPumpLiquid.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        liquid = Core.atlas.find(block.name + "-liquid");
+    }
+
+// DrawRegion.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        if(!drawPlan) return;
+        if(spinSprite){
+            Drawf.spinSprite(region, plan.drawx() + x, plan.drawy() + y, (buildingRotate ? plan.rotation * 90f : 0 + rotation));
+        }else{
+            Draw.rect(region, plan.drawx()+ x, plan.drawy() + y, (buildingRotate ? plan.rotation * 90f : 0 + rotation));
+        }
+    }
+
+// DrawRegion.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{region};
+    }
+
+// DrawRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        region = Core.atlas.find(name != null ? name : block.name + suffix);
+    }
+
+// DrawShape.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        float pz = Draw.z();
+        if(layer > 0) Draw.z(layer);
+
+        Draw.color(color);
+        Fill.poly(build.x + x, build.y + y, sides, useWarmupRadius ? radius * build.warmup() : radius, build.totalProgress() * timeScl);
+
+        Draw.reset();
+        Draw.z(pz);
+    }
+
+// DrawSideRegion.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Draw.rect(build.rotation > 1 ? top2 : top1, build.x, build.y, build.rotdeg());
+    }
+
+// DrawSideRegion.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(plan.rotation > 1 ? top2 : top1, plan.drawx(), plan.drawy(), plan.rotation * 90);
+    }
+
+// DrawSideRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        top1 = Core.atlas.find(block.name + "-top1");
+        top2 = Core.atlas.find(block.name + "-top2");
+    }
+
+// DrawSideRegion.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{top1};
+    }
+
+// DrawSoftParticles.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        super.load(block);
+
+        region = Core.atlas.find("circle-shadow");
+    }
+
+// DrawTurret.java : public void setAmmoParts(Object objects)
+    public void setAmmoParts(Object... objects){
+        for(int i = 0; i < objects.length; i+= 2){
+            ammoParts.put((UnlockableContent)objects[i], ((Seq<DrawPart>)objects[i + 1]).toArray(DrawPart.class));
+        }
+    }
+
+// DrawTurret.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(base, plan.drawx(), plan.drawy());
+        Draw.rect(preview, plan.drawx(), plan.drawy(), block.rotate ? plan.rotation * 90f - 90f : 0f);
+        if(top.found()){
+            Draw.rect(top, plan.drawx(), plan.drawy(), block.rotate ? plan.rotation * 90f - 90f : 0f);
+        }
+    }
+
+// DrawTurret.java : public void drawHeat(Turret block, TurretBuild build)
+    public void drawHeat(Turret block, TurretBuild build){
+        if(build.heat <= 0.00001f || !heat.found()) return;
+
+        Drawf.additive(heat, block.heatColor.write(Tmp.c1).a(build.heat), build.x + build.recoilOffset.x, build.y + build.recoilOffset.y, build.drawrot(), heatLayer);
+    }
+
+// DrawTurret.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return top.found() ? new TextureRegion[]{base, preview, top} : new TextureRegion[]{base, preview};
+    }
+
+// DrawWarmupRegion.java : public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list){
+
+    }
+
+// DrawWarmupRegion.java : public void draw(Building build)
+    @Override
+    public void draw(Building build){
+        Draw.color(color);
+        Draw.alpha(build.warmup() * (1f - sinMag) + Mathf.absin(Time.time, sinScl, sinMag) * build.warmup());
+        Draw.rect(region, build.x, build.y);
+        Draw.reset();
+    }
+
+// DrawWarmupRegion.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        super.load(block);
+
+        region = Core.atlas.find(block.name + "-top");
+    }
+
+// DrawWeave.java : public TextureRegion[] icons(Block block)
+    @Override
+    public TextureRegion[] icons(Block block){
+        return new TextureRegion[]{weave};
+    }
+
+// DrawWeave.java : public void load(Block block)
+    @Override
+    public void load(Block block){
+        weave = Core.atlas.find(block.name + "-weave");
+    }
+

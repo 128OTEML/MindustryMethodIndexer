@@ -1,0 +1,1669 @@
+// Blending.java : public void apply()
+    public void apply(){
+        Gl.enable(Gl.blend);
+        Gl.blendFuncSeparate(src, dst, srcAlpha, dstAlpha);
+    }
+
+// Camera.java : public void update()
+    public void update(){
+        mat.setOrtho(position.x - width / 2f, position.y - height / 2f, width, height);
+        inv.set(mat).inv();
+    }
+
+// Camera.java : public void resize(float viewportWidth, float viewportHeight)
+    public void resize(float viewportWidth, float viewportHeight){
+        this.width = viewportWidth;
+        this.height = viewportHeight;
+        update();
+    }
+
+// Camera.java : public Vec2 unproject(Vec2 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight) / public Vec2 unproject(Vec2 screenCoords) / public Vec2 unproject(float screenX, float screenY)
+    public Vec2 unproject(Vec2 screenCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight){
+        float x = screenCoords.x - viewportX, y = screenCoords.y - viewportY;
+        screenCoords.x = (2 * x) / viewportWidth - 1;
+        screenCoords.y = (2 * y) / viewportHeight - 1;
+        screenCoords.mul(inv);
+        return screenCoords;
+    }
+
+// Camera.java : public Vec2 project(Vec2 worldCoords) / public Vec2 project(float screenX, float screenY) / public Vec2 project(Vec2 worldCoords, float viewportX, float viewportY, float viewportWidth, float viewportHeight)
+    public Vec2 project(Vec2 worldCoords){
+        project(worldCoords, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+        return worldCoords;
+    }
+
+// Camera.java : public Rect bounds(Rect out)
+    public Rect bounds(Rect out){
+        return out.setSize(width, height).setCenter(position);
+    }
+
+// Color.java : public static Color valueOf(String hex) / public static Color valueOf(Color color, String hex)
+    public static Color valueOf(String hex){
+        return valueOf(new Color(), hex);
+    }
+
+// Color.java : private static int parseHex(String string, int from, int to)
+    private static int parseHex(String string, int from, int to){
+        int total = 0;
+        for(int i = from; i < to; i++){
+            char c = string.charAt(i);
+            total += Character.digit(c, 16) * (i == from ? 16 : 1);
+        }
+        return total;
+    }
+
+// Color.java : public static float toFloatBits(int r, int g, int b, int a) / public static float toFloatBits(float r, float g, float b, float a) / public float toFloatBits()
+    public static float toFloatBits(int r, int g, int b, int a){
+        int color = (a << 24) | (b << 16) | (g << 8) | r;
+        return intToFloatColor(color);
+    }
+
+// Color.java : public static double toDoubleBits(float r, float g, float b, float a) / public static double toDoubleBits(int r, int g, int b, int a) / public double toDoubleBits()
+    public static double toDoubleBits(float r, float g, float b, float a){
+        return Double.longBitsToDouble(Color.rgba8888(r, g, b, a) & 0x00000000_ffffffffL);
+    }
+
+// Color.java : public Color fromDouble(double value)
+    public Color fromDouble(double value){
+        return rgba8888((int)(Double.doubleToRawLongBits(value)));
+    }
+
+// Color.java : public static int abgr(int r, int g, int b, int a) / public int abgr()
+    public static int abgr(int r, int g, int b, int a){
+        return (a << 24) | (b << 16) | (g << 8) | r;
+    }
+
+// Color.java : public static int alpha(float alpha)
+    public static int alpha(float alpha){
+        return (int)(alpha * 255.0f);
+    }
+
+// Color.java : public static int luminanceAlpha(float luminance, float alpha)
+    public static int luminanceAlpha(float luminance, float alpha){
+        return ((int)(luminance * 255.0f) << 8) | (int)(alpha * 255);
+    }
+
+// Color.java : public static int rgb565(float r, float g, float b) / public int rgb565() / public Color rgb565(int value)
+    public static int rgb565(float r, float g, float b){
+        return ((int)(r * 31) << 11) | ((int)(g * 63) << 5) | (int)(b * 31);
+    }
+
+// Color.java : public static int rgba4444(float r, float g, float b, float a) / public int rgba4444() / public Color rgba4444(int value)
+    public static int rgba4444(float r, float g, float b, float a){
+        return ((int)(r * 15) << 12) | ((int)(g * 15) << 8) | ((int)(b * 15) << 4) | (int)(a * 15);
+    }
+
+// Color.java : public static int rgb888(float r, float g, float b) / public int rgb888() / public Color rgb888(int value)
+    public static int rgb888(float r, float g, float b){
+        return ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255);
+    }
+
+// Color.java : public static int rgba8888(float r, float g, float b, float a) / public int rgba8888() / public Color rgba8888(int value)
+    public static int rgba8888(float r, float g, float b, float a){
+        return ((int)(r * 255) << 24) | ((int)(g * 255) << 16) | ((int)(b * 255) << 8) | (int)(a * 255);
+    }
+
+// Color.java : public static int argb8888(float a, float r, float g, float b) / public int argb8888() / public Color argb8888(int value)
+    public static int argb8888(float a, float r, float g, float b){
+        return ((int)(a * 255) << 24) | ((int)(r * 255) << 16) | ((int)(g * 255) << 8) | (int)(b * 255);
+    }
+
+// Color.java : public static int packRgba(int r, int g, int b, int a)
+    public static int packRgba(int r, int g, int b, int a){
+        return (r << 24) | (g << 16) | (b << 8) | (a);
+    }
+
+// Color.java : public Color abgr8888(float value)
+    public Color abgr8888(float value){
+        int c = floatToIntColor(value);
+        a = ((c & 0xff000000) >>> 24) / 255f;
+        b = ((c & 0x00ff0000) >>> 16) / 255f;
+        g = ((c & 0x0000ff00) >>> 8) / 255f;
+        r = ((c & 0x000000ff)) / 255f;
+        return this;
+    }
+
+// Color.java : public static Color grays(float value)
+    public static Color grays(float value){
+        return new Color(value, value, value);
+    }
+
+// Color.java : public static Color rgb(int r, int g, int b)
+    public static Color rgb(int r, int g, int b){
+        return new Color(r / 255f, g / 255f, b / 255f);
+    }
+
+// Color.java : public static int floatToIntColor(float value)
+    public static int floatToIntColor(float value){
+        int intBits = Float.floatToRawIntBits(value);
+        intBits |= (int)((intBits >>> 24) * (255f / 254f)) << 24;
+        return intBits;
+    }
+
+// Color.java : public static float intToFloatColor(int value)
+    public static float intToFloatColor(int value){
+        return Float.intBitsToFloat(value & 0xfeffffff);
+    }
+
+// Color.java : public Color rand()
+    public Color rand(){
+        return set(Mathf.random(), Mathf.random(), Mathf.random(), 1f);
+    }
+
+// Color.java : public Color randHue()
+    public Color randHue(){
+        fromHsv(Mathf.random(360f), 1f, 1f);
+        a = 1f;
+        return this;
+    }
+
+// Color.java : public float diff(Color other)
+    public float diff(Color other){
+        return Math.abs(hue() - other.hue()) / 360f + Math.abs(value() - other.value()) + Math.abs(saturation() - other.saturation());
+    }
+
+// Color.java : public int rgba()
+    public int rgba(){
+        return rgba8888();
+    }
+
+// Color.java : public Color set(Color color) / public Color set(Vec3 vec) / public Color set(float r, float g, float b, float a) / public Color set(float r, float g, float b) / public Color set(int rgba)
+    public Color set(Color color){
+        this.r = color.r;
+        this.g = color.g;
+        this.b = color.b;
+        this.a = color.a;
+        return this;
+    }
+
+// Color.java : public Color mul(Color color) / public Color mul(float value) / public Color mul(float r, float g, float b, float a)
+    public Color mul(Color color){
+        this.r *= color.r;
+        this.g *= color.g;
+        this.b *= color.b;
+        this.a *= color.a;
+        return clamp();
+    }
+
+// Color.java : public Color mula(float value)
+    public Color mula(float value){
+        this.r *= value;
+        this.g *= value;
+        this.b *= value;
+        this.a *= value;
+        return clamp();
+    }
+
+// Color.java : public Color add(Color color) / public Color add(float r, float g, float b, float a) / public Color add(float r, float g, float b)
+    public Color add(Color color){
+        this.r += color.r;
+        this.g += color.g;
+        this.b += color.b;
+        return clamp();
+    }
+
+// Color.java : public Color sub(Color color) / public Color sub(float r, float g, float b, float a) / public Color sub(float r, float g, float b)
+    public Color sub(Color color){
+        this.r -= color.r;
+        this.g -= color.g;
+        this.b -= color.b;
+        return clamp();
+    }
+
+// Color.java : public float sum()
+    public float sum(){
+        return r + g + b;
+    }
+
+// Color.java : public Color inv()
+    public Color inv(){
+        r = 1f - r;
+        g = 1f - g;
+        b = 1f - b;
+        return this;
+    }
+
+// Color.java : public Color r(float r)
+    public Color r(float r){
+        this.r = r;
+        return this;
+    }
+
+// Color.java : public Color g(float g)
+    public Color g(float g){
+        this.g = g;
+        return this;
+    }
+
+// Color.java : public Color b(float b)
+    public Color b(float b){
+        this.b = b;
+        return this;
+    }
+
+// Color.java : public Color a(float a)
+    public Color a(float a){
+        this.a = a;
+        return this;
+    }
+
+// Color.java : public Color mulA(float a)
+    public Color mulA(float a){
+        this.a *= a;
+        return this;
+    }
+
+// Color.java : public Color lerp(Color target, float t) / public Color lerp(float r, float g, float b, float a, float t) / public Color lerp(Color[] colors, float s)
+    public Color lerp(final Color target, final float t){
+        this.r += t * (target.r - this.r);
+        this.g += t * (target.g - this.g);
+        this.b += t * (target.b - this.b);
+        this.a += t * (target.a - this.a);
+        return clamp();
+    }
+
+// Color.java : public Color premultiplyAlpha()
+    public Color premultiplyAlpha(){
+        r *= a;
+        g *= a;
+        b *= a;
+        return this;
+    }
+
+// Color.java : public float dst(Color other)
+    public float dst(Color other){
+        return Vec3.dst(r, g, b, other.r, other.g, other.b);
+    }
+
+// Color.java : public Color write(Color to)
+    public Color write(Color to){
+        return to.set(this);
+    }
+
+// Color.java : public float hue() / public Color hue(float amount)
+    public float hue(){
+        toHsv(tmpHSV);
+        return tmpHSV[0];
+    }
+
+// Color.java : public float saturation() / public Color saturation(float amount)
+    public float saturation(){
+        toHsv(tmpHSV);
+        return tmpHSV[1];
+    }
+
+// Color.java : public float value() / public Color value(float amount)
+    public float value(){
+        toHsv(tmpHSV);
+        return tmpHSV[2];
+    }
+
+// Color.java : public Color shiftHue(float amount)
+    public Color shiftHue(float amount){
+        toHsv(tmpHSV);
+        tmpHSV[0] += amount;
+        fromHsv(tmpHSV);
+        return this;
+    }
+
+// Color.java : public Color shiftSaturation(float amount)
+    public Color shiftSaturation(float amount){
+        toHsv(tmpHSV);
+        tmpHSV[1] += amount;
+        fromHsv(tmpHSV);
+        return this;
+    }
+
+// Color.java : public Color shiftValue(float amount)
+    public Color shiftValue(float amount){
+        toHsv(tmpHSV);
+        tmpHSV[2] += amount;
+        fromHsv(tmpHSV);
+        return this;
+    }
+
+// Color.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Color color = (Color)o;
+        return abgr() == color.abgr();
+    }
+
+// Color.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        int result = (r != +0.0f ? Float.floatToIntBits(r) : 0);
+        result = 31 * result + (g != +0.0f ? Float.floatToIntBits(g) : 0);
+        result = 31 * result + (b != +0.0f ? Float.floatToIntBits(b) : 0);
+        result = 31 * result + (a != +0.0f ? Float.floatToIntBits(a) : 0);
+        return result;
+    }
+
+// Color.java : public String toString() / public void toString(StringBuilder builder)
+    public String toString(){
+        StringBuilder value = new StringBuilder();
+        toString(value);
+        return value.toString();
+    }
+
+// Color.java : public static Color HSVtoRGB(float h, float s, float v, float alpha) / public static Color HSVtoRGB(float h, float s, float v) / public static Color HSVtoRGB(float h, float s, float v, Color targetColor)
+    public static Color HSVtoRGB(float h, float s, float v, float alpha) {
+        Color c = HSVtoRGB(h, s, v);
+        c.a = alpha;
+        return c;
+    }
+
+// Color.java : public static int[] RGBtoHSV(Color c) / public static int[] RGBtoHSV(float r, float g, float b)
+    public static int[] RGBtoHSV(Color c) {
+        return RGBtoHSV(c.r, c.g, c.b);
+    }
+
+// Color.java : public Color cpy()
+    public Color cpy(){
+        return new Color(this);
+    }
+
+// Color.java : private static int clampf(float value)
+    private static int clampf(float value){
+        return Math.min(Math.max((int)value, 0), 255);
+    }
+
+// Color.java : public static int ri(int rgba)
+    public static int ri(int rgba){
+        return (rgba & 0xff000000) >>> 24;
+    }
+
+// Color.java : public static int gi(int rgba)
+    public static int gi(int rgba){
+        return (rgba & 0x00ff0000) >>> 16;
+    }
+
+// Color.java : public static int bi(int rgba)
+    public static int bi(int rgba){
+        return (rgba & 0x0000ff00) >>> 8;
+    }
+
+// Color.java : public static int ai(int rgba)
+    public static int ai(int rgba){
+        return (rgba & 0x000000ff);
+    }
+
+// Colors.java : public static OrderedMap<String,Color> getColors()
+    public static OrderedMap<String, Color> getColors(){
+        return map;
+    }
+
+// Colors.java : public static Color get(String name)
+    public static Color get(String name){
+        return map.get(name);
+    }
+
+// Colors.java : public static Color put(String name, Color color)
+    public static Color put(String name, Color color){
+        return map.put(name, color);
+    }
+
+// Cubemap.java : public void load(CubemapData data)
+    public void load(CubemapData data){
+        if(!data.isPrepared()) data.prepare();
+        this.width = data.getWidth();
+        this.height = data.getHeight();
+        bind();
+        unsafeSetFilter(minFilter, magFilter, true);
+        unsafeSetWrap(uWrap, vWrap, true);
+        data.consumeCubemapData();
+        Gl.bindTexture(glTarget, 0);
+    }
+
+// Cubemap.java : public CubemapData getCubemapData()
+    public CubemapData getCubemapData(){
+        return data;
+    }
+
+// Cubemap.java : public int getDepth()
+    @Override
+    public int getDepth(){
+        return 0;
+    }
+
+// GLTexture.java : protected static void uploadImageData(int target, TextureData data) / public static void uploadImageData(int target, TextureData data, int miplevel)
+    protected static void uploadImageData(int target, TextureData data){
+        uploadImageData(target, data, 0);
+    }
+
+// GLTexture.java : public void bind() / public void bind(int unit)
+    public void bind(){
+        Gl.bindTexture(glTarget, glHandle);
+    }
+
+// GLTexture.java : public TextureFilter getMinFilter()
+    public TextureFilter getMinFilter(){
+        return minFilter;
+    }
+
+// GLTexture.java : public TextureFilter getMagFilter()
+    public TextureFilter getMagFilter(){
+        return magFilter;
+    }
+
+// GLTexture.java : public TextureWrap getUWrap()
+    public TextureWrap getUWrap(){
+        return uWrap;
+    }
+
+// GLTexture.java : public TextureWrap getVWrap()
+    public TextureWrap getVWrap(){
+        return vWrap;
+    }
+
+// GLTexture.java : public int getTextureObjectHandle()
+    public int getTextureObjectHandle(){
+        return glHandle;
+    }
+
+// GLTexture.java : public void unsafeSetWrap(TextureWrap u, TextureWrap v) / public void unsafeSetWrap(TextureWrap u, TextureWrap v, boolean force)
+    public void unsafeSetWrap(TextureWrap u, TextureWrap v){
+        unsafeSetWrap(u, v, false);
+    }
+
+// GLTexture.java : public void setWrap(TextureWrap wrap) / public void setWrap(TextureWrap u, TextureWrap v)
+    public void setWrap(TextureWrap wrap){
+        setWrap(wrap, wrap);
+    }
+
+// GLTexture.java : public void unsafeSetFilter(TextureFilter minFilter, TextureFilter magFilter) / public void unsafeSetFilter(TextureFilter minFilter, TextureFilter magFilter, boolean force)
+    public void unsafeSetFilter(TextureFilter minFilter, TextureFilter magFilter){
+        unsafeSetFilter(minFilter, magFilter, false);
+    }
+
+// GLTexture.java : public void setFilter(TextureFilter filter) / public void setFilter(TextureFilter minFilter, TextureFilter magFilter)
+    public void setFilter(TextureFilter filter){
+        setFilter(filter, filter);
+    }
+
+// GLTexture.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(glHandle != 0){
+            Gl.deleteTexture(glHandle);
+            glHandle = 0;
+        }
+    }
+
+// Gl.java : public static void reset()
+    public static void reset(){
+        lastActiveTexture = -1;
+        Arrays.fill(lastBoundTextures, -1);
+        lastUsedProgram = -1;
+        enabled.clear();
+        wasDepthMask = true;
+    }
+
+// Gl.java : public static void activeTexture(int texture)
+    public static void activeTexture(int texture){
+        if(optimize && lastActiveTexture == texture) return;
+
+        Core.gl.glActiveTexture(texture);
+        lastActiveTexture = texture;
+    }
+
+// Gl.java : public static void blendFunc(int sfactor, int dfactor)
+    public static void blendFunc(int sfactor, int dfactor){
+        if(optimize && lastBlendSrc == sfactor && lastBlendDst == dfactor && lastBlendSrcAlpha == sfactor && lastBlendDstAlpha == dfactor) return;
+
+        Core.gl.glBlendFunc(lastBlendSrc = lastBlendSrcAlpha = sfactor, lastBlendDst = lastBlendDstAlpha = dfactor);
+    }
+
+// Gl.java : public static void clear(int mask)
+    public static void clear(int mask){
+        Core.gl.glClear(mask);
+    }
+
+// Gl.java : public static void clearColor(float red, float green, float blue, float alpha)
+    public static void clearColor(float red, float green, float blue, float alpha){
+        Core.gl.glClearColor(red, green, blue, alpha);
+    }
+
+// Gl.java : public static void clearDepthf(float depth)
+    public static void clearDepthf(float depth){
+        Core.gl.glClearDepthf(depth);
+    }
+
+// Gl.java : public static void clearStencil(int s)
+    public static void clearStencil(int s){
+        Core.gl.glClearStencil(s);
+    }
+
+// Gl.java : public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha)
+    public static void colorMask(boolean red, boolean green, boolean blue, boolean alpha){
+        Core.gl.glColorMask(red, green, blue, alpha);
+    }
+
+// Gl.java : public static void compressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data)
+    public static void compressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, Buffer data){
+        Core.gl.glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
+    }
+
+// Gl.java : public static void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data)
+    public static void compressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, Buffer data){
+        Core.gl.glCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+    }
+
+// Gl.java : public static void copyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border)
+    public static void copyTexImage2D(int target, int level, int internalformat, int x, int y, int width, int height, int border){
+        Core.gl.glCopyTexImage2D(target, level, internalformat, x, y, width, height, border);
+    }
+
+// Gl.java : public static void copyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height)
+    public static void copyTexSubImage2D(int target, int level, int xoffset, int yoffset, int x, int y, int width, int height){
+        Core.gl.glCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+    }
+
+// Gl.java : public static void cullFace(int mode)
+    public static void cullFace(int mode){
+        Core.gl.glCullFace(mode);
+    }
+
+// Gl.java : public static void deleteTexture(int texture)
+    public static void deleteTexture(int texture){
+        //clear deleted texture, as it may be reused later
+        for(int i = 0; i < lastBoundTextures.length; i++){
+            if(lastBoundTextures[i] == texture){
+                lastBoundTextures[i] = -1;
+            }
+        }
+        Core.gl.glDeleteTexture(texture);
+    }
+
+// Gl.java : public static void depthFunc(int func)
+    public static void depthFunc(int func){
+        Core.gl.glDepthFunc(func);
+    }
+
+// Gl.java : public static void depthMask(boolean flag)
+    public static void depthMask(boolean flag){
+        //TODO might be buggy, test it. may not clear the depth buffer?
+        if(optimize && flag == wasDepthMask) return;
+        wasDepthMask = flag;
+
+        Core.gl.glDepthMask(flag);
+    }
+
+// Gl.java : public static void depthRangef(float zNear, float zFar)
+    public static void depthRangef(float zNear, float zFar){
+        Core.gl.glDepthRangef(zNear, zFar);
+    }
+
+// Gl.java : public static void disable(int cap)
+    public static void disable(int cap){
+        if(optimize && !enabled.get(cap)){
+            return;
+        }
+        Core.gl.glDisable(cap);
+        enabled.clear(cap);
+    }
+
+// Gl.java : public static void drawArrays(int mode, int first, int count)
+    public static void drawArrays(int mode, int first, int count){
+        Core.gl.glDrawArrays(mode, first, count);
+    }
+
+// Gl.java : public static void drawElements(int mode, int count, int type, Buffer indices) / public static void drawElements(int mode, int count, int type, int indices)
+    public static void drawElements(int mode, int count, int type, Buffer indices){
+        Core.gl.glDrawElements(mode, count, type, indices);
+    }
+
+// Gl.java : public static void enable(int cap)
+    public static void enable(int cap){
+        if(optimize && enabled.get(cap)){
+            return;
+        }
+        Core.gl.glEnable(cap);
+        enabled.set(cap);
+    }
+
+// Gl.java : public static void finish()
+    public static void finish(){
+        Core.gl.glFinish();
+    }
+
+// Gl.java : public static void flush()
+    public static void flush(){
+        Core.gl.glFlush();
+    }
+
+// Gl.java : public static void frontFace(int mode)
+    public static void frontFace(int mode){
+        Core.gl.glFrontFace(mode);
+    }
+
+// Gl.java : public static int genTexture()
+    public static int genTexture(){
+        return Core.gl.glGenTexture();
+    }
+
+// Gl.java : public static int getError()
+    public static int getError(){
+        return Core.gl.glGetError();
+    }
+
+// Gl.java : public static void getIntegerv(int pname, IntBuffer params)
+    public static void getIntegerv(int pname, IntBuffer params){
+        Core.gl.glGetIntegerv(pname, params);
+    }
+
+// Gl.java : public static int getInt(int name)
+    public static int getInt(int name){
+        ibuf.position(0);
+        getIntegerv(name, ibuf);
+        return ibuf.get(0);
+    }
+
+// Gl.java : public static float getFloat(int name)
+    public static float getFloat(int name){
+        fbuf.position(0);
+        getFloatv(name, fbuf);
+        return fbuf.get(0);
+    }
+
+// Gl.java : public static String getString(int name)
+    public static String getString(int name){
+        return Core.gl.glGetString(name);
+    }
+
+// Gl.java : public static void hint(int target, int mode)
+    public static void hint(int target, int mode){
+        Core.gl.glHint(target, mode);
+    }
+
+// Gl.java : public static void pixelStorei(int pname, int param)
+    public static void pixelStorei(int pname, int param){
+        Core.gl.glPixelStorei(pname, param);
+    }
+
+// Gl.java : public static void polygonOffset(float factor, float units)
+    public static void polygonOffset(float factor, float units){
+        Core.gl.glPolygonOffset(factor, units);
+    }
+
+// Gl.java : public static void readPixels(int x, int y, int width, int height, int format, int type, Buffer pixels)
+    public static void readPixels(int x, int y, int width, int height, int format, int type, Buffer pixels){
+        Core.gl.glReadPixels(x, y, width, height, format, type, pixels);
+    }
+
+// Gl.java : public static void scissor(int x, int y, int width, int height)
+    public static void scissor(int x, int y, int width, int height){
+        Core.gl.glScissor(x, y, width, height);
+    }
+
+// Gl.java : public static void stencilFunc(int func, int ref, int mask)
+    public static void stencilFunc(int func, int ref, int mask){
+        Core.gl.glStencilFunc(func, ref, mask);
+    }
+
+// Gl.java : public static void stencilMask(int mask)
+    public static void stencilMask(int mask){
+        Core.gl.glStencilMask(mask);
+    }
+
+// Gl.java : public static void stencilOp(int fail, int zfail, int zpass)
+    public static void stencilOp(int fail, int zfail, int zpass){
+        Core.gl.glStencilOp(fail, zfail, zpass);
+    }
+
+// Gl.java : public static void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels)
+    public static void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, Buffer pixels){
+        Core.gl.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+    }
+
+// Gl.java : public static void texParameterf(int target, int pname, float param)
+    public static void texParameterf(int target, int pname, float param){
+        Core.gl.glTexParameterf(target, pname, param);
+    }
+
+// Gl.java : public static void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels)
+    public static void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, Buffer pixels){
+        Core.gl.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+    }
+
+// Gl.java : public static void viewport(int x, int y, int width, int height)
+    public static void viewport(int x, int y, int width, int height){
+        Core.gl.glViewport(x, y, width, height);
+    }
+
+// Gl.java : public static void attachShader(int program, int shader)
+    public static void attachShader(int program, int shader){
+        Core.gl.glAttachShader(program, shader);
+    }
+
+// Gl.java : public static void bindAttribLocation(int program, int index, String name)
+    public static void bindAttribLocation(int program, int index, String name){
+        Core.gl.glBindAttribLocation(program, index, name);
+    }
+
+// Gl.java : public static void bindBuffer(int target, int buffer)
+    public static void bindBuffer(int target, int buffer){
+        Core.gl.glBindBuffer(target, buffer);
+    }
+
+// Gl.java : public static void bindFramebuffer(int target, int framebuffer)
+    public static void bindFramebuffer(int target, int framebuffer){
+        Core.gl.glBindFramebuffer(target, framebuffer);
+    }
+
+// Gl.java : public static void bindRenderbuffer(int target, int renderbuffer)
+    public static void bindRenderbuffer(int target, int renderbuffer){
+        Core.gl.glBindRenderbuffer(target, renderbuffer);
+    }
+
+// Gl.java : public static void blendColor(float red, float green, float blue, float alpha)
+    public static void blendColor(float red, float green, float blue, float alpha){
+        Core.gl.glBlendColor(red, green, blue, alpha);
+    }
+
+// Gl.java : public static void blendEquation(int mode)
+    public static void blendEquation(int mode){
+        Core.gl.glBlendEquation(mode);
+    }
+
+// Gl.java : public static void blendEquationSeparate(int modeRGB, int modeAlpha)
+    public static void blendEquationSeparate(int modeRGB, int modeAlpha){
+        Core.gl.glBlendEquationSeparate(modeRGB, modeAlpha);
+    }
+
+// Gl.java : public static void blendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha)
+    public static void blendFuncSeparate(int srcRGB, int dstRGB, int srcAlpha, int dstAlpha){
+        if(optimize && srcRGB == lastBlendSrc && dstRGB == lastBlendDst && srcAlpha == lastBlendSrcAlpha && dstAlpha == lastBlendDstAlpha){
+            return;
+        }
+
+        Core.gl.glBlendFuncSeparate(lastBlendSrc = srcRGB, lastBlendDst = dstRGB, lastBlendSrcAlpha = srcAlpha, lastBlendDstAlpha = dstAlpha);
+    }
+
+// Gl.java : public static void bufferData(int target, int size, Buffer data, int usage)
+    public static void bufferData(int target, int size, Buffer data, int usage){
+        Core.gl.glBufferData(target, size, data, usage);
+    }
+
+// Gl.java : public static void bufferSubData(int target, int offset, int size, Buffer data)
+    public static void bufferSubData(int target, int offset, int size, Buffer data){
+        Core.gl.glBufferSubData(target, offset, size, data);
+    }
+
+// Gl.java : public static int checkFramebufferStatus(int target)
+    public static int checkFramebufferStatus(int target){
+        return Core.gl.glCheckFramebufferStatus(target);
+    }
+
+// Gl.java : public static void compileShader(int shader)
+    public static void compileShader(int shader){
+        Core.gl.glCompileShader(shader);
+    }
+
+// Gl.java : public static int createProgram()
+    public static int createProgram(){
+        return Core.gl.glCreateProgram();
+    }
+
+// Gl.java : public static int createShader(int type)
+    public static int createShader(int type){
+        return Core.gl.glCreateShader(type);
+    }
+
+// Gl.java : public static void deleteBuffer(int buffer)
+    public static void deleteBuffer(int buffer){
+        Core.gl.glDeleteBuffer(buffer);
+    }
+
+// Gl.java : public static void deleteFramebuffer(int framebuffer)
+    public static void deleteFramebuffer(int framebuffer){
+        Core.gl.glDeleteFramebuffer(framebuffer);
+    }
+
+// Gl.java : public static void deleteProgram(int program)
+    public static void deleteProgram(int program){
+        Core.gl.glDeleteProgram(program);
+    }
+
+// Gl.java : public static void deleteRenderbuffer(int renderbuffer)
+    public static void deleteRenderbuffer(int renderbuffer){
+        Core.gl.glDeleteRenderbuffer(renderbuffer);
+    }
+
+// Gl.java : public static void deleteShader(int shader)
+    public static void deleteShader(int shader){
+        Core.gl.glDeleteShader(shader);
+    }
+
+// Gl.java : public static void detachShader(int program, int shader)
+    public static void detachShader(int program, int shader){
+        Core.gl.glDetachShader(program, shader);
+    }
+
+// Gl.java : public static void disableVertexAttribArray(int index)
+    public static void disableVertexAttribArray(int index){
+        Core.gl.glDisableVertexAttribArray(index);
+    }
+
+// Gl.java : public static void enableVertexAttribArray(int index)
+    public static void enableVertexAttribArray(int index){
+        Core.gl.glEnableVertexAttribArray(index);
+    }
+
+// Gl.java : public static void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer)
+    public static void framebufferRenderbuffer(int target, int attachment, int renderbuffertarget, int renderbuffer){
+        Core.gl.glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+    }
+
+// Gl.java : public static void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+    public static void framebufferTexture2D(int target, int attachment, int textarget, int texture, int level){
+        Core.gl.glFramebufferTexture2D(target, attachment, textarget, texture, level);
+    }
+
+// Gl.java : public static int genBuffer()
+    public static int genBuffer(){
+        return Core.gl.glGenBuffer();
+    }
+
+// Gl.java : public static void generateMipmap(int target)
+    public static void generateMipmap(int target){
+        Core.gl.glGenerateMipmap(target);
+    }
+
+// Gl.java : public static int genFramebuffer()
+    public static int genFramebuffer(){
+        return Core.gl.glGenFramebuffer();
+    }
+
+// Gl.java : public static int genRenderbuffer()
+    public static int genRenderbuffer(){
+        return Core.gl.glGenRenderbuffer();
+    }
+
+// Gl.java : public static String getActiveAttrib(int program, int index, IntBuffer size, IntBuffer type)
+    public static String getActiveAttrib(int program, int index, IntBuffer size, IntBuffer type){
+        return Core.gl.glGetActiveAttrib(program, index, size, type);
+    }
+
+// Gl.java : public static String getActiveUniform(int program, int index, IntBuffer size, IntBuffer type)
+    public static String getActiveUniform(int program, int index, IntBuffer size, IntBuffer type){
+        return Core.gl.glGetActiveUniform(program, index, size, type);
+    }
+
+// Gl.java : public static int getAttribLocation(int program, String name)
+    public static int getAttribLocation(int program, String name){
+        return Core.gl.glGetAttribLocation(program, name);
+    }
+
+// Gl.java : public static void getBooleanv(int pname, Buffer params)
+    public static void getBooleanv(int pname, Buffer params){
+        Core.gl.glGetBooleanv(pname, params);
+    }
+
+// Gl.java : public static void getBufferParameteriv(int target, int pname, IntBuffer params)
+    public static void getBufferParameteriv(int target, int pname, IntBuffer params){
+        Core.gl.glGetBufferParameteriv(target, pname, params);
+    }
+
+// Gl.java : public static void getFloatv(int pname, FloatBuffer params)
+    public static void getFloatv(int pname, FloatBuffer params){
+        Core.gl.glGetFloatv(pname, params);
+    }
+
+// Gl.java : public static void getFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params)
+    public static void getFramebufferAttachmentParameteriv(int target, int attachment, int pname, IntBuffer params){
+        Core.gl.glGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
+    }
+
+// Gl.java : public static void getProgramiv(int program, int pname, IntBuffer params)
+    public static void getProgramiv(int program, int pname, IntBuffer params){
+        Core.gl.glGetProgramiv(program, pname, params);
+    }
+
+// Gl.java : public static String getProgramInfoLog(int program)
+    public static String getProgramInfoLog(int program){
+        return Core.gl.glGetProgramInfoLog(program);
+    }
+
+// Gl.java : public static void getRenderbufferParameteriv(int target, int pname, IntBuffer params)
+    public static void getRenderbufferParameteriv(int target, int pname, IntBuffer params){
+        Core.gl.glGetRenderbufferParameteriv(target, pname, params);
+    }
+
+// Gl.java : public static void getShaderiv(int shader, int pname, IntBuffer params)
+    public static void getShaderiv(int shader, int pname, IntBuffer params){
+        Core.gl.glGetShaderiv(shader, pname, params);
+    }
+
+// Gl.java : public static String getShaderInfoLog(int shader)
+    public static String getShaderInfoLog(int shader){
+        return Core.gl.glGetShaderInfoLog(shader);
+    }
+
+// Gl.java : public static void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision)
+    public static void getShaderPrecisionFormat(int shadertype, int precisiontype, IntBuffer range, IntBuffer precision){
+        Core.gl.glGetShaderPrecisionFormat(shadertype, precisiontype, range, precision);
+    }
+
+// Gl.java : public static void getTexParameterfv(int target, int pname, FloatBuffer params)
+    public static void getTexParameterfv(int target, int pname, FloatBuffer params){
+        Core.gl.glGetTexParameterfv(target, pname, params);
+    }
+
+// Gl.java : public static void getTexParameteriv(int target, int pname, IntBuffer params)
+    public static void getTexParameteriv(int target, int pname, IntBuffer params){
+        Core.gl.glGetTexParameteriv(target, pname, params);
+    }
+
+// Gl.java : public static void getUniformfv(int program, int location, FloatBuffer params)
+    public static void getUniformfv(int program, int location, FloatBuffer params){
+        Core.gl.glGetUniformfv(program, location, params);
+    }
+
+// Gl.java : public static void getUniformiv(int program, int location, IntBuffer params)
+    public static void getUniformiv(int program, int location, IntBuffer params){
+        Core.gl.glGetUniformiv(program, location, params);
+    }
+
+// Gl.java : public static int getUniformLocation(int program, String name)
+    public static int getUniformLocation(int program, String name){
+        return Core.gl.glGetUniformLocation(program, name);
+    }
+
+// Gl.java : public static void getVertexAttribfv(int index, int pname, FloatBuffer params)
+    public static void getVertexAttribfv(int index, int pname, FloatBuffer params){
+        Core.gl.glGetVertexAttribfv(index, pname, params);
+    }
+
+// Gl.java : public static void getVertexAttribiv(int index, int pname, IntBuffer params)
+    public static void getVertexAttribiv(int index, int pname, IntBuffer params){
+        Core.gl.glGetVertexAttribiv(index, pname, params);
+    }
+
+// Gl.java : public static boolean isBuffer(int buffer)
+    public static boolean isBuffer(int buffer){
+        return Core.gl.glIsBuffer(buffer);
+    }
+
+// Gl.java : public static boolean isEnabled(int cap)
+    public static boolean isEnabled(int cap){
+        return Core.gl.glIsEnabled(cap);
+    }
+
+// Gl.java : public static boolean isFramebuffer(int framebuffer)
+    public static boolean isFramebuffer(int framebuffer){
+        return Core.gl.glIsFramebuffer(framebuffer);
+    }
+
+// Gl.java : public static boolean isProgram(int program)
+    public static boolean isProgram(int program){
+        return Core.gl.glIsProgram(program);
+    }
+
+// Gl.java : public static boolean isRenderbuffer(int renderbuffer)
+    public static boolean isRenderbuffer(int renderbuffer){
+        return Core.gl.glIsRenderbuffer(renderbuffer);
+    }
+
+// Gl.java : public static boolean isShader(int shader)
+    public static boolean isShader(int shader){
+        return Core.gl.glIsShader(shader);
+    }
+
+// Gl.java : public static boolean isTexture(int texture)
+    public static boolean isTexture(int texture){
+        return Core.gl.glIsTexture(texture);
+    }
+
+// Gl.java : public static void linkProgram(int program)
+    public static void linkProgram(int program){
+        Core.gl.glLinkProgram(program);
+    }
+
+// Gl.java : public static void releaseShaderCompiler()
+    public static void releaseShaderCompiler(){
+        Core.gl.glReleaseShaderCompiler();
+    }
+
+// Gl.java : public static void renderbufferStorage(int target, int internalformat, int width, int height)
+    public static void renderbufferStorage(int target, int internalformat, int width, int height){
+        Core.gl.glRenderbufferStorage(target, internalformat, width, height);
+    }
+
+// Gl.java : public static void sampleCoverage(float value, boolean invert)
+    public static void sampleCoverage(float value, boolean invert){
+        Core.gl.glSampleCoverage(value, invert);
+    }
+
+// Gl.java : public static void shaderSource(int shader, String string)
+    public static void shaderSource(int shader, String string){
+        Core.gl.glShaderSource(shader, string);
+    }
+
+// Gl.java : public static void stencilFuncSeparate(int face, int func, int ref, int mask)
+    public static void stencilFuncSeparate(int face, int func, int ref, int mask){
+        Core.gl.glStencilFuncSeparate(face, func, ref, mask);
+    }
+
+// Gl.java : public static void stencilMaskSeparate(int face, int mask)
+    public static void stencilMaskSeparate(int face, int mask){
+        Core.gl.glStencilMaskSeparate(face, mask);
+    }
+
+// Gl.java : public static void stencilOpSeparate(int face, int fail, int zfail, int zpass)
+    public static void stencilOpSeparate(int face, int fail, int zfail, int zpass){
+        Core.gl.glStencilOpSeparate(face, fail, zfail, zpass);
+    }
+
+// Gl.java : public static void texParameterfv(int target, int pname, FloatBuffer params)
+    public static void texParameterfv(int target, int pname, FloatBuffer params){
+        Core.gl.glTexParameterfv(target, pname, params);
+    }
+
+// Gl.java : public static void texParameteri(int target, int pname, int param)
+    public static void texParameteri(int target, int pname, int param){
+        Core.gl.glTexParameteri(target, pname, param);
+    }
+
+// Gl.java : public static void texParameteriv(int target, int pname, IntBuffer params)
+    public static void texParameteriv(int target, int pname, IntBuffer params){
+        Core.gl.glTexParameteriv(target, pname, params);
+    }
+
+// Gl.java : public static void uniform1f(int location, float x)
+    public static void uniform1f(int location, float x){
+        Core.gl.glUniform1f(location, x);
+    }
+
+// Gl.java : public static void uniform1fv(int location, int count, FloatBuffer v) / public static void uniform1fv(int location, int count, float[] v, int offset)
+    public static void uniform1fv(int location, int count, FloatBuffer v){
+        Core.gl.glUniform1fv(location, count, v);
+    }
+
+// Gl.java : public static void uniform1i(int location, int x)
+    public static void uniform1i(int location, int x){
+        Core.gl.glUniform1i(location, x);
+    }
+
+// Gl.java : public static void uniform1iv(int location, int count, IntBuffer v) / public static void uniform1iv(int location, int count, int[] v, int offset)
+    public static void uniform1iv(int location, int count, IntBuffer v){
+        Core.gl.glUniform1iv(location, count, v);
+    }
+
+// Gl.java : public static void uniform2f(int location, float x, float y)
+    public static void uniform2f(int location, float x, float y){
+        Core.gl.glUniform2f(location, x, y);
+    }
+
+// Gl.java : public static void uniform2fv(int location, int count, FloatBuffer v) / public static void uniform2fv(int location, int count, float[] v, int offset)
+    public static void uniform2fv(int location, int count, FloatBuffer v){
+        Core.gl.glUniform2fv(location, count, v);
+    }
+
+// Gl.java : public static void uniform2i(int location, int x, int y)
+    public static void uniform2i(int location, int x, int y){
+        Core.gl.glUniform2i(location, x, y);
+    }
+
+// Gl.java : public static void uniform2iv(int location, int count, IntBuffer v) / public static void uniform2iv(int location, int count, int[] v, int offset)
+    public static void uniform2iv(int location, int count, IntBuffer v){
+        Core.gl.glUniform2iv(location, count, v);
+    }
+
+// Gl.java : public static void uniform3f(int location, float x, float y, float z)
+    public static void uniform3f(int location, float x, float y, float z){
+        Core.gl.glUniform3f(location, x, y, z);
+    }
+
+// Gl.java : public static void uniform3fv(int location, int count, FloatBuffer v) / public static void uniform3fv(int location, int count, float[] v, int offset)
+    public static void uniform3fv(int location, int count, FloatBuffer v){
+        Core.gl.glUniform3fv(location, count, v);
+    }
+
+// Gl.java : public static void uniform3i(int location, int x, int y, int z)
+    public static void uniform3i(int location, int x, int y, int z){
+        Core.gl.glUniform3i(location, x, y, z);
+    }
+
+// Gl.java : public static void uniform3iv(int location, int count, IntBuffer v) / public static void uniform3iv(int location, int count, int[] v, int offset)
+    public static void uniform3iv(int location, int count, IntBuffer v){
+        Core.gl.glUniform3iv(location, count, v);
+    }
+
+// Gl.java : public static void uniform4f(int location, float x, float y, float z, float w)
+    public static void uniform4f(int location, float x, float y, float z, float w){
+        Core.gl.glUniform4f(location, x, y, z, w);
+    }
+
+// Gl.java : public static void uniform4fv(int location, int count, FloatBuffer v) / public static void uniform4fv(int location, int count, float[] v, int offset)
+    public static void uniform4fv(int location, int count, FloatBuffer v){
+        Core.gl.glUniform4fv(location, count, v);
+    }
+
+// Gl.java : public static void uniform4i(int location, int x, int y, int z, int w)
+    public static void uniform4i(int location, int x, int y, int z, int w){
+        Core.gl.glUniform4i(location, x, y, z, w);
+    }
+
+// Gl.java : public static void uniform4iv(int location, int count, IntBuffer v) / public static void uniform4iv(int location, int count, int[] v, int offset)
+    public static void uniform4iv(int location, int count, IntBuffer v){
+        Core.gl.glUniform4iv(location, count, v);
+    }
+
+// Gl.java : public static void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix2fv(int location, int count, boolean transpose, float[] value, int offset)
+    public static void uniformMatrix2fv(int location, int count, boolean transpose, FloatBuffer value){
+        Core.gl.glUniformMatrix2fv(location, count, transpose, value);
+    }
+
+// Gl.java : public static void uniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix3fv(int location, int count, boolean transpose, float[] value, int offset)
+    public static void uniformMatrix3fv(int location, int count, boolean transpose, FloatBuffer value){
+        Core.gl.glUniformMatrix3fv(location, count, transpose, value);
+    }
+
+// Gl.java : public static void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value) / public static void uniformMatrix4fv(int location, int count, boolean transpose, float[] value, int offset)
+    public static void uniformMatrix4fv(int location, int count, boolean transpose, FloatBuffer value){
+        Core.gl.glUniformMatrix4fv(location, count, transpose, value);
+    }
+
+// Gl.java : public static void useProgram(int program)
+    public static void useProgram(int program){
+        if(optimize && lastUsedProgram == program){
+            return;
+        }
+        Core.gl.glUseProgram(program);
+        lastUsedProgram = program;
+    }
+
+// Gl.java : public static void validateProgram(int program)
+    public static void validateProgram(int program){
+        Core.gl.glValidateProgram(program);
+    }
+
+// Gl.java : public static void vertexAttrib1f(int indx, float x)
+    public static void vertexAttrib1f(int indx, float x){
+        Core.gl.glVertexAttrib1f(indx, x);
+    }
+
+// Gl.java : public static void vertexAttrib1fv(int indx, FloatBuffer values)
+    public static void vertexAttrib1fv(int indx, FloatBuffer values){
+        Core.gl.glVertexAttrib1fv(indx, values);
+    }
+
+// Gl.java : public static void vertexAttrib2f(int indx, float x, float y)
+    public static void vertexAttrib2f(int indx, float x, float y){
+        Core.gl.glVertexAttrib2f(indx, x, y);
+    }
+
+// Gl.java : public static void vertexAttrib2fv(int indx, FloatBuffer values)
+    public static void vertexAttrib2fv(int indx, FloatBuffer values){
+        Core.gl.glVertexAttrib2fv(indx, values);
+    }
+
+// Gl.java : public static void vertexAttrib3f(int indx, float x, float y, float z)
+    public static void vertexAttrib3f(int indx, float x, float y, float z){
+        Core.gl.glVertexAttrib3f(indx, x, y, z);
+    }
+
+// Gl.java : public static void vertexAttrib3fv(int indx, FloatBuffer values)
+    public static void vertexAttrib3fv(int indx, FloatBuffer values){
+        Core.gl.glVertexAttrib3fv(indx, values);
+    }
+
+// Gl.java : public static void vertexAttrib4f(int indx, float x, float y, float z, float w)
+    public static void vertexAttrib4f(int indx, float x, float y, float z, float w){
+        Core.gl.glVertexAttrib4f(indx, x, y, z, w);
+    }
+
+// Gl.java : public static void vertexAttrib4fv(int indx, FloatBuffer values)
+    public static void vertexAttrib4fv(int indx, FloatBuffer values){
+        Core.gl.glVertexAttrib4fv(indx, values);
+    }
+
+// Gl.java : public static void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr) / public static void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, int ptr)
+    public static void vertexAttribPointer(int indx, int size, int type, boolean normalized, int stride, Buffer ptr){
+        Core.gl.glVertexAttribPointer(indx, size, type, normalized, stride, ptr);
+    }
+
+// Mesh.java : public Mesh setVertices(float[] vertices) / public Mesh setVertices(float[] vertices, int offset, int count)
+    public Mesh setVertices(float[] vertices){
+        this.vertices.set(vertices, 0, vertices.length);
+
+        return this;
+    }
+
+// Mesh.java : public Mesh updateVertices(int targetOffset, float[] source) / public Mesh updateVertices(int targetOffset, float[] source, int sourceOffset, int count)
+    public Mesh updateVertices(int targetOffset, float[] source){
+        return updateVertices(targetOffset, source, 0, source.length);
+    }
+
+// Mesh.java : public Mesh setIndices(short[] indices) / public Mesh setIndices(short[] indices, int offset, int count)
+    public Mesh setIndices(short[] indices){
+        this.indices.set(indices, 0, indices.length);
+
+        return this;
+    }
+
+// Mesh.java : public void getIndices(short[] indices) / public void getIndices(short[] indices, int destOffset) / public void getIndices(int srcOffset, short[] indices, int destOffset) / public void getIndices(int srcOffset, int count, short[] indices, int destOffset)
+    public void getIndices(short[] indices){
+        getIndices(indices, 0);
+    }
+
+// Mesh.java : public int getNumIndices()
+    public int getNumIndices(){
+        return indices.size();
+    }
+
+// Mesh.java : public int getNumVertices()
+    public int getNumVertices(){
+        return vertices.size();
+    }
+
+// Mesh.java : public int getMaxVertices()
+    public int getMaxVertices(){
+        return vertices.max();
+    }
+
+// Mesh.java : public int getMaxIndices()
+    public int getMaxIndices(){
+        return indices.max();
+    }
+
+// Mesh.java : public int getVertexSize()
+    public int getVertexSize(){
+        return vertexSize;
+    }
+
+// Mesh.java : public void setAutoBind(boolean autoBind)
+    public void setAutoBind(boolean autoBind){
+        this.autoBind = autoBind;
+    }
+
+// Mesh.java : public void bind(Shader shader)
+    public void bind(final Shader shader){
+        vertices.bind(shader);
+        if(indices.size() > 0) indices.bind();
+    }
+
+// Mesh.java : public void unbind(Shader shader)
+    public void unbind(final Shader shader){
+        vertices.unbind(shader);
+        if(indices.size() > 0) indices.unbind();
+    }
+
+// Mesh.java : public void render(Shader shader, int primitiveType) / public void render(Shader shader, int primitiveType, int offset, int count) / public void render(Shader shader, int primitiveType, int offset, int count, boolean autoBind)
+    public void render(Shader shader, int primitiveType){
+        render(shader, primitiveType, 0, indices.max() > 0 ? getNumIndices() : getNumVertices(), autoBind);
+    }
+
+// Mesh.java : public void dispose()
+    @Override
+    public void dispose(){
+        vertices.dispose();
+        indices.dispose();
+    }
+
+// Mesh.java : public FloatBuffer getVerticesBuffer()
+    public FloatBuffer getVerticesBuffer(){
+        return vertices.buffer();
+    }
+
+// Mesh.java : public ShortBuffer getIndicesBuffer()
+    public ShortBuffer getIndicesBuffer(){
+        return indices.buffer();
+    }
+
+// Pixmap.java : public Pixmap copy()
+    public Pixmap copy(){
+        Pixmap out = new Pixmap(width, height);
+        copyMem(pixels, 0, out.pixels, 0, pixels.capacity());
+        return out;
+    }
+
+// Pixmap.java : public void each(Intc2 cons)
+    public void each(Intc2 cons){
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                cons.get(x, y);
+            }
+        }
+    }
+
+// Pixmap.java : public void replace(IntIntf func)
+    public void replace(IntIntf func){
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                setRaw(x, y, func.get(getRaw(x, y)));
+            }
+        }
+    }
+
+// Pixmap.java : public void fill(int color) / public void fill(Color color)
+    public void fill(int color){
+        int len = width * height * 4;
+        for(int i = 0; i < len; i += 4){
+            pixels.putInt(i, color);
+        }
+    }
+
+// Pixmap.java : public boolean in(int x, int y)
+    public boolean in(int x, int y){
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
+
+// Pixmap.java : public Pixmap crop(int x, int y, int width, int height)
+    public Pixmap crop(int x, int y, int width, int height){
+        if(isDisposed()) throw new IllegalStateException("input is disposed.");
+        Pixmap pixmap = new Pixmap(width, height);
+        pixmap.draw(this, 0, 0, x, y, width, height);
+        return pixmap;
+    }
+
+// Pixmap.java : public Pixmap flipX()
+    public Pixmap flipX(){
+        Pixmap copy = new Pixmap(width, height);
+
+        for(int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                copy.set(width - 1 - x, y, getRaw(x, y));
+            }
+        }
+
+        return copy;
+    }
+
+// Pixmap.java : public Pixmap outline(Color color, int radius) / public Pixmap outline(int color, int radius)
+    public Pixmap outline(Color color, int radius){
+        return outline(color.rgba(), radius);
+    }
+
+// Pixmap.java : public void drawRect(int x, int y, int width, int height, int color)
+    public void drawRect(int x, int y, int width, int height, int color){
+        hline(x, x + width - 1, y, color);
+        hline(x, x + width - 1, y + height - 1, color);
+        vline(y, y + height - 1, x, color);
+        vline(y, y + height - 1, x + width - 1, color);
+    }
+
+// Pixmap.java : public void draw(PixmapRegion region) / public void draw(PixmapRegion region, boolean blend) / public void draw(PixmapRegion region, int x, int y) / public void draw(PixmapRegion region, int x, int y, int width, int height) / public void draw(PixmapRegion region, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight) / public void draw(PixmapRegion region, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight) / public void draw(Pixmap pixmap, boolean blend) / public void draw(Pixmap pixmap) / public void draw(Pixmap pixmap, int x, int y) / public void draw(Pixmap pixmap, int x, int y, boolean blending) / public void draw(Pixmap pixmap, int x, int y, int width, int height) / public void draw(Pixmap pixmap, int x, int y, int width, int height, boolean filter) / public void draw(Pixmap pixmap, int x, int y, int srcx, int srcy, int srcWidth, int srcHeight) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight, boolean filtering) / public void draw(Pixmap pixmap, int srcx, int srcy, int srcWidth, int srcHeight, int dstx, int dsty, int dstWidth, int dstHeight, boolean filtering, boolean blending)
+    public void draw(PixmapRegion region){
+        draw(region.pixmap, region.x, region.y, region.width, region.height, 0, 0, region.width, region.height);
+    }
+
+// Pixmap.java : public int get(int x, int y)
+    public int get(int x, int y){
+        return in(x, y) ? pixels.getInt((x + y * width) * 4) : 0;
+    }
+
+// Pixmap.java : public int getClamp(int x, int y)
+    public int getClamp(int x, int y){
+        return getRaw(Math.max(Math.min(x, width - 1), 0), Math.max(Math.min(y, height - 1), 0));
+    }
+
+// Pixmap.java : public int getRaw(int x, int y)
+    public int getRaw(int x, int y){
+        return pixels.getInt((x + y * width) * 4);
+    }
+
+// Pixmap.java : public int getA(int x, int y)
+    public int getA(int x, int y){
+        return pixels.get((x + y * width) * 4 + 3) & 0xff;
+    }
+
+// Pixmap.java : public boolean empty(int x, int y) / public static boolean empty(int i)
+    public boolean empty(int x, int y){
+        return pixels.get((x + y * width) * 4 + 3) == 0;
+    }
+
+// Pixmap.java : public int getWidth()
+    public int getWidth(){
+        return width;
+    }
+
+// Pixmap.java : public int getHeight()
+    public int getHeight(){
+        return height;
+    }
+
+// Pixmap.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(handle <= 0) return;
+        free(handle);
+        handle = 0;
+    }
+
+// Pixmap.java : public boolean isDisposed()
+    @Override
+    public boolean isDisposed(){
+        return handle == 0;
+    }
+
+// Pixmap.java : public void set(int x, int y, Color color) / public void set(int x, int y, int color)
+    public void set(int x, int y, Color color){
+        set(x, y, color.rgba());
+    }
+
+// Pixmap.java : public void setRaw(int x, int y, int color)
+    public void setRaw(int x, int y, int color){
+        pixels.putInt((x + y * width) * 4, color);
+    }
+
+// Pixmap.java : public int getGLFormat()
+    public int getGLFormat(){
+        return Gl.rgba;
+    }
+
+// Pixmap.java : public int getGLInternalFormat()
+    public int getGLInternalFormat(){
+        return Gl.rgba;
+    }
+
+// Pixmap.java : public int getGLType()
+    public int getGLType(){
+        return Gl.unsignedByte;
+    }
+
+// Pixmap.java : public ByteBuffer getPixels()
+    public ByteBuffer getPixels(){
+        if(handle == 0) throw new ArcRuntimeException("Pixmap already disposed");
+        return pixels;
+    }
+
+// Pixmap.java : public String toString()
+    @Override
+    public String toString(){
+        return "Pixmap:" + width + "x" + height;
+    }
+
+// PixmapIO.java : public static byte[] writePngBytes(Pixmap pixmap) throws IOException
+    public static byte[] writePngBytes(Pixmap pixmap) throws IOException{
+        PngWriter writer = new PngWriter((int)(pixmap.width * pixmap.height * 1.5f)); // Guess at deflated size.
+        try{
+            writer.setFlipY(false);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            writer.write(stream, pixmap);
+            return stream.toByteArray();
+        }finally{
+            writer.dispose();
+        }
+    }
+
+// PixmapIO.java : public static Pixmap readPNG(Fi file) / public static Pixmap readPNG(byte[] bytes)
+    public static Pixmap readPNG(Fi file){
+        try{
+            PngReader reader = new PngReader();
+            ByteBuffer result = reader.read(new ByteArrayInputStream(file.readBytes()));
+            return new Pixmap(result, reader.width, reader.height);
+        }catch(Exception e){
+            throw new ArcRuntimeException("Error reading PNG: " + file, e);
+        }
+    }
+
+// Pixmaps.java : public static Pixmap noise(int w, int h)
+    public static Pixmap noise(int w, int h){
+        Pixmap out = new Pixmap(w, h);
+        for(int y = 0; y < h; y++){
+            for(int x = 0; x < w; x++){
+                out.set(x, y, Tmp.c1.rand());
+            }
+        }
+        return out;
+    }
+
+// Pixmaps.java : public static Texture noiseTex(int w, int h)
+    public static Texture noiseTex(int w, int h){
+        Pixmap p = noise(w, h);
+        Texture tex = new Texture(p);
+        tex.setWrap(TextureWrap.repeat);
+        p.dispose();
+        return tex;
+    }
+
+// Pixmaps.java : public static Pixmap median(Pixmap input, int radius, double percentile) / public static Pixmap median(Pixmap input, int radius, double percentile, IntSeq tmp)
+    public static Pixmap median(Pixmap input, int radius, double percentile){
+        return median(input, radius, percentile, tmpArray);
+    }
+
+// Pixmaps.java : public static Pixmap scale(Pixmap pixmap, int width, int height, boolean filter) / public static Pixmap scale(Pixmap input, float scale) / public static Pixmap scale(Pixmap input, float scalex, float scaley)
+    public static Pixmap scale(Pixmap pixmap, int width, int height, boolean filter){
+        Pixmap dest = new Pixmap(width, height);
+        dest.draw(pixmap, 0, 0, pixmap.width, pixmap.height, 0, 0, width, height, filter);
+        return dest;
+    }
+
+// Pixmaps.java : public static Pixmap outline(PixmapRegion region, Color color, int radius) / public static Pixmap outline(PixmapRegion region, Color color, int radius, int padding) / public static Pixmap outline(Pixmap input, Color color)
+    public static Pixmap outline(PixmapRegion region, Color color, int radius){
+        return outline(region, color, radius, 0);
+    }
+
+// Pixmaps.java : public static Pixmap zoom(Pixmap input, int scale)
+    public static Pixmap zoom(Pixmap input, int scale){
+        Pixmap pixmap = new Pixmap(input.width, input.height);
+        for(int x = 0; x < pixmap.width; x++){
+            for(int y = 0; y < pixmap.height; y++){
+                pixmap.set(x, y, input.get(x / scale + pixmap.width / 2 / scale, y / scale + pixmap.height / 2 / scale));
+            }
+        }
+        return pixmap;
+    }
+
+// Pixmaps.java : public static Pixmap resize(Pixmap input, int width, int height) / public static Pixmap resize(Pixmap input, int width, int height, int backgroundColor)
+    public static Pixmap resize(Pixmap input, int width, int height){
+        Pixmap pixmap = new Pixmap(width, height);
+        pixmap.draw(input, width / 2 - input.width / 2, height / 2 - input.height / 2);
+
+        return pixmap;
+    }
+
+// Pixmaps.java : public static Pixmap crop(Pixmap input, int x, int y, int width, int height)
+    public static Pixmap crop(Pixmap input, int x, int y, int width, int height){
+        if(input.isDisposed()) throw new IllegalStateException("input is disposed.");
+        Pixmap pixmap = new Pixmap(width, height);
+        pixmap.draw(input, 0, 0, x, y, width, height);
+        return pixmap;
+    }
+
+// Pixmaps.java : public static boolean empty(int i)
+    public static boolean empty(int i){
+        return (i & 0x000000ff) == 0;
+    }
+
+// Pixmaps.java : public static Texture hueTexture(int width, int height)
+    public static Texture hueTexture(int width, int height){
+        return new Texture(huePixmap(width, height));
+    }
+
+// Pixmaps.java : public static Pixmap blankPixmap()
+    public static Pixmap blankPixmap(){
+        Pixmap pixmap = new Pixmap(1, 1);
+        pixmap.fill(Color.whiteRgba);
+        return pixmap;
+    }
+
+// Pixmaps.java : public static Texture blankTexture()
+    public static Texture blankTexture(){
+        Texture texture = new Texture(blankPixmap());
+        texture.setWrap(TextureWrap.repeat, TextureWrap.repeat);
+        return texture;
+    }
+
+// Pixmaps.java : public static TextureRegion blankTextureRegion()
+    public static TextureRegion blankTextureRegion(){
+        return new TextureRegion(blankTexture());
+    }
+
+// Pixmaps.java : public static void drawPixel(Texture texture, int x, int y, int color)
+    public static void drawPixel(Texture texture, int x, int y, int color){
+        if(drawPixmap == null){
+            drawPixmap = new Pixmap(1, 1);
+        }
+
+        drawPixmap.setRaw(0, 0, color);
+        texture.draw(drawPixmap, Mathf.clamp(x, 0, texture.width - 1), Mathf.clamp(y, 0, texture.height - 1));
+    }
+
+// Texture.java : public static Texture createEmpty(TextureData data)
+    public static Texture createEmpty(TextureData data){
+        Texture tex = new Texture();
+        tex.data = data;
+        return tex;
+    }
+
+// Texture.java : public void draw(Pixmap pixmap) / public void draw(Pixmap pixmap, int x, int y)
+    public void draw(Pixmap pixmap){
+        draw(pixmap, 0, 0);
+    }
+
+// Texture.java : public int getDepth()
+    @Override
+    public int getDepth(){
+        return 0;
+    }
+
+// Texture.java : public TextureData getTextureData()
+    public TextureData getTextureData(){
+        return data;
+    }
+
+// Texture.java : public boolean isDisposed()
+    @Override
+    public boolean isDisposed(){
+        return glHandle == 0;
+    }
+
+// Texture.java : public String toString()
+    public String toString(){
+        if(data instanceof FileTextureData) return data.toString();
+        return super.toString();
+    }
+
+// TextureArray.java : private static Fi[] getInternalHandles(String internalPaths)
+    private static Fi[] getInternalHandles(String... internalPaths){
+        Fi[] handles = new Fi[internalPaths.length];
+        for(int i = 0; i < internalPaths.length; i++){
+            handles[i] = Core.files.internal(internalPaths[i]);
+        }
+        return handles;
+    }
+
+// TextureArray.java : public int getDepth()
+    @Override
+    public int getDepth(){
+        return data.getDepth();
+    }
+
+// TextureData.java : default Pixmap getPixmap()
+    default Pixmap getPixmap(){
+        if(!isPrepared()){
+            prepare();
+        }
+        return consumePixmap();
+    }
+
+// TextureData.java : static TextureData load(Fi file, boolean useMipMaps)
+    static TextureData load(Fi file, boolean useMipMaps){
+        return new FileTextureData(file, new Pixmap(file), useMipMaps);
+    }
+

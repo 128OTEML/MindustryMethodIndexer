@@ -1,0 +1,453 @@
+// ArcNet.java : public static void handleError(Throwable e)
+    public static void handleError(Throwable e){
+        errorHandler.get(e);
+    }
+
+// Client.java : public void setDiscoveryPacket(Prov<DatagramPacket> discoveryPacket)
+    public void setDiscoveryPacket(Prov<DatagramPacket> discoveryPacket){
+        this.discoveryPacket = discoveryPacket;
+    }
+
+// Client.java : public void connect(int timeout, String host, int tcpPort) throws IOException / public void connect(int timeout, String host, int tcpPort, int udpPort) throws IOException / public void connect(int timeout, InetAddress host, int tcpPort) throws IOException / public void connect(int timeout, InetAddress host, int tcpPort, int udpPort) throws IOException
+    public void connect(int timeout, String host, int tcpPort) throws IOException{
+        connect(timeout, InetAddress.getByName(host), tcpPort, -1);
+    }
+
+// Client.java : public void reconnect() throws IOException / public void reconnect(int timeout) throws IOException
+    public void reconnect() throws IOException{
+        reconnect(connectTimeout);
+    }
+
+// Client.java : void keepAlive()
+    void keepAlive(){
+        if(!isConnected) return;
+        long time = System.currentTimeMillis();
+        if(tcp.needsKeepAlive(time)) sendTCP(FrameworkMessage.keepAlive);
+        if(udp != null && udpRegistered && udp.needsKeepAlive(time)) sendUDP(FrameworkMessage.keepAlive);
+    }
+
+// Client.java : public void handleNetException(ArcNetException ex)
+    public void handleNetException(ArcNetException ex){
+        lastProtocolError = ex;
+        close();
+        throw ex;
+    }
+
+// Client.java : public void stop()
+    @Override
+    public void stop(){
+        if(shutdown)
+            return;
+        close();
+        shutdown = true;
+        selector.wakeup();
+    }
+
+// Client.java : public void dispose() throws IOException
+    public void dispose() throws IOException{
+        close();
+        selector.close();
+    }
+
+// Client.java : public void setKeepAliveUDP(int keepAliveMillis)
+    public void setKeepAliveUDP(int keepAliveMillis){
+        if(udp == null) throw new IllegalStateException("Not connected via UDP.");
+        udp.keepAliveMillis = keepAliveMillis;
+    }
+
+// Client.java : public Thread getUpdateThread()
+    @Override
+    public Thread getUpdateThread(){
+        return updateThread;
+    }
+
+// Client.java : public NetSerializer getSerialization()
+    public NetSerializer getSerialization(){
+        return serialization;
+    }
+
+// Connection.java : void initialize(NetSerializer serialization, int writeBufferSize, int objectBufferSize)
+    void initialize(NetSerializer serialization, int writeBufferSize, int objectBufferSize){
+        tcp = new TcpConnection(serialization, writeBufferSize,
+        objectBufferSize);
+    }
+
+// Connection.java : public int getID()
+    public int getID(){
+        return id;
+    }
+
+// Connection.java : public boolean isConnected()
+    public boolean isConnected(){
+        return isConnected;
+    }
+
+// Connection.java : public ArcNetException getLastProtocolError()
+    public ArcNetException getLastProtocolError(){
+        return lastProtocolError;
+    }
+
+// Connection.java : public int sendTCP(Object object)
+    public int sendTCP(Object object){
+        if(object == null) throw new IllegalArgumentException("object cannot be null.");
+
+        try{
+            return tcp.send(object);
+        }catch(IOException | ArcNetException ex){
+            close(DcReason.error);
+            ArcNet.handleError(ex);
+            return 0;
+        }
+    }
+
+// Connection.java : public int sendTCPBuffer(ByteBuffer buffer)
+    public int sendTCPBuffer(ByteBuffer buffer){
+        if(buffer == null) throw new IllegalArgumentException("buffer cannot be null.");
+
+        try{
+            return tcp.sendBuffer(buffer);
+        }catch(IOException | ArcNetException ex){
+            close(DcReason.error);
+            ArcNet.handleError(ex);
+            return 0;
+        }
+    }
+
+// Connection.java : public void close(DcReason reason)
+    public void close(DcReason reason){
+        boolean wasConnected = isConnected;
+        isConnected = false;
+        tcp.close();
+        if(udp != null && udp.connectedAddress != null)
+            udp.close();
+        if(wasConnected){
+            notifyDisconnected(reason);
+        }
+        setConnected(false);
+    }
+
+// Connection.java : public void updateReturnTripTime()
+    public void updateReturnTripTime(){
+        Ping ping = new Ping();
+        ping.id = lastPingID++;
+        lastPingSendTime = System.currentTimeMillis();
+        sendTCP(ping);
+    }
+
+// Connection.java : public int getReturnTripTime()
+    public int getReturnTripTime(){
+        return returnTripTime;
+    }
+
+// Connection.java : public void setKeepAliveTCP(int keepAliveMillis)
+    public void setKeepAliveTCP(int keepAliveMillis){
+        tcp.keepAliveMillis = keepAliveMillis;
+    }
+
+// Connection.java : public void setTimeout(int timeoutMillis)
+    public void setTimeout(int timeoutMillis){
+        tcp.timeoutMillis = timeoutMillis;
+    }
+
+// Connection.java : void notifyConnected()
+    void notifyConnected(){
+        NetListener[] listeners = this.listeners;
+        for(NetListener listener : listeners){
+            listener.connected(this);
+        }
+    }
+
+// Connection.java : void notifyDisconnected(DcReason reason)
+    void notifyDisconnected(DcReason reason){
+        NetListener[] listeners = this.listeners;
+        for(NetListener listener : listeners){
+            listener.disconnected(this, reason);
+        }
+    }
+
+// Connection.java : void notifyIdle()
+    void notifyIdle(){
+        NetListener[] listeners = this.listeners;
+        for(NetListener listener : listeners){
+            listener.idle(this);
+            if(!isIdle())
+                break;
+        }
+    }
+
+// Connection.java : public EndPoint getEndPoint()
+    public EndPoint getEndPoint(){
+        return endPoint;
+    }
+
+// Connection.java : public InetSocketAddress getRemoteAddressTCP()
+    public InetSocketAddress getRemoteAddressTCP(){
+        SocketChannel socketChannel = tcp.socketChannel;
+        if(socketChannel != null){
+            Socket socket = tcp.socketChannel.socket();
+            if(socket != null){
+                return (InetSocketAddress)socket.getRemoteSocketAddress();
+            }
+        }
+        return null;
+    }
+
+// Connection.java : public InetSocketAddress getRemoteAddressUDP()
+    public InetSocketAddress getRemoteAddressUDP(){
+        return udp.connectedAddress != null ? udp.connectedAddress : udpRemoteAddress;
+    }
+
+// Connection.java : public void setName(String name)
+    public void setName(String name){
+        this.name = name;
+    }
+
+// Connection.java : public int getTcpWriteBufferSize()
+    public int getTcpWriteBufferSize(){
+        return tcp.writeBuffer.position();
+    }
+
+// Connection.java : public boolean isIdle()
+    public boolean isIdle(){
+        return tcp.writeBuffer.position() / (float)tcp.writeBuffer.capacity() < tcp.idleThreshold;
+    }
+
+// Connection.java : public void setIdleThreshold(float idleThreshold)
+    public void setIdleThreshold(float idleThreshold){
+        tcp.idleThreshold = idleThreshold;
+    }
+
+// Connection.java : public String toString()
+    public String toString(){
+        if(name != null)
+            return name;
+        return "Connection " + id;
+    }
+
+// Connection.java : void setConnected(boolean isConnected)
+    void setConnected(boolean isConnected){
+        this.isConnected = isConnected;
+        if(isConnected && name == null)
+            name = "Connection " + id;
+    }
+
+// Connection.java : public Object getArbitraryData()
+    public Object getArbitraryData(){
+        return arbitraryData;
+    }
+
+// Connection.java : public void setArbitraryData(Object arbitraryData)
+    public void setArbitraryData(Object arbitraryData){
+        this.arbitraryData = arbitraryData;
+    }
+
+// NetListener.java : default void connected(Connection connection)
+    default void connected(Connection connection){
+    }
+
+// NetListener.java : default void disconnected(Connection connection, DcReason reason)
+    default void disconnected(Connection connection, DcReason reason){
+    }
+
+// NetListener.java : default void received(Connection connection, Object object)
+    default void received(Connection connection, Object object){
+    }
+
+// NetListener.java : default void idle(Connection connection)
+    default void idle(Connection connection){
+    }
+
+// NetSerializer.java : default int getLengthLength()
+    default int getLengthLength(){
+        return 2;
+    }
+
+// NetSerializer.java : default void writeLength(ByteBuffer buffer, int length)
+    default void writeLength(ByteBuffer buffer, int length){
+        buffer.putShort((short)length);
+    }
+
+// NetSerializer.java : default int readLength(ByteBuffer buffer)
+    default int readLength(ByteBuffer buffer){
+        return buffer.getShort() & 0xffff; //convert to unsigned short for a higher max packet size
+    }
+
+// Server.java : public void setMulticast(String group, int multicastPort)
+    public void setMulticast(String group, int multicastPort){
+        this.multicastPort = multicastPort;
+        try{
+            multicastGroup = InetAddress.getByName(group);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+// Server.java : public void setDiscoveryHandler(ServerDiscoveryHandler newDiscoveryHandler)
+    public void setDiscoveryHandler(ServerDiscoveryHandler newDiscoveryHandler){
+        discoveryHandler = newDiscoveryHandler;
+    }
+
+// Server.java : public void setConnectFilter(ServerConnectFilter connectFilter)
+    public void setConnectFilter(ServerConnectFilter connectFilter){
+        this.connectFilter = connectFilter;
+    }
+
+// Server.java : public ServerConnectFilter getConnectFilter()
+    public ServerConnectFilter getConnectFilter(){
+        return connectFilter;
+    }
+
+// Server.java : public void bind(int tcpPort) throws IOException / public void bind(int tcpPort, int udpPort) throws IOException / public void bind(InetSocketAddress tcpPort, InetSocketAddress udpPort) throws IOException
+    public void bind(int tcpPort) throws IOException{
+        bind(new InetSocketAddress(tcpPort), null);
+    }
+
+// Server.java : public void run()
+    @Override
+    public void run(){
+        shutdown = false;
+        while(!shutdown){
+            try{
+                update(250);
+            }catch(IOException ex){
+                close();
+            }
+        }
+    }
+
+// Server.java : public void start()
+    @Override
+    public void start(){
+        new Thread(this, "Server").start();
+    }
+
+// Server.java : public void stop()
+    @Override
+    public void stop(){
+        if(shutdown)
+            return;
+        shutdown = true;
+        close();
+    }
+
+// Server.java : private int generateId()
+    private int generateId(){
+        int[] id = {0}; //java lambda as just amazing aren't they????
+        Rand rand = new Rand(); //not really concerned about allocating an object with two longs
+        do{
+            id[0] = rand.nextInt();
+        }while(pendingConnections.containsKey(id[0]) || Structs.contains(connections, c -> c.id == id[0]));
+        return id[0];
+    }
+
+// Server.java : protected Connection newConnection()
+    protected Connection newConnection(){
+        return new Connection();
+    }
+
+// Server.java : private void addConnection(Connection connection)
+    private void addConnection(Connection connection){
+        connections = Structs.add(connections, connection);
+
+        if(connection.udpRemoteAddress != null){
+            udpAddressToConnection.put(connection.udpRemoteAddress, connection);
+        }
+    }
+
+// Server.java : void removeConnection(Connection connection)
+    void removeConnection(Connection connection){
+        connections = Structs.remove(connections, connection);
+
+        pendingConnections.remove(connection.id);
+        if(connection.udpRemoteAddress != null){
+            udpAddressToConnection.remove(connection.udpRemoteAddress);
+        }
+    }
+
+// Server.java : public void dispose() throws IOException
+    public void dispose() throws IOException{
+        close();
+        selector.close();
+    }
+
+// Server.java : public Thread getUpdateThread()
+    @Override
+    public Thread getUpdateThread(){
+        return updateThread;
+    }
+
+// Server.java : public Connection[] getConnections()
+    public Connection[] getConnections(){
+        return connections;
+    }
+
+// TcpConnection.java : public void writeOperation() throws IOException
+    public void writeOperation() throws IOException{
+        synchronized(writeLock){
+            if(writeToSocket()){
+                // Write successful, clear OP_WRITE.
+                selectionKey.interestOps(SelectionKey.OP_READ);
+            }
+            lastWriteTime = System.currentTimeMillis();
+        }
+    }
+
+// TcpConnection.java : public void close()
+    public void close(){
+        try{
+            if(socketChannel != null){
+                socketChannel.close();
+                socketChannel = null;
+                if(selectionKey != null)
+                    selectionKey.selector().wakeup();
+            }
+        }catch(IOException ignored){
+        }
+    }
+
+// TcpConnection.java : public boolean needsKeepAlive(long time)
+    public boolean needsKeepAlive(long time){
+        return socketChannel != null && keepAliveMillis > 0 && time - lastWriteTime > keepAliveMillis;
+    }
+
+// TcpConnection.java : public boolean isTimedOut(long time)
+    public boolean isTimedOut(long time){
+        return socketChannel != null && timeoutMillis > 0 && time - lastReadTime > timeoutMillis;
+    }
+
+// TcpIdleSender.java : protected void start()
+    protected void start(){
+    }
+
+// UdpConnection.java : public InetSocketAddress readFromAddress() throws IOException
+    public InetSocketAddress readFromAddress() throws IOException{
+        DatagramChannel datagramChannel = this.datagramChannel;
+        if(datagramChannel == null)
+            throw new SocketException("Connection is closed.");
+        lastCommunicationTime = System.currentTimeMillis();
+
+        if(!datagramChannel.isConnected())
+            return (InetSocketAddress)datagramChannel.receive(readBuffer); //always null on Android >= 5.0
+        datagramChannel.read(readBuffer);
+        return connectedAddress;
+    }
+
+// UdpConnection.java : public int sendBuffer(ByteBuffer buffer, SocketAddress address) throws IOException
+    public int sendBuffer(ByteBuffer buffer, SocketAddress address) throws IOException{
+        DatagramChannel datagramChannel = this.datagramChannel;
+        if(datagramChannel == null) throw new SocketException("Connection is closed.");
+
+        //note: writeBuffer is not used and thus writeLock is not needed
+        buffer.rewind();
+        int length = buffer.remaining();
+        datagramChannel.send(buffer, address);
+        lastCommunicationTime = System.currentTimeMillis();
+        return !buffer.hasRemaining() ? length : -1;
+    }
+
+// UdpConnection.java : public boolean needsKeepAlive(long time)
+    public boolean needsKeepAlive(long time){
+        return connectedAddress != null && keepAliveMillis > 0
+        && time - lastCommunicationTime > keepAliveMillis;
+    }
+

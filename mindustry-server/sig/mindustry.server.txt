@@ -1,0 +1,46 @@
+ServerControl.java
+Java class implements arc.ApplicationListener
+fields:
+  protected static String tags
+  protected static DateTimeFormatter dateTime
+  static final String defaultRuleString
+  public static ServerControl instance  // Global instance of ServerControl, initialized when the server is created.
+  public final CommandHandler handler
+  public final Fi logFolder
+  private final Interval autosaveCount
+  public Fi currentLogFile  // The file to which the logs are currently being written.
+  public boolean inGameOverWait  // Whether the server is currently waiting for the next map to be loaded.
+  public Gamemode lastMode  // The last gamemode loaded on this server.
+  private Task lastTask
+  private Thread socketThread
+  private ServerSocket serverSocket
+  private PrintWriter socketOutput
+  private String suggested
+  private boolean autoPaused
+  private Fi dataAssetDirectory
+  private Seq<DataAsset> dataAssets
+  private boolean hasTerminal
+  private LineReader lineReader
+  public Runnable serverInput
+  public Cons<GameOverEvent> gameOverListener
+ctors:
+  public ServerControl(String[] args)
+methods:
+  protected void setup(String[] args)
+  JsonValue readRulesFile()
+  void loadDataAssets()
+  protected void registerCommands()
+  public void handleCommandString(String line)
+  public void cancelPlayTask()  // Cancels the world load timer task, if it is scheduled.
+  public void play(Runnable run) / public void play(boolean wait, Runnable run)  // Resets the world state, starts a new game.
+  public void logToFile(String text)
+  public void toggleSocket(boolean on)
+
+ServerLauncher.java
+Java class implements arc.ApplicationListener
+fields:
+  static String args
+methods:
+  public static void main(String[] args)
+  public void init()
+

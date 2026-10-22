@@ -1,0 +1,318 @@
+Cell.java
+Java class implements arc.util.pooling.Pool.Poolable
+// A cell for a {@link Table}.
+fields:
+  private static boolean dset
+  private static Cell defaults
+  static final float unset
+  float minWidth
+  float maxWidth
+  float padTop
+  float fillX
+  int align
+  int expandX
+  int colspan
+  boolean uniformX
+  Element element
+  float elementX
+  float elementWidth
+  boolean endRow
+  int column
+  int cellAboveIndex
+  float computedPadTop
+  private Table table
+ctors:
+  public Cell()
+methods:
+  public static Cell defaults()  // Returns the defaults to use for all cells.
+  public void setLayout(Table table)
+  public Cell<A> setElement(A newElement)  // Sets the element in this cell and adds the element to the cell's table.
+  public Cell<T> clearElement()  // Removes the current element for the cell, if any.
+  public Cell<T> with(Cons<T> c)
+  public Cell<T> self(Cons<Cell<T>> c)
+  public T get()  // getElement shortcut
+  public boolean hasElement()  // Returns true if the cell's element is not null.
+  public float prefWidth()
+  public float prefHeight()
+  public float maxWidth() / public Cell<T> maxWidth(float maxWidth)
+  public float maxHeight() / public Cell<T> maxHeight(float maxHeight)
+  public float minWidth() / public Cell<T> minWidth(float minWidth)
+  public float minHeight() / public Cell<T> minHeight(float minHeight)
+  public Cell<T> tooltip(String text) / public Cell<T> tooltip(String text, boolean mobile) / public Cell<T> tooltip(Cons<Table> builder) / public Cell<T> tooltip(boolean mobile, Cons<Table> builder)
+  public Cell<T> size(float size) / public Cell<T> size(float width, float height)  // Sets the minWidth, prefWidth, maxWidth, minHeight, prefHeight, and maxHeight to the specified value.
+  public Cell<T> name(String name)
+  public Cell<T> update(Cons<T> updater)
+  public Cell<T> disabled(Boolf<T> vis) / public Cell<T> disabled(boolean disabled)
+  public Cell<T> scrollX(boolean allowScrollX)
+  public Cell<T> scrollY(boolean allowScrollY)
+  public Cell<T> touchable(Touchable touchable) / public Cell<T> touchable(Prov<Touchable> touchable)
+  public Cell<T> visible(Boolp prov) / public Cell<T> visible(boolean visible)
+  public Cell<T> scaling(Scaling scaling)
+  public Cell<T> valid(TextFieldValidator val)
+  public Cell<T> maxTextLength(int length)  // For text fields.
+  public Cell<T> wrap() / public Cell<T> wrap(boolean wrapFit)  // @param wrapFit if true, labels will have a prefWidth of 0, and need to have an explicit wrap size set.
+  public Cell<T> ellipsis(boolean ellipsis)
+  public Cell<T> labelAlign(int label, int line) / public Cell<T> labelAlign(int label)
+  public Cell<T> group(ButtonGroup<N> group)
+  public Cell<T> wrapLabel(boolean toggle)
+  public Cell<T> checked(boolean toggle) / public Cell<T> checked(Boolf<T> toggle)
+  public Cell<T> fontScale(float scale)
+  public Cell<T> color(Color color)
+  public Cell<T> margin(float margin)
+  public Cell<T> marginTop(float margin)
+  public Cell<T> marginBottom(float margin)
+  public Cell<T> marginLeft(float margin)
+  public Cell<T> marginRight(float margin)
+  public Cell<T> width(float width)  // Sets the minWidth, prefWidth, and maxWidth to the specified value.
+  public Cell<T> style(Style style)  // Sets the button or label style.
+  public Cell<T> height(float height)  // Sets the minHeight, prefHeight, and maxHeight to the specified value.
+  public Cell<T> minSize(float size) / public Cell<T> minSize(float width, float height)  // Sets the minWidth and minHeight to the specified value.
+  public Cell<T> maxSize(float size) / public Cell<T> maxSize(float width, float height)  // Sets the maxWidth and maxHeight to the specified value.
+  public Cell<T> pad(float pad) / public Cell<T> pad(float top, float left, float bottom, float right)  // Sets the marginTop, marginLeft, marginBottom, and marginRight to the specified value.
+  public Cell<T> padTop(float padTop)
+  public Cell<T> padLeft(float padLeft)
+  public Cell<T> padBottom(float padBottom)
+  public Cell<T> padRight(float padRight)
+  public Cell<T> fill() / public Cell<T> fill(float x, float y) / public Cell<T> fill(boolean x, boolean y) / public Cell<T> fill(boolean fill)  // Sets fillX and fillY to 1.
+  public Cell<T> fillX()  // Sets fillX to 1.
+  public Cell<T> fillY()  // Sets fillY to 1.
+  public Cell<T> align(int align)  // Sets the alignment of the element within the cell.
+  public Cell<T> center()  // Sets the alignment of the element within the cell to {@link Align#center}.
+  public Cell<T> top()  // Adds {@link Align#top} and clears {@link Align#bottom} for the alignment of the element within the cell.
+  public Cell<T> left()  // Adds {@link Align#left} and clears {@link Align#right} for the alignment of the element within the cell.
+  public Cell<T> bottom()  // Adds {@link Align#bottom} and clears {@link Align#top} for the alignment of the element within the cell.
+  public Cell<T> right()  // Adds {@link Align#right} and clears {@link Align#left} for the alignment of the element within the cell.
+  public Cell<T> grow()  // Sets expandX, expandY, fillX, and fillY to 1.
+  public Cell<T> growX()  // Sets expandX and fillX to 1.
+  public Cell<T> growY()  // Sets expandY and fillY to 1.
+  public Cell<T> expand() / public Cell<T> expand(int x, int y) / public Cell<T> expand(boolean x, boolean y)  // Sets expandX and expandY to 1.
+  public Cell<T> expandX()  // Sets expandX to 1.
+  public Cell<T> expandY()  // Sets expandY to 1.
+  public Cell<T> colspan(int colspan)
+  public Cell<T> uniform() / public Cell<T> uniform(boolean x, boolean y)  // Sets uniformX and uniformY to true.
+  public Cell<T> uniformX()  // Sets uniformX to true.
+  public Cell<T> uniformY()  // Sets uniformY to true.
+  public void setBounds(float x, float y, float width, float height)
+  public boolean isEndRow()
+  public void row()
+  public Table getTable()
+  void clear()  // Sets all constraint fields to null.
+  float scl(float value)
+  public void reset()  // Reset state so the cell can be reused, setting all constraints to their {@link #defaults() default} values.
+  public Cell<T> set(Cell cell)
+  public String toString()
+
+Collapser.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+fields:
+  Table table
+  Boolp collapsedFunc
+  private CollapseAction collapseAction
+  boolean collapsed
+  boolean actionRunning
+  float currentHeight
+  float seconds
+ctors:
+  public Collapser(Cons<Table> cons, boolean collapsed) / public Collapser(Table table, boolean collapsed)
+methods:
+  public Collapser setDuration(float seconds)
+  public Collapser setCollapsed(Boolp collapsed) / public Collapser setCollapsed(boolean autoAnimate, Boolp collapsed) / public void setCollapsed(boolean collapse, boolean withAnimation) / public void setCollapsed(boolean collapse)
+  public void toggle() / public void toggle(boolean animated)
+  public boolean isCollapsed()
+  private void updateTouchable()
+  public Collapser setEnforceMinSize(boolean enforceMinSize)
+  public void draw()
+  public void act(float delta)
+  public void layout()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public void setTable(Table table)
+  public float getMinWidth()
+  public float getMinHeight()
+  protected void childrenChanged()
+inner-class: CollapseAction extends arc.scene.Action
+  ctors:
+    CollapseAction()
+  methods:
+    public boolean act(float delta)
+
+Scl.java
+Java class
+// Utilities for UI scale.
+fields:
+  private static float scl
+  private static float addition
+  private static float product
+  private static final float debugScale
+methods:
+  public static void setProduct(float product)
+  public static void setAddition(float addition)
+  public static float scl() / public static float scl(float amount)
+
+Spacer.java
+Java class extends arc.scene.Element
+fields:
+  Floatp widthFunc
+ctors:
+  public Spacer(Floatp widthFunc, Floatp heightFunc)
+methods:
+  public void act(float delta)
+  public float getPrefHeight()
+  public float getPrefWidth()
+
+Stack.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+// A stack is a container that sizes its children to its size and positions them at 0,0 on top of each other.
+fields:
+  private float prefWidth
+  private boolean sizeInvalid
+ctors:
+  public Stack() / public Stack(Element actors)
+methods:
+  public void invalidate()
+  private void computeSize()
+  public void add(Element actor)
+  public void layout()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMinWidth()
+  public float getMinHeight()
+
+Table.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+// A group that sizes and positions children using table constraints.
+fields:
+  private static float columnWeightedWidth
+  private static Pool<Cell> cellPool
+  protected final Seq<Cell> cells
+  protected final Cell cellDefaults
+  float marginTop
+  int align
+  Drawable background
+  boolean round
+  protected int columns
+  protected boolean implicitEndRow
+  protected Cell rowDefaults
+  protected boolean sizeInvalid
+  protected float columnMinWidth
+  protected float columnPrefWidth
+  protected float tableMinWidth
+  protected float tablePrefWidth
+  protected float columnWidth
+  protected float expandWidth
+  protected boolean clip
+ctors:
+  public Table() / public Table(Drawable background) / public Table(Drawable background, Cons<Table> cons) / public Table(Cons<Table> cons)
+methods:
+  protected Cell obtainCell()
+  public Table fill()  // Adds and fills a new table within this one.
+  public void draw()
+  protected void drawBackground(float x, float y)  // Called to draw the background, before clipping is applied (if enabled).
+  public Table background(Drawable background)  // @see #setBackground(Drawable)
+  public Drawable getBackground()
+  public void setBackground(Drawable background)  // @param background May be null to clear the background.
+  public Element hit(float x, float y, boolean touchable)
+  public boolean getClip()
+  public void setClip(boolean enabled)  // Causes the contents to be clipped if they exceed the table element's bounds.
+  public void invalidate()
+  public Cell<T> add(T element) / public void add(Element elements) / public Cell<Label> add(CharSequence text) / public Cell<Label> add(CharSequence text, float scl) / public Cell<Label> add(CharSequence text, LabelStyle labelStyle, float scl) / public Cell<Label> add(CharSequence text, Color color, float scl) / public Cell<Label> add(CharSequence text, LabelStyle labelStyle) / public Cell<Label> add(CharSequence text, Color color) / public Cell add()  // Adds a new cell to the table with the specified element.
+  public Cell<Collapser> collapser(Cons<Table> cons, Boolp shown) / public Cell<Collapser> collapser(Table table, Boolp shown) / public Cell<Collapser> collapser(Cons<Table> cons, boolean animate, Boolp shown) / public Cell<Collapser> collapser(Table table, boolean animate, Boolp shown)
+  public Cell<Table> table() / public Cell<Table> table(Drawable background) / public Cell<Table> table(Cons<Table> cons) / public Cell<Table> table(Drawable background, Cons<Table> cons) / public Cell<Table> table(Drawable background, int align, Cons<Table> cons)
+  public Cell<WrapTable> wrapTable(Cons<WrapTable> cons)
+  public Cell<Label> label(Prov<CharSequence> text)
+  public Cell<Label> labelWrap(Prov<CharSequence> text) / public Cell<Label> labelWrap(String text)
+  public Cell<ScrollPane> pane(Cons<Table> consumer) / public Cell<ScrollPane> pane(ScrollPaneStyle style, Cons<Table> consumer) / public Cell<ScrollPane> pane(ScrollPaneStyle style, Element element) / public Cell<ScrollPane> pane(Element element)
+  public Cell<Stack> stack(Element elements)  // Adds a new cell to the table with the specified elements in a {@link Stack}.
+  public Cell<Spacer> spacer(Floatp width, Floatp height)
+  public Cell<Spacer> spacerX(Floatp width)
+  public Cell<Spacer> spacerY(Floatp height)
+  public Cell<Image> image(Prov<TextureRegion> reg) / public Cell<Image> image() / public Cell<Image> image(Drawable name) / public Cell<Image> image(Drawable name, Color color) / public Cell<Image> image(TextureRegion region)
+  public Cell<Image> imageDraw(Prov<Drawable> reg)
+  public Cell<CheckBox> check(String text, Boolc listener) / public Cell<CheckBox> check(String text, boolean checked, Boolc listener) / public Cell<CheckBox> check(String text, float imagesize, boolean checked, Boolc listener)
+  public Cell<Button> button(Cons<Button> cons, Runnable listener) / public Cell<Button> button(Cons<Button> cons, ButtonStyle style, Runnable listener) / public Cell<TextButton> button(String text, Runnable listener) / public Cell<TextButton> button(String text, TextButtonStyle style, Runnable listener) / public Cell<ImageButton> button(Drawable icon, Runnable listener) / public Cell<ImageButton> button(Drawable icon, float isize, Runnable listener) / public Cell<ImageButton> button(Drawable icon, ImageButtonStyle style, float isize, Runnable listener) / public Cell<ImageButton> button(Drawable icon, ImageButtonStyle style, Runnable listener) / public Cell<TextButton> button(String text, Drawable image, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, float imagesize, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, TextButtonStyle style, float imagesize, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, TextButtonStyle style, Runnable clicked)
+  public Cell<TextField> field(String text, Cons<String> listener) / public Cell<TextField> field(String text, TextFieldFilter filter, Cons<String> listener) / public Cell<TextField> field(String text, TextFieldStyle style, Cons<String> listener)
+  public Cell<TextArea> area(String text, Cons<String> listener) / public Cell<TextArea> area(String text, TextFieldStyle style, Cons<String> listener)
+  public Cell<?> rect(DrawRect draw)
+  public Cell<TextButton> buttonRow(String text, Drawable image, Runnable clicked)
+  public Cell<TextButton> buttonCenter(String text, Drawable image, float imagesize, Runnable clicked) / public Cell<TextButton> buttonCenter(String text, Drawable image, Runnable clicked) / public Cell<TextButton> buttonCenter(String text, Drawable image, TextButtonStyle style, float imagesize, Runnable clicked)
+  public Cell<Slider> slider(float min, float max, float step, Floatc listener) / public Cell<Slider> slider(float min, float max, float step, float defvalue, Floatc listener) / public Cell<Slider> slider(float min, float max, float step, float defvalue, boolean onUp, Floatc listener)
+  public boolean removeChild(Element element) / public boolean removeChild(Element element, boolean unfocus)
+  public void clearChildren()  // Removes all actors and cells from the table.
+  public void reset()  // Removes all actors and cells from the table (same as {@link #clearChildren()}) and additionally resets all table properties
+  public Table row()  // Indicates that subsequent cells should be added to a new row and returns this table.
+  private void endRow()
+  public Cell getCell(T actor)  // Returns the cell for the specified actor in this table, or null.
+  public Seq<Cell> getCells()  // Returns the cells for this table.
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public float getMinWidth()
+  public float getMinHeight()
+  public Cell defaults()  // The cell values that will be used as the defaults for all cells.
+  public Table margin(float pad) / public Table margin(float top, float left, float bottom, float right)  // Sets the marginTop, marginLeft, marginBottom, and marginRight around the table to the specified value.
+  public Table marginTop(float padTop)  // Padding at the top edge of the table.
+  public Table marginLeft(float padLeft)  // Padding at the left edge of the table.
+  public Table marginBottom(float padBottom)  // Padding at the bottom edge of the table.
+  public Table marginRight(float padRight)  // Padding at the right edge of the table.
+  public Table align(int align)  // Alignment of the logical table within the table actor.
+  public Table center()  // Sets the alignment of the logical table within the table actor to {@link Align#center}.
+  public Table top()  // Adds {@link Align#top} and clears {@link Align#bottom} for the alignment of the logical table within the table actor.
+  public Table left()  // Adds {@link Align#left} and clears {@link Align#right} for the alignment of the logical table within the table actor.
+  public Table bottom()  // Adds {@link Align#bottom} and clears {@link Align#top} for the alignment of the logical table within the table actor.
+  public Table right()  // Adds {@link Align#right} and clears {@link Align#left} for the alignment of the logical table within the table actor.
+  public float getMarginTop()
+  public float getMarginLeft()
+  public float getMarginBottom()
+  public float getMarginRight()
+  public int getAlign()
+  public int getRow(float y)  // Returns the row index for the y coordinate, or -1 if there are no cells.
+  public void setRound(boolean round)  // If true (the default), positions and sizes are rounded to integers.
+  public int getRows()
+  public int getColumns()
+  public float getRowHeight(int rowIndex)  // Returns the height of the specified row.
+  public float getColumnWidth(int columnIndex)  // Returns the width of the specified column.
+  private float[] ensureSize(float[] array, int size)
+  public void layout() / protected void layout(float layoutX, float layoutY, float layoutWidth, float layoutHeight)  // Positions and sizes children of the table using the cell associated with each child.
+  protected void computeSize()
+inner-interface: DrawRect
+  methods:
+    void draw(float x, float y, float width, float height)
+
+WidgetGroup.java
+Java class extends arc.scene.Group
+// A {@link Group} that participates in layout and provides a minimum, preferred, and maximum size.
+fields:
+  private boolean needsLayout
+  private boolean layoutEnabled
+ctors:
+  public WidgetGroup() / public WidgetGroup(Element actors)  // Creates a new widget group containing the specified actors.
+methods:
+  public float getMinWidth()
+  public float getMinHeight()
+  public float getPrefWidth()
+  public float getPrefHeight()
+  public void setLayoutEnabled(boolean enabled) / private void setLayoutEnabled(Group parent, boolean enabled)
+  public void validate()
+  public boolean needsLayout()  // Returns true if the widget's layout has been {@link #invalidate() invalidated}.
+  public void invalidate()
+  public void invalidateHierarchy()
+  protected void childrenChanged()
+  protected void sizeChanged()
+  public void pack()
+  public void setFillParent(boolean fillParent)
+  public void layout()
+  public void draw()  // If this method is overridden, the super method or {@link #validate()} should be called to ensure the widget group is laid
+
+WrapTable.java
+Java class extends arc.scene.ui.layout.Table
+// A table that autowraps instead of using standard table layout.
+fields:
+  private static FloatSeq rowHeights
+  private static IntSeq cellRow
+  private float lastComputeWidth
+ctors:
+  public WrapTable() / public WrapTable(Drawable background) / public WrapTable(Drawable background, Cons<Table> cons) / public WrapTable(Cons<Table> cons)
+methods:
+  protected void computeSize()
+  float wrapHeight(float maxRowWidth)
+  protected void layout(float layoutX, float layoutY, float layoutWidth, float layoutHeight)
+

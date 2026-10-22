@@ -1,0 +1,270 @@
+// BlockModule.java : public void read(Reads read, boolean legacy) / public void read(Reads read)
+    public void read(Reads read, boolean legacy){
+        read(read);
+    }
+
+// ItemModule.java : public ItemModule copy()
+    public ItemModule copy(){
+        ItemModule out = new ItemModule();
+        out.set(this);
+        return out;
+    }
+
+// ItemModule.java : public void set(ItemModule other) / public void set(Item item, int amount)
+    public void set(ItemModule other){
+        total = other.total;
+        takeRotation = other.takeRotation;
+        System.arraycopy(other.items, 0, items, 0, items.length);
+    }
+
+// ItemModule.java : public void stopFlow()
+    public void stopFlow(){
+        flow = null;
+    }
+
+// ItemModule.java : public int length()
+    public int length(){
+        return items.length;
+    }
+
+// ItemModule.java : public float getFlowRate(Item item)
+    public float getFlowRate(Item item){
+        return flow == null ? -1f : displayFlow != null ? displayFlow[item.id] * 60 : -1f;
+    }
+
+// ItemModule.java : public boolean hasFlowItem(Item item)
+    public boolean hasFlowItem(Item item){
+        return flow != null && cacheBits.get(item.id);
+    }
+
+// ItemModule.java : public void each(ItemConsumer cons)
+    public void each(ItemConsumer cons){
+        for(int i = 0; i < items.length; i++){
+            if(items[i] != 0){
+                cons.accept(content.item(i), items[i]);
+            }
+        }
+    }
+
+// ItemModule.java : public float sum(ItemCalculator calc)
+    public float sum(ItemCalculator calc){
+        float sum = 0f;
+        for(int i = 0; i < items.length; i++){
+            if(items[i] > 0){
+                sum += calc.get(content.item(i), items[i]);
+            }
+        }
+        return sum;
+    }
+
+// ItemModule.java : public boolean has(int id) / public boolean has(Item item) / public boolean has(Item item, int amount) / public boolean has(ItemStack[] stacks) / public boolean has(ItemSeq items) / public boolean has(Iterable<ItemStack> stacks) / public boolean has(ItemStack[] stacks, float multiplier)
+    public boolean has(int id){
+        return items[id] > 0;
+    }
+
+// ItemModule.java : public boolean hasOne(ItemStack[] stacks)
+    public boolean hasOne(ItemStack[] stacks){
+        for(ItemStack stack : stacks){
+            if(!has(stack.item, 1)) return false;
+        }
+        return true;
+    }
+
+// ItemModule.java : public boolean empty()
+    public boolean empty(){
+        return total == 0;
+    }
+
+// ItemModule.java : public int total()
+    public int total(){
+        return total;
+    }
+
+// ItemModule.java : public boolean any()
+    public boolean any(){
+        return total > 0;
+    }
+
+// ItemModule.java : public Item first()
+    public @Nullable Item first(){
+        for(int i = 0; i < items.length; i++){
+            if(items[i] > 0){
+                return content.item(i);
+            }
+        }
+        return null;
+    }
+
+// ItemModule.java : public int get(int id) / public int get(Item item)
+    public int get(int id){
+        return items[id];
+    }
+
+// ItemModule.java : public void add(Iterable<ItemStack> stacks) / public void add(ItemSeq stacks) / public void add(ItemModule items) / public void add(Item item, int amount) / private void add(int item, int amount)
+    public void add(Iterable<ItemStack> stacks){
+        for(ItemStack stack : stacks){
+            add(stack.item, stack.amount);
+        }
+    }
+
+// ItemModule.java : public void handleFlow(Item item, int amount)
+    public void handleFlow(Item item, int amount){
+        if(flow != null){
+            cacheSums[item.id] += amount;
+        }
+    }
+
+// ItemModule.java : public void undoFlow(Item item)
+    public void undoFlow(Item item){
+        if(flow != null){
+            cacheSums[item.id] -= 1;
+        }
+    }
+
+// ItemModule.java : public void remove(Item item, int amount) / public void remove(ItemStack[] stacks) / public void remove(ItemSeq stacks) / public void remove(Iterable<ItemStack> stacks) / public void remove(ItemStack stack)
+    public void remove(Item item, int amount){
+        amount = Math.min(amount, items[item.id]);
+
+        items[item.id] -= amount;
+        total -= amount;
+    }
+
+// ItemModule.java : public void clear()
+    public void clear(){
+        Arrays.fill(items, 0);
+        total = 0;
+    }
+
+// ItemModule.java : public void checkArrayCapacity(int size)
+    public void checkArrayCapacity(int size){
+        if(items.length != size) items = Arrays.copyOf(items, size);
+        cacheFlow = null;
+        cacheSums = null;
+        displayFlow = null;
+        flow = null;
+    }
+
+// LiquidModule.java : public void stopFlow()
+    public void stopFlow(){
+        flow = null;
+    }
+
+// LiquidModule.java : public float getFlowRate(Liquid liquid)
+    public float getFlowRate(Liquid liquid){
+        return flow == null ? -1f : displayFlow != null ? displayFlow[liquid.id] * 60 : -1f;
+    }
+
+// LiquidModule.java : public boolean hasFlowLiquid(Liquid liquid)
+    public boolean hasFlowLiquid(Liquid liquid){
+        return flow != null && cacheBits.get(liquid.id);
+    }
+
+// LiquidModule.java : public Liquid current()
+    public Liquid current(){
+        return current;
+    }
+
+// LiquidModule.java : public void reset(Liquid liquid, float amount)
+    public void reset(Liquid liquid, float amount){
+        Arrays.fill(liquids, 0f);
+        liquids[liquid.id] = amount;
+        current = liquid;
+    }
+
+// LiquidModule.java : public void set(Liquid liquid, float amount)
+    public void set(Liquid liquid, float amount){
+        if(amount >= liquids[current.id]){
+            current = liquid;
+        }
+        liquids[liquid.id] = amount;
+    }
+
+// LiquidModule.java : public float currentAmount()
+    public float currentAmount(){
+        return liquids[current.id];
+    }
+
+// LiquidModule.java : public float get(Liquid liquid)
+    public float get(Liquid liquid){
+        return liquids[liquid.id];
+    }
+
+// LiquidModule.java : public void clear()
+    public void clear(){
+        Arrays.fill(liquids, 0);
+    }
+
+// LiquidModule.java : public void add(Liquid liquid, float amount)
+    public void add(Liquid liquid, float amount){
+        liquids[liquid.id] += amount;
+        current = liquid;
+
+        if(flow != null){
+            cacheSums[liquid.id] += Math.max(amount, 0);
+        }
+    }
+
+// LiquidModule.java : public void handleFlow(Liquid liquid, float amount)
+    public void handleFlow(Liquid liquid, float amount){
+        if(flow != null){
+            cacheSums[liquid.id] += Math.max(amount, 0);
+        }
+    }
+
+// LiquidModule.java : public void remove(Liquid liquid, float amount)
+    public void remove(Liquid liquid, float amount){
+        //cap to prevent negative removal
+        add(liquid, Math.max(-amount, -liquids[liquid.id]));
+    }
+
+// LiquidModule.java : public void each(LiquidConsumer cons)
+    public void each(LiquidConsumer cons){
+        for(int i = 0; i < liquids.length; i++){
+            if(liquids[i] > 0){
+                cons.accept(content.liquid(i), liquids[i]);
+            }
+        }
+    }
+
+// LiquidModule.java : public float sum(LiquidCalculator calc)
+    public float sum(LiquidCalculator calc){
+        float sum = 0f;
+        for(int i = 0; i < liquids.length; i++){
+            if(liquids[i] > 0){
+                sum += calc.get(content.liquid(i), liquids[i]);
+            }
+        }
+        return sum;
+    }
+
+// LiquidModule.java : public void checkArrayCapacity(int size)
+    public void checkArrayCapacity(int size){
+        if(liquids.length != size) liquids = Arrays.copyOf(liquids, size);
+        cacheFlow = null;
+        cacheSums = null;
+        displayFlow = null;
+        flow = null;
+    }
+
+// PowerModule.java : public void write(Writes write)
+    @Override
+    public void write(Writes write){
+        write.s(links.size);
+        for(int i = 0; i < links.size; i++){
+            write.i(links.get(i));
+        }
+        write.f(status);
+    }
+
+// PowerModule.java : public void read(Reads read)
+    @Override
+    public void read(Reads read){
+        links.clear();
+        short amount = read.s();
+        for(int i = 0; i < amount; i++){
+            links.add(read.i());
+        }
+        status = read.f();
+        if(Float.isNaN(status) || Float.isInfinite(status)) status = 0f;
+    }
+

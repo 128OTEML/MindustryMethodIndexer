@@ -1,0 +1,37 @@
+LegacyBlock.java
+Java class extends mindustry.world.Block
+// Any subclass of this will be removed upon world load.
+ctors:
+  public LegacyBlock(String name)
+methods:
+  public void removeSelf(Tile tile)  // Removes this block from the world, or replaces it with something else.
+
+LegacyCommandCenter.java
+Java class extends mindustry.world.blocks.legacy.LegacyBlock
+ctors:
+  public LegacyCommandCenter(String name)
+inner-class: LegacyCommandBuild extends mindustry.gen.Building
+  methods:
+    public void write(Writes write)
+    public void read(Reads read, byte version)
+
+LegacyMechPad.java
+Java class extends mindustry.world.blocks.legacy.LegacyBlock
+ctors:
+  public LegacyMechPad(String name)
+inner-class: LegacyMechPadBuild extends mindustry.gen.Building
+  methods:
+    public void read(Reads read, byte revision)
+
+LegacyUnitFactory.java
+Java class extends mindustry.world.blocks.legacy.LegacyBlock
+fields:
+  public Block replacement
+ctors:
+  public LegacyUnitFactory(String name)
+methods:
+  public void removeSelf(Tile tile)
+inner-class: LegacyUnitFactoryBuild extends mindustry.gen.Building
+  methods:
+    public void read(Reads read, byte revision)
+

@@ -1,0 +1,376 @@
+Reconstructor.java
+Java class extends mindustry.world.blocks.units.UnitBlock
+fields:
+  public float constructTime
+  public Seq<UnitType[]> upgrades
+  public int capacities
+  public Sound createSound
+  public float createSoundVolume
+  public boolean showAllCommands
+ctors:
+  public Reconstructor(String name)
+methods:
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public void setBars()
+  public void setStats()
+  public void init()
+  public void afterPatch()
+  public void initCapacities()
+  public void checkContentArrayCapacity(int items, int liquids)
+  public void addUpgrade(UnitType from, UnitType to)
+inner-class: ReconstructorBuild extends mindustry.world.blocks.units.UnitBlock.UnitBuild
+  fields:
+    public Vec2 commandPos
+    public UnitCommand command
+    boolean constructing
+  methods:
+    public float fraction()
+    public Vec2 getCommandPosition()
+    public void onCommand(Vec2 target)
+    public boolean acceptUnitPayload(Unit unit)
+    public boolean canSetCommand()
+    public Cursor getCursor()
+    public boolean shouldShowConfigure(Player player)
+    public void buildConfiguration(Table table)
+    public boolean acceptPayload(Building source, Payload payload)
+    public BlockStatus status()
+    public int getMaximumAccepted(Item item)
+    public void overwrote(Seq<Building> builds)
+    public void draw()
+    public Object senseObject(LAccess sensor)
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public boolean shouldConsume()
+    public Object config()
+    public UnitType unit()
+    public boolean constructing()
+    public boolean hasUpgrade(UnitType type)
+    public UnitType upgrade(UnitType type)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+RepairTower.java
+Java class extends mindustry.world.Block
+fields:
+  static final float refreshInterval
+  public float range
+  public Color circleColor
+  public float circleSpeed
+  public float healAmount
+  public TextureRegion glow
+ctors:
+  public RepairTower(String name)
+methods:
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: RepairTowerBuild extends mindustry.gen.Building implements mindustry.logic.Ranged
+  fields:
+    public float refresh
+    public float warmup
+    public float totalProgress
+    public Seq<Unit> targets
+  methods:
+    public void updateTile()
+    public boolean shouldConsume()
+    public void draw()
+    public float range()
+    public float warmup()
+    public void drawSelect()
+
+RepairTurret.java
+Java class extends mindustry.world.Block
+fields:
+  static final Rect rect
+  static final Rand rand
+  public int timerTarget
+  public int timerEffect
+  public float repairRadius
+  public float repairSpeed
+  public float powerUse
+  public float length
+  public float beamWidth
+  public float pulseRadius
+  public float pulseStroke
+  public boolean acceptCoolant
+  public float coolantUse
+  public Effect coolEffect  // Effect displayed when coolant is used.
+  public float coolantMultiplier  // How much healing is increased by with heat capacity.
+  public TextureRegion baseRegion
+  public TextureRegion laser
+  public TextureRegion laserEnd
+  public TextureRegion laserTop
+  public TextureRegion laserTopEnd
+  public Color laserColor
+ctors:
+  public RepairTurret(String name)
+methods:
+  public void setStats()
+  public void init()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public TextureRegion[] icons()
+  public static void drawBeam(float x, float y, float rotation, float length, int id, Sized target, Team team, float strength, float pulseStroke, float pulseRadius, float beamWidth, Vec2 lastEnd, Vec2 offset, Color laserColor, Color laserTopColor, TextureRegion laser, TextureRegion laserEnd, TextureRegion laserTop, TextureRegion laserTopEnd)
+inner-class: RepairPointBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.RotBlock
+  fields:
+    public Unit target
+    public Vec2 offset
+    public float strength
+  methods:
+    public float buildRotation()
+    public void draw()
+    public void drawSelect()
+    public boolean shouldAmbientSound()
+    public void updateTile()
+    public boolean shouldConsume()
+    public BlockStatus status()
+    public float range()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public byte version()
+
+UnitAssembler.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public TextureRegion sideRegion1
+  public TextureRegion sideRegion2
+  public int areaSize
+  public UnitType droneType  // Note: The spawned unit MUST have AssemblerAI as a controller and 'tether' (BuildingTetherComp) as a unit component.
+  public int dronesCreated
+  public float droneConstructTime
+  public int capacities
+  public Seq<AssemblerUnitPlan> plans
+  public Sound createSound
+  public float createSoundVolume
+  protected ConsumePayloadDynamic consPayload
+  protected ConsumeItemDynamic consItem
+ctors:
+  public UnitAssembler(String name)
+methods:
+  public Rect getRect(Rect rect, float x, float y, int rotation)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void setBars()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public void init()
+  public void afterPatch()
+  public void initCapacities()
+  public void checkContentArrayCapacity(int items, int liquids)
+  public void setStats()
+  public static void assemblerUnitSpawned(Tile tile)
+  public static void assemblerDroneSpawned(Tile tile, int id)
+inner-class: AssemblerUnitPlan
+  fields:
+    public UnitType unit
+    public Seq<PayloadStack> requirements
+    public ItemStack itemReq
+    public LiquidStack liquidReq
+    public float time
+  ctors:
+    public AssemblerUnitPlan(UnitType unit, float time, Seq<PayloadStack> requirements) / AssemblerUnitPlan()
+inner-class: YeetData
+// hbgwerjhbagjegwg
+  fields:
+    public Vec2 target
+    public UnlockableContent item
+  ctors:
+    public YeetData(Vec2 target, UnlockableContent item)
+inner-class: UnitAssemblerBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    protected IntSeq readUnits
+    protected IntSeq whenSyncedUnits  // holds drone IDs that have been sent, but not synced yet - add to list as soon as possible
+    public Vec2 commandPos
+    public Seq<Unit> units
+    public Seq<UnitAssemblerModuleBuild> modules
+    public PayloadSeq blocks
+    public float progress
+    public float invalidWarmup
+    public int currentTier
+    public int lastTier
+    public boolean wasOccupied
+    public float droneProgress
+  methods:
+    public Vec2 getUnitSpawn()
+    public boolean moduleFits(Block other, float ox, float oy, int rotation)
+    public void updateModules(UnitAssemblerModuleBuild build)
+    public void removeModule(UnitAssemblerModuleBuild build)
+    public void checkTier()
+    public UnitType unit()
+    public AssemblerUnitPlan plan()
+    public boolean shouldConsume()
+    public void drawSelect()
+    public void display(Table table)
+    public void updateTile()
+    public void droneSpawned(int id)
+    public void spawned()
+    public void draw()
+    public boolean checkSolid(Vec2 v, boolean same)
+    public boolean ready()  // @return true if this block is ready to produce units, e.g.
+    public void yeetPayload(Payload payload)
+    public BlockStatus status()
+    public double sense(LAccess sensor)
+    public boolean acceptUnitPayload(Unit unit)
+    public PayloadSeq getPayloads()
+    public boolean acceptPayload(Building source, Payload payload)
+    public int getMaximumAccepted(Item item)
+    public boolean acceptItem(Building source, Item item)
+    public Vec2 getCommandPosition()
+    public void onCommand(Vec2 target)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+UnitAssemblerModule.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+fields:
+  public TextureRegion sideRegion1
+  public TextureRegion sideRegion2
+  public int tier
+ctors:
+  public UnitAssemblerModule(String name)
+methods:
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public UnitAssemblerBuild getLink(Team team, int x, int y, int rotation)
+inner-class: UnitAssemblerModuleBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public UnitAssemblerBuild link
+    public int lastChange
+  methods:
+    public void findLink()
+    public int tier()
+    public void draw()
+    public boolean acceptPayload(Building source, Payload payload)
+    public void drawSelect()
+    public void onRemoved()
+    public void updateTile()
+
+UnitBlock.java
+Java class extends mindustry.world.blocks.payloads.PayloadBlock
+ctors:
+  public UnitBlock(String name)
+methods:
+  public static void unitBlockSpawn(Tile tile)
+inner-class: UnitBuild extends mindustry.world.blocks.payloads.PayloadBlock.PayloadBlockBuild
+  fields:
+    public float progress
+  methods:
+    public void spawned()
+    public void dumpPayload()
+
+UnitCargoLoader.java
+Java class extends mindustry.world.Block
+fields:
+  public UnitType unitType
+  public float unitBuildTime
+  public float polyStroke
+  public int polySides
+  public float polyRotateSpeed
+  public Color polyColor
+ctors:
+  public UnitCargoLoader(String name)
+methods:
+  public boolean outputsItems()
+  public void setBars()
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public static void unitTetherBlockSpawned(Tile tile, int id)
+inner-class: UnitTransportSourceBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock
+  fields:
+    public int readUnitId  // needs to be "unboxed" after reading, since units are read after buildings.
+    public float buildProgress
+    public float warmup
+    public Unit unit
+  methods:
+    public void updateTile()
+    public void spawned(int id)
+    public boolean acceptItem(Building source, Item item)
+    public boolean shouldConsume()
+    public void draw()
+    public float totalProgress()
+    public float progress()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+UnitCargoUnloadPoint.java
+Java class extends mindustry.world.Block
+fields:
+  public float staleTimeDuration  // If a block is full for this amount of time, it will not be flown to anymore.
+  public TextureRegion topRegion
+ctors:
+  public UnitCargoUnloadPoint(String name)
+inner-class: UnitCargoUnloadPointBuild extends mindustry.gen.Building
+  fields:
+    public Item item
+    public float staleTimer
+    public boolean stale
+  methods:
+    public void draw()
+    public void drawSelect()
+    public void updateTile()
+    public int acceptStack(Item item, int amount, Teamc source)
+    public void buildConfiguration(Table table)
+    public Object config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+UnitFactory.java
+Java class extends mindustry.world.blocks.units.UnitBlock
+fields:
+  public int capacities
+  public Seq<UnitPlan> plans
+  public Sound createSound
+  public float createSoundVolume
+ctors:
+  public UnitFactory(String name)
+methods:
+  public void init()
+  public void afterPatch()
+  public void initCapacities()
+  public void checkContentArrayCapacity(int items, int liquids)
+  public void setBars()
+  public boolean outputsItems()
+  public void setStats()
+  public TextureRegion[] icons()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void getPlanConfigs(Seq<UnlockableContent> options)
+inner-class: UnitPlan
+  fields:
+    public UnitType unit
+    public ItemStack requirements
+    public float time
+  ctors:
+    public UnitPlan(UnitType unit, float time, ItemStack[] requirements) / UnitPlan()
+inner-class: UnitFactoryBuild extends mindustry.world.blocks.units.UnitBlock.UnitBuild
+  fields:
+    public Vec2 commandPos
+    public UnitCommand command
+    public int currentPlan
+  methods:
+    public float fraction()
+    public boolean canSetCommand()
+    public void created()
+    public void drawSelect()
+    public Vec2 getCommandPosition()
+    public void onCommand(Vec2 target)
+    public Object senseObject(LAccess sensor)
+    public double sense(LAccess sensor)
+    public void buildConfiguration(Table table)
+    public boolean acceptPayload(Building source, Payload payload)
+    public void display(Table table)
+    public Object config()
+    public void draw()
+    public void updateTile()
+    public boolean shouldConsume()
+    public BlockStatus status()
+    public int getMaximumAccepted(Item item)
+    public boolean acceptItem(Building source, Item item)
+    public UnitType unit()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+

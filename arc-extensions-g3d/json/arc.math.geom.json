@@ -1,0 +1,3803 @@
+[ {
+  "file" : "Frustum.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "A truncated rectangular pyramid.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "protected static final Vec3 clipSpacePlanePoints",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clipSpacePlanePoints",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final float clipSpacePlanePointsArray",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clipSpacePlanePointsArray",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private final static Vec3 tmpV",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpV",
+    "returnType" : null,
+    "modifiers" : [ "private", "final", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Plane planes",
+    "desc" : "the six clipping planes, near, far, left, right, top, bottom *",
+    "overloads" : null,
+    "name" : "planes",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Vec3 planePoints",
+    "desc" : "eight points making up the near and far clipping \"rectangles\".",
+    "overloads" : null,
+    "name" : "planePoints",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected final float planePointsArray",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "planePointsArray",
+    "returnType" : null,
+    "modifiers" : [ "protected", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Frustum()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Frustum",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void update(Mat3D inverseProjectionView)",
+    "desc" : "Updates the clipping plane's based on the given inverse combined projection and view matrix.",
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inverseProjectionView",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean containsPoint(Vec3 point) / public boolean containsPoint(float x, float y, float z)",
+    "desc" : "@return whether the point is in the frustum.",
+    "overloads" : [ "public boolean containsPoint(Vec3 point)", "public boolean containsPoint(float x, float y, float z)" ],
+    "name" : "containsPoint",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean containsSphere(Vec3 center, float radius) / public boolean containsSphere(float x, float y, float z, float radius)",
+    "desc" : "@param center The center of the sphere",
+    "overloads" : [ "public boolean containsSphere(Vec3 center, float radius)", "public boolean containsSphere(float x, float y, float z, float radius)" ],
+    "name" : "containsSphere",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "center",
+      "type" : "Vec3"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean containsSphereWithoutNearFar(Vec3 center, float radius) / public boolean containsSphereWithoutNearFar(float x, float y, float z, float radius)",
+    "desc" : "@param center The center of the sphere",
+    "overloads" : [ "public boolean containsSphereWithoutNearFar(Vec3 center, float radius)", "public boolean containsSphereWithoutNearFar(float x, float y, float z, float radius)" ],
+    "name" : "containsSphereWithoutNearFar",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "center",
+      "type" : "Vec3"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean containsBounds(BoundingBox bounds) / public boolean containsBounds(Vec3 center, Vec3 dimensions) / public boolean containsBounds(float x, float y, float z, float halfWidth, float halfHeight, float halfDepth)",
+    "desc" : "@return Whether the bounding box is in the frustum",
+    "overloads" : [ "public boolean containsBounds(BoundingBox bounds)", "public boolean containsBounds(Vec3 center, Vec3 dimensions)", "public boolean containsBounds(float x, float y, float z, float halfWidth, float halfHeight, float halfDepth)" ],
+    "name" : "containsBounds",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "bounds",
+      "type" : "BoundingBox"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 131,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Icosphere.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float t",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "t",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 baseVert",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "baseVert",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int baseFace",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "baseFace",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static MeshResult create(int level)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "create",
+    "returnType" : "MeshResult",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "level",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void subdivide(int v1, int v2, int v3, FloatSeq vertices, IntSeq faces, int level)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "subdivide",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "v1",
+      "type" : "int"
+    }, {
+      "name" : "v2",
+      "type" : "int"
+    }, {
+      "name" : "v3",
+      "type" : "int"
+    }, {
+      "name" : "vertices",
+      "type" : "FloatSeq"
+    }, {
+      "name" : "faces",
+      "type" : "IntSeq"
+    }, {
+      "name" : "level",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static Vec3 v(float x, float y, float z)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "v",
+    "returnType" : "Vec3",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 60,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Intersector3D.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 v0",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "v0",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 v1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "v1",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 v2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "v2",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Plane p",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "p",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec3 i",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "i",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 best",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "best",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 tmp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 tmp1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp1",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 tmp2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp2",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 tmp3",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp3",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Vec3 intersection",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "intersection",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRayPlane(Ray ray, Plane plane, Vec3 intersection)",
+    "desc" : "Intersects a {@link Ray} and a {@link Plane}.",
+    "overloads" : null,
+    "name" : "intersectRayPlane",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "plane",
+      "type" : "Plane"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static float intersectLinePlane(float x, float y, float z, float x2, float y2, float z2, Plane plane, Vec3 intersection)",
+    "desc" : "Intersects a line and a plane.",
+    "overloads" : null,
+    "name" : "intersectLinePlane",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "x2",
+      "type" : "float"
+    }, {
+      "name" : "y2",
+      "type" : "float"
+    }, {
+      "name" : "z2",
+      "type" : "float"
+    }, {
+      "name" : "plane",
+      "type" : "Plane"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRayTriangle(Ray ray, Vec3 t1, Vec3 t2, Vec3 t3, Vec3 intersection)",
+    "desc" : "Intersect a {@link Ray} and a triangle, returning the intersection point in intersection.",
+    "overloads" : null,
+    "name" : "intersectRayTriangle",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "t1",
+      "type" : "Vec3"
+    }, {
+      "name" : "t2",
+      "type" : "Vec3"
+    }, {
+      "name" : "t3",
+      "type" : "Vec3"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 76,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRaySphere(Ray ray, Vec3 center, float radius, Vec3 intersection)",
+    "desc" : "Intersects a {@link Ray} and a sphere, returning the intersection point in intersection.",
+    "overloads" : null,
+    "name" : "intersectRaySphere",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "center",
+      "type" : "Vec3"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 123,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRayBounds(Ray ray, BoundingBox box, Vec3 intersection)",
+    "desc" : "Intersects a {@link Ray} and a {@link BoundingBox}, returning the intersection point in intersection.",
+    "overloads" : null,
+    "name" : "intersectRayBounds",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "box",
+      "type" : "BoundingBox"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 154,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRayBoundsFast(Ray ray, BoundingBox box) / public static boolean intersectRayBoundsFast(Ray ray, Vec3 center, Vec3 dimensions)",
+    "desc" : "Quick check whether the given {@link Ray} and {@link BoundingBox} intersect.",
+    "overloads" : [ "public static boolean intersectRayBoundsFast(Ray ray, BoundingBox box)", "public static boolean intersectRayBoundsFast(Ray ray, Vec3 center, Vec3 dimensions)" ],
+    "name" : "intersectRayBoundsFast",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "box",
+      "type" : "BoundingBox"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 255,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectSegmentPlane(Vec3 start, Vec3 end, Plane plane, Vec3 intersection)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "intersectSegmentPlane",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "start",
+      "type" : "Vec3"
+    }, {
+      "name" : "end",
+      "type" : "Vec3"
+    }, {
+      "name" : "plane",
+      "type" : "Plane"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 301,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean intersectRayTriangles(Ray ray, float[] triangles, Vec3 intersection) / public static boolean intersectRayTriangles(Ray ray, float[] vertices, short[] indices, int vertexSize, Vec3 intersection) / public static boolean intersectRayTriangles(Ray ray, Seq<Vec3> triangles, Vec3 intersection)",
+    "desc" : "Intersects the given ray with list of triangles.",
+    "overloads" : [ "public static boolean intersectRayTriangles(Ray ray, float[] triangles, Vec3 intersection)", "public static boolean intersectRayTriangles(Ray ray, float[] vertices, short[] indices, int vertexSize, Vec3 intersection)", "public static boolean intersectRayTriangles(Ray ray, Seq<Vec3> triangles, Vec3 intersection)" ],
+    "name" : "intersectRayTriangles",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ray",
+      "type" : "Ray"
+    }, {
+      "name" : "triangles",
+      "type" : "float[]"
+    }, {
+      "name" : "intersection",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 319,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void splitTriangle(float[] triangle, Plane plane, SplitTriangle split)",
+    "desc" : "Splits the triangle by the plane.",
+    "overloads" : null,
+    "name" : "splitTriangle",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "triangle",
+      "type" : "float[]"
+    }, {
+      "name" : "plane",
+      "type" : "Plane"
+    }, {
+      "name" : "split",
+      "type" : "SplitTriangle"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 444,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void splitEdge(float[] vertices, int s, int e, int stride, Plane plane, float[] split, int offset)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "splitEdge",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "vertices",
+      "type" : "float[]"
+    }, {
+      "name" : "s",
+      "type" : "int"
+    }, {
+      "name" : "e",
+      "type" : "int"
+    }, {
+      "name" : "stride",
+      "type" : "int"
+    }, {
+      "name" : "plane",
+      "type" : "Plane"
+    }, {
+      "name" : "split",
+      "type" : "float[]"
+    }, {
+      "name" : "offset",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 543,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "SplitTriangle",
+    "simpleName" : "SplitTriangle",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public float front",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "front",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 558,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public float back",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "back",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 559,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int numFront",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "numFront",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 560,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int numBack",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "numBack",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 561,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int total",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "total",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 562,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "float edgeSplit",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "edgeSplit",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 563,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "boolean frontCurrent",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "frontCurrent",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 564,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int frontOffset",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "frontOffset",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 565,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int backOffset",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "backOffset",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 566,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public SplitTriangle(int numAttributes)",
+      "desc" : "Creates a new instance, assuming numAttributes attributes per triangle vertex.",
+      "overloads" : null,
+      "name" : "SplitTriangle",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "numAttributes",
+        "type" : "int"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 572,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 578,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "boolean getSide()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getSide",
+      "returnType" : "boolean",
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 584,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void setSide(boolean front)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "setSide",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "front",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 588,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void add(float[] vertex, int offset, int stride)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "add",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "vertex",
+        "type" : "float[]"
+      }, {
+        "name" : "offset",
+        "type" : "int"
+      }, {
+        "name" : "stride",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 592,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void reset()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 602,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Mat3D.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "Encapsulates a <a href=\"http://en.wikipedia.org/wiki/Row-major_order#Column-major_order\">column major</a> 4 by 4 matrix.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int M00",
+    "desc" : "XX: Typically the unrotated X component for scaling, also the cosine of the angle when rotated on the Y and/or Z axis.",
+    "overloads" : null,
+    "name" : "M00",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M01",
+    "desc" : "XY: Typically the negative sine of the angle when rotated on the Z axis.",
+    "overloads" : null,
+    "name" : "M01",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M02",
+    "desc" : "XZ: Typically the sine of the angle when rotated on the Y axis.",
+    "overloads" : null,
+    "name" : "M02",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M03",
+    "desc" : "XW: Typically the translation of the X component.",
+    "overloads" : null,
+    "name" : "M03",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M10",
+    "desc" : "YX: Typically the sine of the angle when rotated on the Z axis.",
+    "overloads" : null,
+    "name" : "M10",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M11",
+    "desc" : "YY: Typically the unrotated Y component for scaling, also the cosine of the angle when rotated on the X and/or Z axis.",
+    "overloads" : null,
+    "name" : "M11",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M12",
+    "desc" : "YZ: Typically the negative sine of the angle when rotated on the X axis.",
+    "overloads" : null,
+    "name" : "M12",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M13",
+    "desc" : "YW: Typically the translation of the Y component.",
+    "overloads" : null,
+    "name" : "M13",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 48,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M20",
+    "desc" : "ZX: Typically the negative sine of the angle when rotated on the Y axis.",
+    "overloads" : null,
+    "name" : "M20",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 53,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M21",
+    "desc" : "ZY: Typical the sine of the angle when rotated on the X axis.",
+    "overloads" : null,
+    "name" : "M21",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 58,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M22",
+    "desc" : "ZZ: Typically the unrotated Z component for scaling, also the cosine of the angle when rotated on the X and/or Y axis.",
+    "overloads" : null,
+    "name" : "M22",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 63,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M23",
+    "desc" : "ZW: Typically the translation of the Z component.",
+    "overloads" : null,
+    "name" : "M23",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 65,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M30",
+    "desc" : "WX: Typically the value zero.",
+    "overloads" : null,
+    "name" : "M30",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 67,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M31",
+    "desc" : "WY: Typically the value zero.",
+    "overloads" : null,
+    "name" : "M31",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 69,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M32",
+    "desc" : "WZ: Typically the value zero.",
+    "overloads" : null,
+    "name" : "M32",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 71,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int M33",
+    "desc" : "WW: Typically the value one.",
+    "overloads" : null,
+    "name" : "M33",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 73,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float tmp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 75,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final float val",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "val",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 76,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Quat quat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "quat",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 735,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "static Quat quat2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "quat2",
+    "returnType" : null,
+    "modifiers" : [ "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 736,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 l_vez",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "l_vez",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 874,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 l_vex",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "l_vex",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 875,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 l_vey",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "l_vey",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 876,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 tmpVec",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpVec",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 904,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Mat3D tmpMat",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpMat",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 905,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 right",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "right",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 922,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 tmpForward",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpForward",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 923,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "static final Vec3 tmpUp",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpUp",
+    "returnType" : null,
+    "modifiers" : [ "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 924,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Mat3D() / public Mat3D(Mat3D matrix) / public Mat3D(float[] values) / public Mat3D(Quat quat) / public Mat3D(Vec3 position, Quat rotation, Vec3 scale)",
+    "desc" : "Constructs an identity matrix",
+    "overloads" : [ "public Mat3D()", "public Mat3D(Mat3D matrix)", "public Mat3D(float[] values)", "public Mat3D(Quat quat)", "public Mat3D(Vec3 position, Quat rotation, Vec3 scale)" ],
+    "name" : "Mat3D",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 79,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Mat3D set(Mat3D matrix) / public Mat3D set(float[] values) / public Mat3D set(Quat quat) / public Mat3D set(float quaternionX, float quaternionY, float quaternionZ, float quaternionW) / public Mat3D set(Vec3 position, Quat orientation) / public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW) / public Mat3D set(Vec3 position, Quat orientation, Vec3 scale) / public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW, float scaleX, float scaleY, float scaleZ) / public Mat3D set(Vec3 xAxis, Vec3 yAxis, Vec3 zAxis, Vec3 pos) / public Mat3D set(Mat mat) / public Mat3D set(Affine2 affine)",
+    "desc" : "Sets the matrix to the given matrix.",
+    "overloads" : [ "public Mat3D set(Mat3D matrix)", "public Mat3D set(float[] values)", "public Mat3D set(Quat quat)", "public Mat3D set(float quaternionX, float quaternionY, float quaternionZ, float quaternionW)", "public Mat3D set(Vec3 position, Quat orientation)", "public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW)", "public Mat3D set(Vec3 position, Quat orientation, Vec3 scale)", "public Mat3D set(float translationX, float translationY, float translationZ, float quaternionX, float quaternionY, float quaternionZ, float quaternionW, float scaleX, float scaleY, float scaleZ)", "public Mat3D set(Vec3 xAxis, Vec3 yAxis, Vec3 zAxis, Vec3 pos)", "public Mat3D set(Mat mat)", "public Mat3D set(Affine2 affine)" ],
+    "name" : "set",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 126,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D cpy()",
+    "desc" : "@return a copy of this matrix",
+    "overloads" : null,
+    "name" : "cpy",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 297,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D trn(Vec3 vector) / public Mat3D trn(float x, float y, float z)",
+    "desc" : "Adds a translational component to the matrix in the 4th column.",
+    "overloads" : [ "public Mat3D trn(Vec3 vector)", "public Mat3D trn(float x, float y, float z)" ],
+    "name" : "trn",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vector",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 306,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float[] getValues()",
+    "desc" : "@return the backing float array",
+    "overloads" : null,
+    "name" : "getValues",
+    "returnType" : "float[]",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 328,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D mul(Mat3D matrix) / public static void mul(float[] mata, float[] matb)",
+    "desc" : "Postmultiplies this matrix with the given matrix, storing the result in this matrix.",
+    "overloads" : [ "public Mat3D mul(Mat3D matrix)", "public static void mul(float[] mata, float[] matb)" ],
+    "name" : "mul",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 341,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D mulLeft(Mat3D matrix)",
+    "desc" : "Premultiplies this matrix with the given matrix, storing the result in this matrix.",
+    "overloads" : null,
+    "name" : "mulLeft",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 355,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D tra()",
+    "desc" : "Transposes the matrix.",
+    "overloads" : null,
+    "name" : "tra",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 365,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D idt()",
+    "desc" : "Sets the matrix to an identity matrix.",
+    "overloads" : null,
+    "name" : "idt",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 389,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D inv() / public static boolean inv(float[] val)",
+    "desc" : "Inverts the matrix.",
+    "overloads" : [ "public Mat3D inv()", "public static boolean inv(float[] val)" ],
+    "name" : "inv",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 414,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float det() / public static float det(float[] val)",
+    "desc" : "@return The determinant of this matrix",
+    "overloads" : [ "public float det()", "public static float det(float[] val)" ],
+    "name" : "det",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 478,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float det3x3()",
+    "desc" : "@return The determinant of the 3x3 upper left matrix",
+    "overloads" : null,
+    "name" : "det3x3",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 491,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToProjection(float near, float far, float fovy, float aspectRatio) / public Mat3D setToProjection(float left, float right, float bottom, float top, float near, float far)",
+    "desc" : "Sets the matrix to a projection matrix with a near- and far plane, a field of view in degrees and an aspect ratio.",
+    "overloads" : [ "public Mat3D setToProjection(float near, float far, float fovy, float aspectRatio)", "public Mat3D setToProjection(float left, float right, float bottom, float top, float near, float far)" ],
+    "name" : "setToProjection",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "near",
+      "type" : "float"
+    }, {
+      "name" : "far",
+      "type" : "float"
+    }, {
+      "name" : "fovy",
+      "type" : "float"
+    }, {
+      "name" : "aspectRatio",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 506,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToOrtho2D(float x, float y, float width, float height) / public Mat3D setToOrtho2D(float x, float y, float width, float height, float near, float far)",
+    "desc" : "Sets this matrix to an orthographic projection matrix with the origin at (x,y) extending by width and height.",
+    "overloads" : [ "public Mat3D setToOrtho2D(float x, float y, float width, float height)", "public Mat3D setToOrtho2D(float x, float y, float width, float height, float near, float far)" ],
+    "name" : "setToOrtho2D",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 575,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToOrtho(float left, float right, float bottom, float top, float near, float far)",
+    "desc" : "Sets the matrix to an orthographic projection like glOrtho (http://www.opengl.org/sdk/docs/man/xhtml/glOrtho.xml) following",
+    "overloads" : null,
+    "name" : "setToOrtho",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "left",
+      "type" : "float"
+    }, {
+      "name" : "right",
+      "type" : "float"
+    }, {
+      "name" : "bottom",
+      "type" : "float"
+    }, {
+      "name" : "top",
+      "type" : "float"
+    }, {
+      "name" : "near",
+      "type" : "float"
+    }, {
+      "name" : "far",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 607,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setTranslation(Vec3 vector) / public Mat3D setTranslation(float x, float y, float z)",
+    "desc" : "Sets the 4th column to the translation vector.",
+    "overloads" : [ "public Mat3D setTranslation(Vec3 vector)", "public Mat3D setTranslation(float x, float y, float z)" ],
+    "name" : "setTranslation",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vector",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 643,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToTranslation(Vec3 vector) / public Mat3D setToTranslation(float x, float y, float z)",
+    "desc" : "Sets this matrix to a translation matrix, overwriting it first by an identity matrix and then setting the 4th column to the",
+    "overloads" : [ "public Mat3D setToTranslation(Vec3 vector)", "public Mat3D setToTranslation(float x, float y, float z)" ],
+    "name" : "setToTranslation",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vector",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 670,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToTranslationAndScaling(Vec3 translation, Vec3 scaling) / public Mat3D setToTranslationAndScaling(float translationX, float translationY, float translationZ, float scalingX, float scalingY, float scalingZ)",
+    "desc" : "Sets this matrix to a translation and scaling matrix by first overwriting it with an identity and then setting the",
+    "overloads" : [ "public Mat3D setToTranslationAndScaling(Vec3 translation, Vec3 scaling)", "public Mat3D setToTranslationAndScaling(float translationX, float translationY, float translationZ, float scalingX, float scalingY, float scalingZ)" ],
+    "name" : "setToTranslationAndScaling",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "translation",
+      "type" : "Vec3"
+    }, {
+      "name" : "scaling",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 701,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToRotation(Vec3 axis, float degrees) / public Mat3D setToRotation(float axisX, float axisY, float axisZ, float degrees) / public Mat3D setToRotation(Vec3 v1, Vec3 v2) / public Mat3D setToRotation(float x1, float y1, float z1, float x2, float y2, float z2)",
+    "desc" : "Sets the matrix to a rotation matrix around the given axis.",
+    "overloads" : [ "public Mat3D setToRotation(Vec3 axis, float degrees)", "public Mat3D setToRotation(float axisX, float axisY, float axisZ, float degrees)", "public Mat3D setToRotation(Vec3 v1, Vec3 v2)", "public Mat3D setToRotation(float x1, float y1, float z1, float x2, float y2, float z2)" ],
+    "name" : "setToRotation",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "degrees",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 744,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToRotationRad(Vec3 axis, float radians) / public Mat3D setToRotationRad(float axisX, float axisY, float axisZ, float radians)",
+    "desc" : "Sets the matrix to a rotation matrix around the given axis.",
+    "overloads" : [ "public Mat3D setToRotationRad(Vec3 axis, float radians)", "public Mat3D setToRotationRad(float axisX, float axisY, float axisZ, float radians)" ],
+    "name" : "setToRotationRad",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "radians",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 758,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setFromEulerAngles(float yaw, float pitch, float roll)",
+    "desc" : "Sets this matrix to a rotation matrix from the given euler angles.",
+    "overloads" : null,
+    "name" : "setFromEulerAngles",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "yaw",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "roll",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 829,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setFromEulerAnglesRad(float yaw, float pitch, float roll)",
+    "desc" : "Sets this matrix to a rotation matrix from the given euler angles.",
+    "overloads" : null,
+    "name" : "setFromEulerAnglesRad",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "yaw",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "roll",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 841,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToScaling(Vec3 vector) / public Mat3D setToScaling(float x, float y, float z)",
+    "desc" : "Sets this matrix to a scaling matrix",
+    "overloads" : [ "public Mat3D setToScaling(Vec3 vector)", "public Mat3D setToScaling(float x, float y, float z)" ],
+    "name" : "setToScaling",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vector",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 851,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToLookAt(Vec3 direction, Vec3 up) / public Mat3D setToLookAt(Vec3 position, Vec3 target, Vec3 up)",
+    "desc" : "Sets the matrix to a look at matrix with a direction and an up vector.",
+    "overloads" : [ "public Mat3D setToLookAt(Vec3 direction, Vec3 up)", "public Mat3D setToLookAt(Vec3 position, Vec3 target, Vec3 up)" ],
+    "name" : "setToLookAt",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "direction",
+      "type" : "Vec3"
+    }, {
+      "name" : "up",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 885,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setToWorld(Vec3 position, Vec3 forward, Vec3 up)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setToWorld",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    }, {
+      "name" : "forward",
+      "type" : "Vec3"
+    }, {
+      "name" : "up",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 926,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 935,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D lerp(Mat3D matrix, float alpha)",
+    "desc" : "Linearly interpolates between this matrix and the given matrix mixing by alpha",
+    "overloads" : null,
+    "name" : "lerp",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 947,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D avg(Mat3D other, float w) / public Mat3D avg(Mat3D[] t) / public Mat3D avg(Mat3D[] t, float[] w)",
+    "desc" : "Averages the given transform with this one and stores the result in this matrix.",
+    "overloads" : [ "public Mat3D avg(Mat3D other, float w)", "public Mat3D avg(Mat3D[] t)", "public Mat3D avg(Mat3D[] t, float[] w)" ],
+    "name" : "avg",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Mat3D"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 960,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D setAsAffine(Affine2 affine) / public Mat3D setAsAffine(Mat3D mat)",
+    "desc" : "Assumes that this matrix is a 2D affine transformation, copying only the relevant components.",
+    "overloads" : [ "public Mat3D setAsAffine(Affine2 affine)", "public Mat3D setAsAffine(Mat3D mat)" ],
+    "name" : "setAsAffine",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "affine",
+      "type" : "Affine2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1100,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D scl(Vec3 scale) / public Mat3D scl(float x, float y, float z) / public Mat3D scl(float scale)",
+    "desc" : null,
+    "overloads" : [ "public Mat3D scl(Vec3 scale)", "public Mat3D scl(float x, float y, float z)", "public Mat3D scl(float scale)" ],
+    "name" : "scl",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1132,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 getTranslation(Vec3 position)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTranslation",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "position",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1153,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat getRotation(Quat rotation, boolean normalizeAxes) / public Quat getRotation(Quat rotation)",
+    "desc" : "Gets the rotation of this matrix.",
+    "overloads" : [ "public Quat getRotation(Quat rotation, boolean normalizeAxes)", "public Quat getRotation(Quat rotation)" ],
+    "name" : "getRotation",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rotation",
+      "type" : "Quat"
+    }, {
+      "name" : "normalizeAxes",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1166,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleXSquared()",
+    "desc" : "@return the squared scale factor on the X axis",
+    "overloads" : null,
+    "name" : "getScaleXSquared",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1180,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleYSquared()",
+    "desc" : "@return the squared scale factor on the Y axis",
+    "overloads" : null,
+    "name" : "getScaleYSquared",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1185,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleZSquared()",
+    "desc" : "@return the squared scale factor on the Z axis",
+    "overloads" : null,
+    "name" : "getScaleZSquared",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1190,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleX()",
+    "desc" : "@return the scale factor on the X axis (non-negative)",
+    "overloads" : null,
+    "name" : "getScaleX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1195,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleY()",
+    "desc" : "@return the scale factor on the Y axis (non-negative)",
+    "overloads" : null,
+    "name" : "getScaleY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1201,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScaleZ()",
+    "desc" : "@return the scale factor on the X axis (non-negative)",
+    "overloads" : null,
+    "name" : "getScaleZ",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1207,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 getScale(Vec3 scale)",
+    "desc" : "@param scale The vector which will receive the (non-negative) scale components on each axis.",
+    "overloads" : null,
+    "name" : "getScale",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1216,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D toNormalMatrix()",
+    "desc" : "removes the translational part and transposes the matrix.",
+    "overloads" : null,
+    "name" : "toNormalMatrix",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1221,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void mulVec(float[] mat, float[] vec)",
+    "desc" : "Multiplies the vector with the given matrix.",
+    "overloads" : null,
+    "name" : "mulVec",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "mat",
+      "type" : "float[]"
+    }, {
+      "name" : "vec",
+      "type" : "float[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1262,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void prj(float[] mat, float[] vec) / public static void prj(float[] mat, float[] vecs, int offset, int numVecs, int stride) / public static Vec3 prj(Vec3 v, Mat3D matrix)",
+    "desc" : "Multiplies the vector with the given matrix, performing a division by w.",
+    "overloads" : [ "public static void prj(float[] mat, float[] vec)", "public static void prj(float[] mat, float[] vecs, int offset, int numVecs, int stride)", "public static Vec3 prj(Vec3 v, Mat3D matrix)" ],
+    "name" : "prj",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "mat",
+      "type" : "float[]"
+    }, {
+      "name" : "vec",
+      "type" : "float[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1279,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void rot(float[] mat, float[] vec) / public static Vec3 rot(Vec3 v, Mat3D matrix)",
+    "desc" : "Multiplies the vector with the top most 3x3 sub-matrix of the given matrix.",
+    "overloads" : [ "public static void rot(float[] mat, float[] vec)", "public static Vec3 rot(Vec3 v, Mat3D matrix)" ],
+    "name" : "rot",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "mat",
+      "type" : "float[]"
+    }, {
+      "name" : "vec",
+      "type" : "float[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1322,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D translate(Vec3 translation) / public Mat3D translate(float x, float y, float z)",
+    "desc" : "Postmultiplies this matrix by a translation matrix.",
+    "overloads" : [ "public Mat3D translate(Vec3 translation)", "public Mat3D translate(float x, float y, float z)" ],
+    "name" : "translate",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "translation",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1415,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D rotate(Vec3 axis, float degrees) / public Mat3D rotate(float axisX, float axisY, float axisZ, float degrees) / public Mat3D rotate(Quat rotation) / public Mat3D rotate(Vec3 v1, Vec3 v2)",
+    "desc" : "Postmultiplies this matrix with a (counter-clockwise) rotation matrix.",
+    "overloads" : [ "public Mat3D rotate(Vec3 axis, float degrees)", "public Mat3D rotate(float axisX, float axisY, float axisZ, float degrees)", "public Mat3D rotate(Quat rotation)", "public Mat3D rotate(Vec3 v1, Vec3 v2)" ],
+    "name" : "rotate",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "degrees",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1456,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D rotateRad(Vec3 axis, float radians) / public Mat3D rotateRad(float axisX, float axisY, float axisZ, float radians)",
+    "desc" : "Postmultiplies this matrix with a (counter-clockwise) rotation matrix.",
+    "overloads" : [ "public Mat3D rotateRad(Vec3 axis, float radians)", "public Mat3D rotateRad(float axisX, float axisY, float axisZ, float radians)" ],
+    "name" : "rotateRad",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "radians",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1469,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Mat3D scale(Vec3 vec) / public Mat3D scale(float scaleX, float scaleY, float scaleZ)",
+    "desc" : "Postmultiplies this matrix with a scale matrix.",
+    "overloads" : [ "public Mat3D scale(Vec3 vec)", "public Mat3D scale(float scaleX, float scaleY, float scaleZ)" ],
+    "name" : "scale",
+    "returnType" : "Mat3D",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vec",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1526,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void extract4x3Matrix(float[] dst)",
+    "desc" : "Copies the 4x3 upper-left sub-matrix into float array.",
+    "overloads" : null,
+    "name" : "extract4x3Matrix",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "dst",
+      "type" : "float[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1564,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasRotationOrScaling()",
+    "desc" : "@return True if this matrix has any rotation or scaling, false otherwise",
+    "overloads" : null,
+    "name" : "hasRotationOrScaling",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1580,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static Vec3 unrotate(Vec3 v, Mat3D matrix)",
+    "desc" : "Multiplies this vector by the transpose of the first three columns of the matrix.",
+    "overloads" : null,
+    "name" : "unrotate",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "Vec3"
+    }, {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1617,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static Vec3 untransform(Vec3 v, Mat3D matrix)",
+    "desc" : "Translates this vector in the direction opposite to the translation of the matrix and the multiplies this vector by the",
+    "overloads" : null,
+    "name" : "untransform",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "Vec3"
+    }, {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 1630,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MeshResult.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public FloatSeq vertices",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vertices",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public IntSeq indices",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "indices",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Plane.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "A plane defined via a unit length normal and the distance from the origin, as you learned in your math class.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Vec3 normal",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "normal",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float d",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "d",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Plane() / public Plane(Vec3 normal, float d) / public Plane(Vec3 normal, Vec3 point) / public Plane(Vec3 point1, Vec3 point2, Vec3 point3)",
+    "desc" : "Constructs a new plane with all values set to 0",
+    "overloads" : [ "public Plane()", "public Plane(Vec3 normal, float d)", "public Plane(Vec3 normal, Vec3 point)", "public Plane(Vec3 point1, Vec3 point2, Vec3 point3)" ],
+    "name" : "Plane",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void set(Vec3 point1, Vec3 point2, Vec3 point3) / public void set(float nx, float ny, float nz, float d) / public void set(Vec3 point, Vec3 normal) / public void set(float pointX, float pointY, float pointZ, float norX, float norY, float norZ) / public void set(Plane plane)",
+    "desc" : "Sets the plane normal and distance to the origin based on the three given points which are considered to be on the plane.",
+    "overloads" : [ "public void set(Vec3 point1, Vec3 point2, Vec3 point3)", "public void set(float nx, float ny, float nz, float d)", "public void set(Vec3 point, Vec3 normal)", "public void set(float pointX, float pointY, float pointZ, float norX, float norY, float norZ)", "public void set(Plane plane)" ],
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "point1",
+      "type" : "Vec3"
+    }, {
+      "name" : "point2",
+      "type" : "Vec3"
+    }, {
+      "name" : "point3",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 project(Vec3 v)",
+    "desc" : "Projects the supplied vector onto this plane.",
+    "overloads" : null,
+    "name" : "project",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float distance(Vec3 point)",
+    "desc" : "Calculates the shortest signed distance between the plane and the given point.",
+    "overloads" : null,
+    "name" : "distance",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public PlaneSide testPoint(Vec3 point) / public PlaneSide testPoint(float x, float y, float z)",
+    "desc" : "Returns on which side the given point lies relative to the plane and its normal.",
+    "overloads" : [ "public PlaneSide testPoint(Vec3 point)", "public PlaneSide testPoint(float x, float y, float z)" ],
+    "name" : "testPoint",
+    "returnType" : "PlaneSide",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "point",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 92,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isFrontFacing(Vec3 direction)",
+    "desc" : "Returns whether the plane is facing the direction vector.",
+    "overloads" : null,
+    "name" : "isFrontFacing",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "direction",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 125,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 getNormal()",
+    "desc" : "@return The normal",
+    "overloads" : null,
+    "name" : "getNormal",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 131,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getD()",
+    "desc" : "@return The distance to the origin",
+    "overloads" : null,
+    "name" : "getD",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 136,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 164,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Quat.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "A simple quaternion class.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private static Quat tmp1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp1",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Quat tmp2",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmp2",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float x",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "x",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float y",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "y",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float z",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "z",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float w",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "w",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Quat(float x, float y, float z, float w) / public Quat() / public Quat(Quat quat) / public Quat(Vec3 axis, float angle)",
+    "desc" : "Constructor, sets the four components of the quaternion.",
+    "overloads" : [ "public Quat(float x, float y, float z, float w)", "public Quat()", "public Quat(Quat quat)", "public Quat(Vec3 axis, float angle)" ],
+    "name" : "Quat",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static float len(float x, float y, float z, float w) / public float len()",
+    "desc" : "@return the euclidean length of the specified quaternion",
+    "overloads" : [ "public static float len(float x, float y, float z, float w)", "public float len()" ],
+    "name" : "len",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static float len2(float x, float y, float z, float w) / public float len2()",
+    "desc" : "@return the length of this quaternion without square root",
+    "overloads" : [ "public static float len2(float x, float y, float z, float w)", "public float len2()" ],
+    "name" : "len2",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static float dot(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2) / public float dot(Quat other) / public float dot(float x, float y, float z, float w)",
+    "desc" : "Get the dot product between the two quaternions (commutative).",
+    "overloads" : [ "public static float dot(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2)", "public float dot(Quat other)", "public float dot(float x, float y, float z, float w)" ],
+    "name" : "dot",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x1",
+      "type" : "float"
+    }, {
+      "name" : "y1",
+      "type" : "float"
+    }, {
+      "name" : "z1",
+      "type" : "float"
+    }, {
+      "name" : "w1",
+      "type" : "float"
+    }, {
+      "name" : "x2",
+      "type" : "float"
+    }, {
+      "name" : "y2",
+      "type" : "float"
+    }, {
+      "name" : "z2",
+      "type" : "float"
+    }, {
+      "name" : "w2",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 74,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat set(float x, float y, float z, float w) / public Quat set(Quat quat) / public Quat set(Vec3 axis, float angle)",
+    "desc" : "Sets the components of the quaternion",
+    "overloads" : [ "public Quat set(float x, float y, float z, float w)", "public Quat set(Quat quat)", "public Quat set(Vec3 axis, float angle)" ],
+    "name" : "set",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "z",
+      "type" : "float"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat cpy()",
+    "desc" : "@return a copy of this quaternion",
+    "overloads" : null,
+    "name" : "cpy",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 124,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setEulerAngles(float yaw, float pitch, float roll)",
+    "desc" : "Sets the quaternion to the given euler angles in degrees.",
+    "overloads" : null,
+    "name" : "setEulerAngles",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "yaw",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "roll",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 136,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setEulerAnglesRad(float yaw, float pitch, float roll)",
+    "desc" : "Sets the quaternion to the given euler angles in radians.",
+    "overloads" : null,
+    "name" : "setEulerAnglesRad",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "yaw",
+      "type" : "float"
+    }, {
+      "name" : "pitch",
+      "type" : "float"
+    }, {
+      "name" : "roll",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 148,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getGimbalPole()",
+    "desc" : "Get the pole of the gimbal lock, if any.",
+    "overloads" : null,
+    "name" : "getGimbalPole",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 174,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getRollRad()",
+    "desc" : "Get the roll euler angle in radians, which is the rotation around the z axis.",
+    "overloads" : null,
+    "name" : "getRollRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 183,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getRoll()",
+    "desc" : "Get the roll euler angle in degrees, which is the rotation around the z axis.",
+    "overloads" : null,
+    "name" : "getRoll",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 193,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getPitchRad()",
+    "desc" : "Get the pitch euler angle in radians, which is the rotation around the x axis.",
+    "overloads" : null,
+    "name" : "getPitchRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 201,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getPitch()",
+    "desc" : "Get the pitch euler angle in degrees, which is the rotation around the x axis.",
+    "overloads" : null,
+    "name" : "getPitch",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 210,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getYawRad()",
+    "desc" : "Get the yaw euler angle in radians, which is the rotation around the y axis.",
+    "overloads" : null,
+    "name" : "getYawRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 218,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getYaw()",
+    "desc" : "Get the yaw euler angle in degrees, which is the rotation around the y axis.",
+    "overloads" : null,
+    "name" : "getYaw",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 226,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat nor()",
+    "desc" : "Normalizes this quaternion to unit length",
+    "overloads" : null,
+    "name" : "nor",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 239,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat conjugate()",
+    "desc" : "Conjugate the quaternion.",
+    "overloads" : null,
+    "name" : "conjugate",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 257,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 transform(Vec3 v)",
+    "desc" : "Transforms the given vector using this quaternion",
+    "overloads" : null,
+    "name" : "transform",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "v",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 268,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat mul(Quat other) / public Quat mul(float x, float y, float z, float w) / public Quat mul(float scalar)",
+    "desc" : "Multiplies this quaternion with another one in the form of this = this * other",
+    "overloads" : [ "public Quat mul(Quat other)", "public Quat mul(float x, float y, float z, float w)", "public Quat mul(float scalar)" ],
+    "name" : "mul",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Quat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 284,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat mulLeft(Quat other) / public Quat mulLeft(float x, float y, float z, float w)",
+    "desc" : "Multiplies this quaternion with another one in the form of this = other * this",
+    "overloads" : [ "public Quat mulLeft(Quat other)", "public Quat mulLeft(float x, float y, float z, float w)" ],
+    "name" : "mulLeft",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "Quat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 321,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat add(Quat quat) / public Quat add(float qx, float qy, float qz, float qw)",
+    "desc" : "Add the x,y,z,w components of the passed in quaternion to the ones of this quaternion",
+    "overloads" : [ "public Quat add(Quat quat)", "public Quat add(float qx, float qy, float qz, float qw)" ],
+    "name" : "add",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "quat",
+      "type" : "Quat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 354,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void toMatrix(float[] matrix)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toMatrix",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "matrix",
+      "type" : "float[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 371,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat idt()",
+    "desc" : "Sets the quaternion to an identity Quaternion",
+    "overloads" : null,
+    "name" : "idt",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 404,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isIdentity() / public boolean isIdentity(float tolerance)",
+    "desc" : "@return If this quaternion is an identity Quaternion",
+    "overloads" : [ "public boolean isIdentity()", "public boolean isIdentity(float tolerance)" ],
+    "name" : "isIdentity",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 409,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setFromAxis(Vec3 axis, float degrees) / public Quat setFromAxis(float x, float y, float z, float degrees)",
+    "desc" : "Sets the quaternion components from the given axis and angle around that axis.",
+    "overloads" : [ "public Quat setFromAxis(Vec3 axis, float degrees)", "public Quat setFromAxis(float x, float y, float z, float degrees)" ],
+    "name" : "setFromAxis",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "degrees",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 427,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setFromAxisRad(Vec3 axis, float radians) / public Quat setFromAxisRad(float x, float y, float z, float radians)",
+    "desc" : "Sets the quaternion components from the given axis and angle around that axis.",
+    "overloads" : [ "public Quat setFromAxisRad(Vec3 axis, float radians)", "public Quat setFromAxisRad(float x, float y, float z, float radians)" ],
+    "name" : "setFromAxisRad",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    }, {
+      "name" : "radians",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 437,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setFromMatrix(boolean normalizeAxes, Mat3D matrix) / public Quat setFromMatrix(Mat3D matrix) / public Quat setFromMatrix(boolean normalizeAxes, Mat matrix) / public Quat setFromMatrix(Mat matrix)",
+    "desc" : "Sets the Quaternion from the given matrix, optionally removing any scaling.",
+    "overloads" : [ "public Quat setFromMatrix(boolean normalizeAxes, Mat3D matrix)", "public Quat setFromMatrix(Mat3D matrix)", "public Quat setFromMatrix(boolean normalizeAxes, Mat matrix)", "public Quat setFromMatrix(Mat matrix)" ],
+    "name" : "setFromMatrix",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "normalizeAxes",
+      "type" : "boolean"
+    }, {
+      "name" : "matrix",
+      "type" : "Mat3D"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 472,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz) / public Quat setFromAxes(boolean normalizeAxes, float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz)",
+    "desc" : "<p>",
+    "overloads" : [ "public Quat setFromAxes(float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz)", "public Quat setFromAxes(boolean normalizeAxes, float xx, float xy, float xz, float yx, float yy, float yz, float zx, float zy, float zz)" ],
+    "name" : "setFromAxes",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "xx",
+      "type" : "float"
+    }, {
+      "name" : "xy",
+      "type" : "float"
+    }, {
+      "name" : "xz",
+      "type" : "float"
+    }, {
+      "name" : "yx",
+      "type" : "float"
+    }, {
+      "name" : "yy",
+      "type" : "float"
+    }, {
+      "name" : "yz",
+      "type" : "float"
+    }, {
+      "name" : "zx",
+      "type" : "float"
+    }, {
+      "name" : "zy",
+      "type" : "float"
+    }, {
+      "name" : "zz",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 514,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat setFromCross(Vec3 v1, Vec3 v2) / public Quat setFromCross(float x1, float y1, float z1, float x2, float y2, float z2)",
+    "desc" : "Set this quaternion to the rotation between two vectors.",
+    "overloads" : [ "public Quat setFromCross(Vec3 v1, Vec3 v2)", "public Quat setFromCross(float x1, float y1, float z1, float x2, float y2, float z2)" ],
+    "name" : "setFromCross",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "v1",
+      "type" : "Vec3"
+    }, {
+      "name" : "v2",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 598,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat slerp(Quat end, float alpha) / public Quat slerp(Quat[] q) / public Quat slerp(Quat[] q, float[] w)",
+    "desc" : "Spherical Linear interpolation between this quaternion and the other quaternion, based on the alpha value in the range",
+    "overloads" : [ "public Quat slerp(Quat end, float alpha)", "public Quat slerp(Quat[] q)", "public Quat slerp(Quat[] q, float[] w)" ],
+    "name" : "slerp",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "end",
+      "type" : "Quat"
+    }, {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 627,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Quat exp(float alpha)",
+    "desc" : "Calculates (this quaternion)^alpha where alpha is a real number and stores the result in this quaternion.",
+    "overloads" : null,
+    "name" : "exp",
+    "returnType" : "Quat",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 702,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int hashCode()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hashCode",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 731,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean equals(Object obj)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "equals",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "obj",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 742,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAxisAngle(Vec3 axis)",
+    "desc" : "Get the axis angle representation of the rotation in degrees.",
+    "overloads" : null,
+    "name" : "getAxisAngle",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 805,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAxisAngleRad(Vec3 axis)",
+    "desc" : "Get the axis-angle representation of the rotation in radians.",
+    "overloads" : null,
+    "name" : "getAxisAngleRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axis",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 820,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAngleRad()",
+    "desc" : "Get the angle in radians of the rotation this quaternion represents.",
+    "overloads" : null,
+    "name" : "getAngleRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 845,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAngle()",
+    "desc" : "Get the angle in degrees of the rotation this quaternion represents.",
+    "overloads" : null,
+    "name" : "getAngle",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 854,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void getSwingTwist(float axisX, float axisY, float axisZ, Quat swing, Quat twist) / public void getSwingTwist(Vec3 axis, Quat swing, Quat twist)",
+    "desc" : "Get the swing rotation and twist rotation for the specified axis.",
+    "overloads" : [ "public void getSwingTwist(float axisX, float axisY, float axisZ, Quat swing, Quat twist)", "public void getSwingTwist(Vec3 axis, Quat swing, Quat twist)" ],
+    "name" : "getSwingTwist",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axisX",
+      "type" : "float"
+    }, {
+      "name" : "axisY",
+      "type" : "float"
+    }, {
+      "name" : "axisZ",
+      "type" : "float"
+    }, {
+      "name" : "swing",
+      "type" : "Quat"
+    }, {
+      "name" : "twist",
+      "type" : "Quat"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 870,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAngleAroundRad(float axisX, float axisY, float axisZ) / public float getAngleAroundRad(Vec3 axis)",
+    "desc" : "Get the angle in radians of the rotation around the specified axis.",
+    "overloads" : [ "public float getAngleAroundRad(float axisX, float axisY, float axisZ)", "public float getAngleAroundRad(Vec3 axis)" ],
+    "name" : "getAngleAroundRad",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axisX",
+      "type" : "float"
+    }, {
+      "name" : "axisY",
+      "type" : "float"
+    }, {
+      "name" : "axisZ",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 899,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAngleAround(float axisX, float axisY, float axisZ) / public float getAngleAround(Vec3 axis)",
+    "desc" : "Get the angle in degrees of the rotation around the specified axis.",
+    "overloads" : [ "public float getAngleAround(float axisX, float axisY, float axisZ)", "public float getAngleAround(Vec3 axis)" ],
+    "name" : "getAngleAround",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "axisX",
+      "type" : "float"
+    }, {
+      "name" : "axisY",
+      "type" : "float"
+    }, {
+      "name" : "axisZ",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 922,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Ray.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "Encapsulates a ray having a starting position and a unit length direction.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Vec3 origin",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "origin",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Vec3 direction",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "direction",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Ray() / public Ray(Vec3 origin, Vec3 direction)",
+    "desc" : "Constructor, sets the starting position of the ray and the direction.",
+    "overloads" : [ "public Ray()", "public Ray(Vec3 origin, Vec3 direction)" ],
+    "name" : "Ray",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Ray cpy()",
+    "desc" : "@return a copy of this ray.",
+    "overloads" : null,
+    "name" : "cpy",
+    "returnType" : "Ray",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec3 getEndPoint(Vec3 out, float distance)",
+    "desc" : "Returns the endpoint given the distance.",
+    "overloads" : null,
+    "name" : "getEndPoint",
+    "returnType" : "Vec3",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "out",
+      "type" : "Vec3"
+    }, {
+      "name" : "distance",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Ray set(Vec3 origin, Vec3 direction) / public Ray set(float x, float y, float z, float dx, float dy, float dz) / public Ray set(Ray ray)",
+    "desc" : "Sets the starting position and the direction of this ray.",
+    "overloads" : [ "public Ray set(Vec3 origin, Vec3 direction)", "public Ray set(float x, float y, float z, float dx, float dy, float dz)", "public Ray set(Ray ray)" ],
+    "name" : "set",
+    "returnType" : "Ray",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "origin",
+      "type" : "Vec3"
+    }, {
+      "name" : "direction",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : "{@inheritDoc}",
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 79,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean equals(Object o)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "equals",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "o",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 84,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int hashCode()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hashCode",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 92,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Segment.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "A Segment is a line in 3-space having a staring and an ending position.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Vec3 a",
+    "desc" : "the starting position *",
+    "overloads" : null,
+    "name" : "a",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Vec3 b",
+    "desc" : "the ending position *",
+    "overloads" : null,
+    "name" : "b",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Segment(Vec3 a, Vec3 b) / public Segment(float aX, float aY, float aZ, float bX, float bY, float bZ)",
+    "desc" : "Constructs a new Segment from the two points given.",
+    "overloads" : [ "public Segment(Vec3 a, Vec3 b)", "public Segment(float aX, float aY, float aZ, float bX, float bY, float bZ)" ],
+    "name" : "Segment",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "Vec3"
+    }, {
+      "name" : "b",
+      "type" : "Vec3"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public float len()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "len",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float len2()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "len2",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean equals(Object o)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "equals",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "o",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int hashCode()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hashCode",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Sphere.java",
+  "pkg" : "arc.math.geom",
+  "type" : "Java class",
+  "typeDesc" : "Encapsulates a 3D sphere with a center and a radius",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float PI_4_3",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "PI_4_3",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Vec3 center",
+    "desc" : "the center of the sphere *",
+    "overloads" : null,
+    "name" : "center",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float radius",
+    "desc" : "the radius of the sphere *",
+    "overloads" : null,
+    "name" : "radius",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Sphere(Vec3 center, float radius)",
+    "desc" : "Constructs a sphere with the given center and radius",
+    "overloads" : null,
+    "name" : "Sphere",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "center",
+      "type" : "Vec3"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean overlaps(Sphere sphere)",
+    "desc" : "@param sphere the other sphere",
+    "overloads" : null,
+    "name" : "overlaps",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "sphere",
+      "type" : "Sphere"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int hashCode()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hashCode",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean equals(Object o)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "equals",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "o",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 43,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float volume()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "volume",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 51,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float surfaceArea()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "surfaceArea",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

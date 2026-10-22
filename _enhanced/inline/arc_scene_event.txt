@@ -1,0 +1,484 @@
+// ChangeListener.java : public boolean handle(SceneEvent event)
+    @Override
+    public boolean handle(SceneEvent event){
+        if(!(event instanceof ChangeEvent)) return false;
+        changed((ChangeEvent)event, event.targetActor);
+        return false;
+    }
+
+// ClickListener.java : public void touchDragged(InputEvent event, float x, float y, int pointer)
+    @Override
+    public void touchDragged(InputEvent event, float x, float y, int pointer){
+        if(pointer != pressedPointer || cancelled) return;
+        pressed = isOver(event.listenerActor, x, y);
+        if(pressed && pointer == 0 && button != null && !Core.input.keyDown(button)) pressed = false;
+        if(!pressed){
+            // Once outside the tap square, don't use the tap square anymore.
+            invalidateTapSquare();
+        }
+    }
+
+// ClickListener.java : public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+    @Override
+    public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+        if(pointer == -1 && !cancelled) over = true;
+        if(!cancelled) overAny = true;
+    }
+
+// ClickListener.java : public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+    @Override
+    public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
+        if(pointer == -1 && !cancelled) over = false;
+        if(!cancelled) overAny = false;
+    }
+
+// ClickListener.java : public void cancel()
+    public void cancel(){
+        if(pressedPointer == -1) return;
+        cancelled = true;
+        pressed = false;
+    }
+
+// ClickListener.java : public void clicked(InputEvent event, float x, float y)
+    public void clicked(InputEvent event, float x, float y){
+    }
+
+// ClickListener.java : public boolean isOver(Element element, float x, float y) / public boolean isOver()
+    public boolean isOver(Element element, float x, float y){
+        element.localToStageCoordinates(Tmp.v1.set(x, y));
+        Element hit = Core.scene.hit(Tmp.v1.x, Tmp.v1.y, true);
+        return hit != null && hit.isDescendantOf(element);
+    }
+
+// ClickListener.java : public boolean inTapSquare(float x, float y) / public boolean inTapSquare()
+    public boolean inTapSquare(float x, float y){
+        return (!(touchDownX == -1) || !(touchDownY == -1)) && Math.abs(x - touchDownX) < tapSquareSize && Math.abs(y - touchDownY) < tapSquareSize;
+    }
+
+// ClickListener.java : public void invalidateTapSquare()
+    public void invalidateTapSquare(){
+        touchDownX = -1;
+        touchDownY = -1;
+    }
+
+// ClickListener.java : public boolean isPressed()
+    public boolean isPressed(){
+        return pressed;
+    }
+
+// ClickListener.java : public boolean isVisualPressed()
+    public boolean isVisualPressed(){
+        if(pressed) return true;
+        if(visualPressedTime <= 0) return false;
+        if(visualPressedTime > Time.millis()) return true;
+        visualPressedTime = 0;
+        return false;
+    }
+
+// ClickListener.java : public float getTapSquareSize()
+    public float getTapSquareSize(){
+        return tapSquareSize;
+    }
+
+// ClickListener.java : public void setTapSquareSize(float halfTapSquareSize)
+    public void setTapSquareSize(float halfTapSquareSize){
+        tapSquareSize = halfTapSquareSize;
+    }
+
+// ClickListener.java : public void setTapCountInterval(float tapCountInterval)
+    public void setTapCountInterval(float tapCountInterval){
+        this.tapCountInterval = (long)(tapCountInterval * 1000000000L);
+    }
+
+// ClickListener.java : public int getTapCount()
+    public int getTapCount(){
+        return tapCount;
+    }
+
+// ClickListener.java : public void setTapCount(int tapCount)
+    public void setTapCount(int tapCount){
+        this.tapCount = tapCount;
+    }
+
+// ClickListener.java : public float getTouchDownX()
+    public float getTouchDownX(){
+        return touchDownX;
+    }
+
+// ClickListener.java : public float getTouchDownY()
+    public float getTouchDownY(){
+        return touchDownY;
+    }
+
+// ClickListener.java : public KeyCode getPressedButton()
+    public KeyCode getPressedButton(){
+        return pressedButton;
+    }
+
+// ClickListener.java : public int getPressedPointer()
+    public int getPressedPointer(){
+        return pressedPointer;
+    }
+
+// ClickListener.java : public KeyCode getButton()
+    public KeyCode getButton(){
+        return button;
+    }
+
+// ClickListener.java : public void setButton(KeyCode button)
+    public void setButton(KeyCode button){
+        this.button = button;
+    }
+
+// DragListener.java : public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+        if(pressedPointer != -1) return false;
+        if(pointer == 0 && this.button != -1 && button != this.button) return false;
+        pressedPointer = pointer;
+        touchDownX = x;
+        touchDownY = y;
+        stageTouchDownX = event.stageX;
+        stageTouchDownY = event.stageY;
+        return true;
+    }
+
+// DragListener.java : public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+    public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+        if(pointer == pressedPointer){
+            if(dragging) dragStop(event, x, y, pointer);
+            cancel();
+        }
+    }
+
+// DragListener.java : public void dragStart(InputEvent event, float x, float y, int pointer)
+    public void dragStart(InputEvent event, float x, float y, int pointer){
+    }
+
+// DragListener.java : public void drag(InputEvent event, float x, float y, int pointer)
+    public void drag(InputEvent event, float x, float y, int pointer){
+    }
+
+// DragListener.java : public void dragStop(InputEvent event, float x, float y, int pointer)
+    public void dragStop(InputEvent event, float x, float y, int pointer){
+    }
+
+// DragListener.java : public void cancel()
+    public void cancel(){
+        dragging = false;
+        pressedPointer = -1;
+    }
+
+// DragListener.java : public boolean isDragging()
+    public boolean isDragging(){
+        return dragging;
+    }
+
+// DragListener.java : public float getTapSquareSize()
+    public float getTapSquareSize(){
+        return tapSquareSize;
+    }
+
+// DragListener.java : public void setTapSquareSize(float halfTapSquareSize)
+    public void setTapSquareSize(float halfTapSquareSize){
+        tapSquareSize = halfTapSquareSize;
+    }
+
+// DragListener.java : public float getTouchDownX()
+    public float getTouchDownX(){
+        return touchDownX;
+    }
+
+// DragListener.java : public float getTouchDownY()
+    public float getTouchDownY(){
+        return touchDownY;
+    }
+
+// DragListener.java : public float getStageTouchDownX()
+    public float getStageTouchDownX(){
+        return stageTouchDownX;
+    }
+
+// DragListener.java : public float getStageTouchDownY()
+    public float getStageTouchDownY(){
+        return stageTouchDownY;
+    }
+
+// DragListener.java : public float getDeltaX()
+    public float getDeltaX(){
+        return deltaX;
+    }
+
+// DragListener.java : public float getDeltaY()
+    public float getDeltaY(){
+        return deltaY;
+    }
+
+// DragListener.java : public int getButton()
+    public int getButton(){
+        return button;
+    }
+
+// DragListener.java : public void setButton(int button)
+    public void setButton(int button){
+        this.button = button;
+    }
+
+// DragScrollListener.java : public void setup(float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs)
+    public void setup(float minSpeedPixels, float maxSpeedPixels, float tickSecs, float rampSecs){
+        this.minSpeed = minSpeedPixels;
+        this.maxSpeed = maxSpeedPixels;
+        this.tickSecs = tickSecs;
+        rampTime = (long)(rampSecs * 1000);
+    }
+
+// DragScrollListener.java : float getScrollPixels()
+    float getScrollPixels(){
+        return interpolation.apply(minSpeed, maxSpeed, Math.min(1, (System.currentTimeMillis() - startTime) / (float)rampTime));
+    }
+
+// DragScrollListener.java : public void dragStop(InputEvent event, float x, float y, int pointer)
+    @Override
+    public void dragStop(InputEvent event, float x, float y, int pointer){
+        scrollUp.cancel();
+        scrollDown.cancel();
+    }
+
+// ElementGestureListener.java : public void touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public void touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
+    }
+
+// ElementGestureListener.java : public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
+    }
+
+// ElementGestureListener.java : public void tap(InputEvent event, float x, float y, int count, KeyCode button)
+    public void tap(InputEvent event, float x, float y, int count, KeyCode button){
+    }
+
+// ElementGestureListener.java : public boolean longPress(Element actor, float x, float y)
+    public boolean longPress(Element actor, float x, float y){
+        return false;
+    }
+
+// ElementGestureListener.java : public void fling(InputEvent event, float velocityX, float velocityY, KeyCode button)
+    public void fling(InputEvent event, float velocityX, float velocityY, KeyCode button){
+    }
+
+// ElementGestureListener.java : public void pan(InputEvent event, float x, float y, float deltaX, float deltaY)
+    public void pan(InputEvent event, float x, float y, float deltaX, float deltaY){
+    }
+
+// ElementGestureListener.java : public void zoom(InputEvent event, float initialDistance, float distance)
+    public void zoom(InputEvent event, float initialDistance, float distance){
+    }
+
+// ElementGestureListener.java : public void pinch(InputEvent event, Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)
+    public void pinch(InputEvent event, Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2){
+    }
+
+// ElementGestureListener.java : public GestureDetector getGestureDetector()
+    public GestureDetector getGestureDetector(){
+        return detector;
+    }
+
+// ElementGestureListener.java : public Element getTouchDownTarget()
+    public Element getTouchDownTarget(){
+        return touchDownTarget;
+    }
+
+// FocusListener.java : public void keyboardFocusChanged(FocusEvent event, Element element, boolean focused)
+    public void keyboardFocusChanged(FocusEvent event, Element element, boolean focused){
+    }
+
+// FocusListener.java : public void scrollFocusChanged(FocusEvent event, Element element, boolean focused)
+    public void scrollFocusChanged(FocusEvent event, Element element, boolean focused){
+    }
+
+// HandCursorListener.java : public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+    @Override
+    public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+        super.enter(event, x, y, pointer, fromActor);
+
+        if(pointer != -1 || !enabled.get() || (checkEnabled && (isDisabled(event.targetActor) || isDisabled(fromActor)))){
+            return;
+        }
+
+        Core.graphics.cursor(SystemCursor.hand);
+    }
+
+// HandCursorListener.java : public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+    @Override
+    public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
+        super.exit(event, x, y, pointer, toActor);
+
+        if(pointer == -1){
+            Core.graphics.restoreCursor();
+        }
+    }
+
+// HandCursorListener.java : static boolean isDisabled(Element element)
+    static boolean isDisabled(Element element){
+        return element != null && (((element instanceof Disableable && ((Disableable)element).isDisabled()) || !element.visible) || isDisabled(element.parent));
+    }
+
+// IbeamCursorListener.java : public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+    @Override
+    public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+        super.enter(event, x, y, pointer, fromActor);
+        if(pointer == -1 && event.targetActor.visible){
+            Core.graphics.cursor(SystemCursor.ibeam);
+        }
+    }
+
+// IbeamCursorListener.java : public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+    @Override
+    public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
+        super.exit(event, x, y, pointer, toActor);
+        if(pointer == -1){
+            Core.graphics.restoreCursor();
+        }
+    }
+
+// InputEvent.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        relatedActor = null;
+    }
+
+// InputEvent.java : public Vec2 toCoordinates(Element actor, Vec2 actorCoords)
+    public Vec2 toCoordinates(Element actor, Vec2 actorCoords){
+        actorCoords.set(stageX, stageY);
+        actor.stageToLocalCoordinates(actorCoords);
+        return actorCoords;
+    }
+
+// InputEvent.java : public boolean isTouchFocusCancel()
+    public boolean isTouchFocusCancel(){
+        return stageX == Integer.MIN_VALUE || stageY == Integer.MIN_VALUE;
+    }
+
+// InputEvent.java : public String toString()
+    @Override
+    public String toString(){
+        return type.toString();
+    }
+
+// InputListener.java : public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button){
+        return false;
+    }
+
+// InputListener.java : public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button)
+    public void touchUp(InputEvent event, float x, float y, int pointer, KeyCode button){
+    }
+
+// InputListener.java : public void touchDragged(InputEvent event, float x, float y, int pointer)
+    public void touchDragged(InputEvent event, float x, float y, int pointer){
+    }
+
+// InputListener.java : public boolean mouseMoved(InputEvent event, float x, float y)
+    public boolean mouseMoved(InputEvent event, float x, float y){
+        return false;
+    }
+
+// InputListener.java : public void enter(InputEvent event, float x, float y, int pointer, Element fromActor)
+    public void enter(InputEvent event, float x, float y, int pointer, Element fromActor){
+    }
+
+// InputListener.java : public void exit(InputEvent event, float x, float y, int pointer, Element toActor)
+    public void exit(InputEvent event, float x, float y, int pointer, Element toActor){
+    }
+
+// InputListener.java : public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY)
+    public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY){
+        return false;
+    }
+
+// InputListener.java : public boolean keyDown(InputEvent event, KeyCode keycode)
+    public boolean keyDown(InputEvent event, KeyCode keycode){
+        return false;
+    }
+
+// InputListener.java : public boolean keyUp(InputEvent event, KeyCode keycode)
+    public boolean keyUp(InputEvent event, KeyCode keycode){
+        return false;
+    }
+
+// InputListener.java : public boolean keyTyped(InputEvent event, char character)
+    public boolean keyTyped(InputEvent event, char character){
+        return false;
+    }
+
+// ResizeListener.java : public boolean handle(SceneEvent event)
+    @Override
+    public boolean handle(SceneEvent event){
+        if(event instanceof SceneResizeEvent){
+            //always returns false, because resizing is global.
+            resized();
+        }
+        return false;
+    }
+
+// ResizeListener.java : public void resized()
+    public void resized(){
+
+    }
+
+// SceneEvent.java : public void handle()
+    public void handle(){
+        handled = true;
+    }
+
+// SceneEvent.java : public void cancel()
+    public void cancel(){
+        cancelled = true;
+        stopped = true;
+        handled = true;
+    }
+
+// SceneEvent.java : public void stop()
+    public void stop(){
+        stopped = true;
+    }
+
+// SceneEvent.java : public void reset()
+    @Override
+    public void reset(){
+        targetActor = null;
+        listenerActor = null;
+        capture = false;
+        bubbles = true;
+        handled = false;
+        stopped = false;
+        cancelled = false;
+    }
+
+// VisibilityEvent.java : public boolean isHide()
+    public boolean isHide(){
+        return hide;
+    }
+
+// VisibilityListener.java : public boolean handle(SceneEvent event)
+    @Override
+    public boolean handle(SceneEvent event){
+        if(event instanceof VisibilityEvent){
+            if(((VisibilityEvent)event).isHide()){
+                return hidden();
+            }else{
+                return shown();
+            }
+        }
+        return false;
+    }
+
+// VisibilityListener.java : public boolean shown()
+    public boolean shown(){
+        return false;
+    }
+
+// VisibilityListener.java : public boolean hidden()
+    public boolean hidden(){
+        return false;
+    }
+

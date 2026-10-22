@@ -1,0 +1,452 @@
+[ {
+  "file" : "CallGenerator.java",
+  "pkg" : "mindustry.annotations.remote",
+  "type" : "Java class",
+  "typeDesc" : "Generates code for writing remote invoke packets on the client and server.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void generate(ClassSerializer serializer, Seq<MethodEntry> methods) throws IOException",
+    "desc" : "Generates all classes in this list.",
+    "overloads" : null,
+    "name" : "generate",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "serializer",
+      "type" : "ClassSerializer"
+    }, {
+      "name" : "methods",
+      "type" : "Seq<MethodEntry>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void makeWriter(TypeSpec.Builder typespec, MethodEntry ent, ClassSerializer serializer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "makeWriter",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "typespec",
+      "type" : "TypeSpec.Builder"
+    }, {
+      "name" : "ent",
+      "type" : "MethodEntry"
+    }, {
+      "name" : "serializer",
+      "type" : "ClassSerializer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 108,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void makeReader(TypeSpec.Builder typespec, MethodEntry ent, ClassSerializer serializer)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "makeReader",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "typespec",
+      "type" : "TypeSpec.Builder"
+    }, {
+      "name" : "ent",
+      "type" : "MethodEntry"
+    }, {
+      "name" : "serializer",
+      "type" : "ClassSerializer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 156,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void writeCallMethod(TypeSpec.Builder classBuilder, MethodEntry ent, boolean toAll, boolean forwarded)",
+    "desc" : "Creates a specific variant for a method entry.",
+    "overloads" : null,
+    "name" : "writeCallMethod",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "classBuilder",
+      "type" : "TypeSpec.Builder"
+    }, {
+      "name" : "ent",
+      "type" : "MethodEntry"
+    }, {
+      "name" : "toAll",
+      "type" : "boolean"
+    }, {
+      "name" : "forwarded",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 224,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static String getCheckString(Loc loc)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCheckString",
+    "returnType" : "String",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "loc",
+      "type" : "Loc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 351,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static MethodSpec writeHandleMethod(MethodEntry ent, boolean isClient)",
+    "desc" : "Generates handleServer / handleClient methods.",
+    "overloads" : null,
+    "name" : "writeHandleMethod",
+    "returnType" : "MethodSpec",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ent",
+      "type" : "MethodEntry"
+    }, {
+      "name" : "isClient",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 359,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MethodEntry.java",
+  "pkg" : "mindustry.annotations.remote",
+  "type" : "Java class",
+  "typeDesc" : "Class that repesents a remote method to be constructed and put into a class.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final String className",
+    "desc" : "Simple target class name.",
+    "overloads" : null,
+    "name" : "className",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final String targetMethod",
+    "desc" : "Fully qualified target method to call.",
+    "overloads" : null,
+    "name" : "targetMethod",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final String packetClassName",
+    "desc" : "Simple name of the generated packet class.",
+    "overloads" : null,
+    "name" : "packetClassName",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Loc where",
+    "desc" : "Whether this method can be called on a client/server.",
+    "overloads" : null,
+    "name" : "where",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Variant target",
+    "desc" : "Whether an additional 'one' and 'all' method variant is generated.",
+    "overloads" : null,
+    "name" : "target",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Loc local",
+    "desc" : "Whether this method is called locally as well as remotely.",
+    "overloads" : null,
+    "name" : "local",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final boolean unreliable",
+    "desc" : "Whether this method is unreliable and uses UDP.",
+    "overloads" : null,
+    "name" : "unreliable",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final boolean forward",
+    "desc" : "Whether to forward this method call to all other clients when a client invokes it.",
+    "overloads" : null,
+    "name" : "forward",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final int id",
+    "desc" : "Unique method ID.",
+    "overloads" : null,
+    "name" : "id",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final Smethod element",
+    "desc" : "The element method associated with this entry.",
+    "overloads" : null,
+    "name" : "element",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final PacketPriority priority",
+    "desc" : "The assigned packet priority.",
+    "overloads" : null,
+    "name" : "priority",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MethodEntry(String className, String targetMethod, String packetClassName, Loc where, Variant target, Loc local, boolean unreliable, boolean forward, int id, Smethod element, PacketPriority priority)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MethodEntry",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "className",
+      "type" : "String"
+    }, {
+      "name" : "targetMethod",
+      "type" : "String"
+    }, {
+      "name" : "packetClassName",
+      "type" : "String"
+    }, {
+      "name" : "where",
+      "type" : "Loc"
+    }, {
+      "name" : "target",
+      "type" : "Variant"
+    }, {
+      "name" : "local",
+      "type" : "Loc"
+    }, {
+      "name" : "unreliable",
+      "type" : "boolean"
+    }, {
+      "name" : "forward",
+      "type" : "boolean"
+    }, {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "element",
+      "type" : "Smethod"
+    }, {
+      "name" : "priority",
+      "type" : "PacketPriority"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public int hashCode()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hashCode",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 49,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoteProcess.java",
+  "pkg" : "mindustry.annotations.remote",
+  "type" : "Java class extends mindustry.annotations.BaseProcessor",
+  "typeDesc" : "The annotation processor for generating remote method call code.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final String callLocation",
+    "desc" : "Simple class name of generated class name.",
+    "overloads" : null,
+    "name" : "callLocation",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void process(RoundEnvironment roundEnv) throws Exception",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "process",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "roundEnv",
+      "type" : "RoundEnvironment"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SerializerResolver.java",
+  "pkg" : "mindustry.annotations.remote",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static String locate(ExecutableElement elem, TypeMirror mirror, boolean write)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "locate",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "elem",
+      "type" : "ExecutableElement"
+    }, {
+      "name" : "mirror",
+      "type" : "TypeMirror"
+    }, {
+      "name" : "write",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean isEntity(TypeMirror mirror)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isEntity",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "mirror",
+      "type" : "TypeMirror"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

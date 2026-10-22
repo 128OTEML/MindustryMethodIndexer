@@ -1,0 +1,86 @@
+AsteroidGenerator.java
+Java class extends mindustry.maps.generators.BlankPlanetGenerator
+fields:
+  public int min
+  public float radMin
+  public float fmag
+  public float stoneChance
+  public float thoriumScl
+  Rand rand
+  int seed
+methods:
+  void asteroid(int ax, int ay, int radius)
+  public void generate()
+  public int getSectorSize(Sector sector)
+
+ErekirPlanetGenerator.java
+Java class extends mindustry.maps.generators.PlanetGenerator
+fields:
+  public float heightScl
+  public static float arkThresh  // TODO inline/remove
+  public static int arkSeed
+  public static float liqThresh
+  public static int crystalSeed
+  public static float crystalScl
+  public static float airThresh
+  Block terrain
+methods:
+  public float getHeight(Vec3 position)
+  public void getColor(Vec3 position, Color out)
+  public float getSizeScl()
+  float rawHeight(Vec3 position)
+  float rawTemp(Vec3 position)
+  Block getBlock(Vec3 position)
+  public void genTile(Vec3 position, TileGen tile)
+  protected void generate()
+
+SerpuloPlanetGenerator.java
+Java class extends mindustry.maps.generators.PlanetGenerator
+fields:
+  public static boolean indirectPaths  // alternate, less direct generation
+  public static boolean genLakes  // random water patches
+  BaseGenerator basegen
+  float heightYOffset
+  float scl
+  float waterOffset
+  float heightScl
+  Block arr
+  ObjectMap<Block,Block> dec
+  ObjectMap<Block,Block> tars
+  float water
+  Vec3 basePos  // megabase position
+  static double metalDstScl
+methods:
+  float rawHeight(Vec3 position)
+  public void onSectorCaptured(Sector sector)
+  public void onSectorLost(Sector sector)
+  public void beforeSaveWrite(Sector sector)
+  public boolean isEmissive()
+  public boolean allowNumberedLaunch(Sector s)
+  public boolean allowLanding(Sector sector)
+  public Sector findLaunchCandidate(Sector destination, Sector selected)
+  public void getLockedText(Sector hovered, StringBuilder out)
+  public float getHeight(Vec3 position)
+  public void getColor(Vec3 position, Color out)
+  public void getEmissiveColor(Vec3 position, Color out)
+  public void genTile(Vec3 position, TileGen tile)
+  Block getBlock(Vec3 position, boolean visualOnly)
+  protected float noise(float x, float y, double octaves, double falloff, double scl, double mag)
+  protected void generate()
+  public void postGenerate(Tiles tiles)
+
+TantrosPlanetGenerator.java
+Java class extends mindustry.maps.generators.PlanetGenerator
+fields:
+  Color c1
+  Block arr
+methods:
+  public float getHeight(Vec3 position)
+  public void getColor(Vec3 position, Color out)
+  public float getSizeScl()
+  public void addWeather(Sector sector, Rules rules)
+  public void genTile(Vec3 position, TileGen tile)
+  protected void generate()
+  float rawHeight(Vec3 position)
+  Block getBlock(Vec3 position)
+

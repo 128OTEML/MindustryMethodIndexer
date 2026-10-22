@@ -1,0 +1,1493 @@
+// CellLiquid.java : public float react(Liquid other, float amount, Tile tile, float x, float y)
+    @Override
+    public float react(Liquid other, float amount, Tile tile, float x, float y){
+        if(other == spreadTarget){
+            return amount;
+        }
+        return 0f;
+    }
+
+// ErrorContent.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.error;
+    }
+
+// Item.java : public boolean isOnPlanet(Planet planet)
+    @Override
+    public boolean isOnPlanet(Planet planet){
+        //hidden items should not appear on any planet's resource selection screen
+        return super.isOnPlanet(planet) && !hidden;
+    }
+
+// Item.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return hidden;
+    }
+
+// Item.java : public void setStats()
+    @Override
+    public void setStats(){
+        stats.addPercent(Stat.explosiveness, explosiveness);
+        stats.addPercent(Stat.flammability, flammability);
+        stats.addPercent(Stat.radioactivity, radioactivity);
+        stats.addPercent(Stat.charge, charge);
+    }
+
+// Item.java : public String toString()
+    @Override
+    public String toString(){
+        return localizedName;
+    }
+
+// Item.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.item;
+    }
+
+// Item.java : public double sense(LAccess sensor)
+    @Override
+    public double sense(LAccess sensor){
+        if(sensor == LAccess.color) return color.toDoubleBits();
+        if(sensor == LAccess.id) return getLogicId();
+        return Float.NaN;
+    }
+
+// Item.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        if(sensor == LAccess.name) return name;
+        return noSensed;
+    }
+
+// Item.java : public static Seq<Item> getAllOres()
+    public static Seq<Item> getAllOres(){
+        return content.blocks().select(b -> b instanceof OreBlock).map(b -> b.itemDrop);
+    }
+
+// ItemSeq.java : public void checkNegative()
+    public void checkNegative(){
+        for(int i = 0; i < values.length; i++){
+            if(values[i] < 0) values[i] = 0;
+        }
+    }
+
+// ItemSeq.java : public ItemSeq copy()
+    public ItemSeq copy(){
+        ItemSeq out = new ItemSeq();
+        out.total = total;
+        System.arraycopy(values, 0, out.values, 0, values.length);
+        return out;
+    }
+
+// ItemSeq.java : public void each(ItemConsumer cons)
+    public void each(ItemConsumer cons){
+        for(int i = 0; i < values.length; i++){
+            if(values[i] != 0){
+                cons.accept(Vars.content.item(i), values[i]);
+            }
+        }
+    }
+
+// ItemSeq.java : public void clear()
+    public void clear(){
+        total = 0;
+        Arrays.fill(values, 0);
+    }
+
+// ItemSeq.java : public Seq<ItemStack> toSeq()
+    public Seq<ItemStack> toSeq(){
+        Seq<ItemStack> out = new Seq<>();
+        for(int i = 0; i < values.length; i++){
+            if(values[i] != 0) out.add(new ItemStack(Vars.content.item(i), values[i]));
+        }
+        return out;
+    }
+
+// ItemSeq.java : public void min(int number)
+    public void min(int number){
+        for(Item item : Vars.content.items()){
+            set(item, Math.min(get(item), number));
+        }
+    }
+
+// ItemSeq.java : public boolean has(Item item) / public boolean has(ItemSeq seq) / public boolean has(Item item, int amount)
+    public boolean has(Item item){
+        return values[item.id] > 0;
+    }
+
+// ItemSeq.java : public int get(Item item)
+    public int get(Item item){
+        return values[item.id];
+    }
+
+// ItemSeq.java : public void set(Item item, int amount)
+    public void set(Item item, int amount){
+        add(item, amount - values[item.id]);
+    }
+
+// ItemSeq.java : public void add(ItemModule itemModule) / public void add(ItemStack[] stacks) / public void add(ItemSeq seq) / public void add(ItemStack stack) / public void add(Item item) / public void add(Item item, int amount)
+    public void add(ItemModule itemModule){
+        itemModule.each(this::add);
+    }
+
+// ItemSeq.java : public void remove(ItemStack stack) / public void remove(Item item) / public void remove(Item item, int amount)
+    public void remove(ItemStack stack){
+        add(stack.item, -stack.amount);
+    }
+
+// ItemSeq.java : public void write(Json json)
+    @Override
+    public void write(Json json){
+        for(Item item : Vars.content.items()){
+            if(values[item.id] != 0){
+                json.writeValue(item.name, values[item.id]);
+            }
+        }
+    }
+
+// ItemSeq.java : public void read(Json json, JsonValue jsonData)
+    @Override
+    public void read(Json json, JsonValue jsonData){
+        total = 0;
+        for(Item item : Vars.content.items()){
+            values[item.id] = jsonData.getInt(item.name, 0);
+            total += values[item.id];
+        }
+    }
+
+// ItemSeq.java : public String toString()
+    @Override
+    public String toString(){
+        return JsonIO.print(JsonIO.write(this));
+    }
+
+// ItemSeq.java : public Iterator<ItemStack> iterator()
+    @Override
+    public Iterator<ItemStack> iterator(){
+        return toSeq().iterator();
+    }
+
+// ItemStack.java : public ItemStack set(Item item, int amount)
+    public ItemStack set(Item item, int amount){
+        this.item = item;
+        this.amount = amount;
+        return this;
+    }
+
+// ItemStack.java : public ItemStack copy() / public static ItemStack[] copy(ItemStack[] stacks)
+    public ItemStack copy(){
+        return new ItemStack(item, amount);
+    }
+
+// ItemStack.java : public boolean equals(ItemStack other) / public boolean equals(Object o)
+    public boolean equals(ItemStack other){
+        return other != null && other.item == item && other.amount == amount;
+    }
+
+// ItemStack.java : public static ItemStack[] mult(ItemStack[] stacks, float amount)
+    public static ItemStack[] mult(ItemStack[] stacks, float amount){
+        var copy = new ItemStack[stacks.length];
+        for(int i = 0; i < copy.length; i++){
+            copy[i] = new ItemStack(stacks[i].item, Mathf.round(stacks[i].amount * amount));
+        }
+        return copy;
+    }
+
+// ItemStack.java : public static ItemStack[] with(Object items)
+    public static ItemStack[] with(Object... items){
+        var stacks = new ItemStack[items.length / 2];
+        for(int i = 0; i < items.length; i += 2){
+            stacks[i / 2] = new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue());
+        }
+        return stacks;
+    }
+
+// ItemStack.java : public static Seq<ItemStack> list(Object items)
+    public static Seq<ItemStack> list(Object... items){
+        Seq<ItemStack> stacks = new Seq<>(items.length / 2);
+        for(int i = 0; i < items.length; i += 2){
+            stacks.add(new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue()));
+        }
+        return stacks;
+    }
+
+// ItemStack.java : public int compareTo(ItemStack itemStack)
+    @Override
+    public int compareTo(ItemStack itemStack){
+        return item.compareTo(itemStack.item);
+    }
+
+// ItemStack.java : public String toString()
+    @Override
+    public String toString(){
+        return item + ": " + amount;
+    }
+
+// Liquid.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return hidden;
+    }
+
+// Liquid.java : public int getAnimationFrame()
+    public int getAnimationFrame(){
+        return (int)(Time.time / (gas ? animationScaleGas : animationScaleLiquid) * animationFrames + id*5) % animationFrames;
+    }
+
+// Liquid.java : public boolean willBoil()
+    public boolean willBoil(){
+        return Attribute.heat.env() >= boilPoint;
+    }
+
+// Liquid.java : public boolean canExtinguish()
+    public boolean canExtinguish(){
+        return flammability < 0.1f && temperature <= 0.5f;
+    }
+
+// Liquid.java : public Color barColor()
+    public Color barColor(){
+        return barColor == null ? color : barColor;
+    }
+
+// Liquid.java : public void update(Puddle puddle)
+    public void update(Puddle puddle){
+
+    }
+
+// Liquid.java : public float react(Liquid other, float amount, Tile tile, float x, float y)
+    public float react(Liquid other, float amount, Tile tile, float x, float y){
+        return 0f;
+    }
+
+// Liquid.java : public void setStats()
+    @Override
+    public void setStats(){
+        stats.addPercent(Stat.explosiveness, explosiveness);
+        stats.addPercent(Stat.flammability, flammability);
+        stats.addPercent(Stat.temperature, temperature);
+        stats.addPercent(Stat.heatCapacity, heatCapacity);
+        stats.addPercent(Stat.viscosity, viscosity);
+    }
+
+// Liquid.java : public double sense(LAccess sensor)
+    @Override
+    public double sense(LAccess sensor){
+        if(sensor == LAccess.color) return color.toDoubleBits();
+        if(sensor == LAccess.id) return getLogicId();
+        return Double.NaN;
+    }
+
+// Liquid.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        if(sensor == LAccess.name) return name;
+        return noSensed;
+    }
+
+// Liquid.java : public String toString()
+    @Override
+    public String toString(){
+        return localizedName;
+    }
+
+// Liquid.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.liquid;
+    }
+
+// LiquidStack.java : public LiquidStack set(Liquid liquid, float amount)
+    public LiquidStack set(Liquid liquid, float amount){
+        this.liquid = liquid;
+        this.amount = amount;
+        return this;
+    }
+
+// LiquidStack.java : public LiquidStack copy()
+    public LiquidStack copy(){
+        return new LiquidStack(liquid, amount);
+    }
+
+// LiquidStack.java : public boolean equals(LiquidStack other) / public boolean equals(Object o)
+    public boolean equals(LiquidStack other){
+        return other != null && other.liquid == liquid && other.amount == amount;
+    }
+
+// LiquidStack.java : public static LiquidStack[] mult(LiquidStack[] stacks, float amount)
+    public static LiquidStack[] mult(LiquidStack[] stacks, float amount){
+        LiquidStack[] copy = new LiquidStack[stacks.length];
+        for(int i = 0; i < copy.length; i++){
+            copy[i] = new LiquidStack(stacks[i].liquid, stacks[i].amount * amount);
+        }
+        return copy;
+    }
+
+// LiquidStack.java : public static LiquidStack[] with(Object items)
+    public static LiquidStack[] with(Object... items){
+        LiquidStack[] stacks = new LiquidStack[items.length / 2];
+        for(int i = 0; i < items.length; i += 2){
+            stacks[i / 2] = new LiquidStack((Liquid)items[i], ((Number)items[i + 1]).floatValue());
+        }
+        return stacks;
+    }
+
+// LiquidStack.java : public static Seq<LiquidStack> list(Object items)
+    public static Seq<LiquidStack> list(Object... items){
+        Seq<LiquidStack> stacks = new Seq<>(items.length / 2);
+        for(int i = 0; i < items.length; i += 2){
+            stacks.add(new LiquidStack((Liquid)items[i], ((Number)items[i + 1]).floatValue()));
+        }
+        return stacks;
+    }
+
+// LiquidStack.java : public int compareTo(LiquidStack liquidStack)
+    @Override
+    public int compareTo(LiquidStack liquidStack){
+        return liquid.compareTo(liquidStack.liquid);
+    }
+
+// LiquidStack.java : public String toString()
+    @Override
+    public String toString(){
+        return "LiquidStack{" +
+        "liquid=" + liquid +
+        ", amount=" + amount +
+        '}';
+    }
+
+// MapLocales.java : public void write(Json json)
+    @Override
+    public void write(Json json){
+        for(var entry : entries()){
+            json.writeValue(entry.key, entry.value, StringMap.class, String.class);
+        }
+    }
+
+// MapLocales.java : public String getProperty(String key) / private String getProperty(String locale, String key)
+    public String getProperty(String key){
+        if(!containsProperty(currentLocale(), key)){
+            if(containsProperty("en", key)) return get("en").get(key);
+            if(bundle.has(key)) return bundle.get(key);
+            return "???" + key + "???";
+        }
+        return get(currentLocale()).get(key);
+    }
+
+// MapLocales.java : public boolean containsProperty(String key) / private boolean containsProperty(String locale, String key)
+    public boolean containsProperty(String key){
+        return containsProperty(currentLocale(), key) || containsProperty("en", key);
+    }
+
+// MapLocales.java : public static String currentLocale()
+    public static String currentLocale(){
+        String locale = settings.getString("locale");
+        if(locale.equals("default")){
+            locale = Locale.getDefault().getLanguage();
+        }
+        return locale;
+    }
+
+// PayloadSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return total == 0;
+    }
+
+// PayloadSeq.java : public boolean any()
+    public boolean any(){
+        return total > 0;
+    }
+
+// PayloadSeq.java : public int total()
+    public int total(){
+        return total;
+    }
+
+// PayloadSeq.java : public void add(UnlockableContent block) / public void add(UnlockableContent block, int amount)
+    public void add(UnlockableContent block){
+        add(block, 1);
+    }
+
+// PayloadSeq.java : public void remove(UnlockableContent block) / public void remove(UnlockableContent block, int amount) / public void remove(Seq<PayloadStack> stacks)
+    public void remove(UnlockableContent block){
+        add(block, -1);
+    }
+
+// PayloadSeq.java : public PayloadSeq removeAll(Boolf<UnlockableContent> pred)
+    public PayloadSeq removeAll(Boolf<UnlockableContent> pred){
+        Entries<UnlockableContent> iter = payloads.iterator();
+        while(iter.hasNext()){
+            Entry<UnlockableContent> e = iter.next();
+            if(pred.get(e.key)){
+                iter.remove();
+                total -= e.value;
+            }
+        }
+        return this;
+    }
+
+// PayloadSeq.java : public void clear()
+    public void clear(){
+        payloads.clear();
+        total = 0;
+    }
+
+// PayloadSeq.java : public int get(UnlockableContent block)
+    public int get(UnlockableContent block){
+        return payloads.get(block);
+    }
+
+// PayloadSeq.java : public boolean contains(Seq<PayloadStack> stacks) / public boolean contains(UnlockableContent block, int amount) / public boolean contains(UnlockableContent block) / public boolean contains(PayloadStack stack)
+    public boolean contains(Seq<PayloadStack> stacks){
+        return !stacks.contains(b -> get(b.item) < b.amount);
+    }
+
+// PayloadSeq.java : public void write(Writes write)
+    public void write(Writes write){
+        //IMPORTANT NOTICE: size is negated here because I changed the format of this class at some point
+        //negated = new format
+        write.s(-payloads.size);
+        for(var entry : payloads.entries()){
+            write.b(entry.key.getContentType().ordinal());
+            write.s(entry.key.id);
+            write.i(entry.value);
+        }
+    }
+
+// PayloadStack.java : public static PayloadStack[] with(Object items)
+    public static PayloadStack[] with(Object... items){
+        var stacks = new PayloadStack[items.length / 2];
+        for(int i = 0; i < items.length; i += 2){
+            stacks[i / 2] = new PayloadStack((UnlockableContent)items[i], ((Number)items[i + 1]).intValue());
+        }
+        return stacks;
+    }
+
+// PayloadStack.java : public static Seq<PayloadStack> list(Object items)
+    public static Seq<PayloadStack> list(Object... items){
+        Seq<PayloadStack> stacks = new Seq<>(items.length / 2);
+        for(int i = 0; i < items.length; i += 2){
+            stacks.add(new PayloadStack((UnlockableContent)items[i], ((Number)items[i + 1]).intValue()));
+        }
+        return stacks;
+    }
+
+// PayloadStack.java : public int compareTo(PayloadStack stack)
+    @Override
+    public int compareTo(PayloadStack stack){
+        return item.compareTo(stack.item);
+    }
+
+// PayloadStack.java : public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o){
+        return this == o || (o instanceof PayloadStack stack && stack.amount == amount && item == stack.item);
+    }
+
+// PayloadStack.java : public String toString()
+    @Override
+    public String toString(){
+        return "BlockStack{" +
+        "item=" + item +
+        ", amount=" + amount +
+        '}';
+    }
+
+// Planet.java : public void removeContent()
+    @Override
+    public void removeContent(){
+        super.removeContent();
+
+        if(parent != null){
+            parent.children.remove(this);
+            parent.updateTotalRadius();
+            if(mesh != null) mesh.dispose();
+            if(cloudMesh != null) cloudMesh.dispose();
+        }
+    }
+
+// Planet.java : public void saveRules()
+    public void saveRules(){
+        Core.settings.putJson(name + "-campaign-rules", campaignRules);
+    }
+
+// Planet.java : public void loadRules()
+    public void loadRules(){
+        campaignRules = Core.settings.getJson(name + "-campaign-rules", CampaignRules.class, () -> campaignRules);
+    }
+
+// Planet.java : public CampaignStats stats()
+    public CampaignStats stats(){
+        return statParent != null ? statParent.campaignStats : campaignStats;
+    }
+
+// Planet.java : public void loadStats()
+    public void loadStats(){
+        //there is no need to load stats if the parent's ones are used
+        if(statParent == null){
+            campaignStats = Core.settings.getJson(name + "-campaign-stats", CampaignStats.class, CampaignStats::new);
+        }
+    }
+
+// Planet.java : public void saveStats()
+    public void saveStats(){
+        if(statParent != null && statParent != this){
+            statParent.saveStats();
+        }else{
+            Core.settings.putJson(name + "-campaign-stats", campaignStats);
+        }
+    }
+
+// Planet.java : public void clearStats()
+    public void clearStats(){
+        if(statParent != null && statParent != this){
+            statParent.clearStats();
+        }else{
+            campaignStats = new CampaignStats();
+            saveStats();
+        }
+    }
+
+// Planet.java : public Sector getStartSector()
+    public @Nullable Sector getStartSector(){
+        return sectors.size == 0 ? null : sectors.get(startSector);
+    }
+
+// Planet.java : public void applyRules(Rules rules) / public void applyRules(Rules rules, boolean customGame)
+    public void applyRules(Rules rules){
+        applyRules(rules, false);
+    }
+
+// Planet.java : public void applyDefaultRules(CampaignRules rules)
+    public void applyDefaultRules(CampaignRules rules){
+        JsonIO.copy(campaignRuleDefaults, rules);
+    }
+
+// Planet.java : public Sector getLastSector()
+    public @Nullable Sector getLastSector(){
+        if(sectors.isEmpty()){
+            return null;
+        }
+        return sectors.get(Math.min(Core.settings.getInt(name + "-last-sector", startSector), sectors.size - 1));
+    }
+
+// Planet.java : public void setLastSector(Sector sector)
+    public void setLastSector(Sector sector){
+        Core.settings.put(name + "-last-sector", sector.id);
+    }
+
+// Planet.java : public void preset(int index, SectorPreset preset)
+    public void preset(int index, SectorPreset preset){
+        sectors.get(index).preset = preset;
+    }
+
+// Planet.java : public boolean hasGrid()
+    public boolean hasGrid(){
+        return grid != null && generator != null && sectors.size > 0;
+    }
+
+// Planet.java : public boolean isLandable()
+    public boolean isLandable(){
+        return sectors.size > 0;
+    }
+
+// Planet.java : public void updateTotalRadius()
+    public void updateTotalRadius(){
+        totalRadius = radius;
+        for(Planet planet : children){
+            //max with highest outer bound planet
+            totalRadius = Math.max(totalRadius, planet.orbitRadius + planet.totalRadius);
+        }
+    }
+
+// Planet.java : public Vec3 getLightNormal()
+    public Vec3 getLightNormal(){
+        return Tmp.v31.set(solarSystem.position).sub(position).nor();
+    }
+
+// Planet.java : public float getOrbitAngle()
+    public float getOrbitAngle(){
+        return (orbitOffset + universe.secondsf() / (orbitTime / 360f)) % 360f;
+    }
+
+// Planet.java : public float getRotation()
+    public float getRotation(){
+        //tidally locked planets always face toward parents
+        if(tidalLock){
+            return -getOrbitAngle() + 90;
+        }
+        //random offset for more variability
+        float offset = Mathf.randomSeed(id+1, 360);
+        return (offset + universe.secondsf() / (rotateTime / 360f)) % 360f;
+    }
+
+// Planet.java : public Vec3 addParentOffset(Vec3 in)
+    public Vec3 addParentOffset(Vec3 in){
+        //planets with no parents are at the center, so they appear at 0,0
+        if(parent == null || Mathf.zero(orbitRadius)){
+            return in;
+        }
+
+        float angle = getOrbitAngle();
+        return in.add(Angles.trnsx(angle, orbitRadius), 0, Angles.trnsy(angle, orbitRadius));
+    }
+
+// Planet.java : public Vec3 getWorldPosition(Vec3 in)
+    public Vec3 getWorldPosition(Vec3 in){
+        in.setZero();
+        for(Planet current = this; current != null; current = current.parent){
+            current.addParentOffset(in);
+        }
+        return in;
+    }
+
+// Planet.java : public Mat3D getTransform(Mat3D mat)
+    public Mat3D getTransform(Mat3D mat){
+        return mat.setToTranslation(position).rotate(Vec3.Y, getRotation());
+    }
+
+// Planet.java : public void reloadMesh()
+    public void reloadMesh(){
+        if(headless) return;
+
+        if(mesh != null){
+            mesh.dispose();
+        }
+        mesh = meshLoader.get();
+    }
+
+// Planet.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        if(!headless){
+            mesh = meshLoader.get();
+            cloudMesh = cloudMeshLoader.get();
+            if(grid != null) gridMesh = gridMeshLoader.get();
+        }
+    }
+
+// Planet.java : public Sector getSector(Ptile tile) / public Sector getSector(Ray ray) / public Sector getSector(Ray ray, float radius)
+    public Sector getSector(Ptile tile){
+        return sectors.get(tile.id);
+    }
+
+// Planet.java : public Vec3 intersect(Ray ray, float radius)
+    public @Nullable Vec3 intersect(Ray ray, float radius){
+        boolean found = Intersector3D.intersectRaySphere(ray, position, radius, intersectResult);
+        if(!found) return null;
+        return intersectResult;
+    }
+
+// Planet.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return true;
+    }
+
+// Planet.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.planet;
+    }
+
+// Planet.java : public boolean visible()
+    public boolean visible(){
+        return visible;
+    }
+
+// Planet.java : public void draw(PlanetParams params, Mat3D projection, Mat3D transform)
+    public void draw(PlanetParams params, Mat3D projection, Mat3D transform){
+        mesh.render(params, projection, transform);
+    }
+
+// Planet.java : public void drawClouds(PlanetParams params, Mat3D projection, Mat3D transform)
+    public void drawClouds(PlanetParams params, Mat3D projection, Mat3D transform){
+        if(cloudMesh != null){
+            cloudMesh.render(params, projection, transform);
+        }
+    }
+
+// Planet.java : public void fill(VertexBatch3D batch, Sector sector, Color color, float offset)
+    public void fill(VertexBatch3D batch, Sector sector, Color color, float offset){
+        float rr = outlineRad * radius + offset;
+        for(int i = 0; i < sector.tile.corners.length; i++){
+            Corner c = sector.tile.corners[i], next = sector.tile.corners[(i+1) % sector.tile.corners.length];
+            batch.tri(Tmp.v31.set(c.v).setLength(rr), Tmp.v32.set(next.v).setLength(rr), Tmp.v33.set(sector.tile.v).setLength(rr), color);
+        }
+    }
+
+// Planet.java : public Vec3 lookAt(Sector sector, Vec3 out)
+    public Vec3 lookAt(Sector sector, Vec3 out){
+        return out.set(sector.tile.v).rotate(Vec3.Y, -getRotation());
+    }
+
+// Planet.java : public Vec3 project(Sector sector, Camera3D cam, Vec3 out)
+    public Vec3 project(Sector sector, Camera3D cam, Vec3 out){
+        return cam.project(out.set(sector.tile.v).setLength(outlineRad * radius).rotate(Vec3.Y, -getRotation()).add(position));
+    }
+
+// Publishable.java : default Seq<String> extraTags()
+    default Seq<String> extraTags(){
+        return new Seq<>(0);
+    }
+
+// Publishable.java : default boolean hasSteamID()
+    default boolean hasSteamID(){
+        return getSteamID() != null && Vars.steam;
+    }
+
+// Publishable.java : default boolean prePublish()
+    default boolean prePublish(){
+        return true;
+    }
+
+// Sector.java : public Seq<Sector> near() / public void near(Cons<Sector> cons)
+    public Seq<Sector> near(){
+        tmpSeq1.clear();
+        for(Ptile tile : tile.tiles){
+            tmpSeq1.add(planet.getSector(tile));
+        }
+
+        return tmpSeq1;
+    }
+
+// Sector.java : public boolean isNear(Sector other)
+    public boolean isNear(Sector other){
+        for(var tile : tile.tiles){
+            if(planet.getSector(tile) == other){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// Sector.java : public String displayThreat()
+    public String displayThreat(){
+        float step = 0.25f;
+        String color = Tmp.c1.set(Color.white).lerp(Color.scarlet, Mathf.round(threat, step)).toString();
+        //TODO: rework this in the future
+        return "[#" + color + "]" + Core.bundle.get("threat." + (preset != null && Mathf.equal(preset.difficulty, SectorDifficulty.unreasonable) ? "unreasonable" : threats[Math.min((int)(threat / step), threats.length - 1)]));
+    }
+
+// Sector.java : public boolean unlocked()
+    public boolean unlocked(){
+        return hasBase() || (preset != null && preset.alwaysUnlocked);
+    }
+
+// Sector.java : public boolean allowLaunchSchematics()
+    public boolean allowLaunchSchematics(){
+        return (preset != null && preset.overrideLaunchDefaults) ? preset.allowLaunchSchematics : planet.allowLaunchSchematics;
+    }
+
+// Sector.java : public boolean allowLaunchLoadout()
+    public boolean allowLaunchLoadout(){
+        return (preset != null && preset.overrideLaunchDefaults) ? preset.allowLaunchLoadout : planet.allowLaunchLoadout;
+    }
+
+// Sector.java : public void saveInfo()
+    public void saveInfo(){
+        Core.settings.putJson(planet.name + "-s-" + id + "-info", info);
+    }
+
+// Sector.java : public void clearInfo()
+    public void clearInfo(){
+        info = new SectorInfo();
+        Core.settings.remove(planet.name + "-s-" + id + "-info");
+    }
+
+// Sector.java : public boolean isShielded()
+    public boolean isShielded(){
+        return preset != null && preset.shieldSectors.size > 0 && !isCaptured() && preset.shieldSectors.contains(s -> !s.isCaptured());
+    }
+
+// Sector.java : public boolean isAttacked()
+    public boolean isAttacked(){
+        if(isBeingPlayed()) return state.rules.waves || state.rules.attackMode;
+        return save != null && (info.waves || info.attack) && info.hasCore;
+    }
+
+// Sector.java : public boolean hasBase()
+    public boolean hasBase(){
+        return save != null && info.hasCore && !(Vars.state.isGame() && Vars.state.rules.sector == this && state.gameOver);
+    }
+
+// Sector.java : public boolean isFrozen()
+    public boolean isFrozen(){
+        return isAttacked() && !isBeingPlayed();
+    }
+
+// Sector.java : public boolean hasEnemyBase()
+    public boolean hasEnemyBase(){
+        return ((generateEnemyBase && preset == null) || (preset != null && preset.captureWave == 0)) && (save == null || info.attack || !hasBase());
+    }
+
+// Sector.java : public boolean isBeingPlayed()
+    public boolean isBeingPlayed(){
+        //after the launch dialog, a sector is no longer considered being played
+        return Vars.state.isGame() && Vars.state.rules.sector == this && !Vars.state.gameOver && !net.client();
+    }
+
+// Sector.java : public String name()
+    public String name(){
+        if(preset != null && info.name == null && (preset.requireUnlock || preset.showHidden)){
+            return preset.localizedName;
+        }
+        //single-sector "planets" use their own name for the sector name.
+        if(info.name == null && planet.sectors.size == 1){
+            return planet.localizedName;
+        }
+        return info.name == null ? id + "" : info.name;
+    }
+
+// Sector.java : public void setName(String name)
+    public void setName(String name){
+        info.name = name;
+        saveInfo();
+    }
+
+// Sector.java : public TextureRegion icon()
+    @Nullable
+    public TextureRegion icon(){
+        return info.contentIcon != null ? info.contentIcon.uiIcon : info.icon == null ? (preset != null && preset.requireUnlock && preset.unlocked() && preset.uiIcon.found() ? preset.uiIcon : null) : Fonts.getLargeIcon(info.icon);
+    }
+
+// Sector.java : public String iconChar()
+    @Nullable
+    public String iconChar(){
+        if(info.contentIcon != null) return info.contentIcon.emoji();
+        if(info.icon != null) return (char)Iconc.codes.get(info.icon) + "";
+        return null;
+    }
+
+// Sector.java : public boolean isCaptured()
+    public boolean isCaptured(){
+        if(isBeingPlayed()) return !state.rules.waves && !state.rules.attackMode;
+        return save != null && !info.waves && !info.attack;
+    }
+
+// Sector.java : public boolean hasSave()
+    public boolean hasSave(){
+        return save != null;
+    }
+
+// Sector.java : public boolean locked()
+    public boolean locked(){
+        return !unlocked();
+    }
+
+// Sector.java : public float getLight()
+    public float getLight(){
+        Vec3 normal = Tmp.v31.set(tile.v).rotate(Vec3.Y, -planet.getRotation()).nor();
+        Vec3 light = Tmp.v32.set(planet.solarSystem.position).sub(planet.position).nor();
+        //lightness in [0, 1]
+        return (normal.dot(light) + 1f) / 2f;
+    }
+
+// Sector.java : public int getSize()
+    public int getSize(){
+        return planet.generator == null ? 1 : planet.generator.getSectorSize(this);
+    }
+
+// Sector.java : public void removeItems(ItemSeq items)
+    public void removeItems(ItemSeq items){
+        ItemSeq copy = items.copy();
+        copy.each((i, a) -> copy.set(i, -a));
+        addItems(copy);
+    }
+
+// Sector.java : public void removeItem(Item item, int amount)
+    public void removeItem(Item item, int amount){
+        ItemSeq seq = new ItemSeq();
+        seq.add(item, -amount);
+        addItems(seq);
+    }
+
+// Sector.java : public String toString()
+    public String toString(){
+        return planet.name + "#" + id + " (" + name() + ")";
+    }
+
+// SectorPreset.java : public void initialize(Planet planet, int sector) / public void initialize(Planet planet, int sector, boolean override)
+    public void initialize(Planet planet, int sector){
+        initialize(planet, sector, false);
+    }
+
+// SectorPreset.java : public void removeContent()
+    @Override
+    public void removeContent(){
+        super.removeContent();
+        if(sector != null && sector.preset == this){
+            sector.preset = null;
+        }
+    }
+
+// SectorPreset.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        //note that sectors can only have one visual shield target
+        for(var other : shieldSectors){
+            other.shieldTarget = sector;
+        }
+    }
+
+// SectorPreset.java : public void createIcons(MultiPacker packer)
+    @Override
+    public void createIcons(MultiPacker packer){
+        super.createIcons(packer);
+
+        if(outline && Core.atlas.has("sector-" + name)){
+            makeOutline(PageType.ui, packer, Core.atlas.find("sector-" + name), false, outlineColor, outlineRadius, outlineRadius);
+        }
+    }
+
+// SectorPreset.java : public void loadIcon()
+    @Override
+    public void loadIcon(){
+        if(Icon.terrain != null){
+            uiIcon = fullIcon = Core.atlas.find("sector-" + name, Icon.terrain.getRegion());
+        }
+    }
+
+// SectorPreset.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return description == null;
+    }
+
+// SectorPreset.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.sector;
+    }
+
+// StatusEffect.java : public void init() / public void init(Runnable run)
+    @Override
+    public void init(){
+        super.init();
+        if(initblock != null){
+            initblock.run();
+        }
+    }
+
+// StatusEffect.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return localizedName.equals(name) || !show;
+    }
+
+// StatusEffect.java : public boolean showUnlock()
+    @Override
+    public boolean showUnlock(){
+        return false;
+    }
+
+// StatusEffect.java : public void onRemoved(Unit unit)
+    public void onRemoved(Unit unit){
+
+    }
+
+// StatusEffect.java : public void trans(StatusEffect effect, TransitionHandler handler)
+    public void trans(StatusEffect effect, TransitionHandler handler){
+        transitions.put(effect, handler);
+    }
+
+// StatusEffect.java : public void affinity(StatusEffect effect, TransitionHandler handler)
+    public void affinity(StatusEffect effect, TransitionHandler handler){
+        affinities.add(effect);
+        effect.affinities.add(this);
+        trans(effect, handler);
+    }
+
+// StatusEffect.java : public void opposite(StatusEffect effect)
+    public void opposite(StatusEffect... effect){
+        for(var other : effect){
+            handleOpposite(other);
+            other.handleOpposite(this);
+        }
+    }
+
+// StatusEffect.java : protected void handleOpposite(StatusEffect other)
+    protected void handleOpposite(StatusEffect other){
+        opposites.add(other);
+        trans(other, (unit, result, time) -> {
+            result.time -= time * 0.5f;
+            if(result.time <= 0f){
+                result.time = time;
+                result.effect = other;
+            }
+        });
+    }
+
+// StatusEffect.java : public void draw(Unit unit, float time) / public void draw(Unit unit)
+    public void draw(Unit unit, float time){
+        draw(unit); //Backwards compatibility
+    }
+
+// StatusEffect.java : public boolean reactsWith(StatusEffect effect)
+    public boolean reactsWith(StatusEffect effect){
+        return transitions.containsKey(effect);
+    }
+
+// StatusEffect.java : public boolean applyTransition(Unit unit, StatusEffect to, StatusEntry entry, float time)
+    public boolean applyTransition(Unit unit, StatusEffect to, StatusEntry entry, float time){
+        var trans = transitions.get(to);
+        if(trans != null){
+            trans.handle(unit, entry, time);
+            return true;
+        }
+        return false;
+    }
+
+// StatusEffect.java : public void applied(Unit unit, float time, boolean extend)
+    public void applied(Unit unit, float time, boolean extend){
+        if(!extend || applyExtend) applyEffect.at(unit.x, unit.y, 0, applyColor, parentizeApplyEffect ? unit : null);
+    }
+
+// StatusEffect.java : public void createIcons(MultiPacker packer)
+    @Override
+    public void createIcons(MultiPacker packer){
+        super.createIcons(packer);
+
+        if(outline){
+            makeOutline(PageType.ui, packer, uiIcon, false, Pal.gray, 3);
+        }
+    }
+
+// StatusEffect.java : public String toString()
+    @Override
+    public String toString(){
+        return localizedName;
+    }
+
+// StatusEffect.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.status;
+    }
+
+// TeamEntry.java : public void displayExtra(Table table)
+    @Override
+    public void displayExtra(Table table){
+        table.add("@team." + name + ".log").pad(6).padTop(20).width(400f).wrap().fillX();
+    }
+
+// TeamEntry.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.team;
+    }
+
+// UnitType.java : public UnitController createController(Unit unit)
+    public UnitController createController(Unit unit){
+        return controller.get(unit);
+    }
+
+// UnitType.java : public boolean hasWeapons()
+    public boolean hasWeapons(){
+        return weapons.size > 0;
+    }
+
+// UnitType.java : public boolean targetable(Unit unit, Team targeter)
+    public boolean targetable(Unit unit, Team targeter){
+        return targetable || (vulnerableWithPayloads && unit instanceof Payloadc p && p.hasPayload());
+    }
+
+// UnitType.java : public boolean killable(Unit unit)
+    public boolean killable(Unit unit){
+        return killable;
+    }
+
+// UnitType.java : public boolean hittable(Unit unit)
+    public boolean hittable(Unit unit){
+        return hittable || (vulnerableWithPayloads && unit instanceof Payloadc p && p.hasPayload());
+    }
+
+// UnitType.java : public boolean allowStance(Unit unit, UnitStance stance)
+    public boolean allowStance(Unit unit, UnitStance stance){
+        if(stance == UnitStance.stop) return true;
+        tmpStances.clear();
+        getUnitStances(unit, tmpStances);
+        return tmpStances.contains(stance);
+    }
+
+// UnitType.java : public boolean allowCommand(Unit unit, UnitCommand command)
+    public boolean allowCommand(Unit unit, UnitCommand command){
+        return commands.contains(command);
+    }
+
+// UnitType.java : public void update(Unit unit)
+    public void update(Unit unit){
+
+    }
+
+// UnitType.java : public void updatePayload(Unit unit, Unit unitHolder, Building buildingHolder)
+    public void updatePayload(Unit unit, @Nullable Unit unitHolder, @Nullable Building buildingHolder){
+
+    }
+
+// UnitType.java : public void killed(Unit unit)
+    public void killed(Unit unit){}
+
+// UnitType.java : public void landed(Unit unit)
+    public void landed(Unit unit){}
+
+// UnitType.java : public boolean supportsEnv(int env)
+    public boolean supportsEnv(int env){
+        return (envEnabled & env) != 0 && (envDisabled & env) == 0 && (envRequired == 0 || (envRequired & env) == envRequired);
+    }
+
+// UnitType.java : public boolean isBanned()
+    @Override
+    public boolean isBanned(){
+        return state.rules.isBanned(this);
+    }
+
+// UnitType.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return hidden;
+    }
+
+// UnitType.java : public void getRegionsToOutline(Seq<TextureRegion> out)
+    public void getRegionsToOutline(Seq<TextureRegion> out){
+        for(Weapon weapon : weapons){
+            for(var part : weapon.parts){
+                part.getOutlines(out);
+            }
+        }
+        for(var part : parts){
+            part.getOutlines(out);
+        }
+    }
+
+// UnitType.java : public boolean needsBodyOutline()
+    public boolean needsBodyOutline(){
+        return alwaysCreateOutline;
+    }
+
+// UnitType.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        super.afterPatch();
+        totalRequirements = cachedRequirements = firstRequirements = null;
+
+        //this will technically reset any assigned values, but in vanilla, they're not reassigned anyway
+        flowfieldPathType = -1;
+        pathCost = null;
+        pathCostId = -1;
+        initPathType();
+    }
+
+// UnitType.java : public void beforeParse()
+    public void beforeParse(){
+        totalRequirements = cachedRequirements = firstRequirements = null;
+    }
+
+// UnitType.java : public float getBuildTime()
+    public float getBuildTime(){
+        getTotalRequirements();
+        return buildTime;
+    }
+
+// UnitType.java : public ItemStack[] getFirstRequirements()
+    public @Nullable ItemStack[] getFirstRequirements(){
+        if(firstRequirements == null){
+            firstRequirements = getRequirements(null, null);
+        }
+        return firstRequirements;
+    }
+
+// UnitType.java : public Object senseObject(LAccess sensor)
+    @Override
+    public Object senseObject(LAccess sensor){
+        if(sensor == LAccess.name) return name;
+        return noSensed;
+    }
+
+// UnitType.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.unit;
+    }
+
+// UnitType.java : public void setEnginesMirror(UnitEngine array)
+    public void setEnginesMirror(UnitEngine... array){
+        for(var base : array){
+            engines.add(base);
+
+            var engine = base.copy();
+            engine.x *= -1;
+            engine.rotation = 180f - engine.rotation;
+            if(engine.rotation < 0) engine.rotation += 360f;
+            engines.add(engine);
+        }
+    }
+
+// UnitType.java : public Color shieldColor(Unit unit)
+    public Color shieldColor(Unit unit){
+        return shieldColor == null ? unit.team.color : shieldColor;
+    }
+
+// UnitType.java : public void drawMining(Unit unit)
+    public void drawMining(Unit unit){
+        if(drawMineBeam){
+            float focusLen = mineBeamOffset + Mathf.absin(Time.time, 1.1f, 0.5f);
+            float px = unit.x + Angles.trnsx(unit.rotation, focusLen);
+            float py = unit.y + Angles.trnsy(unit.rotation, focusLen);
+
+            drawMiningBeam(unit, px, py);
+        }
+    }
+
+// UnitType.java : public void drawPayload(T unit)
+    public <T extends Unit & Payloadc> void drawPayload(T unit){
+        if(unit.hasPayload()){
+            float prev = Draw.z();
+            Draw.z(prev - 0.02f);
+            Payload pay = unit.payloads().first();
+            pay.set(unit.x, unit.y, unit.rotation);
+            pay.draw();
+            Draw.z(prev);
+        }
+    }
+
+// UnitType.java : public void drawShield(Unit unit)
+    public void drawShield(Unit unit){
+        float alpha = unit.shieldAlpha();
+        float radius = unit.hitSize() * 1.3f;
+        Fill.light(unit.x, unit.y, Lines.circleVertices(radius), radius,
+            Color.clear,
+            Tmp.c2.set(unit.type.shieldColor(unit)).lerp(Color.white, Mathf.clamp(unit.hitTime() / 2f)).a(0.7f * alpha)
+        );
+    }
+
+// UnitType.java : public void drawSoftShadow(Unit unit) / public void drawSoftShadow(Unit unit, float alpha) / public void drawSoftShadow(float x, float y, float rotation, float alpha)
+    public void drawSoftShadow(Unit unit){
+        drawSoftShadow(unit, 1f);
+    }
+
+// UnitType.java : public void drawTrail(Unit unit)
+    public void drawTrail(Unit unit){
+        if(unit.trail == null){
+            unit.trail = new Trail(trailLength);
+        }
+        Trail trail = unit.trail;
+        trail.draw(trailColor == null ? unit.team.color : trailColor, (engineSize + Mathf.absin(Time.time, 2f, engineSize / 4f) * (useEngineElevation ? unit.elevation : 1f)) * trailScl);
+    }
+
+// UnitType.java : public void drawEngines(Unit unit)
+    public void drawEngines(Unit unit){
+        if((useEngineElevation ? unit.elevation : 1f) <= 0.0001f) return;
+
+        for(var engine : engines){
+            engine.draw(unit);
+        }
+
+        Draw.color();
+    }
+
+// UnitType.java : public void drawWeapons(Unit unit)
+    public void drawWeapons(Unit unit){
+        applyColor(unit);
+
+        for(WeaponMount mount : unit.mounts){
+            mount.weapon.draw(unit, mount);
+        }
+
+        Draw.reset();
+    }
+
+// UnitType.java : public void drawOutline(Unit unit)
+    public void drawOutline(Unit unit){
+        Draw.reset();
+
+        if(Core.atlas.isFound(outlineRegion)){
+            applyColor(unit);
+            applyOutlineColor(unit);
+            Draw.rect(outlineRegion, unit.x, unit.y, unit.rotation - 90);
+            Draw.reset();
+        }
+    }
+
+// UnitType.java : public void drawCell(Unit unit)
+    public void drawCell(Unit unit){
+        applyColor(unit);
+
+        Draw.color(cellColor(unit));
+        Draw.rect(cellRegion, unit.x, unit.y, unit.rotation - 90);
+        Draw.reset();
+    }
+
+// UnitType.java : public Color cellColor(Unit unit)
+    public Color cellColor(Unit unit){
+        float f = Mathf.clamp(unit.healthf());
+        return Tmp.c1.set(Color.black).lerp(unit.team.color, f + Mathf.absin(Time.time, Math.max(f * 5f, 1f), 1f - f));
+    }
+
+// UnitType.java : public void drawLight(Unit unit)
+    public void drawLight(Unit unit){
+        if(lightRadius > 0 && state.rules.unitLight){
+            Drawf.light(unit.x, unit.y, lightRadius, lightColor, lightOpacity);
+        }
+    }
+
+// UnitType.java : public void applyOutlineColor(Unit unit)
+    public void applyOutlineColor(Unit unit){
+        if(unit.drownTime > 0 && unit.lastDrownFloor != null){
+            Draw.color(Color.white, Tmp.c1.set(unit.lastDrownFloor.mapColor).mul(0.8f), unit.drownTime * 0.9f);
+        }
+    }
+
+// Weapon.java : public boolean hasStats(UnitType u)
+    public boolean hasStats(UnitType u){
+        return display;
+    }
+
+// Weapon.java : public float dps()
+    public float dps(){
+        return (bullet.estimateDPS() / reload) * shoot.shots * 60f;
+    }
+
+// Weapon.java : public float shotsPerSec()
+    public float shotsPerSec(){
+        return shoot.shots * 60f / reload;
+    }
+
+// Weapon.java : public float range()
+    public float range(){
+        return bullet.range;
+    }
+
+// Weapon.java : protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+    protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground){
+        return Units.closestTarget(unit.team, x, y, range + Math.abs(shootY), u -> u.checkTarget(air, ground), t -> ground && (unit.type.targetUnderBlocks || !t.block.underBullets));
+    }
+
+// Weapon.java : protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+    protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range){
+        return Units.invalidateTarget(target, unit.team, x, y, range + Math.abs(shootY));
+    }
+
+// Weapon.java : protected float bulletRotation(Unit unit, WeaponMount mount, float bulletX, float bulletY)
+    protected float bulletRotation(Unit unit, WeaponMount mount, float bulletX, float bulletY){
+        return rotate ? unit.rotation + mount.rotation : Angles.angle(bulletX, bulletY, mount.aimX, mount.aimY) + (unit.rotation - unit.angleTo(mount.aimX, mount.aimY)) + baseRotation;
+    }
+
+// Weapon.java : public void flip()
+    public void flip(){
+        x *= -1;
+        shootX *= -1;
+        baseRotation *= -1f;
+        flipSprite = !flipSprite;
+        shoot = shoot.copy();
+        shoot.flip();
+    }
+
+// Weapon.java : public Weapon copy()
+    public Weapon copy(){
+        try{
+            return (Weapon)clone();
+        }catch(CloneNotSupportedException suck){
+            throw new RuntimeException("very good language design", suck);
+        }
+    }
+
+// Weapon.java : public void init()
+    @CallSuper
+    public void init(){
+        if(alwaysContinuous){
+            continuous = true;
+        }
+    }
+
+// Weapon.java : public void load()
+    public void load(){
+        region = Core.atlas.find(name);
+        heatRegion = Core.atlas.find(name + "-heat");
+        cellRegion = Core.atlas.find(name + "-cell");
+        outlineRegion = Core.atlas.find(name + "-outline");
+
+        for(var part : parts){
+            part.turretShading = false;
+            part.load(name);
+        }
+    }
+
+// Weapon.java : public String toString()
+    @Override
+    public String toString(){
+        return name == null || name.isEmpty() ? "Weapon" : "Weapon: " + name;
+    }
+
+// Weather.java : public WeatherState create() / public WeatherState create(float intensity) / public WeatherState create(float intensity, float duration)
+    public WeatherState create(){
+        return create(1f);
+    }
+
+// Weather.java : public WeatherState instance()
+    @Nullable
+    public WeatherState instance(){
+        return Groups.weather.find(w -> w.weather() == this);
+    }
+
+// Weather.java : public boolean isActive()
+    public boolean isActive(){
+        return instance() != null;
+    }
+
+// Weather.java : public void remove()
+    public void remove(){
+        var e = instance();
+        if(e != null) e.remove();
+    }
+
+// Weather.java : public void update(WeatherState state)
+    public void update(WeatherState state){
+
+    }
+
+// Weather.java : public void drawOver(WeatherState state)
+    public void drawOver(WeatherState state){
+
+    }
+
+// Weather.java : public void drawUnder(WeatherState state)
+    public void drawUnder(WeatherState state){
+
+    }
+
+// Weather.java : public static void drawNoiseLayers(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, int layers, float layerSpeedM, float layerAlphaM, float layerSclM, float layerColorM)
+    public static void drawNoiseLayers(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy,
+                                    int layers, float layerSpeedM, float layerAlphaM, float layerSclM, float layerColorM){
+        NoiseEffect.drawNoiseLayers(noise, color, noisescl, opacity, baseSpeed, intensity, vwindx, vwindy, layers, layerSpeedM, layerAlphaM, layerSclM, layerColorM);
+    }
+
+// Weather.java : public static void drawNoise(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, float offset)
+    public static void drawNoise(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, float offset){
+        NoiseEffect.drawNoise(noise, color, noisescl, opacity, baseSpeed, intensity, vwindx, vwindy, offset);
+    }
+
+// Weather.java : public boolean isHidden()
+    @Override
+    public boolean isHidden(){
+        return true;
+    }
+
+// Weather.java : public ContentType getContentType()
+    @Override
+    public ContentType getContentType(){
+        return ContentType.weather;
+    }
+
+// Weather.java : public static void createWeather(Weather weather, float intensity, float duration, float windX, float windY)
+    @Remote(called = Loc.server)
+    public static void createWeather(Weather weather, float intensity, float duration, float windX, float windY){
+        weather.create(intensity, duration).windVector.set(windX, windY);
+    }
+
