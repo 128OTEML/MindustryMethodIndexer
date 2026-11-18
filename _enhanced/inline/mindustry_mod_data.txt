@@ -1,0 +1,249 @@
+// BundleAsset.java : public void updateData(byte[] data)
+    @Override
+    public void updateData(byte[] data){
+        super.updateData(data);
+        this.cachedBundle = null;
+    }
+
+// BundleAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.bundle;
+    }
+
+// ContentAsset.java : public String hashData()
+    public String hashData(){
+        return type.name() + "_" + DataAssetCache.encodeHash(Strings.sha256(data));
+    }
+
+// ContentAsset.java : public void readOverride(String path, Fi file, ContentType type) throws IOException
+    public void readOverride(String path, Fi file, ContentType type) throws IOException{
+        this.type = type;
+        setPath(path);
+        data = file.readString();
+    }
+
+// ContentAsset.java : public String getFullPath()
+    @Override
+    public String getFullPath(){
+        return getType().folder + "/" + type.folderName + "/" + path;
+    }
+
+// ContentAsset.java : public byte[] getData()
+    @Override
+    public byte[] getData(){
+        return data.getBytes(Strings.utf8);
+    }
+
+// ContentAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.content;
+    }
+
+// ContentAsset.java : public void read(DataInput stream) throws IOException
+    @Override
+    public void read(DataInput stream) throws IOException{
+        type = ContentType.all[stream.readShort()];
+        int len = stream.readInt();
+        byte[] bytes = new byte[len];
+        stream.readFully(bytes);
+        data = new String(bytes, Strings.utf8);
+    }
+
+// ContentAsset.java : public void write(DataOutput stream) throws IOException
+    @Override
+    public void write(DataOutput stream) throws IOException{
+        stream.writeShort(type.ordinal());
+        byte[] bytes = data.getBytes(Strings.utf8);
+        stream.writeInt(bytes.length);
+        stream.write(bytes);
+    }
+
+// ContentAsset.java : public int compareTo(DataAsset asset)
+    @Override
+    public int compareTo(DataAsset asset){
+        if(asset instanceof ContentAsset cont){
+            int cmp = type.compareTo(cont.type);
+            if(cmp != 0) return cmp;
+        }
+
+        return super.compareTo(asset);
+    }
+
+// DataAsset.java : public void updateData(byte[] data)
+    public void updateData(byte[] data){
+        setHash(Vars.assetCache.add(data));
+    }
+
+// DataAsset.java : public void setHash(byte[] value)
+    public void setHash(byte[] value){
+        if(value.length != 32) throw new IllegalArgumentException("hash must be 32 bytes long: " + value.length);
+        byteHash = value;
+        stringHash = DataAssetCache.encodeHash(value);
+    }
+
+// DataAsset.java : public void setPath(String path)
+    public void setPath(String path){
+        this.path = path.replace('\\', '/');
+        this.name = Strings.getFileNameWithoutExtension(path);
+    }
+
+// DataAsset.java : public String getFullPath()
+    public String getFullPath(){
+        return getType().folder + "/" + path;
+    }
+
+// DataAsset.java : public byte[] getData()
+    public byte[] getData(){
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+// DataAsset.java : public boolean isAlwaysEmbedded()
+    public boolean isAlwaysEmbedded(){
+        return getType().embedded;
+    }
+
+// DataAsset.java : public boolean isCached()
+    public boolean isCached(){
+        return overrideCacheFile != null || (stringHash != null && Vars.assetCache.has(stringHash));
+    }
+
+// DataAsset.java : public Fi getCacheFileNoNull()
+    public Fi getCacheFileNoNull(){
+        Fi file = getCacheFile();
+        if(file == null) throw new RuntimeException("Cache file for asset " + path + " not found!");
+        return file;
+    }
+
+// DataAsset.java : public Fi getCacheFile()
+    public @Nullable Fi getCacheFile(){
+        return overrideCacheFile != null ? overrideCacheFile : Vars.assetCache.get(stringHash);
+    }
+
+// DataAsset.java : public void readFromZip(String path, Fi file)
+    public void readFromZip(String path, Fi file){
+        if(isAlwaysEmbedded()) throw new UnsupportedOperationException("Always-embedded assets need custom implementations for reading.");
+        setPath(path);
+        updateData(file.readBytes());
+    }
+
+// DataAsset.java : public void readOverride(String path, Fi file) throws IOException
+    public void readOverride(String path, Fi file) throws IOException{
+        setPath(path);
+        setHash(file.sha256());
+        this.overrideCacheFile = file;
+        //manually make this asset's hash refer to its file in the folder instead of using a folder
+        assetCache.addOverride(stringHash, file);
+    }
+
+// DataAsset.java : public void read(DataInput stream) throws IOException
+    public void read(DataInput stream) throws IOException{
+        int length = stream.readInt();
+        if(length == 0){
+            Log.err("Empty asset in save: @", path);
+            return;
+        }
+
+        byte[] data = new byte[length];
+        stream.readFully(data);
+        updateData(data);
+    }
+
+// DataAsset.java : public static boolean validPath(String path)
+    public static boolean validPath(String path){
+        for(String part : path.replace('\\', '/').split("/")){
+            if(part.equals("..") || part.equals(".")){
+                return false;
+            }
+        }
+        return true;
+    }
+
+// DataAsset.java : public String toString()
+    @Override
+    public String toString(){
+        return getClass().getSimpleName() + "{" + path + "}";
+    }
+
+// DataAsset.java : public int compareTo(DataAsset asset)
+    @Override
+    public int compareTo(DataAsset asset){
+        int cmp = getType().compareTo(asset.getType());
+        if(cmp != 0) return cmp;
+        return path.compareTo(asset.path);
+    }
+
+// ImageAsset.java : public boolean isGenerated()
+    public boolean isGenerated(){
+        return path.startsWith("generated/");
+    }
+
+// ImageAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.image;
+    }
+
+// MusicAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.music;
+    }
+
+// PatchAsset.java : public byte[] getData()
+    @Override
+    public byte[] getData(){
+        return patch.getBytes(Strings.utf8);
+    }
+
+// PatchAsset.java : public void readFromZip(String path, Fi file)
+    @Override
+    public void readFromZip(String path, Fi file){
+        setPath(path);
+        patch = file.readString();
+    }
+
+// PatchAsset.java : public void readOverride(String path, Fi file) throws IOException
+    @Override
+    public void readOverride(String path, Fi file) throws IOException{
+        setPath(path);
+        patch = Jval.read(file.readString()).toString(Jformat.plain);
+    }
+
+// PatchAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.patch;
+    }
+
+// PatchAsset.java : public void read(DataInput stream) throws IOException
+    @Override
+    public void read(DataInput stream) throws IOException{
+        int len = stream.readInt();
+        byte[] bytes = new byte[len];
+        stream.readFully(bytes);
+        patch = new String(bytes, Strings.utf8);
+    }
+
+// PatchAsset.java : public void write(DataOutput stream) throws IOException
+    @Override
+    public void write(DataOutput stream) throws IOException{
+        byte[] bytes = patch.getBytes(Strings.utf8);
+        stream.writeInt(bytes.length);
+        stream.write(bytes);
+    }
+
+// PatchAsset.java : public String toString()
+    @Override
+    public String toString(){
+        //the json can be a single 'error' value if it failed to parse
+        return !json.isObject() ? patch : json.prettyPrint(OutputType.minimal, 2);
+    }
+
+// SoundAsset.java : public DataAssetType getType()
+    @Override
+    public DataAssetType getType(){
+        return DataAssetType.sound;
+    }
+

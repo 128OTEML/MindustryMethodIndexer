@@ -1,0 +1,315 @@
+MenuBuilder.java
+Java class
+// Builder for presenting a complex menu to the player.
+fields:
+  public String title  // Title string; if null, no title is shown at all (the orange bar is removed too)
+  public boolean hideOnClick  // If false, the dialog will not immediately be hidden when a button with a click listener is clicked.
+  public boolean hideExisting  // If true (default), existing menus with this ID are hidden.
+  public boolean fillScreen  // If true (default), the dialog fills the screen.
+  public long token  // Unique value that is passed to the result after menu is closed.
+  public int id  // ID for menu callback; you can reuse this as long as you have unique keys for button results.
+  public NodeBuilder<?> ui  // contents of the dialog, must not be null
+methods:
+  public static MenuBuilder of(NodeBuilder<?> ui) / public static MenuBuilder of(String dslString)  // @return a menu constructed from a builder.
+  public void show(Player player)  // Submits this menu to the relevant player.
+  public void showAll()  // Submits this menu to all players.
+  public void update(Player player, String elementId)  // Rebuilds a specific Table with the specified elementId.
+  public MenuBuilder hideExisting(boolean hideExisting)
+  public MenuBuilder token(long token)
+  public MenuBuilder title(String title)
+  public MenuBuilder hideOnClick(boolean hideOnClick)
+  public MenuBuilder fillScreen(boolean fillScreen)
+  public MenuBuilder id(int id)
+
+MenuResult.java
+Java class
+fields:
+  public static final int maxResultLen  // Maximum length of result string
+  public static final int maxValueLen  // Maximum length of a single value in chars.
+  public static final int maxTotalStringLen  // Maximum total length of all string values in chars.
+  public static final int maxTotalValues  // Maximum values count of any type that can be sent.
+  public long token  // Token passed to MenuBuilder.
+  public String result  // Button that was actually clicked, or null if the dialog was closed (back button).
+  public ObjectMap<String,Object> values  // Maps ID to element value (slider: value, text field: text, checkbox: checked)
+ctors:
+  public MenuResult() / public MenuResult(String result)  // Implies cancelled results.
+methods:
+  public boolean wasCancelled()  // @return if the dialog was closed with no choice being made.
+  public boolean is(String text)  // @return whether the result ID matches the specified parameter.
+  public String getString(String id, String defaultValue) / public String getString(String id)
+  public float getFloat(String id, float def) / public float getFloat(String id)
+  public boolean getBool(String id, boolean def) / public boolean getBool(String id)
+  public String toString()
+
+UiBuilder.java
+Java class
+// Builder-style API for building dialogs on servers.
+methods:
+  public static TableBuilder parse(String source)
+  public static TableBuilder table()
+  public static StackBuilder stack()
+  public static PaneBuilder pane()
+  public static LabelBuilder label(String text)
+  public static ImageBuilder image() / public static ImageBuilder image(String region)
+  public static ButtonBuilder button(String text)
+  public static ImageButtonBuilder imageButton(String icon)
+  public static FieldBuilder field(String text)
+  public static CheckBuilder check() / public static CheckBuilder check(String text)
+  public static SliderBuilder slider(float min, float max, float step)
+  public static SpaceBuilder space()
+  public static DefaultsBuilder defaults()
+  public static ButtonTableBuilder buttonTable()
+inner-class: NodeBuilder
+  fields:
+    final UiKey type
+    final Seq<Entry> entries
+  ctors:
+    NodeBuilder(UiKey type)
+  methods:
+    private T self()
+    protected T prop(UiKey key, String value) / protected T prop(UiKey key, float value) / protected T prop(UiKey key, boolean value)
+    public T id(String id)
+    public T condition(String cond)
+    public T grow()
+    public T growX()
+    public T growY()
+    public T fill()
+    public T fillX()
+    public T fillY()
+    public T expand()
+    public T expandX()
+    public T expandY()
+    public T width(float w)
+    public T height(float h)
+    public T size(float s)
+    public T minWidth(float w)
+    public T maxWidth(float w)
+    public T minHeight(float h)
+    public T maxHeight(float h)
+    public T pad(float p)
+    public T padTop(float p)
+    public T padLeft(float p)
+    public T padBottom(float p)
+    public T padRight(float p)
+    public T align(String align)
+    public T colspan(int c)
+    public T uniform()
+    public T uniformX()
+    public T uniformY()
+    public T color(Color color) / public T color(String colorHex)
+    public void write(Writes out)
+    static void writeEntries(Writes out, Seq<Entry> entries)
+    public static NodeBuilder<?> read(Reads in)
+    static void readEntries(Reads in, Seq<Entry> entries)
+    static NodeBuilder<?> create(UiKey type)
+    static void writeEntry(Writes out, Entry e)
+    static Entry readEntry(Reads in)
+    String str(UiKey key) / String str(UiKey key, String def)
+    Float num(UiKey key) / float num(UiKey key, float def)
+    boolean bool(UiKey key) / boolean bool(UiKey key, boolean def)
+    public String toString()
+inner-class: Entry
+  fields:
+    final UiKey key
+    final Object value
+  ctors:
+    Entry(UiKey key, Object value)
+  methods:
+    public String toString()
+inner-class: ContainerBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+// Shared behavior for node types that can contain children (table, pane).
+  ctors:
+    ContainerBuilder(UiKey type)
+  methods:
+    private T self()
+    public T row()
+    public T add(NodeBuilder<?> child)  // Generic nesting point - append any already-configured node as a child.
+inner-class: StackBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder
+  ctors:
+    StackBuilder()
+inner-class: TableBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder
+  ctors:
+    TableBuilder()
+  methods:
+    public TableBuilder background(String name)
+    public TableBuilder margin(float m)
+    public TableBuilder wrap(boolean wrap)
+inner-class: PaneBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder
+  ctors:
+    PaneBuilder()
+  methods:
+    public PaneBuilder style(String style)
+inner-class: LabelBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    LabelBuilder()
+  methods:
+    public LabelBuilder text(String text)
+    public LabelBuilder wrap()
+    public LabelBuilder style(String style)
+    public LabelBuilder labelAlign(String align)
+inner-class: ImageBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    ImageBuilder()
+  methods:
+    public ImageBuilder region(String region)
+    public ImageBuilder placeholder(String placeholder)
+    public ImageBuilder scaling(Scaling scaling)
+inner-class: ButtonBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    ButtonBuilder()
+  methods:
+    public ButtonBuilder text(String text)
+    public ButtonBuilder icon(String icon)
+    public ButtonBuilder placeholder(String placeholder)
+    public ButtonBuilder style(String style)
+    public ButtonBuilder clicked(String result)
+    public ButtonBuilder disabled(boolean disabled)
+    public ButtonBuilder group(String group)
+    public ButtonBuilder checked(boolean checked)
+inner-class: ImageButtonBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    ImageButtonBuilder()
+  methods:
+    public ImageButtonBuilder icon(String icon)
+    public ImageButtonBuilder placeholder(String placeholder)
+    public ImageButtonBuilder style(String style)
+    public ImageButtonBuilder clicked(String result)
+    public ImageButtonBuilder disabled(boolean disabled)
+    public ImageButtonBuilder group(String group)
+    public ImageButtonBuilder checked(boolean checked)
+inner-class: FieldBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    FieldBuilder()
+  methods:
+    public FieldBuilder text(String text)
+    public FieldBuilder hint(String hint)
+    public FieldBuilder maxLength(int length)
+    public FieldBuilder style(String style)
+    public FieldBuilder enter(String result)
+    public FieldBuilder disabled(boolean disabled)
+inner-class: CheckBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    CheckBuilder()
+  methods:
+    public CheckBuilder text(String text)
+    public CheckBuilder checked(boolean checked)
+    public CheckBuilder style(String style)
+    public CheckBuilder disabled(boolean disabled)
+    public CheckBuilder group(String group)
+inner-class: SliderBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    SliderBuilder()
+  methods:
+    public SliderBuilder min(float min)
+    public SliderBuilder max(float max)
+    public SliderBuilder step(float step)
+    public SliderBuilder defaultValue(float value)
+    public SliderBuilder style(String style)
+    public SliderBuilder disabled(boolean disabled)
+inner-class: SpaceBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    SpaceBuilder()
+inner-class: DefaultsBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder
+  ctors:
+    DefaultsBuilder()
+inner-class: ButtonTableBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder
+  ctors:
+    ButtonTableBuilder()
+  methods:
+    public ButtonTableBuilder style(String style)
+    public ButtonTableBuilder clicked(String result)
+    public ButtonTableBuilder margin(float m)
+    public ButtonTableBuilder disabled(boolean disabled)
+    public ButtonTableBuilder group(String group)
+    public ButtonTableBuilder checked(boolean checked)
+
+UiDslParser.java
+Java class
+// Parses String -> UiBuilders.
+fields:
+  private final String src
+  private int pos
+  private boolean lastQuoted  // whether the most recently parsed value was a quoted string
+ctors:
+  private UiDslParser(String src)
+methods:
+  public static TableBuilder parse(String source)  // Parses source text into a root TableBuilder (the implicit root table's body).
+  private void parseStatementsInto(NodeBuilder<?> node)
+  private void parseStatement(NodeBuilder<?> node)
+  private static UiKey getShorthandType(UiKey key)  // for statements such as image: "cat", the key type is region, not text.
+  private Object coerce(String raw)  // Converts a parsed bare token into the most specific type it looks like; quoted strings stay strings.
+  private String parseValue()
+  private String parseString()
+  private String readBareToken()  // reads until whitespace/brace/colon; covers identifiers, numbers, and bare-word values alike
+  private void skipWs()
+  private void expect(char c)
+  private boolean atEnd()
+  private char peek()
+  private int line(int index)  // counts newlines up to (not including) the given index to determine the 1-based line number
+
+UiDslWriter.java
+Java class
+// Converts a parsed NodeBuilder tree back into UI DSL source text.
+methods:
+  public static String write(NodeBuilder<?> root)  // Writes the root node's entries (no wrapping block, since root is an implicit table body).
+  private static void writeEntries(StringBuilder sb, Seq<Entry> entries, int depth)
+  private static void writeChildNode(StringBuilder sb, NodeBuilder<?> child, int depth)
+  private static UiKey shorthandType(UiKey key)  // Mirrors UiDslParser's getShorthandType: image uses region, everything else uses text.
+  private static String formatValue(Object value)
+  private static String formatFloat(float f)
+  private static boolean needsQuotes(String s)  // A bare token round-trips correctly only if the parser wouldn't reinterpret it as a bool/number/keyword.
+  private static String quote(String s)
+  private static void indent(StringBuilder sb, int depth)
+
+UiHotReload.java
+Java class
+// Utility class for showing a MSUI dialog box that automatically reloads changes for a certain file.
+methods:
+  public static void show()  // Shows a file picker for the dialog box.
+  static void reload(Fi file, BaseDialog dialog)
+
+UiKey.java
+(unknown)
+
+UiStyleLookup.java
+Java class
+// Grabs style fields by name from {@link Styles}.
+fields:
+  private static final ObjectMap<Class<?>,ObjectMap<String,Object>> styles
+methods:
+  public static T get(Class<T> type, String name)
+  private static void init()
+
+UiTreeBuilder.java
+Java class
+// Builds a UI into an existing Table from a NodeBuilder tree.
+methods:
+  public static BuildResult build(Table root, NodeBuilder<?> builder) / public static BuildResult build(Table root, NodeBuilder<?> builder, Cons<MenuResult> resultListener)
+  private static void buildInto(Table table, Seq<Entry> entries, BuildContext ctx)
+  private static Element addNode(UiKey type, NodeBuilder<?> node, BuildContext ctx)  // Constructs the element for one node, adds it to the parent table, and returns its cell.
+  private static boolean applyStyle(NodeBuilder<?> node, Class<S> styleType, Cons<S> setter)  // Looks up a style by the node's "style" value (if set) and applies it via the given setter; no-op if absent/unknown.
+  private static void wireButton(Button element, NodeBuilder<?> node, BuildContext ctx)  // Sets up the click callback and button group, if present.
+  private static void fireResult(BuildContext ctx, String result)
+  private static void applyTableProp(Table table, UiKey key, Object value)  // Properties that apply to the table itself rather than to a cell (found loose in a table's body).
+  private static void applyCellProp(Cell<?> cell, UiKey key, Object value)
+  private static Drawable findDrawable(String name) / private static Drawable findDrawable(String name, String placeholder)  // @param placeholder shown instead of the error sprite if {@code name} isn't streamed from the server yet
+  private static boolean evalCondition(String cond)  // Evaluates a condition string: "portrait", "landscape", or "width|height >=|>|<|<= number".
+  private static int parseAlign(String value)
+inner-class: BuildContext
+  fields:
+    final Cons<MenuResult> resultListener
+    final ObjectMap<String,Element> idElements
+    final ObjectMap<String,ButtonGroup<Button>> buttonGroups
+    final ObjectMap<String,Seq<Image>> images
+  ctors:
+    BuildContext(Cons<MenuResult> resultListener)
+  methods:
+    ButtonGroup<Button> group(String name)
+inner-class: BuildResult
+// Result of building a NodeBuilder: named elements (those with an explicit id), plus any server-streamed images, keyed by region name
+  fields:
+    public final ObjectMap<String,Element> idElements
+    public final ObjectMap<String,Seq<Image>> images
+  ctors:
+    BuildResult(ObjectMap<String,Element> idElements, ObjectMap<String,Seq<Image>> images)
+

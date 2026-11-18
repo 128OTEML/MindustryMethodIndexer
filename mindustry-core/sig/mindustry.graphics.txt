@@ -1,0 +1,746 @@
+BlockRenderer.java
+Java class
+fields:
+  public static final int crackRegions  // TODO cracks take up far to much space, so I had to limit it to 7.
+  public static final boolean drawQuadtreeDebug
+  public static final boolean blockDrawCountDebug
+  public static final Color shadowColor
+  private static final int initialRequests
+  public final FloorRenderer floor
+  public TextureRegion cracks
+  private IntSeq chunksToDraw
+  private IntSet chunksToDrawSet
+  private Seq<Tile> tileview
+  private Seq<Building> tileExtraCachedView
+  private Seq<Building> tileWithConsumerView
+  private Seq<Tile> lightview
+  private Seq<UpdateRenderState> updateFloors  // TODO I don't like this system
+  private boolean hadMapLimit
+  private int lastCamX
+  private Team lastTeam
+  private float brokenFade
+  private FrameBuffer shadows
+  private FrameBuffer dark
+  private Seq<Building> outArray2
+  private Seq<Tile> shadowEvents
+  private IntSet darkEvents
+  private IntSet procLinks
+  private BlockQuadtree blockTree
+  private BlockQuadtree blockCachedTree
+  private BlockLightQuadtree blockLightTree
+  private OverlayQuadtree overlayTree
+  private FloorQuadtree floorTree
+  private CacheChunk cacheChunks
+  private CacheBatch cbatch
+  private Seq<SpriteCache> caches
+  private Seq<IntSeq> queuedCacheDraws
+  private IntSeq queuedCacheIndices
+  private IntSet dirtyChunks
+  private ObjectIntMap<Block> blockDrawSprites  // only used when blockDrawCountDebug = true
+  private ObjectIntMap<Block> blockDrawTotal
+ctors:
+  public BlockRenderer()
+methods:
+  public void recacheBuilding(BuildingCacheLayer layer, Tile tile)
+  public void cacheChunk(int layer, int cx, int cy)
+  public void reload()
+  public void updateShadows(boolean ignoreBuildings, boolean ignoreTerrain)
+  public void updateDarkness()
+  public void invalidateTile(Tile tile)
+  public FrameBuffer getShadowBuffer()
+  public void removeFloorIndex(Tile tile)
+  public void addFloorIndex(Tile tile)
+  public void removeOverlayIndex(Tile tile)
+  public void addOverlayIndex(Tile tile)
+  boolean indexBlock(Tile tile)
+  boolean indexBlockCached(Tile tile)
+  boolean indexOverlay(Tile tile)
+  boolean indexFloor(Tile tile)
+  void recordIndex(Tile tile)
+  public void recacheWall(Tile tile)
+  public void checkChanges()
+  public void drawDarkness()
+  public void drawDestroyed()
+  public void processShadows() / public void processShadows(boolean ignoreBuildings, boolean ignoreTerrain)
+  public void drawShadows()
+  public void processBlocks()  // Process all blocks to draw.
+  void drawTree(QuadTree<Tile> tree)  // debug method for drawing block bounds
+  public void drawBlocks()
+  public void updateShadow(Building build)
+  public void updateShadowTile(Tile tile)
+inner-class: CacheChunk
+  fields:
+    SpriteCache caches
+    int spriteCacheIndices  // index of cache variable in list of global sprite caches
+    int cacheIds
+    boolean dirty
+    Team lastSeenTeam
+inner-class: BlockQuadtree extends arc.math.geom.QuadTree
+  ctors:
+    public BlockQuadtree(Rect bounds)
+  methods:
+    public void hitbox(Tile tile)
+    protected QuadTree<Tile> newChild(Rect rect)
+inner-class: BlockLightQuadtree extends arc.math.geom.QuadTree
+  ctors:
+    public BlockLightQuadtree(Rect bounds)
+  methods:
+    public void hitbox(Tile tile)
+    protected QuadTree<Tile> newChild(Rect rect)
+inner-class: OverlayQuadtree extends arc.math.geom.QuadTree
+  ctors:
+    public OverlayQuadtree(Rect bounds)
+  methods:
+    public void hitbox(Tile tile)
+    protected QuadTree<Tile> newChild(Rect rect)
+inner-class: FloorQuadtree extends arc.math.geom.QuadTree
+  ctors:
+    public FloorQuadtree(Rect bounds)
+  methods:
+    public void hitbox(Tile tile)
+    protected QuadTree<Tile> newChild(Rect rect)
+
+BuildingCacheLayer.java
+(unknown)
+
+CacheLayer.java
+Java class
+fields:
+  public static CacheLayer water
+  public static CacheLayer all
+  public int id
+  public boolean liquid
+methods:
+  public static void add(CacheLayer layers) / public static void add(int index, CacheLayer layer)  // Registers cache layers that will render before the 'normal' layer.
+  public static void addLast(CacheLayer layers)  // Register CacheLayers at the end of the array.
+  public static void init()  // Loads default cache layers.
+  public void begin()  // Called before the cache layer begins rendering.
+  public void end()  // Called after the cache layer ends rendering.
+inner-class: ShaderLayer extends mindustry.graphics.CacheLayer
+  fields:
+    public Shader shader
+  ctors:
+    public ShaderLayer(Shader shader) / public ShaderLayer(Shader shader, boolean liquid)
+  methods:
+    public void begin()
+    public void end()
+
+CubemapMesh.java
+Java class implements arc.util.Disposable
+fields:
+  private static final float vertices
+  private final Mesh mesh
+  private final Shader shader
+  private Cubemap map
+ctors:
+  public CubemapMesh(Cubemap map)
+methods:
+  public void setCubemap(Cubemap map)
+  public void render(Mat3D projection)
+  public void dispose()
+
+DebugCollisionRenderer.java
+Java class
+fields:
+  static final float edges
+methods:
+  public static void draw()
+
+Drawf.java
+Java class
+fields:
+  private static final Vec2 vecs
+  private static final FloatSeq points
+methods:
+  public static void text(String text, float x, float y, Color color) / public static void text(String text, float x, float y, Color color, float scale) / public static void text(String text, float x, float y, Color color, float scale, int align) / public static void text(String text, float x, float y, float rotation, Color color, float scale, int align) / public static float text()  // Sets Draw.z to the text layer, and returns the previous layer.
+  public static void checkBleed(Pixmap pixmap)  // Bleeds a mod pixmap if linear filtering is enabled.
+  public static void underwater(Runnable run)
+  public static void flame(float x, float y, int divisions, float rotation, float length, float width, float pan)  // TODO offset unused
+  public static void flameFront(float x, float y, int divisions, float rotation, float length, float width)
+  private static void point(float x, float y, float baseX, float baseY, float rotation)
+  public static void buildBeam(float x, float y, float tx, float ty, float radius)
+  public static void additive(TextureRegion region, Color color, float x, float y) / public static void additive(TextureRegion region, Color color, float x, float y, float rotation) / public static void additive(TextureRegion region, Color color, float x, float y, float rotation, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float width, float height, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float rotation, float layer) / public static void additive(TextureRegion region, Color color, float alpha, float x, float y, float rotation, float layer, float originX, float originY)
+  public static void limitLine(Position start, Position dest, float len1, float len2, Color color) / public static void limitLine(Position start, Position dest, float len1, float len2)
+  public static void dashLineDst(Color color, float x, float y, float x2, float y2)
+  public static void dashLine(Color color, float x, float y, float x2, float y2) / public static void dashLine(Color color, float x, float y, float x2, float y2, int segments)
+  public static void line(Color color, float x, float y, float x2, float y2)
+  public static void dashLineBasic(float x, float y, float x2, float y2)
+  public static void dashSquare(Color color, float x, float y, float size)
+  public static void dashRect(Color color, Rect rect) / public static void dashRect(Color color, float x, float y, float width, float height)
+  public static void dashSquareBasic(float x, float y, float size)
+  public static void dashRectBasic(float x, float y, float width, float height)
+  public static void target(float x, float y, float rad, Color color) / public static void target(float x, float y, float rad, float alpha, Color color)
+  public static void light(float x, float y, float radius, Color color, float opacity) / public static void light(Position pos, float radius, Color color, float opacity) / public static void light(float x, float y, TextureRegion region, Color color, float opacity) / public static void light(float x, float y, TextureRegion region, float rotation, Color color, float opacity) / public static void light(float x, float y, float x2, float y2) / public static void light(float x, float y, float x2, float y2, float stroke, Color tint, float alpha)
+  public static void selected(Building tile, Color color) / public static void selected(Tile tile, Color color) / public static void selected(int x, int y, Block block, Color color)
+  public static void shadow(float x, float y, float rad) / public static void shadow(float x, float y, float rad, float alpha) / public static void shadow(TextureRegion region, float x, float y, float rotation) / public static void shadow(TextureRegion region, float x, float y) / public static void shadow(TextureRegion region, float x, float y, float width, float height, float rotation)
+  public static void squareShadow(float x, float y, float rad, float alpha)
+  public static void liquid(TextureRegion region, float x, float y, float alpha, Color color, float rotation) / public static void liquid(TextureRegion region, float x, float y, float alpha, Color color)
+  public static void dashCircle(float x, float y, float rad, Color color)
+  public static void circles(float x, float y, float rad) / public static void circles(float x, float y, float rad, Color color)
+  public static void select(float x, float y, float radius, Color color)
+  public static void square(float x, float y, float radius, float rotation, Color color) / public static void square(float x, float y, float radius, float rotation, Color color, Color bgColor) / public static void square(float x, float y, float radius, float rotation, Color color, Color bgColor, float scaling) / public static void square(float x, float y, float radius, float rotation) / public static void square(float x, float y, float radius, Color color) / public static void square(float x, float y, float radius)
+  public static void cross(float x, float y, float radius, Color color)
+  public static void poly(float x, float y, int sides, float radius, float rotation, Color color)
+  public static void fillPoly(float x, float y, int sides, float radius, float rotation, Color color) / public static void fillPoly(float x, float y, int sides, float radius, float rotation, Color color, Color bgColor, float scl)
+  public static void arrow(float x, float y, float x2, float y2, float length, float radius) / public static void arrow(float x, float y, float x2, float y2, float length, float radius, Color color)
+  public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2) / public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2, float scale) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale, boolean light) / public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2, float scale, boolean light, boolean useLod)
+  public static void tri(float x, float y, float width, float length, float rotation)
+  public static void construct(Building t, UnlockableContent content, float rotation, float progress, float alpha, float time) / public static void construct(float x, float y, TextureRegion region, float rotation, float progress, float alpha, float time) / public static void construct(float x, float y, TextureRegion region, Color color, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, Color color, float rotation, float progress, float alpha, float time) / public static void construct(Building t, TextureRegion region, Color color, float rotation, float progress, float alpha, float time, float size)
+  public static void spinSprite(TextureRegion region, float x, float y, float r)  // Draws a sprite that should be light-wise correct, when rotated.
+
+EnvRenderers.java
+Java class
+methods:
+  public static void init()
+
+FloorRenderer.java
+Java class
+// general implementation:
+fields:
+  public static boolean growSprites
+  private static final VertexAttribute attributes
+  private static final int chunksize
+  private static final float packPad
+  private static final float pad
+  private static final boolean dynamic  // if true, chunks are rendered on-demand; this causes small lag spikes and is generally not needed for most maps
+  private float vertices
+  private int vidx
+  private FloorRenderBatch batch
+  private Shader shader
+  private Mat combinedMat
+  private Texture texture
+  private TextureRegion error
+  private ChunkMesh cache
+  private boolean dirty
+  private IntSet drawnLayerSet
+  private IntSeq drawnLayers
+  private ObjectSet<CacheLayer> used
+  private float packWidth
+  private Seq<Runnable> underwaterDraw
+  private Blending underwaterBlend  // alpha value of pixels cannot exceed the alpha of the surface they're being drawn on
+ctors:
+  public FloorRenderer()
+methods:
+  public float[] getVertexBuffer()
+  public void recacheTile(Tile tile) / public void recacheTile(int x, int y)  // Queues up a cache change for a tile.
+  public void drawFloor() / public void drawFloor(boolean processChanges, boolean cacheIgnoreWalls)
+  public void drawUnderwater(Runnable run)
+  public void beginDraw()
+  public void drawLayer(CacheLayer layer) / public void drawLayer(CacheLayer layer, boolean checkChanges)
+  private void cacheChunk(int cx, int cy, boolean ignoreWalls)
+  private ChunkMesh cacheChunkLayer(int cx, int cy, CacheLayer layer, boolean ignoreWalls)
+  public void reload() / public void reload(boolean ignoreWalls)
+inner-class: ChunkMesh extends arc.graphics.Mesh
+  fields:
+    Rect bounds
+  ctors:
+    ChunkMesh(boolean isStatic, int maxVertices, int maxIndices, VertexAttribute[] attributes, float minX, float minY, float maxX, float maxY)
+inner-class: FloorRenderBatch extends arc.graphics.g2d.Batch
+  methods:
+    protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) / protected void draw(Texture texture, float[] spriteVertices, int offset, int count)
+    float pack(float x, float y)
+    public void flush()
+    public void setShader(Shader shader, boolean apply)
+
+FogRenderer.java
+Java class (final)
+fields:
+  private FrameBuffer staticFog
+  private LongSeq events
+  private Rect rect
+  private Team lastTeam
+ctors:
+  public FogRenderer()
+methods:
+  public void handleEvent(long event)
+  public Texture getStaticTexture()
+  public Texture getDynamicTexture()
+  public void drawFog()
+  void poly(float x, float y, float rad)
+  void renderEvent(long e)
+  public void copyFromCpu()
+
+IntelGpuCheck.java
+Java class
+fields:
+  private static boolean wasIntel
+methods:
+  public static void init(String vendor)  // initialize intel version check for the next application launch
+  public static boolean wasIntel()  // @return whether the last launch used an intel GPU on Windows
+
+InverseKinematics.java
+Java class
+fields:
+  private static final Vec2 mat1
+  private static final Vec2 temp
+methods:
+  public static boolean solve(float lengthA, float lengthB, Vec2 end, boolean side, Vec2 result) / public static boolean solve(float lengthA, float lengthB, Vec2 end, Vec2 attractor, Vec2 result)  // inputs:
+
+Layer.java
+Java class
+// Stores constants for sorting layers.
+fields:
+  public static final float min
+
+LightRenderer.java
+Java class
+// Renders overlay lights.
+fields:
+  private static final int scaling
+  private float vertices
+  private FrameBuffer buffer
+  private Seq<Runnable> lights
+  private Seq<CircleLight> circles
+  private int circleIndex
+  private TextureRegion circleRegion
+methods:
+  public void add(Runnable run) / public void add(float x, float y, float radius, Color color, float opacity) / public void add(float x, float y, TextureRegion region, Color color, float opacity) / public void add(float x, float y, TextureRegion region, float rotation, Color color, float opacity)
+  public void line(float x, float y, float x2, float y2, float stroke, Color tint, float alpha)
+  public boolean enabled()
+  public void draw()
+inner-class: CircleLight
+  fields:
+    float x
+  methods:
+    public void set(float x, float y, float color, float radius)
+
+LoadRenderer.java
+Java class implements arc.util.Disposable
+fields:
+  private static final Color color
+  private static final Color colorRed
+  private static final String red
+  private static final String orange
+  private static final FloatSeq floats
+  private static final boolean preview
+  private float testprogress
+  private StringBuilder assetText
+  private Bar bars
+  private Mesh mesh
+  private Camera3D cam
+  private int lastLength
+  private FxProcessor fx
+  private WindowedMean renderTimes
+  private BloomFilter bloom
+  private boolean renderStencil
+  private long lastFrameTime
+methods:
+  public void dispose()
+  public void draw()
+inner-class: Bar
+  fields:
+    final Floatp value
+    final Boolp red
+    final String text
+  ctors:
+    public Bar(String text, float value, boolean red) / public Bar(String text, Boolp valid, Floatp value, Boolp red)
+  methods:
+    boolean valid()
+    boolean red()
+    float value()
+
+Lod.java
+Java class
+fields:
+  private static final float threshold1
+  private static final float fade
+  public static boolean disable
+  public static boolean l1
+  public static float alpha1
+  public static boolean l2
+  public static float alpha2
+methods:
+  public static void update()
+
+MenuRenderer.java
+Java class implements arc.util.Disposable
+fields:
+  private static final float darkness
+  private final int width
+  private int cacheFloor
+  private Camera camera
+  private Mat mat
+  private FrameBuffer shadows
+  private CacheBatch batch
+  private float time
+  private float flyerRot
+  private int flyers
+  private UnitType flyerType  // no longer random or "dynamic", mod units in the menu look jarring, and it's not worth the configuration effort
+ctors:
+  public MenuRenderer()
+methods:
+  private void generate()
+  private void cache()
+  public void render()
+  private void drawFlyers()
+  private void flyers(Floatc2 cons)
+  public void dispose()
+
+MinimapRenderer.java
+Java class
+fields:
+  private static final float baseSize
+  private final Seq<Unit> units
+  private Pixmap pixmap
+  private Texture texture
+  private TextureRegion region
+  private Rect rect
+  private float zoom
+  private IntSet updates
+  private float updateCounter
+ctors:
+  public MinimapRenderer()
+methods:
+  public void update() / public void update(Tile tile)
+  public Pixmap getPixmap()
+  public Texture getTexture()
+  public void zoomBy(float amount)
+  public void setZoom(float amount)
+  public float getZoom()
+  public void reset()
+  public void drawEntities(float x, float y, float w, float h, boolean fullView)
+  public void drawSpawns()
+  public TextureRegion getRegion()
+  public void updateAll()
+  public void updatePixel(Tile tile)
+  public void updateUnitArray()
+  private Block realBlock(Tile tile)
+  private int colorFor(Tile tile)
+  public void drawLabel(float x, float y, String text, Color color, float scaleFactor) / public void drawLabel(float x, float y, String text, Color color, float scaleFactor, boolean bg)
+
+MultiPacker.java
+Java class implements arc.util.Disposable
+fields:
+  private PixmapPacker packers
+  private ObjectSet<String> outlined
+ctors:
+  public MultiPacker() / public MultiPacker(boolean initialize)
+methods:
+  public PixmapRegion get(TextureRegion region) / public PixmapRegion get(String region)
+  public PixmapRegion getPacked(String name)
+  public void printStats()
+  public boolean registerOutlined(String named)  // @return whether this image was not already outlined.
+  public boolean isOutlined(String name)
+  public boolean has(String name) / public boolean has(PageType type, String name)
+  public void add(PageType type, String name, PixmapRegion region) / public void add(PageType type, String name, PixmapRegion region, int[] splits, int[] pads) / public void add(PageType type, String name, Pixmap pix)
+  public TextureAtlas flush(TextureFilter filter, TextureAtlas atlas)
+  public void dispose()
+
+NvGpuInfo.java
+Java class
+// Nvidia-specific utility class for querying GPU VRAM information.
+fields:
+  private static final int GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX
+  private static final int GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX
+  private static boolean supported
+methods:
+  public static int getMaxMemoryKB()
+  public static int getAvailableMemoryKB()
+  public static boolean hasMemoryInfo()
+
+OverlayRenderer.java
+Java class
+fields:
+  private static final float indicatorLength
+  private static final float spawnerMargin
+  private static final Rect rect
+  private float buildFade
+  private Sized lastSelect
+  private Seq<CoreEdge> cedges
+  private boolean updatedCores
+ctors:
+  public OverlayRenderer()
+methods:
+  private void updateCoreEdges()
+  public void drawBottom()
+  public void drawTop()
+  public void checkApplySelection(Unit u)
+inner-class: CoreEdge
+  fields:
+    float x1
+    Team t1
+  ctors:
+    public CoreEdge(float x1, float y1, float x2, float y2, Team t1, Team t2)
+  methods:
+    Team displayed()
+
+Pal.java
+Java class
+fields:
+  public static Color water
+
+ParticleRenderer.java
+Java class
+// WIP experimental point-sprite based particle renderer.
+fields:
+  static final boolean useAsync
+  static final int maxParticles
+  static final int particleSize
+  static final int particleVertexSize
+  static final float globalDrag
+  static final float cullPadding
+  static final VertexAttribute attributes
+  static Shader shader
+  float data
+  volatile int count
+  float addBuffer  // TODO should be smaller than data
+  int addCount
+  Mesh mesh
+  float vertexBuffer
+  volatile int vertexBufferLength
+  Future<?> asyncTask
+methods:
+  public int count()
+  public void updateAndRender()
+  public void update() / static int update(float[] data, int count, float delta)
+  void updateAsync()
+  public void render()
+  public void add(float x, float y, float lifetime, float vx, float vy, float sizeFrom, float sizeTo, float color)
+  void buildVertices()
+  void uploadMeshData(Mesh mesh)
+  static void makeShader()
+
+Pixelator.java
+Java class implements arc.util.Disposable
+fields:
+  private FrameBuffer buffer
+  private float px
+methods:
+  public void drawPixelate()
+  public void register()
+  public boolean enabled()
+  public void dispose()
+
+Shaders.java
+Java class
+fields:
+  public static BlockBuildShader blockbuild
+  public static ShieldShader shield
+  public static BuildBeamShader buildBeam
+  public static UnitBuildShader build
+  public static UnitArmorShader armor
+  public static DarknessShader darkness
+  public static FogShader fog
+  public static LightShader light
+  public static SurfaceShader water
+  public static PlanetShader planet
+  public static CloudShader clouds
+  public static PlanetGridShader planetGrid
+  public static AtmosphereShader atmosphere
+  public static ShockwaveShader shockwave
+  public static MeshShader mesh
+  public static Shader unlit
+  public static Shader screenspace
+methods:
+  public static void init()
+  public static Fi getShaderFi(String file)
+inner-class: AtmosphereShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public Camera3D camera
+    public Planet planet
+    Mat3D mat
+  ctors:
+    public AtmosphereShader()
+  methods:
+    public void apply()
+inner-class: PlanetShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public Vec3 lightDir
+    public Color ambientColor
+    public Vec3 camDir
+    public Vec3 camPos
+    public boolean emissive
+    public Planet planet
+  ctors:
+    public PlanetShader()
+  methods:
+    public void apply()
+inner-class: CloudShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public Vec3 lightDir
+    public Color ambientColor
+    public Vec3 camDir
+    public float alpha
+    public Planet planet
+  ctors:
+    public CloudShader()
+  methods:
+    public void apply()
+inner-class: MeshShader extends mindustry.graphics.Shaders.LoadShader
+  ctors:
+    public MeshShader()
+inner-class: PlanetGridShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public Vec3 mouse
+  ctors:
+    public PlanetGridShader()
+  methods:
+    public void apply()
+inner-class: LightShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public Color ambient
+  ctors:
+    public LightShader()
+  methods:
+    public void apply()
+inner-class: DarknessShader extends mindustry.graphics.Shaders.LoadShader
+  ctors:
+    public DarknessShader()
+inner-class: FogShader extends mindustry.graphics.Shaders.LoadShader
+  ctors:
+    public FogShader()
+inner-class: UnitBuildShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public float progress
+    public Color color
+    public TextureRegion region
+  ctors:
+    public UnitBuildShader()
+  methods:
+    public void apply()
+inner-class: UnitArmorShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public float progress
+    public TextureRegion region
+  ctors:
+    public UnitArmorShader()
+  methods:
+    public void apply()
+inner-class: BlockBuildShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    public float progress
+    public float alpha  // Alpha changes the opacity of *everything*, while the provided batch color only changes the outline
+    public TextureRegion region
+    public float time
+  ctors:
+    public BlockBuildShader()
+  methods:
+    public void apply()
+inner-class: ShieldShader extends mindustry.graphics.Shaders.LoadShader
+  ctors:
+    public ShieldShader()
+  methods:
+    public void apply()
+inner-class: BuildBeamShader extends mindustry.graphics.Shaders.LoadShader
+  ctors:
+    public BuildBeamShader()
+  methods:
+    public void apply()
+inner-class: SpaceShader extends mindustry.graphics.Shaders.SurfaceShader
+// seed: 8kmfuix03fw
+  fields:
+    Texture texture
+  ctors:
+    public SpaceShader(String frag)
+  methods:
+    public void apply()
+inner-class: SurfaceShader extends arc.graphics.gl.Shader
+  fields:
+    Texture noiseTex
+  ctors:
+    public SurfaceShader(String frag) / public SurfaceShader(String vertRaw, String fragRaw)
+  methods:
+    public String textureName()
+    public void loadNoise()
+    public void apply()
+inner-class: ShockwaveShader extends mindustry.graphics.Shaders.LoadShader
+  fields:
+    static final int max
+    static final int size
+    protected FloatSeq data  // x y radius life[1-0] lifetime
+    protected FloatSeq uniforms
+    protected boolean hadAny
+    protected FrameBuffer buffer
+    public float lifetime
+  ctors:
+    public ShockwaveShader()
+  methods:
+    public void apply()
+    public void add(float x, float y, float radius) / public void add(float x, float y, float radius, float lifetime)
+inner-class: LoadShader extends arc.graphics.gl.Shader
+  ctors:
+    public LoadShader(String frag, String vert)
+
+Trail.java
+Java class
+fields:
+  public int length
+  protected FloatSeq points
+  protected float lastX
+ctors:
+  public Trail(int length)
+methods:
+  public Trail copy()
+  public float width()
+  public void clear()
+  public int size()
+  public void drawCap(Color color, float width)
+  public void draw(Color color, float width)
+  public void shorten()  // Removes the last point from the trail at intervals.
+  public void update(float x, float y) / public void update(float x, float y, float width)  // Adds a new point to the trail at intervals.
+
+Voronoi.java
+Java class
+// TODO in dire need of cleanup
+fields:
+  private final static int LE
+  private final static int RE
+  int siteidx  // TODO make local
+  Site sites
+  int nsites
+  float borderMinX
+  float ymin
+  float deltay
+  int nvertices
+  int nedges
+  Site bottomsite
+  int PQcount
+  int PQmin
+  int PQhashsize
+  Halfedge PQhash
+  int ELhashsize
+  Halfedge ELhash
+  Seq<GraphEdge> allEdges
+  float minDistanceBetweenSites
+methods:
+  public static Seq<GraphEdge> generate(Vec2[] values, float minX, float maxX, float minY, float maxY)
+  Seq<GraphEdge> generateVoronoi(Vec2[] values, float minX, float maxX, float minY, float maxY)
+  private Site next()
+  private Edge bisect(Site s1, Site s2)
+  private int pqbucket(Halfedge he)
+  private void pqinsert(Halfedge he, Site v, float offset)  // push the HalfEdge into the ordered linked list of vertices
+  private void pqdelete(Halfedge he)  // remove the HalfEdge from the list of vertices
+  private Halfedge newHe(Edge e, int pm)
+  private Site leftReg(Halfedge he)
+  private void insert(Halfedge lb, Halfedge newHe)
+  private void delete(Halfedge he)  // * This delete routine can't reclaim node, since pointers from hash table
+  private Halfedge getHash(int b)  // Get entry from hash table, pruning any deleted nodes
+  private void clipLine(Edge e)
+  private void endpoint(Edge e, int lr, Site s)
+  private boolean right(Halfedge el, Vec2 p)
+  private Site rightreg(Halfedge he)
+  private Site intersect(Halfedge el1, Halfedge el2)
+inner-class: Site
+  fields:
+    Vec2 coord
+    int sitenbr
+inner-class: Halfedge
+  fields:
+    Halfedge ELleft
+    Edge ELedge
+    boolean deleted
+    int ELpm
+    Site vertex
+    float ystar
+    Halfedge PQnext
+inner-class: GraphEdge
+  fields:
+    public float x1
+    public int site1
+inner-class: Edge
+  fields:
+    float a
+    Site ep
+    Site reg
+    int edgenbr
+

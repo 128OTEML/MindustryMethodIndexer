@@ -1,0 +1,103 @@
+EntityIO.java
+Java class
+fields:
+  final static Json json
+  final static String targetSuf  // suffixes for sync fields
+  final static StringMap replacements  // replacements after refactoring
+  final ClassSerializer serializer
+  final String name
+  final TypeSpec.Builder type
+  final Fi directory
+  final Seq<Revision> revisions
+  boolean write
+  MethodSpec.Builder method
+  ObjectSet<String> presentFields
+ctors:
+  EntityIO(String name, TypeSpec.Builder type, Seq<FieldSpec> typeFields, ClassSerializer serializer, Fi directory)
+methods:
+  void write(MethodSpec.Builder method, boolean write, Seq<Svar> allFields) throws Exception
+  boolean fieldHasAnno(RevisionField field, Seq<Svar> allFields, Class<? extends Annotation> type)
+  void writeSync(MethodSpec.Builder method, boolean write, Seq<Svar> allFields) throws Exception
+  void writeSyncManual(MethodSpec.Builder method, boolean write, Seq<Svar> syncFields) throws Exception
+  void writeInterpolate(MethodSpec.Builder method, Seq<Svar> fields) throws Exception
+  private void io(String type, String field, boolean network) throws Exception
+  private void cont(String text, Object fmt)
+  private void econt()
+  private void ncont(String text, Object fmt)
+  private void st(String text, Object args)
+  private void s(String type, String field)
+inner-class: Revision
+  fields:
+    int version
+    Seq<RevisionField> fields
+  ctors:
+    Revision(int version, Seq<RevisionField> fields) / Revision()
+  methods:
+    boolean equal(Seq<FieldSpec> specs)  // @return whether these two revisions are compatible
+inner-class: RevisionField
+  fields:
+    String name
+  ctors:
+    RevisionField(String name, String type) / RevisionField()
+
+EntityProcess.java
+Java class extends mindustry.annotations.BaseProcessor
+fields:
+  static final Pattern selfParamPattern
+  static final Pattern selfPattern
+  static final Pattern yieldPattern
+  static final Pattern missingPattern
+  Seq<EntityDefinition> definitions
+  Seq<GroupDefinition> groupDefs
+  Seq<Stype> baseComponents
+  ObjectMap<String,Stype> componentNames
+  ObjectMap<Stype,Seq<Stype>> componentDependencies
+  ObjectMap<Selement,Seq<Stype>> defComponents
+  ObjectMap<String,String> varInitializers
+  ObjectMap<String,String> methodBlocks
+  ObjectMap<Stype,ObjectSet<Stype>> baseClassDeps
+  ObjectSet<String> imports
+  Seq<Selement> allGroups
+  Seq<Selement> allDefs
+  Seq<Stype> allInterfaces
+  Seq<TypeSpec.Builder> baseClasses
+  ObjectSet<TypeSpec.Builder> baseClassIndexers
+  ClassSerializer serializer
+methods:
+  public void process(RoundEnvironment env) throws Exception
+  Seq<String> getImports(Element elem)
+  String interfaceName(Stype comp)  // @return interface for a component type
+  String baseName(Stype comp)  // @return base class name for a component type
+  Stype interfaceToComp(Stype type)
+  Seq<Stype> allComponents(Selement<?> type)  // @return all components that a entity def has
+  Seq<Stype> getDependencies(Stype component)
+  boolean isCompInterface(Stype type)
+  String createName(Selement<?> elem)
+  Seq<Stype> types(T t, Cons<T> consumer)
+  void skipDeprecated(TypeSpec.Builder builder)
+inner-class: GroupDefinition
+  fields:
+    final String name
+    final ClassName baseType
+    final Seq<Stype> components
+    final boolean spatial
+  ctors:
+    public GroupDefinition(String name, ClassName bestType, Seq<Stype> components, Seq<Stype> excludedComponents, boolean spatial, boolean mapping, boolean collides, boolean updates)
+  methods:
+    public String toString()
+inner-class: EntityDefinition
+  fields:
+    final Seq<GroupDefinition> groups
+    final Seq<Stype> components
+    final Seq<FieldSpec> fieldSpecs
+    final TypeSpec.Builder builder
+    final Selement naming
+    final String name
+    final TypeName extend
+    final boolean legacy
+    int classID
+  ctors:
+    public EntityDefinition(String name, Builder builder, Selement naming, TypeName extend, Seq<Stype> components, Seq<GroupDefinition> groups, Seq<FieldSpec> fieldSpec, boolean legacy)
+  methods:
+    public String toString()
+

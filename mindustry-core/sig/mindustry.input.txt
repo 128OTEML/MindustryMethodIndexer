@@ -1,0 +1,369 @@
+Binding.java
+Java class
+fields:
+  public static final KeyBind moveX
+methods:
+  public static void init()  // dummy static class initializer
+
+DesktopInput.java
+Java class extends mindustry.input.InputHandler
+fields:
+  public Vec2 movement
+  public Cursor cursorType  // Current cursor type.
+  public int selectX  // Position where the player started dragging a line.
+  public int lastLineX  // Last known line positions.
+  public PlaceMode mode  // Whether selecting mode is active.
+  public float selectScale  // Animation scale for line.
+  public BuildPlan splan  // Selected build plan for movement.
+  public boolean deleting  // Whether player is currently deleting removal plans.
+  public float panScale  // Mouse pan speed.
+  public long selectMillis  // Delta time between consecutive clicks.
+  public Tile prevSelected  // Previously selected tile.
+  public int lastCtrlGroup  // Most recently selected control group by index
+  public long lastCtrlGroupSelectMillis  // Time of most recent control group selection
+  public long lastPayloadKeyTapMillis  // Time of most recent payload pickup/drop key press
+  public long lastPayloadKeyHoldMillis  // Time of most recent payload pickup/drop key hold
+  private float buildPlanMouseOffsetX
+  private boolean changedCursor
+methods:
+  boolean showHint()
+  public void reset()
+  public void buildUI(Group group)
+  public void drawTop()
+  public void drawBottom()
+  public void update()
+  public void useSchematic(Schematic schem, boolean checkHidden)
+  public boolean isBreaking()
+  public void buildPlacementUI(Table table)
+  void pollInputNoPlayer()
+  void pollInputPlayer()  // player input: for controlling the player unit (will crash if the unit is not present)
+  public boolean tap(float x, float y, int count, KeyCode button)
+  public boolean touchDown(float x, float y, int pointer, KeyCode button)
+  public boolean selectedBlock()
+  public float getMouseX()
+  public float getMouseY()
+  public void updateState()
+  public void panCamera(Vec2 position)
+  protected void updateMovement(Unit unit)
+
+InputHandler.java
+Java class (abstract) implements arc.input.InputProcessor, arc.input.GestureDetector.GestureListener
+fields:
+  static ObjectMap<Vec2,Seq<Unit>> queuedCommands  // not sure where else to put this - maps unique commands based on position to a list of units that will be turned into a unit group
+  final static float playerSelectRange  // Used for dropping items.
+  final static float unitSelectRadScl
+  final static Seq<UnitStance> stancesOut
+  final static IntSeq removed
+  final static IntSet intSet
+  final static int maxLength  // Maximum line length.
+  final static Rect r1
+  final static Seq<Unit> tmpUnits
+  final static Seq<Building> tmpBuildings
+  final static KeyBind controlGroupBindings
+  public boolean logicCutscene  // If true, there is a cutscene currently occurring in logic.
+  public boolean logicHideHud
+  public Vec2 logicCamPan
+  public float logicCamSpeed
+  public float logicCutsceneZoom
+  public Seq<Boolp> inputLocks  // If any of these functions return true, input is locked.
+  public Interval controlInterval
+  public Block block
+  public boolean overrideLineRotation
+  public int rotation
+  public boolean droppingItem
+  public float itemDepositCooldown
+  public Group uiGroup
+  public boolean isBuilding
+  public UnitType controlledType
+  public float recentRespawnTimer
+  public Schematic lastSchematic
+  public GestureDetector detector
+  public PlaceLine line
+  public BuildPlan resultplan
+  public BuildPlan bplan
+  public Seq<BuildPlan> linePlans
+  public Seq<BuildPlan> selectPlans
+  public Queue<BuildPlan> lastPlans
+  public Unit lastUnit
+  public Unit spectating
+  public Seq<Unit> selectedUnits  // for RTS controls
+  public Seq<Building> commandBuildings
+  public boolean commandMode
+  public boolean commandRect
+  public boolean tappedOne
+  public float commandRectX
+  public IntSeq controlGroups  // Groups of units saved to different hotkeys
+  private Seq<BuildPlan> plansOut
+  private QuadTree<BuildPlan> playerPlanTree
+  private QuadTree<BuildPlan> selectPlanTree
+  public final BlockInventoryFragment inv
+  public final BlockConfigFragment config
+  public final PlanConfigFragment planConfig
+  private WidgetGroup group
+  private BuildPlan overlappingPlan
+  private Player overlappingPlayer
+  protected Eachable<BuildPlan> allPlans
+  private static BuildPlan sameQuadPlan  // prevents allocation
+  private static final Boolf<BuildPlan> sameQuadPlanFinder
+  private static BuildPlan vpIgnore  // static to avoid capture allocation
+  private static Block vpBlock
+  private static int vpX
+  private static final Boolf<BuildPlan> vpPredicate
+ctors:
+  public InputHandler()
+methods:
+  protected void initQuadtrees()
+  public static void transferItemEffect(Item item, float x, float y, Itemsc to)
+  public static void takeItems(Building build, Item item, int amount, Unit to)
+  public static void transferItemToUnit(Item item, float x, float y, Itemsc to)
+  public static void setItem(Building build, Item item, int amount)
+  public static void setItems(Building build, ItemStack[] items)
+  public static void setTileItems(Item item, int amount, int[] positions)
+  public static void clearItems(Building build)
+  public static void setLiquid(Building build, Liquid liquid, float amount)
+  public static void setLiquids(Building build, LiquidStack[] liquids)
+  public static void setTileLiquids(Liquid liquid, float amount, int[] positions)
+  public static void clearLiquids(Building build)
+  public static void transferItemTo(Unit unit, Item item, int amount, float x, float y, Building build)
+  public static void deletePlans(Player player, int[] positions)
+  public static void pingLocation(Player player, float x, float y, String text)
+  public static void createItemTransfer(Item item, int amount, float x, float y, Position to, Runnable done)
+  public static void commandUnits(Player player, int[] unitIds, Building buildTarget, Unit unitTarget, Vec2 posTarget, boolean queueCommand, boolean finalBatch)
+  public static void setUnitCommand(Player player, int[] unitIds, UnitCommand command)
+  public static void setUnitStanceChunked(IntSeq ids, UnitStance stance, boolean enable)
+  public static void setUnitCommandChunked(IntSeq ids, UnitCommand command)
+  public static void setUnitStance(Player player, int[] unitIds, UnitStance stance, boolean enable)
+  public static void commandBuilding(Player player, int[] buildings, Vec2 target)
+  public static void requestItem(Player player, Building build, Item item, int amount)
+  public static void transferInventory(Player player, Building build)
+  public static void removeQueueBlock(int x, int y, boolean breaking)
+  public static void requestUnitPayload(Player player, Unit target)
+  public static void requestBuildPayload(Player player, Building build)
+  public static void pickedUnitPayload(Unit unit, Unit target)
+  public static void pickedBuildPayload(Unit unit, Building build, boolean onGround)
+  public static void requestDropPayload(Player player, float x, float y)
+  public static void payloadDropped(Unit unit, float x, float y)
+  public static void unitEnteredPayload(Unit unit, Building build)
+  public static void dropItem(Player player, float angle)
+  public static void rotateBlock(Player player, Building build, boolean direction)
+  public static void tileConfig(Player player, Building build, Object value)
+  public static void tileTap(Player player, Tile tile)  // uses unreliable packets due to high frequency
+  public static void buildingControlSelect(Player player, Building build)
+  public static void unitBuildingControlSelect(Unit unit, Building build)
+  public static void unitControl(Player player, Unit unit)
+  public static void unitClear(Player player)
+  protected void createPlanLists()
+  public void updateSelectQuadtree()
+  public void addLock(Boolp lock)  // Adds an input lock; if this function returns true, input is locked.
+  public boolean locked()  // @return whether most input is locked, for 'cutscenes'
+  public Eachable<BuildPlan> allPlans()
+  public boolean isUsingSchematic()
+  public void spectate(Unit unit)
+  public void reset()
+  public void getSyncedPlans(Seq<BuildPlan> out)
+  public void update()
+  public void checkUnit()
+  public void tryPickupPayload()
+  public void tryDropPayload()
+  public float getMouseX()
+  public float getMouseY()
+  public void buildPlacementUI(Table table)
+  public void buildUI(Group group)
+  public void updateState()
+  public boolean multiUnitSelect()  // TODO when shift is held? ctrl?
+  public void selectUnitsRect()
+  public void selectTypedUnits()
+  public void tapCommandUnit()
+  public void commandTap(float screenX, float screenY) / public void commandTap(float screenX, float screenY, boolean queue)
+  public void drawCommand(Unit sel) / public void drawCommand(Building build)
+  public void drawCommanded() / public void drawCommanded(boolean flying)
+  public void drawCommandedTargets()
+  public void drawUnitSelection()
+  public void drawOtherBuildPlans()  // Draws build plans of other players.
+  public void drawBuildPlans()
+  public void drawBottom()
+  public void drawTop()
+  public void drawOverSelect()
+  public void drawSelected(int x, int y, Block block, Color color)
+  public void drawBreaking(BuildPlan plan) / public void drawBreaking(int x, int y)
+  public void drawOverlapCheck(Block block, int cursorX, int cursorY, boolean valid)
+  public boolean planMatches(BuildPlan plan)
+  public void useSchematic(Schematic schem) / public abstract void useSchematic(Schematic schem, boolean checkHidden)
+  protected void showSchematicSave()
+  public void rotatePlans(Seq<BuildPlan> plans, int direction)
+  public void flipPlans(Seq<BuildPlan> plans, boolean x)
+  protected int schemOriginX()
+  protected int schemOriginY()
+  protected BuildPlan getPlan(int x, int y) / protected BuildPlan getPlan(int x, int y, int size, BuildPlan skip)  // @return the selection plan that overlaps this position, or null.
+  protected void drawBreakSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void drawBreakSelection(int x1, int y1, int x2, int y2, int maxLength, boolean useSelectPlans) / protected void drawBreakSelection(int x1, int y1, int x2, int y2)
+  protected void drawRebuildSelection(int x1, int y1, int x2, int y2)
+  protected void drawSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void drawSelection(int x1, int y1, int x2, int y2, int maxLength, Color col1, Color col2, boolean withText)
+  protected void flushSelectPlans(Seq<BuildPlan> plans)
+  protected void flushPlansReverse(Seq<BuildPlan> plans)
+  protected void flushPlans(Seq<BuildPlan> plans)
+  protected void drawOverPlan(BuildPlan plan) / protected void drawOverPlan(BuildPlan plan, boolean valid)
+  protected void drawPlan(BuildPlan plan) / protected void drawPlan(BuildPlan plan, boolean valid) / protected void drawPlan(int x, int y, Block block, int rotation)  // Draws a placement icon for a specific block.
+  protected void removeSelection(int x1, int y1, int x2, int y2) / protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush) / protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush, int maxLength)  // Remove everything from the queue in a selection.
+  protected void updateLine(int x1, int y1, int x2, int y2) / protected void updateLine(int x1, int y1)
+  boolean checkConfigTap()
+  boolean tileTapped(Building build)  // Handles tile tap events that are not platform specific.
+  boolean tryTapPlayer(float x, float y)  // Tries to select the player to drop off items, returns true if successful.
+  boolean canTapPlayer(float x, float y)
+  boolean tryBeginMine(Tile tile)  // Tries to begin mining a tile, returns true if successful.
+  boolean tryStopMine() / boolean tryStopMine(Tile tile)  // Tries to stop mining, returns true if mining was stopped.
+  boolean tryRepairDerelict(Tile selected)
+  boolean canRepairDerelict(Tile tile)
+  boolean canMine(Tile tile)
+  Tile tileAt(float x, float y)  // Returns the tile at the specified MOUSE coordinates.
+  int rawTileX()
+  int rawTileY()
+  int tileX(float cursorX)
+  int tileY(float cursorY)
+  public void panCamera(Vec2 position)  // Forces the camera to a position and enables panning on desktop.
+  public boolean selectedBlock()
+  public boolean isPlacing()
+  public boolean isBreaking()
+  public boolean isRebuildSelecting()
+  public float mouseAngle(float x, float y)
+  public Unit selectedUnit()
+  public Building selectedControlBuild()
+  public Unit selectedCommandUnit(float x, float y)
+  public Unit selectedEnemyUnit(float x, float y)
+  public Seq<Building> selectedCommandBuildings(float x, float y, float w, float h)
+  public Seq<Unit> selectedCommandUnits(float x, float y, float w, float h, Boolf<Unit> predicate) / public Seq<Unit> selectedCommandUnits(float x, float y, float w, float h)
+  public void remove()
+  public void add()
+  public boolean canShoot()
+  public boolean onConfigurable()
+  public boolean isDroppingItem()
+  public boolean canDropItem()
+  public void tryDropItems(Building build, float x, float y)
+  public boolean canDepositItem(Building build)
+  public void rebuildArea(int x1, int y1, int x2, int y2)
+  public void tryBreakBlock(int x, int y)
+  public boolean validPlace(int x, int y, Block type, int rotation) / public boolean validPlace(int x, int y, Block type, int rotation, BuildPlan ignore) / public boolean validPlace(int x, int y, Block type, int rotation, BuildPlan ignore, boolean ignoreUnits)
+  public boolean validBreak(int x, int y)
+  public void breakBlock(int x, int y)
+  public void drawArrow(Block block, int x, int y, int rotation) / public void drawArrow(Block block, int x, int y, int rotation, boolean valid)
+  void iterateLine(int startX, int startY, int endX, int endY, Cons<PlaceLine> cons)
+inner-class: PlaceLine
+  fields:
+    public int x
+    public boolean last
+inner-class: QueryEachable implements arc.util.Eachable
+// In the interest of preserving compatibility, this implementation replaces Eachable with its own methods, and requires blocks to cast it to use it properly.
+  fields:
+    final QuadTree<BuildPlan> tree
+    final Seq fallback
+  ctors:
+    public QueryEachable(QuadTree<BuildPlan> tree, Seq<BuildPlan> fallback)
+  methods:
+    public void each(Cons<? super BuildPlan> cons)
+    public BuildPlan find(int x, int y, Boolf<BuildPlan> check) / public BuildPlan find(int x, int y, int size, Boolf<BuildPlan> check)
+
+MobileInput.java
+Java class extends mindustry.input.InputHandler implements arc.input.GestureDetector.GestureListener
+fields:
+  private static final float maxPanSpeed  // Maximum speed the player can pan.
+  public final float edgePan  // Distance to edge of screen to start panning.
+  public Vec2 vector  // gesture data
+  public float lastZoom
+  public int lineStartX  // Position where the player started dragging a line.
+  public float lineScale  // Animation scale for line.
+  public float crosshairScale  // Animation data for crosshair.
+  public Teamc lastTarget
+  public float shiftDeltaX  // Used for shifting build plans.
+  public Seq<BuildPlan> removals  // Place plans to be removed.
+  public boolean selecting  // Whether the player is currently shifting all placed tiles.
+  public boolean lineMode  // Various modes that aren't enums for some reason.
+  public PlaceMode mode  // Current place mode.
+  public Block lastBlock  // Whether no recipe was available when switching to break mode.
+  public BuildPlan lastPlaced  // Last placed plan.
+  public boolean down  // Down tracking for panning.
+  public boolean manualShooting  // Whether manual shooting (point with finger) is enabled.
+  public Teamc target  // Current thing being shot at.
+  public Position payloadTarget  // Payload target being moved to.
+  public Unit unitTapped  // Unit last tapped, or null if last tap was not on a unit.
+  public Building buildingTapped  // Control building last tapped.
+methods:
+  void checkTargets(float x, float y)  // Check and assign targets for a specific position.
+  boolean hasPlan(Tile tile)  // Returns whether this tile is in the list of plans, or at least colliding with one.
+  boolean checkOverlapPlacement(int x, int y, Block block)  // Returns whether this block overlaps any selection plans.
+  BuildPlan getPlan(Tile tile)  // Returns the selection plan that overlaps this tile, or null.
+  void removePlan(BuildPlan plan)
+  boolean isLinePlacing()
+  boolean isAreaBreaking()
+  public void buildPlacementUI(Table table)
+  public boolean showCancel()
+  public boolean hasSchematic()
+  public void buildUI(Group group)
+  public void drawBottom()
+  public void drawTop()
+  public void drawOverSelect()
+  protected void drawPlan(BuildPlan plan)
+  public boolean isRebuildSelecting()
+  protected int schemOriginX()
+  protected int schemOriginY()
+  public boolean isPlacing()
+  public boolean isBreaking()
+  public void useSchematic(Schematic schem, boolean checkHidden)
+  public boolean touchDown(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean touchUp(int screenX, int screenY, int pointer, KeyCode button)
+  public boolean longPress(float x, float y)
+  public boolean tap(float x, float y, int count, KeyCode button)
+  public void updateState()
+  public void reset()
+  public void getSyncedPlans(Seq<BuildPlan> out)
+  public void update()
+  protected void autoPan()
+  public boolean pan(float x, float y, float deltaX, float deltaY)
+  public boolean panStop(float x, float y, int pointer, KeyCode button)
+  public boolean zoom(float initialDistance, float distance)
+  protected void updateMovement(Unit unit)
+
+PlaceMode.java
+(unknown)
+
+Placement.java
+Java interface
+fields:
+  private final ItemBridge bridge
+  private final DirectionBridge bridge
+  private static final Seq<BuildPlan> plans1
+  private static final Seq<Point2> tmpPoints
+  private static final NormalizeResult result
+  private static final NormalizeDrawResult drawResult
+  private static final Bresenham2 bres
+  private static final Seq<Point2> points
+  private static final IntSeq tmpInts
+  private static final IntFloatMap costs  // for pathfinding
+  private static final IntIntMap parents
+  private static final IntSet closed
+ctors:
+  ItemBridgePlacer(ItemBridge bridge)
+  DirectionBridgePlacer(DirectionBridge bridge)
+methods:
+  boolean unlockedNow() / public boolean unlockedNow() / public boolean unlockedNow()
+  boolean positionsValid(int x1, int y1, int x2, int y2) / public boolean positionsValid(int x1, int y1, int x2, int y2) / public boolean positionsValid(int x1, int y1, int x2, int y2)
+  void applyToPlans(BuildPlan cur, BuildPlan other) / public void applyToPlans(BuildPlan cur, BuildPlan other) / public void applyToPlans(BuildPlan cur, BuildPlan other)
+  public static Seq<Point2> pathfindLine(boolean conveyors, int startX, int startY, int endX, int endY)  // Normalize a diagonal line into points.
+  public static Seq<Point2> normalizeLine(int startX, int startY, int endX, int endY)  // Normalize two points into one straight line, no diagonals.
+  public static Seq<Point2> normalizeRectangle(int startX, int startY, int endX, int endY, int blockSize)  // Normalize two points into a rectangle.
+  public static Seq<Point2> upgradeLine(int startX, int startY, int endX, int endY)
+  public static void calculateNodes(Seq<Point2> points, Block block, int rotation, Boolf2<Point2,Point2> overlapper)  // Calculates optimal node placement for nodes with spacing.
+  public static boolean isSidePlace(Seq<BuildPlan> plans)
+  public static void calculateBridges(Seq<BuildPlan> plans, ItemBridge bridge) / private static void calculateBridges(Seq<BuildPlan> plans, BridgePlacer bridge, boolean hasJunction, Boolf<Block> avoid) / public static void calculateBridges(Seq<BuildPlan> plans, ItemBridge bridge, boolean hasJunction, Boolf<Block> avoid) / public static void calculateBridges(Seq<BuildPlan> plans, DirectionBridge bridge, boolean hasJunction, Boolf<Block> avoid)
+  private static void smartCalculateBridges(Seq<BuildPlan> plans, BridgePlacer bridge, boolean hasJunction, Boolf<Block> avoid)
+  private static float tileHeuristic(Tile tile, Tile other)
+  private static float distanceHeuristic(int x1, int y1, int x2, int y2)
+  private static boolean validNode(Tile tile, Tile other)
+  private static boolean astar(int startX, int startY, int endX, int endY)
+  public static NormalizeDrawResult normalizeDrawArea(Block block, int startx, int starty, int endx, int endy, boolean snap, int maxLength, float scaling)  // Normalizes a placement area and returns the result, ready to be used for drawing a rectangle.
+  public static NormalizeResult normalizeArea(int tilex, int tiley, int endx, int endy, int rotation, boolean snap, int maxLength)  // Normalizes a placement area and returns the result.
+inner-class: NormalizeDrawResult
+  fields:
+    public float x
+inner-class: NormalizeResult
+  fields:
+    public int x
+

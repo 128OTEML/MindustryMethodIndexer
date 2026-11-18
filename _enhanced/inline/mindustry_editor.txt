@@ -1,0 +1,706 @@
+// BannedContentDialog.java : public void show(ObjectSet<T> contentSet)
+    public void show(ObjectSet<T> contentSet){
+        this.contentSet = contentSet;
+        show();
+    }
+
+// DrawOperation.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return array.isEmpty();
+    }
+
+// DrawOperation.java : public int size()
+    public int size(){
+        return array.size;
+    }
+
+// DrawOperation.java : public void remove(int amount)
+    public void remove(int amount){
+        array.setSize(Math.max(0, array.size - amount));
+    }
+
+// DrawOperation.java : public void addOperation(long op)
+    public void addOperation(long op){
+        array.add(op);
+    }
+
+// DrawOperation.java : public void undo()
+    public void undo(){
+        for(int i = array.size - 1; i >= 0; i--){
+            updateTile(i);
+        }
+    }
+
+// DrawOperation.java : public void redo()
+    public void redo(){
+        for(int i = 0; i < array.size; i++){
+            updateTile(i);
+        }
+    }
+
+// DrawOperation.java : private void updateTile(int i)
+    private void updateTile(int i){
+        long l = array.get(i);
+        array.set(i, TileOp.get(TileOp.x(l), TileOp.y(l), TileOp.type(l), getTile(editor.tile(TileOp.x(l), TileOp.y(l)), TileOp.type(l))));
+        setTile(editor.tile(TileOp.x(l), TileOp.y(l)), TileOp.type(l), TileOp.value(l));
+    }
+
+// EditorRenderer.java : void updateStatic(int x, int y)
+    void updateStatic(int x, int y){
+        renderer.blocks.floor.recacheTile(x, y);
+        if(x > 0) renderer.blocks.floor.recacheTile(x - 1, y);
+        if(y > 0) renderer.blocks.floor.recacheTile(x, y - 1);
+        if(x < world.width() - 1) renderer.blocks.floor.recacheTile(x + 1, y);
+        if(y < world.height() - 1) renderer.blocks.floor.recacheTile(x, y + 1);
+    }
+
+// EditorRenderer.java : void updateBlock(Tile tile) / void updateBlock(int x, int y)
+    void updateBlock(Tile tile){
+        updateBlock(tile.x, tile.y);
+        renderer.blocks.updateShadowTile(tile);
+    }
+
+// EditorRenderer.java : void recacheTerrain()
+    void recacheTerrain(){
+        renderer.blocks.floor.reload(!editor.showTerrain);
+        renderer.blocks.reload();
+        recacheShadows();
+    }
+
+// EditorRenderer.java : void recacheShadows()
+    void recacheShadows(){
+        renderer.blocks.updateShadows(!editor.showBuildings, !editor.showTerrain);
+    }
+
+// EditorSpriteCache.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return index == 0;
+    }
+
+// EditorSpriteCache.java : public void build(IndexData indices)
+    public void build(IndexData indices){
+        if(mesh != null) mesh.dispose();
+
+        mesh = new Mesh(true, index / vertexSize, 0,
+        VertexAttribute.packedPosition,
+        VertexAttribute.color,
+        VertexAttribute.packedTexCoords
+        );
+        mesh.indices = indices;
+        mesh.setVertices(tmpVertices, 0, index);
+    }
+
+// EditorSpriteCache.java : private float pack(float x, float y)
+    private float pack(float x, float y){
+        return Pack.packUv((x + packX) / packW, (y + packY) / packH);
+    }
+
+// EditorSpriteCache.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(mesh != null){
+            mesh.dispose();
+            mesh = null;
+        }
+    }
+
+// EditorTile.java : public boolean isEditorTile()
+    @Override
+    public boolean isEditorTile(){
+        return true;
+    }
+
+// EditorTile.java : protected void fireChanged()
+    @Override
+    protected void fireChanged(){
+        if(state.isGame()){
+            super.fireChanged();
+        }else{
+            updateStatic();
+        }
+    }
+
+// EditorTile.java : protected void firePreChanged()
+    @Override
+    protected void firePreChanged(){
+        if(state.isGame()){
+            super.firePreChanged();
+        }else{
+            updateStatic();
+        }
+    }
+
+// EditorTile.java : public void recache()
+    @Override
+    public void recache(){
+        if(skip()){
+            super.recache();
+        }
+    }
+
+// EditorTile.java : protected void changed()
+    @Override
+    protected void changed(){
+        if(state.isGame()){
+            super.changed();
+        }
+    }
+
+// EditorTile.java : public boolean isDarkened()
+    @Override
+    public boolean isDarkened(){
+        return skip() && super.isDarkened();
+    }
+
+// EditorTile.java : private boolean requiresBlockUpdate(Block block)
+    private boolean requiresBlockUpdate(Block block){
+        return block != Blocks.air && block.cacheLayer == CacheLayer.normal;
+    }
+
+// EditorTile.java : private void updateStatic()
+    private void updateStatic(){
+        if(!headless) editor.renderer.updateStatic(x, y);
+    }
+
+// EditorTile.java : private boolean skip()
+    private boolean skip(){
+        return state.isGame() || editor.isLoading() || world.isGenerating();
+    }
+
+// EditorTile.java : private void op(int type, short value)
+    private void op(int type, short value){
+        editor.addTileOp(TileOp.get(x, y, (byte)type, value));
+    }
+
+// MapEditor.java : public boolean isLoading()
+    public boolean isLoading(){
+        return loading;
+    }
+
+// MapEditor.java : public void beginEdit(int width, int height) / public void beginEdit(Map map) / public void beginEdit(Pixmap pixmap)
+    public void beginEdit(int width, int height){
+        reset();
+
+        loading = true;
+        createTiles(width, height);
+        renderer.resize(width, height);
+        loading = false;
+    }
+
+// MapEditor.java : public void load(Runnable r)
+    public void load(Runnable r){
+        loading = true;
+        r.run();
+        loading = false;
+    }
+
+// MapEditor.java : private void createTiles(int width, int height)
+    private void createTiles(int width, int height){
+        Tiles tiles = world.resize(width, height);
+
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                tiles.set(x, y, new EditorTile(x, y, Blocks.stone.id, (short)0, (short)0));
+            }
+        }
+    }
+
+// MapEditor.java : public Map createMap(Fi file)
+    public Map createMap(Fi file){
+        return new Map(file, width(), height(), new StringMap(tags), true);
+    }
+
+// MapEditor.java : private void reset()
+    private void reset(){
+        clearOp();
+        brushSize = 1;
+        drawBlock = Blocks.stone;
+        tags = new StringMap();
+    }
+
+// MapEditor.java : public Tiles tiles()
+    public Tiles tiles(){
+        return world.tiles;
+    }
+
+// MapEditor.java : public Tile tile(int x, int y)
+    public Tile tile(int x, int y){
+        return world.rawTile(x, y);
+    }
+
+// MapEditor.java : public int width()
+    public int width(){
+        return world.width();
+    }
+
+// MapEditor.java : public int height()
+    public int height(){
+        return world.height();
+    }
+
+// MapEditor.java : public void drawBlocksReplace(int x, int y)
+    public void drawBlocksReplace(int x, int y){
+        drawBlocks(x, y, tile -> tile.block() != Blocks.air || drawBlock.isFloor());
+    }
+
+// MapEditor.java : public void drawBlocks(int x, int y) / public void drawBlocks(int x, int y, Boolf<Tile> tester) / public void drawBlocks(int x, int y, boolean square, boolean forceOverlay, Boolf<Tile> tester)
+    public void drawBlocks(int x, int y){
+        drawBlocks(x, y, false, false, tile -> true);
+    }
+
+// MapEditor.java : public void clearOp()
+    public void clearOp(){
+        stack.clear();
+    }
+
+// MapEditor.java : public void undo()
+    public void undo(){
+        if(stack.canUndo()){
+            stack.undo();
+        }
+    }
+
+// MapEditor.java : public void redo()
+    public void redo(){
+        if(stack.canRedo()){
+            stack.redo();
+        }
+    }
+
+// MapEditor.java : public boolean canUndo()
+    public boolean canUndo(){
+        return stack.canUndo();
+    }
+
+// MapEditor.java : public boolean canRedo()
+    public boolean canRedo(){
+        return stack.canRedo();
+    }
+
+// MapEditor.java : public void flushOp()
+    public void flushOp(){
+        if(currentOp == null || currentOp.isEmpty()) return;
+        stack.add(currentOp);
+        currentOp = null;
+    }
+
+// MapEditor.java : public void addTileOp(long data)
+    public void addTileOp(long data){
+        if(loading) return;
+
+        if(currentOp == null) currentOp = new DrawOperation();
+        currentOp.addOperation(data);
+
+        renderer.updateStatic(TileOp.x(data), TileOp.y(data));
+    }
+
+// MapEditor.java : public int ops()
+    public int ops(){
+        if(currentOp == null) return 0;
+        return currentOp.size();
+    }
+
+// MapEditor.java : public void removeLastOps(int amount)
+    public void removeLastOps(int amount){
+        if(currentOp == null || loading) return;
+
+        currentOp.remove(amount);
+    }
+
+// MapEditorDialog.java : public void resumeEditing()
+    public void resumeEditing(){
+        state.set(State.menu);
+        shownWithMap = true;
+        show();
+        state.rules = (lastSavedRules == null ? new Rules() : lastSavedRules);
+        lastSavedRules = null;
+        saved = false;
+        editor.renderer.recache();
+    }
+
+// MapEditorDialog.java : public void resumeAfterPlaytest(Map map)
+    public void resumeAfterPlaytest(Map map){
+        beginEditMap(map.file);
+    }
+
+// MapEditorDialog.java : protected void handleSaveBuiltin(Map map)
+    protected void handleSaveBuiltin(Map map){
+        ui.showErrorMessage("@editor.save.overwrite");
+    }
+
+// MapEditorDialog.java : public Dialog show()
+    @Override
+    public Dialog show(){
+        return super.show(Core.scene, Actions.sequence(Actions.alpha(1f)));
+    }
+
+// MapEditorDialog.java : public void hide()
+    @Override
+    public void hide(){
+        super.hide(Actions.sequence(Actions.alpha(0f)));
+    }
+
+// MapEditorDialog.java : public void dispose()
+    @Override
+    public void dispose(){
+        editor.renderer.dispose();
+    }
+
+// MapEditorDialog.java : public MapView getView()
+    public MapView getView(){
+        return view;
+    }
+
+// MapEditorDialog.java : public MapGenerateDialog getGenerateDialog()
+    public MapGenerateDialog getGenerateDialog(){
+        return generateDialog;
+    }
+
+// MapEditorDialog.java : public void resetSaved()
+    public void resetSaved(){
+        saved = false;
+    }
+
+// MapEditorDialog.java : public boolean hasPane()
+    public boolean hasPane(){
+        return Core.scene.getScrollFocus() == pane || Core.scene.getKeyboardFocus() != this;
+    }
+
+// MapEditorDialog.java : private void tryExit()
+    private void tryExit(){
+        ui.showConfirm("@confirm", "@editor.unsaved", () -> {
+            //clears data patches
+            logic.reset();
+            hide();
+        });
+    }
+
+// MapEditorDialog.java : public void rebuildBlockSelection() / private void rebuildBlockSelection(String searchText)
+    public void rebuildBlockSelection(){
+        rebuildBlockSelection("");
+    }
+
+// MapGenerateDialog.java : public void show(Seq<GenerateFilter> filters, Cons<Seq<GenerateFilter>> applier) / public void show(Cons<Seq<GenerateFilter>> applier)
+    public void show(Seq<GenerateFilter> filters, Cons<Seq<GenerateFilter>> applier){
+        this.filters = filters;
+        this.applier = applier;
+        show();
+    }
+
+// MapGenerateDialog.java : void drag(float x, float y)
+    void drag(float x, float y){
+        if(preview == null || dragging == null) return;
+
+        MirrorFilter.getDrawRect(preview, dragRect);
+        if(dragRect.width <= 0f || dragRect.height <= 0f) return;
+
+        //convert preview coordinates back into normalized axis coordinates
+        dragging.axisX = Mathf.clamp((x - dragRect.x) / dragRect.width, 0f, 1f);
+        dragging.axisY = Mathf.clamp((y - dragRect.y) / dragRect.height, 0f, 1f);
+    }
+
+// MapGenerateDialog.java : void dragUpdate(boolean force)
+    void dragUpdate(boolean force){
+        long now = Time.millis();
+        if(!force && now - lastDrag < 33L) return;
+        lastDrag = now;
+        update();
+    }
+
+// MapGenerateDialog.java : long[] create()
+    long[] create(){
+        return new long[(editor.width() / scaling) * (editor.height() / scaling)];
+    }
+
+// MapGenerateDialog.java : long pack(Tile tile)
+    long pack(Tile tile){
+        return PackTile.get(tile.blockID(), tile.floorID(), tile.overlayID());
+    }
+
+// MapGenerateDialog.java : Tile unpack(long tile)
+    Tile unpack(long tile){
+        ctile.setFloor((Floor)content.block(PackTile.floor(tile)));
+        ctile.setBlock(content.block(PackTile.block(tile)));
+        ctile.setOverlay(content.block(PackTile.overlay(tile)));
+        return ctile;
+    }
+
+// MapLocalesDialog.java : public void show(MapLocales locales)
+    public void show(MapLocales locales){
+        this.locales = locales;
+        lastSaved = locales.copy();
+        saved = true;
+        show();
+    }
+
+// MapLocalesDialog.java : private void buildTables()
+    private void buildTables(){
+        if(!locales.containsKey(selectedLocale)){
+            locales.put(selectedLocale, new StringMap());
+        }
+
+        buildLocalesTable();
+        buildMain();
+    }
+
+// MapLocalesDialog.java : private void updateCard(Table table, String propKey, String propValue) / private void updateCard(Table table, String propKey, String propValue, String locale, boolean viewCard)
+    private void updateCard(Table table, String propKey, String propValue){
+        updateCard(table, propKey, propValue, selectedLocale, false);
+    }
+
+// MapLocalesDialog.java : private String writeBundles()
+    private String writeBundles(){
+        StringBuilder data = new StringBuilder();
+
+        for(var locale : locales.keys()){
+            data.append(locale).append(":\n").append(writeLocale(locale));
+        }
+
+        return data.toString();
+    }
+
+// MapObjectivesCanvas.java : public void clearObjectives()
+    public void clearObjectives(){
+        stopQuery();
+        tilemap.clearTiles();
+        tilemap.x = 0f;
+        tilemap.y = 0f;
+    }
+
+// MapObjectivesCanvas.java : protected void stopQuery()
+    protected void stopQuery(){
+        if(query == null) return;
+        query = null;
+
+        Core.graphics.restoreCursor();
+    }
+
+// MapObjectivesCanvas.java : public void query(MapObjective obj)
+    public void query(MapObjective obj){
+        stopQuery();
+        query = obj;
+    }
+
+// MapObjectivesCanvas.java : public void placeQuery()
+    public void placeQuery(){
+        if(isQuerying() && tilemap.createTile(queryX, queryY, query)){
+            objectives.add(query);
+            stopQuery();
+        }
+    }
+
+// MapObjectivesCanvas.java : public boolean isQuerying()
+    public boolean isQuerying(){
+        return query != null;
+    }
+
+// MapObjectivesCanvas.java : public boolean isVisualPressed()
+    public boolean isVisualPressed(){
+        return pressed || visualPressed > Time.millis();
+    }
+
+// MapObjectivesDialog.java : public void show(Seq<MapObjective> objectives, Cons<Seq<MapObjective>> out)
+    public void show(Seq<MapObjective> objectives, Cons<Seq<MapObjective>> out){
+        this.out = out;
+
+        rebuildObjectives(objectives);
+        show();
+    }
+
+// MapObjectivesDialog.java : public static void showTeamSelect(Cons<Team> cons) / public static void showTeamSelect(boolean allowNull, Cons<Team> cons)
+    public static void showTeamSelect(Cons<Team> cons){
+        showTeamSelect(false, cons);
+    }
+
+// MapObjectivesDialog.java : public static void setInterpreter(Class<T> type, FieldInterpreter<? super T> interpreter) / public static void setInterpreter(Class<? extends Annotation> anno, Class<T> type, FieldInterpreter<? super T> interpreter)
+    public static <T> void setInterpreter(Class<T> type, FieldInterpreter<? super T> interpreter){
+        setInterpreter(Override.class, type, interpreter);
+    }
+
+// MapObjectivesDialog.java : public static boolean hasInterpreter(Class<?> type) / public static boolean hasInterpreter(Class<? extends Annotation> anno, Class<?> type)
+    public static boolean hasInterpreter(Class<?> type){
+        return hasInterpreter(Override.class, type);
+    }
+
+// MapObjectivesDialog.java : public static FieldInterpreter<T> getInterpreter(Class<T> type) / public static FieldInterpreter<T> getInterpreter(Class<? extends Annotation> anno, Class<T> type)
+    public static <T> FieldInterpreter<T> getInterpreter(Class<T> type){
+        return getInterpreter(Override.class, type);
+    }
+
+// MapObjectivesDialog.java : public static void setProvider(Class<T> type, FieldProvider<T> provider)
+    public static <T> void setProvider(Class<T> type, FieldProvider<T> provider){
+        providers.put(unbox(type), provider);
+    }
+
+// MapObjectivesDialog.java : public static boolean hasProvider(Class<?> type)
+    public static boolean hasProvider(Class<?> type){
+        return providers.containsKey(unbox(type));
+    }
+
+// MapObjectivesDialog.java : public static FieldProvider<T> getProvider(Class<T> type)
+    public static <T> FieldProvider<T> getProvider(Class<T> type){
+        return (FieldProvider<T>)providers.getThrow(unbox(type), () -> new IllegalArgumentException("Provider for type " + type + " not set up yet."));
+    }
+
+// MapView.java : public EditorTool getTool()
+    public EditorTool getTool(){
+        return tool;
+    }
+
+// MapView.java : public void setTool(EditorTool tool)
+    public void setTool(EditorTool tool){
+        this.tool = tool;
+    }
+
+// MapView.java : public boolean isGrid()
+    public boolean isGrid(){
+        return grid;
+    }
+
+// MapView.java : public void setGrid(boolean grid)
+    public void setGrid(boolean grid){
+        this.grid = grid;
+    }
+
+// MapView.java : public void center()
+    public void center(){
+        offsetx = offsety = 0;
+    }
+
+// MapView.java : private void clampZoom()
+    private void clampZoom(){
+        zoom = Mathf.clamp(zoom, 0.2f, 20f);
+    }
+
+// MapView.java : private Vec2 unproject(int x, int y)
+    private Vec2 unproject(int x, int y){
+        float ratio = 1f / ((float)editor.width() / editor.height());
+        float size = Math.min(width, height);
+        float sclwidth = size * zoom;
+        float sclheight = size * zoom * ratio;
+        float px = ((float)x / editor.width()) * sclwidth + offsetx * zoom - sclwidth / 2 + getWidth() / 2;
+        float py = ((float)(y) / editor.height()) * sclheight
+        + offsety * zoom - sclheight / 2 + getHeight() / 2;
+        return vec.set(px, py);
+    }
+
+// MapView.java : private boolean active()
+    private boolean active(){
+        return Core.scene != null && Core.scene.getKeyboardFocus() != null
+        && Core.scene.getKeyboardFocus().isDescendantOf(ui.editor)
+        && ui.editor.isShown() && tool == EditorTool.zoom &&
+        Core.scene.getHoverElement() == this;
+    }
+
+// MapView.java : public boolean pan(float x, float y, float deltaX, float deltaY)
+    @Override
+    public boolean pan(float x, float y, float deltaX, float deltaY){
+        if(!active()) return false;
+        offsetx += deltaX / zoom;
+        offsety += deltaY / zoom;
+        return false;
+    }
+
+// MapView.java : public boolean zoom(float initialDistance, float distance)
+    @Override
+    public boolean zoom(float initialDistance, float distance){
+        if(!active()) return false;
+        float nzoom = distance - initialDistance;
+        zoom += nzoom / 10000f / Scl.scl(1f) * zoom;
+        clampZoom();
+        return false;
+    }
+
+// MapView.java : public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2)
+    @Override
+    public boolean pinch(Vec2 initialPointer1, Vec2 initialPointer2, Vec2 pointer1, Vec2 pointer2){
+        return false;
+    }
+
+// MapView.java : public void pinchStop()
+    @Override
+    public void pinchStop(){
+
+    }
+
+// OperationStack.java : public void clear()
+    public void clear(){
+        stack.clear();
+        index = 0;
+    }
+
+// OperationStack.java : public void add(DrawOperation action)
+    public void add(DrawOperation action){
+        stack.truncate(stack.size + index);
+        index = 0;
+        stack.add(action);
+
+        if(stack.size > maxSize){
+            stack.remove(0);
+        }
+    }
+
+// OperationStack.java : public boolean canUndo()
+    public boolean canUndo(){
+        return !(stack.size - 1 + index < 0);
+    }
+
+// OperationStack.java : public boolean canRedo()
+    public boolean canRedo(){
+        return !(index > -1 || stack.size + index < 0);
+    }
+
+// OperationStack.java : public void undo()
+    public void undo(){
+        if(!canUndo()) return;
+
+        stack.get(stack.size - 1 + index).undo();
+        index--;
+    }
+
+// OperationStack.java : public void redo()
+    public void redo(){
+        if(!canRedo()) return;
+
+        index++;
+        stack.get(stack.size - 1 + index).redo();
+
+    }
+
+// WaveGraph.java : private void clampZoom()
+    private void clampZoom(){
+        zoom = Mathf.clamp(zoom, 0.5f / Scl.scl(1f), 40f / Scl.scl(1f));
+    }
+
+// WaveGraph.java : private void linePoint(float x, float y)
+    private void linePoint(float x, float y){
+        points.add(x, y);
+    }
+
+// WaveGraph.java : private void beginLine()
+    private void beginLine(){
+        points.clear();
+    }
+
+// WaveGraph.java : private void endLine()
+    private void endLine(){
+        var items = points.items;
+        for(int i = 0; i < points.size - 2; i += 2){
+            Lines.line(items[i], items[i + 1], items[i + 2], items[i + 3], false);
+            Fill.circle(items[i], items[i + 1], Lines.getStroke()/2f);
+        }
+        Fill.circle(items[points.size - 2], items[points.size - 1], Lines.getStroke());
+        points.clear();
+    }
+
+// WaveGraph.java : Color color(UnitType type)
+    Color color(UnitType type){
+        return Tmp.c1.fromHsv(type.id / (float)Vars.content.units().size * 360f, 0.7f, 1f);
+    }
+
+// WaveInfoDialog.java : void updateWaves()
+    void updateWaves(){
+        graph.groups = groups;
+        graph.rebuild();
+    }
+

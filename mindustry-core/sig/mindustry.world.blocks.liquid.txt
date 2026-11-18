@@ -1,0 +1,100 @@
+ArmoredConduit.java
+Java class extends mindustry.world.blocks.liquid.Conduit
+ctors:
+  public ArmoredConduit(String name)
+methods:
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+inner-class: ArmoredConduitBuild extends mindustry.world.blocks.liquid.Conduit.ConduitBuild
+  methods:
+    public boolean acceptLiquid(Building source, Liquid liquid)
+
+Conduit.java
+Java class extends mindustry.world.blocks.liquid.LiquidBlock implements mindustry.world.blocks.Autotiler
+fields:
+  static final float rotatePad
+  static final float rotateOffsets
+  public final int timerFlow
+  public Color botColor
+  public TextureRegion topRegions
+  public TextureRegion botRegions
+  public TextureRegion capRegion
+  public TextureRegion rotateRegions  // indices: [rotation] [fluid type] [frame]
+  public boolean padCorners  // If true, the liquid region is padded at corners, so it doesn't stick out.
+  public boolean leaks
+  public Block junctionReplacement
+ctors:
+  public Conduit(String name)
+methods:
+  public void init()
+  public void load()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public Block getReplacement(BuildPlan req, Seq<BuildPlan> plans)
+  public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  public void handlePlacementLine(Seq<BuildPlan> plans)
+  public TextureRegion[] icons()
+inner-class: ConduitBuild extends mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild implements mindustry.world.blocks.distribution.ChainedBuilding
+  fields:
+    public float smoothLiquid
+    public int blendbits
+    public boolean capped
+  methods:
+    public void drawCached()
+    public void draw() / public void draw(boolean under)
+    protected void drawAt(float x, float y, int bits, int rotation, SliceMode slice, boolean under)
+    public void onProximityUpdate()
+    public boolean acceptLiquid(Building source, Liquid liquid)
+    public void updateTile()
+    public Building next()
+
+LiquidBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion liquidRegion
+  public TextureRegion topRegion
+  public TextureRegion bottomRegion
+ctors:
+  public LiquidBlock(String name)
+methods:
+  public TextureRegion[] icons()
+  public static void drawTiledFrames(int size, float x, float y, float padding, Liquid liquid, float alpha) / public static void drawTiledFrames(int size, float x, float y, float padLeft, float padRight, float padTop, float padBottom, Liquid liquid, float alpha)
+inner-class: LiquidBuild extends mindustry.gen.Building
+  methods:
+    public void draw()
+
+LiquidBridge.java
+Java class extends mindustry.world.blocks.distribution.ItemBridge
+ctors:
+  public LiquidBridge(String name)
+inner-class: LiquidBridgeBuild extends mindustry.world.blocks.distribution.ItemBridge.ItemBridgeBuild
+  methods:
+    public void updateTransport(Building other)
+    public void doDump()
+
+LiquidJunction.java
+Java class extends mindustry.world.blocks.liquid.LiquidBlock
+// TODO should leak!
+ctors:
+  public LiquidJunction(String name)
+methods:
+  public void setStats()
+  public void setBars()
+  public TextureRegion[] icons()
+inner-class: LiquidJunctionBuild extends mindustry.gen.Building
+  methods:
+    public void draw()
+    public Building getLiquidDestination(Building source, Liquid liquid)
+
+LiquidRouter.java
+Java class extends mindustry.world.blocks.liquid.LiquidBlock
+fields:
+  public float liquidPadding
+ctors:
+  public LiquidRouter(String name)
+methods:
+  public TextureRegion[] icons()
+inner-class: LiquidRouterBuild extends mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild
+  methods:
+    public void updateTile()
+    public void draw()
+    public boolean acceptLiquid(Building source, Liquid liquid)
+

@@ -1,0 +1,81 @@
+layout
+  -> mindustry.ui.layout.BranchTreeLayout.firstWalk(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.calcSizeOfLevels(mindustry.ui.layout.TreeLayout.TreeNode, int)
+  -> mindustry.ui.layout.BranchTreeLayout.secondWalk(mindustry.ui.layout.TreeLayout.TreeNode, float, int, float)
+getWidthOrHeightOfNode
+  -> mindustry.ui.layout.TreeLayout.TreeNode.calcWidth()
+getNodeThickness
+  -> mindustry.ui.layout.BranchTreeLayout.getWidthOrHeightOfNode(mindustry.ui.layout.TreeLayout.TreeNode, boolean)
+  -> mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()
+getNodeSize
+  -> mindustry.ui.layout.BranchTreeLayout.getWidthOrHeightOfNode(mindustry.ui.layout.TreeLayout.TreeNode, boolean)
+  -> mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()
+getBounds
+  -> arc.math.geom.Rect.Rect(float, float, float, float)
+calcSizeOfLevels
+  -> arc.struct.FloatSeq.add(float)
+  -> arc.struct.FloatSeq.get(int)
+  -> mindustry.ui.layout.BranchTreeLayout.getNodeThickness(mindustry.ui.layout.TreeLayout.TreeNode)
+  -> arc.struct.FloatSeq.set(int, float)
+  -> mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()
+  -> mindustry.ui.layout.BranchTreeLayout.calcSizeOfLevels(mindustry.ui.layout.TreeLayout.TreeNode, int)
+getSizeOfLevel
+  -> mindustry.ui.layout.BranchTreeLayout.getLevelCount()
+  -> arc.struct.FloatSeq.get(int)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+getDistance
+  -> mindustry.ui.layout.BranchTreeLayout.getNodeSize(mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.getGapBetweenNodes(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+nextLeft
+  -> mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()
+nextRight
+  -> mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()
+ancestor
+  -> mindustry.ui.layout.BranchTreeLayout.getAncestor(mindustry.ui.layout.TreeLayout.TreeNode)
+moveSubtree
+  -> mindustry.ui.layout.BranchTreeLayout.getNumber(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+apportion
+  -> mindustry.ui.layout.BranchTreeLayout.nextRight(mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.nextLeft(mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.getDistance(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.moveSubtree(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, float)
+  -> mindustry.ui.layout.BranchTreeLayout.ancestor(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+firstWalk
+  -> mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()
+  -> mindustry.ui.layout.BranchTreeLayout.getDistance(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.firstWalk(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.apportion(mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode, mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.executeShifts(mindustry.ui.layout.TreeLayout.TreeNode)
+secondWalk
+  -> mindustry.ui.layout.BranchTreeLayout.getLevelChangeSign()
+  -> mindustry.ui.layout.BranchTreeLayout.isLevelChangeInYAxis()
+  -> mindustry.ui.layout.BranchTreeLayout.getSizeOfLevel(int)
+  -> mindustry.ui.layout.BranchTreeLayout.getNodeThickness(mindustry.ui.layout.TreeLayout.TreeNode)
+  -> mindustry.ui.layout.BranchTreeLayout.updateBounds(mindustry.ui.layout.TreeLayout.TreeNode, float, float)
+  -> mindustry.ui.layout.TreeLayout.TreeNode.isLeaf()
+  -> mindustry.ui.layout.BranchTreeLayout.secondWalk(mindustry.ui.layout.TreeLayout.TreeNode, float, int, float)
+layout
+  -> mindustry.ui.layout.RadialTreeLayout.bfs(mindustry.ui.layout.TreeLayout.TreeNode, boolean)
+  -> mindustry.ui.layout.RadialTreeLayout.radialize(mindustry.ui.layout.TreeLayout.TreeNode, float, float, float)
+  -> arc.struct.ObjectSet.ObjectSet(arc.struct.ObjectSet<? extends T>)
+radialize
+  -> arc.math.Mathf.cos(float)
+  -> arc.math.Mathf.sin(float)
+  -> mindustry.ui.layout.RadialTreeLayout.radialize(mindustry.ui.layout.TreeLayout.TreeNode, float, float, float)
+bfs
+  -> arc.struct.ObjectSet.clear()
+  -> arc.struct.Queue.clear()
+  -> arc.struct.ObjectSet.add(T)
+  -> arc.struct.Queue.addFirst(T)
+  -> arc.struct.Queue.isEmpty()
+  -> arc.struct.Queue.removeFirst()
+  -> arc.struct.Queue.addLast(T)
+layout
+  -> mindustry.ui.layout.RowTreeLayout.layout(mindustry.ui.layout.TreeLayout.TreeNode, int, arc.struct.IntSeq)
+  -> arc.struct.IntSeq.IntSeq()
+  -> arc.struct.IntSeq.ensureCapacity(int)
+  -> arc.struct.IntSeq.get(int)
+  -> arc.struct.IntSeq.incr(int, int)
+TreeNode::calcWidth
+  -> mindustry.ui.layout.TreeLayout.TreeNode.calcWidth()
+  -> java.lang.Math.max(float, float)

@@ -1,0 +1,90 @@
+Fi.java
+Java class implements java.lang.Comparable
+// Represents a file or directory on the filesystem, classpath, Android SD card, or Android assets directory.
+fields:
+  protected File file
+  protected FileType type
+ctors:
+  protected Fi() / public Fi(String fileName) / public Fi(File file) / public Fi(String fileName, FileType type) / protected Fi(File file, FileType type)  // Creates a new absolute FileHandle for the file name.
+methods:
+  public static Fi get(String path)
+  public static Fi tempFile(String prefix)
+  public static Fi tempDirectory(String prefix)
+  private static void emptyDirectory(File file, boolean preserveTree) / public void emptyDirectory() / public void emptyDirectory(boolean preserveTree)  // Deletes all children of this directory, recursively.
+  private static boolean deleteDirectory(File file) / public boolean deleteDirectory()  // Deletes this file or directory and all children, recursively.
+  private static void copyFile(Fi source, Fi dest)
+  private static void copyDirectory(Fi sourceDir, Fi destDir)
+  public String path()  // @return the path of the file as specified on construction.
+  public String absolutePath()  // @return the absolute path to this file without backslashes.
+  public String name()  // @return the name of the file, without any parent paths.
+  public boolean extEquals(String ext)  // @return whether this file's extension is equal to the specified string.
+  public String extension()  // Returns the file extension (without the dot) or an empty string if the file name doesn't contain a dot.
+  public String nameWithoutExtension()  // @return the name of the file, without parent paths or the extension.
+  public String pathWithoutExtension()  // @return the path and filename without the extension, e.g.
+  public FileType type()
+  public File file()  // Returns a java.io.File that represents this file handle.
+  public byte[] sha256()  // @return the sha256 hash of this file.
+  public InputStream read() / public BufferedInputStream read(int bufferSize)  // Returns a stream for reading this file as bytes.
+  public Reader reader() / public Reader reader(String charset) / public BufferedReader reader(int bufferSize) / public BufferedReader reader(int bufferSize, String charset)  // Returns a reader for reading this file as characters.
+  public String readString() / public String readString(String charset)  // Reads the entire file into a string using the platform's default charset.
+  public byte[] readBytes() / public int readBytes(byte[] bytes, int offset, int size)  // Reads the entire file into a byte array.
+  public ByteArrayInputStream readByteStream()  // @return a new ByteArrayInputStream containing all the bytes in this file.
+  private int estimateLength()
+  public ByteBuffer map() / public ByteBuffer map(FileChannel.MapMode mode)  // Attempts to memory map this file in READ_ONLY mode.
+  public Writes writes(boolean append) / public Writes writes()
+  public Reads reads()
+  public Writes writesDeflate()
+  public Reads readsDeflate()
+  public OutputStream write() / public OutputStream write(boolean append) / public OutputStream write(boolean append, int bufferSize) / public void write(InputStream input, boolean append)  // Returns a stream for writing to this file.
+  public Writer writer(boolean append) / public Writer writer(boolean append, String charset)  // Returns a writer for writing to this file using the default charset.
+  public void writePng(Pixmap pixmap)  // {@see PixmapIO#writePNG(FileHandle, Pixmap)}
+  public void writeString(String string) / public void writeString(String string, boolean append) / public void writeString(String string, boolean append, String charset)  // Writes a string without appending it.
+  public void writeBytes(byte[] bytes) / public void writeBytes(byte[] bytes, boolean append) / public void writeBytes(byte[] bytes, int offset, int length, boolean append)  // Writes the specified bytes to the file.
+  public void walk(Cons<Fi> cons)  // Recursively iterates through all files in this directory.
+  public Seq<Fi> findAll(Boolf<Fi> test) / public Seq<Fi> findAll()  // Recursively iterates through all files in this directory and adds them to an array.
+  public Seq<Fi> seq()  // Equivalent to {@link #list()}, but returns a Seq.
+  public Fi[] list() / public Fi[] list(FileFilter filter) / public Fi[] list(FilenameFilter filter) / public Fi[] list(String suffix)  // Returns the paths to the children of this directory.
+  public boolean isDirectory()  // Returns true if this file is a directory.
+  public Fi child(String name)  // Returns a handle to the child with the specified name.
+  public Fi sibling(String name)  // Returns a handle to the sibling with the specified name.
+  public Fi parent()
+  public boolean mkdirs()  // @throws ArcRuntimeException if this file handle is a {@link FileType#classpath} or {@link FileType#internal} file.
+  public boolean exists()  // Returns true if the file exists.
+  public boolean delete()  // Deletes this file or empty directory and returns success.
+  public void copyTo(Fi dest)  // Copies this file or directory to the specified file or directory.
+  public void copyFilesTo(Fi dest)  // Copies the contents of this folder into another folder.
+  public void moveTo(Fi dest)  // Moves this file to the specified file, overwriting the file if it already exists.
+  public long length()  // Returns the length in bytes of this file, or 0 if this file is a directory, does not exist, or the size cannot otherwise be
+  public long lastModified()  // Returns the last modified time in milliseconds for this file.
+  public boolean equals(Object obj)
+  public int hashCode()
+  public int compareTo(Fi fi)
+  public String toString()
+
+ZipFi.java
+Java class extends arc.files.Fi
+// A FileHandle meant for easily representing and reading the contents of a zip/jar file.
+fields:
+  private ZipFi children
+  private ZipFi parent
+  private String path
+  private Seq<ZipFi> allFiles
+  private final ZipEntry entry
+  private final ZipFile zip
+ctors:
+  public ZipFi(Fi zipFileLoc) / private ZipFi(ZipEntry entry, ZipFile file, Seq<ZipFi> allFiles, Seq<ZipFi> allDirectories) / private ZipFi(String path, ZipFile file, Seq<ZipFi> allFiles, Seq<ZipFi> allDirectories)
+methods:
+  private static int countSlashes(String str)
+  public boolean delete()
+  public boolean exists()
+  public Fi child(String name)
+  public String name()
+  public String path()
+  private static boolean isChild(ZipFi file, ZipFi dir)
+  public Fi parent()
+  public Fi[] list()
+  public boolean isDirectory()
+  public InputStream read()
+  public long length()
+  public String toString()
+

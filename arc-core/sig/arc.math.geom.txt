@@ -1,0 +1,746 @@
+BSpline.java
+Java class implements arc.math.geom.Path
+// @author Xoppa
+fields:
+  private static final float d6
+  public T controlPoints
+  public Seq<T> knots
+  public int degree
+  public boolean continuous
+  public int spanCount
+  private T tmp
+  private T tmp2
+  private T tmp3
+ctors:
+  public BSpline() / public BSpline(T[] controlPoints, int degree, boolean continuous)
+methods:
+  public static T cubic(T out, float t, T[] points, boolean continuous, T tmp) / public static T cubic(T out, int i, float u, T[] points, boolean continuous, T tmp)  // Calculates the cubic b-spline value for the given position (t).
+  public static T cubic_derivative(T out, float t, T[] points, boolean continuous, T tmp) / public static T cubic_derivative(T out, int i, float u, T[] points, boolean continuous, T tmp)  // Calculates the cubic b-spline derivative for the given position (t).
+  public static T calculate(T out, float t, T[] points, int degree, boolean continuous, T tmp) / public static T calculate(T out, int i, float u, T[] points, int degree, boolean continuous, T tmp)  // Calculates the n-degree b-spline value for the given position (t).
+  public static T derivative(T out, float t, T[] points, int degree, boolean continuous, T tmp) / public static T derivative(T out, int i, float u, T[] points, int degree, boolean continuous, T tmp)  // Calculates the n-degree b-spline derivative for the given position (t).
+  public BSpline set(T[] controlPoints, int degree, boolean continuous)
+  public T valueAt(T out, float t) / public T valueAt(T out, int span, float u)  // @return The value of the spline at position u of the specified span
+  public T derivativeAt(T out, float t) / public T derivativeAt(T out, int span, float u)  // @return The derivative of the spline at position u of the specified span
+  public int nearest(T in) / public int nearest(T in, int start, int count)  // @return The span closest to the specified value
+  public float approximate(T v) / public float approximate(T in, int start, int count) / public float approximate(T in, int near)
+  public float locate(T v)
+  public float approxLength(int samples)
+
+Bezier.java
+Java class implements arc.math.geom.Path
+// Implementation of the Bezier curve.
+fields:
+  public Seq<T> points
+  private T tmp
+  private T tmp2
+  private T tmp3
+ctors:
+  public Bezier() / public Bezier(T points) / public Bezier(T[] points, int offset, int length) / public Bezier(Seq<T> points, int offset, int length)
+methods:
+  public static T linear(T out, float t, T p0, T p1, T tmp)  // Simple Linear interpolation
+  public static T linearDerivative(T out, float t, T p0, T p1, T tmp)  // Simple Linear interpolation derivative
+  public static T quadratic(T out, float t, T p0, T p1, T p2, T tmp)  // Quadratic Bezier curve
+  public static T quadraticDerivative(T out, float t, T p0, T p1, T p2, T tmp)  // Quadratic Bezier curve derivative
+  public static T cubic(T out, float t, T p0, T p1, T p2, T p3, T tmp)  // Cubic Bezier curve
+  public static T cubicDerivative(T out, float t, T p0, T p1, T p2, T p3, T tmp)  // Cubic Bezier curve derivative
+  public Bezier<T> set(T points) / public Bezier<T> set(T[] points, int offset, int length) / public Bezier<T> set(T p1, T p2, T p3) / public Bezier<T> set(Seq<T> points) / public Bezier<T> set(Seq<T> points, int offset, int length)
+  public T valueAt(T out, float t)
+  public T derivativeAt(T out, float t)
+  public float approximate(T v)
+  public float locate(T v)
+  public float approxLength(int samples)
+
+BoundingBox.java
+Java class
+// Encapsulates an axis aligned bounding box represented by a minimum and a maximum Vector.
+fields:
+  public final Vec3 min
+  public final Vec3 max
+  private final Vec3 cnt
+  private final Vec3 dim
+ctors:
+  public BoundingBox() / public BoundingBox(BoundingBox bounds) / public BoundingBox(Vec3 minimum, Vec3 maximum)  // Constructs a new bounding box with the minimum and maximum vector set to zeros.
+methods:
+  static float min(float a, float b)
+  static float max(float a, float b)
+  public Vec3 getCenter(Vec3 out)  // @param out The {@link Vec3} to receive the center of the bounding box.
+  public float getCenterX()
+  public float getCenterY()
+  public float getCenterZ()
+  public Vec3 getCorner000(Vec3 out)
+  public Vec3 getCorner001(Vec3 out)
+  public Vec3 getCorner010(Vec3 out)
+  public Vec3 getCorner011(Vec3 out)
+  public Vec3 getCorner100(Vec3 out)
+  public Vec3 getCorner101(Vec3 out)
+  public Vec3 getCorner110(Vec3 out)
+  public Vec3 getCorner111(Vec3 out)
+  public Vec3 getDimensions(Vec3 out)  // @param out The {@link Vec3} to receive the dimensions of this bounding box on all three axis.
+  public float getWidth()
+  public float getHeight()
+  public float getDepth()
+  public Vec3 getMin(Vec3 out)  // @param out The {@link Vec3} to receive the minimum values.
+  public Vec3 getMax(Vec3 out)  // @param out The {@link Vec3} to receive the maximum values.
+  public BoundingBox set(BoundingBox bounds) / public BoundingBox set(Vec3 minimum, Vec3 maximum) / public BoundingBox set(Vec3[] points) / public BoundingBox set(Seq<Vec3> points)  // Sets the given bounding box.
+  public BoundingBox inf()  // Sets the minimum and maximum vector to positive and negative infinity.
+  public BoundingBox ext(Vec3 point) / public BoundingBox ext(BoundingBox a_bounds) / public BoundingBox ext(Vec3 center, float radius) / public BoundingBox ext(float x, float y, float z)  // Extends the bounding box to incorporate the given {@link Vec3}.
+  public BoundingBox clr()  // Sets the minimum and maximum vector to zeros.
+  public boolean isValid()  // Returns whether this bounding box is valid.
+  public boolean contains(BoundingBox b) / public boolean contains(Vec3 v)  // Returns whether the given bounding box is contained in this bounding box.
+  public boolean intersects(BoundingBox b)  // Returns whether the given bounding box is intersecting this bounding box (at least one point in).
+  public String toString()
+
+Bresenham2.java
+Java class
+// Returns a list of points at integer coordinates for a line on a 2D grid, using the Bresenham algorithm.
+fields:
+  private final Seq<Point2> points
+  private final Pool<Point2> pool
+methods:
+  public static void line(int startX, int startY, int endX, int endY, Intc2 consumer) / public Seq<Point2> line(Point2 start, Point2 end) / public Seq<Point2> line(int startX, int startY, int endX, int endY) / public Seq<Point2> line(int startX, int startY, int endX, int endY, Pool<Point2> pool, Seq<Point2> output)  // Iterates through a list of {@link Point2} instances along the given line, at integer coordinates.
+  public Seq<Point2> lineNoDiagonal(int startX, int startY, int endX, int endY, Pool<Point2> pool, Seq<Point2> output)  // Returns a list of {@link Point2} instances along the given line at integer coordinates, with no diagonals.
+
+CatmullRomSpline.java
+Java class implements arc.math.geom.Path
+// @author Xoppa
+fields:
+  public T controlPoints
+  public boolean continuous
+  public int spanCount
+  private T tmp
+  private T tmp2
+  private T tmp3
+ctors:
+  public CatmullRomSpline() / public CatmullRomSpline(T[] controlPoints, boolean continuous)
+methods:
+  public static T calculate(T out, float t, T[] points, boolean continuous, T tmp) / public static T calculate(T out, int i, float u, T[] points, boolean continuous, T tmp)  // Calculates the catmullrom value for the given position (t).
+  public static T derivative(T out, float t, T[] points, boolean continuous, T tmp) / public static T derivative(T out, int i, float u, T[] points, boolean continuous, T tmp)  // Calculates the derivative of the catmullrom spline for the given position (t).
+  public CatmullRomSpline set(T[] controlPoints, boolean continuous)
+  public T valueAt(T out, float t) / public T valueAt(T out, int span, float u)  // @return The value of the spline at position u of the specified span
+  public T derivativeAt(T out, float t) / public T derivativeAt(T out, int span, float u)  // @return The derivative of the spline at position u of the specified span
+  public int nearest(T in) / public int nearest(T in, int start, int count)  // @return The span closest to the specified value
+  public float approximate(T v) / public float approximate(T in, int start, int count) / public float approximate(T in, int near)
+  public float locate(T v)
+  public float approxLength(int samples)
+
+Circle.java
+Java class implements arc.math.geom.Shape2D
+// A convenient 2D circle class.
+fields:
+  public float x
+  public float radius
+ctors:
+  public Circle() / public Circle(float x, float y, float radius) / public Circle(Vec2 position, float radius) / public Circle(Circle circle) / public Circle(Vec2 center, Vec2 edge)  // Constructs a new circle with all values set to zero
+methods:
+  public Circle set(float x, float y, float radius) / public Circle set(Vec2 position, float radius) / public Circle set(Circle circle) / public Circle set(Vec2 center, Vec2 edge)  // Sets a new location and radius for this circle.
+  public Circle setPosition(Vec2 position) / public Circle setPosition(float x, float y)  // Sets the x and y-coordinates of circle center from vector
+  public void setX(float x)  // Sets the x-coordinate of circle center
+  public void setY(float y)  // Sets the y-coordinate of circle center
+  public void setRadius(float radius)  // Sets the radius of circle
+  public boolean contains(float x, float y) / public boolean contains(Vec2 point) / public boolean contains(Circle c)  // Checks whether or not this circle contains a given point.
+  public boolean overlaps(Circle c)  // @param c the other {@link Circle}
+  public String toString()  // Returns a {@link String} representation of this {@link Circle} of the form {@code x,y,radius}.
+  public float circumference()  // @return The circumference of this circle (as 2 * {@link Mathf#PI2}) * {@code radius}
+  public float area()  // @return The area of this circle (as {@link Mathf#PI} * radius * radius).
+  public boolean equals(Object o)
+  public int hashCode()
+
+ConvexHull.java
+Java class
+// Computes the convex hull of a set of points using the monotone chain convex hull algorithm (aka Andrew's algorithm).
+fields:
+  private final IntSeq quicksortStack
+  private final FloatSeq hull
+  private final IntSeq indices
+  private final ShortSeq originalIndices
+  private float sortedPoints
+methods:
+  public FloatSeq computePolygon(FloatSeq points, boolean sorted) / public FloatSeq computePolygon(float[] polygon, boolean sorted) / public FloatSeq computePolygon(float[] points, int offset, int count, boolean sorted)  // @see #computePolygon(float[], int, int, boolean)
+  public IntSeq computeIndices(FloatSeq points, boolean sorted, boolean yDown) / public IntSeq computeIndices(float[] polygon, boolean sorted, boolean yDown) / public IntSeq computeIndices(float[] points, int offset, int count, boolean sorted, boolean yDown)  // @see #computeIndices(float[], int, int, boolean, boolean)
+  private float ccw(float p3x, float p3y)  // Returns > 0 if the points are a counterclockwise turn, < 0 if clockwise, and 0 if colinear.
+  private void sort(float[] values, int count)  // Sorts x,y pairs of values by the x value, then the y value.
+  private int quicksortPartition(float[] values, int lower, int upper)
+  private void sortWithIndices(float[] values, int count, boolean yDown)  // Sorts x,y pairs of values by the x value, then the y value and stores unsorted original indices.
+  private int quicksortPartitionWithIndices(float[] values, int lower, int upper, boolean yDown, short[] originalIndices)
+
+Ellipse.java
+Java class implements arc.math.geom.Shape2D
+// A convenient 2D ellipse class, based on the circle class
+fields:
+  public float x
+  public float width
+ctors:
+  public Ellipse() / public Ellipse(Ellipse ellipse) / public Ellipse(float x, float y, float width, float height) / public Ellipse(Vec2 position, float width, float height) / public Ellipse(Vec2 position, Vec2 size) / public Ellipse(Circle circle)  // Construct a new ellipse with all values set to zero
+methods:
+  public boolean contains(float x, float y) / public boolean contains(Vec2 point)  // Checks whether or not this ellipse contains the given point.
+  public void set(float x, float y, float width, float height) / public void set(Ellipse ellipse) / public void set(Circle circle) / public void set(Vec2 position, Vec2 size)  // Sets a new position and size for this ellipse.
+  public Ellipse setPosition(Vec2 position) / public Ellipse setPosition(float x, float y)  // Sets the x and y-coordinates of ellipse center from a {@link Vec2}.
+  public Ellipse setSize(float width, float height)  // Sets the width and height of this ellipse
+  public float area()  // @return The area of this {@link Ellipse} as {@link Mathf#PI} * {@link Ellipse#width} * {@link Ellipse#height}
+  public float circumference()  // Approximates the circumference of this {@link Ellipse}.
+  public boolean equals(Object o)
+  public int hashCode()
+
+Geometry.java
+Java class (final)
+fields:
+  public final static Point2 d4  // Points representing cardinal directions, starting at the left and going counter-clockwise.
+  public final static Point2 d4c  // Points representing cardinal directions, starting at the left and going counter-clockwise.
+  public final static int d4x
+  public final static int d4y
+  public final static Point2 d8
+  public final static Point2 d8edge
+  private static final Vec2 tmp1
+methods:
+  public static Point2 d4(int i)
+  public static int d4x(int i)
+  public static int d4y(int i)
+  public static Point2 d8(int i)
+  public static Point2 d8edge(int i)
+  public static void circle(int x, int y, int radius, Intc2 cons) / public static void circle(int x, int y, int width, int height, int radius, Intc2 cons)
+  public static FloatSeq vectorsToFloats(Seq<Vec2> result)
+  public static T findClosest(float x, float y, T[] list) / public static T findClosest(float x, float y, Iterable<T> list) / public static T findClosest(float x, float y, Iterable<T> list, Boolf<T> predicate)
+  public static T findFurthest(float x, float y, Iterable<T> list) / public static T findFurthest(float x, float y, Iterable<T> list, Boolf<T> predicate)
+  public static Vec2[] pixelCircle(float tindex) / public static Vec2[] pixelCircle(float index, SolidChecker checker)
+  public static float[] regPoly(int amount, float size)  // returns a regular polygon with {amount} sides
+  public static float iterateLine(float start, float x1, float y1, float x2, float y2, float segment, Floatc2 pos)
+  public static void iteratePolySegments(float[] vertices, Floatc4 it)
+  public static void iteratePolygon(Floatc2 path, float[] vertices)
+  public static Point2[] getD4Points()
+  public static Point2[] getD8Points()
+  public static Point2[] getD8EdgePoints()
+  public static boolean raycast(int x0f, int y0f, int x1, int y1, Raycaster cons)
+  public static Vec2 raycastRect(float startx, float starty, float endx, float endy, Rect rect) / public static Vec2 raycastRect(float startx, float starty, float endx, float endy, float x, float y, float halfx, float halfy)
+  public static Vec2 overlap(Rect a, Rect b, boolean x)  // Checks for collisions between two rectangles, and returns the correct delta vector of A.
+  public static Vec2 toBarycoord(Vec2 p, Vec2 a, Vec2 b, Vec2 c, Vec2 barycentricOut)  // Computes the barycentric coordinates v,w for the specified point in the triangle.
+  public static boolean barycoordInsideTriangle(Vec2 barycentric)  // Returns true if the barycentric coordinates are inside the triangle.
+  public static Vec2 fromBarycoord(Vec2 barycentric, Vec2 a, Vec2 b, Vec2 c, Vec2 interpolatedOut) / public static float fromBarycoord(Vec2 barycentric, float a, float b, float c)  // Returns interpolated values given the barycentric coordinates of a point in a triangle and the values at each vertex.
+  public static float lowestPositiveRoot(float a, float b, float c)  // Returns the lowest positive root of the quadric equation given by a* x * x + b * x + c = 0.
+  public static boolean colinear(float x1, float y1, float x2, float y2, float x3, float y3)
+  public static Vec2 triangleCentroid(float x1, float y1, float x2, float y2, float x3, float y3, Vec2 centroid)
+  public static Vec2 triangleCircumcenter(float x1, float y1, float x2, float y2, float x3, float y3, Vec2 circumcenter)  // Returns the circumcenter of the triangle.
+  public static float triangleCircumradius(float x1, float y1, float x2, float y2, float x3, float y3)
+  public static float triangleQuality(float x1, float y1, float x2, float y2, float x3, float y3)  // Ratio of circumradius to shortest edge as a measure of triangle quality.
+  public static float triangleArea(float x1, float y1, float x2, float y2, float x3, float y3)
+  public static Vec2 quadrilateralCentroid(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Vec2 centroid)
+  public static Vec2 polygonCentroid(float[] polygon, int offset, int count, Vec2 centroid)  // Returns the centroid for the specified non-self-intersecting polygon.
+  public static float polygonArea(float[] polygon, int offset, int count)  // Computes the area for a convex polygon.
+  public static void ensureCCW(float[] polygon) / public static void ensureCCW(float[] polygon, int offset, int count)
+  public static boolean isClockwise(float[] polygon, int offset, int count)
+inner-interface: Raycaster
+  methods:
+    boolean accept(int x, int y)
+inner-interface: SolidChecker
+  methods:
+    boolean solid(float index, int x, int y)
+
+IntQuadTree.java
+Java class
+fields:
+  protected final Rect tmp
+  protected static final int maxObjectsPerNode
+  public IntQuadTreeProvider prov
+  public Rect bounds
+  public IntSeq objects
+  public IntQuadTree botLeft
+  public boolean leaf
+  public int totalObjects
+ctors:
+  public IntQuadTree(Rect bounds, IntQuadTreeProvider prov)
+methods:
+  protected void split()
+  protected void unsplit()
+  public void insert(int obj)  // Inserts an object into this node or its child nodes.
+  public boolean remove(int obj)  // Removes an object from this node or its child nodes.
+  public void clear()  // Removes all objects.
+  protected IntQuadTree getFittingChild(Rect boundingBox)
+  public void intersect(float x, float y, float width, float height, Intc out) / public void intersect(Rect rect, Intc out) / public void intersect(Rect toCheck, IntSeq out) / public void intersect(float x, float y, float width, float height, IntSeq out)  // Processes objects that may intersect the given rectangle.
+  public boolean any(float x, float y, float width, float height)  // @return whether an object overlaps this rectangle.
+  public void getObjects(IntSeq out)  // Adds all quadtree objects to the specified Seq.
+  protected IntQuadTree newChild(Rect rect)
+  protected void hitbox(int t)
+inner-interface: IntQuadTreeProvider
+// Represents an object in a QuadTree.
+  methods:
+    void hitbox(int object, Rect out)  // Fills the out parameter with this element's rough bounding box.
+
+Intersector.java
+Java class (final)
+// Class offering various static methods for intersection testing between different geometric objects.
+fields:
+  private static final Vec3 v0
+  private static final Vec3 v1
+  private static final Vec3 v2
+  private static final FloatSeq floatArray
+  private static final FloatSeq floatArray2
+  private static final Vec2 ip
+  private static final Vec2 ep1
+  private static final Vec2 ep2
+  private static final Vec2 s
+  private static final Vec2 e
+  static Vec3 tmp
+  static Vec3 tmp1
+  static Vec3 tmp2
+  static Vec3 tmp3
+  static Vec2 v2tmp
+methods:
+  public static boolean intersectPolygons(float[] p1, float[] p2) / public static boolean intersectPolygons(Polygon p1, Polygon p2, Polygon overlap)  // Intersects two convex polygons with clockwise vertices and sets the overlap polygon resulting from the intersection.
+  public static boolean isInTriangle(Vec3 point, Vec3 t1, Vec3 t2, Vec3 t3) / public static boolean isInTriangle(Vec2 p, Vec2 a, Vec2 b, Vec2 c) / public static boolean isInTriangle(float px, float py, float ax, float ay, float bx, float by, float cx, float cy)  // Returns whether the given point is inside the triangle.
+  public static boolean isInsideHexagon(float cx, float cy, float d, float x, float y)  // @return whether x,y is inside the hexagon with radius d centered at cx, cy.
+  public static boolean isInRegularPolygon(int sides, float cx, float cy, float radius, float rotation, float x, float y)  // @return whether the specified x,y is inside a regular polygon.
+  public static int pointLineSide(Vec2 linePoint1, Vec2 linePoint2, Vec2 point) / public static int pointLineSide(float linePoint1X, float linePoint1Y, float linePoint2X, float linePoint2Y, float pointX, float pointY)  // Determines on which side of the given line the point is.
+  public static boolean isInPolygon(Seq<Vec2> polygon, Vec2 point) / public static boolean isInPolygon(float[] polygon, int offset, int count, float x, float y)  // Checks whether the given point is in the polygon.
+  public static float distanceLinePoint(Vec2 start, Vec2 end, Vec2 point) / public static float distanceLinePoint(float startX, float startY, float endX, float endY, float pointX, float pointY)  // Returns the distance between the given line and point.
+  public static float distanceSegmentPoint(float startX, float startY, float endX, float endY, float pointX, float pointY) / public static float distanceSegmentPoint(Vec2 start, Vec2 end, Vec2 point)  // Returns the distance between the given segment and point.
+  public static Vec2 nearestSegmentPoint(Vec2 start, Vec2 end, Vec2 point, Vec2 nearest) / public static Vec2 nearestSegmentPoint(float startX, float startY, float endX, float endY, float pointX, float pointY, Vec2 nearest)  // Returns a point on the segment nearest to the specified point.
+  public static boolean intersectSegmentCircle(Vec2 start, Vec2 end, Vec2 center, float squareRadius)  // Returns whether the given line segment intersects the given circle.
+  public static float intersectSegmentCircleDisplace(Vec2 start, Vec2 end, Vec2 point, float radius, Vec2 displacement)  // Checks whether the line segment and the circle intersect and returns by how much and in what direction the line has to move
+  public static float intersectRayRay(Vec2 start1, Vec2 direction1, Vec2 start2, Vec2 direction2)  // Intersect two 2D Rays and return the scalar parameter of the first ray at the intersection point.
+  public static boolean intersectLines(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4, Vec2 intersection) / public static boolean intersectLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Vec2 intersection)  // Intersects the two lines and returns the intersection point in intersection.
+  public static boolean intersectLinePolygon(Vec2 p1, Vec2 p2, Polygon polygon)  // Check whether the given line and {@link Polygon} intersect.
+  public static boolean intersectRectangles(Rect rect1, Rect rect2, Rect intersection)  // Determines whether the given rectangles intersect and, if they do, sets the supplied {@code intersection} rectangle to the
+  public static boolean intersectSegmentRectangleFast(float startx, float starty, float endx, float endy, float rectX, float rectY, float rectW, float rectH)  // Experimental method! May be inaccurate, do not use.
+  public static boolean intersectSegmentRectangle(float startX, float startY, float endX, float endY, float rectX, float rectY, float rectW, float rectH) / public static boolean intersectSegmentRectangle(float startX, float startY, float endX, float endY, Rect rect) / public static boolean intersectSegmentRectangle(Vec2 start, Vec2 end, Rect rect)  // Determines whether the given rectangle and segment intersect
+  public static boolean intersectSegmentPolygon(Vec2 p1, Vec2 p2, Polygon polygon)  // Check whether the given line segment and {@link Polygon} intersect.
+  public static boolean intersectSegments(Vec2 p1, Vec2 p2, Vec2 p3, Vec2 p4, Vec2 intersection) / public static boolean intersectSegments(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Vec2 intersection)  // Intersects the two line segments and returns the intersection point in intersection.
+  static float det(float a, float b, float c, float d)
+  static double detd(double a, double b, double c, double d)
+  public static boolean overlapsRect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2)
+  public static boolean overlaps(Circle c1, Circle c2) / public static boolean overlaps(Rect r1, Rect r2) / public static boolean overlaps(Circle c, Rect r)
+  public static boolean overlapConvexPolygons(Polygon p1, Polygon p2) / public static boolean overlapConvexPolygons(Polygon p1, Polygon p2, MinimumTranslationVector mtv) / public static boolean overlapConvexPolygons(float[] verts1, float[] verts2, MinimumTranslationVector mtv) / public static boolean overlapConvexPolygons(float[] verts1, int offset1, int count1, float[] verts2, int offset2, int count2, MinimumTranslationVector mtv)  // Check whether specified counter-clockwise wound convex polygons overlap.
+inner-class: MinimumTranslationVector
+// Minimum translation required to separate two polygons.
+  fields:
+    public Vec2 normal  // Unit length vector that indicates the direction for the separation
+    public float depth  // Distance of the translation required for the separation
+
+Path.java
+Java interface
+// Interface that specifies a path of type T within the window 0.0<=t<=1.0.
+methods:
+  T derivativeAt(T out, float t)
+  T valueAt(T out, float t)  // @return The value of the path at t where 0<=t<=1
+  float approximate(T v)  // @return The approximated value (between 0 and 1) on the path which is closest to the specified value.
+  float locate(T v)  // @return The precise location (between 0 and 1) on the path which is closest to the specified value.
+  float approxLength(int samples)  // @param samples The amount of divisions used to approximate length.
+
+Point2.java
+Java class
+// A point in a 2D grid, with integer x and y coordinates
+fields:
+  public int x
+  public int y
+ctors:
+  public Point2() / public Point2(int x, int y) / public Point2(Point2 point)  // Constructs a new 2D grid point.
+methods:
+  public static Point2 unpack(int pos)  // @return a point unpacked from an integer.
+  public static int pack(int x, int y) / public int pack()  // @return this point packed into a single int by casting its components to shorts.
+  public static short x(int pos)  // @return the x component of a packed position.
+  public static short y(int pos)  // @return the y component of a packed position.
+  public Point2 set(Point2 point) / public Point2 set(int x, int y)  // Sets the coordinates of this 2D grid point to that of another.
+  public float dst2(Point2 other) / public float dst2(int x, int y)  // @param other The other point
+  public float dst(Point2 other) / public float dst(int x, int y)  // @param other The other point
+  public Point2 add(Point2 other) / public Point2 add(int x, int y)  // Adds another 2D grid point to this point.
+  public Point2 sub(Point2 other) / public Point2 sub(int x, int y)  // Subtracts another 2D grid point from this point.
+  public Point2 cpy()  // @return a copy of this grid point
+  public Point2 rotate(int steps)  // Rotates this point in 90-degree increments several times.
+  public boolean equals(int x, int y) / public static boolean equals(int x, int y, int ox, int oy) / public boolean equals(Object o)
+  public int hashCode()
+  public String toString()
+
+Point3.java
+Java class
+// A point in a 3D grid, with integer x and y coordinates
+fields:
+  private static final long serialVersionUID
+  public int x
+  public int y
+  public int z
+ctors:
+  public Point3() / public Point3(int x, int y, int z) / public Point3(Point3 point)  // Constructs a 3D grid point with all coordinates pointing to the origin (0, 0, 0).
+methods:
+  public Point3 set(Point3 point) / public Point3 set(int x, int y, int z)  // Sets the coordinates of this 3D grid point to that of another.
+  public float dst2(Point3 other) / public float dst2(int x, int y, int z)  // @param other The other point
+  public float dst(Point3 other) / public float dst(int x, int y, int z)  // @param other The other point
+  public Point3 add(Point3 other) / public Point3 add(int x, int y, int z)  // Adds another 3D grid point to this point.
+  public Point3 sub(Point3 other) / public Point3 sub(int x, int y, int z)  // Subtracts another 3D grid point from this point.
+  public Point3 cpy()  // @return a copy of this grid point
+  public boolean equals(Object o)
+  public int hashCode()
+  public String toString()
+
+Polygon.java
+Java class implements arc.math.geom.Shape2D
+// Encapsulates a 2D polygon defined by it's vertices relative to an origin point (default of 0, 0).
+fields:
+  private float localVertices
+  private float worldVertices
+  private float x
+  private float originX
+  private float rotation
+  private float scaleX
+  private boolean dirty
+  private Rect bounds
+ctors:
+  public Polygon() / public Polygon(float[] vertices)  // Constructs a new polygon with no vertices.
+methods:
+  public float[] getVertices()  // Returns the polygon's local vertices without scaling or rotation and without being offset by the polygon position.
+  public void setVertices(float[] vertices)  // Sets the polygon's local vertices relative to the origin point, without any scaling, rotating or translations being applied.
+  public float[] getTransformedVertices()  // Calculates and returns the vertices of the polygon after scaling, rotation, and positional translations have been applied,
+  public void setOrigin(float originX, float originY)  // Sets the origin point to which all of the polygon's local vertices are relative to.
+  public void setPosition(float x, float y)  // Sets the polygon's position within the world.
+  public void translate(float x, float y)  // Translates the polygon's position by the specified horizontal and vertical amounts.
+  public void rotate(float degrees)  // Applies additional rotation to the polygon by the supplied degrees.
+  public void setScale(float scaleX, float scaleY)  // Sets the amount of scaling to be applied to the polygon.
+  public void scale(float amount)  // Applies additional scaling to the polygon by the supplied amount.
+  public void dirty()  // Sets the polygon's world vertices to be recalculated when calling {@link #getTransformedVertices() getTransformedVertices}.
+  public float area()  // Returns the area contained within the polygon.
+  public Rect getBoundingRectangle()  // Returns an axis-aligned bounding box of this polygon.
+  public boolean contains(float x, float y) / public boolean contains(Vec2 point)  // Returns whether an x, y pair is contained within the polygon.
+  public float getX()  // Returns the x-coordinate of the polygon's position within the world.
+  public float getY()  // Returns the y-coordinate of the polygon's position within the world.
+  public float getOriginX()  // Returns the x-coordinate of the polygon's origin point.
+  public float getOriginY()  // Returns the y-coordinate of the polygon's origin point.
+  public float getRotation()  // Returns the total rotation applied to the polygon.
+  public void setRotation(float degrees)  // Sets the polygon to be rotated by the supplied degrees.
+  public float getScaleX()  // Returns the total horizontal scaling applied to the polygon.
+  public float getScaleY()  // Returns the total vertical scaling applied to the polygon.
+
+Polyline.java
+Java class implements arc.math.geom.Shape2D
+fields:
+  private float localVertices
+  private float worldVertices
+  private float x
+  private float originX
+  private float rotation
+  private float scaleX
+  private float length
+  private float scaledLength
+  private boolean calculateScaledLength
+  private boolean calculateLength
+  private boolean dirty
+ctors:
+  public Polyline() / public Polyline(float[] vertices)
+methods:
+  public float[] getVertices()  // Returns vertices without scaling or rotation and without being offset by the polyline position.
+  public void setVertices(float[] vertices)
+  public float[] getTransformedVertices()  // Returns vertices scaled, rotated, and offset by the polygon position.
+  public float getLength()  // Returns the euclidean length of the polyline without scaling
+  public float getScaledLength()  // Returns the euclidean length of the polyline
+  public float getX()
+  public float getY()
+  public float getOriginX()
+  public float getOriginY()
+  public float getRotation()
+  public void setRotation(float degrees)
+  public float getScaleX()
+  public float getScaleY()
+  public void setOrigin(float originX, float originY)
+  public void setPosition(float x, float y)
+  public void rotate(float degrees)
+  public void setScale(float scaleX, float scaleY)
+  public void scale(float amount)
+  public void calculateLength()
+  public void calculateScaledLength()
+  public void dirty()
+  public void translate(float x, float y)
+  public boolean contains(Vec2 point) / public boolean contains(float x, float y)
+
+Position.java
+Java interface
+// Represents a point in 2-D space.
+methods:
+  float getX()
+  float getY()
+  default float angleTo(Position other) / default float angleTo(float x, float y)
+  default float dst2(Position other) / default float dst2(float x, float y)
+  default float dst(Position other) / default float dst(float x, float y)
+  default boolean within(Position other, float dst) / default boolean within(float x, float y, float dst)
+
+QuadTree.java
+Java class
+// A basic quad tree.
+fields:
+  protected final Rect tmp
+  protected static final float minNodeSize  // if many objects are stacked on a point, it may split infinitely, so floor the size
+  protected static final int maxObjectsPerNode
+  public Rect bounds
+  public Seq<T> objects
+  public QuadTree<T> botLeft
+  public boolean leaf
+  public int totalObjects
+  private Seq<T> fillBL  // scratch partitioning lists reused across fill() calls to avoid allocating every rebuild
+ctors:
+  public QuadTree(Rect bounds)
+methods:
+  protected void split()
+  protected void unsplit()
+  public void insert(T obj)  // Inserts an object into this node or its child nodes.
+  public void fill(Seq<T> list)  // Rebuilds this tree from scratch using the given list of objects.
+  public boolean remove(T obj)  // Removes an object from this node or its child nodes.
+  public void clear()  // Removes all objects.
+  protected QuadTree<T> getFittingChild(Rect boundingBox)
+  public void intersect(float x, float y, float width, float height, Cons<T> out) / public boolean intersect(float x, float y, float width, float height, Boolf<T> out) / public void intersect(Rect rect, Cons<T> out) / public void intersect(Rect toCheck, Seq<T> out) / public void intersect(float x, float y, float width, float height, Seq<T> out)  // Processes objects that may intersect the given rectangle.
+  public T find(float x, float y, float width, float height, Boolf<T> out)  // Tries to find any object matching the predicate in this tree.
+  public boolean any(float x, float y, float width, float height)  // @return whether an object overlaps this rectangle.
+  public void getObjects(Seq<T> out)  // Adds all quadtree objects to the specified Seq.
+  protected QuadTree<T> newChild(Rect rect)
+  protected void hitbox(T t)
+inner-interface: QuadTreeObject
+// Represents an object in a QuadTree.
+  methods:
+    void hitbox(Rect out)  // Fills the out parameter with this element's rough bounding box.
+
+Rect.java
+Java class implements arc.math.geom.Shape2D
+// Encapsulates a 2D rectangle defined by its corner point in the bottom left and its extents in x (width) and y (height).
+fields:
+  public static final Rect tmp  // Static temporary rectangle.
+  public static final Rect tmp2  // Static temporary rectangle.
+  public float x
+  public float width
+ctors:
+  public Rect() / public Rect(float x, float y, float width, float height) / public Rect(Rect rect)  // Constructs a new rectangle with all values set to zero
+methods:
+  public Rect setCentered(float x, float y, float size) / public Rect setCentered(float x, float y, float width, float height)
+  public Rect set(float x, float y, float width, float height) / public Rect set(Rect rect)  // @param x bottom-left x coordinate
+  public float getX()  // @return the x-coordinate of the bottom left corner
+  public Rect setX(float x)  // Sets the x-coordinate of the bottom left corner
+  public float getY()  // @return the y-coordinate of the bottom left corner
+  public Rect setY(float y)  // Sets the y-coordinate of the bottom left corner
+  public float getWidth()  // @return the width
+  public Rect setWidth(float width)  // Sets the width of this rectangle
+  public float getHeight()  // @return the height
+  public Rect setHeight(float height)  // Sets the height of this rectangle
+  public Vec2 getPosition(Vec2 position)  // return the Vec2 with coordinates of this rectangle
+  public Rect setPosition(Vec2 position) / public Rect setPosition(float x, float y)  // Sets the x and y-coordinates of the bottom left corner from vector
+  public Rect move(float cx, float cy)
+  public Rect setSize(float width, float height) / public Rect setSize(float sizeXY)  // Sets the width and height of this rectangle
+  public Vec2 getSize(Vec2 size)  // @param size The Vec2
+  public static boolean contains(float x, float y, float width, float height, float px, float py) / public static boolean contains(float x, float y, float width, float height, float rx, float ry, float rwidth, float rheight) / public boolean contains(float x, float y) / public boolean contains(Vec2 point) / public boolean contains(Circle circle) / public boolean contains(Rect rect)  // @param x point x coordinate
+  public boolean overlaps(Rect r) / public boolean overlaps(float rx, float ry, float rwidth, float rheight)  // @param r the other {@link Rect}
+  public Rect grow(float amount) / public Rect grow(float amountX, float amountY)
+  public Rect merge(Rect rect) / public Rect merge(float x, float y) / public Rect merge(Vec2 vec) / public Rect merge(Vec2[] vecs)  // Merges this rectangle with the other rectangle.
+  public Rect normalize()  // "fixes" negative size dimensions.
+  public float getAspectRatio()  // Calculates the aspect ratio ( width / height ) of this rectangle
+  public Vec2 getCenter(Vec2 vector)  // Calculates the center of the rectangle.
+  public Rect setCenter(float x, float y) / public Rect setCenter(Vec2 position)  // Moves this rectangle so that its center point is located at a given position
+  public Rect fitOutside(Rect rect)  // Fits this rectangle around another rectangle while maintaining aspect ratio.
+  public Rect fitInside(Rect rect)  // Fits this rectangle into another rectangle while maintaining aspect ratio.
+  public String toString()  // Converts this {@code Rectangle} to a string in the format {@code [x,y,width,height]}.
+  public Rect fromString(String v)  // Sets this {@code Rectangle} to the value represented by the specified string according to the format of {@link #toString()}
+  public float area()
+  public float perimeter()
+  public int hashCode()
+  public boolean equals(Object obj)
+
+Shape2D.java
+Java interface
+methods:
+  boolean contains(Vec2 point) / boolean contains(float x, float y)  // Returns whether the given point is contained within the shape.
+
+Spring1D.java
+Java class
+// @author xSke
+fields:
+  public float value
+  public float target
+  public float velocity
+  public float damping
+  public float frequency
+ctors:
+  public Spring1D(float damping, float frequency)
+methods:
+  public void update(float deltaTime)
+
+Spring2D.java
+Java class
+// @author xSke
+fields:
+  public Vec2 value
+  public Vec2 target
+  public Vec2 velocity
+  public float damping
+  public float frequency
+ctors:
+  public Spring2D(float damping, float frequency)
+methods:
+  public void update(float deltaTime)
+
+Vec2.java
+Java class implements arc.math.geom.Vector, arc.math.geom.Position
+// Encapsulates a 2D vector.
+fields:
+  public static final Vec2 X
+  public float x  // the x-component of this vector *
+  public float y  // the y-component of this vector *
+ctors:
+  public Vec2() / public Vec2(float x, float y) / public Vec2(Vec2 v)  // Constructs a new vector at (0,0)
+methods:
+  public Vec2 trns(float angle, float amount) / public Vec2 trns(float angle, float x, float y)
+  public Vec2 trnsExact(float angle, float amount)
+  public Vec2 snap()  // Snaps this vector's coordinates to integers.
+  public Vec2 div(Vec2 other)
+  public Vec2 cpy()
+  public float len()
+  public float len2()
+  public Vec2 set(Vec2 v) / public Vec2 set(Position v) / public Vec2 set(float x, float y) / public Vec2 set(Vec3 other)  // Sets the components of this vector
+  public Vec2 sub(Position v) / public Vec2 sub(Vec2 v) / public Vec2 sub(float x, float y) / public Vec2 sub(Vec3 v)  // Substracts the other vector from this vector.
+  public Vec2 nor()
+  public Vec2 add(Vec2 v) / public Vec2 add(Position pos) / public Vec2 add(Vec2 vec, float scl) / public Vec2 add(float x, float y)  // Adds the given components to this vector
+  public float dot(Vec2 v) / public float dot(float ox, float oy)
+  public Vec2 scl(float scalar) / public Vec2 scl(float x, float y) / public Vec2 scl(Vec2 v)  // Multiplies this vector by a scalar
+  public Vec2 inv()
+  public Vec2 mulAdd(Vec2 vec, float scalar) / public Vec2 mulAdd(Vec2 vec, Vec2 mulVec)
+  public float dst(Vec2 v) / public float dst(float x, float y)  // @param x The x-component of the other vector
+  public float dst2(Vec2 v) / public float dst2(float x, float y)  // @param x The x-component of the other vector
+  public Vec2 clampLength(float min, float max)
+  public Vec2 limit(float limit)
+  public Vec2 limit2(float limit2)
+  public Vec2 clamp(float min, float max) / public Vec2 clamp(float minx, float miny, float maxx, float maxy)
+  public Vec2 setLength(float len)
+  public Vec2 setLength2(float len2)
+  public String toString()  // Converts this {@code Vec2} to a string in the format {@code (x,y)}.
+  public Vec2 tryFromString(String v)
+  public Vec2 fromString(String v)  // Sets this {@code Vec2} to the value represented by the specified string according to the format of {@link #toString()}.
+  public Vec2 mul(Mat mat)  // Left-multiplies this vector by the given matrix
+  public float crs(Vec2 v) / public float crs(float x, float y)  // Calculates the 2D cross product between this and the given vector.
+  public float angle() / public float angle(Vec2 reference)  // @return the angle in degrees of this vector (point) relative to the x-axis.
+  public Vec2 rnd(float length)  // Sets this vector to a random direction with the specified length.
+  public float angleRad() / public float angleRad(Vec2 reference)  // @return the angle in radians of this vector (point) relative to the x-axis.
+  public Vec2 setAngle(float degrees)  // Sets the angle of the vector in degrees relative to the x-axis, towards the positive y-axis (typically counter-clockwise).
+  public Vec2 setAngleRad(float radians)  // Sets the angle of the vector in radians relative to the x-axis, towards the positive y-axis (typically counter-clockwise).
+  public Vec2 rotateTo(float angle, float speed)
+  public Vec2 rotate(float degrees)  // Rotates the Vec2 by the given angle, counter-clockwise assuming the y-axis points up.
+  public Vec2 rotateAround(Vec2 reference, float degrees)  // Rotates the Vec2 by the given angle around reference vector, counter-clockwise assuming the y-axis points up.
+  public Vec2 rotateRad(float radians)  // Rotates the Vec2 by the given angle, counter-clockwise assuming the y-axis points up.
+  public Vec2 rotateRadExact(float radians)
+  public Vec2 rotateAroundRad(Vec2 reference, float radians)  // Rotates the Vec2 by the given angle around reference vector, counter-clockwise assuming the y-axis points up.
+  public Vec2 rotate90(int dir)  // Rotates the Vec2 by 90 degrees in the specified direction, where >= 0 is counter-clockwise and < 0 is clockwise.
+  public Vec2 approachDelta(Vec2 target, float alpha)
+  public Vec2 approach(Vec2 target, float alpha)
+  public Vec2 lerpPast(Vec2 target, float alpha)
+  public Vec2 lerpDelta(float tx, float ty, float alpha) / public Vec2 lerpDelta(Position target, float alpha)
+  public Vec2 lerp(Position target, float alpha) / public Vec2 lerp(float tx, float ty, float alpha) / public Vec2 lerp(Vec2 target, float alpha)
+  public Vec2 interpolate(Vec2 target, float alpha, Interp interpolation)
+  public Vec2 setToRandomDirection() / public Vec2 setToRandomDirection(Rand rand)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public boolean epsilonEquals(Vec2 other, float epsilon) / public boolean epsilonEquals(float x, float y, float epsilon) / public boolean epsilonEquals(Vec2 other) / public boolean epsilonEquals(float x, float y)  // Compares this vector with the other vector, using the supplied epsilon for fuzzy equality testing.
+  public boolean isNaN()
+  public boolean isInfinite()
+  public boolean isUnit() / public boolean isUnit(float margin)
+  public boolean isZero() / public boolean isZero(float margin)
+  public boolean isOnLine(Vec2 other) / public boolean isOnLine(Vec2 other, float epsilon)
+  public boolean isCollinear(Vec2 other, float epsilon) / public boolean isCollinear(Vec2 other)
+  public boolean isCollinearOpposite(Vec2 other, float epsilon) / public boolean isCollinearOpposite(Vec2 other)
+  public boolean isPerpendicular(Vec2 vector) / public boolean isPerpendicular(Vec2 vector, float epsilon)
+  public boolean hasSameDirection(Vec2 vector)
+  public boolean hasOppositeDirection(Vec2 vector)
+  public Vec2 setZero()
+  public float getX()
+  public float getY()
+
+Vec3.java
+Java class implements arc.math.geom.Vector
+// Encapsulates a 3D vector.
+fields:
+  public final static Vec3 X
+  public final static Vec3 Y
+  public final static Vec3 Z
+  public final static Vec3 Zero
+  private static final Mat tmpMat
+  public float x  // the x-component of this vector *
+  public float y  // the y-component of this vector *
+  public float z  // the z-component of this vector *
+ctors:
+  public Vec3() / public Vec3(float x, float y, float z) / public Vec3(double x, double y, double z) / public Vec3(Vec3 vector) / public Vec3(float[] values) / public Vec3(Vec2 vector, float z)  // Constructs a vector at (0,0,0)
+methods:
+  public static float len(float x, float y, float z) / public float len()  // @return The euclidean length
+  public static float len2(float x, float y, float z) / public float len2()  // @return The squared euclidean length
+  public static float dst(float x1, float y1, float z1, float x2, float y2, float z2) / public float dst(Vec3 vector) / public float dst(float x, float y, float z)  // @return The euclidean distance between the two specified vectors
+  public static float dst2(float x1, float y1, float z1, float x2, float y2, float z2) / public float dst2(Vec3 point) / public float dst2(float x, float y, float z)  // @return the squared distance between the given points
+  public static float dot(float x1, float y1, float z1, float x2, float y2, float z2) / public float dot(Vec3 vector) / public float dot(float x, float y, float z)  // @return The dot product between the two vectors
+  public Vec3 set(float x, float y, float z) / public Vec3 set(Vec3 vector) / public Vec3 set(float[] values) / public Vec3 set(float[] values, int offset) / public Vec3 set(Vec2 vector, float z)  // Sets the vector to the given components
+  public Vec3 div(Vec3 other)
+  public Vec3 setFromSpherical(float azimuthalAngle, float polarAngle)  // Sets the components from the given spherical coordinate
+  public Vec3 setToRandomDirection() / public Vec3 setToRandomDirection(Rand rand)
+  public Vec3 cpy() / public Vec3 cpy(Vec3 dest)
+  public Vec3 add(Vec3 vector) / public Vec3 add(Vec3 vector, float scale) / public Vec3 add(float x, float y, float z) / public Vec3 add(float values)  // Adds the given vector to this component
+  public Vec3 sub(Vec3 vector, float scale) / public Vec3 sub(Vec3 a_vec) / public Vec3 sub(float x, float y, float z) / public Vec3 sub(float value)  // Subtracts the other vector from this vector.
+  public Vec3 scl(float scalar) / public Vec3 scl(Vec3 other) / public Vec3 scl(float vx, float vy, float vz)  // Scales this vector by the given values
+  public Vec3 mulAdd(Vec3 vec, float scalar) / public Vec3 mulAdd(Vec3 vec, Vec3 mulVec)
+  public boolean idt(Vec3 vector)  // @param vector The other vector
+  public boolean within(Vec3 v, float dst)
+  public Vec3 nor()
+  public float angleRad(Vec3 vector)  // @return the angle to the other vector, in radians.
+  public float angle(Vec3 vector)  // @return the angle to the other vector, in degrees.
+  public Vec3 crs(Vec3 vector) / public Vec3 crs(float x, float y, float z)  // Sets this vector to the cross product between it and the other vector.
+  public Vec3 mul4x3(float[] matrix)  // Left-multiplies the vector by the given 4x3 column major matrix.
+  public Vec3 mul(Mat matrix)  // Left-multiplies the vector by the given matrix.
+  public Vec3 traMul(Mat matrix)  // Multiplies the vector by the transpose of the given matrix.
+  public Vec3 rotate(Vec3 axis, float degrees)  // Rotates this vector by the given angle in degrees around the given axis.
+  public boolean isUnit() / public boolean isUnit(float margin)
+  public boolean isZero() / public boolean isZero(float margin)
+  public boolean isOnLine(Vec3 other, float epsilon) / public boolean isOnLine(Vec3 other)
+  public boolean isCollinear(Vec3 other, float epsilon) / public boolean isCollinear(Vec3 other)
+  public boolean isCollinearOpposite(Vec3 other, float epsilon) / public boolean isCollinearOpposite(Vec3 other)
+  public boolean isPerpendicular(Vec3 vector) / public boolean isPerpendicular(Vec3 vector, float epsilon)
+  public boolean hasSameDirection(Vec3 vector)
+  public boolean hasOppositeDirection(Vec3 vector)
+  public Vec3 lerp(Vec3 target, float alpha)
+  public Vec3 interpolate(Vec3 target, float alpha, Interp interpolator)
+  public Vec3 slerp(Vec3 target, float alpha)  // Spherically interpolates between this vector and the target vector by alpha which is in the range [0,1].
+  public String toString()  // Converts this {@code Vec3} to a string in the format {@code (x,y,z)}.
+  public Vec3 fromString(String v)  // Sets this {@code Vec3} to the value represented by the specified string according to the format of {@link #toString()}.
+  public Vec3 limit(float limit)
+  public Vec3 limit2(float limit2)
+  public Vec3 setLength(float len)
+  public Vec3 setLength2(float len2)
+  public Vec3 clamp(float min, float max)
+  public int hashCode()
+  public boolean equals(Object obj)
+  public boolean epsilonEquals(Vec3 other, float epsilon) / public boolean epsilonEquals(float x, float y, float z, float epsilon) / public boolean epsilonEquals(Vec3 other) / public boolean epsilonEquals(float x, float y, float z)  // Compares this vector with the other vector, using the supplied epsilon for fuzzy equality testing.
+  public Vec3 setZero()
+
+Vector.java
+Java interface
+// Encapsulates a general vector.
+methods:
+  T cpy()  // @return a copy of this vector
+  float len()  // @return The euclidean length
+  float len2()  // This method is faster than {@link Vector#len()} because it avoids calculating a square root.
+  T limit(float limit)  // Limits the length of this vector, based on the desired maximum length.
+  T limit2(float limit2)  // Limits the length of this vector, based on the desired maximum length squared.
+  T setLength(float len)  // Sets the length of this vector.
+  T setLength2(float len2)  // Sets the length of this vector, based on the square of the desired length.
+  T clamp(float min, float max)  // Clamps this vector's length to given min and max values
+  T set(T v)  // Sets this vector from the given vector
+  T sub(T v)  // Subtracts the given vector from this vector.
+  T nor()  // Normalizes this vector.
+  T add(T v)  // Adds the given vector to this vector
+  float dot(T v)  // @param v The other vector
+  T scl(float scalar) / T scl(T v)  // Scales this vector by a scalar
+  T div(T other)  // Inverse of scl()
+  float dst(T v)  // @param v The other vector
+  float dst2(T v)  // This method is faster than {@link Vector#dst(Vector)} because it avoids calculating a square root.
+  T lerp(T target, float alpha)  // Linearly interpolates between this vector and the target vector by alpha which is in the range [0,1].
+  T interpolate(T target, float alpha, Interp interpolator)  // Interpolates between this vector and the given target vector by alpha (within range [0,1]) using the given Interpolation
+  T setToRandomDirection()  // Sets this vector to the unit vector with a random direction
+  boolean isUnit() / boolean isUnit(float margin)  // @return Whether this vector is a unit length vector
+  boolean isZero() / boolean isZero(float margin)  // @return Whether this vector is a zero vector
+  boolean isOnLine(T other, float epsilon) / boolean isOnLine(T other)  // @return true if this vector is in line with the other vector (either in the same or the opposite direction)
+  boolean isCollinear(T other, float epsilon) / boolean isCollinear(T other)  // @return true if this vector is collinear with the other vector ({@link #isOnLine(Vector, float)} &&
+  boolean isCollinearOpposite(T other, float epsilon) / boolean isCollinearOpposite(T other)  // @return true if this vector is opposite collinear with the other vector ({@link #isOnLine(Vector, float)} &&
+  boolean isPerpendicular(T other) / boolean isPerpendicular(T other, float epsilon)  // @return Whether this vector is perpendicular with the other vector.
+  boolean hasSameDirection(T other)  // @return Whether this vector has similar direction compared to the other vector.
+  boolean hasOppositeDirection(T other)  // @return Whether this vector has opposite direction compared to the other vector.
+  boolean epsilonEquals(T other, float epsilon)  // Compares this vector with the other vector, using the supplied epsilon for fuzzy equality testing.
+  T mulAdd(T v, float scalar) / T mulAdd(T v, T mulVec)  // First scale a supplied vector, then add it to this vector.
+  T setZero()  // Sets the components of this vector to 0
+  default T plus(T other)
+  default T minus(T other)
+  default T unaryMinus()
+  default T times(T other)
+

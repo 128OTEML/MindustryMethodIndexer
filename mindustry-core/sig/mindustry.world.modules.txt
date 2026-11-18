@@ -1,0 +1,108 @@
+BlockModule.java
+Java class (abstract)
+// A class that represents compartmentalized tile entity state.
+methods:
+  public abstract void write(Writes write)
+  public void read(Reads read, boolean legacy) / public void read(Reads read)
+
+ItemModule.java
+Java class extends mindustry.world.modules.BlockModule
+fields:
+  public static final ItemModule empty
+  public static int flowWindowSize  // Total number of samples of flow rate that are taken.
+  public static float flowPollInterval  // Interval between which samples are added to the window, in ticks.
+  public static float flowVisualRefreshInterval  // Visual refresh rate of the value, in ticks.
+  private static WindowedMean cacheFlow
+  private static float cacheSums
+  private static float displayFlow
+  private static final Bits cacheBits
+  private static final Interval flowTimer
+  protected int items
+  protected int total
+  protected int takeRotation
+  private WindowedMean flow
+methods:
+  public ItemModule copy()
+  public void set(ItemModule other) / public void set(Item item, int amount)
+  public void updateFlow()
+  public void stopFlow()
+  public int length()
+  public float getFlowRate(Item item)  // @return a specific item's flow rate in items/s; any value < 0 means not ready.
+  public boolean hasFlowItem(Item item)
+  public void each(ItemConsumer cons)
+  public float sum(ItemCalculator calc)
+  public boolean has(int id) / public boolean has(Item item) / public boolean has(Item item, int amount) / public boolean has(ItemStack[] stacks) / public boolean has(ItemSeq items) / public boolean has(Iterable<ItemStack> stacks) / public boolean has(ItemStack[] stacks, float multiplier)
+  public boolean hasOne(ItemStack[] stacks)  // Returns true if this entity has at least one of each item in each stack.
+  public boolean empty()
+  public int total()
+  public boolean any()
+  public Item first()
+  public Item take()
+  public int get(int id) / public int get(Item item)
+  public void add(Iterable<ItemStack> stacks) / public void add(ItemSeq stacks) / public void add(ItemModule items) / public void add(Item item, int amount) / private void add(int item, int amount)
+  public void handleFlow(Item item, int amount)
+  public void undoFlow(Item item)
+  public void remove(Item item, int amount) / public void remove(ItemStack[] stacks) / public void remove(ItemSeq stacks) / public void remove(Iterable<ItemStack> stacks) / public void remove(ItemStack stack)
+  public void clear()
+  public void checkArrayCapacity(int size)
+  public void write(Writes write)
+  public void read(Reads read, boolean legacy)
+  public String toString()
+inner-interface: ItemConsumer
+  methods:
+    void accept(Item item, int amount)
+inner-interface: ItemCalculator
+  methods:
+    float get(Item item, int amount)
+
+LiquidModule.java
+Java class extends mindustry.world.modules.BlockModule
+fields:
+  public static int flowWindowSize  // Total number of samples of flow rate that are taken.
+  public static float flowPollInterval  // Interval between which samples are added to the window, in ticks.
+  public static float flowVisualRefreshInterval  // Visual refresh rate of the value, in ticks.
+  private static final Interval flowTimer
+  private static WindowedMean cacheFlow
+  private static float cacheSums
+  private static float displayFlow
+  private static final Bits cacheBits
+  private float liquids
+  private Liquid current
+  private WindowedMean flow
+methods:
+  public void updateFlow()
+  public void stopFlow()
+  public float getFlowRate(Liquid liquid)  // @return current liquid's flow rate in u/s; any value < 0 means 'not ready'.
+  public boolean hasFlowLiquid(Liquid liquid)
+  public Liquid current()  // Last received or loaded liquid.
+  public void reset(Liquid liquid, float amount)
+  public void set(Liquid liquid, float amount)
+  public float currentAmount()
+  public float get(Liquid liquid)
+  public void clear()
+  public void add(Liquid liquid, float amount)
+  public void handleFlow(Liquid liquid, float amount)
+  public void remove(Liquid liquid, float amount)
+  public void each(LiquidConsumer cons)
+  public float sum(LiquidCalculator calc)
+  public void checkArrayCapacity(int size)
+  public void write(Writes write)
+  public void read(Reads read, boolean legacy)
+inner-interface: LiquidConsumer
+  methods:
+    void accept(Liquid liquid, float amount)
+inner-interface: LiquidCalculator
+  methods:
+    float get(Liquid liquid, float amount)
+
+PowerModule.java
+Java class extends mindustry.world.modules.BlockModule
+fields:
+  public float status  // In case of unbuffered consumers, this is the percentage (1.0f = 100%) of the demanded power which can be supplied.
+  public boolean init
+  public PowerGraph graph
+  public IntSeq links
+methods:
+  public void write(Writes write)
+  public void read(Reads read)
+

@@ -1,0 +1,151 @@
+FConfig.java
+Java class
+// Configuration class that easily allows the user to fine tune the library's functionality.
+fields:
+  public static boolean forceColorMarkupByDefault  // Whether or not <a href="https://github.com/libgdx/libgdx/wiki/Color-Markup-Language">LibGDX's Color Markup
+  public static float defaultWaitValue  // Default time in seconds that an empty {@code WAIT} token should wait for.
+  public static float defaultSpeedPerChar  // Time in seconds that takes for each char to appear in the default speed.
+  public static int charLimitPerFrame  // Defines how many chars can appear per frame.
+  public static Color defaultClearColor  // Default color for the {@code CLEARCOLOR} token.
+  public static ObjectFloatMap<Character> intervalMultipliersByChar  // Returns a map of characters and their respective interval multipliers, of which the interval to the next char
+  public static final ObjectMap<String,String> globalVars  // Map of global variables that affect all {@link FLabel} instances at once.
+  static final ObjectMap<String,Prov<FEffect>> effects  // Map of start tokens and their effect classes.
+  static boolean dirtyEffectMaps  // Whether or not effect tokens are dirty and need to be recalculated.
+methods:
+  public static void registerEffect(String tokenName, Prov<FEffect> effect)  // Registers a new effect to FLabel.
+  public static void unregisterEffect(String tokenName)  // Unregisters an effect from FLabel.
+
+FEffect.java
+Java class (abstract)
+// Abstract text effect.
+fields:
+  private static final float fadeoutSplit
+  public int indexStart
+  public int indexEnd
+  public float duration
+  public String endToken
+  protected float totalTime
+methods:
+  public void applyParams(String[] params)  // Applies token parameters from the parsed FLabel.
+  public void update(float delta)
+  public final void apply(FLabel label, FGlyph glyph, int glyphIndex, float delta)  // Applies the effect to the given glyph.
+  protected abstract void onApply(FLabel label, FGlyph glyph, int localIndex, float delta)  // Called when this effect should be applied to the given glyph.
+  public boolean isFinished()  // Returns whether or not this effect is finished and should be removed.
+  protected float calculateFadeout()  // Calculates the fadeout of this effect, if any.
+  protected float calculateProgress(float modifier) / protected float calculateProgress(float modifier, float offset) / protected float calculateProgress(float modifier, float offset, boolean pingpong)  // Calculates a linear progress dividing the total time by the given modifier.
+  protected float getLineHeight(FLabel label)  // Returns the line height of the label controlling this effect.
+
+FGlyph.java
+Java class extends arc.graphics.g2d.Font.Glyph implements arc.util.pooling.Pool.Poolable
+// Extension of {@link Glyph} with additional data exposed to the user.
+fields:
+  public GlyphRun run  // {@link GlyphRun} this glyph belongs to.
+  int internalIndex  // Internal index associated with this glyph.
+  public Color color  // Color of this glyph.
+methods:
+  public void set(Glyph from)
+  public void reset()
+
+FLabel.java
+Java class extends arc.scene.ui.Label
+// An extension of {@link Label} that progressively shows the text as if it was being typed in real time, and allows the
+fields:
+  private final ObjectMap<String,String> variables  // Collections
+  protected final Seq<FParser.TokenEntry> tokenEntries
+  private Color clearColor  // Config
+  private FListener listener
+  boolean forceMarkupColor
+  private final StringBuilder originalText  // Internal state
+  private final Seq<FGlyph> glyphCache
+  private final IntSeq glyphRunCapacities
+  private final IntSeq offsetCache
+  private final IntSeq layoutLineBreaks
+  private final Seq<FEffect> activeEffects
+  private float textSpeed
+  private float charCooldown
+  private int rawCharIndex  // All chars, including color codes
+  private int glyphCharIndex  // Only renderable chars, excludes color codes
+  private int glyphCharCompensation
+  private int cachedGlyphCharIndex  // Last glyphCharIndex sent to the cache
+  private float lastLayoutX
+  private float lastLayoutY
+  private boolean parsed
+  private boolean paused
+  private boolean ended
+  private boolean skipping
+  private boolean ignoringEvents
+  private boolean ignoringEffects
+  private String defaultToken
+ctors:
+  public FLabel(CharSequence text)
+methods:
+  public void setText(CharSequence newText) / protected void setText(CharSequence newText, boolean modifyOriginalText)  // Modifies the text of this label.
+  public StringBuilder getOriginalText()  // Similar to {@link #getText()}, but returns the original text with all the tokens unchanged.
+  protected void saveOriginalText()  // Copies the content of {@link #getText()} to the {@link StringBuilder} containing the original text with all
+  protected void restoreOriginalText()  // Restores the original text with all tokens unchanged to this label.
+  public FListener getTypingListener()  // Returns the {@link FListener} associated with this label.
+  public void setTypingListener(FListener listener)  // Sets the {@link FListener} associated with this label, or {@code null} to remove the current one.
+  public Color getClearColor()  // Returns a {@link Color} instance with the color to be used on {@code CLEARCOLOR} tokens.
+  public void setForceMarkupColor(boolean forceMarkupColor)  // Sets whether or not this instance should enable markup color by force.
+  public String getDefaultToken()  // Returns the default token being used in this label.
+  public void setDefaultToken(String defaultToken)  // Sets the default token being used in this label.
+  public void parseTokens()  // Parses all tokens of this label.
+  public void skipToTheEnd() / public void skipToTheEnd(boolean ignoreEvents) / public void skipToTheEnd(boolean ignoreEvents, boolean ignoreEffects)  // Skips the char progression to the end, showing the entire label.
+  public void cancelSkipping()  // Cancels calls to {@link #skipToTheEnd()}.
+  public boolean isPaused()  // Returns whether or not this label is paused.
+  public void pause()  // Pauses this label's character progression.
+  public void resume()  // Resumes this label's character progression.
+  public boolean hasEnded()  // Returns whether or not this label's char progression has ended.
+  public void restart() / public void restart(CharSequence newText)  // Restarts this label with the original text and starts the char progression right away.
+  public ObjectMap<String,String> getVariables()  // Returns an {@link ObjectMap} with all the variable names and their respective replacement values.
+  public void setVariable(String var, String value)  // Registers a variable and its respective replacement value to this label.
+  public void setVariables(ObjectMap<String,String> variableMap)  // Registers a set of variables and their respective replacement values to this label.
+  public void clearVariables()  // Removes all variables from this label.
+  public void act(float delta)
+  private void processCharProgression()  // Proccess char progression according to current cooldown and process all tokens in the current index.
+  public boolean remove()
+  public void layout()
+  private void layoutCache()  // Reallocate glyph clones according to the updated {@link GlyphLayout}.
+  private void addMissingGlyphs()  // Adds cached glyphs to the active FontCache as the char index progresses.
+  public void draw()
+
+FListener.java
+Java interface
+// Simple listener for fancy label events.
+methods:
+  default void event(String event)  // Called each time an {@code EVENT} token is processed.
+  default void end()  // Called when the char progression reaches the end.
+  default String replaceVariable(String variable)  // Called when variable tokens are replaced in text.
+  default void onChar(char ch)  // Called when a new character is displayed.
+
+FParser.java
+Java class
+// Utility class to parse tokens from a {@link FLabel}.
+fields:
+  private static String resetReplacement
+  static final Pattern parameterParser  // Handles separating the parameters from the effect name
+methods:
+  static void parseTokens(FLabel label)  // Parses all tokens from the given {@link FLabel}.
+  private static void baseParse(FLabel label, TokenHandler replacer)
+  private static void parseReplacements(FLabel label)
+  private static void parseRegularTokens(FLabel label)
+  private static void parseAllTokens(FLabel label, boolean square, Intc2 handler)
+  private static void stripTokens(FLabel label)
+  private static String getResetReplacement()  // Returns the replacement string intended to be used on {RESET} tokens.
+inner-interface: TokenHandler
+  methods:
+    String handle(String string, int position)
+inner-class: TokenEntry implements java.lang.Comparable
+// Container representing a token, parsed parameters and its position in text.
+  fields:
+    String token
+    TokenCategory category
+    int index
+    float floatValue
+    String stringValue
+    FEffect effect
+  ctors:
+    TokenEntry(String token, TokenCategory category, int index, float floatValue, String stringValue)
+  methods:
+    public int compareTo(TokenEntry o)
+

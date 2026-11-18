@@ -1,0 +1,250 @@
+AssemblerAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public Vec2 targetPos
+  public float targetAngle
+methods:
+  public void updateMovement()
+  public boolean inPosition()
+
+BoostAI.java
+Java class extends mindustry.entities.units.AIController
+// not meant to be used outside RTS-AI-controlled units
+methods:
+  public void updateUnit()
+
+BuilderAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public static float buildRadius
+  public Unit assistFollowing
+  public Unit following
+  public Teamc enemy
+  public BlockPlan lastPlan
+  public float fleeRange
+  public boolean alwaysFlee
+  public boolean onlyAssist
+  boolean found
+  float retreatTimer
+ctors:
+  public BuilderAI(boolean alwaysFlee, float fleeRange) / public BuilderAI()
+methods:
+  public void init()
+  public void updateMovement()
+  protected boolean nearEnemy(int x, int y)
+  public AIController fallback()
+  public boolean useFallback()
+  public boolean shouldFire()
+  public boolean shouldShoot()
+
+CargoAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  static Seq<Item> orderedItems
+  static Seq<UnitCargoUnloadPointBuild> targets
+  public static float emptyWaitTime
+  public static float transferRange
+  public UnitCargoUnloadPointBuild unloadTarget
+  public Item itemTarget
+  public float noDestTimer
+  public int targetIndex
+methods:
+  public void updateMovement()
+  public int findDropTarget(Item item, int offset, UnitCargoUnloadPointBuild ignore)  // find target for the unit's current item
+  public void findAnyTarget(Building build)
+  void sortTargets(Seq<UnitCargoUnloadPointBuild> targets)  // unused, might change later
+
+CommandAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  protected static final int maxCommandQueueSize
+  protected static final Vec2 moveTarget
+  protected static final UnitPayload tmpPayload
+  protected static final int transferStateNone
+  public Seq<Position> commandQueue
+  public Vec2 targetPos
+  public Building targetBuild
+  public Teamc attackTarget
+  public UnitGroup group  // Group of units that were all commanded to reach the same point.
+  public int groupIndex
+  public IntSeq unreachableBuildings  // All encountered unreachable buildings of this AI.
+  public int readAttackTarget  // ID of unit read as target.
+  protected boolean stopAtTarget
+  protected Vec2 lastTargetPos
+  protected boolean blockingUnit
+  protected float timeSpentBlocked
+  protected float payloadPickupCooldown
+  protected int transferState
+  public UnitCommand command  // Current command this unit is following.
+  public Bits stances  // Stance, usually related to firing mode.
+  protected AIController commandController  // Current controller instance based on command.
+  protected UnitCommand lastCommand  // Last command type assigned.
+methods:
+  public UnitCommand currentCommand()
+  public void command(UnitCommand command)  // Attempts to assign a command to this unit.
+  public boolean hasStance(UnitStance stance)
+  public void setStance(UnitStance stance, boolean enabled) / public void setStance(UnitStance stance)
+  public void disableStance(UnitStance stance)
+  public void stanceChanged()
+  public void init()
+  public boolean isLogicControllable()
+  public boolean isAttacking()
+  public void updateUnit()
+  protected boolean shouldBoost()
+  public void clearCommands()
+  void tryPickupUnit(Payloadc pay)
+  public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)
+  public void defaultBehavior()
+  void finishPath()
+  public void removed(Unit unit)
+  public void commandQueue(Position location)
+  public void afterRead(Unit unit)
+  public boolean shouldFire()
+  public void hit(Bullet bullet)
+  public boolean keepState()
+  public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+  public boolean nearAttackTarget(float x, float y, float range)
+  public boolean retarget()
+  public boolean hasCommand()
+  public void setupLastPos()
+  public void commandPosition(Vec2 pos) / public void commandPosition(Vec2 pos, boolean stopWhenInRange)
+  public void commandTarget(Teamc moveTo) / public void commandTarget(Teamc moveTo, boolean stopAtTarget)
+
+DefenderAI.java
+Java class extends mindustry.entities.units.AIController
+methods:
+  public void updateMovement()
+  public void updateTargeting()
+  public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+
+FlyingAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  final static Rand rand
+  final static BlockFlag randomTargets
+methods:
+  public void updateMovement()
+  public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+  public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)
+
+FlyingFollowAI.java
+Java class extends mindustry.ai.types.FlyingAI
+// AI/wave team only! This is used for wave support flyers.
+fields:
+  public Teamc following
+methods:
+  public void updateMovement()
+  public boolean shouldFaceTarget()
+  public void updateVisuals()
+  public AIController fallback()
+  public boolean useFallback()
+
+GroundAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  float stuckTime
+  float stuckX
+  static final float stuckRange
+methods:
+  public void updateMovement()
+
+HugAI.java
+Java class extends mindustry.entities.units.AIController
+methods:
+  public void updateMovement()
+
+LogicAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public static final float transferDelay  // Minimum delay between item transfers.
+  public static final float logicControlTimeout  // Time after which the unit resets its controlled and reverts to a normal unit.
+  public LUnitControl control
+  public float moveX
+  public float controlTimer
+  public Building controller
+  public BuildPlan plan
+  public ObjectMap<Object,Object> execCache  // special cache for instruction to store data
+  public LUnitControl aimControl  // type of aiming to use
+  public boolean boost  // whether to use the boost (certain units only)
+  public Teamc mainTarget  // main target set for shootP
+  public boolean shoot  // whether to shoot at all
+  public PosTeam posTarget  // target shoot positions for manual aiming
+  private ObjectSet<Object> radars
+methods:
+  public boolean keepState()  // LogicAI state should not be reset after reading.
+  public void updateMovement()
+  public boolean checkTargetTimer(Object radar)
+  public boolean checkTarget(Teamc target, float x, float y, float range)
+  public boolean retarget()  // always retarget
+  public boolean invalid(Teamc target)
+  public boolean shouldShoot()
+  public Teamc target(float x, float y, float range, boolean air, boolean ground)  // always aim for the main target
+
+MinerAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public boolean mining
+  public Item targetItem
+  public Tile ore
+methods:
+  public void stanceChanged()
+  public void updateMovement()
+
+MissileAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public Unit shooter
+methods:
+  protected void resetTimers()
+  public void updateMovement()
+  public Teamc target(float x, float y, float range, boolean air, boolean ground)
+  public boolean retarget()
+
+NoAI.java
+Java class implements mindustry.entities.units.UnitController
+fields:
+  protected Unit unit
+methods:
+  public Unit unit() / public void unit(Unit unit)
+  public boolean isValidController()
+  public void updateUnit()
+  public void removed(Unit unit)
+
+PrebuildAI.java
+Java class extends mindustry.entities.units.AIController
+// don't use this yet, it's not functional!
+fields:
+  static float priorities
+  static Seq<BlockPlan> tmpCopy
+  BlockPlan lastPlan
+  Block collectBlock
+  boolean collectingItems
+  boolean mining
+  Item lastTargetItem
+  Tile ore
+methods:
+  public static void sortPlans(Queue<BlockPlan> plans)  // TODO move this function?
+  private boolean canBuild(CoreBuild core, Block block)
+  private BlockPlan findNextPlan()
+  public void updateMovement()
+  void doMining()
+
+RepairAI.java
+Java class extends mindustry.entities.units.AIController
+fields:
+  public static float retreatDst
+  Teamc avoid
+  float retreatTimer
+  Building damagedTarget
+methods:
+  public void updateMovement()
+  public void updateTargeting()
+
+SuicideAI.java
+Java class extends mindustry.ai.types.GroundAI
+fields:
+  static boolean blockedByBlock
+methods:
+  public void updateUnit()
+  public Teamc target(float x, float y, float range, boolean air, boolean ground)
+

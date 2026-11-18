@@ -1,0 +1,200 @@
+DrawPart.java
+Java class (abstract)
+fields:
+  public static final PartParams params
+  public boolean turretShading  // If true, turret shading is used.
+  public boolean under  // If true, the layer is overridden to be under the weapon/turret itself.
+  public int weaponIndex  // For units, this is the index of the weapon this part gets its progress for.
+  public int recoilIndex  // Which recoil counter to use.
+methods:
+  public abstract void draw(PartParams params)
+  public void load(String name)
+  public void getOutlines(Seq<TextureRegion> out)
+inner-class: PartParams
+// Parameters for drawing a part in draw().
+  fields:
+    public float warmup  // TODO document
+    public float x
+    public int sideOverride
+  methods:
+    public PartParams set(float warmup, float reload, float smoothReload, float heat, float recoil, float charge, float x, float y, float rotation)
+    public PartParams setRecoil(float recoils)
+inner-class: PartMove
+  fields:
+    public PartProgress progress
+    public float x
+  ctors:
+    public PartMove(PartProgress progress, float x, float y, float gx, float gy, float rot) / public PartMove(PartProgress progress, float x, float y, float rot) / public PartMove()
+inner-interface: PartProgress
+  fields:
+    PartProgress reload  // Reload of the weapon - 1 right after shooting, 0 when ready to fire
+  methods:
+    float get(PartParams p)
+    static PartProgress constant(float value)
+    default float getClamp(PartParams p) / default float getClamp(PartParams p, boolean clamp)
+    default PartProgress inv()
+    default PartProgress slope()
+    default PartProgress clamp()
+    default PartProgress add(float amount) / default PartProgress add(PartProgress other)
+    default PartProgress delay(float amount)
+    default PartProgress curve(float offset, float duration) / default PartProgress curve(Interp interp)
+    default PartProgress sustain(float offset, float grow, float sustain)
+    default PartProgress shorten(float amount)
+    default PartProgress compress(float start, float end)
+    default PartProgress blend(PartProgress other, float amount)
+    default PartProgress mul(PartProgress other) / default PartProgress mul(float amount)
+    default PartProgress min(PartProgress other)
+    default PartProgress sin(float offset, float scl, float mag) / default PartProgress sin(float scl, float mag)
+    default PartProgress absin(float scl, float mag)
+    default PartProgress mod(float amount)
+    default PartProgress loop(float time)
+    default PartProgress apply(PartProgress other, PartFunc func)
+inner-interface: PartFunc
+  methods:
+    float get(float a, float b)
+inner-class: CompatFix
+// RoboVM chokes on lambdas referencing self in default methods in interfaces, so they have to be moved into a separate class.
+  methods:
+    static PartProgress inv(PartProgress self)
+    static PartProgress slope(PartProgress self)
+    static PartProgress clamp(PartProgress self)
+    static PartProgress add(PartProgress self, float amount) / static PartProgress add(PartProgress self, PartProgress other)
+    static PartProgress delay(PartProgress self, float amount)
+    static PartProgress curve(PartProgress self, float offset, float duration) / static PartProgress curve(PartProgress self, Interp interp)
+    static PartProgress sustain(PartProgress self, float offset, float grow, float sustain)
+    static PartProgress shorten(PartProgress self, float amount)
+    static PartProgress compress(PartProgress self, float start, float end)
+    static PartProgress blend(PartProgress self, PartProgress other, float amount)
+    static PartProgress mul(PartProgress self, PartProgress other) / static PartProgress mul(PartProgress self, float amount)
+    static PartProgress min(PartProgress self, PartProgress other)
+    static PartProgress sin(PartProgress self, float offset, float scl, float mag) / static PartProgress sin(PartProgress self, float scl, float mag)
+    static PartProgress absin(PartProgress self, float scl, float mag)
+    static PartProgress mod(PartProgress self, float amount)
+    static PartProgress loop(PartProgress self, float time)
+    static PartProgress apply(PartProgress self, PartProgress other, PartFunc func)
+
+EffectSpawnerPart.java
+Java class extends mindustry.entities.part.DrawPart
+// Spawns effects in a rectangle centered on x and y.
+fields:
+  public float x
+  public boolean mirror
+  public float effectRot
+  public float effectInterval  // If >0, the interval, in ticks, between effect spawns.
+  public float effectIntervalFrom  // If >0, this is the interval at 0 progress.
+  public float effectChance
+  public Effect effect
+  public Color effectColor
+  public boolean useProgress  // If true, effectChance will be scaled by progress.
+  public PartProgress progress
+  public boolean debugDraw  // Shows the spawn rectangles in red.
+  protected float effectIntervalState
+methods:
+  public void draw(PartParams params)
+
+FlarePart.java
+Java class extends mindustry.entities.part.DrawPart
+fields:
+  public int sides
+  public float radius
+  public float x
+  public boolean followRotation
+  public Color color1
+  public boolean clampProgress
+  public PartProgress progress
+  public float layer
+methods:
+  public void draw(PartParams params)
+  public void load(String name)
+
+HaloPart.java
+Java class extends mindustry.entities.part.DrawPart
+fields:
+  public boolean hollow
+  public int shapes
+  public int sides
+  public float radius
+  public float triLength
+  public float haloRadius
+  public float x
+  public float moveX
+  public float haloRotateSpeed
+  public float rotateSpeed
+  public Color color
+  public Color colorTo
+  public boolean mirror
+  public boolean clampProgress
+  public PartProgress progress
+  public float layer
+methods:
+  public void draw(PartParams params)
+  public void load(String name)
+
+HoverPart.java
+Java class extends mindustry.entities.part.DrawPart
+fields:
+  public float radius
+  public float x
+  public int circles
+  public Color color
+  public boolean mirror
+  public float layer
+methods:
+  public void draw(PartParams params)
+  public void load(String name)
+
+RegionPart.java
+Java class extends mindustry.entities.part.DrawPart
+fields:
+  protected PartParams childParam
+  public String suffix  // Appended to unit/weapon/block name and drawn.
+  public String name  // Overrides suffix if set.
+  public TextureRegion heat
+  public TextureRegion regions
+  public TextureRegion outlines
+  public boolean mirror  // If true, parts are mirrored across the turret.
+  public boolean outline  // If true, an outline is drawn under the part.
+  public boolean replaceOutline  // If true, this part has an outline created 'in-place'.
+  public boolean drawRegion  // If true, the base + outline regions are drawn.
+  public boolean heatLight  // If true, the heat region produces light.
+  public boolean clampProgress  // Whether to clamp progress to (0-1).
+  public PartProgress progress  // Progress function for determining position/rotation.
+  public PartProgress growProgress  // Progress function for scaling.
+  public PartProgress heatProgress  // Progress function for heat alpha.
+  public Blending blending
+  public float layer
+  public float outlineLayerOffset
+  public float x  // note that origin DOES NOT AFFECT child parts
+  public float moveX
+  public float heatLightOpacity
+  public Color color
+  public Color heatColor
+  public Seq<DrawPart> children
+  public Seq<PartMove> moves
+ctors:
+  public RegionPart(String region) / public RegionPart(String region, Blending blending, Color color) / public RegionPart()
+methods:
+  public void draw(PartParams params)
+  void rect(TextureRegion region, float x, float y, float rotation)
+  public void load(String name)
+  public void getOutlines(Seq<TextureRegion> out)
+
+ShapePart.java
+Java class extends mindustry.entities.part.DrawPart
+fields:
+  public boolean circle
+  public int sides
+  public float radius
+  public float x
+  public float moveX
+  public float rotateSpeed
+  public Color color
+  public Color colorTo
+  public boolean mirror
+  public boolean clampProgress
+  public PartProgress progress
+  public float layer
+methods:
+  public void draw(PartParams params)
+  public void load(String name)
+

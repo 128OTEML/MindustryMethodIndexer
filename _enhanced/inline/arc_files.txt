@@ -1,0 +1,418 @@
+// Fi.java : public static Fi get(String path)
+    public static Fi get(String path){
+        return new Fi(path);
+    }
+
+// Fi.java : public static Fi tempFile(String prefix)
+    public static Fi tempFile(String prefix){
+        try{
+            return new Fi(File.createTempFile(prefix, null));
+        }catch(IOException ex){
+            throw new ArcRuntimeException("Unable to create temp file.", ex);
+        }
+    }
+
+// Fi.java : public static Fi tempDirectory(String prefix)
+    public static Fi tempDirectory(String prefix){
+        try{
+            File file = File.createTempFile(prefix, null);
+            if(!file.delete()) throw new IOException("Unable to delete temp file: " + file);
+            if(!file.mkdir()) throw new IOException("Unable to create temp directory: " + file);
+            return new Fi(file);
+        }catch(IOException ex){
+            throw new ArcRuntimeException("Unable to create temp file.", ex);
+        }
+    }
+
+// Fi.java : private static boolean deleteDirectory(File file) / public boolean deleteDirectory()
+    private static boolean deleteDirectory(File file){
+        emptyDirectory(file, false);
+        return file.delete();
+    }
+
+// Fi.java : private static void copyFile(Fi source, Fi dest)
+    private static void copyFile(Fi source, Fi dest){
+        try{
+            dest.write(source.read(), false);
+        }catch(Exception ex){
+            throw new ArcRuntimeException("Error copying source file: " + source.file + " (" + source.type + ")\n" //
+            + "To destination: " + dest.file + " (" + dest.type + ")", ex);
+        }
+    }
+
+// Fi.java : private static void copyDirectory(Fi sourceDir, Fi destDir)
+    private static void copyDirectory(Fi sourceDir, Fi destDir){
+        destDir.mkdirs();
+        Fi[] files = sourceDir.list();
+        for(Fi srcFile : files){
+            Fi destFile = destDir.child(srcFile.name());
+            if(srcFile.isDirectory())
+                copyDirectory(srcFile, destFile);
+            else
+                copyFile(srcFile, destFile);
+        }
+    }
+
+// Fi.java : public String path()
+    public String path(){
+        return file.getPath().replace('\\', '/');
+    }
+
+// Fi.java : public String absolutePath()
+    public String absolutePath(){
+        return file.getAbsolutePath().replace('\\', '/');
+    }
+
+// Fi.java : public String name()
+    public String name(){
+        return file.getName().isEmpty() ? file.getPath() : file.getName();
+    }
+
+// Fi.java : public boolean extEquals(String ext)
+    public boolean extEquals(String ext){
+        return extension().equalsIgnoreCase(ext);
+    }
+
+// Fi.java : public String extension()
+    public String extension(){
+        String name = file.getName();
+        int dotIndex = name.lastIndexOf('.');
+        if(dotIndex == -1) return "";
+        return name.substring(dotIndex + 1);
+    }
+
+// Fi.java : public String nameWithoutExtension()
+    public String nameWithoutExtension(){
+        String name = file.getName();
+        int dotIndex = name.lastIndexOf('.');
+        if(dotIndex == -1) return name;
+        return name.substring(0, dotIndex);
+    }
+
+// Fi.java : public String pathWithoutExtension()
+    public String pathWithoutExtension(){
+        String path = file.getPath().replace('\\', '/');
+        int dotIndex = path.lastIndexOf('.');
+        if(dotIndex == -1) return path;
+        return path.substring(0, dotIndex);
+    }
+
+// Fi.java : public FileType type()
+    public FileType type(){
+        return type;
+    }
+
+// Fi.java : public File file()
+    public File file(){
+        if(type == FileType.external) return new File(Core.files.getExternalStoragePath(), file.getPath());
+        return file;
+    }
+
+// Fi.java : public Reader reader() / public Reader reader(String charset) / public BufferedReader reader(int bufferSize) / public BufferedReader reader(int bufferSize, String charset)
+    public Reader reader(){
+        return reader("UTF-8");
+    }
+
+// Fi.java : public String readString() / public String readString(String charset)
+    public String readString(){
+        return readString("UTF-8");
+    }
+
+// Fi.java : public byte[] readBytes() / public int readBytes(byte[] bytes, int offset, int size)
+    public byte[] readBytes(){
+        InputStream input = read();
+        try{
+            return Streams.copyBytes(input, estimateLength());
+        }catch(IOException ex){
+            throw new ArcRuntimeException("Error reading file: " + this, ex);
+        }finally{
+            Streams.close(input);
+        }
+    }
+
+// Fi.java : public ByteArrayInputStream readByteStream()
+    public ByteArrayInputStream readByteStream(){
+        return new ByteArrayInputStream(readBytes());
+    }
+
+// Fi.java : private int estimateLength()
+    private int estimateLength(){
+        int length = (int)length();
+        return length != 0 ? length : 512;
+    }
+
+// Fi.java : public ByteBuffer map() / public ByteBuffer map(FileChannel.MapMode mode)
+    public ByteBuffer map(){
+        return map(MapMode.READ_ONLY);
+    }
+
+// Fi.java : public Writes writes(boolean append) / public Writes writes()
+    public Writes writes(boolean append){
+        return new Writes(new DataOutputStream(write(append, Streams.defaultBufferSize)));
+    }
+
+// Fi.java : public Reads reads()
+    public Reads reads(){
+        return new Reads(new DataInputStream(read(Streams.defaultBufferSize)));
+    }
+
+// Fi.java : public Writes writesDeflate()
+    public Writes writesDeflate(){
+        return new Writes(new DataOutputStream(new DeflaterOutputStream(write(false, Streams.defaultBufferSize))));
+    }
+
+// Fi.java : public Reads readsDeflate()
+    public Reads readsDeflate(){
+        return new Reads(new DataInputStream(new InflaterInputStream(read(Streams.defaultBufferSize))));
+    }
+
+// Fi.java : public OutputStream write() / public OutputStream write(boolean append) / public OutputStream write(boolean append, int bufferSize) / public void write(InputStream input, boolean append)
+    public OutputStream write(){
+        return write(false);
+    }
+
+// Fi.java : public Writer writer(boolean append) / public Writer writer(boolean append, String charset)
+    public Writer writer(boolean append){
+        return writer(append, "UTF-8");
+    }
+
+// Fi.java : public void writePng(Pixmap pixmap)
+    public void writePng(Pixmap pixmap){
+        PixmapIO.writePng(this, pixmap);
+    }
+
+// Fi.java : public void writeString(String string) / public void writeString(String string, boolean append) / public void writeString(String string, boolean append, String charset)
+    public void writeString(String string){
+        writeString(string, false);
+    }
+
+// Fi.java : public void writeBytes(byte[] bytes) / public void writeBytes(byte[] bytes, boolean append) / public void writeBytes(byte[] bytes, int offset, int length, boolean append)
+    public void writeBytes(byte[] bytes){
+        writeBytes(bytes, false);
+    }
+
+// Fi.java : public void walk(Cons<Fi> cons)
+    public void walk(Cons<Fi> cons){
+        if(isDirectory()){
+            for(Fi file : list()){
+                file.walk(cons);
+            }
+        }else{
+            cons.get(this);
+        }
+    }
+
+// Fi.java : public Seq<Fi> findAll(Boolf<Fi> test) / public Seq<Fi> findAll()
+    public Seq<Fi> findAll(Boolf<Fi> test){
+        Seq<Fi> out = new Seq<>();
+        walk(f -> {
+            if(test.get(f)){
+                out.add(f);
+            }
+        });
+        return out;
+    }
+
+// Fi.java : public Seq<Fi> seq()
+    public Seq<Fi> seq(){
+        return Seq.with(list());
+    }
+
+// Fi.java : public Fi[] list() / public Fi[] list(FileFilter filter) / public Fi[] list(FilenameFilter filter) / public Fi[] list(String suffix)
+    public Fi[] list(){
+        if(type == FileType.classpath) throw new ArcRuntimeException("Cannot list a classpath directory: " + file);
+        String[] relativePaths = file().list();
+        if(relativePaths == null) return new Fi[0];
+        Fi[] handles = new Fi[relativePaths.length];
+        for(int i = 0, n = relativePaths.length; i < n; i++)
+            handles[i] = child(relativePaths[i]);
+        return handles;
+    }
+
+// Fi.java : public boolean isDirectory()
+    public boolean isDirectory(){
+        if(type == FileType.classpath) return false;
+        return file().isDirectory();
+    }
+
+// Fi.java : public Fi child(String name)
+    public Fi child(String name){
+        if(file.getPath().length() == 0) return new Fi(new File(name), type);
+        return new Fi(new File(file, name), type);
+    }
+
+// Fi.java : public Fi sibling(String name)
+    public Fi sibling(String name){
+        if(file.getPath().length() == 0) throw new ArcRuntimeException("Cannot get the sibling of the root.");
+        return new Fi(new File(file.getParent(), name), type);
+    }
+
+// Fi.java : public boolean mkdirs()
+    public boolean mkdirs(){
+        if(type == FileType.classpath) throw new ArcRuntimeException("Cannot mkdirs with a classpath file: " + file);
+        if(type == FileType.internal) throw new ArcRuntimeException("Cannot mkdirs with an internal file: " + file);
+        return file().mkdirs();
+    }
+
+// Fi.java : public boolean exists()
+    public boolean exists(){
+        switch(type){
+            case internal:
+                if(file().exists()) return true;
+                // Fall through.
+            case classpath:
+                return Fi.class.getResource("/" + file.getPath().replace('\\', '/')) != null;
+        }
+        return file().exists();
+    }
+
+// Fi.java : public boolean delete()
+    public boolean delete(){
+        if(type == FileType.classpath) throw new ArcRuntimeException("Cannot delete a classpath file: " + file);
+        if(type == FileType.internal) throw new ArcRuntimeException("Cannot delete an internal file: " + file);
+        return file().delete();
+    }
+
+// Fi.java : public void copyFilesTo(Fi dest)
+    public void copyFilesTo(Fi dest){
+        if(!isDirectory()) throw new ArcRuntimeException("Source folder must be a directory: " + this);
+        if(dest.exists() && !dest.isDirectory()) throw new ArcRuntimeException("Destination folder must be a directory: " + dest);
+
+        dest.mkdirs();
+
+        copyDirectory(this, dest);
+    }
+
+// Fi.java : public long lastModified()
+    public long lastModified(){
+        return file().lastModified();
+    }
+
+// Fi.java : public boolean equals(Object obj)
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Fi)) return false;
+        Fi other = (Fi)obj;
+        return type == other.type && path().equals(other.path());
+    }
+
+// Fi.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        int hash = 1;
+        hash = hash * 37 + type.hashCode();
+        hash = hash * 67 + path().hashCode();
+        return hash;
+    }
+
+// Fi.java : public int compareTo(Fi fi)
+    @Override
+    public int compareTo(Fi fi){
+        return file.compareTo(fi.file);
+    }
+
+// Fi.java : public String toString()
+    @Override
+    public String toString(){
+        return file.getPath().replace('\\', '/');
+    }
+
+// ZipFi.java : private static int countSlashes(String str)
+    private static int countSlashes(String str){
+        int sum = 0;
+        for(int i = 0; i < str.length(); i++){
+            if(str.charAt(i) == '/') sum ++;
+        }
+        return sum;
+    }
+
+// ZipFi.java : public boolean delete()
+    @Override
+    public boolean delete(){
+        try{
+            zip.close();
+            return true;
+        }catch(IOException e){
+            Log.err(e);
+            return false;
+        }
+    }
+
+// ZipFi.java : public boolean exists()
+    @Override
+    public boolean exists(){
+        return true;
+    }
+
+// ZipFi.java : public String name()
+    @Override
+    public String name(){
+        return file.getName();
+    }
+
+// ZipFi.java : public String path()
+    @Override
+    public String path(){
+        return path;
+    }
+
+// ZipFi.java : private static boolean isChild(ZipFi file, ZipFi dir)
+    private static boolean isChild(ZipFi file, ZipFi dir){
+        return dir != file
+            && file.path().startsWith(dir.path())
+            && (file.path().substring(1 + dir.path().length()).indexOf('/') == -1 || //do not allow extra slashes in the path
+            (file.path().endsWith("/") && countSlashes(file.path().substring(1 + dir.path().length())) == 1));
+    }
+
+// ZipFi.java : public Fi parent()
+    @Override
+    public Fi parent(){
+        //root
+        if(path.length() == 0) return null;
+
+        if(parent == null){
+            parent = allDirectories.find(other -> isChild(this, other));
+        }
+
+        return parent;
+    }
+
+// ZipFi.java : public Fi[] list()
+    @Override
+    public Fi[] list(){
+        if(children == null){
+            children = allFiles.select(f -> f.parent == this || isChild(f, this)).toArray(ZipFi.class);
+        }
+
+        return children;
+    }
+
+// ZipFi.java : public boolean isDirectory()
+    @Override
+    public boolean isDirectory(){
+        return entry == null || entry.isDirectory();
+    }
+
+// ZipFi.java : public InputStream read()
+    @Override
+    public InputStream read(){
+        if(entry == null) throw new RuntimeException("Not permitted.");
+        try{
+            return zip.getInputStream(entry);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// ZipFi.java : public long length()
+    @Override
+    public long length(){
+        return isDirectory() ? 0 : entry.getSize();
+    }
+
+// ZipFi.java : public String toString()
+    @Override
+    public String toString(){
+        return path();
+    }
+

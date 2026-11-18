@@ -1,0 +1,477 @@
+DrawArcSmelt.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color flameColor
+  public float flameRad
+  public float x
+  public float alpha
+  public int particles
+  public float particleLife
+  public boolean drawCenter
+  public Blending blending
+methods:
+  public void draw(Building build)
+
+DrawBlock.java
+Java class
+// An implementation of custom rendering behavior for a crafter block.
+fields:
+  protected static final Rand rand
+  public String iconOverride  // If set, the icon is overridden to be these strings, in order.
+methods:
+  public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+  public void draw(Building build)  // Draws the block itself.
+  public void drawLight(Building build)  // Draws any extra light for the block.
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)  // Draws the planned version of this block.
+  public void load(Block block)  // Load any relevant texture regions.
+  public TextureRegion[] icons(Block block)  // @return the generated icons to be used for this block.
+  public final TextureRegion[] finalIcons(Block block)
+  public GenericCrafter expectCrafter(Block block)
+
+DrawBlockParts.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Seq<DrawPart> parts
+  public TextureRegion preview
+methods:
+  public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void draw(Building build)
+  public void load(Block block)
+  public TextureRegion[] icons(Block block)
+
+DrawBlurSpin.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion region
+  public String suffix
+  public float rotateSpeed
+ctors:
+  public DrawBlurSpin(String suffix, float speed) / public DrawBlurSpin()
+methods:
+  public void draw(Building build)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+
+DrawBubbles.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public int amount
+  public float strokeMin
+  public float recurrence
+  public boolean fill
+ctors:
+  public DrawBubbles(Color color) / public DrawBubbles()
+methods:
+  public void draw(Building build)
+
+DrawCells.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion middle
+  public Color color
+  public int particles
+  public float range
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawCircles.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public int amount
+  public float strokeMin
+  public float radius
+  public Interp strokeInterp
+ctors:
+  public DrawCircles(Color color) / public DrawCircles()
+methods:
+  public void draw(Building build)
+
+DrawCrucibleFlame.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color flameColor
+  public float flameRad
+  public float alpha
+  public int particles
+  public float particleLife
+  public Interp particleInterp
+methods:
+  public void draw(Building build)
+
+DrawCultivator.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color plantColor
+  public Color plantColorLight
+  public Color bottomColor
+  public int bubbles
+  public float strokeMin
+  public float recurrence
+  public TextureRegion middle
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawDefault.java
+Java class extends mindustry.world.draw.DrawBlock
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons(Block block)
+
+DrawFade.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public String suffix
+  public float alpha
+  public TextureRegion region
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawFlame.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color flameColor
+  public TextureRegion top
+  public float lightRadius
+  public float flameRadius
+  public float flameX
+ctors:
+  public DrawFlame() / public DrawFlame(Color flameColor)
+methods:
+  public void load(Block block)
+  public void draw(Building build)
+  public void drawLight(Building build)
+
+DrawFrames.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public int frames  // Number of frames to draw.
+  public float interval  // Ticks between frames.
+  public boolean sine  // If true, frames wil alternate back and forth in a sine wave.
+  public TextureRegion regions
+methods:
+  public void draw(Building build)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+
+DrawGlowRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Blending blending
+  public String suffix
+  public float alpha
+  public float rotateSpeed
+  public float layer
+  public boolean rotate
+  public Color color
+  public TextureRegion region
+ctors:
+  public DrawGlowRegion() / public DrawGlowRegion(float layer) / public DrawGlowRegion(boolean rotate) / public DrawGlowRegion(String suffix)
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawHeatInput.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public String suffix
+  public Color heatColor
+  public float heatPulse
+  public TextureRegion heat
+ctors:
+  public DrawHeatInput(String suffix) / public DrawHeatInput()
+methods:
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawHeatOutput.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion heat
+  public Color heatColor
+  public float heatPulse
+  public int rotOffset
+  public boolean drawGlow
+ctors:
+  public DrawHeatOutput() / public DrawHeatOutput(int rotOffset, boolean drawGlow)
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void load(Block block)
+
+DrawHeatRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public float pulse
+  public float layer
+  public TextureRegion heat
+  public String suffix
+ctors:
+  public DrawHeatRegion(float layer) / public DrawHeatRegion(String suffix) / public DrawHeatRegion()
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawLiquidOutputs.java
+Java class extends mindustry.world.draw.DrawBlock
+// This must be used in conjunction with another DrawBlock; it only draws outputs.
+fields:
+  public TextureRegion liquidOutputRegions
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void load(Block block)
+
+DrawLiquidRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Liquid drawLiquid
+  public TextureRegion liquid
+  public String suffix
+  public float alpha
+ctors:
+  public DrawLiquidRegion(Liquid drawLiquid) / public DrawLiquidRegion()
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawLiquidTile.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Liquid drawLiquid
+  public float padding
+  public float padLeft
+  public float alpha
+ctors:
+  public DrawLiquidTile(Liquid drawLiquid, float padding) / public DrawLiquidTile(Liquid drawLiquid) / public DrawLiquidTile()
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawMulti.java
+Java class extends mindustry.world.draw.DrawBlock
+// combined several DrawBlocks into one
+fields:
+  public DrawBlock drawers
+ctors:
+  public DrawMulti() / public DrawMulti(DrawBlock drawers) / public DrawMulti(Seq<DrawBlock> drawers)
+methods:
+  public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void drawLight(Building build)
+  public void load(Block block)
+  public TextureRegion[] icons(Block block)
+
+DrawMultiWeave.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion weave
+  public float rotateSpeed
+  public boolean fadeWeave
+  public Color glowColor
+  public float pulse
+methods:
+  public void draw(Building build)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+
+DrawParticles.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public int sides
+  public float x
+  public float alpha
+  public int particles
+  public float particleRotation
+  public boolean reverse
+  public Interp particleInterp
+  public Interp particleSizeInterp
+  public Blending blending
+methods:
+  public void draw(Building build)
+
+DrawPistons.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public float sinMag
+  public int sides
+  public String suffix
+  public TextureRegion region1
+methods:
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void draw(Building build)
+  public void load(Block block)
+  public TextureRegion[] icons(Block block)
+
+DrawPlasma.java
+Java class extends mindustry.world.draw.DrawFlame
+fields:
+  public float x
+  public TextureRegion regions
+  public String suffix
+  public int plasmas
+  public Color plasma1
+methods:
+  public void load(Block block)
+  public void drawLight(Building build)
+  public void draw(Building build)
+
+DrawPower.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion emptyRegion
+  public String suffix
+  public boolean drawPlan
+  public boolean mixcol  // If false, fades between emptyRegion and fullRegion instead of mixcol between empty and full colors.
+  public Color emptyLightColor
+  public Color fullLightColor
+  public float layer  // Any number <=0 disables layer changes.
+ctors:
+  public DrawPower() / public DrawPower(String suffix)
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+
+DrawPulseShape.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public float stroke
+  public float radiusScl
+  public float layer
+  public boolean square
+ctors:
+  public DrawPulseShape(boolean square) / public DrawPulseShape()
+methods:
+  public void draw(Building build)
+
+DrawPumpLiquid.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion liquid
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion region
+  public String suffix
+  public String name  // If set, overrides the region name.
+  public Color color
+  public boolean spinSprite
+  public boolean drawPlan
+  public boolean buildingRotate
+  public float rotateSpeed
+  public float layer  // Any number <=0 disables layer changes.
+ctors:
+  public DrawRegion(String suffix) / public DrawRegion(String suffix, float rotateSpeed) / public DrawRegion(String suffix, float rotateSpeed, boolean spinSprite) / public DrawRegion()
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+
+DrawShape.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public int sides
+  public float radius
+  public boolean useWarmupRadius
+methods:
+  public void draw(Building build)
+
+DrawSideRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion top1
+methods:
+  public void draw(Building build)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void load(Block block)
+  public TextureRegion[] icons(Block block)
+
+DrawSoftParticles.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion region
+  public Color color
+  public float x
+  public float alpha
+  public int particles
+  public float particleLife
+  public Interp particleInterp
+methods:
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawSpikes.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public Color color
+  public int amount
+  public float stroke
+  public float radius
+ctors:
+  public DrawSpikes(Color color) / public DrawSpikes()
+methods:
+  public void draw(Building build)
+
+DrawTurret.java
+Java class extends mindustry.world.draw.DrawBlock
+// Extend to implement custom drawing behavior for a turret.
+fields:
+  protected static final Rand rand
+  public Seq<DrawPart> parts
+  public ObjectMap<UnlockableContent,DrawPart[]> ammoParts
+  public String basePrefix  // Prefix to use when loading base region.
+  public Liquid liquidDraw  // Overrides the liquid to draw in the liquid region.
+  public float turretLayer
+  public TextureRegion base
+ctors:
+  public DrawTurret(String basePrefix) / public DrawTurret()
+methods:
+  public void setAmmoParts(Object objects)  // Format: [unlockableContent1, seq1, unlockableContent2, seq2...]
+  public void getRegionsToOutline(Block block, Seq<TextureRegion> out)
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void draw(Building build)
+  public void drawTurret(Turret block, TurretBuild build)
+  public void drawHeat(Turret block, TurretBuild build)
+  public void load(Block block)  // Load any relevant texture regions.
+  public TextureRegion[] icons(Block block)  // @return the generated icons to be used for this block.
+
+DrawWarmupRegion.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public float sinMag
+  public Color color
+  public TextureRegion region
+methods:
+  public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list)
+  public void draw(Building build)
+  public void load(Block block)
+
+DrawWeave.java
+Java class extends mindustry.world.draw.DrawBlock
+fields:
+  public TextureRegion weave
+  public float x
+methods:
+  public void draw(Building build)
+  public TextureRegion[] icons(Block block)
+  public void load(Block block)
+

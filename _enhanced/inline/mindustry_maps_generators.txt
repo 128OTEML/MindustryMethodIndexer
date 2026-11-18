@@ -1,0 +1,259 @@
+// BaseGenerator.java : public static Block getDifficultyWall(int size, float difficulty)
+    public static Block getDifficultyWall(int size, float difficulty){
+        Seq<Block> wallsSmall = content.blocks().select(b -> b instanceof Wall && b.isVanilla() && b.size == size
+            && !b.insulated && b.buildVisibility == BuildVisibility.shown
+            && !(b instanceof Door)
+            && b.isOnPlanet(state.getPlanet()));
+        wallsSmall.sort(b -> b.buildTime);
+        return wallsSmall.getFrac(difficulty * 0.91f);
+    }
+
+// BaseGenerator.java : void pass(Cons<Tile> cons)
+    void pass(Cons<Tile> cons){
+        Tile core = cores.first();
+        core.circle(range, (x, y) -> cons.get(tiles.getn(x, y)));
+    }
+
+// BaseGenerator.java : public static boolean tryPlace(BasePart part, int x, int y, Team team, Rand rand) / public static boolean tryPlace(BasePart part, int x, int y, Team team, Rand random, Intc2 posc)
+    public static boolean tryPlace(BasePart part, int x, int y, Team team, Rand rand){
+        return tryPlace(part, x, y, team, rand, null);
+    }
+
+// BaseGenerator.java : static void set(Tile tile, Item item)
+    static void set(Tile tile, Item item){
+        if(bases.ores.containsKey(item)){
+            tile.setOverlay(bases.ores.get(item));
+        }else if(bases.oreFloors.containsKey(item)){
+            tile.setFloor(bases.oreFloors.get(item));
+        }
+    }
+
+// BaseGenerator.java : static boolean overlaps(int x, int y)
+    static boolean overlaps(int x, int y){
+        Tile tile = world.tiles.get(x, y);
+
+        return tile == null || !tile.block().alwaysReplace || world.getDarkness(x, y) > 0;
+    }
+
+// BasicGenerator.java : public void generate(Tiles tiles, WorldParams params) / protected void generate()
+    @Override
+    public void generate(Tiles tiles, WorldParams params){
+        this.tiles = tiles;
+        this.width = tiles.width;
+        this.height = tiles.height;
+
+        generate();
+    }
+
+// BasicGenerator.java : public void median(int radius) / public void median(int radius, double percentile) / public void median(int radius, double percentile, Block targetFloor)
+    public void median(int radius){
+        median(radius, 0.5);
+    }
+
+// BasicGenerator.java : public void ore(Block dest, Block src, float i, float thresh)
+    public void ore(Block dest, Block src, float i, float thresh){
+        pass((x, y) -> {
+            if(floor != src) return;
+
+            if(Math.abs(0.5f - noise(x, y + i*999, 2, 0.7, (40 + i * 2))) > 0.26f * thresh &&
+            Math.abs(0.5f - noise(x, y - i*999, 1, 1, (30 + i * 4))) > 0.37f * thresh){
+                ore = dest;
+            }
+        });
+    }
+
+// BasicGenerator.java : public void noise(Block floor, Block block, int octaves, float falloff, float scl, float threshold) / protected float noise(float x, float y, double scl, double mag) / protected abstract float noise(float x, float y, double octaves, double falloff, double scl, double mag) / protected float noise(float x, float y, double octaves, double falloff, double scl)
+    public void noise(Block floor, Block block, int octaves, float falloff, float scl, float threshold){
+        pass((x, y) -> {
+            if(noise(octaves, falloff, scl, x, y) > threshold){
+                Tile tile = tiles.getn(x, y);
+                this.floor = floor;
+                if(tile.block().solid){
+                    this.block = block;
+                }
+            }
+        });
+    }
+
+// BasicGenerator.java : public void overlay(Block floor, Block block, float chance, int octaves, float falloff, float scl, float threshold)
+    public void overlay(Block floor, Block block, float chance, int octaves, float falloff, float scl, float threshold){
+        pass((x, y) -> {
+            if(noise(x, y, octaves, falloff, scl) > threshold && rand.chance(chance) && tiles.getn(x, y).floor() == floor){
+                ore = block;
+            }
+        });
+    }
+
+// BasicGenerator.java : public void tech() / public void tech(Block floor1, Block floor2, Block wall)
+    public void tech(){
+        tech(Blocks.darkPanel3, Blocks.darkPanel4, Blocks.darkMetal);
+    }
+
+// BasicGenerator.java : public void scatter(Block target, Block dst, float chance)
+    public void scatter(Block target, Block dst, float chance){
+        pass((x, y) -> {
+            if(!rand.chance(chance)) return;
+            if(floor == target){
+                floor = dst;
+            }else if(block == target){
+                block = dst;
+            }
+        });
+    }
+
+// BasicGenerator.java : public void each(Intc2 r)
+    public void each(Intc2 r){
+        for(int x = 0; x < width; x++){
+            for(int y = 0; y < height; y++){
+                r.get(x, y);
+            }
+        }
+    }
+
+// BasicGenerator.java : public void cells(int iterations) / public void cells(int iterations, int birthLimit, int deathLimit, int cradius)
+    public void cells(int iterations){
+        cells(iterations, 16, 16, 3);
+    }
+
+// BasicGenerator.java : public void pass(Intc2 r)
+    public void pass(Intc2 r){
+        for(Tile tile : tiles){
+            floor = tile.floor();
+            block = tile.block();
+            ore = tile.overlay();
+            r.get(tile.x, tile.y);
+            tile.setFloor(floor.asFloor());
+            if(block != tile.block()) tile.setBlock(block);
+            tile.setOverlay(ore);
+        }
+    }
+
+// BasicGenerator.java : public boolean nearWall(int x, int y)
+    public boolean nearWall(int x, int y){
+        for(Point2 p : Geometry.d8){
+            Tile other = tiles.get(x + p.x, y + p.y);
+            if(other != null && other.block() != Blocks.air){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// BasicGenerator.java : public boolean nearAir(int x, int y)
+    public boolean nearAir(int x, int y){
+        for(Point2 p : Geometry.d4){
+            Tile other = tiles.get(x + p.x, y + p.y);
+            if(other != null && other.block() == Blocks.air){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// BasicGenerator.java : public void brush(Seq<Tile> path, int rad)
+    public void brush(Seq<Tile> path, int rad){
+        path.each(tile -> erase(tile.x, tile.y, rad));
+    }
+
+// BasicGenerator.java : public void erase(int cx, int cy, int rad)
+    public void erase(int cx, int cy, int rad){
+        for(int x = -rad; x <= rad; x++){
+            for(int y = -rad; y <= rad; y++){
+                int wx = cx + x, wy = cy + y;
+                if(Structs.inBounds(wx, wy, width, height) && Mathf.within(x, y, rad)){
+                    Tile other = tiles.getn(wx, wy);
+                    other.setBlock(Blocks.air);
+                }
+            }
+        }
+    }
+
+// BasicGenerator.java : public Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, DistanceHeuristic dh)
+    public Seq<Tile> pathfind(int startX, int startY, int endX, int endY, TileHeuristic th, DistanceHeuristic dh){
+        return Astar.pathfind(startX, startY, endX, endY, th, dh, tile -> world.getDarkness(tile.x, tile.y) <= 1f);
+    }
+
+// BlankPlanetGenerator.java : public void addWeather(Sector sector, Rules rules)
+    @Override
+    public void addWeather(Sector sector, Rules rules){
+
+    }
+
+// BlankPlanetGenerator.java : public void generate(Tiles tiles, Sector sec, WorldParams params)
+    @Override
+    public void generate(Tiles tiles, Sector sec, WorldParams params){
+        this.tiles = tiles;
+        this.sector = sec;
+        this.rand.setSeed(sec.id + params.seedOffset + baseSeed);
+
+        tiles.fill();
+
+        generate(tiles, params);
+    }
+
+// PlanetGenerator.java : public void generateSector(Sector sector)
+    public void generateSector(Sector sector){
+
+    }
+
+// PlanetGenerator.java : public void onSectorCaptured(Sector sector)
+    public void onSectorCaptured(Sector sector){
+
+    }
+
+// PlanetGenerator.java : public void onSectorLost(Sector sector)
+    public void onSectorLost(Sector sector){
+
+    }
+
+// PlanetGenerator.java : public void beforeSaveWrite(Sector sector)
+    public void beforeSaveWrite(Sector sector){
+
+    }
+
+// PlanetGenerator.java : public void getLockedText(Sector hovered, StringBuilder out)
+    public void getLockedText(Sector hovered, StringBuilder out){
+        out.append("[gray]").append(Iconc.lock).append(" ").append(Core.bundle.get("locked"));
+    }
+
+// PlanetGenerator.java : public TextureRegion getLockedIcon(Sector hovered)
+    public @Nullable TextureRegion getLockedIcon(Sector hovered){
+        return (hovered.preset == null && !hovered.planet.allowLaunchToNumbered ? null : Fonts.getLargeIcon("lock"));
+    }
+
+// PlanetGenerator.java : public boolean allowLanding(Sector sector)
+    public boolean allowLanding(Sector sector){
+        return sector.planet.allowLaunchToNumbered && (sector.hasBase() || sector.near().contains(Sector::hasBase));
+    }
+
+// PlanetGenerator.java : public boolean allowAcceleratorLanding(Sector sector)
+    public boolean allowAcceleratorLanding(Sector sector){
+        return sector.planet.allowLaunchToNumbered;
+    }
+
+// PlanetGenerator.java : protected void genTile(Vec3 position, TileGen tile)
+    protected void genTile(Vec3 position, TileGen tile){
+
+    }
+
+// PlanetGenerator.java : protected float noise(float x, float y, double octaves, double falloff, double scl, double mag)
+    @Override
+    protected float noise(float x, float y, double octaves, double falloff, double scl, double mag){
+        Vec3 v = sector.rect.project(x, y);
+        return Simplex.noise3d(0, octaves, falloff, 1f / scl, v.x, v.y, v.z) * (float)mag;
+    }
+
+// PlanetGenerator.java : public float getSizeScl()
+    public float getSizeScl(){
+        return 3200;
+    }
+
+// PlanetGenerator.java : public int getSectorSize(Sector sector)
+    public int getSectorSize(Sector sector){
+        int res = (int)(sector.rect.radius * getSizeScl());
+        return res % 2 == 0 ? res : res + 1;
+    }
+
+// WorldGenerator.java : default void postGenerate(Tiles tiles)
+    default void postGenerate(Tiles tiles){}
+

@@ -1,0 +1,189 @@
+// Elem.java : public static CheckBox newCheck(String text, Boolc listener)
+    public static CheckBox newCheck(String text, Boolc listener){
+        CheckBox button = new CheckBox(text);
+        if(listener != null)
+            button.changed(() -> listener.get(button.isChecked()));
+        return button;
+    }
+
+// Elem.java : public static TextButton newButton(String text, Runnable listener) / public static TextButton newButton(String text, TextButtonStyle style, Runnable listener)
+    public static TextButton newButton(String text, Runnable listener){
+        TextButton button = new TextButton(text);
+        if(listener != null)
+            button.changed(listener);
+
+        return button;
+    }
+
+// Elem.java : public static ImageButton newImageButton(Drawable icon, Runnable listener) / public static ImageButton newImageButton(Drawable icon, float size, Runnable listener) / public static ImageButton newImageButton(ImageButtonStyle style, Drawable icon, float size, Runnable listener) / public static ImageButton newImageButton(Drawable icon, float size, Color color, Runnable listener)
+    public static ImageButton newImageButton(Drawable icon, Runnable listener){
+        ImageButton button = new ImageButton(icon);
+        if(listener != null)
+            button.changed(listener);
+        return button;
+    }
+
+// Selection.java : public void setActor(Element element)
+    public void setActor(Element element){
+        this.element = element;
+    }
+
+// Selection.java : public boolean hasItems()
+    public boolean hasItems(){
+        return selected.size > 0;
+    }
+
+// Selection.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return selected.size == 0;
+    }
+
+// Selection.java : public int size()
+    public int size(){
+        return selected.size;
+    }
+
+// Selection.java : public OrderedSet<T> items()
+    public OrderedSet<T> items(){
+        return selected;
+    }
+
+// Selection.java : public T first()
+    public T first(){
+        return selected.size == 0 ? null : selected.first();
+    }
+
+// Selection.java : void snapshot()
+    void snapshot(){
+        old.clear();
+        old.addAll(selected);
+    }
+
+// Selection.java : void revert()
+    void revert(){
+        selected.clear();
+        selected.addAll(old);
+    }
+
+// Selection.java : void cleanup()
+    void cleanup(){
+        old.clear(32);
+    }
+
+// Selection.java : public void add(T item)
+    public void add(T item){
+        if(item == null) throw new IllegalArgumentException("item cannot be null.");
+        if(!selected.add(item)) return;
+        if(programmaticChangeEvents && fireChangeEvent())
+            selected.remove(item);
+        else{
+            lastSelected = item;
+            changed();
+        }
+    }
+
+// Selection.java : public void remove(T item)
+    public void remove(T item){
+        if(item == null) throw new IllegalArgumentException("item cannot be null.");
+        if(!selected.remove(item)) return;
+        if(programmaticChangeEvents && fireChangeEvent())
+            selected.add(item);
+        else{
+            lastSelected = null;
+            changed();
+        }
+    }
+
+// Selection.java : protected void changed()
+    protected void changed(){
+    }
+
+// Selection.java : public boolean fireChangeEvent()
+    public boolean fireChangeEvent(){
+        if(element == null) return false;
+        ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class, ChangeEvent::new);
+        try{
+            return element.fire(changeEvent);
+        }finally{
+            Pools.free(changeEvent);
+        }
+    }
+
+// Selection.java : public boolean contains(T item)
+    public boolean contains(T item){
+        return item != null && selected.contains(item);
+    }
+
+// Selection.java : public T getLastSelected()
+    public T getLastSelected(){
+        if(lastSelected != null){
+            return lastSelected;
+        }else if(selected.size > 0){
+            return selected.first();
+        }
+        return null;
+    }
+
+// Selection.java : public Iterator<T> iterator()
+    @Override
+    public Iterator<T> iterator(){
+        return selected.iterator();
+    }
+
+// Selection.java : public Seq<T> toArray() / public Seq<T> toArray(Seq<T> array)
+    public Seq<T> toArray(){
+        return selected.iterator().toSeq();
+    }
+
+// Selection.java : public boolean isDisabled()
+    @Override
+    public boolean isDisabled(){
+        return isDisabled;
+    }
+
+// Selection.java : public void setDisabled(boolean isDisabled)
+    @Override
+    public void setDisabled(boolean isDisabled){
+        this.isDisabled = isDisabled;
+    }
+
+// Selection.java : public boolean getToggle()
+    public boolean getToggle(){
+        return toggle;
+    }
+
+// Selection.java : public void setToggle(boolean toggle)
+    public void setToggle(boolean toggle){
+        this.toggle = toggle;
+    }
+
+// Selection.java : public boolean getMultiple()
+    public boolean getMultiple(){
+        return multiple;
+    }
+
+// Selection.java : public void setMultiple(boolean multiple)
+    public void setMultiple(boolean multiple){
+        this.multiple = multiple;
+    }
+
+// Selection.java : public boolean getRequired()
+    public boolean getRequired(){
+        return required;
+    }
+
+// Selection.java : public void setRequired(boolean required)
+    public void setRequired(boolean required){
+        this.required = required;
+    }
+
+// Selection.java : public void setProgrammaticChangeEvents(boolean programmaticChangeEvents)
+    public void setProgrammaticChangeEvents(boolean programmaticChangeEvents){
+        this.programmaticChangeEvents = programmaticChangeEvents;
+    }
+
+// Selection.java : public String toString()
+    public String toString(){
+        return selected.toString();
+    }
+

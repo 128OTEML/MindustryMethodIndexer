@@ -1,0 +1,3369 @@
+[ {
+  "file" : "FileProcessor.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class",
+  "typeDesc" : "Collects files recursively, filtering by file name.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "FilenameFilter inputFilter",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "inputFilter",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Comparator<File> comparator",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "comparator",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Seq<Pattern> inputRegex",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "inputRegex",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "String outputSuffix",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "outputSuffix",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Seq<Entry> outputFiles",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "outputFiles",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean recursive",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "recursive",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean flattenOutput",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "flattenOutput",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Comparator<Entry> entryComparator",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "entryComparator",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public FileProcessor() / public FileProcessor(FileProcessor processor)",
+    "desc" : "Copy constructor.",
+    "overloads" : [ "public FileProcessor()", "public FileProcessor(FileProcessor processor)" ],
+    "name" : "FileProcessor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public FileProcessor setInputFilter(FilenameFilter inputFilter)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setInputFilter",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inputFilter",
+      "type" : "FilenameFilter"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor setComparator(Comparator<File> comparator)",
+    "desc" : "Sets the comparator for {@link #processDir(Entry, Seq)}.",
+    "overloads" : null,
+    "name" : "setComparator",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "comparator",
+      "type" : "Comparator<File>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 47,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor addInputSuffix(String suffixes)",
+    "desc" : "Adds a case insensitive suffix for matching input files.",
+    "overloads" : null,
+    "name" : "addInputSuffix",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "suffixes",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor addInputRegex(String regexes)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addInputRegex",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "regexes",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor setOutputSuffix(String outputSuffix)",
+    "desc" : "Sets the suffix for output files, replacing the extension of the input file.",
+    "overloads" : null,
+    "name" : "setOutputSuffix",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "outputSuffix",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor setFlattenOutput(boolean flattenOutput)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setFlattenOutput",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "flattenOutput",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public FileProcessor setRecursive(boolean recursive)",
+    "desc" : "Default is true.",
+    "overloads" : null,
+    "name" : "setRecursive",
+    "returnType" : "FileProcessor",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "recursive",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<Entry> process(String inputFileOrDir, String outputRoot) throws Exception / public Seq<Entry> process(File inputFileOrDir, File outputRoot) throws Exception / public Seq<Entry> process(File[] files, File outputRoot) throws Exception / private void process(File[] files, File outputRoot, File outputDir, LinkedHashMap<File,Seq<Entry>> dirToEntries, int depth)",
+    "desc" : "@param outputRoot May be null.",
+    "overloads" : [ "public Seq<Entry> process(String inputFileOrDir, String outputRoot) throws Exception", "public Seq<Entry> process(File inputFileOrDir, File outputRoot) throws Exception", "public Seq<Entry> process(File[] files, File outputRoot) throws Exception", "private void process(File[] files, File outputRoot, File outputDir, LinkedHashMap<File,Seq<Entry>> dirToEntries, int depth)" ],
+    "name" : "process",
+    "returnType" : "Seq<Entry>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inputFileOrDir",
+      "type" : "String"
+    }, {
+      "name" : "outputRoot",
+      "type" : "String"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void processFile(Entry entry) throws Exception",
+    "desc" : "Called with each input file.",
+    "overloads" : null,
+    "name" : "processFile",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "entry",
+      "type" : "Entry"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 208,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void processDir(Entry entryDir, Seq<Entry> files) throws Exception",
+    "desc" : "Called for each input directory.",
+    "overloads" : null,
+    "name" : "processDir",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "entryDir",
+      "type" : "Entry"
+    }, {
+      "name" : "files",
+      "type" : "Seq<Entry>"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 215,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void addProcessedFile(Entry entry)",
+    "desc" : "This method should be called by {@link #processFile(Entry)} or {@link #processDir(Entry, Seq)} if the return value of",
+    "overloads" : null,
+    "name" : "addProcessedFile",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "entry",
+      "type" : "Entry"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Entry",
+    "simpleName" : "Entry",
+    "desc" : "@author Nathan Sweet",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public File inputFile",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "inputFile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 228,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public File outputDir",
+      "desc" : "May be null.",
+      "overloads" : null,
+      "name" : "outputDir",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 230,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public File outputFile",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "outputFile",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 231,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int depth",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "depth",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 232,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Entry() / public Entry(File inputFile, File outputFile)",
+      "desc" : null,
+      "overloads" : [ "public Entry()", "public Entry(File inputFile, File outputFile)" ],
+      "name" : "Entry",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 234,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 242,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "GridPacker.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class implements arc.packer.TexturePacker.Packer",
+  "typeDesc" : "@author Nathan Sweet",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final Settings settings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "settings",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public GridPacker(Settings settings)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "GridPacker",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "settings",
+      "type" : "Settings"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<Page> pack(Seq<Rect> inputRects)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pack",
+    "returnType" : "Seq<Page>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inputRects",
+      "type" : "Seq<Rect>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Page packPage(Seq<Rect> inputRects, int cellWidth, int cellHeight, int maxWidth, int maxHeight)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packPage",
+    "returnType" : "Page",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "inputRects",
+      "type" : "Seq<Rect>"
+    }, {
+      "name" : "cellWidth",
+      "type" : "int"
+    }, {
+      "name" : "cellHeight",
+      "type" : "int"
+    }, {
+      "name" : "maxWidth",
+      "type" : "int"
+    }, {
+      "name" : "maxHeight",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ImageProcessor.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Pixmap emptyImage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "emptyImage",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Settings settings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "settings",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final HashMap<String,Rect> crcs",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "crcs",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<Rect> rects",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rects",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float scale",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scale",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean resampling",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resampling",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ImageProcessor(Settings settings)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ImageProcessor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "settings",
+      "type" : "Settings"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void addImage(File file, String rootPath) / public Rect addImage(Pixmap image, String name)",
+    "desc" : "@param rootPath Used to strip the root directory prefix from image file names, can be null.",
+    "overloads" : [ "public void addImage(File file, String rootPath)", "public Rect addImage(Pixmap image, String name)" ],
+    "name" : "addImage",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "File"
+    }, {
+      "name" : "rootPath",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setScale(float scale)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setScale",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setResampling(boolean resampling)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setResampling",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "resampling",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 81,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<Rect> getImages()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getImages",
+    "returnType" : "Seq<Rect>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 85,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 89,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "Rect processImage(Pixmap image, String name)",
+    "desc" : "Returns a rect for the image describing the texture region to be packed, or null if the image should not be packed.",
+    "overloads" : null,
+    "name" : "processImage",
+    "returnType" : "Rect",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "image",
+      "type" : "Pixmap"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Rect stripWhitespace(Pixmap source, String name)",
+    "desc" : "Strips whitespace and returns the rect, or null if the image should be ignored.",
+    "overloads" : null,
+    "name" : "stripWhitespace",
+    "returnType" : "Rect",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "Pixmap"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 141,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private int[] getSplits(Pixmap image, String name)",
+    "desc" : "Returns the splits, or null if the image had no splits or the splits were only a single region.",
+    "overloads" : null,
+    "name" : "getSplits",
+    "returnType" : "int[]",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "image",
+      "type" : "Pixmap"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 249,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private int[] getPads(Pixmap image, String name, int[] splits)",
+    "desc" : "Returns the pads, or null if the image had no pads or the pads match the splits.",
+    "overloads" : null,
+    "name" : "getPads",
+    "returnType" : "int[]",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "image",
+      "type" : "Pixmap"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "splits",
+      "type" : "int[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 292,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static int getSplitPoint(Pixmap image, String name, int startX, int startY, boolean startPoint, boolean xAxis)",
+    "desc" : "Hunts for the start or end of a sequence of split pixels.",
+    "overloads" : null,
+    "name" : "getSplitPoint",
+    "returnType" : "int",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "image",
+      "type" : "Pixmap"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    }, {
+      "name" : "startX",
+      "type" : "int"
+    }, {
+      "name" : "startY",
+      "type" : "int"
+    }, {
+      "name" : "startPoint",
+      "type" : "boolean"
+    }, {
+      "name" : "xAxis",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 362,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static String hash(Pixmap image) / private static void hash(MessageDigest digest, int value)",
+    "desc" : null,
+    "overloads" : [ "private static String hash(Pixmap image)", "private static void hash(MessageDigest digest, int value)" ],
+    "name" : "hash",
+    "returnType" : "String",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "image",
+      "type" : "Pixmap"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 388,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MaxRectsPacker.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class implements arc.packer.TexturePacker.Packer",
+  "typeDesc" : "Packs pages of images using the maximal rectangles bin packing algorithm by Jukka Jylänki.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "final Settings settings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "settings",
+    "returnType" : null,
+    "modifiers" : [ "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final FreeRectChoiceHeuristic methods",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "methods",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final MaxRects maxRects",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxRects",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Sort sort",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sort",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Comparator<Rect> rectComparator",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rectComparator",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MaxRectsPacker(Settings settings)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "MaxRectsPacker",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "settings",
+      "type" : "Settings"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<Page> pack(Seq<Rect> inputRects)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pack",
+    "returnType" : "Seq<Page>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inputRects",
+      "type" : "Seq<Rect>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Page packPage(Seq<Rect> inputRects)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packPage",
+    "returnType" : "Page",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "inputRects",
+      "type" : "Seq<Rect>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 67,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Page packAtSize(boolean fully, int width, int height, Seq<Rect> inputRects)",
+    "desc" : "@param fully If true, the only results that pack all rects will be considered.",
+    "overloads" : null,
+    "name" : "packAtSize",
+    "returnType" : "Page",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "fully",
+      "type" : "boolean"
+    }, {
+      "name" : "width",
+      "type" : "int"
+    }, {
+      "name" : "height",
+      "type" : "int"
+    }, {
+      "name" : "inputRects",
+      "type" : "Seq<Rect>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 191,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Page getBest(Page result1, Page result2)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getBest",
+    "returnType" : "Page",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "result1",
+      "type" : "Page"
+    }, {
+      "name" : "result2",
+      "type" : "Page"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 217,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "BinarySearch",
+    "simpleName" : "BinarySearch",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final boolean pot",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pot",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 224,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final int min",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "min",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 225,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int low",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "low",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 226,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public BinarySearch(int min, int max, int fuzziness, boolean pot, boolean mod4)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BinarySearch",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "min",
+        "type" : "int"
+      }, {
+        "name" : "max",
+        "type" : "int"
+      }, {
+        "name" : "fuzziness",
+        "type" : "int"
+      }, {
+        "name" : "pot",
+        "type" : "boolean"
+      }, {
+        "name" : "mod4",
+        "type" : "boolean"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 228,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public int reset()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 244,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int next(boolean result)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "next",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 253,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "MaxRects",
+    "simpleName" : "MaxRects",
+    "desc" : "Maximal rectangles bin packing algorithm.",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "private int binWidth",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "binWidth",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 274,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private final Seq<Rect> usedRectangles",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "usedRectangles",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 275,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private final Seq<Rect> freeRectangles",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "freeRectangles",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 276,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private final Seq<Rect> rectanglesToCheckWhenPruning",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "rectanglesToCheckWhenPruning",
+      "returnType" : null,
+      "modifiers" : [ "private", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 277,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void init(int width, int height)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "init",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 279,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Rect insert(Rect rect, FreeRectChoiceHeuristic method)",
+      "desc" : "Packs a single image.",
+      "overloads" : null,
+      "name" : "insert",
+      "returnType" : "Rect",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "rect",
+        "type" : "Rect"
+      }, {
+        "name" : "method",
+        "type" : "FreeRectChoiceHeuristic"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 294,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Page pack(Seq<Rect> rects, FreeRectChoiceHeuristic method)",
+      "desc" : "For each rectangle, packs each one then chooses the best and packs that.",
+      "overloads" : null,
+      "name" : "pack",
+      "returnType" : "Page",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "rects",
+        "type" : "Seq<Rect>"
+      }, {
+        "name" : "method",
+        "type" : "FreeRectChoiceHeuristic"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 324,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public Page getResult()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getResult",
+      "returnType" : "Page",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 359,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private void placeRect(Rect node)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "placeRect",
+      "returnType" : "void",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "node",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 374,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect scoreRect(Rect rect, FreeRectChoiceHeuristic method)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scoreRect",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "rect",
+        "type" : "Rect"
+      }, {
+        "name" : "method",
+        "type" : "FreeRectChoiceHeuristic"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 389,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private float getOccupancy()",
+      "desc" : "/ Computes the ratio of used surface area.",
+      "overloads" : null,
+      "name" : "getOccupancy",
+      "returnType" : "float",
+      "modifiers" : [ "private" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 426,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect findPositionForNewNodeBottomLeft(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "findPositionForNewNodeBottomLeft",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      }, {
+        "name" : "rotatedWidth",
+        "type" : "int"
+      }, {
+        "name" : "rotatedHeight",
+        "type" : "int"
+      }, {
+        "name" : "rotate",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 433,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect findPositionForNewNodeBestShortSideFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "findPositionForNewNodeBestShortSideFit",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      }, {
+        "name" : "rotatedWidth",
+        "type" : "int"
+      }, {
+        "name" : "rotatedHeight",
+        "type" : "int"
+      }, {
+        "name" : "rotate",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 468,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect findPositionForNewNodeBestLongSideFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "findPositionForNewNodeBestLongSideFit",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      }, {
+        "name" : "rotatedWidth",
+        "type" : "int"
+      }, {
+        "name" : "rotatedHeight",
+        "type" : "int"
+      }, {
+        "name" : "rotate",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 514,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect findPositionForNewNodeBestAreaFit(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "findPositionForNewNodeBestAreaFit",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      }, {
+        "name" : "rotatedWidth",
+        "type" : "int"
+      }, {
+        "name" : "rotatedHeight",
+        "type" : "int"
+      }, {
+        "name" : "rotate",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 559,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private int commonIntervalLength(int i1start, int i1end, int i2start, int i2end)",
+      "desc" : "/ Returns 0 if the two intervals i1 and i2 are disjoint, or the length of their overlap otherwise.",
+      "overloads" : null,
+      "name" : "commonIntervalLength",
+      "returnType" : "int",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "i1start",
+        "type" : "int"
+      }, {
+        "name" : "i1end",
+        "type" : "int"
+      }, {
+        "name" : "i2start",
+        "type" : "int"
+      }, {
+        "name" : "i2end",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 605,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private int contactPointScoreNode(int x, int y, int width, int height)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "contactPointScoreNode",
+      "returnType" : "int",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "int"
+      }, {
+        "name" : "y",
+        "type" : "int"
+      }, {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 610,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private Rect findPositionForNewNodeContactPoint(int width, int height, int rotatedWidth, int rotatedHeight, boolean rotate)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "findPositionForNewNodeContactPoint",
+      "returnType" : "Rect",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "width",
+        "type" : "int"
+      }, {
+        "name" : "height",
+        "type" : "int"
+      }, {
+        "name" : "rotatedWidth",
+        "type" : "int"
+      }, {
+        "name" : "rotatedHeight",
+        "type" : "int"
+      }, {
+        "name" : "rotate",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 627,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private boolean splitFreeNode(Rect freeNode, Rect usedNode)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "splitFreeNode",
+      "returnType" : "boolean",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "freeNode",
+        "type" : "Rect"
+      }, {
+        "name" : "usedNode",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 663,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private void pruneFreeList()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pruneFreeList",
+      "returnType" : "void",
+      "modifiers" : [ "private" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 709,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "private boolean isContainedIn(Rect a, Rect b)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "isContainedIn",
+      "returnType" : "boolean",
+      "modifiers" : [ "private" ],
+      "parameters" : [ {
+        "name" : "a",
+        "type" : "Rect"
+      }, {
+        "name" : "b",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 740,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "TexturePacker.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class",
+  "typeDesc" : "@author Nathan Sweet",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "String rootPath",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rootPath",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Settings settings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "settings",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Packer packer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packer",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final ImageProcessor imageProcessor",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "imageProcessor",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<InputImage> inputImages",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "inputImages",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TexturePacker(File rootDir, Settings settings) / public TexturePacker(Settings settings)",
+    "desc" : "@param rootDir See {@link #setRootDir(File)}.",
+    "overloads" : [ "public TexturePacker(File rootDir, Settings settings)", "public TexturePacker(Settings settings)" ],
+    "name" : "TexturePacker",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rootDir",
+      "type" : "File"
+    }, {
+      "name" : "settings",
+      "type" : "Settings"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setRootDir(File rootDir)",
+    "desc" : "@param rootDir Used to strip the root directory prefix from image file names, can be null.",
+    "overloads" : null,
+    "name" : "setRootDir",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rootDir",
+      "type" : "File"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void addImage(File file) / public void addImage(Pixmap image, String name)",
+    "desc" : null,
+    "overloads" : [ "public void addImage(File file)", "public void addImage(Pixmap image, String name)" ],
+    "name" : "addImage",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "File"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void pack(File outputDir, String packFileName)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pack",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "outputDir",
+      "type" : "File"
+    }, {
+      "name" : "packFileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private void writeImages(File outputDir, String scaledPackFileName, Seq<Page> pages)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeImages",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "outputDir",
+      "type" : "File"
+    }, {
+      "name" : "scaledPackFileName",
+      "type" : "String"
+    }, {
+      "name" : "pages",
+      "type" : "Seq<Page>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 111,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static void copy(Pixmap src, int x, int y, int w, int h, Pixmap dst, int dx, int dy, boolean rotated)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "copy",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "src",
+      "type" : "Pixmap"
+    }, {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "w",
+      "type" : "int"
+    }, {
+      "name" : "h",
+      "type" : "int"
+    }, {
+      "name" : "dst",
+      "type" : "Pixmap"
+    }, {
+      "name" : "dx",
+      "type" : "int"
+    }, {
+      "name" : "dy",
+      "type" : "int"
+    }, {
+      "name" : "rotated",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 224,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private void writePackFile(File outputDir, String scaledPackFileName, Seq<Page> pages) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writePackFile",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "outputDir",
+      "type" : "File"
+    }, {
+      "name" : "scaledPackFileName",
+      "type" : "String"
+    }, {
+      "name" : "pages",
+      "type" : "Seq<Page>"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 234,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private void writeRect(Writes write, Page page, Rect rect, String name) throws IOException",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeRect",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "write",
+      "type" : "Writes"
+    }, {
+      "name" : "page",
+      "type" : "Page"
+    }, {
+      "name" : "rect",
+      "type" : "Rect"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ "IOException" ],
+    "annotations" : [ ],
+    "line" : 282,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void process(String input, String output, String packFileName) / public static void process(Settings settings, String input, String output, String packFileName)",
+    "desc" : "Packs using defaults settings.",
+    "overloads" : [ "public static void process(String input, String output, String packFileName)", "public static void process(Settings settings, String input, String output, String packFileName)" ],
+    "name" : "process",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "String"
+    }, {
+      "name" : "output",
+      "type" : "String"
+    }, {
+      "name" : "packFileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 473,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean isModified(String input, String output, String packFileName, Settings settings) / private static boolean isModified(File file, long lastModified)",
+    "desc" : "@return true if the output file does not yet exist or its last modification date is before the last modification date of",
+    "overloads" : [ "public static boolean isModified(String input, String output, String packFileName, Settings settings)", "private static boolean isModified(File file, long lastModified)" ],
+    "name" : "isModified",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "String"
+    }, {
+      "name" : "output",
+      "type" : "String"
+    }, {
+      "name" : "packFileName",
+      "type" : "String"
+    }, {
+      "name" : "settings",
+      "type" : "Settings"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 495,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean processIfModified(String input, String output, String packFileName) / public static boolean processIfModified(Settings settings, String input, String output, String packFileName)",
+    "desc" : null,
+    "overloads" : [ "public static boolean processIfModified(String input, String output, String packFileName)", "public static boolean processIfModified(Settings settings, String input, String output, String packFileName)" ],
+    "name" : "processIfModified",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "input",
+      "type" : "String"
+    }, {
+      "name" : "output",
+      "type" : "String"
+    }, {
+      "name" : "packFileName",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 530,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void main(String[] args) throws Exception",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "main",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "args",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 618,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Page",
+    "simpleName" : "Page",
+    "desc" : "@author Nathan Sweet",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public String imageName",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "imageName",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 323,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Seq<Rect> outputRects",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "outputRects",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 324,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public float occupancy",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "occupancy",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 325,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int x",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "x",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 326,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Alias implements java.lang.Comparable",
+    "simpleName" : "Alias",
+    "desc" : "@author Regnarock",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public String name",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "name",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 334,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int index",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "index",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 335,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int splits",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "splits",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 336,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int pads",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pads",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 337,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int offsetX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "offsetX",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 338,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public Alias(Rect rect)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Alias",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "rect",
+        "type" : "Rect"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 340,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void apply(Rect rect)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "apply",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "rect",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 350,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int compareTo(Alias o)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "compareTo",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "o",
+        "type" : "Alias"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 360,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Rect implements java.lang.Comparable",
+    "simpleName" : "Rect",
+    "desc" : "@author Nathan Sweet",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public String name",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "name",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 368,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int offsetX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "offsetX",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 369,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int x",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "x",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 370,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int width",
+      "desc" : "Portion of page taken by this region, including padding.",
+      "overloads" : null,
+      "name" : "width",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 371,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean rotated",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "rotated",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 372,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Set<Alias> aliases",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "aliases",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 373,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int splits",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "splits",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 374,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int pads",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pads",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 375,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean canRotate",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "canRotate",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 376,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "boolean isPatch",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "isPatch",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 378,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Pixmap pixmap",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pixmap",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 379,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Fi file",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "file",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 380,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "int score1",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "score1",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 381,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "Rect(Pixmap source, int left, int top, int newWidth, int newHeight, boolean isPatch) / Rect() / Rect(Rect rect)",
+      "desc" : null,
+      "overloads" : [ "Rect(Pixmap source, int left, int top, int newWidth, int newHeight, boolean isPatch)", "Rect()", "Rect(Rect rect)" ],
+      "name" : "Rect",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "source",
+        "type" : "Pixmap"
+      }, {
+        "name" : "left",
+        "type" : "int"
+      }, {
+        "name" : "top",
+        "type" : "int"
+      }, {
+        "name" : "newWidth",
+        "type" : "int"
+      }, {
+        "name" : "newHeight",
+        "type" : "int"
+      }, {
+        "name" : "isPatch",
+        "type" : "boolean"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 383,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public Pixmap getImage(ImageProcessor imageProcessor)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getImage",
+      "returnType" : "Pixmap",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "imageProcessor",
+        "type" : "ImageProcessor"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 400,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "void set(Rect rect)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "rect",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 419,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public int compareTo(Rect o)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "compareTo",
+      "returnType" : "int",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "o",
+        "type" : "Rect"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 443,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public boolean equals(Object obj)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "equals",
+      "returnType" : "boolean",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "obj",
+        "type" : "Object"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 448,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 459,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public static String getAtlasName(String name, boolean flattenPaths)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getAtlasName",
+      "returnType" : "String",
+      "modifiers" : [ "public", "static" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      }, {
+        "name" : "flattenPaths",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 464,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "Packer",
+    "simpleName" : "Packer",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "Seq<Page> pack(Seq<Rect> inputRects)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pack",
+      "returnType" : "Seq<Page>",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "inputRects",
+        "type" : "Seq<Rect>"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 550,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "InputImage",
+    "simpleName" : "InputImage",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "File file",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "file",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 554,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "String rootPath",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "rootPath",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 555,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "Pixmap image",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "image",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 556,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Settings implements java.lang.Cloneable",
+    "simpleName" : "Settings",
+    "desc" : "@author Nathan Sweet",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public boolean pot",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pot",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 561,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean multipleOfFour",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "multipleOfFour",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 562,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int paddingX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "paddingX",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 563,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean edgePadding",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "edgePadding",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 564,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean duplicatePadding",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "duplicatePadding",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 565,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean rotation",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "rotation",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 566,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int minWidth",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "minWidth",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 567,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int maxWidth",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "maxWidth",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 568,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean square",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "square",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 569,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean stripWhitespaceX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "stripWhitespaceX",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 570,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean stripWhitespaceCenter",
+      "desc" : "Whether to strip whitespace in a way that keeps the region rectangle centered.",
+      "overloads" : null,
+      "name" : "stripWhitespaceCenter",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 572,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String ignoredWhitespaceStrings",
+      "desc" : "Paths containing these strings do not have whitespace stripped.",
+      "overloads" : null,
+      "name" : "ignoredWhitespaceStrings",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 574,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int alphaThreshold",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "alphaThreshold",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 575,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureFilter filterMin",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "filterMin",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 576,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public TextureWrap wrapX",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrapX",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 577,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean alias",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "alias",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 578,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean ignoreBlankImages",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ignoreBlankImages",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 579,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean fast",
+      "desc" : "with fast = false packing takes an eternity, I have no idea why that wasn't the default before",
+      "overloads" : null,
+      "name" : "fast",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 580,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean silent",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "silent",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 581,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean printAliases",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "printAliases",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 582,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean combineSubdirectories",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "combineSubdirectories",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 583,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean ignore",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ignore",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 584,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean flattenPaths",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "flattenPaths",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 585,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean bleed",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "bleed",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 586,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int bleedIterations",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "bleedIterations",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 587,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean grid",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "grid",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 588,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public float scale",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scale",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 589,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String scaleSuffix",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scaleSuffix",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 590,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public boolean scaleResampling",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scaleResampling",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 591,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public String atlasExtension",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "atlasExtension",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 592,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public Settings copy()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "copy",
+      "returnType" : "Settings",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 594,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public String getScaledPackFileName(String packFileName, int scaleIndex)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "getScaledPackFileName",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "packFileName",
+        "type" : "String"
+      }, {
+        "name" : "scaleIndex",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 602,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "TexturePackerFileProcessor.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class extends arc.packer.FileProcessor",
+  "typeDesc" : "@author Nathan Sweet",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final Settings defaultSettings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaultSettings",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private ObjectMap<File,Settings> dirToSettings",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "dirToSettings",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Json json",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "json",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private String packFileName",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packFileName",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private File root",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "root",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "Seq<File> ignoreDirs",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ignoreDirs",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "boolean countOnly",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "countOnly",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "int packCount",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "packCount",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TexturePackerFileProcessor() / public TexturePackerFileProcessor(Settings defaultSettings, String packFileName)",
+    "desc" : null,
+    "overloads" : [ "public TexturePackerFileProcessor()", "public TexturePackerFileProcessor(Settings defaultSettings, String packFileName)" ],
+    "name" : "TexturePackerFileProcessor",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Seq<Entry> process(File inputFile, File outputRoot) throws Exception / public Seq<Entry> process(File[] files, File outputRoot) throws Exception",
+    "desc" : null,
+    "overloads" : [ "public Seq<Entry> process(File inputFile, File outputRoot) throws Exception", "public Seq<Entry> process(File[] files, File outputRoot) throws Exception" ],
+    "name" : "process",
+    "returnType" : "Seq<Entry>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "inputFile",
+      "type" : "File"
+    }, {
+      "name" : "outputRoot",
+      "type" : "File"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ "Override" ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "void merge(Settings settings, File settingsFile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "merge",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "settings",
+      "type" : "Settings"
+    }, {
+      "name" : "settingsFile",
+      "type" : "File"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void deleteOutput(File outputRoot) throws Exception",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "deleteOutput",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "outputRoot",
+      "type" : "File"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ ],
+    "line" : 99,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void processDir(Entry inputDir, Seq<Entry> files) throws Exception",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "processDir",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "inputDir",
+      "type" : "Entry"
+    }, {
+      "name" : "files",
+      "type" : "Seq<Entry>"
+    } ],
+    "throwsList" : [ "Exception" ],
+    "annotations" : [ "Override" ],
+    "line" : 136,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TextureUnpacker.java",
+  "pkg" : "arc.packer",
+  "type" : "Java class",
+  "typeDesc" : "Unpacks a texture atlas into individual image files.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final String DEFAULT_OUTPUT_PATH",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "DEFAULT_OUTPUT_PATH",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int NINEPATCH_PADDING",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "NINEPATCH_PADDING",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final String HELP",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "HELP",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final String ATLAS_FILE_EXTENSION",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ATLAS_FILE_EXTENSION",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "private int parseArguments(String[] args)",
+    "desc" : "Checks the command line arguments for correctness.",
+    "overloads" : null,
+    "name" : "parseArguments",
+    "returnType" : "int",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "args",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private boolean checkDirectoryValidity(String directory)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkDirectoryValidity",
+    "returnType" : "boolean",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "directory",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void splitAtlas(TextureAtlasData atlas, String outputDir, boolean quiet)",
+    "desc" : "Splits an atlas into seperate image and ninepatch files.",
+    "overloads" : null,
+    "name" : "splitAtlas",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "atlas",
+      "type" : "TextureAtlasData"
+    }, {
+      "name" : "outputDir",
+      "type" : "String"
+    }, {
+      "name" : "quiet",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Pixmap extractImage(Pixmap page, Region region, int padding)",
+    "desc" : "Extract an image from a texture atlas.",
+    "overloads" : null,
+    "name" : "extractImage",
+    "returnType" : "Pixmap",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "page",
+      "type" : "Pixmap"
+    }, {
+      "name" : "region",
+      "type" : "Region"
+    }, {
+      "name" : "padding",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Pixmap extractNinePatch(Pixmap page, Region region)",
+    "desc" : "Extract a ninepatch from a texture atlas, according to the android specification.",
+    "overloads" : null,
+    "name" : "extractNinePatch",
+    "returnType" : "Pixmap",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "page",
+      "type" : "Pixmap"
+    }, {
+      "name" : "region",
+      "type" : "Region"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 132,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void main(String[] args)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "main",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "args",
+      "type" : "String[]"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 154,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

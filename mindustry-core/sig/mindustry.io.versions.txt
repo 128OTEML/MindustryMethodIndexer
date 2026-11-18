@@ -1,0 +1,126 @@
+LegacyIO.java
+Java class
+fields:
+  public static final StringMap unitMap  // Maps old unit names to new ones.
+methods:
+  public static Seq<Server> readServers()
+
+LegacyRegionSaveVersion.java
+Java class extends mindustry.io.versions.ShortChunkSaveVersion
+// This version does not read custom chunk data (<= 6).
+ctors:
+  public LegacyRegionSaveVersion(int version)
+methods:
+  public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException
+
+LegacySaveVersion.java
+Java class (abstract) extends mindustry.io.versions.LegacyRegionSaveVersion
+ctors:
+  public LegacySaveVersion(int version)
+methods:
+  public void readMap(DataInput stream, SaveReadState state) throws IOException
+  public void readLegacyEntities(DataInput stream) throws IOException
+
+LegacySaveVersion2.java
+Java class extends mindustry.io.versions.LegacyRegionSaveVersion
+// This version did not read/write entity IDs to the save.
+ctors:
+  public LegacySaveVersion2(int version)
+methods:
+  public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException
+
+Save1.java
+Java class extends mindustry.io.versions.LegacySaveVersion
+ctors:
+  public Save1()
+methods:
+  public void readEntities(DataInput stream, SaveReadState state) throws IOException
+
+Save10.java
+Java class extends mindustry.io.SaveVersion
+// Removes short entity chunks, switching to 4 byte lengths for all chunks.
+ctors:
+  public Save10()
+
+Save11.java
+Java class extends mindustry.io.SaveVersion
+// Adds patches in content header.
+ctors:
+  public Save11()
+methods:
+  public void read(DataInputStream stream, CounterInputStream counter, SaveReadState saveState) throws IOException
+  public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException  // old, simplified string-only data patches
+
+Save12.java
+Java class extends mindustry.io.SaveVersion
+// Changes data patches to be read before content, and adds support for more complex data patch IO.
+ctors:
+  public Save12()
+methods:
+  public void readDataPatches(DataInput stream, SaveReadState saveState) throws IOException
+
+Save13.java
+Java class extends mindustry.io.SaveVersion
+// New asset-based data patch system.
+ctors:
+  public Save13()
+
+Save2.java
+Java class extends mindustry.io.versions.LegacySaveVersion
+ctors:
+  public Save2()
+methods:
+  public void readEntities(DataInput stream, SaveReadState state) throws IOException
+
+Save3.java
+Java class extends mindustry.io.versions.LegacySaveVersion
+ctors:
+  public Save3()
+methods:
+  public void readEntities(DataInput stream, SaveReadState state) throws IOException
+
+Save4.java
+Java class extends mindustry.io.versions.LegacySaveVersion2
+// This version only reads entities, no entity ID mappings.
+ctors:
+  public Save4()
+methods:
+  public void readEntities(DataInput stream, SaveReadState state) throws IOException
+
+Save5.java
+Java class extends mindustry.io.versions.LegacySaveVersion2
+// Uses the legacy readWorldEntities function without entity IDs.
+ctors:
+  public Save5()
+
+Save6.java
+Java class extends mindustry.io.versions.LegacyRegionSaveVersion
+// This version does not read custom chunk data.
+ctors:
+  public Save6()
+
+Save7.java
+Java class extends mindustry.io.versions.ShortChunkSaveVersion
+ctors:
+  public Save7()
+
+Save8.java
+Java class extends mindustry.io.versions.ShortChunkSaveVersion
+// Adds support for the marker binary data region.
+ctors:
+  public Save8()
+
+Save9.java
+Java class extends mindustry.io.versions.ShortChunkSaveVersion
+// Adds support for the new 7-byte custom tile data.
+ctors:
+  public Save9()
+
+ShortChunkSaveVersion.java
+Java class extends mindustry.io.SaveVersion
+ctors:
+  public ShortChunkSaveVersion(int version)
+methods:
+  public void readWorldEntities(DataInput stream, Prov[] mapping, SaveReadState state) throws IOException
+  public void readMap(DataInput stream, SaveReadState state) throws IOException
+

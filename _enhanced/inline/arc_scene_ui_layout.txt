@@ -1,0 +1,1188 @@
+// Cell.java : public void setLayout(Table table)
+    public void setLayout(Table table){
+        this.table = table;
+    }
+
+// Cell.java : public Cell<A> setElement(A newElement)
+    public <A extends Element> Cell<A> setElement(A newElement){
+        if(element != newElement){
+            if(element != null) element.remove();
+            element = newElement;
+            if(newElement != null) table.addChild(newElement);
+        }
+        return (Cell<A>)this;
+    }
+
+// Cell.java : public Cell<T> clearElement()
+    public Cell<T> clearElement(){
+        setElement(null);
+        return this;
+    }
+
+// Cell.java : public Cell<T> with(Cons<T> c)
+    public Cell<T> with(Cons<T> c){
+        c.get((T)element);
+        return this;
+    }
+
+// Cell.java : public Cell<T> self(Cons<Cell<T>> c)
+    public Cell<T> self(Cons<Cell<T>> c){
+        c.get(this);
+        return this;
+    }
+
+// Cell.java : public T get()
+    public T get(){
+        return (T)element;
+    }
+
+// Cell.java : public boolean hasElement()
+    public boolean hasElement(){
+        return element != null;
+    }
+
+// Cell.java : public float prefWidth()
+    public float prefWidth(){
+        return element == null ? 0f : element.getPrefWidth();
+    }
+
+// Cell.java : public float prefHeight()
+    public float prefHeight(){
+        return element == null ? 0f : element.getPrefHeight();
+    }
+
+// Cell.java : public float maxWidth() / public Cell<T> maxWidth(float maxWidth)
+    public float maxWidth(){
+        return maxWidth == unset ? element == null ? 0 : element.getMaxWidth() : maxWidth;
+    }
+
+// Cell.java : public float maxHeight() / public Cell<T> maxHeight(float maxHeight)
+    public float maxHeight(){
+        return maxHeight == unset ? element == null ? 0 : element.getMaxHeight() : maxHeight;
+    }
+
+// Cell.java : public float minWidth() / public Cell<T> minWidth(float minWidth)
+    public float minWidth(){
+        return minWidth == unset ? element == null ? 0 : element.getMinWidth() : minWidth;
+    }
+
+// Cell.java : public float minHeight() / public Cell<T> minHeight(float minHeight)
+    public float minHeight(){
+        return minHeight == unset ? element == null ? 0 : element.getMinHeight() : minHeight;
+    }
+
+// Cell.java : public Cell<T> tooltip(String text) / public Cell<T> tooltip(String text, boolean mobile) / public Cell<T> tooltip(Cons<Table> builder) / public Cell<T> tooltip(boolean mobile, Cons<Table> builder)
+    public Cell<T> tooltip(String text){
+        return tooltip(text, false);
+    }
+
+// Cell.java : public Cell<T> size(float size) / public Cell<T> size(float width, float height)
+    public Cell<T> size(float size){
+        minWidth = minHeight = maxWidth = maxHeight = scl(size);
+        return this;
+    }
+
+// Cell.java : public Cell<T> name(String name)
+    public Cell<T> name(String name){
+        get().name = name;
+        return this;
+    }
+
+// Cell.java : public Cell<T> update(Cons<T> updater)
+    public Cell<T> update(Cons<T> updater){
+        T t = get();
+        t.update(() -> updater.get(t));
+        return this;
+    }
+
+// Cell.java : public Cell<T> disabled(Boolf<T> vis) / public Cell<T> disabled(boolean disabled)
+    public Cell<T> disabled(Boolf<T> vis){
+        if(element instanceof Button){
+            T t = get();
+            ((Button)element).setDisabled(() -> vis.get(t));
+        }else if(element instanceof Disableable){
+            T t = get();
+            element.update(() -> ((Disableable)element).setDisabled(vis.get(t)));
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> scrollX(boolean allowScrollX)
+    public Cell<T> scrollX(boolean allowScrollX){
+        if(element instanceof ScrollPane){
+            ((ScrollPane)element).setScrollingDisabledX(!allowScrollX);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> scrollY(boolean allowScrollY)
+    public Cell<T> scrollY(boolean allowScrollY){
+        if(element instanceof ScrollPane){
+            ((ScrollPane)element).setScrollingDisabledY(!allowScrollY);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> touchable(Touchable touchable) / public Cell<T> touchable(Prov<Touchable> touchable)
+    public Cell<T> touchable(Touchable touchable){
+        get().touchable = touchable;
+        return this;
+    }
+
+// Cell.java : public Cell<T> visible(Boolp prov) / public Cell<T> visible(boolean visible)
+    public Cell<T> visible(Boolp prov){
+        get().visible(prov);
+        return this;
+    }
+
+// Cell.java : public Cell<T> scaling(Scaling scaling)
+    public Cell<T> scaling(Scaling scaling){
+        if(element instanceof Image){
+            ((Image)element).setScaling(scaling);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> valid(TextFieldValidator val)
+    public Cell<T> valid(TextFieldValidator val){
+        if(element instanceof TextField){
+            ((TextField)element).setValidator(val);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> maxTextLength(int length)
+    public Cell<T> maxTextLength(int length){
+        if(element instanceof TextField){
+            ((TextField)element).setMaxLength(length);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> wrap() / public Cell<T> wrap(boolean wrapFit)
+    public Cell<T> wrap(){
+        return wrap(false);
+    }
+
+// Cell.java : public Cell<T> ellipsis(boolean ellipsis)
+    public Cell<T> ellipsis(boolean ellipsis){
+        if(get() instanceof Label){
+            ((Label)get()).setEllipsis(ellipsis);
+        }else if(get() instanceof TextButton){
+            ((TextButton)get()).getLabel().setEllipsis(ellipsis);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> labelAlign(int label, int line) / public Cell<T> labelAlign(int label)
+    public Cell<T> labelAlign(int label, int line){
+        if(get() instanceof Label){
+            ((Label)get()).setAlignment(label, line);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> group(ButtonGroup<N> group)
+    public <N extends Button> Cell<T> group(ButtonGroup<N> group){
+        if(get() instanceof Button){
+            group.add((N)get());
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> wrapLabel(boolean toggle)
+    public Cell<T> wrapLabel(boolean toggle){
+        if(get() instanceof TextButton){
+            ((TextButton)(get())).getLabel().setWrap(toggle);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> checked(boolean toggle) / public Cell<T> checked(Boolf<T> toggle)
+    public Cell<T> checked(boolean toggle){
+        if(get() instanceof Button){
+            ((Button)(get())).setChecked(toggle);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> fontScale(float scale)
+    public Cell<T> fontScale(float scale){
+        if(element instanceof Label){
+            ((Label)element).setFontScale(scale);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> color(Color color)
+    public Cell<T> color(Color color){
+        get().setColor(color);
+        return this;
+    }
+
+// Cell.java : public Cell<T> margin(float margin)
+    public Cell<T> margin(float margin){
+        if(get() instanceof Table){
+            ((Table) get()).margin(margin);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> marginTop(float margin)
+    public Cell<T> marginTop(float margin){
+        if(get() instanceof Table){
+            ((Table) get()).marginTop(margin);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> marginBottom(float margin)
+    public Cell<T> marginBottom(float margin){
+        if(get() instanceof Table){
+            ((Table) get()).marginBottom(margin);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> marginLeft(float margin)
+    public Cell<T> marginLeft(float margin){
+        if(get() instanceof Table){
+            ((Table) get()).marginLeft(margin);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> marginRight(float margin)
+    public Cell<T> marginRight(float margin){
+        if(get() instanceof Table){
+            ((Table) get()).marginRight(margin);
+        }
+        return this;
+    }
+
+// Cell.java : public Cell<T> width(float width)
+    public Cell<T> width(float width){
+        minWidth = maxWidth = scl(width);
+        return this;
+    }
+
+// Cell.java : public Cell<T> height(float height)
+    public Cell<T> height(float height){
+        minHeight = maxHeight = scl(height);
+        return this;
+    }
+
+// Cell.java : public Cell<T> minSize(float size) / public Cell<T> minSize(float width, float height)
+    public Cell<T> minSize(float size){
+        minWidth = minHeight = scl(size);
+        return this;
+    }
+
+// Cell.java : public Cell<T> maxSize(float size) / public Cell<T> maxSize(float width, float height)
+    public Cell<T> maxSize(float size){
+        maxWidth = maxHeight = scl(size);
+        return this;
+    }
+
+// Cell.java : public Cell<T> pad(float pad) / public Cell<T> pad(float top, float left, float bottom, float right)
+    public Cell<T> pad(float pad){
+        padTop = padLeft = padBottom = padRight = scl(pad);
+        return this;
+    }
+
+// Cell.java : public Cell<T> padTop(float padTop)
+    public Cell<T> padTop(float padTop){
+        this.padTop = scl(padTop);
+        return this;
+    }
+
+// Cell.java : public Cell<T> padLeft(float padLeft)
+    public Cell<T> padLeft(float padLeft){
+        this.padLeft = scl(padLeft);
+        return this;
+    }
+
+// Cell.java : public Cell<T> padBottom(float padBottom)
+    public Cell<T> padBottom(float padBottom){
+        this.padBottom = scl(padBottom);
+        return this;
+    }
+
+// Cell.java : public Cell<T> padRight(float padRight)
+    public Cell<T> padRight(float padRight){
+        this.padRight = scl(padRight);
+        return this;
+    }
+
+// Cell.java : public Cell<T> fill() / public Cell<T> fill(float x, float y) / public Cell<T> fill(boolean x, boolean y) / public Cell<T> fill(boolean fill)
+    public Cell<T> fill(){
+        fillX = 1;
+        fillY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> fillX()
+    public Cell<T> fillX(){
+        fillX = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> fillY()
+    public Cell<T> fillY(){
+        fillY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> align(int align)
+    public Cell<T> align(int align){
+        this.align = align;
+        return this;
+    }
+
+// Cell.java : public Cell<T> center()
+    public Cell<T> center(){
+        align = Align.center;
+        return this;
+    }
+
+// Cell.java : public Cell<T> top()
+    public Cell<T> top(){
+        align = (align | Align.top) & ~Align.bottom;
+        return this;
+    }
+
+// Cell.java : public Cell<T> left()
+    public Cell<T> left(){
+        align = (align | Align.left) & ~Align.right;
+        return this;
+    }
+
+// Cell.java : public Cell<T> bottom()
+    public Cell<T> bottom(){
+        align = (align | Align.bottom) & ~Align.top;
+        return this;
+    }
+
+// Cell.java : public Cell<T> right()
+    public Cell<T> right(){
+        align = (align | Align.right) & ~Align.left;
+        return this;
+    }
+
+// Cell.java : public Cell<T> grow()
+    public Cell<T> grow(){
+        expandX = 1;
+        expandY = 1;
+        fillX = 1;
+        fillY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> growX()
+    public Cell<T> growX(){
+        expandX = 1;
+        fillX = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> growY()
+    public Cell<T> growY(){
+        expandY = 1;
+        fillY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> expand() / public Cell<T> expand(int x, int y) / public Cell<T> expand(boolean x, boolean y)
+    public Cell<T> expand(){
+        expandX = 1;
+        expandY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> expandX()
+    public Cell<T> expandX(){
+        expandX = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> expandY()
+    public Cell<T> expandY(){
+        expandY = 1;
+        return this;
+    }
+
+// Cell.java : public Cell<T> colspan(int colspan)
+    public Cell<T> colspan(int colspan){
+        this.colspan = colspan;
+        return this;
+    }
+
+// Cell.java : public Cell<T> uniform() / public Cell<T> uniform(boolean x, boolean y)
+    public Cell<T> uniform(){
+        uniformX = true;
+        uniformY = true;
+        return this;
+    }
+
+// Cell.java : public Cell<T> uniformX()
+    public Cell<T> uniformX(){
+        uniformX = true;
+        return this;
+    }
+
+// Cell.java : public Cell<T> uniformY()
+    public Cell<T> uniformY(){
+        uniformY = true;
+        return this;
+    }
+
+// Cell.java : public void setBounds(float x, float y, float width, float height)
+    public void setBounds(float x, float y, float width, float height){
+        elementX = x;
+        elementY = y;
+        elementWidth = width;
+        elementHeight = height;
+    }
+
+// Cell.java : public boolean isEndRow()
+    public boolean isEndRow(){
+        return endRow;
+    }
+
+// Cell.java : public void row()
+    public void row(){
+        table.row();
+    }
+
+// Cell.java : public Table getTable()
+    public Table getTable(){
+        return table;
+    }
+
+// Cell.java : float scl(float value)
+    float scl(float value){
+        return Scl.scl(value);
+    }
+
+// Cell.java : public void reset()
+    @Override
+    public void reset(){
+        element = null;
+        table = null;
+        endRow = false;
+        cellAboveIndex = -1;
+
+        Cell defaults = defaults();
+        if(defaults != null) set(defaults);
+    }
+
+// Cell.java : public String toString()
+    public String toString(){
+        return element != null ? element.toString() : super.toString();
+    }
+
+// Collapser.java : public Collapser setDuration(float seconds)
+    public Collapser setDuration(float seconds){
+        this.seconds = seconds;
+        return this;
+    }
+
+// Collapser.java : public Collapser setCollapsed(Boolp collapsed) / public Collapser setCollapsed(boolean autoAnimate, Boolp collapsed) / public void setCollapsed(boolean collapse, boolean withAnimation) / public void setCollapsed(boolean collapse)
+    public Collapser setCollapsed(Boolp collapsed){
+        this.collapsedFunc = collapsed;
+        return this;
+    }
+
+// Collapser.java : public void toggle() / public void toggle(boolean animated)
+    public void toggle(){
+        setCollapsed(!isCollapsed());
+    }
+
+// Collapser.java : public boolean isCollapsed()
+    public boolean isCollapsed(){
+        return collapsed;
+    }
+
+// Collapser.java : private void updateTouchable()
+    private void updateTouchable(){
+        Touchable touchable1 = collapsed ? Touchable.disabled : Touchable.enabled;
+        this.touchable = touchable1;
+    }
+
+// Collapser.java : public Collapser setEnforceMinSize(boolean enforceMinSize)
+    public Collapser setEnforceMinSize(boolean enforceMinSize){
+        this.enforceMinSize = enforceMinSize;
+        return this;
+    }
+
+// Collapser.java : public void draw()
+    @Override
+    public void draw(){
+        if(currentHeight > 1){
+            Draw.flush();
+            if(clipBegin(x, y, getWidth(), currentHeight)){
+                super.draw();
+                Draw.flush();
+                clipEnd();
+            }
+        }
+    }
+
+// Collapser.java : public void act(float delta)
+    @Override
+    public void act(float delta){
+        super.act(delta);
+
+        if(collapsedFunc != null){
+            boolean col = collapsedFunc.get();
+            if(col != collapsed){
+                setCollapsed(col, autoAnimate);
+            }
+        }
+    }
+
+// Collapser.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        return table == null ? 0 : table.getPrefWidth();
+    }
+
+// Collapser.java : public void setTable(Table table)
+    public void setTable(Table table){
+        this.table = table;
+        clearChildren();
+        addChild(table);
+    }
+
+// Collapser.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return enforceMinSize ? super.getMinWidth() : 0;
+    }
+
+// Collapser.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return enforceMinSize ? super.getMinHeight() : 0;
+    }
+
+// Collapser.java : protected void childrenChanged()
+    @Override
+    protected void childrenChanged(){
+        super.childrenChanged();
+        if(getChildren().size > 1) throw new ArcRuntimeException("Only one actor can be added to CollapsibleWidget");
+    }
+
+// Scl.java : public static void setProduct(float product)
+    public static void setProduct(float product){
+        Scl.product = product;
+        scl = -1;
+    }
+
+// Scl.java : public static void setAddition(float addition)
+    public static void setAddition(float addition){
+        Scl.addition = addition;
+        scl = -1;
+    }
+
+// Scl.java : public static float scl() / public static float scl(float amount)
+    public static float scl(){
+        return scl(1f);
+    }
+
+// Spacer.java : public void act(float delta)
+    @Override
+    public void act(float delta){
+        super.act(delta);
+
+        float w = Scl.scl(widthFunc.get()), h = Scl.scl(heightFunc.get());
+        if(w != width || h != height){
+            width = w;
+            height = h;
+            invalidateHierarchy();
+        }
+    }
+
+// Spacer.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        return Scl.scl(heightFunc.get());
+    }
+
+// Spacer.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        return Scl.scl(widthFunc.get());
+    }
+
+// Stack.java : public void invalidate()
+    @Override
+    public void invalidate(){
+        super.invalidate();
+        sizeInvalid = true;
+    }
+
+// Stack.java : public void add(Element actor)
+    public void add(Element actor){
+        addChild(actor);
+    }
+
+// Stack.java : public void layout()
+    @Override
+    public void layout(){
+        if(sizeInvalid) computeSize();
+        float width = getWidth(), height = getHeight();
+        Seq<Element> children = getChildren();
+        for(int i = 0, n = children.size; i < n; i++){
+            Element child = children.get(i);
+            child.setBounds(0, 0, width, height);
+            if(child != null) child.validate();
+        }
+    }
+
+// Stack.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(sizeInvalid) computeSize();
+        return prefWidth;
+    }
+
+// Stack.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(sizeInvalid) computeSize();
+        return prefHeight;
+    }
+
+// Stack.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        if(sizeInvalid) computeSize();
+        return minWidth;
+    }
+
+// Stack.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        if(sizeInvalid) computeSize();
+        return minHeight;
+    }
+
+// Table.java : protected Cell obtainCell()
+    protected Cell obtainCell(){
+        Cell cell = cellPool.obtain();
+        cell.setLayout(this);
+        return cell;
+    }
+
+// Table.java : public Table fill()
+    public Table fill(){
+        Table table = new Table();
+        table.setFillParent(true);
+        add(table);
+        return table;
+    }
+
+// Table.java : protected void drawBackground(float x, float y)
+    protected void drawBackground(float x, float y){
+        if(background == null) return;
+        Color color = this.color;
+        Draw.color(color.r, color.g, color.b, color.a * parentAlpha);
+        background.draw(x, y, width, height);
+    }
+
+// Table.java : public Table background(Drawable background)
+    public Table background(Drawable background){
+        setBackground(background);
+        return this;
+    }
+
+// Table.java : public Drawable getBackground()
+    public Drawable getBackground(){
+        return background;
+    }
+
+// Table.java : public void setBackground(Drawable background)
+    public void setBackground(Drawable background){
+        if(this.background == background) return;
+        float padTopOld = getMarginTop(), padLeftOld = getMarginLeft(), padBottomOld = getMarginBottom(), padRightOld = getMarginRight();
+        this.background = background; // The default margin values use the background's padding.
+        float padTopNew = getMarginTop(), padLeftNew = getMarginLeft(), padBottomNew = getMarginBottom(), padRightNew = getMarginRight();
+        if(padTopOld + padBottomOld != padTopNew + padBottomNew || padLeftOld + padRightOld != padLeftNew + padRightNew)
+            invalidateHierarchy();
+        else if(padTopOld != padTopNew || padLeftOld != padLeftNew || padBottomOld != padBottomNew || padRightOld != padRightNew)
+            invalidate();
+    }
+
+// Table.java : public Element hit(float x, float y, boolean touchable)
+    @Override
+    public Element hit(float x, float y, boolean touchable){
+        if(clip){
+            if(touchable && this.touchable == Touchable.disabled) return null;
+            if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return null;
+        }
+        return super.hit(x, y, touchable);
+    }
+
+// Table.java : public boolean getClip()
+    public boolean getClip(){
+        return clip;
+    }
+
+// Table.java : public void setClip(boolean enabled)
+    public void setClip(boolean enabled){
+        clip = enabled;
+        setTransform(enabled);
+        invalidate();
+    }
+
+// Table.java : public void invalidate()
+    @Override
+    public void invalidate(){
+        sizeInvalid = true;
+        super.invalidate();
+    }
+
+// Table.java : public Cell<Collapser> collapser(Cons<Table> cons, Boolp shown) / public Cell<Collapser> collapser(Table table, Boolp shown) / public Cell<Collapser> collapser(Cons<Table> cons, boolean animate, Boolp shown) / public Cell<Collapser> collapser(Table table, boolean animate, Boolp shown)
+    public Cell<Collapser> collapser(Cons<Table> cons, Boolp shown){
+        return collapser(cons, false, shown);
+    }
+
+// Table.java : public Cell<Table> table() / public Cell<Table> table(Drawable background) / public Cell<Table> table(Cons<Table> cons) / public Cell<Table> table(Drawable background, Cons<Table> cons) / public Cell<Table> table(Drawable background, int align, Cons<Table> cons)
+    public Cell<Table> table(){
+        return table((Drawable)null);
+    }
+
+// Table.java : public Cell<WrapTable> wrapTable(Cons<WrapTable> cons)
+    public Cell<WrapTable> wrapTable(Cons<WrapTable> cons){
+        WrapTable table = new WrapTable();
+        cons.get(table);
+        return add(table);
+    }
+
+// Table.java : public Cell<Label> label(Prov<CharSequence> text)
+    public Cell<Label> label(Prov<CharSequence> text){
+        return add(new Label(text));
+    }
+
+// Table.java : public Cell<Label> labelWrap(Prov<CharSequence> text) / public Cell<Label> labelWrap(String text)
+    public Cell<Label> labelWrap(Prov<CharSequence> text){
+        Label label = new Label(text);
+        label.setWrap(true);
+        return add(label);
+    }
+
+// Table.java : public Cell<ScrollPane> pane(Cons<Table> consumer) / public Cell<ScrollPane> pane(ScrollPaneStyle style, Cons<Table> consumer) / public Cell<ScrollPane> pane(ScrollPaneStyle style, Element element) / public Cell<ScrollPane> pane(Element element)
+    public Cell<ScrollPane> pane(Cons<Table> consumer){
+        return pane(scene.getStyle(ScrollPaneStyle.class), consumer);
+    }
+
+// Table.java : public Cell<Stack> stack(Element elements)
+    public Cell<Stack> stack(Element... elements){
+        Stack stack = new Stack();
+        if(elements != null){
+            for(int i = 0, n = elements.length; i < n; i++)
+                stack.addChild(elements[i]);
+        }
+        return add(stack);
+    }
+
+// Table.java : public Cell<Spacer> spacer(Floatp width, Floatp height)
+    public Cell<Spacer> spacer(Floatp width, Floatp height){
+        return add(new Spacer(width, height));
+    }
+
+// Table.java : public Cell<Spacer> spacerX(Floatp width)
+    public Cell<Spacer> spacerX(Floatp width){
+        return add(new Spacer(width, () -> 0f));
+    }
+
+// Table.java : public Cell<Spacer> spacerY(Floatp height)
+    public Cell<Spacer> spacerY(Floatp height){
+        return add(new Spacer(() -> 0f, height));
+    }
+
+// Table.java : public Cell<Image> image(Prov<TextureRegion> reg) / public Cell<Image> image() / public Cell<Image> image(Drawable name) / public Cell<Image> image(Drawable name, Color color) / public Cell<Image> image(TextureRegion region)
+    public Cell<Image> image(Prov<TextureRegion> reg){
+        return add(new Image(reg.get())).update(i -> {
+            ((TextureRegionDrawable)i.getDrawable()).setRegion(reg.get());
+            i.layout();
+        });
+    }
+
+// Table.java : public Cell<Image> imageDraw(Prov<Drawable> reg)
+    public Cell<Image> imageDraw(Prov<Drawable> reg){
+        return add(new Image(reg.get())).update(i -> {
+            i.setDrawable(reg.get());
+            i.layout();
+        });
+    }
+
+// Table.java : public Cell<CheckBox> check(String text, Boolc listener) / public Cell<CheckBox> check(String text, boolean checked, Boolc listener) / public Cell<CheckBox> check(String text, float imagesize, boolean checked, Boolc listener)
+    public Cell<CheckBox> check(String text, Boolc listener){
+        CheckBox button = Elem.newCheck(text, listener);
+        return add(button);
+    }
+
+// Table.java : public Cell<Button> button(Cons<Button> cons, Runnable listener) / public Cell<Button> button(Cons<Button> cons, ButtonStyle style, Runnable listener) / public Cell<TextButton> button(String text, Runnable listener) / public Cell<TextButton> button(String text, TextButtonStyle style, Runnable listener) / public Cell<ImageButton> button(Drawable icon, Runnable listener) / public Cell<ImageButton> button(Drawable icon, float isize, Runnable listener) / public Cell<ImageButton> button(Drawable icon, ImageButtonStyle style, float isize, Runnable listener) / public Cell<ImageButton> button(Drawable icon, ImageButtonStyle style, Runnable listener) / public Cell<TextButton> button(String text, Drawable image, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, float imagesize, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, TextButtonStyle style, float imagesize, Runnable clicked) / public Cell<TextButton> button(String text, Drawable image, TextButtonStyle style, Runnable clicked)
+    public Cell<Button> button(Cons<Button> cons, Runnable listener){
+        Button button = new Button();
+        button.clearChildren();
+        button.clicked(listener);
+        cons.get(button);
+        return add(button);
+    }
+
+// Table.java : public Cell<TextField> field(String text, Cons<String> listener) / public Cell<TextField> field(String text, TextFieldFilter filter, Cons<String> listener) / public Cell<TextField> field(String text, TextFieldStyle style, Cons<String> listener)
+    public Cell<TextField> field(String text, Cons<String> listener){
+        TextField field = Elem.newField(text, listener);
+        return add(field);
+    }
+
+// Table.java : public Cell<TextArea> area(String text, Cons<String> listener) / public Cell<TextArea> area(String text, TextFieldStyle style, Cons<String> listener)
+    public Cell<TextArea> area(String text, Cons<String> listener){
+        TextArea area = new TextArea(text);
+        area.changed(() -> listener.get(area.getText()));
+        return add(area);
+    }
+
+// Table.java : public Cell<?> rect(DrawRect draw)
+    public Cell<?> rect(DrawRect draw){
+        return add(new Element(){
+            @Override
+            public void draw(){
+                draw.draw(x, y, getWidth(), getHeight());
+            }
+        });
+    }
+
+// Table.java : public Cell<TextButton> buttonRow(String text, Drawable image, Runnable clicked)
+    public Cell<TextButton> buttonRow(String text, Drawable image, Runnable clicked){
+        TextButton button = new TextButton(text);
+        button.clearChildren();
+        button.add(new Image(image)).update(i -> i.setColor(button.isDisabled() ? Color.gray : Color.white));
+        button.row();
+        button.add(button.getLabel()).padTop(4).padLeft(4).padRight(4).wrap().growX();
+        button.clicked(clicked);
+        return add(button);
+    }
+
+// Table.java : public Cell<TextButton> buttonCenter(String text, Drawable image, float imagesize, Runnable clicked) / public Cell<TextButton> buttonCenter(String text, Drawable image, Runnable clicked) / public Cell<TextButton> buttonCenter(String text, Drawable image, TextButtonStyle style, float imagesize, Runnable clicked)
+    public Cell<TextButton> buttonCenter(String text, Drawable image, float imagesize, Runnable clicked){
+        return buttonCenter(text, image, scene.getStyle(TextButtonStyle.class), imagesize, clicked);
+    }
+
+// Table.java : public Cell<Slider> slider(float min, float max, float step, Floatc listener) / public Cell<Slider> slider(float min, float max, float step, float defvalue, Floatc listener) / public Cell<Slider> slider(float min, float max, float step, float defvalue, boolean onUp, Floatc listener)
+    public Cell<Slider> slider(float min, float max, float step, Floatc listener){
+        return slider(min, max, step, 0f, listener);
+    }
+
+// Table.java : public boolean removeChild(Element element) / public boolean removeChild(Element element, boolean unfocus)
+    @Override
+    public boolean removeChild(Element element){
+        return removeChild(element, true);
+    }
+
+// Table.java : public void reset()
+    public void reset(){
+        clearChildren();
+        marginTop = unset;
+        marginLeft = unset;
+        marginBot = unset;
+        marginRight = unset;
+        align = Align.center;
+        cellDefaults.reset();
+    }
+
+// Table.java : public Table row()
+    public Table row(){
+        if(cells.size > 0){
+            if(!implicitEndRow) endRow();
+            invalidate();
+        }
+        implicitEndRow = false;
+        if(rowDefaults != null) cellPool.free(rowDefaults);
+        rowDefaults = obtainCell();
+        rowDefaults.clear();
+        return this;
+    }
+
+// Table.java : public Cell getCell(T actor)
+    public <T extends Element> Cell getCell(T actor){
+        Seq<Cell> cells = this.cells;
+        for(int i = 0, n = cells.size; i < n; i++){
+            Cell c = cells.get(i);
+            if(c.element == actor) return c;
+        }
+        return null;
+    }
+
+// Table.java : public Seq<Cell> getCells()
+    public Seq<Cell> getCells(){
+        return cells;
+    }
+
+// Table.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        if(sizeInvalid) computeSize();
+        float width = tablePrefWidth;
+        if(background != null) return Math.max(width, background.getMinWidth());
+        return width;
+    }
+
+// Table.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        if(sizeInvalid) computeSize();
+        float height = tablePrefHeight;
+        if(background != null) return Math.max(height, background.getMinHeight());
+        return height;
+    }
+
+// Table.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        if(sizeInvalid) computeSize();
+        return tableMinWidth;
+    }
+
+// Table.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        if(sizeInvalid) computeSize();
+        return tableMinHeight;
+    }
+
+// Table.java : public Cell defaults()
+    public Cell defaults(){
+        return cellDefaults;
+    }
+
+// Table.java : public Table margin(float pad) / public Table margin(float top, float left, float bottom, float right)
+    public Table margin(float pad){
+        margin(pad, pad, pad, pad);
+        return this;
+    }
+
+// Table.java : public Table marginTop(float padTop)
+    public Table marginTop(float padTop){
+        this.marginTop = Scl.scl(padTop);
+        sizeInvalid = true;
+        return this;
+    }
+
+// Table.java : public Table marginLeft(float padLeft)
+    public Table marginLeft(float padLeft){
+        this.marginLeft = Scl.scl(padLeft);
+        sizeInvalid = true;
+        return this;
+    }
+
+// Table.java : public Table marginBottom(float padBottom)
+    public Table marginBottom(float padBottom){
+        this.marginBot = Scl.scl(padBottom);
+        sizeInvalid = true;
+        return this;
+    }
+
+// Table.java : public Table marginRight(float padRight)
+    public Table marginRight(float padRight){
+        this.marginRight = Scl.scl(padRight);
+        sizeInvalid = true;
+        return this;
+    }
+
+// Table.java : public Table align(int align)
+    public Table align(int align){
+        this.align = align;
+        return this;
+    }
+
+// Table.java : public Table center()
+    public Table center(){
+        align = Align.center;
+        return this;
+    }
+
+// Table.java : public Table top()
+    public Table top(){
+        align |= Align.top;
+        align &= ~Align.bottom;
+        return this;
+    }
+
+// Table.java : public Table left()
+    public Table left(){
+        align |= Align.left;
+        align &= ~Align.right;
+        return this;
+    }
+
+// Table.java : public Table bottom()
+    public Table bottom(){
+        align |= Align.bottom;
+        align &= ~Align.top;
+        return this;
+    }
+
+// Table.java : public Table right()
+    public Table right(){
+        align |= Align.right;
+        align &= ~Align.left;
+        return this;
+    }
+
+// Table.java : public float getMarginTop()
+    public float getMarginTop(){
+        return marginTop != unset ? marginTop : background == null ? 0f : background.getTopHeight();
+    }
+
+// Table.java : public float getMarginLeft()
+    public float getMarginLeft(){
+        return marginLeft != unset ? marginLeft : background == null ? 0f : background.getLeftWidth();
+    }
+
+// Table.java : public float getMarginBottom()
+    public float getMarginBottom(){
+        return marginBot != unset ? marginBot : background == null ? 0f : background.getBottomHeight();
+    }
+
+// Table.java : public float getMarginRight()
+    public float getMarginRight(){
+        return marginRight != unset ? marginRight : background == null ? 0f : background.getRightWidth();
+    }
+
+// Table.java : public int getAlign()
+    public int getAlign(){
+        return align;
+    }
+
+// Table.java : public void setRound(boolean round)
+    public void setRound(boolean round){
+        this.round = round;
+    }
+
+// Table.java : public int getRows()
+    public int getRows(){
+        return rows;
+    }
+
+// Table.java : public int getColumns()
+    public int getColumns(){
+        return columns;
+    }
+
+// Table.java : public float getRowHeight(int rowIndex)
+    public float getRowHeight(int rowIndex){
+        return rowHeight[rowIndex];
+    }
+
+// Table.java : public float getColumnWidth(int columnIndex)
+    public float getColumnWidth(int columnIndex){
+        return columnWidth[columnIndex];
+    }
+
+// Table.java : private float[] ensureSize(float[] array, int size)
+    private float[] ensureSize(float[] array, int size){
+        if(array == null || array.length < size) return new float[size];
+        for(int i = 0, n = array.length; i < n; i++)
+            array[i] = 0;
+        return array;
+    }
+
+// WidgetGroup.java : public float getMinWidth()
+    @Override
+    public float getMinWidth(){
+        return getPrefWidth();
+    }
+
+// WidgetGroup.java : public float getMinHeight()
+    @Override
+    public float getMinHeight(){
+        return getPrefHeight();
+    }
+
+// WidgetGroup.java : public float getPrefWidth()
+    @Override
+    public float getPrefWidth(){
+        return 0;
+    }
+
+// WidgetGroup.java : public float getPrefHeight()
+    @Override
+    public float getPrefHeight(){
+        return 0;
+    }
+
+// WidgetGroup.java : public void setLayoutEnabled(boolean enabled) / private void setLayoutEnabled(Group parent, boolean enabled)
+    @Override
+    public void setLayoutEnabled(boolean enabled){
+        if(layoutEnabled == enabled) return;
+        layoutEnabled = enabled;
+        setLayoutEnabled(this, enabled);
+    }
+
+// WidgetGroup.java : public boolean needsLayout()
+    @Override
+    public boolean needsLayout(){
+        return needsLayout;
+    }
+
+// WidgetGroup.java : public void invalidate()
+    @Override
+    public void invalidate(){
+        needsLayout = true;
+    }
+
+// WidgetGroup.java : public void invalidateHierarchy()
+    @Override
+    public void invalidateHierarchy(){
+        invalidate();
+        Group parent = this.parent;
+        if(parent != null) parent.invalidateHierarchy();
+    }
+
+// WidgetGroup.java : protected void childrenChanged()
+    @Override
+    protected void childrenChanged(){
+        invalidateHierarchy();
+    }
+
+// WidgetGroup.java : protected void sizeChanged()
+    @Override
+    protected void sizeChanged(){
+        invalidate();
+    }
+
+// WidgetGroup.java : public void pack()
+    @Override
+    public void pack(){
+        setSize(getPrefWidth(), getPrefHeight());
+        validate();
+        //Some situations require another layout. Eg, a wrapped label doesn't know its pref height until it knows its width, so it
+        //calls invalidateHierarchy() in layout() if its pref height has changed.
+        if(needsLayout){
+            setSize(getPrefWidth(), getPrefHeight());
+            validate();
+        }
+    }
+
+// WidgetGroup.java : public void setFillParent(boolean fillParent)
+    @Override
+    public void setFillParent(boolean fillParent){
+        this.fillParent = fillParent;
+    }
+
+// WidgetGroup.java : public void layout()
+    @Override
+    public void layout(){
+    }
+
+// WidgetGroup.java : public void draw()
+    @Override
+    public void draw(){
+        validate();
+        super.draw();
+    }
+

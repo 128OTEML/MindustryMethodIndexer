@@ -1,0 +1,167 @@
+// Generators.java : private static double gasFrame(double x, double y, int frame)
+    private static double gasFrame(double x, double y, int frame){
+        int s = 31;
+        //calculate random space offsets for the frame cutout
+        double ox = Mathf.randomSeed(frame, 200_000), oy = Mathf.randomSeed(frame, 200_000);
+        double scale = 21, second = 0.3;
+        return (Simplex.rawTiled(x, y, ox, oy, s, s, scale) + Simplex.rawTiled(x, y, ox, oy, s, s, scale / 1.5) * second) / (1.0 + second);
+    }
+
+// Generators.java : private static double liquidFrame(double x, double y, int frame)
+    private static double liquidFrame(double x, double y, int frame){
+        int s = 31;
+        //calculate random space offsets for the frame cutout
+        double ox = Mathf.randomSeed(frame, 1), oy = Mathf.randomSeed(frame, 1);
+        double scale = 26, second = 0.5;
+        return (Simplex.rawTiled(x, y, ox, oy, s, s, scale) + Simplex.rawTiled(x, y, ox, oy, s, s, scale / 1.5) * second) / (1.0 + second);
+    }
+
+// IconConverter.java : void square(float x, float y, float size)
+    void square(float x, float y, float size){
+        rect(x - size/2f, y - size/2f, size, size);
+    }
+
+// IconConverter.java : void tri(float x1, float y1, float x2, float y2, float x3, float y3)
+    void tri(float x1, float y1, float x2, float y2, float x3, float y3){
+        out.append("<polygon points=\"");
+        out.append(x1 + 0.5f).append(",").append(flip(y1 + 0.5f)).append(" ");
+        out.append(x2 + 0.5f).append(",").append(flip(y2 + 0.5f)).append(" ");
+        out.append(x3 + 0.5f).append(",").append(flip(y3 + 0.5f)).append("\" ");
+        out.append("style=\"fill:white\" />\n");
+    }
+
+// IconConverter.java : void rect(float x1, float y1, float width, float height)
+    void rect(float x1, float y1, float width, float height){
+        out.append("<rect x=\"")
+            .append(x1 + 0.5f).append("\" y=\"").append(flip(y1 + 0.5f) - height)
+            .append("\" width=\"").append(width).append("\" height=\"")
+            .append(height).append("\" style=\"fill:white\" />\n");
+    }
+
+// IconConverter.java : float flip(float y)
+    float flip(float y){
+        return height - y;
+    }
+
+// IconConverter.java : int index(int x, int y, int w, int h, boolean[][] grid)
+    int index(int x, int y, int w, int h, boolean[][] grid){
+        int botleft = sample(grid, x, y);
+        int botright = sample(grid, x + 1, y);
+        int topright = sample(grid, x + 1, y + 1);
+        int topleft = sample(grid, x, y + 1);
+        return (botleft << 3) | (botright << 2) | (topright << 1) | topleft;
+    }
+
+// IconConverter.java : int sample(boolean[][] grid, int x, int y)
+    int sample(boolean[][] grid, int x, int y){
+        return (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length) ? 0 : grid[x][y] ? 1 : 0;
+    }
+
+// ImagePacker.java : static void fixSubdirectory(String dir)
+    static void fixSubdirectory(String dir){
+        Fi folder = Fi.get("../../../assets-raw/sprites_out/" + dir);
+        Fi parent = folder.parent();
+        folder.walk(fi -> {
+            fi.moveTo(parent.child(fi.name()));
+        });
+        folder.delete();
+    }
+
+// ImagePacker.java : static String texname(UnlockableContent c)
+    static String texname(UnlockableContent c){
+        return c.getContentType() + "-" + c.name + "-ui";
+    }
+
+// ImagePacker.java : static void generate(String name, Runnable run)
+    static void generate(String name, Runnable run){
+        Time.mark();
+        run.run();
+        Log.info("&ly[Generator]&lc Time to generate &lm@&lc: &lg@&lcms", name, Time.elapsed());
+    }
+
+// ImagePacker.java : static Pixmap get(String name) / static Pixmap get(TextureRegion region)
+    static Pixmap get(String name){
+        return get(Core.atlas.find(name));
+    }
+
+// ImagePacker.java : static boolean has(String name)
+    static boolean has(String name){
+        return Core.atlas.has(name);
+    }
+
+// ImagePacker.java : static void save(Pixmap pix, String path)
+    static void save(Pixmap pix, String path){
+        Fi.get(path + ".png").writePng(pix);
+    }
+
+// ImagePacker.java : static void drawCenter(Pixmap pix, Pixmap other)
+    static void drawCenter(Pixmap pix, Pixmap other){
+        pix.draw(other, pix.width/2 - other.width/2, pix.height/2 - other.height/2, true);
+    }
+
+// ImagePacker.java : static void saveScaled(Pixmap pix, String name, int size)
+    static void saveScaled(Pixmap pix, String name, int size){
+        Pixmap scaled = new Pixmap(size, size);
+        //TODO bad linear scaling
+        scaled.draw(pix, 0, 0, pix.width, pix.height, 0, 0, size, size, true, true);
+        save(scaled, name);
+    }
+
+// ImagePacker.java : static void drawScaledFit(Pixmap base, Pixmap image)
+    static void drawScaledFit(Pixmap base, Pixmap image){
+        Vec2 size = Scaling.fit.apply(image.width, image.height, base.width, base.height);
+        int wx = (int)size.x, wy = (int)size.y;
+        //TODO bad linear scaling
+        base.draw(image, 0, 0, image.width, image.height, base.width/2 - wx/2, base.height/2 - wy/2, wx, wy, true, true);
+    }
+
+// ImagePacker.java : static void delete(String name)
+    static void delete(String name){
+        ((GenRegion)Core.atlas.find(name)).path.delete();
+    }
+
+// ImagePacker.java : static void replace(String name, Pixmap image) / static void replace(String path, String name, Pixmap image) / static void replace(TextureRegion region, Pixmap image)
+    static void replace(String name, Pixmap image){
+        replace(name, name, image);
+    }
+
+// ImagePacker.java : static void err(String message, Object args)
+    static void err(String message, Object... args){
+        throw new IllegalArgumentException(Strings.format(message, args));
+    }
+
+// ImagePacker.java : static void validate(TextureRegion region)
+    static void validate(TextureRegion region){
+        if(((GenRegion)region).invalid){
+            ImagePacker.err("Region does not exist: @", ((GenRegion)region).name);
+        }
+    }
+
+// MapFixer.java : public static void main(String[] args)
+    public static void main(String[] args){
+        Log.useColors = false;
+
+        Reflect.set(Maps.class, "useDefaultFolder", false);
+        Reflect.set(Maps.class, "defaultMapNames", new Fi("maps")
+        .findAll(f -> f.extEquals("msav"))
+        .map(f -> f.path().replace(".msav", "").replace("maps/", "")).toArray(String.class));
+
+        HeadlessSetup.setup();
+        fixMapNames();
+    }
+
+// SchemaGenerator.java : public static void injectCustomFields(Class<?> type, Cons<Jval> injector)
+    public static void injectCustomFields(Class<?> type, Cons<Jval> injector){
+        customInjectors.get(type, Seq::new).add(injector);
+    }
+
+// SchemaGenerator.java : public static void injectCustomField(Class<?> type, String fieldName, Jval fieldSchema)
+    public static void injectCustomField(Class<?> type, String fieldName, Jval fieldSchema){
+        injectCustomFields(type, val -> val.put(fieldName, fieldSchema));
+    }
+
+// SchemaGenerator.java : private static Jval field(String type, String doc) / private static Jval field(String type, String doc, boolean nullable) / private static Jval field(String type, String doc, boolean nullable, String def)
+    private static Jval field(String type, String doc){
+        return field(type, doc, false, null);
+    }
+

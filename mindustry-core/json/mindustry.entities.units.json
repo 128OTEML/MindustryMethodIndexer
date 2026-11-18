@@ -1,0 +1,1789 @@
+[ {
+  "file" : "AIController.java",
+  "pkg" : "mindustry.entities.units",
+  "type" : "Java class implements mindustry.entities.units.UnitController",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "protected static final Vec2 vec",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vec",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final float rotateBackTimer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rotateBackTimer",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "protected static final int timerTarget",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timerTarget",
+    "returnType" : null,
+    "modifiers" : [ "protected", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Unit unit",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unit",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Interval timer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timer",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected AIController fallback",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fallback",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected float noTargetTime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "noTargetTime",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Teamc target",
+    "desc" : "main target that is being faced",
+    "overloads" : null,
+    "name" : "target",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected Teamc bomberTarget",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bomberTarget",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "protected boolean turningAway",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "turningAway",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void resetTimers()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "resetTimers",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "arc.util.Interval.reset(int, float)", "arc.math.Mathf.random(float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateUnit()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateUnit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 44,
+    "calls" : [ "mindustry.entities.units.AIController.useFallback()", "mindustry.entities.units.AIController.fallback()", "mindustry.entities.units.AIController.unit(mindustry.gen.Unit)", "mindustry.entities.units.AIController.updateUnit()", "mindustry.entities.units.AIController.updateVisuals()", "mindustry.entities.units.AIController.updateTargeting()", "mindustry.entities.units.AIController.updateMovement()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean hasStance(UnitStance stance)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasStance",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "stance",
+      "type" : "UnitStance"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ "mindustry.gen.Unitc.controller()", "mindustry.ai.types.CommandAI.hasStance(mindustry.ai.UnitStance)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void stanceChanged()",
+    "desc" : "Called when the parent CommandAI changes its stance.",
+    "overloads" : null,
+    "name" : "stanceChanged",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean keepState()",
+    "desc" : "@return whether controller state should not be reset after reading.",
+    "overloads" : null,
+    "name" : "keepState",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void afterRead(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "afterRead",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 76,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isLogicControllable()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isLogicControllable",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 81,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void stopShooting()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stopShooting",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public AIController fallback()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fallback",
+    "returnType" : "AIController",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 93,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean useFallback()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "useFallback",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 98,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateVisuals()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateVisuals",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ "mindustry.gen.Unitc.isFlying()", "mindustry.gen.Unitc.wobble()", "mindustry.gen.Unitc.lookAt(float)", "mindustry.gen.Unitc.prefRotation()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateMovement()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateMovement",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 110,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateTargeting()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateTargeting",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 114,
+    "calls" : [ "mindustry.gen.Unitc.hasWeapons()", "mindustry.entities.units.AIController.updateWeapons()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void faceTarget()",
+    "desc" : "For ground units: Looks at the target, or the movement position.",
+    "overloads" : null,
+    "name" : "faceTarget",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 121,
+    "calls" : [ "mindustry.entities.Units.invalidateTarget(mindustry.gen.Teamc, mindustry.gen.Unit, float)", "mindustry.gen.Unitc.range()", "mindustry.type.UnitType.hasWeapons()", "mindustry.gen.Unitc.lookAt(arc.math.geom.Position)", "mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, mindustry.entities.bullet.BulletType)", "arc.struct.Seq.first()", "mindustry.gen.Velc.moving()", "mindustry.gen.Unitc.lookAt(float)", "arc.math.geom.Vec2.angle()", "mindustry.gen.Unit.vel()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public void faceMovement()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "faceMovement",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 131,
+    "calls" : [ "mindustry.gen.Velc.moving()", "mindustry.gen.Unitc.lookAt(float)", "arc.math.geom.Vec2.angle()", "mindustry.gen.Unit.vel()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean invalid(Teamc target)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "invalid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Teamc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 137,
+    "calls" : [ "mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void pathfind(int pathTarget) / public void pathfind(int pathTarget, boolean stopAtTargetTile) / public void pathfind(int pathTarget, boolean stopAtTargetTile, boolean avoidance)",
+    "desc" : null,
+    "overloads" : [ "public void pathfind(int pathTarget)", "public void pathfind(int pathTarget, boolean stopAtTargetTile)", "public void pathfind(int pathTarget, boolean stopAtTargetTile, boolean avoidance)" ],
+    "name" : "pathfind",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pathTarget",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 141,
+    "calls" : [ "mindustry.entities.units.AIController.pathfind(int, boolean)", "mindustry.entities.units.AIController.pathfind(int, boolean, boolean)", "mindustry.gen.Posc.tileOn()", "mindustry.ai.Pathfinder.Flowfield.getNextTile(mindustry.world.Tile, int)", "mindustry.ai.Pathfinder.getField(mindustry.game.Team, int, int)", "mindustry.gen.Unitc.collisionLayer()", "mindustry.gen.Velc.canPass(int, int)", "mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)", "arc.math.geom.Vec2.trns(float, float)", "arc.math.geom.Position.angleTo(float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.entities.units.AIController.prefSpeed()" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public Vec2 alterPathfind(Vec2 vec)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "alterPathfind",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "vec",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 163,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void targetInvalidated()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "targetInvalidated",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 167,
+    "calls" : [ "arc.util.Interval.reset(int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void updateWeapons()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateWeapons",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 172,
+    "calls" : [ "mindustry.entities.units.AIController.retarget()", "mindustry.entities.units.AIController.findMainTarget(float, float, float, boolean, boolean)", "mindustry.gen.Unitc.range()", "mindustry.entities.units.AIController.invalid(mindustry.gen.Teamc)", "mindustry.gen.Healthc.isValid()", "mindustry.entities.units.AIController.targetInvalidated()", "mindustry.type.Weapon.range()", "arc.math.Angles.trnsx(float, float, float)", "arc.math.Angles.trnsy(float, float, float)", "mindustry.entities.units.AIController.findTarget(float, float, float, boolean, boolean)", "mindustry.entities.units.AIController.checkTarget(mindustry.gen.Teamc, float, float, float)", "arc.math.geom.Position.within(float, float, float)", "mindustry.entities.Sized.hitSize()", "mindustry.entities.units.AIController.shouldShoot()", "mindustry.gen.Entityc.isAdded()", "arc.math.geom.Position.within(arc.math.geom.Position, float)", "mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)", "mindustry.gen.Unitc.isFlying()", "mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, mindustry.entities.bullet.BulletType)", "mindustry.entities.units.AIController.shouldFire()", "arc.math.Angles.within(float, float, float)", "arc.math.geom.Vec2.trns(float, float)" ],
+    "callCount" : 22
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean checkTarget(Teamc target, float x, float y, float range)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkTarget",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Teamc"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 258,
+    "calls" : [ "mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shouldFire()",
+    "desc" : "@return whether the unit should actually fire bullets (as opposed to just targeting something)",
+    "overloads" : null,
+    "name" : "shouldFire",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 263,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shouldShoot()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shouldShoot",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 267,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Teamc targetFlag(float x, float y, BlockFlag flag, boolean enemy)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "targetFlag",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "flag",
+      "type" : "BlockFlag"
+    }, {
+      "name" : "enemy",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 271,
+    "calls" : [ "arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>)", "mindustry.ai.BlockIndexer.getEnemy(mindustry.game.Team, mindustry.world.meta.BlockFlag)", "mindustry.ai.BlockIndexer.getFlagged(mindustry.game.Team, mindustry.world.meta.BlockFlag)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Teamc targetFlagActive(float x, float y, BlockFlag flag, boolean enemy)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "targetFlagActive",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "flag",
+      "type" : "BlockFlag"
+    }, {
+      "name" : "enemy",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 276,
+    "calls" : [ "arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>, arc.func.Boolf<T>)", "mindustry.ai.BlockIndexer.getEnemy(mindustry.game.Team, mindustry.world.meta.BlockFlag)", "mindustry.ai.BlockIndexer.getFlagged(mindustry.game.Team, mindustry.world.meta.BlockFlag)", "t.items.any", "t.status" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public Teamc target(float x, float y, float range, boolean air, boolean ground)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "target",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "air",
+      "type" : "boolean"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 281,
+    "calls" : [ "mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean retarget()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "retarget",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 285,
+    "calls" : [ "arc.util.Interval.get(int, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findMainTarget",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "air",
+      "type" : "boolean"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 289,
+    "calls" : [ "mindustry.entities.units.AIController.findTarget(float, float, float, boolean, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findTarget",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "air",
+      "type" : "boolean"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 293,
+    "calls" : [ "mindustry.entities.units.AIController.target(float, float, float, boolean, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void commandTarget(Teamc moveTo)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "commandTarget",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "moveTo",
+      "type" : "Teamc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 297,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void commandPosition(Vec2 pos)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "commandPosition",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pos",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 299,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : "Called after this controller is assigned a unit.",
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 302,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Tile getClosestSpawner()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getClosestSpawner",
+    "returnType" : "Tile",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 306,
+    "calls" : [ "arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>)", "mindustry.ai.WaveSpawner.getSpawns()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void unloadPayloads()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unloadPayloads",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 310,
+    "calls" : [ "mindustry.gen.Payloadc.hasPayload()", "arc.struct.Seq.peek()", "mindustry.gen.Payloadc.payloads()", "arc.math.geom.Position.within(arc.math.geom.Position, float)", "java.lang.Math.max(float, float)", "mindustry.gen.Unit.type()", "mindustry.gen.Payloadc.dropLastPayload()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public void circleAttack(float circleLength)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "circleAttack",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "circleLength",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 318,
+    "calls" : [ "arc.math.geom.Vec2.sub(arc.math.geom.Position)", "arc.math.geom.Vec2.set(arc.math.geom.Position)", "arc.math.geom.Position.angleTo(arc.math.geom.Position)", "arc.math.Angles.angleDist(float, float)", "mindustry.gen.Unit.rotation()", "mindustry.gen.Unitc.collisionLayer()", "mindustry.gen.Unitc.physicSize()", "arc.math.geom.Vec2.scl(float)", "arc.math.geom.Vec2.setLength(float)", "mindustry.entities.units.AIController.prefSpeed()", "mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)", "arc.math.geom.Position.within(arc.math.geom.Position, float)", "arc.math.geom.Vec2.len()", "arc.math.geom.Vec2.setAngle(float)", "arc.math.geom.Vec2.angle()", "mindustry.gen.Unit.vel()", "arc.math.Angles.moveToward(float, float, float)" ],
+    "callCount" : 17
+  }, {
+    "kind" : "method",
+    "signature" : "public void circle(Position target, float circleLength) / public void circle(Position target, float circleLength, float speed)",
+    "desc" : null,
+    "overloads" : [ "public void circle(Position target, float circleLength)", "public void circle(Position target, float circleLength, float speed)" ],
+    "name" : "circle",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Position"
+    }, {
+      "name" : "circleLength",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 353,
+    "calls" : [ "mindustry.entities.units.AIController.circle(arc.math.geom.Position, float, float)", "mindustry.entities.units.AIController.prefSpeed()", "arc.math.geom.Vec2.sub(arc.math.geom.Position)", "arc.math.geom.Vec2.set(arc.math.geom.Position)", "arc.math.geom.Vec2.len()", "arc.math.geom.Vec2.rotate(float)", "arc.math.geom.Vec2.setLength(float)", "mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public void moveTo(Position target, float circleLength) / public void moveTo(Position target, float circleLength, float smooth) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset) / public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset, boolean arrive)",
+    "desc" : null,
+    "overloads" : [ "public void moveTo(Position target, float circleLength)", "public void moveTo(Position target, float circleLength, float smooth)", "public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset)", "public void moveTo(Position target, float circleLength, float smooth, boolean keepDistance, Vec2 offset, boolean arrive)" ],
+    "name" : "moveTo",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Position"
+    }, {
+      "name" : "circleLength",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 371,
+    "calls" : [ "mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float)", "mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float, boolean, arc.math.geom.Vec2)", "mindustry.gen.Unitc.isFlying()", "mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float, boolean, arc.math.geom.Vec2, boolean)", "mindustry.entities.units.AIController.prefSpeed()", "arc.math.geom.Vec2.sub(arc.math.geom.Position)", "arc.math.geom.Vec2.set(arc.math.geom.Position)", "arc.math.Mathf.clamp(float, float, float)", "arc.math.geom.Position.dst(arc.math.geom.Position)", "arc.math.geom.Vec2.setLength(float)", "arc.math.geom.Vec2.add(float, float)", "arc.math.geom.Vec2.set(float, float)", "arc.math.geom.Position.getX()", "arc.math.geom.Position.getY()", "arc.math.geom.Vec2.limit(float)", "arc.math.geom.Vec2.add(arc.math.geom.Vec2)", "mindustry.gen.Unitc.moveAt(arc.math.geom.Vec2)", "arc.math.geom.Vec2.rotate(float)", "arc.math.geom.Vec2.setZero()", "arc.math.geom.Vec2.isNaN()", "arc.math.geom.Vec2.isInfinite()", "arc.math.geom.Vec2.isZero()", "arc.math.geom.Vec2.angle()", "mindustry.gen.Unitc.lookAt(float)", "arc.math.Angles.within(float, float, float)", "mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)" ],
+    "callCount" : 26
+  }, {
+    "kind" : "method",
+    "signature" : "public float prefSpeed()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "prefSpeed",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 434,
+    "calls" : [ "mindustry.gen.Unitc.speed()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void unit(Unit unit) / public Unit unit()",
+    "desc" : null,
+    "overloads" : [ "public void unit(Unit unit)", "public Unit unit()" ],
+    "name" : "unit",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 438,
+    "calls" : [ "mindustry.entities.units.AIController.init()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "BuildPlan.java",
+  "pkg" : "mindustry.entities.units",
+  "type" : "Java class implements arc.math.geom.Position, arc.math.geom.QuadTree.QuadTreeObject",
+  "typeDesc" : "Class for storing build plans.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public int x",
+    "desc" : "Position and rotation of this plan.",
+    "overloads" : null,
+    "name" : "x",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Block block",
+    "desc" : "Block being placed.",
+    "overloads" : null,
+    "name" : "block",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean breaking",
+    "desc" : "Whether this is a break plan.",
+    "overloads" : null,
+    "name" : "breaking",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Object config",
+    "desc" : "Config int.",
+    "overloads" : null,
+    "name" : "config",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float progress",
+    "desc" : "Last progress.",
+    "overloads" : null,
+    "name" : "progress",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean initialized",
+    "desc" : "Whether construction has started for this plan.",
+    "overloads" : null,
+    "name" : "initialized",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean worldContext",
+    "desc" : "If true, this plan is in the world.",
+    "overloads" : null,
+    "name" : "worldContext",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float animScale",
+    "desc" : "Visual scale.",
+    "overloads" : null,
+    "name" : "animScale",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public BuildPlan(int x, int y, int rotation, Block block) / public BuildPlan(int x, int y, int rotation, Block block, Object config) / public BuildPlan(int x, int y) / public BuildPlan()",
+    "desc" : "This creates a build plan.",
+    "overloads" : [ "public BuildPlan(int x, int y, int rotation, Block block)", "public BuildPlan(int x, int y, int rotation, Block block, Object config)", "public BuildPlan(int x, int y)", "public BuildPlan()" ],
+    "name" : "BuildPlan",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : [ "mindustry.world.Block.planRotation(int)", "mindustry.world.Tile.block()", "mindustry.core.World.tile(int, int)" ],
+    "callCount" : 3
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean placeable(Team team)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "placeable",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 67,
+    "calls" : [ "mindustry.world.Build.validPlace(mindustry.world.Block, mindustry.game.Team, int, int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isRotation(Team team)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isRotation",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ "mindustry.entities.units.BuildPlan.tile()", "mindustry.world.Tile.team()", "mindustry.world.Tile.block()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDerelictRepair()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDerelictRepair",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 77,
+    "calls" : [ "mindustry.entities.units.BuildPlan.tile()", "mindustry.world.Tile.team()", "mindustry.world.Tile.block()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean samePos(BuildPlan other)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "samePos",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "other",
+      "type" : "BuildPlan"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 83,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static Object pointConfig(Block block, Object config, Cons<Point2> cons) / public void pointConfig(Cons<Point2> cons)",
+    "desc" : "Transforms the internal position of this config using the specified function, and return the result.",
+    "overloads" : [ "public static Object pointConfig(Block block, Object config, Cons<Point2> cons)", "public void pointConfig(Cons<Point2> cons)" ],
+    "name" : "pointConfig",
+    "returnType" : "Object",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "block",
+      "type" : "Block"
+    }, {
+      "name" : "config",
+      "type" : "Object"
+    }, {
+      "name" : "cons",
+      "type" : "Cons<Point2>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 88,
+    "calls" : [ "arc.math.geom.Point2.cpy()", "arc.func.Cons.get(T)", "mindustry.world.Block.pointConfig(java.lang.Object, arc.func.Cons<arc.math.geom.Point2>)", "mindustry.entities.units.BuildPlan.pointConfig(mindustry.world.Block, java.lang.Object, arc.func.Cons<arc.math.geom.Point2>)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public BuildPlan copy()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "copy",
+    "returnType" : "BuildPlan",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 111,
+    "calls" : [ "mindustry.entities.units.BuildPlan.BuildPlan()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Rect bounds(Rect rect)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bounds",
+    "returnType" : "Rect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rect",
+      "type" : "Rect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 125,
+    "calls" : [ "arc.math.geom.Rect.set(float, float, float, float)", "mindustry.world.Block.bounds(int, int, arc.math.geom.Rect)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public BuildPlan set(int x, int y, int rotation, Block block)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "BuildPlan",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "rotation",
+      "type" : "int"
+    }, {
+      "name" : "block",
+      "type" : "Block"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 133,
+    "calls" : [ "mindustry.world.Block.planRotation(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float drawx()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawx",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 142,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float drawy()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "drawy",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 146,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isDone()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isDone",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 150,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.block()", "mindustry.world.Tile.floor()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public Tile tile()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tile",
+    "returnType" : "Tile",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 161,
+    "calls" : [ "mindustry.core.World.tile(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Building build()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : "Building",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 165,
+    "calls" : [ "mindustry.core.World.build(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void hitbox(Rect out)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitbox",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "out",
+      "type" : "Rect"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 169,
+    "calls" : [ "arc.math.geom.Rect.setCentered(float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 178,
+    "calls" : [ "mindustry.entities.units.BuildPlan.drawx()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 183,
+    "calls" : [ "mindustry.entities.units.BuildPlan.drawy()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 188,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "StatusEntry.java",
+  "pkg" : "mindustry.entities.units",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public StatusEffect effect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "effect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float time",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "time",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float damageTime",
+    "desc" : "for interval damage",
+    "overloads" : null,
+    "name" : "damageTime",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float damageMultiplier",
+    "desc" : "all of these are for the dynamic effect only!",
+    "overloads" : null,
+    "name" : "damageMultiplier",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public StatusEntry set(StatusEffect effect, float time)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "StatusEntry",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "effect",
+      "type" : "StatusEffect"
+    }, {
+      "name" : "time",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UnitController.java",
+  "pkg" : "mindustry.entities.units",
+  "type" : "Java interface",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "void unit(Unit unit) / Unit unit()",
+    "desc" : null,
+    "overloads" : [ "void unit(Unit unit)", "Unit unit()" ],
+    "name" : "unit",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 7,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void hit(Bullet bullet)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hit",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "bullet",
+      "type" : "Bullet"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean isValidController()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isValidController",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default boolean isLogicControllable()",
+    "desc" : "@return whether logic AI can take over",
+    "overloads" : null,
+    "name" : "isLogicControllable",
+    "returnType" : "boolean",
+    "modifiers" : [ "default" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void updateUnit()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateUnit",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void removed(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removed",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "default void afterRead(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "afterRead",
+    "returnType" : "void",
+    "modifiers" : [ "default" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "WeaponMount.java",
+  "pkg" : "mindustry.entities.units",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Weapon weapon",
+    "desc" : "weapon associated with this mount",
+    "overloads" : null,
+    "name" : "weapon",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float reload",
+    "desc" : "reload in frames; 0 means ready to fire",
+    "overloads" : null,
+    "name" : "reload",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float rotation",
+    "desc" : "rotation relative to the unit this mount is on",
+    "overloads" : null,
+    "name" : "rotation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float recoil",
+    "desc" : "weapon recoil",
+    "overloads" : null,
+    "name" : "recoil",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float recoils",
+    "desc" : "weapon barrel recoil",
+    "overloads" : null,
+    "name" : "recoils",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float targetRotation",
+    "desc" : "destination rotation; do not modify!",
+    "overloads" : null,
+    "name" : "targetRotation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float heat",
+    "desc" : "current heat, 0 to 1",
+    "overloads" : null,
+    "name" : "heat",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float warmup",
+    "desc" : "lerps to 1 when shooting, 0 when not",
+    "overloads" : null,
+    "name" : "warmup",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean charging",
+    "desc" : "is the weapon actively charging",
+    "overloads" : null,
+    "name" : "charging",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float charge",
+    "desc" : "counts up to 1 when charging, 0 when not",
+    "overloads" : null,
+    "name" : "charge",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float smoothReload",
+    "desc" : "lerps to reload time",
+    "overloads" : null,
+    "name" : "smoothReload",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float aimX",
+    "desc" : "aiming position in world coordinates",
+    "overloads" : null,
+    "name" : "aimX",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean shoot",
+    "desc" : "whether to shoot right now",
+    "overloads" : null,
+    "name" : "shoot",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean allowShootEffects",
+    "desc" : "whether to allow any shooting effects",
+    "overloads" : null,
+    "name" : "allowShootEffects",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 36,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean rotate",
+    "desc" : "whether to rotate to face the target right now",
+    "overloads" : null,
+    "name" : "rotate",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean side",
+    "desc" : "extra state for alternating weapons",
+    "overloads" : null,
+    "name" : "side",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int totalShots",
+    "desc" : "total bullets fired from this mount",
+    "overloads" : null,
+    "name" : "totalShots",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 42,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int barrelCounter",
+    "desc" : "counter for which barrel bullets have been fired from; used for alternating patterns",
+    "overloads" : null,
+    "name" : "barrelCounter",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float lastLength",
+    "desc" : "Last aim length of weapon.",
+    "overloads" : null,
+    "name" : "lastLength",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Bullet bullet",
+    "desc" : "current bullet for continuous weapons",
+    "overloads" : null,
+    "name" : "bullet",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 48,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public SoundLoop sound",
+    "desc" : "sound loop for continuous weapons",
+    "overloads" : null,
+    "name" : "sound",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 50,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Teamc target",
+    "desc" : "current target; used for autonomous weapons and AI",
+    "overloads" : null,
+    "name" : "target",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 52,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float retarget",
+    "desc" : "retarget counter",
+    "overloads" : null,
+    "name" : "retarget",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 54,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public WeaponMount(Weapon weapon)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "WeaponMount",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "weapon",
+      "type" : "Weapon"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 56,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+} ]

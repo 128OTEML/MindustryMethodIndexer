@@ -1,0 +1,793 @@
+// Binding.java : public static void init()
+    public static void init(){}
+
+// DesktopInput.java : boolean showHint()
+    boolean showHint(){
+        return ui.hudfrag.shown() && Core.settings.getBool("hints") && selectPlans.isEmpty() && !player.dead() &&
+            (!isBuilding && !Core.settings.getBool("buildautopause") || player.unit().isBuilding() || !player.dead() && !player.unit().spawnedByCore());
+    }
+
+// DesktopInput.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        shouldShoot = false;
+        deleting = false;
+    }
+
+// DesktopInput.java : public void useSchematic(Schematic schem, boolean checkHidden)
+    @Override
+    public void useSchematic(Schematic schem, boolean checkHidden){
+        block = null;
+        schematicX = tileX(getMouseX());
+        schematicY = tileY(getMouseY());
+
+        selectPlans.clear();
+        selectPlans.addAll(schematics.toPlans(schem, schematicX, schematicY, checkHidden));
+        mode = none;
+    }
+
+// DesktopInput.java : public boolean isBreaking()
+    @Override
+    public boolean isBreaking(){
+        return mode == breaking;
+    }
+
+// DesktopInput.java : public boolean selectedBlock()
+    @Override
+    public boolean selectedBlock(){
+        return isPlacing() && mode != breaking;
+    }
+
+// DesktopInput.java : public float getMouseX()
+    @Override
+    public float getMouseX(){
+        return Core.input.mouseX();
+    }
+
+// DesktopInput.java : public float getMouseY()
+    @Override
+    public float getMouseY(){
+        return Core.input.mouseY();
+    }
+
+// DesktopInput.java : public void panCamera(Vec2 position)
+    @Override
+    public void panCamera(Vec2 position){
+        if(!locked()){
+            panning = true;
+            camera.position.set(position);
+        }
+    }
+
+// InputHandler.java : protected void initQuadtrees()
+    protected void initQuadtrees(){
+        playerPlanTree = new QuadTree<>(new Rect(0f, 0f, world.unitWidth(), world.unitHeight()));
+        selectPlanTree = new QuadTree<>(new Rect(0f, 0f, world.unitWidth(), world.unitHeight()));
+        createPlanLists();
+    }
+
+// InputHandler.java : public static void transferItemEffect(Item item, float x, float y, Itemsc to)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void transferItemEffect(Item item, float x, float y, Itemsc to){
+        if(to == null) return;
+        createItemTransfer(item, 1, x, y, to, null);
+    }
+
+// InputHandler.java : public static void transferItemToUnit(Item item, float x, float y, Itemsc to)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void transferItemToUnit(Item item, float x, float y, Itemsc to){
+        if(to == null) return;
+        createItemTransfer(item, 1, x, y, to, () -> to.addItem(item));
+    }
+
+// InputHandler.java : public static void setItem(Building build, Item item, int amount)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setItem(Building build, Item item, int amount){
+        if(build == null || build.items == null) return;
+        build.items.set(item, amount);
+    }
+
+// InputHandler.java : public static void setItems(Building build, ItemStack[] items)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setItems(Building build, ItemStack[] items){
+        if(build == null || build.items == null) return;
+
+        for(ItemStack stack : items){
+            build.items.set(stack.item, stack.amount);
+        }
+    }
+
+// InputHandler.java : public static void setTileItems(Item item, int amount, int[] positions)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setTileItems(Item item, int amount, int[] positions){
+        for(int pos : positions){
+            Building build = world.build(pos);
+            if(build != null && build.items != null){
+                build.items.set(item, amount);
+            }
+        }
+    }
+
+// InputHandler.java : public static void clearItems(Building build)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void clearItems(Building build){
+        if(build == null || build.items == null) return;
+        build.items.clear();
+    }
+
+// InputHandler.java : public static void setLiquid(Building build, Liquid liquid, float amount)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setLiquid(Building build, Liquid liquid, float amount){
+        if(build == null || build.liquids == null) return;
+        build.liquids.set(liquid, amount);
+    }
+
+// InputHandler.java : public static void setLiquids(Building build, LiquidStack[] liquids)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setLiquids(Building build, LiquidStack[] liquids){
+        if(build == null || build.liquids == null) return;
+
+        for(LiquidStack stack : liquids){
+            build.liquids.set(stack.liquid, stack.amount);
+        }
+    }
+
+// InputHandler.java : public static void setTileLiquids(Liquid liquid, float amount, int[] positions)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void setTileLiquids(Liquid liquid, float amount, int[] positions){
+        for(int pos : positions){
+            Building build = world.build(pos);
+            if(build != null && build.liquids != null){
+                build.liquids.set(liquid, amount);
+            }
+        }
+    }
+
+// InputHandler.java : public static void clearLiquids(Building build)
+    @Remote(called = Loc.server, unreliable = true)
+    public static void clearLiquids(Building build){
+        if(build == null || build.liquids == null) return;
+        build.liquids.clear();
+    }
+
+// InputHandler.java : public static void createItemTransfer(Item item, int amount, float x, float y, Position to, Runnable done)
+    public static void createItemTransfer(Item item, int amount, float x, float y, Position to, Runnable done){
+        Fx.itemTransfer.at(x, y, amount, item.color, to);
+        if(done != null){
+            Time.run(Fx.itemTransfer.lifetime, done);
+        }
+    }
+
+// InputHandler.java : public static void setUnitStanceChunked(IntSeq ids, UnitStance stance, boolean enable)
+    public static void setUnitStanceChunked(IntSeq ids, UnitStance stance, boolean enable){
+        ids.chunked(1000, values -> Call.setUnitStance(Vars.player, values, stance, enable));
+    }
+
+// InputHandler.java : public static void setUnitCommandChunked(IntSeq ids, UnitCommand command)
+    public static void setUnitCommandChunked(IntSeq ids, UnitCommand command){
+        ids.chunked(1000, values -> Call.setUnitCommand(Vars.player, values, command));
+    }
+
+// InputHandler.java : public static void removeQueueBlock(int x, int y, boolean breaking)
+    @Remote(variants = Variant.one)
+    public static void removeQueueBlock(int x, int y, boolean breaking){
+        if(!player.dead()){
+            player.unit().removeBuild(x, y, breaking);
+        }
+    }
+
+// InputHandler.java : public static void requestUnitPayload(Player player, Unit target)
+    @Remote(targets = Loc.both, called = Loc.server)
+    public static void requestUnitPayload(Player player, Unit target){
+        if(player == null || !(player.unit() instanceof Payloadc pay) || target == null) return;
+
+        Unit unit = player.unit();
+
+        if(target.isAI() && target.isGrounded() && pay.canPickup(target)
+        && target.within(unit, unit.type.hitSize * 2f + target.type.hitSize * 2f)){
+            Call.pickedUnitPayload(unit, target);
+        }
+    }
+
+// InputHandler.java : public static void pickedUnitPayload(Unit unit, Unit target)
+    @Remote(targets = Loc.server, called = Loc.server)
+    public static void pickedUnitPayload(Unit unit, Unit target){
+        if(target != null && unit instanceof Payloadc pay){
+            pay.pickup(target);
+        }else if(target != null){
+            target.remove();
+        }
+    }
+
+// InputHandler.java : public static void payloadDropped(Unit unit, float x, float y)
+    @Remote(called = Loc.server, targets = Loc.server)
+    public static void payloadDropped(Unit unit, float x, float y){
+        if(unit instanceof Payloadc pay){
+            float prevx = pay.x(), prevy = pay.y();
+            pay.set(x, y);
+            pay.dropLastPayload();
+            pay.set(prevx, prevy);
+        }
+    }
+
+// InputHandler.java : public static void tileTap(Player player, Tile tile)
+    @Remote(targets = Loc.both, called = Loc.both, unreliable = true)
+    public static void tileTap(@Nullable Player player, Tile tile){
+        if(tile == null) return;
+
+        Events.fire(new TapEvent(player, tile));
+    }
+
+// InputHandler.java : public static void unitBuildingControlSelect(Unit unit, Building build)
+    @Remote(called = Loc.server)
+    public static void unitBuildingControlSelect(Unit unit, Building build){
+        if(unit == null || unit.dead()) return;
+
+        //client skips checks to prevent ghost units
+        if(unit.team() == build.team && (net.client() || build.canControlSelect(unit))){
+            build.onControlSelect(unit);
+        }
+    }
+
+// InputHandler.java : public void updateSelectQuadtree()
+    public void updateSelectQuadtree(){
+        selectPlanTree.fill(selectPlans);
+    }
+
+// InputHandler.java : public void addLock(Boolp lock)
+    public void addLock(Boolp lock){
+        inputLocks.add(lock);
+    }
+
+// InputHandler.java : public boolean locked()
+    public boolean locked(){
+        return inputLocks.contains(Boolp::get);
+    }
+
+// InputHandler.java : public Eachable<BuildPlan> allPlans()
+    public Eachable<BuildPlan> allPlans(){
+        return allPlans;
+    }
+
+// InputHandler.java : public boolean isUsingSchematic()
+    public boolean isUsingSchematic(){
+        return !selectPlans.isEmpty();
+    }
+
+// InputHandler.java : public void spectate(Unit unit)
+    public void spectate(Unit unit){
+        spectating = unit;
+        camera.position.set(unit);
+    }
+
+// InputHandler.java : public void getSyncedPlans(Seq<BuildPlan> out)
+    public void getSyncedPlans(Seq<BuildPlan> out){
+        for(var plan : lastPlans){
+            if(!plan.breaking){
+                out.add(plan);
+            }
+        }
+    }
+
+// InputHandler.java : public void tryDropPayload()
+    public void tryDropPayload(){
+        Unit unit = player.unit();
+        if(!(unit instanceof Payloadc pay) || !pay.canDropPayload()) return;
+
+        Call.requestDropPayload(player, player.x, player.y);
+    }
+
+// InputHandler.java : public float getMouseX()
+    public float getMouseX(){
+        return Core.input.mouseX();
+    }
+
+// InputHandler.java : public float getMouseY()
+    public float getMouseY(){
+        return Core.input.mouseY();
+    }
+
+// InputHandler.java : public void buildPlacementUI(Table table)
+    public void buildPlacementUI(Table table){
+
+    }
+
+// InputHandler.java : public void buildUI(Group group)
+    public void buildUI(Group group){
+
+    }
+
+// InputHandler.java : public void updateState()
+    public void updateState(){
+        if(state.isMenu()){
+            controlledType = null;
+            logicCutscene = false;
+            config.forceHide();
+            commandMode = commandRect = false;
+        }
+    }
+
+// InputHandler.java : public boolean multiUnitSelect()
+    public boolean multiUnitSelect(){
+        return false;
+    }
+
+// InputHandler.java : public void selectTypedUnits()
+    public void selectTypedUnits(){
+        if(commandMode){
+            Unit unit = selectedCommandUnit(input.mouseWorldX(), input.mouseWorldY());
+            if(unit != null){
+                selectedUnits.clear();
+                camera.bounds(Tmp.r1);
+                selectedUnits.addAll(selectedCommandUnits(Tmp.r1.x, Tmp.r1.y, Tmp.r1.width, Tmp.r1.height, u -> u.type == unit.type));
+                Events.fire(Trigger.unitCommandChange);
+            }
+        }
+    }
+
+// InputHandler.java : public void commandTap(float screenX, float screenY) / public void commandTap(float screenX, float screenY, boolean queue)
+    public void commandTap(float screenX, float screenY){
+        commandTap(screenX, screenY, false);
+    }
+
+// InputHandler.java : public void drawCommand(Unit sel) / public void drawCommand(Building build)
+    public void drawCommand(Unit sel){
+        Drawf.poly(sel.x, sel.y, 6, sel.hitSize / unitSelectRadScl + Mathf.absin(4f, 1f), 0f, selectedUnits.contains(sel) ? Pal.remove : Pal.accent);
+    }
+
+// InputHandler.java : public void drawBottom()
+    public void drawBottom(){
+
+    }
+
+// InputHandler.java : public void drawTop()
+    public void drawTop(){
+
+    }
+
+// InputHandler.java : public void drawOverSelect()
+    public void drawOverSelect(){
+
+    }
+
+// InputHandler.java : public void drawSelected(int x, int y, Block block, Color color)
+    public void drawSelected(int x, int y, Block block, Color color){
+        Drawf.selected(x, y, block, color);
+    }
+
+// InputHandler.java : public void drawBreaking(BuildPlan plan) / public void drawBreaking(int x, int y)
+    public void drawBreaking(BuildPlan plan){
+        if(plan.breaking){
+            drawBreaking(plan.x, plan.y);
+        }else{
+            drawSelected(plan.x, plan.y, plan.block, Pal.remove);
+        }
+    }
+
+// InputHandler.java : public boolean planMatches(BuildPlan plan)
+    public boolean planMatches(BuildPlan plan){
+        Tile tile = world.tile(plan.x, plan.y);
+        return tile != null && tile.build instanceof ConstructBuild cons && cons.current == plan.block;
+    }
+
+// InputHandler.java : public void useSchematic(Schematic schem) / public abstract void useSchematic(Schematic schem, boolean checkHidden)
+    public void useSchematic(Schematic schem){
+        useSchematic(schem, true);
+    }
+
+// InputHandler.java : protected int schemOriginX()
+    protected int schemOriginX(){
+        return rawTileX();
+    }
+
+// InputHandler.java : protected int schemOriginY()
+    protected int schemOriginY(){
+        return rawTileY();
+    }
+
+// InputHandler.java : protected BuildPlan getPlan(int x, int y) / protected BuildPlan getPlan(int x, int y, int size, BuildPlan skip)
+    protected @Nullable BuildPlan getPlan(int x, int y){
+        return getPlan(x, y, 1, null);
+    }
+
+// InputHandler.java : protected void drawBreakSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void drawBreakSelection(int x1, int y1, int x2, int y2, int maxLength, boolean useSelectPlans) / protected void drawBreakSelection(int x1, int y1, int x2, int y2)
+    protected void drawBreakSelection(int x1, int y1, int x2, int y2, int maxLength){
+        drawBreakSelection(x1, y1, x2, y2, maxLength, true);
+    }
+
+// InputHandler.java : protected void drawSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void drawSelection(int x1, int y1, int x2, int y2, int maxLength, Color col1, Color col2, boolean withText)
+    protected void drawSelection(int x1, int y1, int x2, int y2, int maxLength){
+        drawSelection(x1, y1, x2, y2, maxLength, Pal.accentBack, Pal.accent, true);
+    }
+
+// InputHandler.java : protected void flushPlans(Seq<BuildPlan> plans)
+    protected void flushPlans(Seq<BuildPlan> plans){
+        for(var plan : plans){
+            if(plan.block != null && validPlace(plan.x, plan.y, plan.block, plan.rotation, null, true)){
+                BuildPlan copy = plan.copy();
+                plan.block.onNewPlan(copy);
+                player.unit().addBuild(copy);
+                playerPlanTree.insert(copy);
+            }
+        }
+    }
+
+// InputHandler.java : protected void drawOverPlan(BuildPlan plan) / protected void drawOverPlan(BuildPlan plan, boolean valid)
+    protected void drawOverPlan(BuildPlan plan){
+        drawOverPlan(plan, validPlace(plan.x, plan.y, plan.block, plan.rotation));
+    }
+
+// InputHandler.java : protected void drawPlan(BuildPlan plan) / protected void drawPlan(BuildPlan plan, boolean valid) / protected void drawPlan(int x, int y, Block block, int rotation)
+    protected void drawPlan(BuildPlan plan){
+        drawPlan(plan, plan.cachedValid = validPlace(plan.x, plan.y, plan.block, plan.rotation));
+    }
+
+// InputHandler.java : protected void removeSelection(int x1, int y1, int x2, int y2) / protected void removeSelection(int x1, int y1, int x2, int y2, int maxLength) / protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush) / protected void removeSelection(int x1, int y1, int x2, int y2, boolean flush, int maxLength)
+    protected void removeSelection(int x1, int y1, int x2, int y2){
+        removeSelection(x1, y1, x2, y2, false);
+    }
+
+// InputHandler.java : boolean checkConfigTap()
+    boolean checkConfigTap(){
+        return config.isShown() && config.getSelected().onConfigureTapped(input.mouseWorldX(), input.mouseWorldY());
+    }
+
+// InputHandler.java : boolean tryTapPlayer(float x, float y)
+    boolean tryTapPlayer(float x, float y){
+        if(canTapPlayer(x, y)){
+            droppingItem = true;
+            return true;
+        }
+        return false;
+    }
+
+// InputHandler.java : boolean canTapPlayer(float x, float y)
+    boolean canTapPlayer(float x, float y){
+        return player.within(x, y, playerSelectRange) && !player.dead() && player.unit().stack.amount > 0 && block == null;
+    }
+
+// InputHandler.java : boolean tryBeginMine(Tile tile)
+    boolean tryBeginMine(Tile tile){
+        if(!player.dead() && canMine(tile)){
+            player.unit().mineTile = tile;
+            return true;
+        }
+        return false;
+    }
+
+// InputHandler.java : boolean tryStopMine() / boolean tryStopMine(Tile tile)
+    boolean tryStopMine(){
+        if(!player.dead() && player.unit().mining()){
+            player.unit().mineTile = null;
+            return true;
+        }
+        return false;
+    }
+
+// InputHandler.java : boolean tryRepairDerelict(Tile selected)
+    boolean tryRepairDerelict(Tile selected){
+        if(canRepairDerelict(selected)){
+            player.unit().addBuild(new BuildPlan(selected.build.tileX(), selected.build.tileY(), selected.build.rotation, selected.block(), selected.build.config()));
+            return true;
+        }
+        return false;
+    }
+
+// InputHandler.java : boolean canRepairDerelict(Tile tile)
+    boolean canRepairDerelict(Tile tile){
+        return tile != null && tile.build != null && !player.dead() && !state.rules.editor && player.team() != Team.derelict && tile.build.team == Team.derelict && tile.build.block.unlockedNowHost() &&
+            Build.validPlace(tile.block(), player.team(), tile.build.tileX(), tile.build.tileY(), tile.build.rotation);
+    }
+
+// InputHandler.java : boolean canMine(Tile tile)
+    boolean canMine(Tile tile){
+        return !Core.scene.hasMouse()
+        && !player.dead()
+        && player.unit().validMine(tile)
+        && player.unit().acceptsItem(player.unit().getMineResult(tile))
+        && !((!Core.settings.getBool("doubletapmine") && tile.floor().playerUnmineable) && tile.overlay().itemDrop == null)
+        && !((!Core.settings.getBool("doubletapmine") && tile.overlay().playerUnmineable) && tile.overlay().itemDrop != null);
+    }
+
+// InputHandler.java : Tile tileAt(float x, float y)
+    Tile tileAt(float x, float y){
+        return world.tile(tileX(x), tileY(y));
+    }
+
+// InputHandler.java : int rawTileX()
+    int rawTileX(){
+        return World.toTile(Core.input.mouseWorld().x);
+    }
+
+// InputHandler.java : int rawTileY()
+    int rawTileY(){
+        return World.toTile(Core.input.mouseWorld().y);
+    }
+
+// InputHandler.java : int tileX(float cursorX)
+    int tileX(float cursorX){
+        Vec2 vec = Core.input.mouseWorld(cursorX, 0);
+        if(selectedBlock()){
+            vec.sub(block.offset, block.offset);
+        }
+        return World.toTile(vec.x);
+    }
+
+// InputHandler.java : int tileY(float cursorY)
+    int tileY(float cursorY){
+        Vec2 vec = Core.input.mouseWorld(0, cursorY);
+        if(selectedBlock()){
+            vec.sub(block.offset, block.offset);
+        }
+        return World.toTile(vec.y);
+    }
+
+// InputHandler.java : public void panCamera(Vec2 position)
+    public void panCamera(Vec2 position){
+        if(!locked()){
+            camera.position.set(position);
+        }
+    }
+
+// InputHandler.java : public boolean selectedBlock()
+    public boolean selectedBlock(){
+        return isPlacing();
+    }
+
+// InputHandler.java : public boolean isPlacing()
+    public boolean isPlacing(){
+        return block != null;
+    }
+
+// InputHandler.java : public boolean isBreaking()
+    public boolean isBreaking(){
+        return false;
+    }
+
+// InputHandler.java : public boolean isRebuildSelecting()
+    public boolean isRebuildSelecting(){
+        return input.keyDown(Binding.rebuildSelect);
+    }
+
+// InputHandler.java : public float mouseAngle(float x, float y)
+    public float mouseAngle(float x, float y){
+        return Core.input.mouseWorld(getMouseX(), getMouseY()).sub(x, y).angle();
+    }
+
+// InputHandler.java : public Building selectedControlBuild()
+    public @Nullable Building selectedControlBuild(){
+        Building build = world.buildWorld(Core.input.mouseWorld().x, Core.input.mouseWorld().y);
+        if(build != null && !player.dead() && build.canControlSelect(player.unit()) && build.team == player.team()){
+            return build;
+        }
+        return null;
+    }
+
+// InputHandler.java : public Unit selectedCommandUnit(float x, float y)
+    public @Nullable Unit selectedCommandUnit(float x, float y){
+        var tree = player.team().data().tree();
+        tmpUnits.clear();
+        float rad = 4f;
+        tree.intersect(x - rad/2f, y - rad/2f, rad, rad, tmpUnits);
+        return tmpUnits.min(u -> u.isCommandable(), u -> u.dst(x, y) - u.hitSize/2f);
+    }
+
+// InputHandler.java : public Seq<Unit> selectedCommandUnits(float x, float y, float w, float h, Boolf<Unit> predicate) / public Seq<Unit> selectedCommandUnits(float x, float y, float w, float h)
+    public Seq<Unit> selectedCommandUnits(float x, float y, float w, float h, Boolf<Unit> predicate){
+        var tree = player.team().data().tree();
+        tmpUnits.clear();
+        float rad = 4f;
+        tree.intersect(Tmp.r1.set(x - rad/2f, y - rad/2f, rad*2f + w, rad*2f + h).normalize(), tmpUnits);
+        tmpUnits.removeAll(u -> !u.isCommandable() || !predicate.get(u));
+        return tmpUnits;
+    }
+
+// InputHandler.java : public boolean canShoot()
+    public boolean canShoot(){
+        return block == null && !onConfigurable() && !isDroppingItem() && !player.unit().activelyBuilding() &&
+        !(player.unit() instanceof Mechc && player.unit().isFlying()) && !player.unit().mining() && !commandMode;
+    }
+
+// InputHandler.java : public boolean onConfigurable()
+    public boolean onConfigurable(){
+        return false;
+    }
+
+// InputHandler.java : public boolean isDroppingItem()
+    public boolean isDroppingItem(){
+        return droppingItem;
+    }
+
+// InputHandler.java : public boolean canDropItem()
+    public boolean canDropItem(){
+        return droppingItem && !canTapPlayer(Core.input.mouseWorldX(), Core.input.mouseWorldY());
+    }
+
+// InputHandler.java : public boolean canDepositItem(Building build)
+    public boolean canDepositItem(Building build){
+        //takes advantage of itemDepositCooldown being able to be negative, allows the cooldown to be different for each building
+        if(build.block.depositCooldown >= 0){
+            return itemDepositCooldown - state.rules.itemDepositCooldown <= -build.block.depositCooldown;
+        }
+        return itemDepositCooldown <= 0;
+    }
+
+// InputHandler.java : public void tryBreakBlock(int x, int y)
+    public void tryBreakBlock(int x, int y){
+        if(validBreak(x, y)){
+            breakBlock(x, y);
+        }
+    }
+
+// InputHandler.java : public boolean validPlace(int x, int y, Block type, int rotation) / public boolean validPlace(int x, int y, Block type, int rotation, BuildPlan ignore) / public boolean validPlace(int x, int y, Block type, int rotation, BuildPlan ignore, boolean ignoreUnits)
+    public boolean validPlace(int x, int y, Block type, int rotation){
+        return validPlace(x, y, type, rotation, null);
+    }
+
+// InputHandler.java : public boolean validBreak(int x, int y)
+    public boolean validBreak(int x, int y){
+        return Build.validBreak(player.team(), x, y);
+    }
+
+// InputHandler.java : public void breakBlock(int x, int y)
+    public void breakBlock(int x, int y){
+        if(!player.isBuilder()) return;
+
+        Tile tile = world.tile(x, y);
+        if(tile != null && tile.build != null) tile = tile.build.tile;
+        player.unit().addBuild(new BuildPlan(tile.x, tile.y));
+    }
+
+// InputHandler.java : public void drawArrow(Block block, int x, int y, int rotation) / public void drawArrow(Block block, int x, int y, int rotation, boolean valid)
+    public void drawArrow(Block block, int x, int y, int rotation){
+        drawArrow(block, x, y, rotation, validPlace(x, y, block, rotation));
+    }
+
+// MobileInput.java : boolean hasPlan(Tile tile)
+    boolean hasPlan(Tile tile){
+        return getPlan(tile) != null;
+    }
+
+// MobileInput.java : void removePlan(BuildPlan plan)
+    void removePlan(BuildPlan plan){
+        selectPlans.remove(plan, true);
+        if(!plan.breaking){
+            removals.add(plan);
+        }
+    }
+
+// MobileInput.java : boolean isLinePlacing()
+    boolean isLinePlacing(){
+        return mode == placing && lineMode && Mathf.dst(lineStartX * tilesize, lineStartY * tilesize, Core.input.mouseWorld().x, Core.input.mouseWorld().y) >= 3 * tilesize;
+    }
+
+// MobileInput.java : boolean isAreaBreaking()
+    boolean isAreaBreaking(){
+        return mode == breaking && lineMode && Mathf.dst(lineStartX * tilesize, lineStartY * tilesize, Core.input.mouseWorld().x, Core.input.mouseWorld().y) >= 2 * tilesize;
+    }
+
+// MobileInput.java : public boolean showCancel()
+    public boolean showCancel(){
+        return !player.dead() && (player.unit().isBuilding() || block != null || mode == breaking || !selectPlans.isEmpty()) && !hasSchematic() && !ui.consolefrag.shown();
+    }
+
+// MobileInput.java : public boolean hasSchematic()
+    public boolean hasSchematic(){
+        return lastSchematic != null && !selectPlans.isEmpty();
+    }
+
+// MobileInput.java : public void drawTop()
+    @Override
+    public void drawTop(){
+        if(mode == schematicSelect){
+            drawSelection(lineStartX, lineStartY, lastLineX, lastLineY, Vars.maxSchematicSize);
+        }else if(mode == rebuildSelect){
+            drawRebuildSelection(lineStartX, lineStartY, lastLineX, lastLineY);
+        }
+    }
+
+// MobileInput.java : public boolean isRebuildSelecting()
+    @Override
+    public boolean isRebuildSelecting(){
+        return rebuildMode;
+    }
+
+// MobileInput.java : protected int schemOriginX()
+    @Override
+    protected int schemOriginX(){
+        Tmp.v1.setZero();
+        selectPlans.each(r -> Tmp.v1.add(r.drawx(), r.drawy()));
+        return World.toTile(Tmp.v1.scl(1f / selectPlans.size).x);
+    }
+
+// MobileInput.java : protected int schemOriginY()
+    @Override
+    protected int schemOriginY(){
+        Tmp.v1.setZero();
+        selectPlans.each(r -> Tmp.v1.add(r.drawx(), r.drawy()));
+        return World.toTile(Tmp.v1.scl(1f / selectPlans.size).y);
+    }
+
+// MobileInput.java : public boolean isPlacing()
+    @Override
+    public boolean isPlacing(){
+        return super.isPlacing() && mode == placing;
+    }
+
+// MobileInput.java : public boolean isBreaking()
+    @Override
+    public boolean isBreaking(){
+        return mode == breaking;
+    }
+
+// MobileInput.java : public void useSchematic(Schematic schem, boolean checkHidden)
+    @Override
+    public void useSchematic(Schematic schem, boolean checkHidden){
+        selectPlans.clear();
+        selectPlans.addAll(schematics.toPlans(schem, World.toTile(Core.camera.position.x), World.toTile(Core.camera.position.y), checkHidden));
+        lastSchematic = schem;
+    }
+
+// MobileInput.java : public void reset()
+    @Override
+    public void reset(){
+        super.reset();
+        manualShooting = down = false;
+    }
+
+// MobileInput.java : public void getSyncedPlans(Seq<BuildPlan> out)
+    @Override
+    public void getSyncedPlans(Seq<BuildPlan> out){
+        super.getSyncedPlans(out);
+        for(var plan : selectPlans){
+            if(!plan.breaking){
+                out.add(plan);
+            }
+        }
+    }
+
+// MobileInput.java : public boolean panStop(float x, float y, int pointer, KeyCode button)
+    @Override
+    public boolean panStop(float x, float y, int pointer, KeyCode button){
+        shiftDeltaX = shiftDeltaY = 0f;
+        return false;
+    }
+
+// MobileInput.java : public boolean zoom(float initialDistance, float distance)
+    @Override
+    public boolean zoom(float initialDistance, float distance){
+        if(Core.settings.getBool("keyboard")) return false;
+        if(lastZoom < 0){
+            lastZoom = renderer.getScale();
+        }
+
+        renderer.setScale(distance / initialDistance * lastZoom);
+        return true;
+    }
+
+// Placement.java : public static boolean isSidePlace(Seq<BuildPlan> plans)
+    public static boolean isSidePlace(Seq<BuildPlan> plans){
+        return plans.size > 1 && Mathf.mod(Tile.relativeTo(plans.first().x, plans.first().y, plans.get(1).x, plans.get(1).y) - plans.first().rotation, 2) == 1;
+    }
+
+// Placement.java : public static void calculateBridges(Seq<BuildPlan> plans, ItemBridge bridge) / private static void calculateBridges(Seq<BuildPlan> plans, BridgePlacer bridge, boolean hasJunction, Boolf<Block> avoid) / public static void calculateBridges(Seq<BuildPlan> plans, ItemBridge bridge, boolean hasJunction, Boolf<Block> avoid) / public static void calculateBridges(Seq<BuildPlan> plans, DirectionBridge bridge, boolean hasJunction, Boolf<Block> avoid)
+    public static void calculateBridges(Seq<BuildPlan> plans, ItemBridge bridge){
+        calculateBridges(plans, bridge, false, t -> false);
+    }
+
+// Placement.java : private static float distanceHeuristic(int x1, int y1, int x2, int y2)
+    private static float distanceHeuristic(int x1, int y1, int x2, int y2){
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+// Placement.java : private static boolean validNode(Tile tile, Tile other)
+    private static boolean validNode(Tile tile, Tile other){
+        Block block = control.input.block;
+        if(block != null && block.canReplace(other.block())){
+            return true;
+        }else{
+            return other.block().alwaysReplace;
+        }
+    }
+

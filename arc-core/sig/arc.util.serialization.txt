@@ -1,0 +1,495 @@
+AllowSerialization.java
+Java interface
+// Marker interface for allowing serialization
+
+Base64Coder.java
+Java class
+fields:
+  public static final CharMap regularMap
+  private static final String systemLineSeparator  // The line separator string of the operating system.
+ctors:
+  private Base64Coder()  // Dummy constructor.
+methods:
+  public static String encodeString(String s) / public static String encodeString(String s, boolean useUrlsafeEncoding)  // Encodes a string into Base64 format.
+  public static String encodeLines(byte[] in) / public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator, CharMap charMap) / public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator, char[] charMap)  // Encodes a byte array into Base64 format and breaks the output into lines of 76 characters.
+  public static char[] encode(byte[] in) / public static char[] encode(byte[] in, boolean urlSafe) / public static char[] encode(byte[] in, CharMap charMap) / public static char[] encode(byte[] in, char[] charMap) / public static char[] encode(byte[] in, int iLen) / public static char[] encode(byte[] in, int iOff, int iLen, CharMap charMap) / public static char[] encode(byte[] in, int iOff, int iLen, char[] charMap)  // Encodes a byte array into Base64 format.
+  public static String decodeString(String s) / public static String decodeString(String s, boolean useUrlSafeEncoding)  // Decodes a string from Base64 format.
+  public static byte[] decodeLines(String s) / public static byte[] decodeLines(String s, CharMap inverseCharMap) / public static byte[] decodeLines(String s, byte[] inverseCharMap)  // Decodes a byte array from Base64 format and ignores line separators, tabs and blanks.
+  public static byte[] decode(String s) / public static byte[] decode(String s, CharMap inverseCharMap) / public static byte[] decode(char[] in, byte[] inverseCharMap) / public static byte[] decode(char[] in, CharMap inverseCharMap) / public static byte[] decode(char[] in) / public static byte[] decode(char[] in, int iOff, int iLen, CharMap inverseCharMap) / public static byte[] decode(char[] in, int iOff, int iLen, byte[] inverseCharMap)  // Decodes a byte array from Base64 format.
+inner-class: CharMap
+  fields:
+    protected final char encodingMap
+    protected final byte decodingMap
+  ctors:
+    public CharMap(char char63, char char64)
+  methods:
+    public byte[] getDecodingMap()
+    public char[] getEncodingMap()
+
+BaseJsonReader.java
+Java interface
+methods:
+  JsonValue parse(InputStream input) / default JsonValue parse(Fi file)
+
+BaseJsonWriter.java
+Java interface extends java.io.Closeable
+methods:
+  void setOutputType(OutputType outputType)
+  void setQuoteLongValues(boolean quoteLongValues)
+  BaseJsonWriter name(String name) throws IOException
+  BaseJsonWriter object() throws IOException / BaseJsonWriter object(String name) throws IOException
+  BaseJsonWriter array() throws IOException / BaseJsonWriter array(String name) throws IOException
+  BaseJsonWriter value(Object value) throws IOException
+  BaseJsonWriter set(String name, Object value) throws IOException
+  BaseJsonWriter pop() throws IOException
+
+Json.java
+Java class
+// Reads/writes Java objects to/from JSON, automatically.
+fields:
+  private static final boolean debug
+  private final ObjectMap<Class,OrderedMap<String,FieldMetadata>> typeToFields
+  private final ObjectMap<String,Class> tagToClass
+  private final ObjectMap<Class,String> classToTag
+  private final ObjectMap<Class,Serializer> classToSerializer
+  private final ObjectMap<Class,Object[]> classToDefaultValues
+  private final Object equals1
+  private BaseJsonWriter writer
+  private String typeName
+  private boolean usePrototypes
+  private OutputType outputType
+  private boolean quoteLongValues
+  private boolean ignoreUnknownFields
+  private boolean ignoreDeprecated
+  private boolean readDeprecated
+  private boolean enumNames
+  private Serializer defaultSerializer
+ctors:
+  public Json() / public Json(OutputType outputType)
+methods:
+  public boolean getIgnoreUnknownFields()
+  public void setIgnoreUnknownFields(boolean ignoreUnknownFields)  // When true, fields in the JSON that are not found on the class will not throw a {@link SerializationException}.
+  public void setIgnoreDeprecated(boolean ignoreDeprecated)  // When true, fields with the {@link Deprecated} annotation will not be serialized.
+  public void setReadDeprecated(boolean readDeprecated)  // When true, fields with the {@link Deprecated} annotation will be read (but not written) when
+  public void setOutputType(OutputType outputType)  // @see JsonWriter#setOutputType(OutputType)
+  public void setQuoteLongValues(boolean quoteLongValues)  // @see JsonWriter#setQuoteLongValues(boolean)
+  public void setEnumNames(boolean enumNames)  // When true, {@link Enum#name()} is used to write enum values.
+  public void addClassTag(String tag, Class type)  // Sets a tag to use instead of the fully qualifier class name.
+  public Class getClass(String tag)  // Returns the class for the specified tag, or null.
+  public String getTag(Class type)  // Returns the tag for the specified class, or null.
+  public void setTypeName(String typeName)  // Sets the name of the JSON field to store the Java class name or class tag when required to avoid ambiguity during
+  public void setDefaultSerializer(Serializer defaultSerializer)  // Sets the serializer to use when the type being deserialized is not known (null).
+  public void setSerializer(Class<T> type, Serializer<T> serializer)  // Registers a serializer to use for the specified type instead of the default behavior of serializing all of an objects
+  public Serializer<T> getSerializer(Class<T> type)
+  public void setUsePrototypes(boolean usePrototypes)  // When true, field values that are identical to a newly constructed instance are not written.
+  public void setElementType(Class type, String fieldName, Class elementType)  // Sets the type of elements in a struct.
+  public OrderedMap<String,FieldMetadata> getFields(Class type)
+  public String toJson(Object object) / public String toJson(Object object, Class knownType) / public String toJson(Object object, Class knownType, Class elementType) / public void toJson(Object object, Fi file) / public void toJson(Object object, Class knownType, Fi file) / public void toJson(Object object, Class knownType, Class elementType, Fi file) / public void toJson(Object object, Writer writer) / public void toJson(Object object, Class knownType, Writer writer) / public void toJson(Object object, Class knownType, Class elementType, Writer writer)  // @param knownType May be null if the type is unknown.
+  public void toUBJson(Object object, Class knownType, OutputStream stream)
+  public BaseJsonWriter getWriter()
+  public void setWriter(BaseJsonWriter writer)  // Sets the writer where JSON output will be written.
+  public void writeFields(Object object)  // Writes all fields of the specified object to the current JSON object.
+  private Object[] getDefaultValues(Class type)
+  public void writeField(Object object, String name) / public void writeField(Object object, String name, Class elementType) / public void writeField(Object object, String fieldName, String jsonName) / public void writeField(Object object, String fieldName, String jsonName, Class elementType)  // @see #writeField(Object, String, String, Class)
+  public void writeValue(String name, Object value) / public void writeValue(String name, Object value, Class knownType) / public void writeValue(String name, Object value, Class knownType, Class elementType) / public void writeValue(Object value) / public void writeValue(Object value, Class knownType) / public void writeValue(Object value, Class knownType, Class elementType)  // Writes the value as a field on the current JSON object, without writing the actual class.
+  public void writeObjectStart(String name) / public void writeObjectStart(String name, Class actualType, Class knownType) / public void writeObjectStart() / public void writeObjectStart(Class actualType, Class knownType)  // @param knownType May be null if the type is unknown.
+  public void writeObjectEnd()
+  public void writeArrayStart(String name) / public void writeArrayStart()
+  public void writeArrayEnd()
+  public void writeType(Class type)
+  public T fromJson(Class<T> type, Reader reader) / public T fromJson(Class<T> type, Class elementType, Reader reader) / public T fromJson(Class<T> type, InputStream input) / public T fromJson(Class<T> type, Class elementType, InputStream input) / public T fromJson(Class<T> type, Fi file) / public T fromJson(Class<T> type, Class elementType, Fi file) / public T fromJson(Class<T> type, char[] data, int offset, int length) / public T fromJson(Class<T> type, Class elementType, char[] data, int offset, int length) / public T fromJson(Class<T> type, String json) / public T fromJson(Class<T> type, Class elementType, String json)  // @param type May be null if the type is unknown.
+  public void readField(Object object, String name, JsonValue jsonData) / public void readField(Object object, String name, Class elementType, JsonValue jsonData) / public void readField(Object object, String fieldName, String jsonName, JsonValue jsonData) / public void readField(Object object, String fieldName, String jsonName, Class elementType, JsonValue jsonMap) / public void readField(Object object, Field field, String jsonName, Class elementType, JsonValue jsonMap)  // @param elementType May be null if the type is unknown.
+  public void readFields(Object object, JsonValue jsonMap)
+  protected boolean ignoreUnknownField(Class type, String fieldName)  // Called for each unknown field name encountered by {@link #readFields(Object, JsonValue)} when {@link #ignoreUnknownFields}
+  public T readValue(String name, Class<T> type, JsonValue jsonMap) / public T readValue(String name, Class<T> type, T defaultValue, JsonValue jsonMap) / public T readValue(String name, Class<T> type, Class elementType, JsonValue jsonMap) / public T readValue(String name, Class<T> type, Class elementType, T defaultValue, JsonValue jsonMap) / public T readValue(Class<T> type, Class elementType, T defaultValue, JsonValue jsonData) / public T readValue(Class<T> type, JsonValue jsonData) / public T readValue(Class<T> type, Class elementType, JsonValue jsonData) / public T readValue(Class<T> type, Class elementType, JsonValue jsonData, Class keytype)  // @param type May be null if the type is unknown.
+  public void copyFields(Object from, Object to) / public void copyFields(Object from, Object to, boolean setFinals)  // Each field on the <code>to</code> object is set to the value for the field with the same name on the <code>from</code>
+  protected Class<T> resolveClass(String className)
+  private String convertToString(Enum e) / protected String convertToString(Object object)
+  protected Object newInstance(Class type)
+  public String prettyPrint(Object object) / public String prettyPrint(String json) / public String prettyPrint(Object object, int singleLineColumns) / public String prettyPrint(String json, int singleLineColumns) / public String prettyPrint(Object object, PrettyPrintSettings settings) / public String prettyPrint(String json, PrettyPrintSettings settings)
+  static Class getElementType(Field field, int index)
+inner-interface: Serializer
+  methods:
+    void write(Json json, T object, Class knownType)
+    T read(Json json, JsonValue jsonData, Class type)
+inner-interface: JsonSerializable
+  methods:
+    void write(Json json)
+    void read(Json json, JsonValue jsonData)
+inner-class: FieldMetadata
+  fields:
+    public final Field field
+    public Class elementType
+    public Class keyType
+  ctors:
+    public FieldMetadata(Field field)
+
+JsonReader.java
+Java class implements arc.util.serialization.BaseJsonReader
+// Lightweight JSON parser.<br>
+fields:
+  static final int json_start
+  static final int json_first_final
+  static final int json_error
+  static final int json_en_object
+  static final int json_en_array
+  static final int json_en_main
+  private static final byte _json_actions
+  private static final short _json_key_offsets
+  private static final char _json_trans_keys
+  private static final byte _json_single_lengths
+  private static final byte _json_range_lengths
+  private static final short _json_index_offsets
+  private static final byte _json_indicies
+  private static final byte _json_trans_targs
+  private static final byte _json_trans_actions
+  private static final byte _json_eof_actions
+  private final Seq<JsonValue> elements
+  private final Seq<JsonValue> lastChild
+  private JsonValue root
+methods:
+  private static byte[] init__json_actions_0()  // line 421 "JsonReader.java"
+  private static short[] init__json_key_offsets_0()
+  private static char[] init__json_trans_keys_0()
+  private static byte[] init__json_single_lengths_0()
+  private static byte[] init__json_range_lengths_0()
+  private static short[] init__json_index_offsets_0()
+  private static byte[] init__json_indicies_0()
+  private static byte[] init__json_trans_targs_0()
+  private static byte[] init__json_trans_actions_0()
+  private static byte[] init__json_eof_actions_0()
+  public JsonValue parse(String json) / public JsonValue parse(Reader reader) / public JsonValue parse(InputStream input) / public JsonValue parse(Fi file) / public JsonValue parse(char[] data, int offset, int length)
+  private void addChild(String name, JsonValue child)
+  protected void startObject(String name)
+  protected void startArray(String name)
+  protected void pop()
+  protected void string(String name, String value)
+  protected void number(String name, double value, String stringValue) / protected void number(String name, long value, String stringValue)
+  protected void bool(String name, boolean value)
+  private String unescape(String value)
+
+JsonValue.java
+Java class implements java.lang.Iterable
+// Container for a JSON object, array, string, double, long, boolean, or null.
+fields:
+  public String name
+  public JsonValue child
+  public int size
+  private ValueType type
+  private String stringValue
+  private double doubleValue
+  private long longValue
+ctors:
+  public JsonValue(ValueType type) / public JsonValue(String value) / public JsonValue(double value) / public JsonValue(long value) / public JsonValue(double value, String stringValue) / public JsonValue(long value, String stringValue) / public JsonValue(boolean value)  // @param value May be null.
+methods:
+  private static boolean isFlat(JsonValue object)
+  private static boolean isNumeric(JsonValue object)
+  private static void indent(int count, StringBuilder buffer) / private static void indent(int count, Writer buffer) throws IOException
+  public JsonValue get(int index) / public JsonValue get(String name)  // Returns the child at the specified index.
+  public boolean has(String name)  // Returns true if a child with the specified name exists.
+  public JsonValue require(int index) / public JsonValue require(String name)  // Returns the child at the specified index.
+  public JsonValue remove(int index) / public JsonValue remove(String name)  // Removes the child with the specified index.
+  public String asString()  // Returns this value as a string.
+  public float asFloat()  // Returns this value as a float.
+  public double asDouble()  // Returns this value as a double.
+  public long asLong()  // Returns this value as a long.
+  public int asInt()  // Returns this value as an int.
+  public boolean asBoolean()  // Returns this value as a boolean.
+  public byte asByte()  // Returns this value as a byte.
+  public short asShort()  // Returns this value as a short.
+  public char asChar()  // Returns this value as a char.
+  public String[] asStringArray()  // Returns the children of this value as a newly allocated String array.
+  public float[] asFloatArray()  // Returns the children of this value as a newly allocated float array.
+  public double[] asDoubleArray()  // Returns the children of this value as a newly allocated double array.
+  public long[] asLongArray()  // Returns the children of this value as a newly allocated long array.
+  public int[] asIntArray()  // Returns the children of this value as a newly allocated int array.
+  public boolean[] asBooleanArray()  // Returns the children of this value as a newly allocated boolean array.
+  public byte[] asByteArray()  // Returns the children of this value as a newly allocated byte array.
+  public short[] asShortArray()  // Returns the children of this value as a newly allocated short array.
+  private void mismatch(String type)
+  private RuntimeException typeMismatch(String type)
+  public char[] asCharArray()  // Returns the children of this value as a newly allocated char array.
+  public boolean hasChild(String name)  // Returns true if a child with the specified name exists and has a child.
+  public JsonValue getChild(String name)  // Finds the child with the specified name and returns its first child.
+  public String getString(String name, String defaultValue) / public String getString(String name) / public String getString(int index)  // Finds the child with the specified name and returns it as a string.
+  public float getFloat(String name, float defaultValue) / public float getFloat(String name) / public float getFloat(int index)  // Finds the child with the specified name and returns it as a float.
+  public double getDouble(String name, double defaultValue) / public double getDouble(String name) / public double getDouble(int index)  // Finds the child with the specified name and returns it as a double.
+  public long getLong(String name, long defaultValue) / public long getLong(String name) / public long getLong(int index)  // Finds the child with the specified name and returns it as a long.
+  public int getInt(String name, int defaultValue) / public int getInt(String name) / public int getInt(int index)  // Finds the child with the specified name and returns it as an int.
+  public boolean getBoolean(String name, boolean defaultValue) / public boolean getBoolean(String name) / public boolean getBoolean(int index)  // Finds the child with the specified name and returns it as a boolean.
+  public byte getByte(String name, byte defaultValue) / public byte getByte(String name) / public byte getByte(int index)  // Finds the child with the specified name and returns it as a byte.
+  public short getShort(String name, short defaultValue) / public short getShort(String name) / public short getShort(int index)  // Finds the child with the specified name and returns it as a short.
+  public char getChar(String name, char defaultValue) / public char getChar(String name) / public char getChar(int index)  // Finds the child with the specified name and returns it as a char.
+  public ValueType type()
+  public void setType(ValueType type)
+  public boolean isArray()
+  public boolean isObject()
+  public boolean isString()
+  public boolean isNumber()  // Returns true if this is a double or long value.
+  public boolean isDouble()
+  public boolean isLong()
+  public boolean isBoolean()
+  public boolean isNull()
+  public boolean isValue()  // Returns true if this is not an array or object.
+  public String name()  // Returns the name for this object value.
+  public void setName(String name)
+  public JsonValue parent()  // Returns the parent for this value.
+  public JsonValue child()  // Returns the first child for this object or array.
+  public void addChild(String name, JsonValue value) / public void addChild(JsonValue value)  // Sets the name of the specified value and adds it after the last child.
+  public JsonValue next()  // Returns the next sibling of this value.
+  public void setNext(JsonValue next)
+  public JsonValue prev()  // Returns the previous sibling of this value.
+  public void setPrev(JsonValue prev)
+  public void set(String value) / public void set(double value, String stringValue) / public void set(long value, String stringValue) / public void set(boolean value)  // @param value May be null.
+  public String toJson(OutputType outputType)
+  private void json(JsonValue object, StringBuilder buffer, OutputType outputType)
+  public String toString()
+  public String prettyPrint(OutputType outputType, int singleLineColumns) / public String prettyPrint(PrettyPrintSettings settings) / private void prettyPrint(JsonValue object, StringBuilder buffer, int indent, PrettyPrintSettings settings) / public void prettyPrint(OutputType outputType, Writer writer) throws IOException / private void prettyPrint(JsonValue object, Writer writer, int indent, PrettyPrintSettings settings) throws IOException  // More efficient than {@link #prettyPrint(PrettyPrintSettings)} but {@link PrettyPrintSettings#singleLineColumns} and
+  public JsonIterator iterator()
+  public String trace()  // Returns a human readable string representing the path from the root of the JSON object graph to this value.
+inner-class: PrettyPrintSettings
+  fields:
+    public OutputType outputType
+    public int singleLineColumns  // If an object on a single line fits this many columns, it won't wrap.
+    public boolean wrapNumericArrays  // Arrays of floats won't wrap.
+inner-class: JsonIterator implements java.util.Iterator, java.lang.Iterable
+  fields:
+    JsonValue entry
+    JsonValue current
+  methods:
+    public boolean hasNext()
+    public JsonValue next()
+    public void remove()
+    public Iterator<JsonValue> iterator()
+
+JsonWriter.java
+Java class extends java.io.Writer implements arc.util.serialization.BaseJsonWriter
+// Builder style API for emitting JSON.
+fields:
+  final Writer writer
+  private final Seq<JsonObject> stack
+  private JsonObject current
+  private boolean named
+  private OutputType outputType
+  private boolean quoteLongValues
+ctors:
+  public JsonWriter(Writer writer)
+methods:
+  public Writer getWriter()
+  public void setOutputType(OutputType outputType)  // Sets the type of JSON output.
+  public void setQuoteLongValues(boolean quoteLongValues)  // When true, quotes long, double, BigInteger, BigDecimal types to prevent truncation in languages like JavaScript and PHP.
+  public BaseJsonWriter name(String name) throws IOException
+  public BaseJsonWriter object() throws IOException / public BaseJsonWriter object(String name) throws IOException
+  public BaseJsonWriter array() throws IOException / public BaseJsonWriter array(String name) throws IOException
+  public BaseJsonWriter value(Object value) throws IOException
+  private void requireCommaOrName() throws IOException
+  public BaseJsonWriter set(String name, Object value) throws IOException
+  public BaseJsonWriter pop() throws IOException
+  public void write(char[] cbuf, int off, int len) throws IOException
+  public void flush() throws IOException
+  public void close() throws IOException
+inner-class: JsonObject
+  fields:
+    final boolean array
+    boolean needsComma
+  ctors:
+    JsonObject(boolean array)
+  methods:
+    void close() throws IOException
+
+Jval.java
+Java class
+// An hsjon parser.
+fields:
+  public static final Jval TRUE
+  private Object value  // Internal value.
+ctors:
+  Jval(Object value)
+methods:
+  public static Jval newObject()
+  public static Jval newArray()
+  public static Jval read(Reader reader) / public static Jval read(byte[] bytes) / public static Jval read(String text)  // Reads a Hjson value from the given reader.
+  public Jtype getType()
+  public static Jval valueOf(int value) / public static Jval valueOf(long value) / public static Jval valueOf(float value) / public static Jval valueOf(double value) / public static Jval valueOf(String string) / public static Jval valueOf(boolean value)
+  public boolean isObject()
+  public boolean isArray()
+  public boolean isNumber()
+  public boolean isString()
+  public boolean isBoolean()
+  public boolean isTrue()
+  public boolean isFalse()
+  public boolean isNull()
+  public JsonMap asObject()
+  public JsonArray asArray()
+  public byte asByte()
+  public short asShort()
+  public int asInt()
+  public long asLong()
+  public float asFloat()
+  public double asDouble()
+  public String asString()
+  public boolean asBool()
+  public Jval get(String name)
+  public void add(String name, Jval val) / public void add(String name, String val) / public Jval add(Jval value) / public Jval add(String value) / public Jval add(Number value) / public Jval add(boolean value)
+  public Jval put(String name, Jval val) / public Jval put(String name, String val) / public Jval put(String name, Number val) / public Jval put(String name, boolean val)
+  public Jval remove(String name)
+  public boolean has(String name)
+  public int getInt(String name, int defaultValue)
+  public long getLong(String name, long defaultValue)
+  public float getFloat(String name, float defaultValue)
+  public double getDouble(String name, double defaultValue)
+  public boolean getBool(String name, boolean defaultValue)
+  public String getString(String name) / public String getString(String name, String defaultValue)
+  public void writeTo(Writer writer) throws IOException / public void writeTo(Writer writer, Jformat format) throws IOException  // Writes the JSON representation of this value to the given writer in its minimal form, without
+  public String toString() / public String toString(Jformat format)  // Returns the JSON string for this value in its minimal form, without any additional whitespace.
+  public boolean equals(Object object)
+inner-class: JsonMap extends arc.struct.ArrayMap
+// Alias class of whatever is used to store json maps (objects).
+  methods:
+    protected void putAdd(String key, Jval value)  // Puts a value without checking if it's in the map first.
+inner-class: JsonArray extends arc.struct.Seq
+// Alias class of json arrays.
+inner-class: WritingBuffer extends java.io.Writer
+// A lightweight writing buffer to reduce the amount of write operations to be performed on the
+  fields:
+    private final Writer writer
+    private final char buffer
+    private int fill
+  ctors:
+    WritingBuffer(Writer writer, int bufferSize)
+  methods:
+    public void write(int c) throws IOException / public void write(char[] cbuf, int off, int len) throws IOException / public void write(String str, int off, int len) throws IOException
+    public void flush() throws IOException  // Flushes the internal buffer but does not flush the wrapped writer.
+    public void close()  // Does not close or flush the wrapped writer.
+inner-class: Hparser
+  fields:
+    private final char buffer
+    private int index
+    private int line
+    private int lineOffset
+    private int current
+    private StringBuilder captureBuffer
+    private int captureStart
+    private int rawStart
+    private boolean escaped
+    private boolean isArray
+  ctors:
+    Hparser(String string) / Hparser(Reader reader)
+  methods:
+    static boolean isWhiteSpace(int ch) / private boolean isWhiteSpace()
+    void reset()
+    Jval parse()
+    Jval checkTrailing(Jval v) throws JsonParseException
+    private Jval readValue()
+    private Jval readTfnns()
+    static Jval tryParseNumber(char[] buf, int from, int to, boolean stopAtNext) / static Jval tryParseNumber(StringBuilder value, boolean stopAtNext) / static Jval tryParseNumber(String value)
+    private boolean regionMatches(int off, String kw)
+    private static boolean isTrimChar(char c)  // Matches String.trim()'s definition (chars <= 0x20), used where the original relied on .trim().
+    private Jval readArray()
+    private Jval readObject(boolean objectWithoutBraces)
+    private String readName()
+    private String readMlString()
+    private void skipIndent(int indent)
+    private Jval readString()
+    private String readStringInternal(boolean allowML)
+    private void startCapture()
+    private void readEscape()
+    private String endCapture()
+    private static boolean isDigit(char ch)
+    private boolean readIf(char ch)
+    private void skipWhiteSpace()
+    private void read()
+    private int peek(int idx) / private int peek()
+    private JsonParseException expected(String expected)
+    private JsonParseException error(String message)
+    private boolean isHexDigit()
+    private boolean isEndOfText()
+inner-class: JsonParseException extends java.lang.RuntimeException
+// An unchecked exception to indicate that an input does not qualify as valid JSON.
+  fields:
+    public final int offset
+    public final int line
+    public final int column
+  ctors:
+    JsonParseException(String message, int offset, int line, int column)
+inner-class: Hwriter
+  methods:
+    static void nl(Writer tw, int level) throws IOException
+    public static void save(Jval value, Writer tw, int level, String separator, boolean noIndent) throws IOException
+    static String escapeName(String name)
+    static boolean needsEscapeName(String name)
+    static void writeString(String value, Writer tw, int level, String separator) throws IOException
+    static boolean containsQuoteChar(String value)
+    static void writeMLString(String value, Writer tw, int level, String separator) throws IOException
+    static boolean startsWithKeyword(String text)
+    static boolean isPunctuatorChar(int c)
+    static boolean needsQuotes(char c)
+    static boolean needsEscape(char c)
+    static boolean needsEscapeML(char c)
+inner-class: Jwriter
+  methods:
+    static void nl(Writer tw, int level) throws IOException
+    public static void save(Jval value, boolean format, boolean includeQuotes, Writer tw, int level) throws IOException
+    static String escapeString(String src)
+    private static String doEscapeString(StringBuilder sb, String src, int cur)
+    private static String getEscapedChar(char c)
+
+SerializationException.java
+Java class extends java.lang.RuntimeException
+// Indicates an error during serialization due to misconfiguration or during deserialization due to invalid input data.
+fields:
+  private StringBuilder trace
+ctors:
+  public SerializationException() / public SerializationException(String message, Throwable cause) / public SerializationException(String message) / public SerializationException(Throwable cause)
+methods:
+  public boolean causedBy(Class type) / private boolean causedBy(Throwable ex, Class<?> type)  // Returns true if any of the exceptions that caused this exception are of the specified type.
+  public String getMessage()
+  public void addTrace(String info)  // Adds information to the exception message about where in the the object graph serialization failure occurred.
+
+UBJsonReader.java
+Java class implements arc.util.serialization.BaseJsonReader
+// Lightweight UBJSON parser.<br>
+methods:
+  public JsonValue parse(InputStream input) / public JsonValue parse(Fi file) / public JsonValue parse(DataInputStream din) throws IOException / protected JsonValue parse(DataInputStream din, byte type) throws IOException  // Parses the UBJSON from the given stream.
+  public JsonValue parseWihoutClosing(DataInputStream din) throws IOException
+  protected JsonValue parseArray(DataInputStream din) throws IOException
+  protected JsonValue parseObject(DataInputStream din) throws IOException
+  protected JsonValue parseData(DataInputStream din, byte blockType) throws IOException
+  protected String parseString(DataInputStream din, byte type) throws IOException / protected String parseString(DataInputStream din, boolean sOptional, byte type) throws IOException
+  protected long parseSize(DataInputStream din, boolean useIntOnError, long defaultValue) throws IOException / protected long parseSize(DataInputStream din, byte type, boolean useIntOnError, long defaultValue) throws IOException
+  protected short readUChar(DataInputStream din) throws IOException
+  protected int readUShort(DataInputStream din) throws IOException
+  protected long readUInt(DataInputStream din) throws IOException
+  protected String readString(DataInputStream din, long size) throws IOException
+
+UBJsonWriter.java
+Java class implements java.io.Closeable, arc.util.serialization.BaseJsonWriter
+// Builder style API for emitting UBJSON.
+fields:
+  final DataOutputStream out
+  private final Seq<JsonObject> stack
+  private JsonObject current
+  private boolean named
+ctors:
+  public UBJsonWriter(OutputStream out)
+methods:
+  public void reset()
+  public UBJsonWriter object() throws IOException / public UBJsonWriter object(String name) throws IOException  // Begins a new object container.
+  public UBJsonWriter array() throws IOException / public UBJsonWriter array(String name) throws IOException  // Begins a new array container.
+  public UBJsonWriter name(String name) throws IOException  // Appends a name for the next object, array, or value.
+  public UBJsonWriter value(byte value) throws IOException / public UBJsonWriter value(short value) throws IOException / public UBJsonWriter value(int value) throws IOException / public UBJsonWriter value(long value) throws IOException / public UBJsonWriter value(float value) throws IOException / public UBJsonWriter value(double value) throws IOException / public UBJsonWriter value(boolean value) throws IOException / public UBJsonWriter value(char value) throws IOException / public UBJsonWriter value(String value) throws IOException / public UBJsonWriter value(byte[] values) throws IOException / public UBJsonWriter value(short[] values) throws IOException / public UBJsonWriter value(int[] values) throws IOException / public UBJsonWriter value(long[] values) throws IOException / public UBJsonWriter value(float[] values) throws IOException / public UBJsonWriter value(double[] values) throws IOException / public UBJsonWriter value(boolean[] values) throws IOException / public UBJsonWriter value(char[] values) throws IOException / public UBJsonWriter value(String[] values) throws IOException / public UBJsonWriter value(JsonValue value) throws IOException / public UBJsonWriter value(Object object) throws IOException / public UBJsonWriter value() throws IOException  // Appends a {@code byte} value to the stream.
+  public void setOutputType(OutputType outputType)
+  public void setQuoteLongValues(boolean quoteLongValues)
+  public UBJsonWriter set(String name, Object value) throws IOException / public UBJsonWriter set(String name, byte value) throws IOException / public UBJsonWriter set(String name, short value) throws IOException / public UBJsonWriter set(String name, int value) throws IOException / public UBJsonWriter set(String name, long value) throws IOException / public UBJsonWriter set(String name, float value) throws IOException / public UBJsonWriter set(String name, double value) throws IOException / public UBJsonWriter set(String name, boolean value) throws IOException / public UBJsonWriter set(String name, char value) throws IOException / public UBJsonWriter set(String name, String value) throws IOException / public UBJsonWriter set(String name, byte[] value) throws IOException / public UBJsonWriter set(String name, short[] value) throws IOException / public UBJsonWriter set(String name, int[] value) throws IOException / public UBJsonWriter set(String name, long[] value) throws IOException / public UBJsonWriter set(String name, float[] value) throws IOException / public UBJsonWriter set(String name, double[] value) throws IOException / public UBJsonWriter set(String name, boolean[] value) throws IOException / public UBJsonWriter set(String name, char[] value) throws IOException / public UBJsonWriter set(String name, String[] value) throws IOException / public UBJsonWriter set(String name) throws IOException  // Appends a named value to the stream.
+  private void checkName()
+  public UBJsonWriter pop() throws IOException / protected UBJsonWriter pop(boolean silent) throws IOException  // Ends the current object or array and pops it off of the element stack.
+  public void flush() throws IOException  // Flushes the underlying stream.
+  public void close() throws IOException  // Closes the underlying output stream and releases any system resources associated with the stream.
+inner-class: JsonObject
+  fields:
+    final boolean array
+  ctors:
+    JsonObject(boolean array)
+  methods:
+    void close() throws IOException
+

@@ -1,0 +1,94 @@
+DiscordRPC.java
+Java class (final)
+// Simple class for handling Discord Rich Presence.
+fields:
+  private static int pid
+  private static long clientId
+  private static Pipe pipe
+  public static Cons<String> onActivityJoin
+  public static Cons<String> onActivitySpectate
+  public static Cons2<String,User> onActivityJoinRequest
+  public static Runnable onReady
+  public static Cons<Throwable> onDisconnected
+  public static Cons<Jval> onClose
+methods:
+  public static void connect(long clientId) throws Exception  // Call before sending any presence updates.
+  public static void send(RichPresence presence)  // Updates the displayed rich presence.
+  public static void subscribe()  // Subscribes to all activity events.
+  public static PipeStatus getStatus()
+  public static void close()  // Attempts to close an open connection to Discord.
+  private static void checkConnected(boolean connected)  // Makes sure that the client is connected (or not) depending on if it should
+inner-class: Packet
+  fields:
+    public final PacketOp op
+    public final Jval data
+  ctors:
+    public Packet(PacketOp op, Jval data)
+  methods:
+    public byte[] toBytes()
+    public String toString()
+inner-class: NoDiscordClientException extends java.lang.RuntimeException
+inner-class: User
+  fields:
+    public final String name
+    public final String discriminator
+    public final long id
+    public final String avatar
+  ctors:
+    public User(String name, String discriminator, long id, String avatar)
+inner-class: RichPresence
+  fields:
+    public String state
+    public String details
+    public long startTimestamp
+    public long endTimestamp
+    public String largeImageKey
+    public String largeImageText
+    public String smallImageKey
+    public String smallImageText
+    public String partyId
+    public int partySize
+    public int partyMax
+    public String matchSecret
+    public String joinSecret
+    public String spectateSecret
+    public String label1
+    public String url1
+    public String label2
+    public String url2
+    public boolean instance
+  methods:
+    public Jval toJson()
+    Jval buttons()
+inner-class: Pipe
+  fields:
+    private static final int version
+    private final static String unixPaths  // a list of system property keys to get IPC file from different unix systems.
+    public PipeStatus status
+  methods:
+    public static Pipe openPipe(long clientId) throws Exception
+    private static String getPipeLocation(int i)
+    public void send(PacketOp op, Jval data)
+    public abstract Packet read() throws Exception
+    public abstract void write(byte[] b) throws IOException
+    public abstract void close() throws IOException
+inner-class: UnixPipe extends arc.discord.DiscordRPC.Pipe
+  fields:
+    private final SocketChannel socket
+    private final ByteBuffer buffer
+  ctors:
+    UnixPipe(String location)
+  methods:
+    public Packet read() throws Exception
+    public void write(byte[] b) throws IOException
+    public void close() throws IOException
+inner-class: WindowsPipe extends arc.discord.DiscordRPC.Pipe
+  fields:
+    private final RandomAccessFile file
+  ctors:
+    WindowsPipe(String location)
+  methods:
+    public void write(byte[] b) throws IOException
+    public Packet read() throws Exception
+    public void close() throws IOException
+

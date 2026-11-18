@@ -1,0 +1,475 @@
+Battery.java
+Java class extends mindustry.world.blocks.power.PowerDistributor
+fields:
+  public DrawBlock drawer
+  public Color emptyLightColor
+  public Color fullLightColor
+ctors:
+  public Battery(String name)
+methods:
+  public void init()
+  void checkDrawDefault()
+  public void load()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+inner-class: BatteryBuild extends mindustry.gen.Building
+  methods:
+    public void draw()
+    public void drawLight()
+    public float warmup()
+    public void overwrote(Seq<Building> previous)
+    public BlockStatus status()
+
+BeamNode.java
+Java class extends mindustry.world.blocks.power.PowerBlock
+fields:
+  private static final int maxRange  // maximum expected range of any beam node; used for previews
+  public int range
+  public TextureRegion laser
+  public TextureRegion laserEnd
+  public Color laserColor1
+  public Color laserColor2
+  public float pulseScl
+  public float laserWidth
+ctors:
+  public BeamNode(String name)
+methods:
+  public void setBars()
+  public void setStats()
+  public void init()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void changePlacementPath(Seq<Point2> points, int rotation, boolean diagonal)
+  public static void getNodeLinks(Tile tile, Block block, Team team, Cons<Building> others)  // Iterates through linked nodes of a block at a tile.
+  public void drawLaser(float x1, float y1, float x2, float y2, int size1, int size2)  // Note that x1 and y1 are expected to be coordinates of the node to draw the beam from.
+inner-class: BeamNodeBuild extends mindustry.gen.Building
+  fields:
+    public Building links  // current links in cardinal directions
+    public Tile dests
+    public int lastChange
+  methods:
+    public boolean couldConnect(int direction, Block target, int targetX, int targetY)  // @return whether a beam could theoretically connect with the specified block at a position
+    public void updateTile()
+    public BlockStatus status()
+    public void draw()
+    public void pickedUp()
+    public void updateDirections()
+
+ConsumeGenerator.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+// A generator that just takes in certain items or liquids.
+fields:
+  public float itemDuration  // The time in number of ticks during which a single item will produce power.
+  public float warmupSpeed
+  public float effectChance
+  public Effect generateEffect
+  public float generateEffectRange
+  public float baseLightRadius
+  public LiquidStack outputLiquid
+  public boolean explodeOnFull  // If true, this block explodes when outputLiquid exceeds capacity.
+  public ConsumeItemFilter filterItem
+  public ConsumeLiquidFilter filterLiquid
+  public ObjectFloatMap<Item> itemDurationMultipliers  // Multiplies the itemDuration for a given item.
+ctors:
+  public ConsumeGenerator(String name)
+methods:
+  public void setBars()
+  public void init()
+  public void afterPatch()
+  public void setStats()
+inner-class: ConsumeGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild
+  fields:
+    public float warmup
+  methods:
+    public void updateEfficiencyMultiplier()
+    public void updateTile()
+    public boolean consumeTriggerValid()
+    public float warmup()
+    public float totalProgress()
+    public void drawLight()
+
+HeaterGenerator.java
+Java class extends mindustry.world.blocks.power.ConsumeGenerator
+fields:
+  public float heatOutput
+  public float warmupRate
+ctors:
+  public HeaterGenerator(String name)
+methods:
+  public void setStats()
+  public boolean rotatedOutput(int x, int y)
+  public void setBars()
+inner-class: HeaterGeneratorBuild extends mindustry.world.blocks.power.ConsumeGenerator.ConsumeGeneratorBuild implements mindustry.world.blocks.heat.HeatBlock
+  fields:
+    public float heat
+  methods:
+    public void updateTile()
+    public float heatFrac()
+    public float heat()
+    public double sense(LAccess sensor)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ImpactReactor.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+fields:
+  public final int timerUse
+  public float warmupSpeed
+  public float itemDuration
+ctors:
+  public ImpactReactor(String name)
+methods:
+  public void setBars()
+  public void setStats()
+  public float statWarmup(float progress)  // progress remaining
+inner-class: ImpactReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild
+  fields:
+    public float warmup
+  methods:
+    public void updateTile()
+    public float warmup()
+    public float totalProgress()
+    public float ambientVolume()
+    public double sense(LAccess sensor)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+LightBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public float brightness
+  public float radius
+  public TextureRegion topRegion
+ctors:
+  public LightBlock(String name)
+methods:
+  public void init()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void changePlacementPath(Seq<Point2> points, int rotation)
+  public int minimapColor(Tile tile)
+inner-class: LightBuild extends mindustry.gen.Building
+  fields:
+    public int color
+    public float smoothTime
+  methods:
+    public void configured(Unit player, Object value)
+    public void control(LAccess type, double p1, double p2, double p3, double p4)
+    public double sense(LAccess sensor)
+    public void draw()
+    public void updateTile()
+    public void buildConfiguration(Table table)
+    public boolean onConfigureBuildTapped(Building other)
+    public void drawLight()
+    public Integer config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+LongPowerNode.java
+Java class extends mindustry.world.blocks.power.PowerNode
+fields:
+  public TextureRegion glow
+  public Color glowColor
+  public float glowScl
+ctors:
+  public LongPowerNode(String name)
+methods:
+  public void load()
+inner-class: LongPowerNodeBuild extends mindustry.world.blocks.power.PowerNode.PowerNodeBuild
+  fields:
+    public float warmup
+  methods:
+    public void updateTile()
+    public void draw()
+
+NuclearReactor.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+fields:
+  public final int timerFuel
+  public Color lightColor
+  public Color coolColor
+  public Color hotColor
+  public float itemDuration  // ticks to consume 1 fuel
+  public float heating  // heating per frame * fullness
+  public float heatOutput  // max heat this block can output per side
+  public float heatWarmupRate  // rate at which heat progress increases
+  public float heatConsumeRate  // rate at which fuel consumption scales with heat
+  public float ambientCooldownTime  // time taken to cool down if no fuel is inputted even if coolant is not present
+  public float smokeThreshold  // threshold at which block starts smoking
+  public float flashThreshold  // heat threshold at which lights start flashing
+  public float coolantPower  // heat removed per unit of coolant
+  public Item fuelItem
+  public TextureRegion topRegion
+  public TextureRegion lightsRegion
+ctors:
+  public NuclearReactor(String name)
+methods:
+  public void setStats()
+  public void setBars()
+inner-class: NuclearReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatBlock
+  fields:
+    public float heat
+    public float heatLastFrame
+    public float heatProgress
+    public float flash
+    public float smoothLight
+  methods:
+    public void updateTile()
+    public float heatFrac()
+    public float heat()
+    public double sense(LAccess sensor)
+    public boolean shouldExplode()
+    public void drawLight()
+    public void draw()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PowerBlock.java
+Java class extends mindustry.world.Block
+ctors:
+  public PowerBlock(String name)
+
+PowerDiode.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion arrow
+ctors:
+  public PowerDiode(String name)
+methods:
+  public void setBars()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public float bar(Building tile)  // battery % of the graph on either side, defaults to zero
+inner-class: PowerDiodeBuild extends mindustry.gen.Building
+  methods:
+    public void draw()
+    public void updateTile()
+
+PowerDistributor.java
+Java class extends mindustry.world.blocks.power.PowerBlock
+ctors:
+  public PowerDistributor(String name)
+
+PowerGenerator.java
+Java class extends mindustry.world.blocks.power.PowerDistributor
+fields:
+  public float powerProduction  // The amount of power produced per tick in case of an efficiency of 1.0, which represents 100%.
+  public Stat generationType
+  public DrawBlock drawer
+  public int explosionRadius
+  public int explosionDamage
+  public Effect explodeEffect
+  public Sound explodeSound
+  public int explosionPuddles
+  public float explosionPuddleRange
+  public float explosionPuddleAmount
+  public Liquid explosionPuddleLiquid
+  public float explosionMinWarmup
+  public float explosionShake
+  public boolean explosionBreaksProps
+  public int explosionScorchSize  // Size of scorch effect on the ground after explosion.
+  public float explosionIgnitionChance  // Chance for each tile in the explosion radius to catch on fire.
+  public boolean explosionScaleIgnitionChance  // If true, the ignition chance decreases with distance.
+  public float explosionSpeed  // The speed at which ignition spreads.
+  public int explosionFireballs  // Extra number of fireballs spawned from explosions.
+ctors:
+  public PowerGenerator(String name)
+methods:
+  public float getDisplayedPowerProduction()
+  public TextureRegion[] icons()
+  public void load()
+  public void setStats()
+  public void setBars()
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean outputsItems()
+inner-class: GeneratorBuild extends mindustry.gen.Building
+  fields:
+    public float generateTime
+    public float productionEfficiency  // The efficiency of the producer.
+  methods:
+    public void draw()
+    public float warmup()
+    public void onDestroyed()
+    public boolean shouldExplode()
+    public void createExplosion()
+    public void onExplosion()
+    public void drawLight()
+    public float ambientVolume()
+    public float getPowerProduction()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+PowerGraph.java
+Java class
+fields:
+  private static final Queue<Building> queue
+  private static final Seq<Building> outArray1
+  private static final Seq<Building> outArray2
+  private static final IntSet closedSet
+  public final Seq<Building> producers  // do not modify any of these unless you know what you're doing!
+  public final Seq<Building> consumers
+  public final Seq<Building> batteries
+  public final Seq<Building> all
+  private final PowerGraphUpdater entity
+  private final WindowedMean powerBalance
+  private float lastPowerProduced
+  private float lastScaledPowerIn
+  private float energyDelta  // diodes workaround for correct energy production info
+  private final int graphID
+  private static int lastGraphID
+ctors:
+  public PowerGraph() / public PowerGraph(boolean noEntity)
+methods:
+  public int getID()
+  public float getLastScaledPowerIn()
+  public float getLastScaledPowerOut()
+  public float getLastCapacity()
+  public float getPowerBalance()
+  public boolean hasPowerBalanceSamples()
+  public float getLastPowerNeeded()
+  public float getLastPowerProduced()
+  public float getLastPowerStored()
+  public void transferPower(float amount)
+  public float getSatisfaction()
+  public float getPowerProduced()
+  public float getPowerNeeded()
+  public float getBatteryStored()
+  public float getBatteryCapacity()
+  public float getTotalBatteryCapacity()
+  public float useBatteries(float needed)
+  public float chargeBatteries(float excess)
+  public void distributePower(float needed, float produced, boolean charged)
+  public void update()
+  public void addGraph(PowerGraph graph)
+  public void add(Building build)
+  public void checkAdd()
+  public void clear()
+  public void reflow(Building tile)
+  public void removeList(Building build)  // Used for unit tests only.
+  public void remove(Building tile)  // Note that this does not actually remove the building from the graph;
+  public String toString()
+
+PowerNode.java
+Java class extends mindustry.world.blocks.power.PowerBlock
+fields:
+  protected static int returnInt
+  protected final static ObjectSet<PowerGraph> graphs
+  protected static float maxRange  // The maximum range of all power nodes on the map
+  public TextureRegion laser
+  public TextureRegion laserEnd
+  public float laserRange
+  public int maxNodes
+  public boolean autolink
+  public float laserScale
+  public boolean useLod
+  public float powerLayer
+  public Color laserColor1
+  public Color laserColor2
+  private static int currentFindX
+  private static BuildPlan currentPlan
+  private static final Boolf<BuildPlan> planFinder
+ctors:
+  public PowerNode(String name)
+methods:
+  public void setBars()
+  public static Func<Building,Bar> makePowerBalance()
+  public static Func<Building,Bar> makeBatteryBalance()
+  public void setStats()
+  public void init()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void changePlacementPath(Seq<Point2> points, int rotation)
+  protected void setupColor(float satisfaction)
+  public void drawLaser(float x1, float y1, float x2, float y2, int size1, int size2) / public void drawLaser(float x1, float y1, float x2, float y2, int size1, int size2, boolean light)
+  protected boolean overlaps(float srcx, float srcy, Tile other, Block otherBlock, float range) / protected boolean overlaps(float srcx, float srcy, Tile other, float range) / protected boolean overlaps(Building src, Building other, float range) / protected boolean overlaps(Tile src, Tile other, float range) / public boolean overlaps(Tile src, Tile other)
+  protected void getPotentialLinks(Tile tile, Team team, Cons<Building> others)
+  public static void getNodeLinks(Tile tile, Block block, Team team, Cons<Building> others)  // Iterates through linked nodes of a block at a tile.
+  public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list)
+  public float planConfigClipSize()
+  public boolean linkValid(Building tile, Building link) / public boolean linkValid(Building tile, Building link, boolean checkMaxNodes)
+  public static boolean insulated(Tile tile, Tile other) / public static boolean insulated(Building tile, Building other) / public static boolean insulated(int x, int y, int x2, int y2)
+inner-class: PowerNodeBuild extends mindustry.gen.Building
+  methods:
+    public void created()
+    public void placed()
+    public void dropped()
+    public boolean onConfigureBuildTapped(Building other)
+    public void drawSelect()
+    public void drawConfigure()
+    public void drawCached()
+    public void draw()
+    protected boolean linked(Building other)
+    public Point2[] config()
+
+SolarGenerator.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+ctors:
+  public SolarGenerator(String name)
+methods:
+  public void setStats()
+inner-class: SolarGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild
+  methods:
+    public void updateTile()
+
+ThermalGenerator.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+fields:
+  public Effect generateEffect
+  public float effectChance
+  public float minEfficiency
+  public float displayEfficiencyScale
+  public boolean displayEfficiency
+  public LiquidStack outputLiquid
+  public Attribute attribute
+ctors:
+  public ThermalGenerator(String name)
+methods:
+  public float getDisplayedPowerProduction()
+  public void init()
+  public void afterPatch()
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+inner-class: ThermalGeneratorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild
+  fields:
+    public float sum
+  methods:
+    public void updateTile()
+    public void afterPickedUp()
+    public float totalProgress()
+    public void drawLight()
+    public void onProximityAdded()
+
+VariableReactor.java
+Java class extends mindustry.world.blocks.power.PowerGenerator
+fields:
+  public float maxHeat
+  public float unstableSpeed  // How quickly instability moves towards 1, per frame.
+  public float warmupSpeed
+  public Effect effect
+  public float effectChance
+  public Color effectColor
+  public float flashThreshold
+  public Color flashColor1
+  public TextureRegion lightsRegion
+ctors:
+  public VariableReactor(String name)
+methods:
+  public void setBars()
+  public void setStats()
+inner-class: VariableReactorBuild extends mindustry.world.blocks.power.PowerGenerator.GeneratorBuild implements mindustry.world.blocks.heat.HeatConsumer
+// TODO: draw warmup fraction on block?
+  fields:
+    public float sideHeat
+    public float heat
+  methods:
+    public void updateTile()
+    public boolean shouldExplode()
+    public void draw()
+    public float totalProgress()
+    public float warmup()
+    public void updateEfficiencyMultiplier()
+    public float[] sideHeat()
+    public float heatRequirement()
+    public double sense(LAccess sensor)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+

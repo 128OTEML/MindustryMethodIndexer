@@ -1,0 +1,88 @@
+ItemSource
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+  -> mindustry.world.Block.configClear(arc.func.Cons<E>)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.removeBar(java.lang.String)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.add(mindustry.world.meta.Stat, float, mindustry.world.meta.StatUnit)
+icons
+  -> arc.graphics.g2d.TextureAtlas.find(java.lang.String)
+drawPlanConfig
+  -> mindustry.world.Block.drawPlanConfigCenter(mindustry.entities.units.BuildPlan, java.lang.Object, java.lang.String, boolean)
+ItemSourceBuild extends mindustry.gen.Building::draw
+  -> arc.graphics.g2d.Draw.rect(java.lang.String, float, float)
+  -> arc.graphics.g2d.Draw.color(arc.graphics.Color)
+  -> arc.graphics.g2d.Fill.square(float, float, float)
+  -> arc.graphics.g2d.Draw.color()
+  -> mindustry.gen.Building.draw()
+ItemSourceBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.gen.Building.drawSelect()
+  -> mindustry.gen.Building.drawItemSelection(mindustry.ctype.UnlockableContent)
+ItemSourceBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.gen.Building.edelta()
+  -> mindustry.world.modules.ItemModule.set(mindustry.type.Item, int)
+  -> mindustry.gen.Building.dump(mindustry.type.Item)
+  -> mindustry.gen.Building.produced(mindustry.type.Item)
+ItemSourceBuild extends mindustry.gen.Building::configured
+  -> mindustry.gen.Building.configured(mindustry.gen.Unit, java.lang.Object)
+  -> mindustry.gen.Building.recache()
+ItemSourceBuild extends mindustry.gen.Building::buildConfiguration
+  -> mindustry.world.blocks.ItemSelection.buildTable(mindustry.world.Block, arc.scene.ui.layout.Table, arc.struct.Seq<T>, arc.func.Prov<T>, arc.func.Cons<T>, int, int)
+  -> mindustry.core.ContentLoader.items()
+ItemSourceBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.s(int)
+ItemSourceBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> mindustry.core.ContentLoader.item(int)
+  -> arc.util.io.Reads.s()
+ItemVoidBuild extends mindustry.gen.Building::handleItem
+  -> mindustry.world.modules.ItemModule.handleFlow(mindustry.type.Item, int)
+LiquidSource
+  -> mindustry.world.Block.config(java.lang.Class<T>, arc.func.Cons2<E, T>)
+  -> mindustry.world.Block.configClear(arc.func.Cons<E>)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.removeBar(java.lang.String)
+drawPlanConfig
+  -> mindustry.world.Block.drawPlanConfigCenter(mindustry.entities.units.BuildPlan, java.lang.Object, java.lang.String, boolean)
+LiquidSourceBuild extends mindustry.gen.Building::updateTile
+  -> mindustry.world.modules.LiquidModule.clear()
+  -> mindustry.world.modules.LiquidModule.set(mindustry.type.Liquid, float)
+  -> mindustry.gen.Building.dumpLiquid(mindustry.type.Liquid)
+LiquidSourceBuild extends mindustry.gen.Building::draw
+  -> mindustry.gen.Building.draw()
+  -> arc.graphics.g2d.Draw.rect(arc.graphics.g2d.TextureRegion, float, float)
+  -> mindustry.world.blocks.liquid.LiquidBlock.drawTiledFrames(int, float, float, float, mindustry.type.Liquid, float)
+LiquidSourceBuild extends mindustry.gen.Building::drawSelect
+  -> mindustry.gen.Building.drawSelect()
+  -> mindustry.gen.Building.drawItemSelection(mindustry.ctype.UnlockableContent)
+LiquidSourceBuild extends mindustry.gen.Building::buildConfiguration
+  -> mindustry.world.blocks.ItemSelection.buildTable(mindustry.world.Block, arc.scene.ui.layout.Table, arc.struct.Seq<T>, arc.func.Prov<T>, arc.func.Cons<T>, int, int)
+  -> mindustry.core.ContentLoader.liquids()
+LiquidSourceBuild extends mindustry.gen.Building::write
+  -> mindustry.gen.Building.write(arc.util.io.Writes)
+  -> arc.util.io.Writes.s(int)
+LiquidSourceBuild extends mindustry.gen.Building::read
+  -> mindustry.gen.Building.read(arc.util.io.Reads, byte)
+  -> arc.util.io.Reads.s()
+  -> arc.util.io.Reads.b()
+  -> mindustry.core.ContentLoader.liquid(int)
+setBars
+  -> mindustry.world.Block.setBars()
+  -> mindustry.world.Block.removeBar(java.lang.String)
+LiquidVoidBuild extends mindustry.gen.Building::placed
+  -> mindustry.gen.Building.placed()
+  -> mindustry.world.modules.LiquidModule.clear()
+LiquidVoidBuild extends mindustry.gen.Building::handleLiquid
+  -> mindustry.world.modules.LiquidModule.handleFlow(mindustry.type.Liquid, float)
+PowerSourceBuild extends mindustry.world.blocks.power.PowerNode.PowerNodeBuild::onProximityUpdate
+  -> mindustry.gen.Building.onProximityUpdate()
+  -> mindustry.gen.Building.allowUpdate()
+PowerVoid
+  -> mindustry.world.Block.consumePower(float)
+setStats
+  -> mindustry.world.Block.setStats()
+  -> mindustry.world.meta.Stats.remove(mindustry.world.meta.Stat)

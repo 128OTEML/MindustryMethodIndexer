@@ -1,0 +1,191 @@
+// FxFilter.java : public static Shader compileShader(Fi vertexFile, Fi fragmentFile) / public static Shader compileShader(Fi vertexFile, Fi fragmentFile, String defines)
+    public static Shader compileShader(Fi vertexFile, Fi fragmentFile){
+        return compileShader(vertexFile, fragmentFile, "");
+    }
+
+// FxFilter.java : public FxFilter setInput(Texture input) / public FxFilter setInput(FrameBuffer input)
+    public FxFilter setInput(Texture input){
+        this.inputTexture = input;
+        return this;
+    }
+
+// FxFilter.java : public FxFilter setOutput(FrameBuffer output)
+    public FxFilter setOutput(FrameBuffer output){
+        this.outputBuffer = output;
+        return this;
+    }
+
+// FxFilter.java : public void dispose()
+    @Override
+    public void dispose(){
+        shader.dispose();
+    }
+
+// FxFilter.java : public void resize(int width, int height)
+    public void resize(int width, int height){
+
+    }
+
+// FxFilter.java : public void rebind()
+    public void rebind(){
+        if(shader == null) return;
+
+        shader.bind();
+        setParams();
+    }
+
+// FxFilter.java : protected void setParams()
+    protected void setParams(){
+        if(shader != null){
+            shader.setUniformi("u_texture0", u_texture0);
+        }
+    }
+
+// FxFilter.java : protected void onBeforeRender()
+    protected void onBeforeRender(){
+        inputTexture.bind(u_texture0);
+    }
+
+// FxFilter.java : public boolean isDisabled()
+    public boolean isDisabled(){
+        return disabled;
+    }
+
+// FxFilter.java : public void setDisabled(boolean enabled)
+    public void setDisabled(boolean enabled){
+        this.disabled = enabled;
+    }
+
+// FxFilter.java : public void update()
+    public void update(){
+        time = Time.time;
+    }
+
+// FxProcessor.java : public void dispose()
+    @Override
+    public void dispose(){
+        pingPongBuffer.dispose();
+    }
+
+// FxProcessor.java : public void rebind()
+    public void rebind(){
+        bufferRenderer.rebind();
+
+        for(FxFilter filter : effectsAll){
+            filter.rebind();
+        }
+    }
+
+// FxProcessor.java : public int getWidth()
+    public int getWidth(){
+        return width;
+    }
+
+// FxProcessor.java : public int getHeight()
+    public int getHeight(){
+        return height;
+    }
+
+// FxProcessor.java : public boolean isDisabled()
+    public boolean isDisabled(){
+        return disabled;
+    }
+
+// FxProcessor.java : public void setDisabled(boolean disabled)
+    public void setDisabled(boolean disabled){
+        this.disabled = disabled;
+    }
+
+// FxProcessor.java : public boolean isBlendingEnabled()
+    public boolean isBlendingEnabled(){
+        return blendingEnabled;
+    }
+
+// FxProcessor.java : public void setBlendingEnabled(boolean blendingEnabled)
+    public void setBlendingEnabled(boolean blendingEnabled){
+        this.blendingEnabled = blendingEnabled;
+    }
+
+// FxProcessor.java : public Format getFramebufferFormat()
+    public Format getFramebufferFormat(){
+        return fboFormat;
+    }
+
+// FxProcessor.java : public void setBufferTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+    public void setBufferTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag){
+        pingPongBuffer.setTextureParams(u, v, min, mag);
+    }
+
+// FxProcessor.java : public void setTextureFilter(TextureFilter filter)
+    public void setTextureFilter(TextureFilter filter){
+        setBufferTextureParams(TextureWrap.clampToEdge, TextureWrap.clampToEdge, filter, filter);
+    }
+
+// FxProcessor.java : public boolean isCapturing()
+    public boolean isCapturing(){
+        return capturing;
+    }
+
+// FxProcessor.java : public boolean isApplyingEffects()
+    public boolean isApplyingEffects(){
+        return applyingEffects;
+    }
+
+// FxProcessor.java : public boolean hasResult()
+    public boolean hasResult(){
+        return hasCaptured;
+    }
+
+// FxProcessor.java : public FrameBuffer getResultBuffer()
+    public FrameBuffer getResultBuffer(){
+        return pingPongBuffer.getDstBuffer();
+    }
+
+// FxProcessor.java : public PingPongBuffer getPingPongBuffer()
+    public PingPongBuffer getPingPongBuffer(){
+        return pingPongBuffer;
+    }
+
+// FxProcessor.java : public boolean hasEnabledEffects()
+    public boolean hasEnabledEffects(){
+        return effectsAll.contains(fx -> !fx.isDisabled());
+    }
+
+// FxProcessor.java : public void addEffect(FxFilter effect) / public void addEffect(FxFilter effect, int priority)
+    public void addEffect(FxFilter effect){
+        addEffect(effect, 0);
+    }
+
+// FxProcessor.java : public void removeEffect(FxFilter effect)
+    public void removeEffect(FxFilter effect){
+        effectsAll.remove(effect);
+    }
+
+// FxProcessor.java : public void removeAllEffects()
+    public void removeAllEffects(){
+        effectsAll.clear();
+    }
+
+// FxProcessor.java : public void setEffectPriority(FxFilter effect, int priority)
+    public void setEffectPriority(FxFilter effect, int priority){
+        priorities.put(effect, priority);
+        effectsAll.sort(e -> priorities.get(effect, 0));
+    }
+
+// FxProcessor.java : public void clear() / public void clear(Color color)
+    public void clear(){
+        clear(Color.clear);
+    }
+
+// FxProcessor.java : public boolean end()
+    public boolean end(){
+        if(!capturing) return false;
+
+        Draw.flush();
+
+        hasCaptured = true;
+        capturing = false;
+        pingPongBuffer.end();
+        return true;
+    }
+

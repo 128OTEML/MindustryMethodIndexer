@@ -1,0 +1,145 @@
+Attributes.java
+Java class implements arc.util.serialization.Json.JsonSerializable
+fields:
+  private float arr
+methods:
+  public void clear()
+  public float get(Attribute attr)
+  public void set(Attribute attr, float value)
+  public void add(Attributes other) / public void add(Attributes other, float scl)
+  public void write(Json json)
+  public void read(Json json, JsonValue data)
+  private void check()
+  public String toString()
+
+Autotiler.java
+Java interface
+methods:
+  default TextureRegion sliced(TextureRegion input, SliceMode mode)  // @param input The TextureRegion to be sliced
+  default TextureRegion topHalf(TextureRegion input)  // @return The top half of the input
+  default TextureRegion botHalf(TextureRegion input)  // @return The bottom half of the input
+  default int[] getTiling(BuildPlan plan, Eachable<BuildPlan> list)
+  default int[] buildBlending(Tile tile, int rotation, BuildPlan[] directional, boolean world)  // @return an array of blending values:
+  default void transformCase(int num, int[] bits)  // Transforms the autotiler setting the connection and the y-scale
+  default boolean facing(int x, int y, int rotation, int x2, int y2)  // Check if a position is facing the secondary position at a rotation
+  default boolean blends(Tile tile, int rotation, BuildPlan[] directional, int direction, boolean checkWorld) / default boolean blends(Tile tile, int rotation, int direction) / boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)  // TODO docs -- use for direction?
+  default boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)
+  default boolean notLookingAt(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)  // @return whether this other block is *not* looking at this one.
+  default boolean lookingAtEither(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock)  // @return whether this tile is looking at the other tile, or the other tile is looking at this one.
+  default boolean lookingAt(Tile tile, int rotation, int otherx, int othery, Block otherblock)  // Check if a position is facing the secondary position at a rotation
+inner-class: AutotilerHolder
+// Holds some static temporary variables, required due to some RoboVM bugs
+  fields:
+    static final int blendresult
+    static final BuildPlan directionals
+    static BuildPlan plan
+    static final Boolf<BuildPlan> blendFinder
+
+ConstructBlock.java
+Java class extends mindustry.world.Block
+// A block in the process of construction.
+fields:
+  private static final ConstructBlock consBlocks
+  private static long lastTime
+  private static int pitchSeq
+  private static long lastPlayed
+ctors:
+  public ConstructBlock(int size)
+methods:
+  public static ConstructBlock get(int size)  // Returns a ConstructBlock by size.
+  public static void deconstructFinish(Tile tile, Block block, Unit builder)
+  public static void constructFinish(Tile tile, Block block, Unit builder, byte rotation, Team team, Object config)
+  static boolean shouldPlay()
+  static float calcPitch(boolean up)
+  public static void playRepairSound(Team team, Tile tile)
+  public static void constructed(Tile tile, Block block, Unit builder, byte rotation, Team team, Object config)
+  public boolean isHidden()
+inner-class: ConstructBuild extends mindustry.gen.Building
+  fields:
+    public Block current  // The recipe of the block that is being (de)constructed.
+    public Block previous  // The block that used to be here.
+    public Seq<Building> prevBuild  // Buildings that previously occupied this location.
+    public float progress
+    public float buildCost
+    public Object lastConfig
+    public Unit lastBuilder
+    public boolean wasConstructing
+    public float constructColor
+    private float accumulator
+    private float totalAccumulator
+    private int itemsLeft
+  methods:
+    public String getDisplayName()
+    public TextureRegion getDisplayIcon()
+    public boolean checkSolid()
+    public Cursor getCursor()
+    public void tapped()
+    public double sense(LAccess sensor)
+    public Object senseObject(LAccess sensor)
+    public void onDestroyed()
+    public void updateTile()
+    public void draw()
+    public void construct(Unit builder, Building core, float amount, Object config)
+    public void deconstruct(Unit builder, CoreBuild core, float amount)
+    private float checkRequired(ItemModule inventory, float amount, boolean remove)
+    public float progress()
+    public void setConstruct(Block previous, Block block)
+    public void setDeconstruct(Block previous)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ControlBlock.java
+Java interface
+// Any block that has a proxy unit that can be controlled by a player.
+methods:
+  Unit unit()
+  default boolean isControlled()  // @return whether this block is being controlled by a player.
+  default boolean canControl()  // @return whether this block can be controlled at all.
+  default boolean shouldAutoTarget()  // @return whether targets should automatically be selected (on mobile)
+
+ExplosionShield.java
+Java interface
+// TODO: horrible API design, but I'm not sure of a better way to do this right now.
+methods:
+  boolean absorbExplosion(float x, float y, float damage)  // @return whether the shield was able to absorb the explosion; this should apply damage to the shield if true is returned.
+
+ItemSelection.java
+Java class
+fields:
+  private static TextField search
+  private static int rowCount
+methods:
+  public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int columns) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int rows, int columns) / public static void buildTable(Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, int rows, int columns) / public static void buildTable(Block block, Table table, Seq<T> items, Prov<T> holder, Cons<T> consumer, boolean closeSelect, int rows, int columns)
+
+LaunchAnimator.java
+Java interface
+methods:
+  void drawLaunch()
+  default void drawLaunchGlobalZ()
+  void beginLaunch(boolean launching)
+  void endLaunch()
+  void updateLaunch()
+  float launchDuration()
+  default Music landMusic()
+  float zoomLaunch()
+
+RotBlock.java
+Java interface
+// Any block that has 360-degree rotation
+methods:
+  float buildRotation()
+
+TileBitmask.java
+Java class
+fields:
+  public static final int values  // Autotile bitmasks for 8-directional sprites (see <a href="https://github.com/GglLfr/tile-gen">tile-gen</a>)
+methods:
+  public static TextureRegion[] load(String name)
+  public static TextureRegion[][] loadVariants(String name, int variants)
+
+UnitTetherBlock.java
+Java interface
+methods:
+  void spawned(int id)
+

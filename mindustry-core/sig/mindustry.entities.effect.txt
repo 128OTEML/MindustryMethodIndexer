@@ -1,0 +1,171 @@
+ExplosionEffect.java
+Java class extends mindustry.entities.Effect
+fields:
+  public Color waveColor
+  public float waveLife
+  public int smokes
+ctors:
+  public ExplosionEffect()
+
+MultiEffect.java
+Java class extends mindustry.entities.Effect
+// Renders multiple particle effects at once.
+fields:
+  public Effect effects
+ctors:
+  public MultiEffect() / public MultiEffect(Effect effects)
+methods:
+  public void create(float x, float y, float rotation, Color color, Object data)
+
+NoiseEffect.java
+Java class extends mindustry.entities.Effect
+// Effect that renders noise layers over the camera view.
+fields:
+  public String noisePath
+  public Color color
+  public float noiseScl
+  public float opacity
+  public float baseSpeed
+  public float intensity
+  public float windX
+  public float windY
+  public int layers
+  public float layerSpeedMul
+  public float layerAlphaMul
+  public float layerSclMul
+  public float layerColorMul
+  public Texture tex
+methods:
+  public void render(EffectContainer e)
+  public static void drawNoiseLayers(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, int layers, float layerSpeedM, float layerAlphaM, float layerSclM, float layerColorM)
+  public static void drawNoise(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, float offset)
+
+ParticleEffect.java
+Java class extends mindustry.entities.Effect
+// The most essential effect class.
+fields:
+  private static final Rand rand
+  private static final Vec2 rv
+  public Color colorFrom  // Particle color.
+  public int particles  // Number of particles created.
+  public boolean randLength  // If true, the particle's length is set in a random range from 0 to length.
+  public boolean casingFlip  // Gives the effect flipping compatability like casing effects.
+  public float cone
+  public Interp interp  // Particle size/length/radius interpolation.
+  public Interp sizeInterp  // Particle size interpolation.
+  public Interp colorInterp  // Particle color interpolation.
+  public float offsetX  // Offset position of the particle.
+  public float lightScl  // Particle light properties.
+  public Color lightColor  // Color of the light each particle emits.
+  public float spin  // Spin in degrees per tick.
+  public float sizeFrom  // Controls the initial and final sprite sizes.
+  public float sizeChangeStart  // Controls the amount of ticks the effect waits before changing size.
+  public float widthChangeStart  // Controls the amount of ticks the effect waits before changing width.
+  public float heightChangeStart  // Controls the amount of ticks the effect waits before changing height.
+  public boolean useRotation  // Whether the rotation adds with the parent
+  public float offset  // Rotation offset.
+  public String region  // Sprite to draw.
+  public float widthFrom  // Particle width and height properties as a ratio of its radius.
+  public Interp widthInterp  // Particle width interpolation.
+  public Interp heightInterp  // Particle height interpolation.
+  public boolean line  // line only
+  public float strokeFrom
+  public boolean cap
+  private TextureRegion tex
+methods:
+  public void init()
+  public void render(EffectContainer e)
+
+RadialEffect.java
+Java class extends mindustry.entities.Effect
+// Renders one particle effect repeatedly at specified angle intervals.
+fields:
+  public Effect effect
+  public float rotationSpacing
+  public float lengthOffset
+  public int amount
+ctors:
+  public RadialEffect() / public RadialEffect(Effect effect, int amount, float spacing, float lengthOffset, float effectRotationOffset) / public RadialEffect(Effect effect, int amount, float spacing, float lengthOffset)
+methods:
+  public void create(float x, float y, float rotation, Color color, Object data)
+
+SeqEffect.java
+Java class extends mindustry.entities.Effect
+// Renders multiple particle effects in sequence.
+fields:
+  public Effect effects
+ctors:
+  public SeqEffect() / public SeqEffect(Effect effects)
+methods:
+  public void init()
+  public void render(EffectContainer e)
+
+SoundEffect.java
+Java class extends mindustry.entities.Effect
+// Plays a sound effect when created and simultaneously renders an effect.
+fields:
+  public Sound sound
+  public float minPitch
+  public float maxPitch
+  public float minVolume
+  public float maxVolume
+  public Effect effect
+ctors:
+  public SoundEffect() / public SoundEffect(Sound sound, Effect effect)
+methods:
+  public void init()
+  public void create(float x, float y, float rotation, Color color, Object data)
+
+TriangleEffect.java
+Java class extends mindustry.entities.Effect
+// Creates a triangle with heavily customizable parameters.
+fields:
+  private static final Rand rand
+  public Color colorFrom  // Triangle color.
+  public boolean flippable  // Gives the effect flipping compatability like casing effects.
+  public Interp interp  // Triangle position interpolation.
+  public Interp widthInterp  // Width interpolation.
+  public Interp heightInterp  // Height interpolation.
+  public Interp colorInterp  // Triangle color interpolation.
+  public float startX  // Controls the starting and ending positions of the triangle.
+  public float lightScl  // Triangle light properties.
+  public Color lightColor  // Color of the light the triangle emits.
+  public float widthFrom  // Controls the initial and final positions of each point on the triangle.
+  public boolean useRotation  // Whether the rotation adds with the parent
+  public int spin  // Spin in degrees/tick.
+  public float offset  // Rotation offset.
+methods:
+  public void init()
+  public void render(EffectContainer e)
+
+WaveEffect.java
+Java class extends mindustry.entities.Effect
+// Effect that renders a basic shockwave.
+fields:
+  public Color colorFrom
+  public Color lightColor
+  public float sizeFrom
+  public int sides
+  public float rotation
+  public float strokeFrom
+  public Interp interp
+  public Interp lightInterp
+  public float offsetX
+methods:
+  public void init()
+  public void render(EffectContainer e)
+
+WrapEffect.java
+Java class extends mindustry.entities.Effect
+// Wraps an effect with some parameters.
+fields:
+  public Effect effect
+  public Color color
+  public float rotation
+ctors:
+  public WrapEffect() / public WrapEffect(Effect effect, Color color) / public WrapEffect(Effect effect, Color color, float rotation)
+methods:
+  public void init()
+  public void render(EffectContainer e)
+  public void create(float x, float y, float rotation, Color color, Object data)
+

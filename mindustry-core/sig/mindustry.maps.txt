@@ -1,0 +1,145 @@
+Map.java
+Java class implements java.lang.Comparable, mindustry.type.Publishable
+fields:
+  public final boolean custom  // Whether this is a custom map.
+  public final StringMap tags  // Metadata.
+  public final Fi file  // Base file of this map.
+  public final int version  // Format version.
+  public boolean workshop  // Whether this map is managed, e.g.
+  public int width  // Map width/height, shorts.
+  public Texture texture  // Preview texture.
+  public int build  // Build that this map was created in.
+  public IntSet teams  // All teams present on this map.
+  public int spawns  // Number of enemy spawns on this map.
+  public LoadedMod mod  // Associated mod.
+ctors:
+  public Map(Fi file, int width, int height, StringMap tags, boolean custom, int version, int build) / public Map(Fi file, int width, int height, StringMap tags, boolean custom, int version) / public Map(Fi file, int width, int height, StringMap tags, boolean custom) / public Map(StringMap tags)
+methods:
+  public int getHighScore()
+  public Texture safeTexture()
+  public Fi previewFile()
+  public Fi cacheFile()
+  public void setHighScore(int score)
+  public Rules applyRules(Gamemode mode)  // Returns the result of applying this map's rules to the specified gamemode.
+  public Rules rules() / public Rules rules(Rules base)  // This creates a new instance of Rules.
+  public Seq<GenerateFilter> filters()  // Returns the generation filters that this map uses on load.
+  public String name()
+  public String author()
+  public String description()
+  public String plainName()
+  public String plainAuthor()
+  public String plainDescription()
+  public String tag(String name)
+  public boolean hasTag(String name)
+  public String getSteamID()
+  public void addSteamID(String id)
+  public void removeSteamID()
+  public String steamTitle()
+  public String steamDescription()
+  public String steamTag()
+  public Fi createSteamFolder(String id)
+  public Fi createSteamPreview(String id)
+  public Seq<String> extraTags()
+  public boolean prePublish()
+  public int compareTo(Map map)
+  public String toString()
+
+MapException.java
+Java class extends java.lang.RuntimeException
+fields:
+  public final Map map
+ctors:
+  public MapException(Map map, String s)
+
+MapPreviewLoader.java
+Java class extends arc.assets.loaders.TextureLoader
+fields:
+  private static Runnable check
+ctors:
+  public MapPreviewLoader()
+methods:
+  public void loadAsync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+  public Texture loadSync(AssetManager manager, String fileName, Fi file, TextureParameter parameter)
+  public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, TextureParameter parameter)
+  public static void setupLoaders()
+  public static void checkPreviews()
+inner-class: MapPreviewParameter extends arc.assets.loaders.TextureLoader.TextureParameter
+  fields:
+    public Map map
+  ctors:
+    public MapPreviewParameter(Map map)
+
+Maps.java
+Java class
+fields:
+  public static Prov<GenerateFilter> allFilterTypes  // All generation filter types.
+  private static String defaultMapNames  // List of all built-in maps.
+  private static String pvpMaps  // Maps tagged as PvP
+  private static boolean useDefaultFolder  // If true, the defaultMapNames are prefixed with default/
+  private Seq<Map> maps  // All maps stored in an ordered array.
+  private ShuffleMode shuffleMode
+  private MapProvider shuffler
+  private Map nextMapOverride
+  private ObjectSet<Map> previewList
+ctors:
+  public Maps()
+methods:
+  public ShuffleMode getShuffleMode()
+  public void setShuffleMode(ShuffleMode mode)
+  public void setMapProvider(MapProvider provider)  // Set the provider for the map(s) to be played on.
+  public void setNextMapOverride(Map nextMapOverride)  // Set the map that will override the next selected map.
+  public Map getNextMap(Gamemode mode, Map previous)  // @return the next map to shuffle to.
+  public Seq<Map> all()  // Returns a list of all maps, including custom ones.
+  public Seq<Map> customMaps()  // Returns a list of only custom maps.
+  public Seq<Map> defaultMaps()  // Returns a list of only default maps.
+  public Seq<Map> moddedMaps()  // Returns a list of only modded maps.
+  public Map byName(String name)
+  public Map loadInternalMap(String name)  // Loads a map from the map folder and returns it.
+  public void load()  // Load all maps.
+  public void reload()
+  public Map saveMap(ObjectMap<String,String> baseTags) / public Map saveMap(ObjectMap<String,String> baseTags, boolean embedAssets)  // Save a custom map to the directory.
+  public Map importMap(Fi file) throws IOException  // Imports a map, then saves it.
+  public void tryCatchMapError(UnsafeRunnable run)  // Attempts to run the following code;
+  public void removeMap(Map map)  // Removes a map completely.
+  public Seq<GenerateFilter> readFilters(String str)  // Reads JSON of filters, returning a new default array if not found.
+  public void addDefaultOres(Seq<GenerateFilter> filters)
+  public String writeWaves(Seq<SpawnGroup> groups)
+  public Seq<SpawnGroup> readWaves(String str)
+  public void loadPreviews()
+  private void createAllPreviews()
+  public void queueNewPreview(Map map)
+  private void createNewPreview(Map map, Cons<Exception> failed)
+  private void writeCache(Map map) throws IOException
+  private void readCache(Map map) throws IOException
+  private Fi findFile(String unsanitizedName)  // Find a new filename to put a map to.
+  private Map loadMap(Fi file, boolean custom) throws IOException
+inner-interface: MapProvider
+  methods:
+    Map next(Gamemode mode, Map previous)
+
+SectorDamage.java
+Java class
+fields:
+  private static final boolean rubble
+methods:
+  public static void apply(float fraction)
+  static float cost(Tile tile)
+
+SectorSubmissions.java
+Java class
+// Class for temporarily (?) storing links to map submissions on Discord.
+fields:
+  private static ObjectMap<Sector,MapSubmission> threadMap
+methods:
+  public static String getSectorThread(Sector sector)  // @return the link to the Discord discussion thread of the specified hidden sector submission.
+  public static void registerSectors()
+  static SectorPreset register(int id, String author, String mapFileLink, int difficulty)
+  static SectorPreset registerSurvival(int id, String author, String mapFileLink, int captureWave, float difficulty)
+  static SectorPreset registerSector(int id, String author, String mapFileLink, int captureWave, float difficulty)
+  static void registerThread(int id, String link)
+inner-class: MapSubmission
+  fields:
+    public String author
+    public String threadLink
+    public String mapFileLink
+

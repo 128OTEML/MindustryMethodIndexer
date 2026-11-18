@@ -1,0 +1,519 @@
+AutoDoor.java
+Java class extends mindustry.world.blocks.defense.Wall
+fields:
+  protected final static Rect rect
+  protected final static Seq<Unit> units
+  protected final static Boolf<Unit> groundCheck
+  public final int timerToggle
+  public float checkInterval
+  public Effect openfx
+  public Effect closefx
+  public Sound doorSound
+  public TextureRegion openRegion
+  public float triggerMargin
+ctors:
+  public AutoDoor(String name)
+methods:
+  public static void autoDoorToggle(Tile tile, boolean open)
+inner-class: AutoDoorBuild extends mindustry.gen.Building
+  fields:
+    public boolean open
+  ctors:
+    public AutoDoorBuild()
+  methods:
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public void setOpen(boolean open)
+    public void draw()
+    public boolean checkSolid()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+BaseShield.java
+Java class extends mindustry.world.Block
+fields:
+  public float radius  // TODO game rule? or field? should vary by base.
+  public int sides
+  public Color shieldColor
+  protected static BaseShieldBuild paramBuild
+  protected static final Cons<Bullet> bulletConsumer  // protected static Effect paramEffect;
+  protected static final Cons<Unit> unitConsumer
+ctors:
+  public BaseShield(String name)
+methods:
+  public void init()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: BaseShieldBuild extends mindustry.gen.Building
+  fields:
+    public boolean broken
+    public float hit
+    public float smoothRadius
+  methods:
+    public void updateTile()
+    public float radius()
+    public void drawSelect()
+    public void draw()
+    public boolean inFogTo(Team viewer)  // always visible due to their shield nature
+    public void drawShield()
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+BuildTurret.java
+Java class extends mindustry.world.blocks.defense.turrets.BaseTurret
+fields:
+  public final int timerTarget
+  public int targetInterval
+  public TextureRegion baseRegion
+  public TextureRegion glowRegion
+  public float buildSpeed
+  public float buildBeamOffset
+  public UnitType unitType  // created in init() - do not assign or edit this manually, edit buildSpeed and other fields instead
+  public float elevation
+  public Color heatColor
+ctors:
+  public BuildTurret(String name)
+methods:
+  public void init()
+  public void afterPatch()
+  public void setStats()
+  public TextureRegion[] icons()
+inner-class: BuildTurretBuild extends mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild implements mindustry.world.blocks.ControlBlock, mindustry.world.blocks.RotBlock
+  fields:
+    public BlockUnitc unit
+    public Unit following
+    public BlockPlan lastPlan
+    public float warmup
+  methods:
+    public boolean canControl()
+    public float buildRotation()
+    public Unit unit()
+    public void updateTile()
+    public boolean shouldConsume()
+    public void draw()
+    public float warmup()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public double sense(LAccess sensor)
+    public Object senseObject(LAccess sensor)
+
+Door.java
+Java class extends mindustry.world.blocks.defense.Wall
+fields:
+  protected final static Rect rect
+  protected final static Queue<DoorBuild> doorQueue
+  public final int timerToggle
+  public Effect openfx
+  public Effect closefx
+  public Sound doorSound
+  public boolean chainEffect
+  public TextureRegion openRegion
+ctors:
+  public Door(String name)
+methods:
+  public TextureRegion getPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+inner-class: DoorBuild extends mindustry.gen.Building
+  fields:
+    public boolean open
+    public Seq<DoorBuild> chained
+  methods:
+    public void onProximityAdded()
+    public void onProximityRemoved()
+    public double sense(LAccess sensor)
+    public void control(LAccess type, double p1, double p2, double p3, double p4)
+    public DoorBuild origin()
+    public void effect()
+    public void updateChained()
+    public void draw()
+    public Cursor getCursor()
+    public boolean checkSolid()
+    public void tapped()
+    public Boolean config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ForceProjector.java
+Java class extends mindustry.world.Block
+fields:
+  public final int timerUse
+  public float phaseUseTime
+  public float phaseRadiusBoost
+  public float phaseShieldBoost
+  public float radius
+  public int sides
+  public float shieldRotation
+  public float shieldHealth
+  public float cooldownNormal
+  public float cooldownLiquid
+  public float cooldownBrokenBase
+  public float coolantConsumption
+  public boolean consumeCoolant
+  public float crashDamageMultiplier
+  public Sound breakSound
+  public Sound hitSound
+  public float hitSoundVolume
+  public Effect absorbEffect
+  public Effect shieldBreakEffect
+  public Effect forceShrinkEffect
+  public TextureRegion topRegion
+  public Consume itemConsumer  // TODO json support
+  protected static ForceProjector paramBlock  // lambdas need to be static to prevent GC
+  protected static ForceBuild paramEntity
+  protected static final Cons<Bullet> shieldConsumer
+ctors:
+  public ForceProjector(String name)
+methods:
+  public void init()
+  public void setBars()
+  public boolean outputsItems()
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: ForceBuild extends mindustry.gen.Building implements mindustry.logic.Ranged, mindustry.world.blocks.ExplosionShield
+  fields:
+    public boolean broken
+    public float buildup
+  methods:
+    public void setProp(LAccess prop, double value)
+    public float range()
+    public boolean shouldAmbientSound()
+    public void onRemoved()
+    public void pickedUp()
+    public boolean inFogTo(Team viewer)
+    public void updateTile()
+    public void deflectBullets()
+    public boolean absorbExplosion(float ex, float ey, float damage)
+    public float realRadius()
+    public double sense(LAccess sensor)
+    public void draw()
+    public void drawShield()
+    public void overwrote(Seq<Building> previous)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+MendProjector.java
+Java class extends mindustry.world.Block
+fields:
+  public final int timerUse
+  public Color baseColor
+  public Color phaseColor
+  public TextureRegion topRegion
+  public float reload
+  public float range
+  public float healPercent
+  public float phaseBoost
+  public float phaseRangeBoost
+  public float useTime
+  public Sound mendSound
+  public float mendSoundVolume
+  private boolean any
+ctors:
+  public MendProjector(String name)
+methods:
+  public boolean outputsItems()
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: MendBuild extends mindustry.gen.Building implements mindustry.logic.Ranged
+  fields:
+    public float heat
+  methods:
+    public float range()
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public void drawSelect()
+    public void drawCached()
+    public void draw()
+    public void drawLight()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+OverdriveProjector.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion topRegion
+  public float reload
+  public float range
+  public float speedBoost
+  public float speedBoostPhase
+  public float useTime
+  public float phaseRangeBoost
+  public boolean hasBoost
+  public Color baseColor
+  public Color phaseColor
+ctors:
+  public OverdriveProjector(String name)
+methods:
+  public boolean outputsItems()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void setStats()
+  public void setBars()
+inner-class: OverdriveBuild extends mindustry.gen.Building implements mindustry.logic.Ranged
+  fields:
+    public float heat
+  methods:
+    public float range()
+    public void drawLight()
+    public void updateTile()
+    public float realBoost()
+    public void drawSelect()
+    public void draw()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Radar.java
+Java class extends mindustry.world.Block
+fields:
+  public float discoveryTime
+  public float rotateSpeed
+  public TextureRegion baseRegion
+  public TextureRegion glowRegion
+  public Color glowColor
+  public float glowScl
+ctors:
+  public Radar(String name)
+methods:
+  public TextureRegion[] icons()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: RadarBuild extends mindustry.gen.Building
+  fields:
+    public float progress
+    public float lastRadius
+    public float smoothEfficiency
+    public float totalProgress
+  methods:
+    public float fogRadius()
+    public void updateTile()
+    public boolean canPickup()
+    public void drawSelect()
+    public void draw()
+    public float progress()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+RegenProjector.java
+Java class extends mindustry.world.Block
+fields:
+  private static final IntSet taken
+  private static final IntFloatMap mendMap  // map building pos to mend amount (TODO just use buildings as keys? no lookup)
+  private static long lastUpdateFrame
+  public int range
+  public float healPercent  // per frame
+  public float optionalMultiplier
+  public float optionalUseTime
+  public DrawBlock drawer
+  public float effectChance
+  public Color baseColor
+  public Effect effect
+ctors:
+  public RegenProjector(String name)
+methods:
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean outputsItems()
+  public TextureRegion[] icons()
+  public void load()
+  public void setStats()
+inner-class: RegenProjectorBuild extends mindustry.gen.Building
+  fields:
+    public Seq<Building> targets
+    public int lastChange
+    public float warmup
+    public boolean anyTargets
+    public boolean didRegen
+  methods:
+    public void updateTargets()
+    public void updateTile()
+    public boolean shouldConsume()
+    public void drawSelect()
+    public float warmup()
+    public float totalProgress()
+    public void draw()
+    public void drawLight()
+
+ShieldWall.java
+Java class extends mindustry.world.blocks.defense.Wall
+fields:
+  public float shieldHealth
+  public float breakCooldown
+  public float regenSpeed
+  public Color glowColor
+  public float glowMag
+  public TextureRegion glowRegion
+ctors:
+  public ShieldWall(String name)
+methods:
+  public void setStats()
+  public void init()
+inner-class: ShieldWallBuild extends mindustry.world.blocks.defense.Wall.WallBuild
+  fields:
+    public float shield
+    public float breakTimer
+  methods:
+    public void draw()
+    public void updateTile()
+    public boolean broken()
+    public void pickedUp()
+    public void damage(float damage)
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+ShockMine.java
+Java class extends mindustry.world.Block
+fields:
+  public final int timerDamage
+  public float cooldown
+  public float tileDamage
+  public float damage
+  public int length
+  public int tendrils
+  public Color lightningColor
+  public int shots
+  public float inaccuracy
+  public BulletType bullet
+  public float teamAlpha
+  public TextureRegion teamRegion
+ctors:
+  public ShockMine(String name)
+methods:
+  public void setStats()
+inner-class: ShockMineBuild extends mindustry.gen.Building
+  methods:
+    public void drawTeam()
+    public void draw()
+    public void drawCracks()
+    public void unitOn(Unit unit)
+    public void triggered()
+
+ShockwaveTower.java
+Java class extends mindustry.world.Block
+fields:
+  public int timerCheck
+  public float range
+  public float reload
+  public float bulletDamage
+  public float falloffCount
+  public float shake
+  public float checkInterval  // checking for bullets every frame is costly, so only do it at intervals even when ready.
+  public Sound shootSound
+  public Color waveColor
+  public float cooldownMultiplier
+  public Effect hitEffect
+  public Effect waveEffect
+  public float shapeRotateSpeed  // TODO switch to drawers eventually or something
+  public int shapeSides
+  public TextureRegion heatRegion
+ctors:
+  public ShockwaveTower(String name)
+methods:
+  public void setStats()
+  public void drawPlace(int x, int y, int rotation, boolean valid)
+inner-class: ShockwaveTowerBuild extends mindustry.gen.Building
+  fields:
+    public float reloadCounter
+    public float heat
+    public Seq<Bullet> targets
+  methods:
+    public void updateTile()
+    public double sense(LAccess sensor)
+    public float warmup()
+    public boolean shouldConsume()
+    public void draw()
+    public void drawSelect()
+
+TargetDummy.java
+Java class extends mindustry.world.Block
+fields:
+  static final float maxDummySize
+  public final int dpsUpdateTime
+  public UnitType unitType
+  public float pullScale
+  public String emptyStr
+  public TextureRegion tetherEnd
+  public TextureRegion tether
+  public TextureRegion previewRegion
+ctors:
+  public TargetDummy(String name)
+methods:
+  protected TextureRegion[] icons()
+  public void setBars()
+  public void drawDefaultPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+inner-class: TargetDummyBuild extends mindustry.gen.Building implements mindustry.world.blocks.UnitTetherBlock
+  fields:
+    public int readUnitId  // needs to be "unboxed" after reading, since units are read after buildings.
+    public Unit unit
+    public float resetTime
+    public float total
+    public float dps
+    public int hits
+    public int hitsDisplay
+    public boolean boosting
+    public float unitArmor
+    public Team unitTeam
+  methods:
+    public boolean canPickup()
+    public void created()
+    public void updateTile()
+    public void spawned(int id)
+    public void draw()
+    public void drawSelect()
+    public String displayDPS(boolean round)
+    public String displayTotal()
+    public String displayHits()
+    public boolean collide(Bullet other)
+    public boolean collision(Bullet other)
+    public void dummyHit(float damage)
+    public void damage(float damage)
+    public void buildConfiguration(Table table)
+    public void configureInt(int index, int value)  // helper to send the rest of values, since config does not support arrays
+    public int dummyTeam()
+    public int[] config()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+
+Thruster.java
+Java class extends mindustry.world.blocks.defense.Wall
+fields:
+  public TextureRegion topRegion
+ctors:
+  public Thruster(String name)
+methods:
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public TextureRegion[] icons()
+inner-class: ThrusterBuild extends mindustry.world.blocks.defense.Wall.WallBuild
+  methods:
+    public void drawCached()
+
+Wall.java
+Java class extends mindustry.world.Block
+fields:
+  public float lightningChance  // Lighting chance.
+  public float lightningDamage
+  public int lightningLength
+  public Color lightningColor
+  public Sound lightningSound
+  public float chanceDeflect  // Bullet deflection chance.
+  public boolean flashHit
+  public Color flashColor
+  public Sound deflectSound
+  public boolean autotile  // If true, this block uses autotiling; variants are not supported.
+  protected TextureRegion autotileRegions
+ctors:
+  public Wall(String name)
+methods:
+  public void setStats()
+  public void load()
+  public void init()
+  public TextureRegion[] icons()
+inner-class: WallBuild extends mindustry.gen.Building
+  fields:
+    protected int autotileBits
+    protected float hit
+  methods:
+    protected void updateAutotileBits()
+    protected void updateOtherBits()
+    public void onProximityUpdate()
+    public void onProximityRemoved()
+    public void onProximityAdded()
+    public void drawCached()
+    public void draw()
+    public boolean collision(Bullet bullet)
+

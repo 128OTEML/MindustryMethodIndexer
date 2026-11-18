@@ -1,0 +1,1611 @@
+AttackIndicators.java
+Java class
+// Updates and stores attack indicators for the minimap.
+fields:
+  private static final float duration
+  private LongSeq indicators
+  private IntIntMap posToIndex
+methods:
+  public LongSeq list()
+  public void clear()
+  public void add(int x, int y)
+  public void update()
+inner-class: IndicatorStruct
+  fields:
+    int pos
+    float time
+
+CampaignRules.java
+Java class
+fields:
+  public Difficulty difficulty
+  public boolean fog
+  public boolean hideSpawns
+  public boolean sectorInvasion
+  public boolean randomWaveAI
+  public boolean legacyLaunchPads
+  public boolean rtsAI
+  public boolean clearSectorOnLose
+  public boolean pauseDisabled
+methods:
+  public void apply(Planet planet, Rules rules)
+
+CampaignStats.java
+Java class
+// Statistics for a specific planet's campaign.
+fields:
+  public ObjectIntMap<UnitType> enemyUnitsDestroyed  // Enemy units destroyed by type.
+  public ObjectIntMap<Block> enemyBuildingsDestroyed  // Record of enemy blocks that have been destroyed (from any source) by count.
+  public ObjectIntMap<UnitType> unitsProduced  // Player team units produced by type.
+  public ObjectIntMap<UnitType> unitsDestroyed  // Player team units destroyed by type.
+  public ObjectIntMap<Block> buildingsBuilt  // Record of blocks that have been placed by count.
+  public ObjectIntMap<Block> buildingsDeconstructed  // Record of blocks that have been placed by count.
+  public ObjectIntMap<Block> buildingsDestroyed  // Record of blocks that have been placed by count.
+  public long playtime  // Total campaign playtime in milliseconds.
+  public int sectorsLost  // Total game-overs.
+  public int sectorsCaptured  // Total times a sector has been captured.
+  public int wavesLasted  // Total waves lasted.
+
+Difficulty.java
+(unknown)
+
+EventType.java
+Java class
+inner-class: WinEvent
+inner-class: LoseEvent
+inner-class: ResizeEvent
+inner-class: MapMakeEvent
+inner-class: MapPublishEvent
+inner-class: SaveWriteEvent
+inner-class: ClientCreateEvent
+inner-class: ServerLoadEvent
+inner-class: DisposeEvent
+inner-class: PlayEvent
+inner-class: ResetEvent
+inner-class: HostEvent
+inner-class: WaveEvent
+inner-class: TurnEvent
+inner-class: LineConfirmEvent
+// Called when the player places a line, mobile or desktop.
+inner-class: BlockInfoEvent
+// Called when the player opens info for a specific block.
+inner-class: ContentInitEvent
+// Called *after* all content has been initialized.
+inner-class: AtlasPackEvent
+// Called *after* all content has been added to the atlas, but before its pixmaps are disposed.
+  fields:
+    public final MultiPacker multiPacker
+  ctors:
+    public AtlasPackEvent(MultiPacker multiPacker)
+inner-class: ModContentLoadEvent
+// Called *after* all mod content has been loaded, but before it has been initialized.
+inner-class: ClientLoadEvent
+// Called when the client game is first loaded.
+inner-class: MusicRegisterEvent
+// Called after SoundControl registers its music.
+inner-class: FileTreeInitEvent
+// Called *after* all the modded files have been added into Vars.tree
+inner-class: WorldLoadEvent
+// Called when a game begins and the world tiles are loaded, just set `generating = false`.
+inner-class: WorldLoadBeginEvent
+// Called when the world begin to load, just set `generating = true`.
+inner-class: WorldLoadEndEvent
+// Called when a game begins and the world tiles are initiated.
+inner-class: DataPatchLoadEvent
+// Called when a save loads custom data patches.
+  fields:
+    public final Seq<DataAsset> assets
+  ctors:
+    public DataPatchLoadEvent(Seq<DataAsset> assets)
+inner-class: TextureStreamEvent
+// Called when a new texture is received from the server via {@link mindustry.core.NetServer#sendTexture}.
+  fields:
+    public final String name
+  ctors:
+    public TextureStreamEvent(String name)
+inner-class: SaveLoadEvent
+  fields:
+    public final boolean isMap
+  ctors:
+    public SaveLoadEvent(boolean isMap)
+inner-class: SectorLoseEvent
+// Called when a sector is destroyed by waves when you're not there.
+  fields:
+    public final Sector sector
+  ctors:
+    public SectorLoseEvent(Sector sector)
+inner-class: SectorInvasionEvent
+// Called when a sector is destroyed by waves when you're not there.
+  fields:
+    public final Sector sector
+  ctors:
+    public SectorInvasionEvent(Sector sector)
+inner-class: LaunchItemEvent
+  fields:
+    public final ItemStack stack
+  ctors:
+    public LaunchItemEvent(ItemStack stack)
+inner-class: SectorLaunchEvent
+  fields:
+    public final Sector sector
+  ctors:
+    public SectorLaunchEvent(Sector sector)
+inner-class: SectorLaunchLoadoutEvent
+  fields:
+    public final Sector sector
+    public final Schematic loadout
+  ctors:
+    public SectorLaunchLoadoutEvent(Sector sector, Sector from, Schematic loadout)
+inner-class: SchematicCreateEvent
+  fields:
+    public final Schematic schematic
+  ctors:
+    public SchematicCreateEvent(Schematic schematic)
+inner-class: ClientPreConnectEvent
+  fields:
+    public final Host host
+  ctors:
+    public ClientPreConnectEvent(Host host)
+inner-class: ClientServerConnectEvent
+  fields:
+    public final String ip
+    public final int port
+  ctors:
+    public ClientServerConnectEvent(String ip, int port)
+inner-class: MenuOptionChooseEvent
+// Consider using Menus.registerMenu instead.
+  fields:
+    public final Player player
+    public final int menuId
+  ctors:
+    public MenuOptionChooseEvent(Player player, int menuId, int option)
+inner-class: MenuBuilderOptionChooseEvent
+// Consider using Menus.registerMenu instead.
+  fields:
+    public final Player player
+    public final int menuId
+    public final MenuResult result
+  ctors:
+    public MenuBuilderOptionChooseEvent(Player player, int menuId, MenuResult result)
+inner-class: TextInputEvent
+// Consider using Menus.registerTextInput instead.
+  fields:
+    public final Player player
+    public final int textInputId
+    public final String text
+  ctors:
+    public TextInputEvent(Player player, int textInputId, String text)
+inner-class: PlayerChatEvent
+  fields:
+    public final Player player
+    public final String message
+  ctors:
+    public PlayerChatEvent(Player player, String message)
+inner-class: ClientChatEvent
+// Called when the client sends a chat message.
+  fields:
+    public final String message
+  ctors:
+    public ClientChatEvent(String message)
+inner-class: SectorCaptureEvent
+// Called when a sector is conquered, e.g.
+  fields:
+    public final Sector sector
+    public final boolean initialCapture
+  ctors:
+    public SectorCaptureEvent(Sector sector, boolean initialCapture)
+inner-class: WithdrawEvent
+// Called when the player withdraws items from a block.
+  fields:
+    public final Building tile
+    public final Player player
+    public final Item item
+    public final int amount
+  ctors:
+    public WithdrawEvent(Building tile, Player player, Item item, int amount)
+inner-class: DepositEvent
+// Called when a player deposits items to a block.
+  fields:
+    public final Building tile
+    public final Player player
+    public final Item item
+    public final int amount
+  ctors:
+    public DepositEvent(Building tile, Player player, Item item, int amount)
+inner-class: ConfigEvent
+// Called when a specific building has its configuration changed.
+  fields:
+    public final Building tile
+    public final Player player
+    public final Object value
+  ctors:
+    public ConfigEvent(Building tile, Player player, Object value)
+inner-class: TapEvent
+// Called when a player taps any tile.
+  fields:
+    public final Player player
+    public final Tile tile
+  ctors:
+    public TapEvent(Player player, Tile tile)
+inner-class: PickupEvent
+  fields:
+    public final Unit carrier
+    public final Unit unit
+    public final Building build
+  ctors:
+    public PickupEvent(Unit carrier, Unit unit) / public PickupEvent(Unit carrier, Building build)
+inner-class: PayloadDropEvent
+  fields:
+    public final Unit carrier
+    public final Unit unit
+    public final Building build
+  ctors:
+    public PayloadDropEvent(Unit carrier, Unit unit) / public PayloadDropEvent(Unit carrier, Building build)
+inner-class: UnitControlEvent
+  fields:
+    public final Player player
+    public final Unit unit
+  ctors:
+    public UnitControlEvent(Player player, Unit unit)
+inner-class: BuildingCommandEvent
+  fields:
+    public final Player player
+    public final Building building
+    public final Vec2 position
+  ctors:
+    public BuildingCommandEvent(Player player, Building building, Vec2 position)
+inner-class: GameOverEvent
+  fields:
+    public final Team winner
+  ctors:
+    public GameOverEvent(Team winner)
+inner-class: BuildDamageEvent
+// Called when a bullet damages a building.
+  fields:
+    public Building build
+    public Bullet source
+  methods:
+    public BuildDamageEvent set(Building build, Bullet source)
+inner-class: BulletCreateEvent
+// Called when a bullet has been created.
+  fields:
+    public Bullet bullet
+  methods:
+    public BulletCreateEvent set(Bullet bullet)
+inner-class: TilePreChangeEvent
+// Called *before* a tile has changed.
+  fields:
+    public Tile tile
+  methods:
+    public TilePreChangeEvent set(Tile tile)
+inner-class: TileChangeEvent
+// Called *after* a tile has changed.
+  fields:
+    public Tile tile
+  methods:
+    public TileChangeEvent set(Tile tile)
+inner-class: TileFloorChangeEvent
+// Called when a tile changes its floor.
+  fields:
+    public Tile tile
+    public Floor previous
+  methods:
+    public TileFloorChangeEvent set(Tile tile, Floor previous, Floor floor)
+inner-class: TileOverlayChangeEvent
+// Called when a tile changes its overlay.
+  fields:
+    public Tile tile
+    public Floor previous
+  methods:
+    public TileOverlayChangeEvent set(Tile tile, Floor previous, Floor overlay)
+inner-class: BuildTeamChangeEvent
+// Called after a building's team changes.
+  fields:
+    public Team previous
+    public Building build
+  methods:
+    public BuildTeamChangeEvent set(Team previous, Building build)
+inner-class: CoreChangeEvent
+// Called when a core block is placed/removed or its team is changed.
+  fields:
+    public CoreBuild core
+  ctors:
+    public CoreChangeEvent(CoreBuild core)
+inner-class: StateChangeEvent
+  fields:
+    public final State from
+  ctors:
+    public StateChangeEvent(State from, State to)
+inner-class: UnlockEvent
+  fields:
+    public final UnlockableContent content
+  ctors:
+    public UnlockEvent(UnlockableContent content)
+inner-class: ResearchEvent
+  fields:
+    public final UnlockableContent content
+  ctors:
+    public ResearchEvent(UnlockableContent content)
+inner-class: RulesLoadEvent
+// Called when all rules of the current map are loaded.
+  fields:
+    public final Rules rules
+    public final boolean fromSave
+  ctors:
+    public RulesLoadEvent(Rules rules) / public RulesLoadEvent(Rules rules, boolean fromSave)
+inner-class: BlockBuildBeginEvent
+// Called when block building begins by placing down the ConstructBlock.
+  fields:
+    public final Tile tile
+    public final Team team
+    public final Unit unit
+    public final boolean breaking
+  ctors:
+    public BlockBuildBeginEvent(Tile tile, Team team, Unit unit, boolean breaking)
+inner-class: BlockBuildEndEvent
+  fields:
+    public final Tile tile
+    public final Team team
+    public final Unit unit
+    public final boolean breaking
+    public final Object config
+  ctors:
+    public BlockBuildEndEvent(Tile tile, Unit unit, Team team, boolean breaking, Object config)
+inner-class: BuildRotateEvent
+  fields:
+    public final Building build
+    public final Unit unit
+    public final int previous
+  ctors:
+    public BuildRotateEvent(Building build, Unit unit, int previous)
+inner-class: BuildSelectEvent
+// Called when a player or drone begins building something.
+  fields:
+    public final Tile tile
+    public final Team team
+    public final Unit builder
+    public final boolean breaking
+  ctors:
+    public BuildSelectEvent(Tile tile, Team team, Unit builder, boolean breaking)
+inner-class: BlockDestroyEvent
+// Called right before a block is destroyed.
+  fields:
+    public final Tile tile
+  ctors:
+    public BlockDestroyEvent(Tile tile)
+inner-class: GeneratorPressureExplodeEvent
+// Called when a neoplasia (or other pressure-based block, from mods) reactor explodes due to pressure.
+  fields:
+    public final Building build
+  ctors:
+    public GeneratorPressureExplodeEvent(Building build)
+inner-class: BuildingBulletDestroyEvent
+// Called when a building is directly killed by a bullet.
+  fields:
+    public Building build
+    public Bullet bullet
+  ctors:
+    public BuildingBulletDestroyEvent(Building build, Bullet bullet) / public BuildingBulletDestroyEvent()
+inner-class: UnitDestroyEvent
+  fields:
+    public final Unit unit
+  ctors:
+    public UnitDestroyEvent(Unit unit)
+inner-class: UnitBulletDestroyEvent
+// Called when a unit is directly killed by a bullet.
+  fields:
+    public Unit unit
+    public Bullet bullet
+  ctors:
+    public UnitBulletDestroyEvent(Unit unit, Bullet bullet) / public UnitBulletDestroyEvent()
+inner-class: UnitDamageEvent
+// Called when a unit is hit by a bullet.
+  fields:
+    public Unit unit
+    public Bullet bullet
+  methods:
+    public UnitDamageEvent set(Unit unit, Bullet bullet)
+inner-class: UnitDrownEvent
+  fields:
+    public final Unit unit
+  ctors:
+    public UnitDrownEvent(Unit unit)
+inner-class: UnitCreateEvent
+// Called when a unit is created in a reconstructor, factory or other unit.
+  fields:
+    public final Unit unit
+    public final Building spawner
+    public final Unit spawnerUnit
+  ctors:
+    public UnitCreateEvent(Unit unit, Building spawner, Unit spawnerUnit) / public UnitCreateEvent(Unit unit, Building spawner)
+inner-class: UnitSpawnEvent
+// Called when a unit is spawned by wave.
+  fields:
+    public final Unit unit
+  ctors:
+    public UnitSpawnEvent(Unit unit)
+inner-class: UnitUnloadEvent
+// Called when a unit is dumped from any payload block.
+  fields:
+    public final Unit unit
+  ctors:
+    public UnitUnloadEvent(Unit unit)
+inner-class: UnitChangeEvent
+  fields:
+    public final Player player
+    public final Unit unit
+  ctors:
+    public UnitChangeEvent(Player player, Unit unit)
+inner-class: ConnectionEvent
+// Called when a connection is established to a client.
+  fields:
+    public final NetConnection connection
+  ctors:
+    public ConnectionEvent(NetConnection connection)
+inner-class: ConnectPacketEvent
+// Called when a player sends a connection packet.
+  fields:
+    public final NetConnection connection
+    public final ConnectPacket packet
+  ctors:
+    public ConnectPacketEvent(NetConnection connection, ConnectPacket packet)
+inner-class: PlayerConnectionConfirmed
+// Called after player confirmed it has received world data and is ready to play.
+  fields:
+    public final Player player
+  ctors:
+    public PlayerConnectionConfirmed(Player player)
+inner-class: PlayerJoin
+// Called after connecting; when a player receives world data and is ready to play.
+  fields:
+    public final Player player
+  ctors:
+    public PlayerJoin(Player player)
+inner-class: PlayerConnect
+// Called when a player connects, but has not joined the game yet.
+  fields:
+    public final Player player
+  ctors:
+    public PlayerConnect(Player player)
+inner-class: PlayerLeave
+// Called before a player leaves the game.
+  fields:
+    public final Player player
+  ctors:
+    public PlayerLeave(Player player)
+inner-class: PlayerBanEvent
+  fields:
+    public final Player player
+    public final String uuid
+  ctors:
+    public PlayerBanEvent(Player player, String uuid)
+inner-class: PlayerUnbanEvent
+  fields:
+    public final Player player
+    public final String uuid
+  ctors:
+    public PlayerUnbanEvent(Player player, String uuid)
+inner-class: PlayerIpBanEvent
+  fields:
+    public final String ip
+  ctors:
+    public PlayerIpBanEvent(String ip)
+inner-class: PlayerIpUnbanEvent
+  fields:
+    public final String ip
+  ctors:
+    public PlayerIpUnbanEvent(String ip)
+inner-class: AdminRequestEvent
+  fields:
+    public final Player player
+    public final Player other
+    public final AdminAction action
+  ctors:
+    public AdminRequestEvent(Player player, Player other, AdminAction action)
+
+FogControl.java
+Java class (final) implements mindustry.io.SaveFileReader.CustomChunk
+fields:
+  private static volatile int ww
+  private static final int dynamicUpdateInterval  // 25 FPS
+  private static final Object notifyStatic
+  private volatile FogData fog  // indexed by team
+  private final LongSeq staticEvents
+  private final LongSeq dynamicEventQueue
+  private final LongSeq dynamicEvents  // access must be synchronized; accessed from both threads
+  private Thread staticFogThread
+  private Thread dynamicFogThread
+  private boolean justLoaded
+  private boolean loadedStatic
+  private int lastEntityUpdateIndex
+ctors:
+  public FogControl()
+methods:
+  public Bits getDiscovered(Team team)
+  public boolean isDiscovered(Team team, int x, int y)
+  public boolean isVisible(Team team, float x, float y)
+  public boolean isVisibleTile(Team team, int x, int y)
+  public void resetFog()
+  FogData data(Team team)
+  void stop()
+  void pushStaticBlocks(boolean initial)  // @param initial whether this is the initial update; if true, does not update renderer
+  void pushEvent(long event, boolean skipRender)  // @param skipRender whether the event is passed to the fog renderer
+  public void forceUpdate(Team team, Building build)
+  public void update()
+  void updateStatic()
+  void updateDynamic(Bits cleared)
+  public void write(DataOutput stream) throws IOException
+  public void read(DataInput stream) throws IOException
+  public boolean shouldWrite()
+  static void circle(Bits arr, int x, int y, int radius)
+  static void hline(Bits arr, int x1, int x2, int y)
+inner-class: StaticFogThread extends java.lang.Thread
+  ctors:
+    StaticFogThread()
+  methods:
+    public void run()
+inner-class: DynamicFogThread extends java.lang.Thread
+  fields:
+    final Bits cleared
+  ctors:
+    DynamicFogThread()
+  methods:
+    public void run()
+inner-class: FogData
+  fields:
+    volatile Bits read  // dynamic double-buffered data for dynamic (live) coverage
+    final Bits staticData  // static map exploration fog
+    long lastDynamicMs  // last dynamic update timestamp.
+    boolean dynamicUpdated  // if true, a dynamic fog update must be scheduled.
+  ctors:
+    FogData()
+inner-class: FogEventStruct
+  fields:
+    int x
+    int y
+    int radius
+    int team
+
+GameStats.java
+Java class
+fields:
+  public int enemyUnitsDestroyed  // Enemy (red team) units destroyed.
+  public int wavesLasted  // Total waves lasted.
+  public int buildingsBuilt  // Friendly buildings fully built.
+  public int buildingsDeconstructed  // Friendly buildings fully deconstructed.
+  public int buildingsDestroyed  // Friendly buildings destroyed.
+  public int unitsCreated  // Total units created by any means.
+  public ObjectIntMap<Block> placedBlockCount  // Record of blocks that have been placed by count.
+  public ObjectIntMap<Block> destroyedBlockCount  // Record of enemy blocks that have been destroyed (from any source) by count.
+  public ObjectIntMap<Item> coreItemCount  // Record of items that have entered the core through transport blocks.
+methods:
+  public int getPlaced(Block block)
+  public int getDestroyed(Block block)
+
+Gamemode.java
+(unknown)
+
+MapMarkers.java
+Java class implements java.lang.Iterable
+fields:
+  private IntMap<ObjectiveMarker> map  // Maps marker unique ID to marker.
+  public Seq<ObjectiveMarker> worldMarkers
+  public Seq<ObjectiveMarker> mapMarkers
+  public Seq<ObjectiveMarker> lightMarkers
+methods:
+  public void clear()
+  public void add(int id, ObjectiveMarker marker)
+  public void remove(int id) / private void remove(Seq<ObjectiveMarker> markers, int index, MarkerSetter setter)
+  public ObjectiveMarker get(int id)
+  public boolean has(int id)
+  public int size()
+  public void write(DataOutput stream) throws IOException
+  public void read(DataInput stream) throws IOException
+  public void updateMarker(Seq<ObjectiveMarker> markers, ObjectiveMarker marker, boolean visible, Intf<ObjectiveMarker> getter, MarkerSetter setter)
+  private void setMarker(Seq<ObjectiveMarker> markers, ObjectiveMarker curr, ObjectiveMarker prev, Intf<ObjectiveMarker> getter, MarkerSetter setter)
+  public Iterator<ObjectiveMarker> iterator()  // @deprecated use the seq fields instead
+inner-interface: MarkerSetter
+  methods:
+    void set(ObjectiveMarker marker, int index)
+
+MapObjectives.java
+Java class implements java.lang.Iterable, arc.util.Eachable
+// Handles and executes in-map objectives.
+fields:
+  public static final Seq<Prov<? extends MapObjective>> allObjectiveTypes
+  public static final Seq<Prov<? extends ObjectiveMarker>> allMarkerTypes
+  public static final ObjectMap<String,Prov<? extends ObjectiveMarker>> markerNameToType
+  public static final Seq<String> allMarkerTypeNames
+  public Seq<MapObjective> all  // All objectives the executor contains.
+ctors:
+  public MapObjectives(Seq<MapObjective> all) / public MapObjectives()
+methods:
+  public static void registerObjective(Prov<? extends MapObjective> providers)
+  public static void registerMarker(Prov<? extends ObjectiveMarker> providers)
+  public static void registerLegacyMarker(String name, Prov<? extends ObjectiveMarker> prov)
+  public void add(MapObjective objectives)  // Adds all given objectives to the executor as root objectives.
+  private void flatten(MapObjective objective)  // Recursively adds the objective and its children.
+  public void update()  // Updates all objectives this executor contains.
+  public MapObjective get(int index)
+  public boolean any()  // @return Whether there are any qualified objectives at all.
+  public void clear()
+  public void eachRunning(Cons<MapObjective> cons) / public void eachRunning(Boolf<? super MapObjective> pred, Cons<T> cons)  // Iterates over all qualified in-map objectives.
+  public Iterator<MapObjective> iterator()
+  public void each(Cons<? super MapObjective> cons)
+  private static void lookupRegion(Object texture, TextureRegion out)
+  private static void prepareTexture(ObjectiveMarker marker, Object texture)
+inner-class: MapObjective implements arc.util.serialization.AllowSerialization
+// Base abstract class for any in-map objective.
+  fields:
+    public boolean hidden
+    public String details
+    public String completionLogicCode
+    public String flagsAdded
+    public String flagsRemoved
+    public ObjectiveMarker markers
+    public transient Seq<MapObjective> parents  // The parents of this objective.
+    private transient final Seq<MapObjective> children  // Temporary container to store references since this class is static.
+    public transient int editorX  // For the objectives UI dialog.
+    private boolean completed  // Whether this objective has been done yet.
+    private transient boolean depFinished  // Internal value.
+  methods:
+    public abstract boolean update()  // @return True if this objective is done and should be removed from the executor.
+    public void reset()  // Reset internal state, if any.
+    public void done()  // Called once after {@link #update()} returns true, before this objective is removed.
+    public final boolean dependencyFinished()  // @return true if all {@link #parents} are completed, rendering this objective able to execute.
+    public final boolean isCompleted()  // @return true if this objective is done (practically, has been removed from the executor).
+    public boolean qualified()  // @return Whether this objective should run at all.
+    public MapObjective child(MapObjective child)  // @return This objective, with the given child's parents added with this, for chaining operations.
+    public MapObjective parent(MapObjective parent)  // @return This objective, with the given parent added to this objective's parents, for chaining operations.
+    public MapObjective details(String details) / public String details()  // @return This objective, with the details message assigned to, for chaining operations.
+    public MapObjective flagsAdded(String flagsAdded)  // @return This objective, with the added-flags assigned to, for chaining operations.
+    public MapObjective flagsRemoved(String flagsRemoved)  // @return This objective, with the removed-flags assigned to, for chaining operations.
+    public MapObjective markers(ObjectiveMarker markers)  // @return This objective, with the markers assigned to, for chaining operations.
+    public String text()  // @return Basic mission display text.
+    public String typeName()  // @return The localized type-name of this objective, defaulting to the class simple name without the "Objective" prefix.
+    public void validate()  // Validate fields after reading to make sure none of them are null.
+inner-class: ResearchObjective extends mindustry.game.MapObjectives.MapObjective
+// Research a specific piece of content in the tech tree.
+  fields:
+    public UnlockableContent content
+  ctors:
+    public ResearchObjective(UnlockableContent content) / public ResearchObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: ProduceObjective extends mindustry.game.MapObjectives.MapObjective
+// Produce a specific piece of content in the tech tree (essentially research with different text).
+  fields:
+    public UnlockableContent content
+  ctors:
+    public ProduceObjective(UnlockableContent content) / public ProduceObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: ItemObjective extends mindustry.game.MapObjectives.MapObjective
+// Have a certain amount of item in your core.
+  fields:
+    public Item item
+    public int amount
+  ctors:
+    public ItemObjective(Item item, int amount) / public ItemObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: CoreItemObjective extends mindustry.game.MapObjectives.MapObjective
+// Get a certain item in your core (through a block, not manually.)
+  fields:
+    public Item item
+    public int amount
+  ctors:
+    public CoreItemObjective(Item item, int amount) / public CoreItemObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: BuildCountObjective extends mindustry.game.MapObjectives.MapObjective
+// Build a certain amount of a block.
+  fields:
+    public Block block
+    public int count
+  ctors:
+    public BuildCountObjective(Block block, int count) / public BuildCountObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: UnitCountObjective extends mindustry.game.MapObjectives.MapObjective
+// Produce a certain amount of a unit.
+  fields:
+    public UnitType unit
+    public int count
+  ctors:
+    public UnitCountObjective(UnitType unit, int count) / public UnitCountObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: DestroyUnitsObjective extends mindustry.game.MapObjectives.MapObjective
+// Produce a certain amount of units.
+  fields:
+    public int count
+  ctors:
+    public DestroyUnitsObjective(int count) / public DestroyUnitsObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public String toString()
+inner-class: TimerObjective extends mindustry.game.MapObjectives.MapObjective
+  fields:
+    public String text
+    public float duration
+    protected float countup
+  ctors:
+    public TimerObjective(String text, float duration) / public TimerObjective()
+  methods:
+    public boolean update()
+    public void reset()
+    public String text()
+    public String toString()
+inner-class: DestroyBlockObjective extends mindustry.game.MapObjectives.MapObjective
+  fields:
+    public Point2 pos
+    public Team team
+    public Block block
+  ctors:
+    public DestroyBlockObjective(Block block, int x, int y, Team team) / public DestroyBlockObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: DestroyBlocksObjective extends mindustry.game.MapObjectives.MapObjective
+  fields:
+    public Point2 positions
+    public Team team
+    public Block block
+  ctors:
+    public DestroyBlocksObjective(Block block, Team team, Point2 positions) / public DestroyBlocksObjective()
+  methods:
+    public int progress()
+    public boolean update()
+    public String text()
+    public void validate()
+    public String toString()
+inner-class: CommandModeObjective extends mindustry.game.MapObjectives.MapObjective
+// Command any unit to do anything.
+  methods:
+    public boolean update()
+    public String text()
+    public String toString()
+inner-class: FlagObjective extends mindustry.game.MapObjectives.MapObjective
+// Wait until a logic flag is set.
+  fields:
+    public String flag
+    public String text
+  ctors:
+    public FlagObjective(String flag, String text) / public FlagObjective()
+  methods:
+    public boolean update()
+    public String text()
+    public String toString()
+inner-class: DestroyCoreObjective extends mindustry.game.MapObjectives.MapObjective
+// Destroy all enemy core(s).
+  methods:
+    public boolean update()
+    public String text()
+    public String toString()
+inner-class: ObjectiveMarker implements arc.util.serialization.Json.JsonSerializable
+// Marker used for drawing various content to indicate something along with an objective.
+  fields:
+    public int world  // Whether to display marker in the world.
+    public int minimap  // Whether to display marker on the minimap.
+    public int light  // Whether to use the marker as light.
+    public boolean autoscale  // Whether to scale marker corresponding to player's zoom level.
+    protected float drawLayer  // On which z-sorting layer is marker drawn.
+  methods:
+    public void draw(float scaleFactor)
+    public void drawLight(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)  // Control marker with world processor code.
+    public void setText(String text, boolean fetch)
+    public void setTexture(Object texture)
+    public String typeName()  // @return The localized type-name of this objective, defaulting to the class simple name without the "Marker" prefix.
+    public void write(Json json)
+    private void updateField(JsonValue value)
+    public void read(Json json, JsonValue jsonData)
+    public static String fetchText(String text)
+inner-class: PosMarker extends mindustry.game.MapObjectives.ObjectiveMarker
+// A marker that has a position in the world in world coordinates.
+  fields:
+    public Vec2 pos  // Position of marker, in world coordinates
+  methods:
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+inner-class: ShapeTextMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays text above a shape.
+  fields:
+    public String text
+    public float fontSize
+    public byte flags
+    public int textAlign
+    public int lineAlign
+    public float radius
+    public int sides
+    public Color color
+    private transient String fetchedText  // Cached localized text.
+  ctors:
+    public ShapeTextMarker(String text, float x, float y) / public ShapeTextMarker(String text, float x, float y, float radius) / public ShapeTextMarker(String text, float x, float y, float radius, float rotation) / public ShapeTextMarker(String text, float x, float y, float radius, float rotation, float textHeight) / public ShapeTextMarker(String text, float x, float y, float radius, float rotation, float textHeight, int textAlign) / public ShapeTextMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+    public void setText(String text, boolean fetch)
+inner-class: PointMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays a circle in the world.
+  fields:
+    public float radius
+    public Color color
+  ctors:
+    public PointMarker(int x, int y) / public PointMarker(int x, int y, Color color) / public PointMarker(int x, int y, float radius, float stroke, Color color) / public PointMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void drawLight(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+inner-class: ShapeMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays a shape with an outline and color.
+  fields:
+    public float radius
+    public boolean fill
+    public int sides
+    public Color color
+  ctors:
+    public ShapeMarker(float x, float y) / public ShapeMarker(float x, float y, float radius, float rotation) / public ShapeMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+inner-class: TextMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays text at a location.
+  fields:
+    public String text
+    public float fontSize
+    public byte flags
+    public int textAlign
+    public int lineAlign
+    private transient String fetchedText  // Cached localized text.
+  ctors:
+    public TextMarker(String text, float x, float y, float fontSize, byte flags) / public TextMarker(String text, float x, float y) / public TextMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+    public void setText(String text, boolean fetch)
+inner-class: LineMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays a line from pos1 to pos2.
+  fields:
+    public Vec2 endPos
+    public float stroke
+    public boolean outline
+    public Color color1
+    public Color color2
+  ctors:
+    public LineMarker(float x1, float y1, float x2, float y2, float stroke) / public LineMarker(float x1, float y1, float x2, float y2) / public LineMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void drawLight(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+inner-class: TextureMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays a texture with specified name.
+  fields:
+    public float rotation  // Zero width/height scales marker to original texture's size
+    public final TextureHolder texture
+    public Color color
+    private transient TextureRegion fetchedRegion
+  ctors:
+    public TextureMarker(Object texture, float x, float y, float width, float height) / public TextureMarker(Object texture, float x, float y) / public TextureMarker()
+  methods:
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+    public void draw(float scaleFactor)
+    public void setTexture(Object texture)
+inner-class: QuadMarker extends mindustry.game.MapObjectives.ObjectiveMarker
+  fields:
+    public final TextureHolder texture
+    public float vertices
+    private boolean mapRegion
+    private transient TextureRegion fetchedRegion
+  ctors:
+    public QuadMarker()
+  methods:
+    public void draw(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+    public void setTexture(Object texture)
+    private static float unmap(float x, float from, float to)
+    private void setPos(int i, double x, double y)
+    private void setColor(int i, double c)
+    private void setUv(int i, double u, double v)
+inner-class: LightMarker extends mindustry.game.MapObjectives.PosMarker
+// Displays a single point light.
+  fields:
+    public float radius
+    public Color color
+  ctors:
+    public LightMarker(int x, int y) / public LightMarker(int x, int y, Color color) / public LightMarker(int x, int y, float radius, Color color) / public LightMarker()
+  methods:
+    public void drawLight(float scaleFactor)
+    public void control(LMarkerControl type, double p1, double p2, double p3)
+inner-class: TextureHolder implements arc.util.serialization.Json.JsonSerializable
+  fields:
+    public Object value
+  methods:
+    public void write(Json json)
+    public void read(Json json, JsonValue jsonData)
+
+Objectives.java
+Java class
+// Holds objective classes.
+inner-class: Research implements mindustry.game.Objectives.Objective
+  fields:
+    public UnlockableContent content
+  ctors:
+    public Research(UnlockableContent content) / protected Research()
+  methods:
+    public boolean complete()
+    public String display()
+    public String toString()
+inner-class: Produce implements mindustry.game.Objectives.Objective
+  fields:
+    public UnlockableContent content
+  ctors:
+    public Produce(UnlockableContent content) / protected Produce()
+  methods:
+    public boolean complete()
+    public String display()
+    public String toString()
+inner-class: SectorComplete implements mindustry.game.Objectives.Objective
+  fields:
+    public SectorPreset preset
+  ctors:
+    public SectorComplete(SectorPreset zone) / protected SectorComplete()
+  methods:
+    public boolean complete()
+    public String display()
+    public String toString()
+inner-class: OnSector implements mindustry.game.Objectives.Objective
+  fields:
+    public SectorPreset preset
+  ctors:
+    public OnSector(SectorPreset zone) / protected OnSector()
+  methods:
+    public boolean complete()
+    public String display()
+    public String toString()
+inner-class: OnPlanet implements mindustry.game.Objectives.Objective
+  fields:
+    public Planet planet
+  ctors:
+    public OnPlanet(Planet planet) / protected OnPlanet()
+  methods:
+    public boolean complete()
+    public String display()
+    public String toString()
+inner-interface: Objective
+// Defines a specific objective for a game.
+  methods:
+    boolean complete()  // @return whether this objective is met.
+    String display()  // @return the string displayed when this objective is completed, in imperative form.
+    default void build(Table table)  // Build a display for this zone requirement.
+
+Rules.java
+Java class
+// Defines current rules on how the game should function.
+fields:
+  public boolean allowEditRules  // Allows editing the rules in-game.
+  public boolean infiniteResources  // Sandbox mode: Enables infinite resources, build range and build speed.
+  public boolean coreBuildAndConfig  // Allow building and deconstructing cores anywhere, as well as showing ui to change teams
+  public TeamRules teams  // Team-specific rules.
+  public boolean waveTimer  // Whether the waves come automatically on a timer.
+  public boolean waveSending  // Whether the waves can be manually summoned with the play button.
+  public boolean waves  // Whether waves are spawnable at all.
+  public boolean airUseSpawns  // Whether air units spawn at spawns instead of the edge of the map
+  public boolean wavesSpawnAtCores  // If true, units spawn at enemy cores in attack maps with waves enabled.
+  public boolean pvp  // Whether the game objective is PvP.
+  public boolean pvpAutoPause  // Whether is waiting for players enabled in PvP.
+  public boolean pauseDisabled  // Whether pause is enabled or not in singleplayer
+  public boolean waitEnemies  // Whether to pause the wave timer until all enemies are destroyed.
+  public boolean attackMode  // Determines if gamemode is attack mode.
+  public boolean editor  // Whether this is the editor gamemode.
+  public boolean derelictRepair  // Whether blocks can be repaired by clicking them.
+  public boolean canGameOver  // Whether a gameover can happen at all.
+  public boolean coreCapture  // Whether cores change teams when they are destroyed.
+  public boolean reactorExplosions  // Whether reactors can explode and damage other blocks.
+  public boolean possessionAllowed  // Whether to allow manual unit control.
+  public boolean schematicsAllowed  // Whether schematics are allowed.
+  public boolean damageExplosions  // Whether friendly explosions can occur and set fire/damage other blocks.
+  public boolean fire  // Whether fire (and neoplasm spread) is enabled.
+  public boolean randomWaveAI  // If true, air and ground units target random things each wave instead of only the core/generators.
+  public boolean unitPayloadUpdate  // EXPERIMENTAL! If true, blocks will update in units and share power.
+  public boolean unitPayloadsExplode  // If true, units' payloads are destroy()ed when the unit is destroyed.
+  public boolean unitCapVariable  // Whether cores add to unit limit
+  public boolean hideSpawns  // If true, unit spawn points are hidden.
+  public float solarMultiplier  // Multiplies power output of solar panels.
+  public float unitBuildSpeedMultiplier  // How fast unit factories build units.
+  public float unitCostMultiplier  // Multiplier of resources that units take to build.
+  public float unitDamageMultiplier  // How much damage units deal.
+  public float unitHealthMultiplier  // How much health units start with.
+  public float unitCrashDamageMultiplier  // How much damage unit crash damage deals.
+  public float unitMineSpeedMultiplier  // How fast units can mine.
+  public float unitFactoryActivationDelay  // Time until unit factories activate (global).
+  public boolean ghostBlocks  // If true, ghost blocks will appear upon destruction, letting builder blocks/units rebuild them.
+  public boolean showOtherTeamPings  // If true, pings of players from other teams will be shown.
+  public boolean logicUnitControl  // Whether to allow logic to control units.
+  public boolean logicUnitBuild  // Whether to allow units to build with logic.
+  public boolean logicUnitDeconstruct  // Whether to allow units to deconstruct blocks with logic.
+  public boolean worldProcessorPlayerLink  // If false, world processors can't link to player structures.
+  public boolean allowEditWorldProcessors  // If true, world processors can be edited and placed on this map.
+  public boolean disableWorldProcessors  // If true, world processors no longer update.
+  public float blockHealthMultiplier  // How much health blocks start with.
+  public float blockDamageMultiplier  // How much damage blocks (turrets) deal.
+  public float buildCostMultiplier  // Multiplier for buildings resource cost.
+  public float buildSpeedMultiplier  // Multiplier for building speed.
+  public float deconstructRefundMultiplier  // Multiplier for percentage of materials refunded when deconstructing.
+  public float objectiveTimerMultiplier  // Multiplier for time in timer objectives.
+  public float enemyCoreBuildRadius  // No-build zone around enemy core radius.
+  public boolean polygonCoreProtection  // If true, no-build zones are calculated based on the closest core.
+  public boolean placeRangeCheck  // If true, blocks cannot be placed near blocks that are near the enemy team.
+  public boolean cleanupDeadTeams  // If true, dead teams in PvP automatically have their blocks & units converted to derelict upon death.
+  public boolean onlyDepositCore  // If true, items can only be deposited in the core.
+  public boolean allowCoreUnloaders  // If true, Serpulo unloaders can take items from the core.
+  public float itemDepositCooldown  // Cooldown, in seconds, of item depositing for players.
+  public boolean coreDestroyClear  // If true, every enemy block in the radius of the (enemy) core is destroyed upon death.
+  public boolean hideBannedBlocks  // If true, banned blocks are hidden from the build menu.
+  public boolean allowEnvironmentDeconstruct  // If true, most blocks (including environmental walls) can be deconstructed.
+  public boolean instantBuild  // If true, buildings will be constructed instantly, with no limit on blocks placed per second.
+  public boolean blockWhitelist  // If true, bannedBlocks becomes a whitelist.
+  public boolean unitWhitelist  // If true, bannedUnits becomes a whitelist.
+  public float dropZoneRadius  // Radius around enemy wave drop zones.
+  public float waveSpacing  // Time between waves in ticks.
+  public float initialWaveSpacing  // Starting wave spacing; if <=0, uses waveSpacing * 2.
+  public int winWave  // Wave after which the player 'wins'.
+  public int unitCap  // Base unit cap.
+  public boolean disableUnitCap  // If true, the unit cap is disabled.
+  public float dragMultiplier  // Environment drag multiplier.
+  public int env  // Environmental flags that dictate visuals & how blocks function.
+  public Attributes attributes  // Attributes of the environment.
+  public Sector sector  // Sector for saves that have them.
+  public Seq<MusicContainer> ambientMusic  // Overrides random ambient music to be played.
+  public Seq<MusicContainer> darkMusic  // Overrides music that is played in certain situations, like during boss waves or low core health.
+  public boolean alwaysPlayMusic  // If true, this overrides the game setting to always play ambient music.
+  public boolean disableMusic  // If true, automatic music is disabled.
+  public float musicVolume  // Multiplier for music volume (max value is 1).
+  public Seq<SpawnGroup> spawns  // Spawn layout.
+  public Seq<ItemStack> loadout  // Starting items put in cores.
+  public Seq<WeatherEntry> weather  // Weather events that occur here.
+  public ObjectIntMap<Block> blockLimits  // Block placement limits by type.
+  public ObjectSet<Block> bannedBlocks  // Blocks that cannot be placed.
+  public ObjectSet<UnitType> bannedUnits  // Units that cannot be built.
+  public ObjectSet<Block> revealedBlocks  // Reveals blocks normally hidden by build visibility.
+  public ObjectSet<UnlockableContent> researched  // Unlocked content names.
+  public MapObjectives objectives  // In-map objective executor.
+  public ObjectSet<String> objectiveFlags  // Flags set by objectives.
+  public boolean fog  // If true, fog of war is enabled.
+  public boolean staticFog  // If fog = true, this is whether static (black) fog is enabled.
+  public Color staticColor  // Color for static, undiscovered fog of war areas.
+  public Color dynamicColor  // Color for discovered but un-monitored fog of war areas.
+  public boolean lighting  // Whether ambient lighting is enabled.
+  public Color ambientLight  // Ambient light color, used when lighting is enabled.
+  public boolean unitLight  // Whether units produce light when lighting is enabled.
+  public Team defaultTeam  // team of the player by default.
+  public Team waveTeam  // team of the enemy in waves/sectors.
+  public Color cloudColor  // color of clouds that is displayed when the player is landing
+  public String modeName  // name of the custom mode that this ruleset describes, or null.
+  public String mission  // Mission string displayed instead of wave/core counter.
+  public boolean coreIncinerates  // Whether cores incinerate items when full, just like in the campaign.
+  public boolean borderDarkness  // If false, borders fade out into darkness.
+  public boolean limitMapArea  // If true, the map play area is cropped based on the rectangle below.
+  public int limitX  // Map area limit rectangle.
+  public boolean disableOutsideArea  // If true, blocks outside the map area are disabled.
+  public StringMap tags  // special tags for additional info.
+  public String customBackgroundCallback  // Name of callback to call for background rendering in mods; see Renderer#addCustomBackground.
+  public String backgroundTexture  // path to background texture with extension (e.g.
+  public float backgroundSpeed  // background texture move speed scaling - bigger numbers mean slower movement.
+  public float backgroundScl  // background texture scaling factor
+  public float backgroundOffsetX  // background UV offsets
+  public PlanetParams planetBackground  // Parameters for planet rendered in the background.
+  public Planet planet  // Rules from this planet are applied.
+  public boolean allowLogicData  // If the `data` instruction is allowed for world processors
+methods:
+  public Rules copy()  // Copies this ruleset exactly.
+  public void retainContentFields(Rules source)  // When a map is played, it uses rules from the rules dialog, which cannot contain patched content, since it doesn't exist at that point in time.
+  public Gamemode mode()  // Returns the gamemode that best fits these rules.
+  public boolean hasEnv(int env)
+  public float buildRadius(Team team)
+  public float unitBuildSpeed(Team team)
+  public float unitCost(Team team)
+  public float unitDamage(Team team)
+  public float unitHealth(Team team)
+  public float unitCrashDamage(Team team)
+  public float unitMineSpeed(Team team)
+  public float blockHealth(Team team)
+  public float blockDamage(Team team)
+  public float buildSpeed(Team team)
+  public boolean isBanned(Block block) / public boolean isBanned(UnitType unit)
+  public float unitActivationDelay(Team team)
+  public boolean isInfiniteResources(Team team)
+inner-class: TeamRule
+// A team-specific ruleset.
+  fields:
+    public boolean aiCoreSpawn  // Whether, when AI is enabled, ships should be spawned from the core.
+    public boolean protectCores  // Whether the core no-build radius/polygonal protection applies to this team, unprotected teams are ignored by team assigner
+    public boolean checkPlacement  // Whether the placeRangeCheck applies to this team
+    public boolean cheat  // If true, blocks don't require power or resources.
+    public boolean fillItems  // If true, the core is always filled to capacity with all items.
+    public boolean infiniteResources  // If true, resources are not consumed when building.
+    public boolean prebuildAi  // EXPERIMENTAL, DO NOT USE: Pre-built base AI.
+    public boolean buildAi  // AI that builds random schematics.
+    public float buildAiTier  // Tier of builder AI.
+    public boolean rtsAi  // Enables "RTS" unit AI.
+    public int rtsMinSquad  // Minimum size of attack squads.
+    public int rtsMaxSquad  // Maximum size of attack squads.
+    public float rtsMinWeight  // Minimum "advantage" needed for a squad to attack.
+    public float unitFactoryActivationDelay  // Time until unit factories activate.
+    public float unitBuildSpeedMultiplier  // How fast unit factories build units.
+    public float unitDamageMultiplier  // How much damage units deal.
+    public float unitCrashDamageMultiplier  // How much damage unit crash damage deals.
+    public float unitMineSpeedMultiplier  // How fast units can mine.
+    public float unitCostMultiplier  // Multiplier of resources that units take to build.
+    public float unitHealthMultiplier  // How much health units start with.
+    public float blockHealthMultiplier  // How much health blocks start with.
+    public float blockDamageMultiplier  // How much damage blocks (turrets) deal.
+    public float buildSpeedMultiplier  // Multiplier for building speed.
+    public float extraCoreBuildRadius  // Extra spacing added to the no-build zone around the core.
+  ctors:
+    public TeamRule() / public TeamRule(Team team)  // for reading from json
+inner-class: TeamRules implements arc.util.serialization.Json.JsonSerializable
+// A simple map for storing TeamRules in an efficient way without hashing.
+  fields:
+    final TeamRule values
+  methods:
+    public TeamRule get(Team team)
+    public void write(Json json)
+    public void read(Json json, JsonValue jsonData)
+
+Saves.java
+Java class
+fields:
+  private static final DateFormat dateFormat
+  Seq<SaveSlot> saves
+  SaveSlot current
+  private SaveSlot lastSectorSave
+  private boolean saving
+  private float time
+  long totalPlaytime
+  private long lastTimestamp
+ctors:
+  public Saves()
+methods:
+  private void clearOldMegabaseSectors()
+  public void load()
+  public SaveSlot getLastSector()
+  public SaveSlot getCurrent()
+  public void update()
+  public long getTotalPlaytime()
+  public void resetSave()
+  public boolean isSaving()
+  public Fi getSectorFile(Sector sector)
+  public void saveSector(Sector sector)
+  public SaveSlot addSave(String name)
+  public SaveSlot importSave(Fi file) throws IOException
+  public Fi getNextSlotFile()
+  public Seq<SaveSlot> getSaveSlots()
+  public void deleteAll()
+inner-class: SaveSlot
+  fields:
+    public Fi file
+    boolean requestedPreview
+    public SaveMeta meta
+  ctors:
+    public SaveSlot(Fi file)
+  methods:
+    public void load() throws SaveException / public void load(WorldContext context) throws SaveException
+    public void save()
+    private void savePreview()
+    public Texture previewTexture()
+    private String index()
+    private Fi previewFile()
+    private Fi loadPreviewFile()
+    public boolean isHidden()
+    public String getPlayTime()
+    public long getTimestamp()
+    public String getDate()
+    public Map getMap()
+    public void cautiousLoad(Runnable run)
+    public String getName()
+    public void setName(String name)
+    public String[] getMods()
+    public Sector getSector()
+    public boolean isSector()
+    public Gamemode mode()
+    public int getBuild()
+    public int getWave()
+    public boolean isAutosave()
+    public void setAutosave(boolean save)
+    public boolean isBeingPlayed()
+    public boolean hasExternalAssets()
+    public void importFile(Fi from) throws IOException
+    public void exportFile(Fi to) throws IOException
+    public void delete()
+
+Schematic.java
+Java class implements mindustry.type.Publishable, java.lang.Comparable
+fields:
+  public final Seq<Stile> tiles
+  public Seq<String> labels  // These are used for the schematic tag UI.
+  public StringMap tags  // Internal meta tags.
+  public int width
+  public Fi file
+  public LoadedMod mod  // Associated mod.
+ctors:
+  public Schematic(Seq<Stile> tiles, StringMap tags, int width, int height)
+methods:
+  public float powerProduction()
+  public float powerConsumption()
+  public ItemSeq requirements()
+  public boolean hasCore()
+  public CoreBlock findCore()
+  public String name()
+  public String description()
+  public void save()
+  public String getSteamID()
+  public void addSteamID(String id)
+  public void removeSteamID()
+  public String steamTitle()
+  public String steamDescription()
+  public String steamTag()
+  public Fi createSteamFolder(String id)
+  public Fi createSteamPreview(String id)
+  public int compareTo(Schematic schematic)
+inner-class: Stile
+  fields:
+    public Block block
+    public short x
+    public Object config
+    public byte rotation
+  ctors:
+    public Stile(Block block, int x, int y, Object config, byte rotation) / public Stile()  // pooling only
+  methods:
+    public Stile set(Stile other)
+    public Stile copy()
+
+Schematics.java
+Java class implements arc.assets.Loadable
+// Handles schematics.
+fields:
+  private static final Schematic tmpSchem
+  private static final Schematic tmpSchem2
+  private static final byte header
+  private static final byte version
+  private static final boolean limitSchematicSize
+  private static final int padding
+  private static final int maxPreviewsMobile
+  private static final int resolution
+  private OptimizedByteArrayOutputStream out
+  private Seq<Schematic> all
+  private OrderedMap<Schematic,FrameBuffer> previews
+  private ObjectSet<Schematic> errored
+  private ObjectMap<CoreBlock,Seq<Schematic>> loadouts
+  private ObjectMap<CoreBlock,Schematic> defaultLoadouts
+  private FrameBuffer shadowBuffer
+  private Texture errorTexture
+  private long lastClearTime
+ctors:
+  public Schematics()
+methods:
+  public void loadSync()
+  public void load()  // Load all schematics in the folder immediately.
+  private void loadLoadouts()
+  public void overwrite(Schematic target, Schematic newSchematic)
+  private Schematic loadFile(Fi file)
+  public Seq<Schematic> all()
+  public void saveChanges(Schematic s)
+  public void savePreview(Schematic schematic, Fi file)
+  public Texture getPreview(Schematic schematic)
+  public boolean hasPreview(Schematic schematic)
+  public FrameBuffer getBuffer(Schematic schematic)
+  public Seq<BuildPlan> toPlans(Schematic schem, int x, int y) / public Seq<BuildPlan> toPlans(Schematic schem, int x, int y, boolean checkHidden)  // Creates an array of build plans from a schematic's data, centered on the provided x,y coordinates.
+  public Seq<Schematic> getLoadouts(CoreBlock block) / public ObjectMap<CoreBlock,Seq<Schematic>> getLoadouts()  // @return all the valid loadouts for a specific core type.
+  public Schematic getDefaultLoadout(CoreBlock block)
+  public boolean isDefaultLoadout(Schematic schem)
+  private void checkLoadout(Schematic s, boolean customSchem)  // Checks a schematic for deployment validity and adds it to the cache.
+  public int getMaxLaunchSize(Block block)
+  Fi findFile(String schematicName)
+  public void add(Schematic schematic)  // Adds a schematic to the list, also copying it into the files.
+  public void remove(Schematic s)
+  public Schematic create(int x, int y, int x2, int y2)  // Creates a schematic from a world selection.
+  public String writeBase64(Schematic schematic)  // Converts a schematic to base64.
+  public static void placeLaunchLoadout(int x, int y)  // Places the last launch loadout at the coordinates and fills it with the launch resources.
+  public static void placeLoadout(Schematic schem, int x, int y) / public static void placeLoadout(Schematic schem, int x, int y, Team team) / public static void placeLoadout(Schematic schem, int x, int y, Team team, boolean check)
+  public static void place(Schematic schem, int x, int y, Team team) / public static void place(Schematic schem, int x, int y, Team team, boolean overwrite)
+  public static boolean isSchematic(Fi file)
+  public static Schematic readBase64(String schematic)  // Loads a schematic from base64.
+  public static Schematic read(Fi file) throws IOException / public static Schematic read(InputStream input) throws IOException
+  public static void write(Schematic schematic, Fi file) throws IOException / public static void write(Schematic schematic, OutputStream output) throws IOException
+  private static Object mapConfig(Block block, int value, int position)  // Maps legacy int configs to new config objects.
+  public static Schematic rotate(Schematic input, int times)  // @return a temporary schematic representing the input rotated 90 degrees counterclockwise N times.
+  private static Schematic rotated(Schematic input, boolean counter)
+
+SectorInfo.java
+Java class
+fields:
+  private static final int valueWindow  // average window size in samples
+  private static final float refreshPeriod  // refresh period of export in ticks
+  private static float returnf
+  public ObjectMap<Item,ExportStat> production  // Core input statistics.
+  public ObjectMap<Item,ExportStat> rawProduction  // Raw item production statistics.
+  public ObjectMap<Item,ExportStat> export  // Export statistics.
+  public ObjectMap<Item,ExportStat> imports  // Import statistics, based on what launch pads are actually receiving.
+  public ItemSeq items  // Items stored in all cores.
+  public Block bestCoreType  // The best available core type.
+  public int storageCapacity  // Max storage capacity.
+  public boolean hasCore  // Whether a core is available here.
+  public String lastPresetName  // Last sector preset name set to this sector.
+  public int lastWidth  // Last size of the map.
+  public boolean wasCaptured  // Whether this sector was ever fully captured.
+  public Sector origin  // Sector that was launched from.
+  public Sector destination  // Launch destination.
+  public Seq<UnlockableContent> resources  // Resources known to occur at this sector.
+  public boolean waves  // Whether waves are enabled here.
+  public boolean attack  // Whether attack mode is enabled here.
+  public boolean hasSpawns  // Whether this sector has any enemy spawns.
+  public int attempts  // How many times the player has tried to land at this sector with a fresh core.
+  public int wave  // Wave # from state
+  public float waveSpacing  // Time between waves.
+  public int spawnPosition  // Packed core spawn position.
+  public float minutesCaptured  // How many minutes this sector has been captured.
+  public float lightCoverage  // Light coverage in terms of radius.
+  public String name  // Display name.
+  public String icon  // Displayed icon.
+  public UnlockableContent contentIcon  // Displayed icon, as content.
+  public int waveVersion  // Version of generated waves.
+  public boolean shown  // Whether this sector was indicated to the player or not.
+  public ObjectFloatMap<Item> importCooldownTimers
+  public transient float importRateCache
+  public transient ItemSeq lastImported  // Temporary seq for last imported items.
+  private transient Interval time  // Counter refresh state.
+  private transient int coreDeltas  // Core item storage input/output deltas.
+  private transient int productionDeltas  // Core item storage input/output deltas.
+methods:
+  public boolean sectorDataMatches(Sector sector)  // @return whether the sector was last saved with the same preset.
+  public void handleCoreItem(Item item, int amount)  // Handles core item changes.
+  public void handleProduction(Item item, int amount)  // Handles raw production stats.
+  public void handleItemExport(ItemStack stack) / public void handleItemExport(Item item, int amount)  // Updates export statistics.
+  public void handleItemImport(Item item, int amount)  // Updates import statistics.
+  public float getExport(Item item)
+  public boolean hasExport(Item item)
+  public void refreshImportRates(Planet planet)
+  public float[] getImportRates(Planet planet)
+  public float getImportRate(Planet planet, Item item)  // @return the import rate of an item as item/second.
+  public void write()  // Write contents of meta into main storage.
+  public void prepare(Sector sector)  // Prepare data for writing to a save.
+  public void update()  // Update averages of various stats, updates some special sector logic.
+  void updateStats(ObjectMap<Item,ExportStat> map)
+  void updateDelta(Item item, ObjectMap<Item,ExportStat> map, int[] deltas)
+  public ObjectFloatMap<Item> exportRates()
+  public boolean anyExports()
+  public ObjectMap<Item,ExportStat> importStats(Planet planet)  // TODO this can be a float map
+  public void eachImport(Planet planet, Cons<Sector> cons)  // Iterates through every sector this one imports from.
+inner-class: ExportStat
+  fields:
+    public transient float counter
+    public transient WindowedMean means
+    public transient boolean loaded
+    public float mean  // mean in terms of items produced per refresh rate (currently, per second)
+  methods:
+    public String toString()
+
+SpawnGroup.java
+Java class implements arc.util.serialization.Json.JsonSerializable, java.lang.Cloneable
+// A spawn group defines spawn information for a specific type of unit, with optional extra information like
+fields:
+  public static final int never
+  public UnitType type  // The unit type spawned
+  public int end  // When this spawn should end
+  public int begin  // When this spawn should start
+  public int spacing  // The spacing, in waves, of spawns.
+  public int max  // Maximum amount of units that spawn
+  public float unitScaling  // How many waves need to pass before the amount of units spawned increases by 1
+  public float shields  // Shield points that this unit has.
+  public float shieldScaling  // How much shields get increased by per wave.
+  public int unitAmount  // Amount of enemies spawned initially, with no scaling
+  public int spawn  // If not -1, the unit will only spawn in spawnpoints with these packed coordinates.
+  public Seq<UnitType> payloads  // Seq of payloads that this unit will spawn with.
+  public StatusEffect effect  // Status effect applied to the spawned unit.
+  public ItemStack items  // Items this unit spawns with.
+  public Team team  // Team that units spawned use.
+ctors:
+  public SpawnGroup(UnitType type) / public SpawnGroup()
+methods:
+  public boolean canSpawn(int position)
+  public int getSpawned(int wave)  // @return amount of units spawned on a specific wave.
+  public float getShield(int wave)  // @return amount of shields each unit has at a specific wave.
+  public Unit createUnit(Team team, float x, float y, float rotation, int wave, Cons<Unit> cons) / public Unit createUnit(Team team, int wave)  // Creates a unit, and assigns correct values based on this group's data.
+  public void write(Json json)
+  public void read(Json json, JsonValue data)
+  public String toString()
+  public SpawnGroup copy()
+  public boolean equals(Object o)
+  public int hashCode()
+
+Team.java
+Java class implements java.lang.Comparable, mindustry.logic.Senseable
+fields:
+  public final int id
+  public final Color color
+  public final Color palette
+  public final int palettei
+  public boolean ignoreUnitCap
+  public String emoji
+  public boolean hasPalette
+  public String name
+  public static final Team all  // All 256 registered teams.
+  public static final Team baseTeams  // The 6 base teams used in the editor.
+  public final static Team derelict
+ctors:
+  protected Team(int id, String name, Color color) / protected Team(int id, String name, Color color, Color pal1, Color pal2, Color pal3)  // Specifies a 3-color team palette.
+methods:
+  public static Team get(int id)
+  public ItemModule items()  // @return the core items for this team, or an empty item module.
+  public TeamRule rules()  // @return the team-specific rules.
+  public TeamData data()
+  public CoreBuild core()
+  public boolean active()  // @return whether this team has any buildings on this map; in waves mode, this is always true for the enemy team.
+  public boolean isAlive()  // @return whether this team has any active cores.
+  public boolean isAI()  // @return whether this team is supposed to be AI-controlled.
+  public boolean isOnlyAI()  // @return whether this team is solely comprised of AI (with no players possible).
+  public boolean needsFlowField()  // @return whether this team needs a flow field for "dumb" wave pathfinding.
+  public boolean activateUnitFactories()  // @return whether unit factories should be active, according to the game rule.
+  public Seq<CoreBuild> cores()
+  public String localized()
+  public String coloredName()
+  public void setPalette(Color color) / public void setPalette(Color pal1, Color pal2, Color pal3)
+  public int compareTo(Team team)
+  public String toString()
+  public double sense(LAccess sensor)
+  public Object senseObject(LAccess sensor)
+
+Teams.java
+Java class
+// Class for various team-based utilities.
+fields:
+  private TeamData map  // Maps team IDs to team data.
+  public Seq<TeamData> active  // Active teams.
+  public Seq<TeamData> present  // Teams with block or unit presence.
+  public Seq<Unit> bosses  // Current boss units.
+ctors:
+  public Teams()
+methods:
+  public CoreBuild closestEnemyCore(float x, float y, Team team)
+  public CoreBuild closestCore(float x, float y, Team team)
+  public boolean anyEnemyCoresWithinBuildRadius(Team team, float x, float y)
+  public boolean anyEnemyCoresWithin(Team team, float x, float y, float radius)
+  public void eachEnemyCore(Team team, Cons<Building> ret)
+  public TeamData get(Team team)  // Returns team data by type.
+  public TeamData getOrNull(Team team)
+  public Seq<CoreBuild> playerCores()
+  public Seq<CoreBuild> cores(Team team)  // Do not modify!
+  public boolean isActive(Team team)  // Returns whether a team is active, e.g.
+  public boolean canInteract(Team team, Team other)
+  public Seq<TeamData> getActive()  // Do not modify.
+  public void updateActive(Team team)
+  public void registerCore(CoreBuild core)
+  public void unregisterCore(CoreBuild entity)
+  private void count(Unit unit)
+  public void updateTeamStats()
+  private void updateEnemies()
+  public static void destroyPayload(Building build)
+inner-class: TeamData
+  fields:
+    private static final IntSeq derelictBuffer
+    private static final float clusterChunkSize
+    public final Team team
+    public BaseBuilderAI buildAi  // Handles building ""bases"".
+    public RtsAI rtsAi  // Handles RTS unit control.
+    private boolean presentFlag
+    private IntIntMap clusteredCounts
+    private float lastClusterUpdateTimer
+    public Team coreEnemies  // Enemies with cores or spawn points.
+    public Queue<BlockPlan> plans  // Planned blocks for drones.
+    public final Seq<CoreBuild> cores  // List of live cores of this team.
+    public CoreBuild lastCore  // Last known live core of this team.
+    public QuadTree<Building> buildingTree  // Quadtree for all buildings of this team.
+    public QuadTree<Building> turretTree  // Turrets by range.
+    public QuadTree<Unit> unitTree  // Quadtree for units of this team.
+    public int unitCap  // Current unit cap.
+    public int unitCount  // Total unit count.
+    public int typeCounts  // Counts for each type of unit.
+    public ObjectMap<Block,Seq<Building>> buildingTypes  // Cached buildings by type.
+    public Seq<Unit> units  // Units of this team.
+    public Seq<Player> players  // Same as units, but players.
+    public Seq<Building> buildings  // All buildings.
+    public Seq<Unit> unitsByType  // Units of this team by type.
+  ctors:
+    public TeamData(Team team)
+  methods:
+    public Seq<Building> getBuildings(Block block)
+    public int getCount(Block block)
+    public void destroyToDerelict()  // Destroys this team's presence on the map, killing part of its buildings and converting everything to 'derelict'.
+    public void timeDestroy(float x, float y, float range)  // Make all buildings within this range derelict/explode.
+    private void scheduleDerelict(Building build)
+    private void finishScheduleDerelict()
+    public Seq<Unit> getUnits(UnitType type)  // this is just an alias for consistency
+    public Seq<Unit> unitCache(UnitType type)
+    public void updateCount(UnitType type, int amount)
+    public QuadTree<Unit> tree()
+    public int countType(UnitType type)
+    public boolean active()
+    public boolean hasCore()
+    public boolean isAlive()  // @return whether this team has any cores (standard team), or any hearts (neoplasm).
+    public boolean noCores()
+    public CoreBuild core()
+    public boolean hasAI()  // @return whether this team is controlled by the AI and builds bases.
+    public int getClustered(float x, float y)  // @return approximate number of clustered ground units at a specific position
+    private static int clusterKey(float x, float y)
+    public String toString()
+inner-class: BlockPlan
+// Represents a block made by this team that was destroyed somewhere on the map.
+  fields:
+    public final short x
+    public final Block block
+    public final Object config
+    public boolean removed
+  ctors:
+    public BlockPlan(int x, int y, short rotation, Block block, Object config)
+  methods:
+    public String toString()
+
+Universe.java
+Java class
+// Updates and handles state of the campaign universe.
+fields:
+  private int seconds
+  private int netSeconds
+  private float secondCounter
+  private int turn
+  private float turnCounter
+  private Schematic lastLoadout
+  private ItemSeq lastLaunchResources
+ctors:
+  public Universe()
+methods:
+  public void updateGlobal()  // Update regardless of whether the player is in the campaign.
+  public int turn()
+  private void updatePlanet(Planet planet)
+  public void update()  // Update planet rotations, global time and relevant state.
+  public void clearLoadoutInfo()
+  public ItemSeq getLaunchResources()
+  public void updateLaunchResources(ItemSeq stacks)
+  public void updateLoadout(CoreBlock block) / public void updateLoadout(CoreBlock block, Schematic schem)  // Updates selected loadout for future deployment.
+  public Schematic getLastLoadout()
+  public Schematic getLoadout(CoreBlock core)  // @return the last selected loadout for this specific core type.
+  public void runTurn()  // Runs possible events.
+  public void updateNetSeconds(int value)
+  public float secondsMod(float mod, float scale)
+  public int seconds()
+  public void setSeconds(float seconds)
+  public float secondsf()
+  private void save()
+  private void load()
+
+Waves.java
+Java class
+fields:
+  public static final int waveVersion
+  private Seq<SpawnGroup> spawns
+methods:
+  public Seq<SpawnGroup> get()
+  public static Seq<SpawnGroup> generate(float difficulty) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack, boolean airOnly) / public static Seq<SpawnGroup> generate(float difficulty, Rand rand, boolean attack, boolean airOnly, boolean naval)
+

@@ -1,0 +1,86 @@
+FxBufferQueue.java
+Java class implements arc.util.Disposable
+// Provides looped access to an array of Framebuffers.
+fields:
+  private final Seq<FrameBuffer> buffers
+  private int currentIdx
+  private TextureWrap wrapU
+  private TextureWrap wrapV
+  private TextureFilter filterMin
+  private TextureFilter filterMag
+ctors:
+  public FxBufferQueue(Pixmap.Format pixelFormat, int fboAmount)
+methods:
+  public void dispose()
+  public void resize(int width, int height)
+  public void rebind()  // Restores buffer OpenGL parameters.
+  public FrameBuffer getCurrent()
+  public FrameBuffer changeToNext()
+  public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+
+FxBufferRenderer.java
+Java class implements arc.util.Disposable
+// Simple renderer that is capable of drawing textures onto the screen or into another buffer.
+fields:
+  private final Shader shader
+ctors:
+  public FxBufferRenderer()
+methods:
+  public void dispose()
+  public void rebind()
+  public void renderToScreen(FrameBuffer input) / public void renderToScreen(FrameBuffer input, int x, int y, int width, int height)
+  public void renderToFbo(FrameBuffer input, FrameBuffer output)
+
+FxWidgetGroup.java
+Java class extends arc.scene.ui.layout.WidgetGroup
+fields:
+  private final FxProcessor fxProcessor
+  private boolean initialized
+  private boolean resizePending
+  private boolean matchWidgetSize
+ctors:
+  public FxWidgetGroup()
+methods:
+  public FxProcessor getFxProcessor()
+  public boolean isMatchWidgetSize()
+  public void setMatchWidgetSize(boolean matchWidgetSize)  // @param matchWidgetSize if true, the internal {@link FxProcessor} will be resized
+  protected void setScene(Scene stage)
+  protected void sizeChanged()
+  public void draw()
+  protected void drawChildren()
+  public void setCullingArea(Rect cullingArea)
+  public void setTransform(boolean transform)
+  private void initialize()
+  private void reset()
+  private void performPendingResize()
+
+PingPongBuffer.java
+Java class (final)
+// Encapsulates a framebuffer with the ability to ping-pong between two buffers.
+fields:
+  private final FrameBuffer buffer1
+  private final FrameBuffer buffer2
+  private FrameBuffer bufDst
+  private FrameBuffer bufSrc
+  private boolean writeState  // Keeps track of the current active buffer.
+  private boolean capturing  // Where capturing is started.
+  private TextureWrap wrapU
+  private TextureWrap wrapV
+  private TextureFilter filterMin
+  private TextureFilter filterMag
+ctors:
+  public PingPongBuffer(Format fbFormat) / public PingPongBuffer(Format fbFormat, int width, int height) / public PingPongBuffer(Format fbFormat, int width, int height, boolean depth, boolean stencil)  // Initializes ping-pong buffer with the size of the client's area (usually window size).
+methods:
+  public void dispose()
+  public void resize(int width, int height)
+  public void rebind()  // Restores buffer OpenGL parameters.
+  public void begin()  // Start capturing into the destination buffer.
+  public void swap()  // Swaps source/target buffers.
+  public void end()  // Finishes ping-ponging.
+  public Texture getSrcTexture()  // @return the source texture of the current ping-pong chain.
+  public FrameBuffer getSrcBuffer()  // @return the source buffer of the current ping-pong chain.
+  public Texture getDstTexture()  // @return the result's texture of the latest {@link #swap()}.
+  public FrameBuffer getDstBuffer()  // @return Returns the result's buffer of the latest {@link #swap()}.
+  public void setTextureParams(TextureWrap u, TextureWrap v, TextureFilter min, TextureFilter mag)
+  public void clear(Color clearColor) / public void clear(float r, float g, float b, float a)  // Cleans up managed buffers with specified color.
+

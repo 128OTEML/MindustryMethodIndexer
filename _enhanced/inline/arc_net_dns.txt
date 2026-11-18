@@ -1,0 +1,95 @@
+// ArcDns.java : public static Seq<NameserverProvider> getNameserverProviders()
+    public static Seq<NameserverProvider> getNameserverProviders(){
+        return nameserverProviders;
+    }
+
+// ArcDns.java : public static void setNameserverProviders(Seq<NameserverProvider> providers)
+    public static void setNameserverProviders(Seq<NameserverProvider> providers){
+        nameserverProviders.clear();
+        nameserverProviders.addAll(providers);
+        refreshNameservers();
+    }
+
+// ArcDns.java : public static Seq<InetSocketAddress> getNameservers()
+    public static Seq<InetSocketAddress> getNameservers(){
+        return nameservers;
+    }
+
+// ArcDns.java : public static Seq<SRVRecord> getSrvRecords(String domain) / public static Seq<SRVRecord> getSrvRecords(String domain, InetSocketAddress nameserver) throws IOException
+    public static Seq<SRVRecord> getSrvRecords(String domain){
+        for(InetSocketAddress nameserver : nameservers){
+            try{
+                return getSrvRecords(domain, nameserver);
+            }catch(IOException ignored){
+            }
+        }
+        return new Seq<>(1);
+    }
+
+// JndiContextNameserverProvider.java : public Seq<InetSocketAddress> getNameservers()
+    @Override
+    public Seq<InetSocketAddress> getNameservers(){
+        try{
+            return new Inner().getNameservers();
+        }catch(Throwable t){
+            return new Seq<>();
+        }
+    }
+
+// JndiContextNameserverProvider.java : public boolean isEnabled()
+    @Override
+    public boolean isEnabled(){
+        return !OS.isAndroid && !OS.isIos;
+    }
+
+// NameserverProvider.java : default boolean isEnabled()
+    default boolean isEnabled(){
+        return true;
+    }
+
+// ResolvConfNameserverProvider.java : public Seq<InetSocketAddress> getNameservers()
+    @Override
+    public Seq<InetSocketAddress> getNameservers(){
+        Seq<InetSocketAddress> out = new Seq<>();
+        // first try the default unix config path
+        if(!tryParseResolveConf("/etc/resolv.conf", out)){
+            // then fallback to netware
+            tryParseResolveConf("sys:/etc/resolv.cfg", out);
+        }
+        return out;
+    }
+
+// ResolvConfNameserverProvider.java : public boolean isEnabled()
+    @Override
+    public boolean isEnabled(){
+        return !OS.isWindows && !OS.isAndroid;
+    }
+
+// SRVRecord.java : public String toString()
+    @Override
+    public String toString(){
+        return "SRVRecord{" +
+        "ttl=" + ttl +
+        ", priority=" + priority +
+        ", weight=" + weight +
+        ", port=" + port +
+        ", target='" + target + '\'' +
+        '}';
+    }
+
+// SRVRecord.java : public int compareTo(SRVRecord o)
+    @Override
+    public int compareTo(SRVRecord o){
+        if(this.priority != o.priority){
+            return Integer.compare(this.priority, o.priority);
+        }else{
+            return Integer.compare(this.weight, o.weight);
+        }
+    }
+
+// WellKnownNameserverProvider.java : public Seq<InetSocketAddress> getNameservers()
+    @Override
+    public Seq<InetSocketAddress> getNameservers(){
+        return nameservers;
+    }
+

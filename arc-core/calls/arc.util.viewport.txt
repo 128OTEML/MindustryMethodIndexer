@@ -1,0 +1,53 @@
+ExtendViewport
+  -> arc.graphics.Camera.Camera()
+  -> arc.util.viewport.Viewport.setCamera(arc.graphics.Camera)
+update
+  -> arc.util.Scaling.apply(float, float, float, float)
+  -> java.lang.Math.round(float)
+  -> java.lang.Math.min(float, float)
+  -> arc.util.viewport.Viewport.setWorldSize(float, float)
+  -> arc.util.viewport.Viewport.setScreenBounds(int, int, int, int)
+  -> arc.util.viewport.Viewport.apply(boolean)
+ScalingViewport
+  -> arc.graphics.Camera.Camera()
+  -> arc.util.viewport.Viewport.setWorldSize(float, float)
+  -> arc.util.viewport.Viewport.setCamera(arc.graphics.Camera)
+update
+  -> arc.util.Scaling.apply(float, float, float, float)
+  -> arc.util.viewport.Viewport.getWorldWidth()
+  -> arc.util.viewport.Viewport.getWorldHeight()
+  -> java.lang.Math.round(float)
+  -> arc.util.viewport.Viewport.setScreenBounds(int, int, int, int)
+  -> arc.util.viewport.Viewport.apply(boolean)
+ScreenViewport
+  -> arc.graphics.Camera.Camera()
+  -> arc.util.viewport.Viewport.setCamera(arc.graphics.Camera)
+update
+  -> arc.util.viewport.Viewport.setScreenBounds(int, int, int, int)
+  -> arc.util.viewport.Viewport.setWorldSize(float, float)
+  -> arc.util.viewport.Viewport.apply(boolean)
+apply
+  -> arc.util.viewport.Viewport.apply(boolean)
+  -> arc.graphics.gl.HdpiUtils.glViewport(int, int, int, int)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.graphics.Camera.update()
+update
+  -> arc.util.viewport.Viewport.update(int, int, boolean)
+  -> arc.util.viewport.Viewport.apply(boolean)
+unproject
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.graphics.Camera.unproject(arc.math.geom.Vec2, float, float, float, float)
+project
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.graphics.Camera.project(arc.math.geom.Vec2, float, float, float, float)
+calculateScissors
+  -> arc.graphics.g2d.ScissorStack.calculateScissors(arc.graphics.Camera, float, float, float, float, arc.math.Mat, arc.math.geom.Rect, arc.math.geom.Rect)
+toScreenCoordinates
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.math.geom.Vec2.mul(arc.math.Mat)
+  -> arc.graphics.Camera.project(arc.math.geom.Vec2)
+  -> arc.Graphics.getHeight()
+getRightGutterWidth
+  -> arc.Graphics.getWidth()
+getTopGutterHeight
+  -> arc.Graphics.getHeight()

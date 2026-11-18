@@ -1,0 +1,143 @@
+// MusicContainer.java : public Music get()
+    public Music get(){
+        if(accessed) return cached;
+        accessed = true;
+
+        return cached = SoundControl.findMusic(name);
+    }
+
+// MusicContainer.java : public String toString()
+    @Override
+    public String toString(){
+        return name;
+    }
+
+// SoundControl.java : protected void setupFilters()
+    protected void setupFilters(){
+        Core.audio.soundBus.setFilter(0, filter);
+        Core.audio.soundBus.setFilterParam(0, Filters.paramWet, 0f);
+    }
+
+// SoundControl.java : public void stop()
+    public void stop(){
+        silenced = true;
+        if(current != null){
+            current.stop();
+            current = null;
+            fade = 0f;
+        }
+    }
+
+// SoundControl.java : public void keepSilent()
+    public void keepSilent(){
+        keepSilent = true;
+    }
+
+// SoundControl.java : public void playMusic(Music music, boolean interrupt)
+    public void playMusic(@Nullable Music music, boolean interrupt){
+        if(interrupt && current != null){
+            current.stop();
+            current = null;
+        }
+        playOnce(music);
+        if(current == music){
+            silenced = true; //music played successfully, don't fade it out
+        }
+    }
+
+// SoundControl.java : public boolean isPlaying()
+    public boolean isPlaying(){
+        return current != null && current.isPlaying();
+    }
+
+// SoundControl.java : public Music getCurrent()
+    public @Nullable Music getCurrent(){
+        return current;
+    }
+
+// SoundControl.java : public void playRandom()
+    public void playRandom(){
+        if(state.boss() != null){
+            playOnce(getBossMusic().random(lastRandomPlayed));
+        }else if(isDark()){
+            playOnce(getDarkMusic().random(lastRandomPlayed));
+        }else{
+            playOnce(getAmbientMusic().random(lastRandomPlayed));
+        }
+    }
+
+// SoundControl.java : protected boolean alwaysPlayMusic()
+    protected boolean alwaysPlayMusic(){
+        return state.rules.alwaysPlayMusic || Core.settings.getBool("alwaysmusic") || (state.getPlanet() != null && state.getPlanet().alwaysPlayMusic);
+    }
+
+// SoundControl.java : protected Seq<Music> getBossMusic()
+    protected Seq<Music> getBossMusic(){
+        if(state.rules.darkMusic != null) return state.rules.darkMusic.map(MusicContainer::get).removeAll(m -> m == null);
+        return state.getPlanet() != null && state.getPlanet().darkMusic != null ? state.getPlanet().darkMusic : bossMusic;
+    }
+
+// SoundControl.java : protected Seq<Music> getAmbientMusic()
+    protected Seq<Music> getAmbientMusic(){
+        if(state.rules.ambientMusic != null) return state.rules.ambientMusic.map(MusicContainer::get).removeAll(m -> m == null);
+        return state.getPlanet() != null && state.getPlanet().ambientMusic != null ? state.getPlanet().ambientMusic : ambientMusic;
+    }
+
+// SoundControl.java : protected Seq<Music> getDarkMusic()
+    protected Seq<Music> getDarkMusic(){
+        if(state.rules.darkMusic != null) return state.rules.darkMusic.map(MusicContainer::get).removeAll(m -> m == null);
+        return state.getPlanet() != null && state.getPlanet().darkMusic != null ? state.getPlanet().darkMusic : darkMusic;
+    }
+
+// SoundControl.java : protected float volumeMultiplier()
+    protected float volumeMultiplier(){
+        return Core.settings.getInt("musicvol") / 100f * Mathf.clamp(state.rules.musicVolume);
+    }
+
+// SoundControl.java : protected boolean shouldPlay()
+    protected boolean shouldPlay(){
+        return Core.settings.getInt("musicvol") > 0;
+    }
+
+// SoundControl.java : protected void silence()
+    protected void silence(){
+        play(null);
+    }
+
+// SoundControl.java : public void loop(Sound sound, float volume) / public void loop(Sound sound, Position pos, float volume) / public void loop(Sound sound, Position pos, float volume, float pitch) / static void loop(SoundData data, Sound sound, Position pos, float volume, float pitch)
+    public void loop(Sound sound, float volume){
+        if(Vars.headless) return;
+
+        loop(sound, Core.camera.position, volume);
+    }
+
+// SoundLoop.java : public void update(float x, float y, boolean play) / public void update(float x, float y, boolean play, float volumeScl)
+    public void update(float x, float y, boolean play){
+        update(x, y, play, 1f);
+    }
+
+// SoundLoop.java : public void stop()
+    public void stop(){
+        if(id != -1){
+            Core.audio.stop(id);
+            id = -1;
+            volume = 0f;
+        }
+    }
+
+// SoundPriority.java : static void max(int max, Sound sounds)
+    static void max(int max, Sound... sounds){
+        for(var s : sounds) s.setMaxConcurrent(max);
+    }
+
+// SoundPriority.java : static void sameGroup(Sound sounds)
+    static void sameGroup(Sound... sounds){
+        int id = lastGroup ++;
+        for(var s : sounds) s.setConcurrentGroup(id);
+    }
+
+// SoundPriority.java : static void set(float value, Sound sounds)
+    static void set(float value, Sound... sounds){
+        for(var s : sounds) s.setPriority(value);
+    }
+

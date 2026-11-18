@@ -1,0 +1,1829 @@
+// Animation.java : public T[] getKeyFrames()
+    public T[] getKeyFrames(){
+        return keyFrames;
+    }
+
+// Animation.java : protected void setKeyFrames(T keyFrames)
+    protected void setKeyFrames(T... keyFrames){
+        this.keyFrames = keyFrames;
+        this.animationDuration = keyFrames.length * frameDuration;
+    }
+
+// Animation.java : public PlayMode getPlayMode()
+    public PlayMode getPlayMode(){
+        return playMode;
+    }
+
+// Animation.java : public void setPlayMode(PlayMode playMode)
+    public void setPlayMode(PlayMode playMode){
+        this.playMode = playMode;
+    }
+
+// Animation.java : public boolean isAnimationFinished(float stateTime)
+    public boolean isAnimationFinished(float stateTime){
+        int frameNumber = (int)(stateTime / frameDuration);
+        return keyFrames.length - 1 < frameNumber;
+    }
+
+// Animation.java : public float getFrameDuration()
+    public float getFrameDuration(){
+        return frameDuration;
+    }
+
+// Animation.java : public void setFrameDuration(float frameDuration)
+    public void setFrameDuration(float frameDuration){
+        this.frameDuration = frameDuration;
+        this.animationDuration = keyFrames.length * frameDuration;
+    }
+
+// Animation.java : public float getAnimationDuration()
+    public float getAnimationDuration(){
+        return animationDuration;
+    }
+
+// Batch.java : protected void z(float z)
+    protected void z(float z){
+        this.z = z;
+    }
+
+// Batch.java : protected void setSort(boolean sort)
+    protected void setSort(boolean sort){
+
+    }
+
+// Batch.java : protected void setPackedColor(float packedColor)
+    protected void setPackedColor(float packedColor){
+        this.colorPacked = packedColor;
+    }
+
+// Batch.java : protected float getPackedColor()
+    protected float getPackedColor(){
+        return colorPacked;
+    }
+
+// Batch.java : protected void setPackedMixColor(float packedColor)
+    protected void setPackedMixColor(float packedColor){
+        this.mixColorPacked = packedColor;
+    }
+
+// Batch.java : protected float getPackedMixColor()
+    protected float getPackedMixColor(){
+        return mixColorPacked;
+    }
+
+// Batch.java : protected void discard()
+    protected void discard(){
+        idx = 0;
+    }
+
+// Batch.java : protected void setBlending(Blending blending)
+    protected void setBlending(Blending blending){
+        if(this.blending != blending){
+            flush();
+        }
+        this.blending = blending;
+    }
+
+// Batch.java : protected Blending getBlending()
+    protected Blending getBlending(){
+        return blending;
+    }
+
+// Batch.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(ownsShader && shader != null) shader.dispose();
+    }
+
+// Batch.java : protected Mat getProjection()
+    protected Mat getProjection(){
+        return projectionMatrix;
+    }
+
+// Batch.java : protected Mat getTransform()
+    protected Mat getTransform(){
+        return transformMatrix;
+    }
+
+// Batch.java : protected void setProjection(Mat projection)
+    protected void setProjection(Mat projection){
+        flush();
+        projectionMatrix.set(projection);
+    }
+
+// Batch.java : protected void setTransform(Mat transform)
+    protected void setTransform(Mat transform){
+        flush();
+        transformMatrix.set(transform);
+    }
+
+// Batch.java : protected void setupMatrices()
+    protected void setupMatrices(){
+        combinedMatrix.set(projectionMatrix).mul(transformMatrix);
+        getShader().setUniformMatrix4("u_projTrans", combinedMatrix);
+    }
+
+// Batch.java : protected void switchTexture(Texture texture)
+    protected void switchTexture(Texture texture){
+        flush();
+        lastTexture = texture;
+    }
+
+// Batch.java : protected void setShader(Shader shader) / protected void setShader(Shader shader, boolean apply)
+    protected void setShader(Shader shader){
+        setShader(shader, true);
+    }
+
+// Batch.java : protected Shader getShader()
+    protected Shader getShader(){
+        return customShader == null ? shader : customShader;
+    }
+
+// Bloom.java : public void resume()
+    public void resume(){
+        bloomShader.bind();
+        bloomShader.setUniformi("u_texture1", 1);
+
+        setSize(pingPong1.getWidth(), pingPong1.getHeight());
+        setThreshold(threshold);
+        setBloomIntensity(bloomIntensity);
+        setOriginalIntensity(originalIntensity);
+    }
+
+// Bloom.java : public void resize(int width, int height) / public void resize(int width, int height, int scaling)
+    public void resize(int width, int height){
+        resize(width, height, 4);
+    }
+
+// Bloom.java : public void setClearColor(float r, float g, float b, float a)
+    public void setClearColor(float r, float g, float b, float a){
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+
+// Bloom.java : public void capture()
+    public void capture(){
+        if(!capturing){
+            capturing = true;
+            buffer.begin();
+            Gl.clearColor(r, g, b, a);
+            Gl.clear(Gl.colorBufferBit | Gl.depthBufferBit);
+        }
+    }
+
+// Bloom.java : public void capturePause()
+    public void capturePause(){
+        if(capturing){
+            capturing = false;
+            buffer.end();
+        }
+    }
+
+// Bloom.java : public void captureContinue()
+    public void captureContinue(){
+        if(!capturing){
+            capturing = true;
+            buffer.begin();
+        }
+    }
+
+// Bloom.java : public void setBloomIntensity(float intensity)
+    public void setBloomIntensity(float intensity){
+        bloomIntensity = intensity;
+        bloomShader.bind();
+        bloomShader.setUniformf("BloomIntensity", intensity);
+    }
+
+// Bloom.java : public void setOriginalIntensity(float intensity)
+    public void setOriginalIntensity(float intensity){
+        originalIntensity = intensity;
+        bloomShader.bind();
+        bloomShader.setUniformf("OriginalIntensity", intensity);
+    }
+
+// Bloom.java : public void setThreshold(float threshold)
+    public void setThreshold(float threshold){
+        this.threshold = threshold;
+        thresholdShader.bind();
+        thresholdShader.setUniformf("threshold", threshold, 1f / (1 - threshold));
+    }
+
+// Bloom.java : private void setSize(int width, int height)
+    private void setSize(int width, int height){
+        blurShader.bind();
+        blurShader.setUniformf("size", width, height);
+    }
+
+// Bloom.java : public FrameBuffer buffer()
+    public FrameBuffer buffer(){
+        return buffer;
+    }
+
+// Bloom.java : public void dispose()
+    public void dispose(){
+        try{
+            buffer.dispose();
+            pingPong1.dispose();
+            pingPong2.dispose();
+
+            blurShader.dispose();
+            bloomShader.dispose();
+            thresholdShader.dispose();
+        }catch(Throwable ignored){}
+    }
+
+// Bloom.java : private static Shader createShader(String vertexName, String fragmentName)
+    private static Shader createShader(String vertexName, String fragmentName){
+        return new Shader(Core.files.internal("bloomshaders/" + vertexName + ".vert"), Core.files.internal("bloomshaders/" + fragmentName + ".frag"));
+    }
+
+// CacheBatch.java : public void flush()
+    @Override
+    public void flush(){
+        //does nothing, since flushing like this isn't needed
+    }
+
+// CacheBatch.java : public void setPackedColor(float color)
+    @Override
+    public void setPackedColor(float color){
+        cache.setPackedColor(color);
+    }
+
+// CacheBatch.java : public float getPackedColor()
+    @Override
+    public float getPackedColor(){
+        return cache.getPackedColor();
+    }
+
+// CacheBatch.java : public void setProjection(Mat projection)
+    @Override
+    public void setProjection(Mat projection){
+        cache.setProjectionMatrix(projection);
+    }
+
+// CacheBatch.java : public void beginCache()
+    public void beginCache(){
+        cache.beginCache();
+    }
+
+// CacheBatch.java : public int endCache()
+    public int endCache(){
+        return cache.endCache();
+    }
+
+// CacheBatch.java : public void setShader(Shader shader) / public void setShader(Shader shader, boolean apply)
+    @Override
+    public void setShader(Shader shader){
+        setShader(shader, true);
+    }
+
+// CacheBatch.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+        cache.dispose();
+    }
+
+// CacheBatch.java : public void beginDraw()
+    public void beginDraw(){
+        cache.begin();
+    }
+
+// CacheBatch.java : public void endDraw()
+    public void endDraw(){
+        cache.end();
+    }
+
+// CacheBatch.java : public void drawCache(int id)
+    public void drawCache(int id){
+        cache.draw(id);
+    }
+
+// DistanceFieldFont.java : protected void load(FontData data)
+    protected void load(FontData data){
+        super.load(data);
+
+        // Distance field font rendering requires font texture to be filtered Linear.
+        final Seq<TextureRegion> regions = getRegions();
+        for(TextureRegion region : regions)
+            region.texture.setFilter(TextureFilter.linear, TextureFilter.linear);
+    }
+
+// DistanceFieldFont.java : public FontCache newFontCache()
+    @Override
+    public FontCache newFontCache(){
+        return new DistanceFieldFontCache(this, integer);
+    }
+
+// DistanceFieldFont.java : public float getDistanceFieldSmoothing()
+    public float getDistanceFieldSmoothing(){
+        return distanceFieldSmoothing;
+    }
+
+// DistanceFieldFont.java : public void setDistanceFieldSmoothing(float distanceFieldSmoothing)
+    public void setDistanceFieldSmoothing(float distanceFieldSmoothing){
+        this.distanceFieldSmoothing = distanceFieldSmoothing;
+    }
+
+// Draw.java : private static ScreenQuad getQuad()
+    private static ScreenQuad getQuad(){
+        if(squad == null) squad = new ScreenQuad();
+        return squad;
+    }
+
+// Draw.java : public static void blit(Shader shader) / public static void blit(Texture texture, Shader shader) / public static void blit(FrameBuffer buffer, Shader shader)
+    public static void blit(Shader shader){
+        shader.bind();
+        shader.apply();
+        getQuad().render(shader);
+    }
+
+// Draw.java : public static void batch(Batch nextBatch) / public static void batch(Batch nextBatch, Runnable run)
+    public static void batch(Batch nextBatch){
+        flush();
+        Core.batch = nextBatch;
+    }
+
+// Draw.java : public static void stencil(Runnable stencil, Runnable contents)
+    public static void stencil(Runnable stencil, Runnable contents){
+        beginStencil();
+
+        stencil.run();
+
+        beginStenciled();
+
+        contents.run();
+
+        endStencil();
+    }
+
+// Draw.java : public static void beginStencil()
+    public static void beginStencil(){
+        flush();
+
+        Gl.stencilMask(0xFF);
+        Gl.colorMask(false, false, false, false);
+        Gl.enable(Gl.stencilTest);
+        Gl.stencilFunc(Gl.always, 1, 0xFF);
+        Gl.stencilMask(0xFF);
+        Gl.stencilOp(Gl.replace, Gl.replace, Gl.replace);
+    }
+
+// Draw.java : public static void beginStenciled()
+    public static void beginStenciled(){
+        flush();
+
+        Gl.stencilOp(Gl.keep, Gl.keep, Gl.keep);
+        Gl.colorMask(true, true, true, true);
+        Gl.stencilFunc(Gl.equal, 1, 0xFF);
+    }
+
+// Draw.java : public static void endStencil()
+    public static void endStencil(){
+        flush();
+
+        Gl.disable(Gl.stencilTest);
+    }
+
+// Draw.java : public static void scl(float nscl) / public static void scl(float nxscl, float nyscl) / public static void scl()
+    public static void scl(float nscl){
+        scl(nscl, nscl);
+    }
+
+// Draw.java : public static Shader getShader()
+    public static Shader getShader(){
+        return Core.batch.getShader();
+    }
+
+// Draw.java : public static void shader(Shader shader) / public static void shader(Shader shader, boolean apply) / public static void shader()
+    public static void shader(Shader shader){
+        shader(shader, true);
+    }
+
+// Draw.java : public static void sort(boolean sort)
+    public static void sort(boolean sort){
+        batch.setSort(sort);
+    }
+
+// Draw.java : public static void zTransform(FloatFloatf f) / public static void zTransform()
+    public static void zTransform(FloatFloatf f){
+        zTransformer = f;
+    }
+
+// Draw.java : public static float z() / public static void z(float z)
+    public static float z(){
+        return actualZ;
+    }
+
+// Draw.java : public static float getColorAlpha()
+    public static float getColorAlpha(){
+        int abgr = Color.floatToIntColor(batch.getPackedColor());
+        return ((abgr & 0xff000000) >>> 24) / 255f;
+    }
+
+// Draw.java : public static float getColorPacked()
+    public static float getColorPacked(){
+        return batch.getPackedColor();
+    }
+
+// Draw.java : public static float getMixColorPacked()
+    public static float getMixColorPacked(){
+        return batch.getPackedMixColor();
+    }
+
+// Draw.java : public static Color getColor()
+    public static Color getColor(){
+        return retColor.abgr8888(batch.getPackedColor());
+    }
+
+// Draw.java : public static Color getMixColor()
+    public static Color getMixColor(){
+        return retPackedColor.abgr8888(batch.getPackedMixColor());
+    }
+
+// Draw.java : public static void mixcol(Color color, float a) / public static void mixcol(Color a, Color b, float prog) / public static void mixcol() / public static void mixcol(float color)
+    public static void mixcol(Color color, float a){
+        Core.batch.setPackedMixColor(Color.toFloatBits(color.r, color.g, color.b, Mathf.clamp(a)));
+    }
+
+// Draw.java : public static void tint(Color a, Color b, float s) / public static void tint(Color color)
+    public static void tint(Color a, Color b, float s){
+        Tmp.c1.set(a).lerp(b, s);
+        Tmp.c1.a = getColorAlpha();
+        color(Tmp.c1);
+    }
+
+// Draw.java : public static void colorMul(Color color, float mul)
+    public static void colorMul(Color color, float mul){
+        color(color.r * mul, color.g * mul, color.b * mul, 1f);
+    }
+
+// Draw.java : public static void color(Color color) / public static void color(Color color, float alpha) / public static void color(int color) / public static void color(float color) / public static void color(Color a, Color b, Color c, float progress) / public static void color(Color a, Color b, float s) / public static void color() / public static void color(float r, float g, float b) / public static void color(float r, float g, float b, float a)
+    public static void color(Color color){
+        Core.batch.setPackedColor(color.toFloatBits());
+    }
+
+// Draw.java : public static void colorl(float l) / public static void colorl(float l, float a)
+    public static void colorl(float l){
+        color(l, l, l);
+    }
+
+// Draw.java : public static void blend(Blending blending) / public static void blend()
+    public static void blend(Blending blending){
+        Core.batch.setBlending(blending);
+    }
+
+// Draw.java : public static Blending getBlend()
+    public static Blending getBlend(){
+        return batch.getBlending();
+    }
+
+// Draw.java : public static void reset()
+    public static void reset(){
+        color();
+        mixcol();
+        xscl = yscl = 1f;
+        Lines.stroke(1f);
+    }
+
+// Draw.java : public static void alpha(float alpha)
+    public static void alpha(float alpha){
+        int abgr = Color.floatToIntColor(batch.getPackedColor());
+        int rawAlpha = (int)(Mathf.clamp(alpha) * 255);
+
+        batch.setPackedColor(Color.intToFloatColor((abgr & 0x00ffffff) | (rawAlpha << 24)));
+    }
+
+// Draw.java : public static void fbo(FrameBuffer buffer, int worldWidth, int worldHeight, int tilesize) / public static void fbo(Texture texture, int worldWidth, int worldHeight, int tilesize) / public static void fbo(Texture texture, int worldWidth, int worldHeight, int tilesize, float offset)
+    public static void fbo(FrameBuffer buffer, int worldWidth, int worldHeight, int tilesize){
+        fbo(buffer.getTexture(), worldWidth, worldHeight, tilesize);
+    }
+
+// Draw.java : public static void draw(float z, Runnable run)
+    public static void draw(float z, Runnable run){
+        z(z);
+        batch.draw(run);
+    }
+
+// Draw.java : public static void drawRange(float z, Runnable begin, Runnable end) / public static void drawRange(float z, float range, Runnable begin, Runnable end)
+    public static void drawRange(float z, Runnable begin, Runnable end){
+        drawRange(z, 0.001f, begin, end);
+    }
+
+// Draw.java : public static void rect() / public static void rect(String region, float x, float y, float w, float h) / public static void rect(TextureRegion region, float x, float y, float w, float h) / public static void rect(TextureRegion region, float x, float y) / public static void rect(String region, float x, float y) / public static void rect(TextureRegion region, float x, float y, float w, float h, float originX, float originY, float rotation) / public static void rect(String region, float x, float y, float w, float h, float originX, float originY, float rotation) / public static void rect(TextureRegion region, float x, float y, float w, float h, float rotation) / public static void rect(String region, float x, float y, float w, float h, float rotation) / public static void rect(TextureRegion region, Position pos, float w, float h) / public static void rect(TextureRegion region, Position pos, float w, float h, float rotation) / public static void rect(TextureRegion region, Position pos, float rotation) / public static void rect(TextureRegion region, float x, float y, float rotation) / public static void rect(String region, float x, float y, float rotation)
+    public static void rect(){
+        Fill.rect(camera.position.x, camera.position.y, camera.width, camera.height);
+    }
+
+// Draw.java : public static void vert(Texture texture, float[] vertices, int offset, int length)
+    public static void vert(Texture texture, float[] vertices, int offset, int length){
+        Core.batch.draw(texture, vertices, offset, length);
+    }
+
+// Draw.java : public static void flush()
+    public static void flush(){
+        batch.flush();
+    }
+
+// Draw.java : public static void discard()
+    public static void discard(){
+        batch.discard();
+    }
+
+// Draw.java : public static void proj(float x, float y, float w, float h) / public static void proj(Camera proj) / public static void proj(Mat proj) / public static Mat proj()
+    public static void proj(float x, float y, float w, float h){
+        flush();
+        batch.getProjection().setOrtho(x, y, w, h);
+    }
+
+// Draw.java : public static void trans(Mat trans) / public static Mat trans()
+    public static void trans(Mat trans){
+        Core.batch.setTransform(trans);
+    }
+
+// Draw.java : public static TextureRegion wrap(Texture texture)
+    public static TextureRegion wrap(Texture texture){
+        Tmp.tr2.set(texture);
+        return Tmp.tr2;
+    }
+
+// Draw.java : public static void rectv(TextureRegion region, float x, float y, float width, float height, Cons<Vec2> tweaker) / public static void rectv(TextureRegion region, float x, float y, float width, float height, float rotation, Cons<Vec2> tweaker) / public static void rectv(TextureRegion region, float x, float y, float width, float height, float originX, float originY, float rotation, Cons<Vec2> tweaker)
+    public static void rectv(TextureRegion region, float x, float y, float width, float height, Cons<Vec2> tweaker){
+        rectv(region, x, y, width, height, 0, tweaker);
+    }
+
+// Fill.java : public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) / public static void quad(float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4) / public static void quad(TextureRegion region, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) / public static void quad(TextureRegion region, float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4) / public static void quad(Texture texture, float x1, float y1, float c1, float u1, float v1, float x2, float y2, float c2, float u2, float v2, float x3, float y3, float c3, float u3, float v3, float x4, float y4, float c4, float u4, float v4)
+    public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4){
+        float color = Core.batch.getPackedColor();
+        quad(x1, y1, color, x2, y2, color, x3, y3, color, x4, y4, color);
+    }
+
+// Fill.java : public static void tri(float x1, float y1, float x2, float y2, float x3, float y3)
+    public static void tri(float x1, float y1, float x2, float y2, float x3, float y3){
+        quad(x1, y1, x2, y2, x3, y3, x3, y3);
+    }
+
+// Fill.java : public static void dropShadowRect(float x, float y, float width, float height, float blur, float opacity)
+    public static void dropShadowRect(float x, float y, float width, float height, float blur, float opacity){
+        dropShadow(x + width/2f, y + height/2f, width, height, blur, opacity);
+    }
+
+// Fill.java : public static void light(float x, float y, int sides, float radius, Color center, Color edge) / public static void light(float x, float y, int sides, float radius, float rotation, Color center, Color edge)
+    public static void light(float x, float y, int sides, float radius, Color center, Color edge){
+        light(x, y, sides, radius, 0, center, edge);
+    }
+
+// Fill.java : public static void polyBegin()
+    public static void polyBegin(){
+        polyFloats.clear();
+    }
+
+// Fill.java : public static void polyPoint(float x, float y)
+    public static void polyPoint(float x, float y){
+        polyFloats.add(x, y);
+    }
+
+// Fill.java : public static void polyEnd()
+    public static void polyEnd(){
+        poly(polyFloats.items, polyFloats.size);
+    }
+
+// Fill.java : public static void poly(Polygon p) / public static void poly(FloatSeq vertices) / public static void poly(float[] vertices, int length) / public static void poly(float x, float y, int sides, float radius) / public static void poly(float x, float y, int sides, float radius, float rotation)
+    public static void poly(Polygon p){
+        poly(p.getTransformedVertices(), p.getTransformedVertices().length);
+    }
+
+// Fill.java : public static void arc(float x, float y, float radius, float fraction) / public static void arc(float x, float y, float radius, float fraction, float rotation) / public static void arc(float x, float y, float radius, float fraction, float rotation, int sides)
+    public static void arc(float x, float y, float radius, float fraction){
+        arc(x, y, radius, fraction, 0f);
+    }
+
+// Fill.java : public static void circle(Circle c) / public static void circle(float x, float y, float radius)
+    public static void circle(Circle c){
+        circle(c.x, c.y, c.radius);
+    }
+
+// Fill.java : public static void rect(Rect r) / public static void rect(float x, float y, float w, float h) / public static void rect(float x, float y, float w, float h, float rot)
+    public static void rect(Rect r){
+        crect(r.x, r.y, r.width, r.height);
+    }
+
+// Fill.java : public static void crect(float x, float y, float w, float h)
+    public static void crect(float x, float y, float w, float h){
+        Draw.rect(atlas.white(), x + w/2f, y + h/2f, w, h);
+    }
+
+// Fill.java : public static void rects(float x, float y, float w, float h, float skew)
+    public static void rects(float x, float y, float w, float h, float skew){
+        quad(x, y, x + w, y, x + w + skew, y + h, x + skew, y + h);
+    }
+
+// Fill.java : public static void square(float x, float y, float radius) / public static void square(float x, float y, float radius, float rotation)
+    public static void square(float x, float y, float radius){
+        rect(x, y, radius*2, radius*2);
+    }
+
+// Font.java : static int indexOf(CharSequence text, char ch, int start)
+    static int indexOf(CharSequence text, char ch, int start){
+        final int n = text.length();
+        for(; start < n; start++)
+            if(text.charAt(start) == ch) return start;
+        return n;
+    }
+
+// Font.java : protected void load(FontData data)
+    protected void load(FontData data){
+        for(Glyph[] page : data.glyphs){
+            if(page == null) continue;
+            for(Glyph glyph : page)
+                if(glyph != null) data.setGlyphRegion(glyph, regions.get(glyph.page));
+        }
+        if(data.missingGlyph != null) data.setGlyphRegion(data.missingGlyph, regions.get(data.missingGlyph.page));
+    }
+
+// Font.java : public GlyphLayout draw(CharSequence str, float x, float y) / public GlyphLayout draw(CharSequence str, float x, float y, Color color, float scale, boolean integer, int halign) / public GlyphLayout draw(CharSequence str, float x, float y, int halign) / public GlyphLayout draw(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout draw(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void draw(GlyphLayout layout, float x, float y)
+    public GlyphLayout draw(CharSequence str, float x, float y){
+        cache.clear();
+        GlyphLayout layout = cache.addText(str, x, y);
+        cache.draw();
+        return layout;
+    }
+
+// Font.java : public Color getColor()
+    public Color getColor(){
+        return cache.getColor();
+    }
+
+// Font.java : public void setColor(Color color) / public void setColor(float r, float g, float b, float a)
+    public void setColor(Color color){
+        cache.getColor().set(color);
+    }
+
+// Font.java : public float getScaleX()
+    public float getScaleX(){
+        return data.scaleX;
+    }
+
+// Font.java : public float getScaleY()
+    public float getScaleY(){
+        return data.scaleY;
+    }
+
+// Font.java : public TextureRegion getRegion() / public TextureRegion getRegion(int index)
+    public TextureRegion getRegion(){
+        return regions.first();
+    }
+
+// Font.java : public Seq<TextureRegion> getRegions()
+    public Seq<TextureRegion> getRegions(){
+        return regions;
+    }
+
+// Font.java : public float getLineHeight()
+    public float getLineHeight(){
+        return data.lineHeight;
+    }
+
+// Font.java : public float getSpaceXadvance()
+    public float getSpaceXadvance(){
+        return data.spaceXadvance;
+    }
+
+// Font.java : public float getXHeight()
+    public float getXHeight(){
+        return data.xHeight;
+    }
+
+// Font.java : public float getCapHeight()
+    public float getCapHeight(){
+        return data.capHeight;
+    }
+
+// Font.java : public float getAscent()
+    public float getAscent(){
+        return data.ascent;
+    }
+
+// Font.java : public float getDescent()
+    public float getDescent(){
+        return data.descent;
+    }
+
+// Font.java : public boolean isFlipped()
+    public boolean isFlipped(){
+        return flipped;
+    }
+
+// Font.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(ownsTexture){
+            for(int i = 0; i < regions.size; i++)
+                regions.get(i).texture.dispose();
+        }
+    }
+
+// Font.java : public boolean isDisposed()
+    @Override
+    public boolean isDisposed(){
+        if(ownsTexture){
+            //it's a fair assumption to say that if one region is disposed, the whole font is disposed
+            return regions.contains(t -> t.texture.isDisposed());
+        }
+        return false;
+    }
+
+// Font.java : public void setUseIntegerPositions(boolean integer)
+    public void setUseIntegerPositions(boolean integer){
+        this.integer = integer;
+        cache.setUseIntegerPositions(integer);
+    }
+
+// Font.java : public boolean usesIntegerPositions()
+    public boolean usesIntegerPositions(){
+        return integer;
+    }
+
+// Font.java : public FontCache getCache()
+    public FontCache getCache(){
+        return cache;
+    }
+
+// Font.java : public FontData getData()
+    public FontData getData(){
+        return data;
+    }
+
+// Font.java : public boolean ownsTexture()
+    public boolean ownsTexture(){
+        return ownsTexture;
+    }
+
+// Font.java : public void setOwnsTexture(boolean ownsTexture)
+    public void setOwnsTexture(boolean ownsTexture){
+        this.ownsTexture = ownsTexture;
+    }
+
+// Font.java : public FontCache newFontCache()
+    public FontCache newFontCache(){
+        return new FontCache(this, integer);
+    }
+
+// Font.java : public String toString()
+    public String toString(){
+        if(data.fontFile != null) return data.fontFile.nameWithoutExtension();
+        return super.toString();
+    }
+
+// Font.java : public void addFallback(Font other)
+    public void addFallback(Font other){
+        data.addFallback(other.data);
+    }
+
+// FontCache.java : public void setPosition(float x, float y)
+    public void setPosition(float x, float y){
+        translate(x - this.x, y - this.y);
+    }
+
+// FontCache.java : public void setColors(float color) / public void setColors(Color tint) / public void setColors(float r, float g, float b, float a) / public void setColors(Color tint, int start, int end) / public void setColors(float color, int start, int end)
+    public void setColors(float color){
+        for(int j = 0, length = pageVertices.length; j < length; j++){
+            float[] vertices = pageVertices[j];
+            for(int i = 2, n = idx[j]; i < n; i += 6)
+                vertices[i] = color;
+        }
+    }
+
+// FontCache.java : public Color getColor()
+    public Color getColor(){
+        return color;
+    }
+
+// FontCache.java : public void setColor(Color color) / public void setColor(float r, float g, float b, float a)
+    public void setColor(Color color){
+        this.color.set(color);
+    }
+
+// FontCache.java : public void draw() / public void draw(int start, int end) / public void draw(float alphaModulation)
+    public void draw(){
+        Seq<TextureRegion> regions = font.getRegions();
+        for(int j = 0, n = pageVertices.length; j < n; j++){
+            if(idx[j] > 0){ // ignore if this texture has no glyphs
+                float[] vertices = pageVertices[j];
+                Draw.vert(regions.get(j).texture, vertices, 0, idx[j]);
+            }
+        }
+    }
+
+// FontCache.java : public void clear()
+    public void clear(){
+        x = 0;
+        y = 0;
+        Pools.freeAll(pooledLayouts, true);
+        pooledLayouts.clear();
+        layouts.clear();
+        for(int i = 0, n = idx.length; i < n; i++){
+            if(pageGlyphIndices != null) pageGlyphIndices[i].clear();
+            idx[i] = 0;
+        }
+    }
+
+// FontCache.java : public GlyphLayout setText(CharSequence str, float x, float y) / public GlyphLayout setText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout setText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void setText(GlyphLayout layout, float x, float y)
+    public GlyphLayout setText(CharSequence str, float x, float y){
+        clear();
+        return addText(str, x, y, 0, str.length(), 0, Align.left, false);
+    }
+
+// FontCache.java : public GlyphLayout addText(CharSequence str, float x, float y) / public GlyphLayout addText(CharSequence str, float x, float y, float targetWidth, int halign, boolean wrap) / public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap) / public GlyphLayout addText(CharSequence str, float x, float y, int start, int end, float targetWidth, int halign, boolean wrap, String truncate) / public void addText(GlyphLayout layout, float x, float y)
+    public GlyphLayout addText(CharSequence str, float x, float y){
+        return addText(str, x, y, 0, str.length(), 0, Align.left, false, null);
+    }
+
+// FontCache.java : public float getX()
+    public float getX(){
+        return x;
+    }
+
+// FontCache.java : public float getY()
+    public float getY(){
+        return y;
+    }
+
+// FontCache.java : public Font getFont()
+    public Font getFont(){
+        return font;
+    }
+
+// FontCache.java : public void setUseIntegerPositions(boolean use)
+    public void setUseIntegerPositions(boolean use){
+        this.integer = use;
+    }
+
+// FontCache.java : public boolean usesIntegerPositions()
+    public boolean usesIntegerPositions(){
+        return integer;
+    }
+
+// FontCache.java : public float[] getVertices() / public float[] getVertices(int page)
+    public float[] getVertices(){
+        return getVertices(0);
+    }
+
+// FontCache.java : public int getVertexCount(int page)
+    public int getVertexCount(int page){
+        return idx[page];
+    }
+
+// FontCache.java : public Seq<GlyphLayout> getLayouts()
+    public Seq<GlyphLayout> getLayouts(){
+        return layouts;
+    }
+
+// GlyphLayout.java : public static GlyphLayout obtain()
+    public static GlyphLayout obtain(){
+        return Pools.obtain(GlyphLayout.class, GlyphLayout::new);
+    }
+
+// GlyphLayout.java : public void free()
+    public void free(){
+        Pools.free(this);
+    }
+
+// GlyphLayout.java : public void setText(Font font, CharSequence str) / public void setText(Font font, CharSequence str, Color color, float targetWidth, int halign, boolean wrap) / public void setText(Font font, CharSequence str, int start, int end, Color color, float targetWidth, int halign, boolean wrap, String truncate)
+    public void setText(Font font, CharSequence str){
+        setText(font, str, 0, str.length(), font.getColor(), 0, Align.left, false, null);
+    }
+
+// GlyphLayout.java : private void adjustLastGlyph(FontData fontData, GlyphRun run)
+    private void adjustLastGlyph(FontData fontData, GlyphRun run){
+        Glyph last = run.glyphs.peek();
+        if(last.fixedWidth) return;
+        float width = (last.width + last.xoffset) * fontData.scaleX - fontData.padRight;
+        run.width += width - run.xAdvances.peek(); // Can cause the run width to be > targetWidth, but the problem is minimal.
+        run.xAdvances.set(run.xAdvances.size - 1, width);
+    }
+
+// GlyphLayout.java : public void reset()
+    @Override
+    public void reset(){
+        Pools.get(GlyphRun.class, GlyphRun::new).freeAll(runs);
+        runs.clear();
+
+        ignoreMarkup = false;
+        width = 0;
+        height = 0;
+    }
+
+// Lines.java : public static void setCirclePrecision(float amount)
+    public static void setCirclePrecision(float amount){
+        circlePrecision = amount;
+    }
+
+// Lines.java : public static int circleVertices(float rad)
+    public static int circleVertices(float rad){
+        return 11 + (int)(rad * circlePrecision);
+    }
+
+// Lines.java : public static void lineAngle(float x, float y, float angle, float length, boolean cap) / public static void lineAngle(float x, float y, float angle, float length) / public static void lineAngle(float x, float y, float angle, float length, float offset)
+    public static void lineAngle(float x, float y, float angle, float length, boolean cap){
+        vector.trns(angle, length);
+
+        line(x, y, x + vector.x, y + vector.y, cap);
+    }
+
+// Lines.java : public static void lineAngleCenter(float x, float y, float angle, float length, boolean cap) / public static void lineAngleCenter(float x, float y, float angle, float length)
+    public static void lineAngleCenter(float x, float y, float angle, float length, boolean cap){
+        vector.trns(angle, length);
+
+        line(x - vector.x / 2, y - vector.y / 2, x + vector.x / 2, y + vector.y / 2, cap);
+    }
+
+// Lines.java : public static void line(float x, float y, float x2, float y2) / public static void line(float x, float y, Color c, float x2, float y2, Color c2) / public static void line(float x, float y, float x2, float y2, boolean cap) / public static void line(TextureRegion region, float x, float y, float x2, float y2, boolean cap) / public static void line(TextureRegion region, float x, float y, Color c, float x2, float y2, Color c2, boolean cap) / public static void line(TextureRegion region, float x, float y, float color1, float x2, float y2, float color2, boolean cap)
+    public static void line(float x, float y, float x2, float y2){
+        line(x, y, x2, y2, true);
+    }
+
+// Lines.java : public static void linePoint(Position p) / public static void linePoint(float x, float y)
+    public static void linePoint(Position p){
+        linePoint(p.getX(), p.getY());
+    }
+
+// Lines.java : public static void beginLine()
+    public static void beginLine(){
+        if(building) throw new IllegalStateException("Already building");
+        floatBuilder.clear();
+        building = true;
+    }
+
+// Lines.java : public static void endLine() / public static void endLine(boolean wrap) / public static void endLine(boolean wrap, boolean flatEnd)
+    public static void endLine(){
+        endLine(false);
+    }
+
+// Lines.java : public static void polyline(FloatSeq points, boolean wrap) / public static void polyline(float[] points, int length, boolean wrap) / public static void polyline(float[] points, int length, boolean wrap, boolean flatEnd)
+    public static void polyline(FloatSeq points, boolean wrap){
+        polyline(points.items, points.size, wrap);
+    }
+
+// Lines.java : private static void pushQuad()
+    private static void pushQuad(){
+        Fill.quad(q1.x, q1.y, q2.x, q2.y, q3.x, q3.y, q4.x, q4.y);
+    }
+
+// Lines.java : private static void pushBevelFill(Vec2 p1, Vec2 p2, Vec2 apex)
+    private static void pushBevelFill(Vec2 p1, Vec2 p2, Vec2 apex){
+        Fill.quad(p1.x, p1.y, apex.x, apex.y, apex.x, apex.y, p2.x, p2.y);
+    }
+
+// Lines.java : private static void prepareFlatEndpoint(Vec2 pathPoint, Vec2 endPoint, Vec2 D, Vec2 E, float halfLineWidth) / private static void prepareFlatEndpoint(float pathPointX, float pathPointY, float endPointX, float endPointY, Vec2 D, Vec2 E, float halfLineWidth)
+    private static void prepareFlatEndpoint(Vec2 pathPoint, Vec2 endPoint, Vec2 D, Vec2 E, float halfLineWidth){
+        prepareFlatEndpoint(pathPoint.x, pathPoint.y, endPoint.x, endPoint.y, D, E, halfLineWidth);
+    }
+
+// Lines.java : private static float angleRad(Vec2 v, Vec2 reference)
+    private static float angleRad(Vec2 v, Vec2 reference){
+        return (float)Math.atan2(reference.x * v.y - reference.y * v.x, v.x * reference.x + v.y * reference.y);
+    }
+
+// Lines.java : private static void prepareStraightJoin(Vec2 B, Vec2 D, Vec2 E, float halfLineWidth)
+    private static void prepareStraightJoin(Vec2 B, Vec2 D, Vec2 E, float halfLineWidth){
+        AB.setLength(halfLineWidth);
+        D.set(-AB.y, AB.x).add(B);
+        E.set(AB.y, -AB.x).add(B);
+    }
+
+// Lines.java : public static void dashLine(float x1, float y1, float x2, float y2, int divisions)
+    public static void dashLine(float x1, float y1, float x2, float y2, int divisions){
+        float dx = x2 - x1, dy = y2 - y1;
+
+        for(int i = 0; i < divisions; i += 2){
+            line(x1 + ((float)i / divisions) * dx, y1 + ((float)i / divisions) * dy,
+            x1 + ((i + 1f) / divisions) * dx, y1 + ((i + 1f) / divisions) * dy);
+        }
+    }
+
+// Lines.java : public static void circle(float x, float y, float rad)
+    public static void circle(float x, float y, float rad){
+        poly(x, y, circleVertices(rad), rad);
+    }
+
+// Lines.java : public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4)
+    public static void quad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4){
+        floatBuilder.clear();
+
+        floatBuilder.add(x1, y1, x2, y2);
+        floatBuilder.add(x3, y3, x4, y4);
+
+        polyline(floatBuilder, true);
+    }
+
+// Lines.java : public static void arc(float x, float y, float radius, float fraction) / public static void arc(float x, float y, float radius, float fraction, float rotation) / public static void arc(float x, float y, float radius, float fraction, float rotation, int sides)
+    public static void arc(float x, float y, float radius, float fraction){
+        arc(x, y, radius, fraction, 0f);
+    }
+
+// Lines.java : public static void square(float x, float y, float rad) / public static void square(float x, float y, float rad, float rot)
+    public static void square(float x, float y, float rad){
+        rect(x - rad, y - rad, rad * 2, rad * 2);
+    }
+
+// Lines.java : public static void stroke(float thick) / public static void stroke(float thick, Color color)
+    public static void stroke(float thick){
+        stroke = thick;
+    }
+
+// Lines.java : public static float getStroke()
+    public static float getStroke(){
+        return stroke;
+    }
+
+// NinePatch.java : public void draw(float x, float y, float width, float height) / public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
+    public void draw(float x, float y, float width, float height){
+        prepareVertices(x, y, width, height);
+        Draw.vert(texture, vertices, 0, idx);
+    }
+
+// NinePatch.java : public Color getColor()
+    public Color getColor(){
+        return color;
+    }
+
+// NinePatch.java : public void setColor(Color color)
+    public void setColor(Color color){
+        this.color.set(color);
+    }
+
+// NinePatch.java : public float getLeftWidth()
+    public float getLeftWidth(){
+        return leftWidth;
+    }
+
+// NinePatch.java : public void setLeftWidth(float leftWidth)
+    public void setLeftWidth(float leftWidth){
+        this.leftWidth = leftWidth;
+    }
+
+// NinePatch.java : public float getRightWidth()
+    public float getRightWidth(){
+        return rightWidth;
+    }
+
+// NinePatch.java : public void setRightWidth(float rightWidth)
+    public void setRightWidth(float rightWidth){
+        this.rightWidth = rightWidth;
+    }
+
+// NinePatch.java : public float getTopHeight()
+    public float getTopHeight(){
+        return topHeight;
+    }
+
+// NinePatch.java : public void setTopHeight(float topHeight)
+    public void setTopHeight(float topHeight){
+        this.topHeight = topHeight;
+    }
+
+// NinePatch.java : public float getBottomHeight()
+    public float getBottomHeight(){
+        return bottomHeight;
+    }
+
+// NinePatch.java : public void setBottomHeight(float bottomHeight)
+    public void setBottomHeight(float bottomHeight){
+        this.bottomHeight = bottomHeight;
+    }
+
+// NinePatch.java : public float getMiddleWidth()
+    public float getMiddleWidth(){
+        return middleWidth;
+    }
+
+// NinePatch.java : public void setMiddleWidth(float middleWidth)
+    public void setMiddleWidth(float middleWidth){
+        this.middleWidth = middleWidth;
+    }
+
+// NinePatch.java : public float getMiddleHeight()
+    public float getMiddleHeight(){
+        return middleHeight;
+    }
+
+// NinePatch.java : public void setMiddleHeight(float middleHeight)
+    public void setMiddleHeight(float middleHeight){
+        this.middleHeight = middleHeight;
+    }
+
+// NinePatch.java : public float getTotalWidth()
+    public float getTotalWidth(){
+        return leftWidth + middleWidth + rightWidth;
+    }
+
+// NinePatch.java : public float getTotalHeight()
+    public float getTotalHeight(){
+        return topHeight + middleHeight + bottomHeight;
+    }
+
+// NinePatch.java : public void setPadding(float left, float right, float top, float bottom)
+    public void setPadding(float left, float right, float top, float bottom){
+        this.padLeft = left;
+        this.padRight = right;
+        this.padTop = top;
+        this.padBottom = bottom;
+    }
+
+// NinePatch.java : public float getPadLeft()
+    public float getPadLeft(){
+        if(padLeft == -1) return getLeftWidth();
+        return padLeft;
+    }
+
+// NinePatch.java : public void setPadLeft(float left)
+    public void setPadLeft(float left){
+        this.padLeft = left;
+    }
+
+// NinePatch.java : public float getPadRight()
+    public float getPadRight(){
+        if(padRight == -1) return getRightWidth();
+        return padRight;
+    }
+
+// NinePatch.java : public void setPadRight(float right)
+    public void setPadRight(float right){
+        this.padRight = right;
+    }
+
+// NinePatch.java : public float getPadTop()
+    public float getPadTop(){
+        if(padTop == -1) return getTopHeight();
+        return padTop;
+    }
+
+// NinePatch.java : public void setPadTop(float top)
+    public void setPadTop(float top){
+        this.padTop = top;
+    }
+
+// NinePatch.java : public float getPadBottom()
+    public float getPadBottom(){
+        if(padBottom == -1) return getBottomHeight();
+        return padBottom;
+    }
+
+// NinePatch.java : public void setPadBottom(float bottom)
+    public void setPadBottom(float bottom){
+        this.padBottom = bottom;
+    }
+
+// NinePatch.java : public Texture getTexture()
+    public Texture getTexture(){
+        return texture;
+    }
+
+// PixmapPacker.java : public void setAllowMultiplePages(boolean allowMultiplePages)
+    public void setAllowMultiplePages(boolean allowMultiplePages){
+        this.allowMultiplePages = allowMultiplePages;
+    }
+
+// PixmapPacker.java : public void sort(Seq<PixmapRegion> images)
+    public void sort(Seq<PixmapRegion> images){
+        packStrategy.sort(images);
+    }
+
+// PixmapPacker.java : public synchronized Rect pack(Pixmap image) / public synchronized Rect pack(String name, Pixmap image) / public synchronized Rect pack(String name, PixmapRegion image) / public synchronized Rect pack(String name, int width, int height) / public synchronized Rect pack(String name, PixmapRegion image, int[] splits, int[] pads)
+    public synchronized Rect pack(Pixmap image){
+        return pack(null, image);
+    }
+
+// PixmapPacker.java : public Seq<Page> getPages()
+    public Seq<Page> getPages(){
+        return pages;
+    }
+
+// PixmapPacker.java : public synchronized Rect getRect(String name)
+    public synchronized Rect getRect(String name){
+        for(Page page : pages){
+            Rect rect = page.rects.get(name);
+            if(rect != null) return rect;
+        }
+        return null;
+    }
+
+// PixmapPacker.java : public synchronized PixmapRegion getRegion(String name)
+    public synchronized PixmapRegion getRegion(String name){
+        for(Page page : pages){
+            Rect rect = page.rects.get(name);
+            if(rect != null) return new PixmapRegion(page.getPixmap(), (int)rect.x, (int)rect.y, (int)rect.width, (int)rect.height);
+        }
+        return null;
+    }
+
+// PixmapPacker.java : public synchronized Page getPage(String name)
+    public synchronized Page getPage(String name){
+        for(Page page : pages){
+            Rect rect = page.rects.get(name);
+            if(rect != null) return page;
+        }
+        return null;
+    }
+
+// PixmapPacker.java : public synchronized int getPageIndex(String name)
+    public synchronized int getPageIndex(String name){
+        for(int i = 0; i < pages.size; i++){
+            Rect rect = pages.get(i).rects.get(name);
+            if(rect != null) return i;
+        }
+        return -1;
+    }
+
+// PixmapPacker.java : public synchronized void dispose()
+    @Override
+    public synchronized void dispose(){
+        for(Page page : pages){
+            if(page.texture == null){
+                page.image.dispose();
+            }
+        }
+        disposed = true;
+    }
+
+// PixmapPacker.java : public void forceDispose()
+    public void forceDispose(){
+        for(Page page : pages){
+            if(page.image != null){
+                page.image.dispose();
+            }
+        }
+        disposed = true;
+    }
+
+// PixmapPacker.java : public synchronized TextureAtlas generateTextureAtlas(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)
+    public synchronized TextureAtlas generateTextureAtlas(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps){
+        TextureAtlas atlas = new TextureAtlas();
+        updateTextureAtlas(atlas, minFilter, magFilter, useMipMaps, true);
+        return atlas;
+    }
+
+// PixmapPacker.java : public synchronized void updateTextureAtlas(TextureAtlas atlas, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps) / public synchronized void updateTextureAtlas(TextureAtlas atlas, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps, boolean clearRects)
+    public synchronized void updateTextureAtlas(TextureAtlas atlas, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps){
+        updateTextureAtlas(atlas, minFilter, magFilter, useMipMaps, true);
+    }
+
+// PixmapPacker.java : public synchronized void updateTextureRegions(Seq<TextureRegion> regions, TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)
+    public synchronized void updateTextureRegions(Seq<TextureRegion> regions, TextureFilter minFilter, TextureFilter magFilter,
+                                                  boolean useMipMaps){
+        updatePageTextures(minFilter, magFilter, useMipMaps);
+        while(regions.size < pages.size)
+            regions.add(new TextureRegion(pages.get(regions.size).texture));
+    }
+
+// PixmapPacker.java : public synchronized void updatePageTextures(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps)
+    public synchronized void updatePageTextures(TextureFilter minFilter, TextureFilter magFilter, boolean useMipMaps){
+        for(Page page : pages)
+            page.updateTexture(minFilter, magFilter, useMipMaps);
+    }
+
+// PixmapPacker.java : public int getPageWidth()
+    public int getPageWidth(){
+        return pageWidth;
+    }
+
+// PixmapPacker.java : public void setPageWidth(int pageWidth)
+    public void setPageWidth(int pageWidth){
+        this.pageWidth = pageWidth;
+    }
+
+// PixmapPacker.java : public int getPageHeight()
+    public int getPageHeight(){
+        return pageHeight;
+    }
+
+// PixmapPacker.java : public void setPageHeight(int pageHeight)
+    public void setPageHeight(int pageHeight){
+        this.pageHeight = pageHeight;
+    }
+
+// PixmapPacker.java : public int getPadding()
+    public int getPadding(){
+        return padding;
+    }
+
+// PixmapPacker.java : public void setPadding(int padding)
+    public void setPadding(int padding){
+        this.padding = padding;
+    }
+
+// PixmapPacker.java : public boolean getDuplicateBorder()
+    public boolean getDuplicateBorder(){
+        return duplicateBorder;
+    }
+
+// PixmapPacker.java : public void setDuplicateBorder(boolean duplicateBorder)
+    public void setDuplicateBorder(boolean duplicateBorder){
+        this.duplicateBorder = duplicateBorder;
+    }
+
+// PixmapPacker.java : public boolean getPackToTexture()
+    public boolean getPackToTexture(){
+        return packToTexture;
+    }
+
+// PixmapPacker.java : public void setPackToTexture(boolean packToTexture)
+    public void setPackToTexture(boolean packToTexture){
+        this.packToTexture = packToTexture;
+    }
+
+// PixmapPacker.java : public Color getTransparentColor()
+    public Color getTransparentColor(){
+        return this.transparentColor;
+    }
+
+// PixmapPacker.java : public void setTransparentColor(Color color)
+    public void setTransparentColor(Color color){
+        this.transparentColor.set(color);
+    }
+
+// PixmapRegion.java : public int get(int x, int y) / public int get(int x, int y, Color color)
+    public int get(int x, int y){
+        return pixmap.get(this.x + x, this.y + y);
+    }
+
+// PixmapRegion.java : public int getRaw(int x, int y)
+    public int getRaw(int x, int y){
+        return pixmap.getRaw(this.x + x, this.y + y);
+    }
+
+// PixmapRegion.java : public int getA(int x, int y)
+    public int getA(int x, int y){
+        return pixmap.getA(this.x + x, this.y + y);
+    }
+
+// PixmapRegion.java : public PixmapRegion set(Pixmap pixmap) / public PixmapRegion set(Pixmap pixmap, int x, int y, int width, int height)
+    public PixmapRegion set(Pixmap pixmap){
+        return set(pixmap, 0, 0, pixmap.width, pixmap.height);
+    }
+
+// PixmapRegion.java : public Pixmap crop() / public Pixmap crop(int x, int y, int width, int height)
+    public Pixmap crop(){
+        return Pixmaps.crop(pixmap, x, y, width, height);
+    }
+
+// ScissorStack.java : public static Rect pop()
+    public static Rect pop(){
+        Draw.flush();
+        Rect old = scissors.pop();
+        if(scissors.size == 0)
+            Gl.disable(GL20.GL_SCISSOR_TEST);
+        else{
+            Rect scissor = scissors.peek();
+            HdpiUtils.glScissor((int)scissor.x, (int)scissor.y, (int)scissor.width, (int)scissor.height);
+        }
+        return old;
+    }
+
+// ScissorStack.java : public static boolean pushWorld(Rect scissorWorld)
+    public static boolean pushWorld(Rect scissorWorld){
+        calculateScissors(Core.camera, Tmp.m1.idt(), Tmp.r1.set(scissorWorld), scissorWorld);
+        return push(scissorWorld);
+    }
+
+// ScissorStack.java : public static Rect peek()
+    public static Rect peek(){
+        return scissors.peek();
+    }
+
+// ScissorStack.java : public static void calculateScissors(Camera camera, Mat batchTransform, Rect area, Rect scissor) / public static void calculateScissors(Camera camera, float viewportX, float viewportY, float viewportWidth, float viewportHeight, Mat batchTransform, Rect area, Rect scissor)
+    public static void calculateScissors(Camera camera, Mat batchTransform, Rect area, Rect scissor){
+        calculateScissors(camera, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight(), batchTransform, area, scissor);
+    }
+
+// ScissorStack.java : public static Rect getViewport()
+    public static Rect getViewport(){
+        if(scissors.size == 0){
+            viewport.set(0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+            return viewport;
+        }else{
+            Rect scissor = scissors.peek();
+            viewport.set(scissor);
+            return viewport;
+        }
+    }
+
+// ScreenQuad.java : public void render(Shader shader)
+    public void render(Shader shader){
+        mesh.render(shader, Gl.triangleFan, 0, 4);
+    }
+
+// ScreenQuad.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+    }
+
+// SpriteBatch.java : public void dispose()
+    @Override
+    public void dispose(){
+        super.dispose();
+        if(mesh != null){
+            mesh.dispose();
+        }
+    }
+
+// SpriteBatch.java : protected void setSort(boolean sort)
+    @Override
+    protected void setSort(boolean sort){
+        if(this.sort != sort){
+            flush();
+        }
+        this.sort = sort;
+    }
+
+// SpriteBatch.java : protected void setShader(Shader shader, boolean apply)
+    @Override
+    protected void setShader(Shader shader, boolean apply){
+        if(!flushing && sort){
+            throw new IllegalArgumentException("Shaders cannot be set while sorting is enabled. Set shaders inside Draw.run(...).");
+        }
+        super.setShader(shader, apply);
+    }
+
+// SpriteBatch.java : protected void setBlending(Blending blending)
+    @Override
+    protected void setBlending(Blending blending){
+        this.blending = blending;
+    }
+
+// SpriteBatch.java : protected void z(float z)
+    @Override
+    protected void z(float z){
+        if(z == this.z) return;
+        this.z = z;
+        intZ = Float.floatToRawIntBits(z + 16f);
+    }
+
+// SpriteBatch.java : protected void discard()
+    @Override
+    protected void discard(){
+        super.discard();
+
+        buffer.position(0);
+    }
+
+// SpriteBatch.java : protected void prepare(int i)
+    protected void prepare(int i){
+        if(requestVertOffset + i >= requestVerts.length) requestVerts = Arrays.copyOf(requestVerts, requestVerts.length << 1);
+    }
+
+// SpriteBatch.java : protected void expandRequests()
+    protected void expandRequests(){
+        final DrawRequest[] requests = this.requests, newRequests = Arrays.copyOf(requests, requests.length * 7 / 4);
+        for(int i = requests.length; i < newRequests.length; i++){
+            newRequests[i] = new DrawRequest();
+        }
+        this.requests = newRequests;
+        this.requestZ = Arrays.copyOf(requestZ, newRequests.length);
+    }
+
+// SpriteBatch.java : protected void sortRequests()
+    protected void sortRequests(){
+        if(multithreaded){
+            sortRequestsThreaded();
+        }else{
+            sortRequestsStandard();
+        }
+    }
+
+// SpriteCache.java : public Seq<Cache> getCaches()
+    public Seq<Cache> getCaches(){
+        return caches;
+    }
+
+// SpriteCache.java : public void setColor(float r, float g, float b, float a) / public void setColor(Color tint)
+    public void setColor(float r, float g, float b, float a){
+        colorPacked = Color.toFloatBits(r, g, b, a);
+    }
+
+// SpriteCache.java : public float getPackedColor()
+    public float getPackedColor(){
+        return colorPacked;
+    }
+
+// SpriteCache.java : public void setPackedColor(float packedColor)
+    public void setPackedColor(float packedColor){
+        colorPacked = packedColor;
+    }
+
+// SpriteCache.java : public void beginCache() / public void beginCache(int cacheID)
+    public void beginCache(){
+        if(drawing) throw new IllegalStateException("end must be called before beginCache");
+        if(currentCache != null) throw new IllegalStateException("endCache must be called before begin.");
+        mesh.getVerticesBuffer().position(caches.isEmpty() ? 0 : caches.peek().offset + caches.peek().maxCount);
+        currentCache = new Cache(caches.size, mesh.getVerticesBuffer().position());
+        caches.add(currentCache);
+        mesh.getVerticesBuffer().limit(mesh.getVerticesBuffer().capacity());
+    }
+
+// SpriteCache.java : public void clear()
+    public void clear(){
+        caches.clear();
+        mesh.getVerticesBuffer().clear().flip();
+    }
+
+// SpriteCache.java : public int getSpritesUsed()
+    public int getSpritesUsed(){
+        return (caches.isEmpty() ? 0 : caches.peek().offset + caches.peek().maxCount) / (vertexSize * (mesh.getNumIndices() > 0 ? 4 : 6));
+    }
+
+// SpriteCache.java : public int getSpriteCapacity()
+    public int getSpriteCapacity(){
+        return mesh.getVerticesBuffer().limit() / (vertexSize * (mesh.getNumIndices() > 0 ? 4 : 6));
+    }
+
+// SpriteCache.java : public void begin() / public void begin(boolean writeUniforms)
+    public void begin(){
+        begin(true);
+    }
+
+// SpriteCache.java : public void end()
+    public void end(){
+        if(!drawing) throw new IllegalStateException("begin must be called before end.");
+        drawing = false;
+
+        if(customShader != null)
+            mesh.unbind(customShader);
+        else
+            mesh.unbind(shader);
+    }
+
+// SpriteCache.java : public void dispose()
+    @Override
+    public void dispose(){
+        mesh.dispose();
+        if(shader != null && shader != getDefaultShader()) shader.dispose();
+    }
+
+// SpriteCache.java : public Mat getProjectionMatrix()
+    public Mat getProjectionMatrix(){
+        return projectionMatrix;
+    }
+
+// SpriteCache.java : public void setProjectionMatrix(Mat projection)
+    public void setProjectionMatrix(Mat projection){
+        if(drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
+        projectionMatrix.set(projection);
+    }
+
+// SpriteCache.java : public Mat getTransformMatrix()
+    public Mat getTransformMatrix(){
+        return transformMatrix;
+    }
+
+// SpriteCache.java : public void setTransformMatrix(Mat transform)
+    public void setTransformMatrix(Mat transform){
+        if(drawing) throw new IllegalStateException("Can't set the matrix within begin/end.");
+        transformMatrix.set(transform);
+    }
+
+// SpriteCache.java : public void setShader(Shader shader)
+    public void setShader(Shader shader){
+        customShader = shader;
+    }
+
+// SpriteCache.java : public boolean isDrawing()
+    public boolean isDrawing(){
+        return drawing;
+    }
+
+// TextureAtlas.java : public static TextureAtlas blankAtlas()
+    public static TextureAtlas blankAtlas(){
+        TextureAtlas a =  new TextureAtlas();
+        a.white = new AtlasRegion(Pixmaps.blankTextureRegion());
+        return a;
+    }
+
+// TextureAtlas.java : public void setDrawableScale(float scale)
+    public void setDrawableScale(float scale){
+        this.drawableScale = scale;
+    }
+
+// TextureAtlas.java : public PixmapRegion getPixmap(String name) / public PixmapRegion getPixmap(AtlasRegion region) / public PixmapRegion getPixmap(TextureRegion region)
+    public PixmapRegion getPixmap(String name){
+        return getPixmap(find(name));
+    }
+
+// TextureAtlas.java : public ObjectMap<Texture,Pixmap> getPixmaps()
+    public ObjectMap<Texture, Pixmap> getPixmaps(){
+        return pixmaps;
+    }
+
+// TextureAtlas.java : public void disposePixmap(Texture texture)
+    public void disposePixmap(Texture texture){
+        if(pixmaps.containsKey(texture) && !pixmaps.get(texture).isDisposed()){
+            pixmaps.get(texture).dispose();
+        }
+        pixmaps.remove(texture);
+    }
+
+// TextureAtlas.java : public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height) / public AtlasRegion addRegion(String name, TextureRegion textureRegion)
+    public AtlasRegion addRegion(String name, Texture texture, int x, int y, int width, int height){
+        textures.add(texture);
+        AtlasRegion region = new AtlasRegion(texture, x, y, width, height);
+        region.name = name;
+        region.originalWidth = width;
+        region.originalHeight = height;
+        regions.add(region);
+        regionmap.put(name, region);
+        return region;
+    }
+
+// TextureAtlas.java : public Seq<AtlasRegion> getRegions()
+    public Seq<AtlasRegion> getRegions(){
+        return regions;
+    }
+
+// TextureAtlas.java : public ObjectMap<String,AtlasRegion> getRegionMap()
+    public ObjectMap<String, AtlasRegion> getRegionMap(){
+        return regionmap;
+    }
+
+// TextureAtlas.java : public AtlasRegion white()
+    public AtlasRegion white(){
+        if(white == null){
+            white = find("white");
+        }
+        return white;
+    }
+
+// TextureAtlas.java : public boolean setErrorRegion(String name)
+    public boolean setErrorRegion(String name) {
+        if(error != null || !has(name)) return false;
+        error = find(name);
+        return true;
+    }
+
+// TextureAtlas.java : public boolean isFound(TextureRegion region)
+    public boolean isFound(TextureRegion region){
+        return region != error;
+    }
+
+// TextureAtlas.java : public AtlasRegion find(String name) / public TextureRegion find(String name, String def) / public TextureRegion find(String name, TextureRegion def)
+    public AtlasRegion find(String name){
+        AtlasRegion r = regionmap.get(name, error);
+        if(r == null && !name.equals("error"))
+            throw new IllegalArgumentException("The region \"" + name + "\" does not exist!");
+        return r;
+    }
+
+// TextureAtlas.java : public boolean has(String s)
+    public boolean has(String s){
+        return regionmap.containsKey(s);
+    }
+
+// TextureAtlas.java : public T getDrawable(String name)
+    @SuppressWarnings("unchecked")
+    public <T extends Drawable> T getDrawable(String name){
+        return (T)drawable(name);
+    }
+
+// TextureAtlas.java : public ObjectMap<String,Drawable> getDrawables()
+    public ObjectMap<String, Drawable> getDrawables(){
+        return drawables;
+    }
+
+// TextureAtlas.java : public ObjectSet<Texture> getTextures()
+    public ObjectSet<Texture> getTextures(){
+        return textures;
+    }
+
+// TextureAtlas.java : public Texture texture()
+    public Texture texture(){
+        return textures.first();
+    }
+
+// TextureAtlas.java : public void dispose()
+    public void dispose(){
+        for(Texture texture : textures)
+            texture.dispose();
+        for(Pixmap pixmap : pixmaps.values())
+            if(!pixmap.isDisposed())
+                pixmap.dispose();
+        textures.clear();
+        pixmaps.clear();
+    }
+
+// TextureRegion.java : public static TextureRegion[][] split(Texture texture, int tileWidth, int tileHeight) / public TextureRegion[][] split(int tileWidth, int tileHeight)
+    public static TextureRegion[][] split(Texture texture, int tileWidth, int tileHeight){
+        TextureRegion region = new TextureRegion(texture);
+        return region.split(tileWidth, tileHeight);
+    }
+
+// TextureRegion.java : public AtlasRegion asAtlas()
+    public AtlasRegion asAtlas(){
+        return (AtlasRegion)this;
+    }
+
+// TextureRegion.java : public boolean found()
+    public boolean found(){
+        return Core.atlas != null && Core.atlas.error != this;
+    }
+
+// TextureRegion.java : public void set(Texture texture) / public TextureRegion set(int x, int y, int width, int height) / public void set(float u, float v, float u2, float v2) / public void set(TextureRegion region) / public void set(TextureRegion region, int x, int y, int width, int height) / public void set(Texture texture, int x, int y, int width, int height)
+    public void set(Texture texture){
+        this.texture = texture;
+        set(0, 0, texture.width, texture.height);
+    }
+
+// TextureRegion.java : public void setU(float u)
+    public void setU(float u){
+        this.u = u;
+        width = Math.round(Math.abs(u2 - u) * texture.width);
+    }
+
+// TextureRegion.java : public void setV(float v)
+    public void setV(float v){
+        this.v = v;
+        height = Math.round(Math.abs(v2 - v) * texture.height);
+    }
+
+// TextureRegion.java : public void setU2(float u2)
+    public void setU2(float u2){
+        this.u2 = u2;
+        width = Math.round(Math.abs(u2 - u) * texture.width);
+    }
+
+// TextureRegion.java : public void setV2(float v2)
+    public void setV2(float v2){
+        this.v2 = v2;
+        height = Math.round(Math.abs(v2 - v) * texture.height);
+    }
+
+// TextureRegion.java : public int getX()
+    public int getX(){
+        return Math.round(u * texture.width);
+    }
+
+// TextureRegion.java : public void setX(int x) / public void setX(float x)
+    public void setX(int x){
+        setU(x / (float)texture.width);
+    }
+
+// TextureRegion.java : public int getY()
+    public int getY(){
+        return Math.round(v * texture.height);
+    }
+
+// TextureRegion.java : public void setY(int y) / public void setY(float y)
+    public void setY(int y){
+        setV(y / (float)texture.height);
+    }
+
+// TextureRegion.java : public void setWidth(int width) / public void setWidth(float width)
+    public void setWidth(int width){
+        if(isFlipX()){
+            setU(u2 + width / (float)texture.width);
+        }else{
+            setU2(u + width / (float)texture.width);
+        }
+    }
+
+// TextureRegion.java : public void setHeight(int height) / public void setHeight(float height)
+    public void setHeight(int height){
+        if(isFlipY()){
+            setV(v2 + height / (float)texture.height);
+        }else{
+            setV2(v + height / (float)texture.height);
+        }
+    }
+
+// TextureRegion.java : public float ratio()
+    public float ratio(){
+        return (float)width / height;
+    }
+
+// TextureRegion.java : public boolean isFlipX()
+    public boolean isFlipX(){
+        return u > u2;
+    }
+
+// TextureRegion.java : public boolean isFlipY()
+    public boolean isFlipY(){
+        return v > v2;
+    }
+
+// TextureRegion.java : public float scl()
+    public float scl(){
+        return scale * Draw.scl;
+    }
+
+// TextureRegion.java : public String toString()
+    @Override
+    public String toString(){
+        return "TextureRegion{" +
+        "texture=" + texture +
+        ", width=" + width +
+        ", height=" + height +
+        '}';
+    }
+

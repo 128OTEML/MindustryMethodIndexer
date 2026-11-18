@@ -1,0 +1,45 @@
+CallGenerator.java
+Java class
+// Generates code for writing remote invoke packets on the client and server.
+methods:
+  public static void generate(ClassSerializer serializer, Seq<MethodEntry> methods) throws IOException  // Generates all classes in this list.
+  private static void makeWriter(TypeSpec.Builder typespec, MethodEntry ent, ClassSerializer serializer)
+  private static void makeReader(TypeSpec.Builder typespec, MethodEntry ent, ClassSerializer serializer)
+  private static void writeCallMethod(TypeSpec.Builder classBuilder, MethodEntry ent, boolean toAll, boolean forwarded)  // Creates a specific variant for a method entry.
+  private static String getCheckString(Loc loc)
+  public static MethodSpec writeHandleMethod(MethodEntry ent, boolean isClient)  // Generates handleServer / handleClient methods.
+
+MethodEntry.java
+Java class
+// Class that repesents a remote method to be constructed and put into a class.
+fields:
+  public final String className  // Simple target class name.
+  public final String targetMethod  // Fully qualified target method to call.
+  public final String packetClassName  // Simple name of the generated packet class.
+  public final Loc where  // Whether this method can be called on a client/server.
+  public final Variant target  // Whether an additional 'one' and 'all' method variant is generated.
+  public final Loc local  // Whether this method is called locally as well as remotely.
+  public final boolean unreliable  // Whether this method is unreliable and uses UDP.
+  public final boolean forward  // Whether to forward this method call to all other clients when a client invokes it.
+  public final int id  // Unique method ID.
+  public final Smethod element  // The element method associated with this entry.
+  public final PacketPriority priority  // The assigned packet priority.
+ctors:
+  public MethodEntry(String className, String targetMethod, String packetClassName, Loc where, Variant target, Loc local, boolean unreliable, boolean forward, int id, Smethod element, PacketPriority priority)
+methods:
+  public int hashCode()
+
+RemoteProcess.java
+Java class extends mindustry.annotations.BaseProcessor
+// The annotation processor for generating remote method call code.
+fields:
+  public static final String callLocation  // Simple class name of generated class name.
+methods:
+  public void process(RoundEnvironment roundEnv) throws Exception
+
+SerializerResolver.java
+Java class
+methods:
+  public static String locate(ExecutableElement elem, TypeMirror mirror, boolean write)
+  private static boolean isEntity(TypeMirror mirror)
+

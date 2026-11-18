@@ -1,0 +1,92 @@
+// PointDefenseBulletWeapon.java : protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+    @Override
+    protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground){
+        return Groups.bullet.intersect(x - range, y - range, range*2, range*2).min(b -> b.team != unit.team && b.type().hittable && !(b.type.collidesAir && !b.type.collidesTiles), b -> b.dst2(x, y) - b.damage * damageTargetWeight);
+    }
+
+// PointDefenseBulletWeapon.java : protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+    @Override
+    protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range){
+        return !(target.within(unit, range) && target.team() != unit.team && target instanceof Bullet b && b.type != null && b.type.hittable);
+    }
+
+// PointDefenseBulletWeapon.java : protected void handleBullet(Unit unit, WeaponMount mount, Bullet bullet)
+    @Override
+    protected void handleBullet(Unit unit, WeaponMount mount, Bullet bullet){
+        super.handleBullet(unit, mount, bullet);
+
+        if(mount.target instanceof Bullet b){
+            bullet.data = b;
+        }
+    }
+
+// PointDefenseWeapon.java : public void addStats(UnitType u, Table t)
+    @Override
+    public void addStats(UnitType u, Table t){
+        t.add(Core.bundle.format("weapon.pointdefense"));
+        super.addStats(u, t);
+    }
+
+// PointDefenseWeapon.java : protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+    @Override
+    protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground){
+        return Groups.bullet.intersect(x - range, y - range, range*2, range*2).min(b -> b.team != unit.team && b.type().hittable, b -> b.dst2(x, y));
+    }
+
+// PointDefenseWeapon.java : protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+    @Override
+    protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range){
+        return !(target.within(unit, range) && target.team() != unit.team && target instanceof Bullet bullet && bullet.type != null && bullet.type.hittable);
+    }
+
+// RepairBeamWeapon.java : public void addStats(UnitType u, Table w)
+    @Override
+    public void addStats(UnitType u, Table w){
+        w.row();
+        w.add("[lightgray]" + Stat.repairSpeed.localized() + ": " + (mirror ? "2x " : "") + "[white]" + (int)(repairSpeed * 60) + " " + StatUnit.perSecond.localized());
+    }
+
+// RepairBeamWeapon.java : public float dps()
+    @Override
+    public float dps(){
+        return 0f;
+    }
+
+// RepairBeamWeapon.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        laser = Core.atlas.find("laser-white");
+        laserEnd = Core.atlas.find("laser-white-end");
+        laserTop = Core.atlas.find("laser-top");
+        laserTopEnd = Core.atlas.find("laser-top-end");
+    }
+
+// RepairBeamWeapon.java : protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+    @Override
+    protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground){
+        var out = targetUnits ? Units.closest(unit.team, x, y, range, u -> u != unit && u.damaged()) :  null;
+        if(out != null || !targetBuildings) return out;
+        return Units.findAllyTile(unit.team, x, y, range, Building::damaged);
+    }
+
+// RepairBeamWeapon.java : protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+    @Override
+    protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range){
+        return !(target.within(unit, range + unit.hitSize/2f) && target.team() == unit.team && target instanceof Healthc u && u.damaged() && u.isValid());
+    }
+
+// RepairBeamWeapon.java : protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation)
+    @Override
+    protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation){
+        //does nothing, shooting is handled in update()
+    }
+
+// RepairBeamWeapon.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        bullet.healPercent = fractionRepairSpeed;
+    }
+

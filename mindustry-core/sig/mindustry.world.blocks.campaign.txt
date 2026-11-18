@@ -1,0 +1,176 @@
+Accelerator.java
+Java class extends mindustry.world.Block
+fields:
+  public TextureRegion arrowRegion
+  public TextureRegion selectArrowRegion
+  public Block launchBlock  // Core block that is launched.
+  public float powerBufferRequirement
+  public Seq<Planet> launchCandidates  // Override for planets that this block can launch to.
+  public Sound lightningSound
+  public float lightningSoundVolume
+  public Sound chargeSound
+  public Sound launchSound
+  public Sound constructSound
+  public float launchDuration
+  public float chargeDuration
+  public float buildDuration
+  public Interp landZoomInterp
+  public float landZoomFrom
+  public int chargeRings
+  public float ringRadBase
+  public float ringHandleTilt
+  public Color ringColor
+  public int launchLightning
+  public Color lightningColor
+  public float lightningDamage
+  public float lightningOffset
+  public int lightningLengthMin
+  public double lightningLaunchChance
+  protected int capacities
+ctors:
+  public Accelerator(String name)
+methods:
+  public void init()
+  public void checkContentArrayCapacity(int items, int liquids)
+  public void setBars()
+  public boolean outputsItems()
+inner-class: AcceleratorBuild extends mindustry.gen.Building implements mindustry.world.blocks.LaunchAnimator
+  fields:
+    public float heat
+    public float progress
+    public float time
+    public boolean launching
+    public float launchTime
+    protected float cloudSeed
+  methods:
+    public void updateTile()
+    public float progress()
+    public boolean isCoreBuilt()
+    public void draw()
+    public void drawLight()
+    public boolean canLaunch()
+    public Cursor getCursor()
+    public void drawSelect()
+    public void buildConfiguration(Table table)
+    public int getMaximumAccepted(Item item)
+    public boolean acceptItem(Building source, Item item)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+    public float launchDuration()  // launch animator stuff:
+    public Music landMusic()
+    public void beginLaunch(boolean launching)
+    public void endLaunch()
+    public float zoomLaunch()
+    public void updateLaunch()
+    public void drawLaunch()
+    public void drawLaunchGlobalZ()
+    protected void drawRing(float radius, float fin)
+    protected void drawLanding(float fin, float x, float y)
+    protected void drawLandingThrusters(float x, float y, float rotation, float frame)
+
+LandingPad.java
+Java class extends mindustry.world.Block
+fields:
+  static ObjectMap<Item,Seq<LandingPadBuild>> waiting
+  static long lastUpdateId
+  public TextureRegion podRegion
+  public float arrivalDuration
+  public float cooldownTime
+  public float consumeLiquidAmount
+  public Liquid consumeLiquid
+  public Effect landEffect
+  public Effect coolingEffect
+  public float coolingEffectChance
+  public float liquidPad
+  public Color bottomColor
+  public float landSoundVolume
+  public Sound landSound  // impact timing must be exactly equal to arrivalDuration
+ctors:
+  public LandingPad(String name)
+methods:
+  public void init()
+  public void setBars()
+  public void setStats()
+  public boolean outputsItems()
+  public static void landingPadLanded(Tile tile)
+inner-class: LandingPadBuild extends mindustry.gen.Building
+  fields:
+    public Item config
+    public int priority  // priority collisions are possible, but should be extremely rare
+    public float cooldown
+    public float arrivingTimer
+    public Item arriving
+    public float liquidRemoved
+  methods:
+    public void handleLanding()
+    public boolean accessible()
+    public void updateTimers()
+    public void draw()
+    public void drawLight()
+    public void updateTile()
+    public boolean isFake()  // @return whether this pad should receive items forever, essentially acting as an item source for maps.
+    public void drawSelect()
+    public Cursor getCursor()
+    public boolean shouldShowConfigure(Player player)
+    public boolean onConfigureBuildTapped(Building other)
+    public void buildConfiguration(Table table)
+    private boolean canRedirectExports(Sector sector)
+    public void display(Table table)
+    public boolean acceptItem(Building source, Item item)
+    public Object config()
+    public byte version()
+    public void read(Reads read, byte revision)
+    public void write(Writes write)
+
+LaunchPad.java
+Java class extends mindustry.world.Block
+fields:
+  public float launchTime  // Time between launches.
+  public float launchSoundPitchRand
+  public Sound launchSound
+  public TextureRegion lightRegion
+  public TextureRegion podRegion
+  public TextureRegion previewRegion
+  public Color lightColor
+  public boolean acceptMultipleItems
+  public float lightStep
+  public int lightSteps
+  public float liquidPad
+  public Liquid drawLiquid
+  public Color bottomColor
+ctors:
+  public LaunchPad(String name)
+methods:
+  public void setStats()
+  public void setBars()
+  public boolean outputsItems()
+  public TextureRegion[] icons()
+inner-class: LaunchPadBuild extends mindustry.gen.Building
+  fields:
+    public float launchCounter
+  methods:
+    public Cursor getCursor()
+    public boolean shouldConsume()
+    public double sense(LAccess sensor)
+    public void draw()
+    public boolean acceptItem(Building source, Item item)
+    public void updateTile()
+    public void display(Table table)
+    public boolean shouldShowConfigure(Player player)
+    public void buildConfiguration(Table table)
+    public byte version()
+    public void write(Writes write)
+    public void read(Reads read, byte revision)
+inner-class: LaunchPayloadComp implements mindustry.gen.Drawc, mindustry.gen.Timedc, mindustry.gen.Teamc
+  fields:
+    float x
+    Seq<ItemStack> stacks
+    transient Interval in
+  methods:
+    public void draw()
+    float cx()
+    float cy()
+    public void update()
+    public void remove()
+

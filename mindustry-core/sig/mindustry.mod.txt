@@ -1,0 +1,455 @@
+ClassLoaderCloser.java
+Java class
+methods:
+  public static void close(ClassLoader loader) throws Exception  // Workaround for the close() method not being available on Android.
+
+ClassMap.java
+Java class
+// Generated class.
+fields:
+  public static final ObjectMap<String,Class<?>> classes
+
+ContentParser.java
+Java class
+fields:
+  private static final boolean ignoreUnknownFields
+  private static final ContentType typesToSearch
+  static final ObjectSet<Class<?>> implicitNullable
+  ObjectMap<Class<?>,ContentType> contentTypes
+  Seq<ParseListener> listeners
+  boolean allowClassResolution  // If false, arbitrary class names cannot be resolved with Class.forName.
+  boolean allowAssetLoading  // If false, sound asset loading is disabled.
+  boolean allowPatching  // If false, vanilla content cannot be edited.
+  ObjectMap<Class<?>,FieldParser> classParsers
+  private Seq<Runnable> reads  // Stores things that need to be parsed fully, e.g.
+  private Seq<Runnable> postreads
+  private ObjectSet<Object> toBeParsed
+  LoadedMod currentMod
+  Content currentContent
+  Fi currentFile
+  private Json parser
+  private ObjectMap<ContentType,TypeParser<?>> parsers
+methods:
+  public void readBlockConsumers(Block block, JsonValue value)
+  Prov<Unit> unitType(JsonValue value)
+  private String getString(JsonValue value, String key)
+  private String getType(JsonValue value)
+  private T find(ContentType type, String name)
+  private TypeParser<T> parser(ContentType type, Func<String,T> constructor)
+  private void readBundle(ContentType type, String name, JsonValue value)
+  private void read(Runnable run)  // Call to read a content's extra info later.
+  private void init()
+  private void attempt(Runnable run)
+  public void finishParsing()
+  public Content parse(LoadedMod mod, String name, String json, Fi file, ContentType type) throws Exception  // Parses content from a json file.
+  public void checkInit()
+  public void markError(Content content, LoadedMod mod, Fi file, Throwable error) / public void markError(Content content, Throwable error)
+  private String makeError(Throwable t, Fi file)
+  private T locate(ContentType type, String name)
+  private T locateAny(String name)
+  private GenericMesh[] parseMeshes(Planet planet, JsonValue array)
+  private GenericMesh parseMesh(Planet planet, JsonValue data)
+  private PartProgress parseProgressOp(PartProgress base, String op, JsonValue data)
+  T make(Class<T> type) / private T make(Class<T> type, String name)
+  private Prov<T> supply(Class<T> type)
+  Prov<UnitController> resolveController(String type)
+  Object field(Class<?> type, JsonValue value) / private Object field(Class<?> type, String name)  // Gets a field from a static class by name, throwing a descriptive exception if not found.
+  Object fieldOpt(Class<?> type, JsonValue value)
+  void checkNullFields(Object object)
+  private void readFields(Object object, JsonValue jsonMap, boolean stripType) / void readFields(Object object, JsonValue jsonMap)
+  Class<T> resolve(String base) / Class<T> resolve(String base, Class<T> def) / Class<T> resolve(String base, Class<T> def, boolean warn)  // Tries to resolve a class from the class type map.
+  void warn(String string, Object format)
+  void warnContext(Content currentContent, Fi currentFile, String string, Object format)
+  void onNewInstance(Object object, Class<?> type)
+  public Json getJson()
+inner-interface: FieldParser
+  methods:
+    Object parse(Class<?> type, JsonValue value) throws Exception
+inner-interface: TypeParser
+  methods:
+    T parse(String mod, String name, JsonValue value) throws Exception
+inner-class: UnitReq
+// intermediate class for parsing
+  fields:
+    public Block block
+    public ItemStack requirements
+    public UnitType previous
+    public float time
+inner-interface: ParseListener
+  methods:
+    void parsed(Class<?> type, JsonValue jsonData, Object result)
+
+DataAssetCache.java
+Java class
+fields:
+  private static final char base32Alphabet
+  private ObjectMap<String,Fi> hashToFile
+methods:
+  public void load()
+  public synchronized void addOverride(String hash, Fi source)
+  public synchronized byte[] add(byte[] bytes)  // @return the hash
+  public boolean has(String hash)
+  public synchronized Fi get(String shaHash) / public Fi get(byte[] shaHash)
+  public static String encodeHash(byte[] data)  // base32 without padding; data must be exactly 32 bytes
+
+DataAudioLoader.java
+Java class
+fields:
+  private static final int soundIdOffset
+  public static final String prefix
+  private Seq<Sound> loadedSounds
+  private Seq<Music> loadedMusic
+  private ObjectSet<String> registered
+  private ObjectMap<Fi,String> fileToName
+methods:
+  public void load(Seq<SoundAsset> sounds, Seq<MusicAsset> musics)
+  public String getName(Fi file)  // @return proper extension-less audio name of the specified cached file, including prefix
+  public void unload()
+
+DataBundleLoader.java
+Java class
+fields:
+  private ObjectMap<I18NBundle,ObjectMap<String,String>> originalProperties
+methods:
+  public void load(Seq<BundleAsset> assets)
+  public void unload()
+
+DataImagePacker.java
+Java class
+// Manages data patch images.
+fields:
+  public static final String regionPrefix
+  public static final String serverRegionPrefix  // Prefix for images pushed dynamically by the server via {@link #addTexture(String, byte[])}, as opposed to map/mod data patches.
+  private TextureAtlas patchAtlas
+  private final ObjectMap<String,Texture> serverImages  // Textures added at runtime via addTexture(), keyed by their unprefixed name.
+  private final ExecutorService textureExecutor  // Single threaded executor so that concurrent calls always complete in FIFO order.
+methods:
+  public void pack(Seq<ImageAsset> images)  // Packs a new set of images.
+  public void unload()
+  public void addTexture(String name, byte[] pngData)  // Decodes PNG bytes and registers them into the atlas under "netRegionPrefix + name", replacing any existing image with the same name.
+  private void removeTexture(String name)  // Removes a texture previously added with {@link #addTexture}.
+  public void removeTextureQueued(String name)  // Queues a texture for removal.
+  public void printStats(PixmapPacker mainPacker, PixmapPacker envPacker)
+
+DataManager.java
+Java class
+fields:
+  private DataPatcher patcher
+  private DataImagePacker packer
+  private DataAudioLoader soundLoader
+  private DataBundleLoader bundleLoader
+  private ObjectMap<DataAssetType,Seq<DataAsset>> assets
+  private Seq<DataAsset> orderedAssets
+  private Seq<DataAsset> orderedExternalAssets
+methods:
+  public String getAudioName(Fi file)
+  public void reloadContent(boolean reloadArrays)
+  public void regenerateContentSprites(boolean forcePack)
+  public void reloadPatches(Seq<PatchAsset> patches)
+  public void reloadImages() / public void reloadImages(Seq<ImageAsset> images)
+  public void addTexture(String name, byte[] pngData)  // Adds/replaces a single image pushed by the server at runtime, independent of map/mod data patches.
+  public void removeTexture(String name)  // Removes a texture previously added with {@link #addTexture}.
+  public void reloadAudio()
+  public void load(Seq<DataAsset> newAssets)
+  public void unload()
+  private void rebuildOrderedAssets()
+  public Seq<DataAsset> getMissingAssets()  // @return broken assets with no cache file
+  public Seq<DataAsset> getAllAssets()
+  public boolean hasAssetPath(DataAssetType type, String path)
+  public boolean hasAssetName(DataAssetType type, String name)
+  public boolean hasAssetNameOrPath(DataAssetType type, String name, String path)
+  public boolean hasExternalAssets()  // @return whether any assets like audio/images (external to saves) are loaded, requiring separate network transmission.
+  public Seq<DataAsset> getAllExternalAssets()  // @return all assets that can be external to a save (for network sync)
+  public boolean isPatched(Object content)
+  public Seq<T> getAssets(DataAssetType type)
+  public void clearGeneratedImages()
+  public Seq<ImageAsset> getImages()
+  public Seq<PatchAsset> getPatches()
+  public Seq<MusicAsset> getMusic()
+  public Seq<SoundAsset> getSounds()
+  public Seq<BundleAsset> getBundles()
+  public Seq<ContentAsset> getContent()
+
+DataPatcher.java
+Java class
+// The current implementation is awful.
+fields:
+  private static ModMeta dpModMeta
+  public static final LoadedMod dpMod
+  public static final int maxImageSize
+  public static final int patchFormatVersion
+  private static boolean needsArrayFix
+  private static final Object root
+  private static final ObjectMap<String,ContentType> nameToType
+  private static DataPatcher currentDataPatcher
+  private static ContentParser parser
+  private boolean applied
+  private ContentLoader contentLoader
+  private ObjectSet<Object> usedpatches
+  private Seq<Runnable> resetters
+  private Seq<Runnable> afterCallbacks
+  private Seq<Object> visitStack
+  private Seq<Content> addedContent
+  private PatchAsset currentlyApplyingPatch
+  private ContentAsset currentlyApplyingContent
+  private Seq<LVar> addedVars
+methods:
+  static ContentParser createParser()
+  public boolean isPatched(Object object)
+  public void apply(Seq<PatchAsset> patches, Seq<ContentAsset> content) / public void apply(Seq<PatchAsset> patches, Seq<ContentAsset> content, boolean reloadContentWorld)  // Applies the specified patches.
+  public void unapply() / public void unapply(boolean reloadContentWorld)
+  public Seq<Content> getAddedContent()
+  void callContentRemove()
+  public static void fixContentArrays()
+  private static Block getReplacementBlock(Block existing)
+  void visit(Object object)
+  void created(Object object)
+  void assign(Object object, String field, Object value, FieldData metadata, Object parentObject, String parentField) throws Exception
+  void assignValue(Object object, String field, FieldData metadata, Prov getter, Cons setter, Object value, boolean modify) throws Exception
+  Object[] resolve(Object object, String field, FieldData metadata) throws Exception  // 0: the object
+  boolean checkField(Field field)
+  void modifiedField(Object target, String field, Object value)
+  void reset(Runnable run)
+  Object convertKeyType(String string, Class<?> type)
+  void warn(String error, Object fmt)
+  void warnContext(Content currentContent, Fi currentFile, String error, Object fmt)
+  void after(Runnable run)
+  static Object copyArray(Object object)
+inner-class: FieldData
+  fields:
+    Class type
+  ctors:
+    public FieldData(Class type, Class elementType, Class keyType) / public FieldData(FieldMetadata data)
+  methods:
+    public String toString()
+inner-class: PatchRecord
+  fields:
+    Object target
+    Field field
+    Object value
+  ctors:
+    PatchRecord(Object target, Field field, Object value)
+  methods:
+    public boolean equals(Object o)
+    public int hashCode()
+
+Mod.java
+Java class (abstract)
+methods:
+  public Fi getConfigFolder()  // @return the folder where configuration files for this mod should go.
+  public Fi getConfig()  // @return the config file for this plugin, as the file 'mods/[plugin-name]/config.json'.
+  public void init()  // Called after all plugins have been created and commands have been registered.
+  public void loadContent()  // Called on clientside mods.
+  public void packSprites(MultiPacker packer)  // Called during sprite packing to allow adding custom textures
+  public void registerServerCommands(CommandHandler handler)  // Register any commands to be used on the server side, e.g.
+  public void registerClientCommands(CommandHandler handler)  // Register any commands to be used on the client side, e.g.
+
+ModClassLoader.java
+Java class extends java.lang.ClassLoader
+fields:
+  private Seq<ClassLoader> children
+  private ThreadLocal<Boolean> inChild
+ctors:
+  public ModClassLoader(ClassLoader parent)
+methods:
+  public void addChild(ClassLoader child)
+  protected Class<?> findClass(String name) throws ClassNotFoundException
+
+ModListing.java
+Java class
+// Mod listing as a data class.
+fields:
+  public String repo
+  public boolean hasScripts
+  public ArrayMap<String,ModRelease> releases  // game build -> release ID + mod version
+  public String tags
+  public int stars
+methods:
+  public String toString()
+  public ModRelease getMatchingRelease()  // @return the specific release that matches the current game version, or null if no specific match is found (i.e.
+inner-class: ModRelease
+  fields:
+    public String id  // Github release ID ($API/releases/$ID)
+    public String version  // Actual mod version string in release's mod.json
+  methods:
+    public String toString()
+
+Mods.java
+Java class implements arc.assets.Loadable
+fields:
+  private static final String metaFiles
+  private static final ObjectSet<String> blacklistedMods  // it would be nice to parse semver and have syntax like "<1.0.5" here, but mods clearly don't use semver and it's an inconsistent mess
+  private Json json
+  private Scripts scripts
+  private ContentParser parser
+  private ObjectMap<String,Seq<Fi>> bundles
+  private ObjectSet<String> specialFolders
+  private Seq<LoadedMod> lastOrderedMods  // Ordered mods cache.
+  private ModClassLoader mainLoader
+  Seq<LoadedMod> mods
+  private Seq<LoadedMod> newImports
+  private ObjectMap<Class<?>,ModMeta> metas
+  private boolean requiresReload
+ctors:
+  public Mods()
+methods:
+  public ClassLoader mainLoader()  // @return the main class loader for all mods
+  public Fi getConfigFolder(Mod mod)  // @return the folder where configuration files for this mod should go.
+  public Fi getConfig(Mod mod)  // @return a file named 'config.json' in the config folder for the specified mod.
+  public void listFiles(String directory, Cons2<LoadedMod,Fi> cons)  // Returns a list of files per mod subdirectory.
+  public LoadedMod getMod(String name) / public LoadedMod getMod(Class<? extends Mod> type)  // @return the loaded mod found by name, or null if not found.
+  public LoadedMod importMod(Fi file) throws IOException / public LoadedMod importMod(Fi file, boolean forceEnable) throws IOException  // Imports an external mod file.
+  public void loadAsync()  // Repacks all in-game sprites.
+  private void loadIcons()
+  private void loadIcon(LoadedMod mod)
+  private void packSprites(MultiPacker packer, Seq<Fi> sprites, LoadedMod mod, boolean prefix, Seq<Future<Runnable>> tasks, ObjectFloatMap<String> textureResize)
+  void waitForMain(Runnable run)
+  public void loadSync()
+  private PageType getPage(Fi file)
+  public void removeMod(LoadedMod mod)  // Removes a mod file and marks it for requiring a restart.
+  public Scripts getScripts()
+  public boolean hasScripts()  // @return whether the scripting engine has been initialized.
+  public boolean requiresReload()
+  public boolean skipModLoading()  // @return whether to skip mod loading due to previous initialization failure.
+  public void load()  // Loads all mods from the folder, but does not call any methods on them.
+  private void sortMods()
+  private void updateDependencies(LoadedMod mod)
+  public Seq<LoadedMod> orderedMods()  // @return mods ordered in the correct way needed for dependencies.
+  public LoadedMod locateMod(String name)
+  private void buildFiles()
+  private void checkWarnings()  // TODO move to another class, Mods.java should not handle UI
+  private void checkDependencies(Seq<LoadedMod> toCheck, boolean soft)  // TODO move to another class, Mods.java should not handle UI
+  private void downloadDependencies(Seq<String> toImport)
+  public void reload()
+  public boolean hasContentErrors()
+  public void loadScripts()  // This must be run on the main thread!
+  public void loadContent()  // Creates all the content found in mod files.
+  public void loadModPatches()
+  public void handleContentError(Content content, Throwable error)
+  public void addParseListener(ParseListener hook)  // Adds a listener for parsed JSON objects.
+  public Seq<String> getModStrings()  // @return a list of mods and versions, in the format name:version.
+  public void setEnabled(LoadedMod mod, boolean enabled)  // Makes a mod enabled or disabled.
+  public Seq<String> getIncompatibility(Seq<String> out)  // @return the mods that the client is missing.
+  public Seq<LoadedMod> list()  // TODO: deprecate?
+  public Seq<LoadedMod> getMods()  // All mods, including disabled ones.
+  public void eachClass(Cons<Mod> cons)  // Iterates through each mod with a main class.
+  public void eachEnabled(Cons<LoadedMod> cons)  // Iterates through each enabled mod.
+  public void contextRun(LoadedMod mod, Runnable run)
+  public ModMeta findMeta(Fi file)  // Tries to find the config file of a mod/plugin.
+  public OrderedMap<String,ModState> resolveDependencies(Seq<ModMeta> metas)  // Resolves the loading order of a list mods/plugins using their internal names.
+  private boolean resolve(String element, ModResolutionContext context)
+  private Fi resolveRoot(Fi fi)
+  private LoadedMod loadMod(Fi sourceFile, boolean overwrite, boolean initialize) throws Exception  // Loads a mod file+meta, but does not add it to the list.
+inner-class: LoadedMod implements mindustry.type.Publishable, arc.util.Disposable
+// Represents a mod's state.
+  fields:
+    public final Fi file  // The location of this mod's zip file/folder on the disk.
+    public final Fi root  // The root zip file; points to the contents of this mod.
+    public final Mod main  // The mod's main class; may be null.
+    public final String name  // Internal mod name.
+    public final ModMeta meta  // This mod's metadata.
+    public Seq<LoadedMod> dependencies  // This mod's dependencies as already-loaded mods.
+    public Seq<LoadedMod> softDependencies  // This mod's soft dependencies as already-loaded mods.
+    public Seq<String> missingDependencies  // All missing required dependencies of this mod as strings.
+    public Seq<String> missingSoftDependencies  // All missing soft dependencies of this mod as strings.
+    public ObjectSet<Content> erroredContent  // Content with initialization code.
+    public ModState state  // Current state of this mod.
+    public Texture iconTexture  // Icon texture.
+    public ClassLoader loader  // Class loader for JAR mods.
+  ctors:
+    public LoadedMod(Fi file, Fi root, Mod main, ClassLoader loader, ModMeta meta)
+  methods:
+    public boolean isJava()  // @return whether this is a java class mod.
+    public String getRepo()
+    public void setRepo(String repo)
+    public boolean enabled()
+    public boolean shouldBeEnabled()
+    public boolean failed()
+    public boolean hasUnmetDependencies()
+    public boolean hasContentErrors()
+    public boolean isSupported()  // @return whether this mod is supported by the game version
+    public boolean isBlacklisted()  // Some mods are known to cause issues with the game; this detects and returns whether a mod is manually blacklisted.
+    public boolean isOutdated()  // @return whether this mod is outdated, i.e.
+    public int getMinMajor()
+    public void dispose()
+    public String getSteamID()
+    public void addSteamID(String id)
+    public void removeSteamID()
+    public String steamTitle()
+    public String steamDescription()
+    public String steamTag()
+    public Fi createSteamFolder(String id)
+    public Fi createSteamPreview(String id)
+    public boolean prePublish()
+    public String toString()
+inner-class: ModMeta
+// Mod metadata information.
+  fields:
+    public String name  // Name as defined in mod.json.
+    public String internalName  // Name without spaces in all lower case.
+    public String minGameVersion  // Minimum game version that this mod requires, e.g.
+    public String displayName
+    public Seq<String> dependencies
+    public Seq<String> softDependencies
+    public boolean hidden  // Hidden mods are only server-side or client-side, and do not support adding new content.
+    public boolean java  // If true, this mod should be loaded as a Java class mod.
+    public boolean iosCompatible  // If true, this script mod is compatible with iOS.
+    public float texturescale  // To rescale textures with a different size.
+    public boolean pregenerated  // If true, bleeding is skipped and no content icons are generated.
+    public String contentOrder  // If set, load the mod content in this order by content names.
+    public boolean legacyCompatible  // Mod from an older major version that is compatible with the latest one as well.
+  methods:
+    public boolean isBlacklisted()  // Some mods are known to cause issues with the game; this detects and returns whether a mod is manually blacklisted.
+    public String shortDescription()
+    public void cleanup()  // removes all colors
+    public int getMinMajor()
+    public String toString()
+inner-class: ModLoadException extends java.lang.RuntimeException
+  ctors:
+    public ModLoadException(String message)
+inner-class: ModResolutionContext
+  fields:
+    public final ObjectMap<String,Seq<ModDependency>> dependencies
+    public final ObjectSet<String> visited
+    public final OrderedSet<String> ordered
+    public final ObjectMap<String,ModState> invalid
+inner-class: ModDependency
+  fields:
+    public final String name
+    public final boolean required
+  ctors:
+    public ModDependency(String name, boolean required)
+
+NoPatch.java
+(unknown)
+
+Plugin.java
+Java class (abstract) extends mindustry.mod.Mod
+// Defines a special type of mod that is always hidden.
+
+Scripts.java
+Java class implements arc.util.Disposable
+fields:
+  public final Context context
+  public final Scriptable scope
+  private boolean errored
+  LoadedMod currentMod
+ctors:
+  public Scripts()
+methods:
+  public boolean hasErrored()
+  public String runConsole(String text)
+  private String getError(Throwable t, boolean log)
+  public void log(String source, String message) / public void log(LogLevel level, String source, String message)
+  public float[] newFloats(int capacity)
+  public Class<?> getClass(Object object)
+  public void run(LoadedMod mod, Fi file) / private boolean run(String script, String file, boolean wrap)
+  public void dispose()
+inner-class: ScriptModuleProvider extends rhino.module.provider.UrlModuleSourceProvider
+  fields:
+    private final Pattern directory
+  ctors:
+    public ScriptModuleProvider()
+  methods:
+    public ModuleSource loadSource(String moduleId, Scriptable paths, Object validator) throws URISyntaxException / private ModuleSource loadSource(LoadedMod sourceMod, String moduleId, Fi root, Object validator) throws URISyntaxException
+

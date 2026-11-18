@@ -1,0 +1,32 @@
+// LegacySaveVersion.java : public void readLegacyEntities(DataInput stream) throws IOException
+    public void readLegacyEntities(DataInput stream) throws IOException{
+        byte groups = stream.readByte();
+
+        for(int i = 0; i < groups; i++){
+            int amount = stream.readInt();
+            for(int j = 0; j < amount; j++){
+                //simply skip all the entities
+                skipLegacyShortChunk(stream);
+            }
+        }
+    }
+
+// Save1.java : public void readEntities(DataInput stream, SaveReadState state) throws IOException
+    @Override
+    public void readEntities(DataInput stream, SaveReadState state) throws IOException{
+        readLegacyEntities(stream);
+    }
+
+// Save2.java : public void readEntities(DataInput stream, SaveReadState state) throws IOException
+    @Override
+    public void readEntities(DataInput stream, SaveReadState state) throws IOException{
+        readLegacyEntities(stream);
+    }
+
+// Save4.java : public void readEntities(DataInput stream, SaveReadState state) throws IOException
+    @Override
+    public void readEntities(DataInput stream, SaveReadState state) throws IOException{
+        readTeamBlocks(stream);
+        readWorldEntities(stream, EntityMapping.idMap, state);
+    }
+

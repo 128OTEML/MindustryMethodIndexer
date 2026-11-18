@@ -1,0 +1,78 @@
+BuildWeapon.java
+Java class extends mindustry.type.Weapon
+// Purely visual turret.
+ctors:
+  public BuildWeapon() / public BuildWeapon(String name)
+methods:
+  public void update(Unit unit, WeaponMount mount)
+  public void draw(Unit unit, WeaponMount mount)
+
+MineWeapon.java
+Java class extends mindustry.type.Weapon
+ctors:
+  public MineWeapon() / public MineWeapon(String name)
+methods:
+  public void update(Unit unit, WeaponMount mount)
+  public void draw(Unit unit, WeaponMount mount)
+
+PointDefenseBulletWeapon.java
+Java class extends mindustry.type.Weapon
+// Fires a bullet to intercept enemy bullets.
+fields:
+  public float damageTargetWeight
+ctors:
+  public PointDefenseBulletWeapon(String name) / public PointDefenseBulletWeapon()
+methods:
+  protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+  protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+  protected void handleBullet(Unit unit, WeaponMount mount, Bullet bullet)
+
+PointDefenseWeapon.java
+Java class extends mindustry.type.Weapon
+// Note that this requires several things:
+fields:
+  public Color color
+  public Effect beamEffect
+ctors:
+  public PointDefenseWeapon(String name) / public PointDefenseWeapon()
+methods:
+  public void addStats(UnitType u, Table t)
+  protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+  protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+  protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation)
+
+RepairBeamWeapon.java
+Java class extends mindustry.type.Weapon
+// Note that this weapon requires a bullet with a positive maxRange.
+fields:
+  public boolean targetBuildings
+  public float repairSpeed
+  public float fractionRepairSpeed
+  public float beamWidth
+  public float pulseRadius
+  public float pulseStroke
+  public float widthSinMag
+  public float recentDamageMultiplier
+  public TextureRegion laser
+  public Color laserColor
+  public Color healColor  // only for blocks
+  public Effect healEffect
+ctors:
+  public RepairBeamWeapon(String name) / public RepairBeamWeapon()
+methods:
+  public void addStats(UnitType u, Table w)
+  public float dps()
+  public void load()
+  protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+  protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+  protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation)
+  public void update(Unit unit, WeaponMount mount)
+  public void draw(Unit unit, WeaponMount mount)
+  public void init()
+inner-class: HealBeamMount extends mindustry.entities.units.WeaponMount
+  fields:
+    public Vec2 offset
+    public float strength
+  ctors:
+    public HealBeamMount(Weapon weapon)
+

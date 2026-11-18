@@ -1,0 +1,257 @@
+// Ability.java : public void update(Unit unit)
+    public void update(Unit unit){}
+
+// Ability.java : public void draw(Unit unit)
+    public void draw(Unit unit){}
+
+// Ability.java : public void death(Unit unit)
+    public void death(Unit unit){}
+
+// Ability.java : public void created(Unit unit)
+    public void created(Unit unit){}
+
+// Ability.java : public void init(UnitType type)
+    public void init(UnitType type){}
+
+// Ability.java : public void displayBars(Unit unit, Table bars)
+    public void displayBars(Unit unit, Table bars){}
+
+// Ability.java : public void display(Table t)
+    public void display(Table t){
+        t.table(Styles.grayPanel, a -> {
+            a.add("[accent]" + localized()).padBottom(4).center().top().expandX();
+            a.row();
+            a.left().top().defaults().left();
+            addStats(a);
+        }).pad(5).margin(10).growX().top().uniformX();
+    }
+
+// Ability.java : public void addStats(Table t)
+    public void addStats(Table t){
+        if(Core.bundle.has(getBundle() + ".description")){
+            t.add(Core.bundle.get(getBundle() + ".description")).wrap().width(descriptionWidth);
+            t.row();
+        }
+    }
+
+// Ability.java : public String abilityStat(String stat, Object values)
+    public String abilityStat(String stat, Object... values){
+        return Core.bundle.format("ability.stat." + stat, values);
+    }
+
+// Ability.java : public Ability copy()
+    public Ability copy(){
+        try{
+            return (Ability)clone();
+        }catch(CloneNotSupportedException e){
+            //I am disgusted
+            throw new RuntimeException("java sucks", e);
+        }
+    }
+
+// Ability.java : public String localized()
+    public String localized(){
+        return Core.bundle.get(getBundle());
+    }
+
+// Ability.java : public String getBundle()
+    public String getBundle(){
+        var type = getClass();
+        return "ability." + (type.isAnonymousClass() ? type.getSuperclass() : type).getSimpleName().replace("Ability", "").toLowerCase();
+    }
+
+// ArmorPlateAbility.java : public void update(Unit unit)
+    @Override
+    public void update(Unit unit){
+        super.update(unit);
+
+        warmup = Mathf.lerpDelta(warmup, unit.isShooting() ? 1f : 0f, 0.1f);
+        unit.healthMultiplier += warmup * healthMultiplier;
+    }
+
+// ArmorPlateAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(abilityStat("damagereduction", Strings.autoFixed(-healthMultiplier * 100f, 1)));
+    }
+
+// ForceFieldAbility.java : public float scaledMax(Unit unit)
+    public float scaledMax(Unit unit){
+        return max * Vars.state.rules.unitHealth(unit.team);
+    }
+
+// ForceFieldAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(Core.bundle.format("bullet.range", Strings.autoFixed(radius / tilesize, 2)));
+        t.row();
+        t.add(abilityStat("shield", Strings.autoFixed(max, 2)));
+        t.row();
+        t.add(abilityStat("repairspeed", Strings.autoFixed(regen * 60f, 2)));
+        t.row();
+        t.add(abilityStat("cooldown", Strings.autoFixed(cooldown / 60f, 2)));
+    }
+
+// ForceFieldAbility.java : public void death(Unit unit)
+    @Override
+    public void death(Unit unit){
+
+        //self-destructing units can have a shield on death
+        if(unit.shield > 0f && !wasBroken){
+            Fx.shieldBreak.at(unit.x, unit.y, radius, unit.type.shieldColor(unit), sides);
+            breakSound.at(unit.x, unit.y);
+        }
+    }
+
+// ForceFieldAbility.java : public void displayBars(Unit unit, Table bars)
+    @Override
+    public void displayBars(Unit unit, Table bars){
+        bars.add(new Bar("stat.shieldhealth", Pal.accent, () -> unit.shield / scaledMax(unit))).row();
+    }
+
+// ForceFieldAbility.java : public void created(Unit unit)
+    @Override
+    public void created(Unit unit){
+        unit.shield = scaledMax(unit);
+    }
+
+// ForceFieldAbility.java : public void checkRadius(Unit unit)
+    public void checkRadius(Unit unit){
+        //timer2 is used to store radius scale as an effect
+        realRad = radiusScale * radius;
+    }
+
+// LiquidExplodeAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add((liquid.hasEmoji() ? liquid.emoji() : "") + "[stat]" + liquid.localizedName);
+    }
+
+// LiquidRegenAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add((liquid.hasEmoji() ? liquid.emoji() : "") + "[stat]" + liquid.localizedName);
+        t.row();
+        t.add(abilityStat("slurpheal", Strings.autoFixed(regenPerSlurp, 2)));
+    }
+
+// MoveLightningAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(abilityStat("minspeed", Strings.autoFixed(minSpeed * 60f / tilesize, 2)));
+        t.row();
+        t.add(Core.bundle.format("bullet.damage", damage));
+    }
+
+// RegenAbility.java : public void update(Unit unit)
+    @Override
+    public void update(Unit unit){
+        unit.heal((unit.maxHealth * percentAmount / 100f + amount) * Time.delta);
+    }
+
+// ShieldArcAbility.java : public float scaledMax(Unit unit)
+    public float scaledMax(Unit unit){
+        return max * Vars.state.rules.unitHealth(unit.team);
+    }
+
+// ShieldArcAbility.java : public void created(Unit unit)
+    @Override
+    public void created(Unit unit){
+        data = scaledMax(unit);
+    }
+
+// ShieldArcAbility.java : public void displayBars(Unit unit, Table bars)
+    @Override
+    public void displayBars(Unit unit, Table bars){
+        bars.add(new Bar("stat.shieldhealth", Pal.accent, () -> data / scaledMax(unit))).row();
+    }
+
+// ShieldRegenFieldAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(Core.bundle.format("bullet.range", Strings.autoFixed(range / tilesize, 2)));
+        t.row();
+        t.add(abilityStat("firingrate", Strings.autoFixed(60f / reload, 2)));
+        t.row();
+        t.add(abilityStat("pulseregen", Strings.autoFixed(amount, 2)) + "[lightgray] ~ []" + abilityStat("regen", Strings.autoFixed(amount * 60f / reload, 2)));
+        t.row();
+        t.add(abilityStat("shield", Strings.autoFixed(max, 2)));
+    }
+
+// SpawnDeathAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add("[stat]" + (randAmount > 0 ? amount + "x-" + (amount + randAmount) : amount) + "x[] " + (unit.hasEmoji() ? unit.emoji() : "") + "[stat]" + unit.localizedName);
+    }
+
+// StatusFieldAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(Core.bundle.format("bullet.range", Strings.autoFixed(range / tilesize, 2)));
+        t.row();
+        t.add(abilityStat("firingrate", Strings.autoFixed(60f / reload, 2)));
+        t.row();
+        t.add((effect.hasEmoji() ? effect.emoji() : "") + "[stat]" + effect.localizedName);
+    }
+
+// SuppressionFieldAbility.java : public void init(UnitType type)
+    @Override
+    public void init(UnitType type){
+        if(!active) display = false;
+    }
+
+// SuppressionFieldAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(Core.bundle.format("bullet.range", Strings.autoFixed(range / tilesize, 2)));
+        t.row();
+        t.add(abilityStat("duration", Strings.autoFixed(reload / 60f, 2)));
+    }
+
+// SuppressionFieldAbility.java : public void update(Unit unit)
+    @Override
+    public void update(Unit unit){
+        if(!active) return;
+
+        if((timer += Time.delta) >= maxDelay){
+            Tmp.v1.set(x, y).rotate(unit.rotation - 90f).add(unit);
+            Damage.applySuppression(unit.team, Tmp.v1.x, Tmp.v1.y, range, reload, maxDelay, applyParticleChance, unit, effectColor);
+            timer = 0f;
+        }
+    }
+
+// UnitSpawnAbility.java : public void addStats(Table t)
+    @Override
+    public void addStats(Table t){
+        super.addStats(t);
+        t.add(abilityStat("buildtime", Strings.autoFixed(spawnTime / 60f, 2)));
+        t.row();
+        t.add((unit.hasEmoji() ? unit.emoji() : "") + "[stat]" + unit.localizedName);
+    }
+
+// UnitSpawnAbility.java : public void draw(Unit unit)
+    @Override
+    public void draw(Unit unit){
+        if(Units.canCreate(unit.team, this.unit)){
+            Draw.draw(Draw.z(), () -> {
+                float x = unit.x + Angles.trnsx(unit.rotation, spawnY, -spawnX), y = unit.y + Angles.trnsy(unit.rotation, spawnY, -spawnX);
+                Drawf.construct(x, y, this.unit.fullIcon, unit.rotation - 90, timer / spawnTime, 1f, timer);
+            });
+        }
+    }
+
+// UnitSpawnAbility.java : public String localized()
+    @Override
+    public String localized(){
+        return Core.bundle.format("ability.unitspawn", unit.localizedName);
+    }
+

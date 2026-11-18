@@ -1,0 +1,209 @@
+resetTimers
+  -> arc.util.Interval.reset(int, float)
+  -> arc.math.Mathf.random(float)
+updateUnit
+  -> mindustry.entities.units.AIController.useFallback()
+  -> mindustry.entities.units.AIController.fallback()
+  -> mindustry.entities.units.AIController.unit(mindustry.gen.Unit)
+  -> mindustry.entities.units.AIController.updateUnit()
+  -> mindustry.entities.units.AIController.updateVisuals()
+  -> mindustry.entities.units.AIController.updateTargeting()
+  -> mindustry.entities.units.AIController.updateMovement()
+hasStance
+  -> mindustry.gen.Unitc.controller()
+  -> mindustry.ai.types.CommandAI.hasStance(mindustry.ai.UnitStance)
+updateVisuals
+  -> mindustry.gen.Unitc.isFlying()
+  -> mindustry.gen.Unitc.wobble()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> mindustry.gen.Unitc.prefRotation()
+updateTargeting
+  -> mindustry.gen.Unitc.hasWeapons()
+  -> mindustry.entities.units.AIController.updateWeapons()
+faceTarget
+  -> mindustry.entities.Units.invalidateTarget(mindustry.gen.Teamc, mindustry.gen.Unit, float)
+  -> mindustry.gen.Unitc.range()
+  -> mindustry.type.UnitType.hasWeapons()
+  -> mindustry.gen.Unitc.lookAt(arc.math.geom.Position)
+  -> mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, mindustry.entities.bullet.BulletType)
+  -> arc.struct.Seq.first()
+  -> mindustry.gen.Velc.moving()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> arc.math.geom.Vec2.angle()
+  -> mindustry.gen.Unit.vel()
+faceMovement
+  -> mindustry.gen.Velc.moving()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> arc.math.geom.Vec2.angle()
+  -> mindustry.gen.Unit.vel()
+invalid
+  -> mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float)
+pathfind
+  -> mindustry.entities.units.AIController.pathfind(int, boolean)
+  -> mindustry.entities.units.AIController.pathfind(int, boolean, boolean)
+  -> mindustry.gen.Posc.tileOn()
+  -> mindustry.ai.Pathfinder.Flowfield.getNextTile(mindustry.world.Tile, int)
+  -> mindustry.ai.Pathfinder.getField(mindustry.game.Team, int, int)
+  -> mindustry.gen.Unitc.collisionLayer()
+  -> mindustry.gen.Velc.canPass(int, int)
+  -> mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.trns(float, float)
+  -> arc.math.geom.Position.angleTo(float, float)
+  -> mindustry.world.Tile.worldx()
+  -> mindustry.world.Tile.worldy()
+  -> mindustry.entities.units.AIController.prefSpeed()
+targetInvalidated
+  -> arc.util.Interval.reset(int, float)
+updateWeapons
+  -> mindustry.entities.units.AIController.retarget()
+  -> mindustry.entities.units.AIController.findMainTarget(float, float, float, boolean, boolean)
+  -> mindustry.gen.Unitc.range()
+  -> mindustry.entities.units.AIController.invalid(mindustry.gen.Teamc)
+  -> mindustry.gen.Healthc.isValid()
+  -> mindustry.entities.units.AIController.targetInvalidated()
+  -> mindustry.type.Weapon.range()
+  -> arc.math.Angles.trnsx(float, float, float)
+  -> arc.math.Angles.trnsy(float, float, float)
+  -> mindustry.entities.units.AIController.findTarget(float, float, float, boolean, boolean)
+  -> mindustry.entities.units.AIController.checkTarget(mindustry.gen.Teamc, float, float, float)
+  -> arc.math.geom.Position.within(float, float, float)
+  -> mindustry.entities.Sized.hitSize()
+  -> mindustry.entities.units.AIController.shouldShoot()
+  -> mindustry.gen.Entityc.isAdded()
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)
+  -> mindustry.gen.Unitc.isFlying()
+  -> mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, mindustry.entities.bullet.BulletType)
+  -> mindustry.entities.units.AIController.shouldFire()
+  -> arc.math.Angles.within(float, float, float)
+  -> arc.math.geom.Vec2.trns(float, float)
+checkTarget
+  -> mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float, float)
+targetFlag
+  -> arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>)
+  -> mindustry.ai.BlockIndexer.getEnemy(mindustry.game.Team, mindustry.world.meta.BlockFlag)
+  -> mindustry.ai.BlockIndexer.getFlagged(mindustry.game.Team, mindustry.world.meta.BlockFlag)
+targetFlagActive
+  -> arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>, arc.func.Boolf<T>)
+  -> mindustry.ai.BlockIndexer.getEnemy(mindustry.game.Team, mindustry.world.meta.BlockFlag)
+  -> mindustry.ai.BlockIndexer.getFlagged(mindustry.game.Team, mindustry.world.meta.BlockFlag)
+  -> t.items.any
+  -> t.status
+target
+  -> mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)
+  -> mindustry.gen.Unitc.checkTarget(boolean, boolean)
+retarget
+  -> arc.util.Interval.get(int, float)
+findMainTarget
+  -> mindustry.entities.units.AIController.findTarget(float, float, float, boolean, boolean)
+findTarget
+  -> mindustry.entities.units.AIController.target(float, float, float, boolean, boolean)
+getClosestSpawner
+  -> arc.math.geom.Geometry.findClosest(float, float, java.lang.Iterable<T>)
+  -> mindustry.ai.WaveSpawner.getSpawns()
+unloadPayloads
+  -> mindustry.gen.Payloadc.hasPayload()
+  -> arc.struct.Seq.peek()
+  -> mindustry.gen.Payloadc.payloads()
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> java.lang.Math.max(float, float)
+  -> mindustry.gen.Unit.type()
+  -> mindustry.gen.Payloadc.dropLastPayload()
+circleAttack
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.geom.Position.angleTo(arc.math.geom.Position)
+  -> arc.math.Angles.angleDist(float, float)
+  -> mindustry.gen.Unit.rotation()
+  -> mindustry.gen.Unitc.collisionLayer()
+  -> mindustry.gen.Unitc.physicSize()
+  -> arc.math.geom.Vec2.scl(float)
+  -> arc.math.geom.Vec2.setLength(float)
+  -> mindustry.entities.units.AIController.prefSpeed()
+  -> mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)
+  -> arc.math.geom.Position.within(arc.math.geom.Position, float)
+  -> arc.math.geom.Vec2.len()
+  -> arc.math.geom.Vec2.setAngle(float)
+  -> arc.math.geom.Vec2.angle()
+  -> mindustry.gen.Unit.vel()
+  -> arc.math.Angles.moveToward(float, float, float)
+circle
+  -> mindustry.entities.units.AIController.circle(arc.math.geom.Position, float, float)
+  -> mindustry.entities.units.AIController.prefSpeed()
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.len()
+  -> arc.math.geom.Vec2.rotate(float)
+  -> arc.math.geom.Vec2.setLength(float)
+  -> mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)
+moveTo
+  -> mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float)
+  -> mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float, boolean, arc.math.geom.Vec2)
+  -> mindustry.gen.Unitc.isFlying()
+  -> mindustry.entities.units.AIController.moveTo(arc.math.geom.Position, float, float, boolean, arc.math.geom.Vec2, boolean)
+  -> mindustry.entities.units.AIController.prefSpeed()
+  -> arc.math.geom.Vec2.sub(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.set(arc.math.geom.Position)
+  -> arc.math.Mathf.clamp(float, float, float)
+  -> arc.math.geom.Position.dst(arc.math.geom.Position)
+  -> arc.math.geom.Vec2.setLength(float)
+  -> arc.math.geom.Vec2.add(float, float)
+  -> arc.math.geom.Vec2.set(float, float)
+  -> arc.math.geom.Position.getX()
+  -> arc.math.geom.Position.getY()
+  -> arc.math.geom.Vec2.limit(float)
+  -> arc.math.geom.Vec2.add(arc.math.geom.Vec2)
+  -> mindustry.gen.Unitc.moveAt(arc.math.geom.Vec2)
+  -> arc.math.geom.Vec2.rotate(float)
+  -> arc.math.geom.Vec2.setZero()
+  -> arc.math.geom.Vec2.isNaN()
+  -> arc.math.geom.Vec2.isInfinite()
+  -> arc.math.geom.Vec2.isZero()
+  -> arc.math.geom.Vec2.angle()
+  -> mindustry.gen.Unitc.lookAt(float)
+  -> arc.math.Angles.within(float, float, float)
+  -> mindustry.gen.Unitc.movePref(arc.math.geom.Vec2)
+prefSpeed
+  -> mindustry.gen.Unitc.speed()
+unit
+  -> mindustry.entities.units.AIController.init()
+BuildPlan
+  -> mindustry.world.Block.planRotation(int)
+  -> mindustry.world.Tile.block()
+  -> mindustry.core.World.tile(int, int)
+placeable
+  -> mindustry.world.Build.validPlace(mindustry.world.Block, mindustry.game.Team, int, int, int)
+isRotation
+  -> mindustry.entities.units.BuildPlan.tile()
+  -> mindustry.world.Tile.team()
+  -> mindustry.world.Tile.block()
+isDerelictRepair
+  -> mindustry.entities.units.BuildPlan.tile()
+  -> mindustry.world.Tile.team()
+  -> mindustry.world.Tile.block()
+pointConfig
+  -> arc.math.geom.Point2.cpy()
+  -> arc.func.Cons.get(T)
+  -> mindustry.world.Block.pointConfig(java.lang.Object, arc.func.Cons<arc.math.geom.Point2>)
+  -> mindustry.entities.units.BuildPlan.pointConfig(mindustry.world.Block, java.lang.Object, arc.func.Cons<arc.math.geom.Point2>)
+copy
+  -> mindustry.entities.units.BuildPlan.BuildPlan()
+bounds
+  -> arc.math.geom.Rect.set(float, float, float, float)
+  -> mindustry.world.Block.bounds(int, int, arc.math.geom.Rect)
+set
+  -> mindustry.world.Block.planRotation(int)
+isDone
+  -> mindustry.core.World.tile(int, int)
+  -> mindustry.world.Tile.block()
+  -> mindustry.world.Tile.floor()
+tile
+  -> mindustry.core.World.tile(int, int)
+build
+  -> mindustry.core.World.build(int, int)
+hitbox
+  -> arc.math.geom.Rect.setCentered(float, float, float)
+getX
+  -> mindustry.entities.units.BuildPlan.drawx()
+getY
+  -> mindustry.entities.units.BuildPlan.drawy()

@@ -1,0 +1,158 @@
+// FileProcessor.java : public FileProcessor setInputFilter(FilenameFilter inputFilter)
+    public FileProcessor setInputFilter(FilenameFilter inputFilter){
+        this.inputFilter = inputFilter;
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor setComparator(Comparator<File> comparator)
+    public FileProcessor setComparator(Comparator<File> comparator){
+        this.comparator = comparator;
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor addInputSuffix(String suffixes)
+    public FileProcessor addInputSuffix(String... suffixes){
+        for(String suffix : suffixes)
+            addInputRegex("(?i).*" + Pattern.quote(suffix));
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor addInputRegex(String regexes)
+    public FileProcessor addInputRegex(String... regexes){
+        for(String regex : regexes)
+            inputRegex.add(Pattern.compile(regex));
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor setOutputSuffix(String outputSuffix)
+    public FileProcessor setOutputSuffix(String outputSuffix){
+        this.outputSuffix = outputSuffix;
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor setFlattenOutput(boolean flattenOutput)
+    public FileProcessor setFlattenOutput(boolean flattenOutput){
+        this.flattenOutput = flattenOutput;
+        return this;
+    }
+
+// FileProcessor.java : public FileProcessor setRecursive(boolean recursive)
+    public FileProcessor setRecursive(boolean recursive){
+        this.recursive = recursive;
+        return this;
+    }
+
+// FileProcessor.java : public Seq<Entry> process(String inputFileOrDir, String outputRoot) throws Exception / public Seq<Entry> process(File inputFileOrDir, File outputRoot) throws Exception / public Seq<Entry> process(File[] files, File outputRoot) throws Exception / private void process(File[] files, File outputRoot, File outputDir, LinkedHashMap<File,Seq<Entry>> dirToEntries, int depth)
+    public Seq<Entry> process(String inputFileOrDir, String outputRoot) throws Exception{
+        return process(new File(inputFileOrDir), outputRoot == null ? null : new File(outputRoot));
+    }
+
+// FileProcessor.java : protected void processFile(Entry entry) throws Exception
+    protected void processFile(Entry entry) throws Exception{
+    }
+
+// FileProcessor.java : protected void processDir(Entry entryDir, Seq<Entry> files) throws Exception
+    protected void processDir(Entry entryDir, Seq<Entry> files) throws Exception{
+    }
+
+// FileProcessor.java : protected void addProcessedFile(Entry entry)
+    protected void addProcessedFile(Entry entry){
+        outputFiles.add(entry);
+    }
+
+// ImageProcessor.java : public void setScale(float scale)
+    public void setScale(float scale){
+        this.scale = scale;
+    }
+
+// ImageProcessor.java : public void setResampling(boolean resampling)
+    public void setResampling(boolean resampling){
+        this.resampling = resampling;
+    }
+
+// ImageProcessor.java : public Seq<Rect> getImages()
+    public Seq<Rect> getImages(){
+        return rects;
+    }
+
+// ImageProcessor.java : public void clear()
+    public void clear(){
+        rects.clear();
+        crcs.clear();
+    }
+
+// MaxRectsPacker.java : private Page getBest(Page result1, Page result2)
+    private Page getBest(Page result1, Page result2){
+        if(result1 == null) return result2;
+        if(result2 == null) return result1;
+        return result1.occupancy > result2.occupancy ? result1 : result2;
+    }
+
+// TexturePacker.java : public void setRootDir(File rootDir)
+    public void setRootDir(File rootDir){
+        if(rootDir == null){
+            rootPath = null;
+            return;
+        }
+        rootPath = rootDir.getAbsolutePath().replace('\\', '/');
+        if(!rootPath.endsWith("/")) rootPath += "/";
+    }
+
+// TexturePacker.java : public void addImage(File file) / public void addImage(Pixmap image, String name)
+    public void addImage(File file){
+        InputImage inputImage = new InputImage();
+        inputImage.file = file;
+        inputImage.rootPath = rootPath;
+        inputImages.add(inputImage);
+    }
+
+// TexturePacker.java : private static void copy(Pixmap src, int x, int y, int w, int h, Pixmap dst, int dx, int dy, boolean rotated)
+    private static void copy(Pixmap src, int x, int y, int w, int h, Pixmap dst, int dx, int dy, boolean rotated){
+        if(rotated){
+            for(int i = 0; i < w; i++)
+                for(int j = 0; j < h; j++)
+                    dst.set(dx + j, dy + w - i - 1, src.getRaw(x + i, y + j));
+        }else{
+            dst.draw(src, x, y, w, h, dx, dy, w, h);
+        }
+    }
+
+// TexturePacker.java : public static void process(String input, String output, String packFileName) / public static void process(Settings settings, String input, String output, String packFileName)
+    public static void process(String input, String output, String packFileName){
+        process(new Settings(), input, output, packFileName);
+    }
+
+// TexturePacker.java : public static boolean processIfModified(String input, String output, String packFileName) / public static boolean processIfModified(Settings settings, String input, String output, String packFileName)
+    public static boolean processIfModified(String input, String output, String packFileName){
+        // Default settings (Needed to access the default atlas extension string)
+        Settings settings = new Settings();
+
+        if(isModified(input, output, packFileName, settings)){
+            process(settings, input, output, packFileName);
+            return true;
+        }
+        return false;
+    }
+
+// TexturePackerFileProcessor.java : void merge(Settings settings, File settingsFile)
+    void merge(Settings settings, File settingsFile){
+        try{
+            json.readFields(settings, new JsonReader().parse(new FileReader(settingsFile)));
+        }catch(Exception ex){
+            throw new ArcRuntimeException("Error reading settings file: " + settingsFile, ex);
+        }
+    }
+
+// TextureUnpacker.java : private boolean checkDirectoryValidity(String directory)
+    private boolean checkDirectoryValidity(String directory){
+        File checkFile = new File(directory);
+        boolean path = true;
+        // try to get the canonical path, if this fails the path is not valid
+        try{
+            checkFile.getCanonicalPath();
+        }catch(Exception e){
+            path = false;
+        }
+        return path;
+    }
+

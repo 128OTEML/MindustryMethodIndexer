@@ -1,0 +1,4440 @@
+// ArrayMap.java : public int put(K key, V value) / public int put(K key, V value, int index)
+    public int put(K key, V value){
+        int index = indexOfKey(key);
+        if(index == -1){
+            if(size == keys.length) resize(Math.max(8, (int)(size * 1.75f)));
+            index = size++;
+        }
+        keys[index] = key;
+        values[index] = value;
+        return index;
+    }
+
+// ArrayMap.java : public void putAll(ArrayMap<? extends K,? extends V> map) / public void putAll(ArrayMap<? extends K,? extends V> map, int offset, int length)
+    public void putAll(ArrayMap<? extends K, ? extends V> map){
+        putAll(map, 0, map.size);
+    }
+
+// ArrayMap.java : public K getKeyAt(int index)
+    public K getKeyAt(int index){
+        if(index >= size) throw new IndexOutOfBoundsException(String.valueOf(index));
+        return keys[index];
+    }
+
+// ArrayMap.java : public V getValueAt(int index)
+    public V getValueAt(int index){
+        if(index >= size) throw new IndexOutOfBoundsException(String.valueOf(index));
+        return values[index];
+    }
+
+// ArrayMap.java : public K firstKey()
+    public K firstKey(){
+        if(size == 0) throw new IllegalStateException("Map is empty.");
+        return keys[0];
+    }
+
+// ArrayMap.java : public V firstValue()
+    public V firstValue(){
+        if(size == 0) throw new IllegalStateException("Map is empty.");
+        return values[0];
+    }
+
+// ArrayMap.java : public void setKey(int index, K key)
+    public void setKey(int index, K key){
+        if(index >= size) throw new IndexOutOfBoundsException(String.valueOf(index));
+        keys[index] = key;
+    }
+
+// ArrayMap.java : public void setValue(int index, V value)
+    public void setValue(int index, V value){
+        if(index >= size) throw new IndexOutOfBoundsException(String.valueOf(index));
+        values[index] = value;
+    }
+
+// ArrayMap.java : public int indexOfKey(K key)
+    public int indexOfKey(K key){
+        Object[] keys = this.keys;
+        if(key == null){
+            for(int i = 0, n = size; i < n; i++)
+                if(keys[i] == key) return i;
+        }else{
+            for(int i = 0, n = size; i < n; i++)
+                if(key.equals(keys[i])) return i;
+        }
+        return -1;
+    }
+
+// ArrayMap.java : public int indexOfValue(V value, boolean identity)
+    public int indexOfValue(V value, boolean identity){
+        Object[] values = this.values;
+        if(identity || value == null){
+            for(int i = 0, n = size; i < n; i++)
+                if(values[i] == value) return i;
+        }else{
+            for(int i = 0, n = size; i < n; i++)
+                if(value.equals(values[i])) return i;
+        }
+        return -1;
+    }
+
+// ArrayMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ArrayMap.java : public K peekKey()
+    public K peekKey(){
+        return keys[size - 1];
+    }
+
+// ArrayMap.java : public V peekValue()
+    public V peekValue(){
+        return values[size - 1];
+    }
+
+// ArrayMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        if(keys.length <= maximumCapacity){
+            clear();
+            return;
+        }
+        size = 0;
+        resize(maximumCapacity);
+    }
+
+// ArrayMap.java : public void shrink()
+    public void shrink(){
+        if(keys.length == size) return;
+        resize(size);
+    }
+
+// ArrayMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded >= keys.length) resize(Math.max(8, sizeNeeded));
+    }
+
+// ArrayMap.java : protected void resize(int newSize)
+    protected void resize(int newSize){
+        K[] newKeys = (K[])java.lang.reflect.Array.newInstance(keys.getClass().getComponentType(), newSize);
+        System.arraycopy(keys, 0, newKeys, 0, Math.min(size, newKeys.length));
+        this.keys = newKeys;
+
+        V[] newValues = (V[])java.lang.reflect.Array.newInstance(values.getClass().getComponentType(), newSize);
+        System.arraycopy(values, 0, newValues, 0, Math.min(size, newValues.length));
+        this.values = newValues;
+    }
+
+// ArrayMap.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size <= newSize) return;
+        for(int i = newSize; i < size; i++){
+            keys[i] = null;
+            values[i] = null;
+        }
+        size = newSize;
+    }
+
+// ArrayMap.java : public Iterator<Entry<K,V>> iterator()
+    public Iterator<Entry<K, V>> iterator(){
+        return entries();
+    }
+
+// BinaryHeap.java : public boolean contains(T node, boolean identity)
+    public boolean contains(T node, boolean identity){
+        if(identity || node == null){
+            for(Node n : nodes)
+                if(n == node) return true;
+        }else{
+            for(Node n : nodes)
+                if(n.equals(node)) return true;
+        }
+        return false;
+    }
+
+// BinaryHeap.java : public T peek()
+    public T peek(){
+        if(size == 0) throw new IllegalStateException("The heap is empty.");
+        return (T)nodes[0];
+    }
+
+// BinaryHeap.java : public T pop()
+    public T pop(){
+        return remove(0);
+    }
+
+// BinaryHeap.java : public T remove(T node) / private T remove(int index)
+    public T remove(T node){
+        return remove(node.index);
+    }
+
+// BinaryHeap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// BinaryHeap.java : public void clear()
+    public void clear(){
+        Node[] nodes = this.nodes;
+        for(int i = 0, n = size; i < n; i++)
+            nodes[i] = null;
+        size = 0;
+    }
+
+// BinaryHeap.java : public void setValue(T node, float value)
+    public void setValue(T node, float value){
+        float oldValue = node.value;
+        node.value = value;
+        if(value < oldValue ^ isMaxHeap)
+            up(node.index);
+        else
+            down(node.index);
+    }
+
+// BinaryHeap.java : public boolean equals(Object obj)
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof BinaryHeap)) return false;
+        BinaryHeap other = (BinaryHeap)obj;
+        if(other.size != size) return false;
+        for(int i = 0, n = size; i < n; i++)
+            if(other.nodes[i].value != nodes[i].value) return false;
+        return true;
+    }
+
+// BinaryHeap.java : public int hashCode()
+    public int hashCode(){
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + Float.floatToIntBits(nodes[i].value);
+        return h;
+    }
+
+// Bits.java : public void set(Bits other) / public void set(int index, boolean value) / public void set(int index) / public void set(int from, int to)
+    public void set(Bits other){
+        int length = Math.min(bits.length, other.bits.length);
+        System.arraycopy(other.bits, 0, bits, 0, length);
+    }
+
+// Bits.java : public boolean get(int index)
+    public boolean get(int index){
+        final int word = index >>> 6;
+        //TODO why does the original source to index & 0x3F, and why doesn't java.util.BitSet?
+        return word < bits.length && (bits[word] & (1L << (index))) != 0L;
+    }
+
+// Bits.java : public boolean getAndClear(int index)
+    public boolean getAndClear(int index){
+        final int word = index >>> 6;
+        if(word >= bits.length) return false;
+        long oldBits = bits[word];
+        bits[word] &= ~(1L << (index & 0x3F));
+        return bits[word] != oldBits;
+    }
+
+// Bits.java : public boolean getAndSet(int index)
+    public boolean getAndSet(int index){
+        final int word = index >>> 6;
+        checkCapacity(word);
+        long oldBits = bits[word];
+        bits[word] |= 1L << (index & 0x3F);
+        return bits[word] == oldBits;
+    }
+
+// Bits.java : public void flip(int index)
+    public void flip(int index){
+        final int word = index >>> 6;
+        checkCapacity(word);
+        bits[word] ^= 1L << (index & 0x3F);
+    }
+
+// Bits.java : private void checkCapacity(int len)
+    private void checkCapacity(int len){
+        if(len >= bits.length){
+            long[] newBits = new long[len + 1];
+            System.arraycopy(bits, 0, newBits, 0, bits.length);
+            bits = newBits;
+        }
+    }
+
+// Bits.java : public void clear(int index) / public void clear()
+    public void clear(int index){
+        final int word = index >>> 6;
+        if(word >= bits.length) return;
+        bits[word] &= ~(1L << (index & 0x3F));
+    }
+
+// Bits.java : public int numBits()
+    public int numBits(){
+        return bits.length << 6;
+    }
+
+// Bits.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        long[] bits = this.bits;
+        int length = bits.length;
+        for(int i = 0; i < length; i++){
+            if(bits[i] != 0L){
+                return false;
+            }
+        }
+        return true;
+    }
+
+// Bits.java : public void andNot(Bits other)
+    public void andNot(Bits other){
+        for(int i = 0, j = bits.length, k = other.bits.length; i < j && i < k; i++){
+            bits[i] &= ~other.bits[i];
+        }
+    }
+
+// Bits.java : public boolean intersects(Bits other)
+    public boolean intersects(Bits other){
+        long[] bits = this.bits;
+        long[] otherBits = other.bits;
+        for(int i = Math.min(bits.length, otherBits.length) - 1; i >= 0; i--){
+            if((bits[i] & otherBits[i]) != 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// Bits.java : public int hashCode()
+    @Override
+    public int hashCode(){
+        final int word = length() >>> 6;
+        int hash = 0;
+        for(int i = 0; word >= i; i++){
+            hash = 127 * hash + (int)(bits[i] ^ (bits[i] >>> 32));
+        }
+        return hash;
+    }
+
+// BoolSeq.java : public static BoolSeq with(boolean array)
+    public static BoolSeq with(boolean... array){
+        return new BoolSeq(array);
+    }
+
+// BoolSeq.java : public void add(boolean value) / public void add(boolean value1, boolean value2) / public void add(boolean value1, boolean value2, boolean value3) / public void add(boolean value1, boolean value2, boolean value3, boolean value4)
+    public void add(boolean value){
+        boolean[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+    }
+
+// BoolSeq.java : public void addAll(BoolSeq array) / public void addAll(BoolSeq array, int offset, int length) / public void addAll(boolean array) / public void addAll(boolean[] array, int offset, int length)
+    public void addAll(BoolSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// BoolSeq.java : public boolean get(int index)
+    public boolean get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// BoolSeq.java : public void set(int index, boolean value)
+    public void set(int index, boolean value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// BoolSeq.java : public void insert(int index, boolean value)
+    public void insert(int index, boolean value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        boolean[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// BoolSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        boolean[] items = this.items;
+        boolean firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// BoolSeq.java : public boolean removeIndex(int index)
+    public boolean removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        boolean[] items = this.items;
+        boolean value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// BoolSeq.java : public boolean pop()
+    public boolean pop(){
+        return items[--size];
+    }
+
+// BoolSeq.java : public boolean peek()
+    public boolean peek(){
+        return items[size - 1];
+    }
+
+// BoolSeq.java : public boolean first()
+    public boolean first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// BoolSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// BoolSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// BoolSeq.java : public boolean[] shrink()
+    public boolean[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// BoolSeq.java : public boolean[] ensureCapacity(int additionalCapacity)
+    public boolean[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// BoolSeq.java : public boolean[] setSize(int newSize)
+    public boolean[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// BoolSeq.java : protected boolean[] resize(int newSize)
+    protected boolean[] resize(int newSize){
+        boolean[] newItems = new boolean[newSize];
+        boolean[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// BoolSeq.java : public void reverse()
+    public void reverse(){
+        boolean[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            boolean temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// BoolSeq.java : public void shuffle()
+    public void shuffle(){
+        boolean[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            boolean temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// BoolSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// BoolSeq.java : public boolean random()
+    public boolean random(){
+        if(size == 0) return false;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// BoolSeq.java : public boolean[] toArray()
+    public boolean[] toArray(){
+        boolean[] array = new boolean[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// BoolSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        boolean[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + (items[i] ? 1231 : 1237);
+        return h;
+    }
+
+// ByteSeq.java : public static ByteSeq with(byte array)
+    public static ByteSeq with(byte... array){
+        return new ByteSeq(array);
+    }
+
+// ByteSeq.java : public void add(byte value) / public void add(byte value1, byte value2) / public void add(byte value1, byte value2, byte value3) / public void add(byte value1, byte value2, byte value3, byte value4)
+    public void add(byte value){
+        byte[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+    }
+
+// ByteSeq.java : public void addAll(ByteSeq array) / public void addAll(ByteSeq array, int offset, int length) / public void addAll(byte array) / public void addAll(byte[] array, int offset, int length)
+    public void addAll(ByteSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// ByteSeq.java : public byte get(int index)
+    public byte get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// ByteSeq.java : public void set(int index, byte value)
+    public void set(int index, byte value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// ByteSeq.java : public void incr(int index, byte value)
+    public void incr(int index, byte value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] += value;
+    }
+
+// ByteSeq.java : public void mul(int index, byte value)
+    public void mul(int index, byte value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] *= value;
+    }
+
+// ByteSeq.java : public void insert(int index, byte value)
+    public void insert(int index, byte value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        byte[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// ByteSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        byte[] items = this.items;
+        byte firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// ByteSeq.java : public boolean contains(byte value)
+    public boolean contains(byte value){
+        int i = size - 1;
+        byte[] items = this.items;
+        while(i >= 0)
+            if(items[i--] == value) return true;
+        return false;
+    }
+
+// ByteSeq.java : public int indexOf(byte value)
+    public int indexOf(byte value){
+        byte[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// ByteSeq.java : public int lastIndexOf(byte value)
+    public int lastIndexOf(byte value){
+        byte[] items = this.items;
+        for(int i = size - 1; i >= 0; i--)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// ByteSeq.java : public boolean removeValue(byte value)
+    public boolean removeValue(byte value){
+        byte[] items = this.items;
+        for(int i = 0, n = size; i < n; i++){
+            if(items[i] == value){
+                removeIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+// ByteSeq.java : public int removeIndex(int index)
+    public int removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        byte[] items = this.items;
+        int value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// ByteSeq.java : public byte pop()
+    public byte pop(){
+        return items[--size];
+    }
+
+// ByteSeq.java : public byte peek()
+    public byte peek(){
+        return items[size - 1];
+    }
+
+// ByteSeq.java : public byte first()
+    public byte first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// ByteSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ByteSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// ByteSeq.java : public byte[] shrink()
+    public byte[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// ByteSeq.java : public byte[] ensureCapacity(int additionalCapacity)
+    public byte[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// ByteSeq.java : public byte[] setSize(int newSize)
+    public byte[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// ByteSeq.java : protected byte[] resize(int newSize)
+    protected byte[] resize(int newSize){
+        byte[] newItems = new byte[newSize];
+        byte[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// ByteSeq.java : public void sort()
+    public void sort(){
+        Arrays.sort(items, 0, size);
+    }
+
+// ByteSeq.java : public void reverse()
+    public void reverse(){
+        byte[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            byte temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// ByteSeq.java : public void shuffle()
+    public void shuffle(){
+        byte[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            byte temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// ByteSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// ByteSeq.java : public byte random()
+    public byte random(){
+        if(size == 0) return 0;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// ByteSeq.java : public byte[] toArray()
+    public byte[] toArray(){
+        byte[] array = new byte[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// ByteSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        byte[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + items[i];
+        return h;
+    }
+
+// ComparableTimSort.java : static void sort(Object[] a) / static void sort(Object[] a, int lo, int hi)
+    static void sort(Object[] a){
+        sort(a, 0, a.length);
+    }
+
+// ComparableTimSort.java : private static void reverseRange(Object[] a, int lo, int hi)
+    private static void reverseRange(Object[] a, int lo, int hi){
+        hi--;
+        while(lo < hi){
+            Object t = a[lo];
+            a[lo++] = a[hi];
+            a[hi--] = t;
+        }
+    }
+
+// ComparableTimSort.java : private static int minRunLength(int n)
+    private static int minRunLength(int n){
+        assert !DEBUG || n >= 0;
+        int r = 0; // Becomes 1 if any 1 bits are shifted off
+        while(n >= MIN_MERGE){
+            r |= (n & 1);
+            n >>= 1;
+        }
+        return n + r;
+    }
+
+// ComparableTimSort.java : private static void rangeCheck(int arrayLen, int fromIndex, int toIndex)
+    private static void rangeCheck(int arrayLen, int fromIndex, int toIndex){
+        if(fromIndex > toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+        if(fromIndex < 0) throw new ArrayIndexOutOfBoundsException(fromIndex);
+        if(toIndex > arrayLen) throw new ArrayIndexOutOfBoundsException(toIndex);
+    }
+
+// ComparableTimSort.java : private void pushRun(int runBase, int runLen)
+    private void pushRun(int runBase, int runLen){
+        this.runBase[stackSize] = runBase;
+        this.runLen[stackSize] = runLen;
+        stackSize++;
+    }
+
+// ComparableTimSort.java : private void mergeForceCollapse()
+    private void mergeForceCollapse(){
+        while(stackSize > 1){
+            int n = stackSize - 2;
+            if(n > 0 && runLen[n - 1] < runLen[n + 1]) n--;
+            mergeAt(n);
+        }
+    }
+
+// DelayedRemovalSeq.java : public static DelayedRemovalSeq<T> with(T array)
+    public static <T> DelayedRemovalSeq<T> with(T... array){
+        return new DelayedRemovalSeq<>(array);
+    }
+
+// DelayedRemovalSeq.java : public void begin()
+    public void begin(){
+        iterating++;
+    }
+
+// DelayedRemovalSeq.java : public boolean remove(T value, boolean identity) / public T remove(int index)
+    public boolean remove(T value, boolean identity){
+        if(iterating > 0){
+            int index = indexOf(value, identity);
+            if(index == -1) return false;
+            removeIntern(index);
+            return true;
+        }
+        return super.remove(value, identity);
+    }
+
+// DelayedRemovalSeq.java : public void removeRange(int start, int end)
+    public void removeRange(int start, int end){
+        if(iterating > 0){
+            for(int i = end; i >= start; i--)
+                removeIntern(i);
+        }else
+            super.removeRange(start, end);
+    }
+
+// DelayedRemovalSeq.java : public Seq<T> clear()
+    public Seq<T> clear(){
+        if(iterating > 0){
+            clear = size;
+            return this;
+        }
+        return super.clear();
+    }
+
+// DelayedRemovalSeq.java : public void set(int index, T value)
+    public void set(int index, T value){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        super.set(index, value);
+    }
+
+// DelayedRemovalSeq.java : public void insert(int index, T value)
+    public void insert(int index, T value){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        super.insert(index, value);
+    }
+
+// DelayedRemovalSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        super.swap(first, second);
+    }
+
+// DelayedRemovalSeq.java : public T pop()
+    public T pop(){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        return super.pop();
+    }
+
+// DelayedRemovalSeq.java : public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator)
+    public Seq<T> sort(){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        return super.sort();
+    }
+
+// DelayedRemovalSeq.java : public Seq<T> reverse()
+    public Seq<T> reverse(){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        return super.reverse();
+    }
+
+// DelayedRemovalSeq.java : public Seq<T> shuffle()
+    public Seq<T> shuffle(){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        return super.shuffle();
+    }
+
+// DelayedRemovalSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        super.truncate(newSize);
+    }
+
+// DelayedRemovalSeq.java : public T[] setSize(int newSize)
+    public T[] setSize(int newSize){
+        if(iterating > 0) throw new IllegalStateException("Invalid between begin/end.");
+        return super.setSize(newSize);
+    }
+
+// EnumSet.java : public static EnumSet<T> of(T arr)
+    public static <T extends Enum<T>> EnumSet<T> of(T... arr){
+        EnumSet<T> set = new EnumSet<>(arr.length);
+        set.array = arr;
+        for(T t : arr){
+            set.mask |= (1 << t.ordinal());
+        }
+        return set;
+    }
+
+// EnumSet.java : public EnumSet<T> with(T add)
+    public EnumSet<T> with(T add){
+        if(!contains(add)){
+            T[] copy = (T[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), array.length + 1);
+            System.arraycopy(array, 0, copy, 0, array.length);
+            copy[copy.length - 1] = add;
+            return of(copy);
+        }
+        return this;
+    }
+
+// EnumSet.java : public boolean contains(T t)
+    public boolean contains(T t){
+        return (mask & (1 << t.ordinal())) != 0;
+    }
+
+// EnumSet.java : public boolean containsAny(EnumSet<T> other)
+    public boolean containsAny(EnumSet<T> other){
+        return (mask & other.mask) != 0;
+    }
+
+// EnumSet.java : public boolean containsAll(EnumSet<T> other)
+    public boolean containsAll(EnumSet<T> other){
+        return (mask & other.mask) == other.mask;
+    }
+
+// FloatSeq.java : public static FloatSeq with(float array)
+    public static FloatSeq with(float... array){
+        return new FloatSeq(array);
+    }
+
+// FloatSeq.java : public Seq<Vec2> toVec2Array()
+    public Seq<Vec2> toVec2Array(){
+        Seq<Vec2> out = new Seq<>(size/2);
+        for(int i = 0; i < size; i+= 2){
+            out.add(new Vec2(items[i], items[i+1]));
+        }
+        return out;
+    }
+
+// FloatSeq.java : public void add(float value) / public void add(float value1, float value2) / public void add(float value1, float value2, float value3) / public void add(float value1, float value2, float value3, float value4)
+    public void add(float value){
+        float[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+    }
+
+// FloatSeq.java : public void addAll(FloatSeq array) / public void addAll(FloatSeq array, int offset, int length) / public void addAll(float array) / public void addAll(float[] array, int offset, int length)
+    public void addAll(FloatSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// FloatSeq.java : public float get(int index)
+    public float get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// FloatSeq.java : public void set(int index, float value)
+    public void set(int index, float value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// FloatSeq.java : public void incr(int index, float value)
+    public void incr(int index, float value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] += value;
+    }
+
+// FloatSeq.java : public void mul(int index, float value)
+    public void mul(int index, float value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] *= value;
+    }
+
+// FloatSeq.java : public void insert(int index, float value)
+    public void insert(int index, float value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        float[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// FloatSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        float[] items = this.items;
+        float firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// FloatSeq.java : public boolean contains(float value)
+    public boolean contains(float value){
+        int i = size - 1;
+        float[] items = this.items;
+        while(i >= 0)
+            if(items[i--] == value) return true;
+        return false;
+    }
+
+// FloatSeq.java : public int indexOf(float value)
+    public int indexOf(float value){
+        float[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// FloatSeq.java : public int lastIndexOf(float value)
+    public int lastIndexOf(float value){
+        float[] items = this.items;
+        for(int i = size - 1; i >= 0; i--)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// FloatSeq.java : public boolean removeValue(float value)
+    public boolean removeValue(float value){
+        float[] items = this.items;
+        for(int i = 0, n = size; i < n; i++){
+            if(items[i] == value){
+                removeIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+// FloatSeq.java : public float removeIndex(int index)
+    public float removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        float[] items = this.items;
+        float value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// FloatSeq.java : public float pop()
+    public float pop(){
+        return items[--size];
+    }
+
+// FloatSeq.java : public float peek()
+    public float peek(){
+        return items[size - 1];
+    }
+
+// FloatSeq.java : public float first()
+    public float first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// FloatSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// FloatSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// FloatSeq.java : public float sum()
+    public float sum(){
+        float s = 0;
+        for(int i = 0; i < size; i++){
+            s += items[i];
+        }
+        return s;
+    }
+
+// FloatSeq.java : public float[] shrink()
+    public float[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// FloatSeq.java : public float[] ensureCapacity(int additionalCapacity)
+    public float[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// FloatSeq.java : public float[] setSize(int newSize)
+    public float[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// FloatSeq.java : protected float[] resize(int newSize)
+    protected float[] resize(int newSize){
+        float[] newItems = new float[newSize];
+        float[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// FloatSeq.java : public void sort()
+    public void sort(){
+        Arrays.sort(items, 0, size);
+    }
+
+// FloatSeq.java : public void reverse()
+    public void reverse(){
+        float[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            float temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// FloatSeq.java : public void shuffle()
+    public void shuffle(){
+        float[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            float temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// FloatSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// FloatSeq.java : public float random()
+    public float random(){
+        if(size == 0) return 0;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// FloatSeq.java : public float[] toArray()
+    public float[] toArray(){
+        float[] array = new float[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// FloatSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        float[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + Float.floatToIntBits(items[i]);
+        return h;
+    }
+
+// GridBits.java : public void set(GridBits other) / public void set(int x, int y) / public void set(int x, int y, boolean b)
+    public void set(GridBits other){
+        bits.set(other.bits);
+    }
+
+// GridBits.java : public boolean get(int x, int y)
+    public boolean get(int x, int y){
+        if(x >= width || y >= height || x < 0 || y < 0) return false;
+        return bits.get(x + y*width);
+    }
+
+// GridBits.java : public void clear()
+    public void clear(){
+        bits.clear();
+    }
+
+// GridBits.java : public int width()
+    public int width(){
+        return width;
+    }
+
+// GridBits.java : public int height()
+    public int height(){
+        return height;
+    }
+
+// GridMap.java : private static long getHash(int x, int y)
+    private static long getHash(int x, int y){
+        return (((long) x) << 32) | (y & 0xffffffffL);
+    }
+
+// GridMap.java : public T get(int x, int y) / public T get(int x, int y, T defaultValue)
+    public T get(int x, int y){
+        return map.get(getHash(x, y));
+    }
+
+// GridMap.java : public boolean containsKey(int x, int y)
+    public boolean containsKey(int x, int y){
+        return map.containsKey(getHash(x, y));
+    }
+
+// GridMap.java : public void put(int x, int y, T t)
+    public void put(int x, int y, T t){
+        map.put(getHash(x, y), t);
+    }
+
+// GridMap.java : public void remove(int x, int y)
+    public void remove(int x, int y){
+        map.remove(getHash(x, y));
+    }
+
+// GridMap.java : public Values<T> values()
+    public Values<T> values(){
+        return map.values();
+    }
+
+// GridMap.java : public LongMap.Keys keys()
+    public LongMap.Keys keys(){
+        return map.keys();
+    }
+
+// GridMap.java : public void clear()
+    public void clear(){
+        map.clear();
+    }
+
+// GridMap.java : public int size()
+    public int size(){
+        return map.size;
+    }
+
+// IntFloatMap.java : protected int place(int item)
+    protected int place(int item){
+        return (int)(item * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// IntFloatMap.java : private int locateKey(int key)
+    private int locateKey(int key){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            int other = keyTable[i];
+            if(other == 0) return -(i + 1); // Empty space is available.
+            if(other == key) return i; // Same key was found.
+        }
+    }
+
+// IntFloatMap.java : public void putAll(IntFloatMap map)
+    public void putAll(IntFloatMap map){
+        ensureCapacity(map.size);
+        if(map.hasZeroValue) put(0, map.zeroValue);
+        int[] keyTable = map.keyTable;
+        float[] valueTable = map.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) put(key, valueTable[i]);
+        }
+    }
+
+// IntFloatMap.java : private void putResize(int key, float value)
+    private void putResize(int key, float value){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == 0){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// IntFloatMap.java : public float get(int key) / public float get(int key, float defaultValue)
+    public float get(int key){
+        return get(key, 0f);
+    }
+
+// IntFloatMap.java : public float increment(int key) / public float increment(int key, float increment) / public float increment(int key, float defaultValue, float increment)
+    public float increment(int key){
+        return increment(key, 0, 1f);
+    }
+
+// IntFloatMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// IntFloatMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntFloatMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// IntFloatMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        hasZeroValue = false;
+        resize(tableSize);
+    }
+
+// IntFloatMap.java : public boolean containsValue(float value) / public boolean containsValue(float value, float epsilon)
+    public boolean containsValue(float value){
+        if(hasZeroValue && zeroValue == value) return true;
+        int[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--)
+            if(keyTable[i] != 0 && valueTable[i] == value) return true;
+        return false;
+    }
+
+// IntFloatMap.java : public boolean containsKey(int key)
+    public boolean containsKey(int key){
+        if(key == 0) return hasZeroValue;
+        return locateKey(key) >= 0;
+    }
+
+// IntFloatMap.java : public int findKey(float value, int notFound) / public int findKey(float value, float epsilon, int notFound)
+    public int findKey(float value, int notFound){
+        if(hasZeroValue && zeroValue == value) return 0;
+        int[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--)
+            if(keyTable[i] != 0 && valueTable[i] == value) return keyTable[i];
+        return notFound;
+    }
+
+// IntFloatMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// IntFloatMap.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        if(hasZeroValue) h += Float.floatToRawIntBits(zeroValue);
+        int[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) h += key * 31 + Float.floatToRawIntBits(valueTable[i]);
+        }
+        return h;
+    }
+
+// IntFloatMap.java : public Iterator<Entry> iterator()
+    public Iterator<Entry> iterator(){
+        return entries();
+    }
+
+// IntIntMap.java : public static IntIntMap of(int values)
+    public static IntIntMap of(int... values){
+        IntIntMap map = new IntIntMap();
+        for(int i = 0; i < values.length; i += 2){
+            map.put(values[i], values[i + 1]);
+        }
+        return map;
+    }
+
+// IntIntMap.java : protected int place(int item)
+    protected int place(int item){
+        return (int)(item * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// IntIntMap.java : private int locateKey(int key)
+    private int locateKey(int key){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            int other = keyTable[i];
+            if(other == 0) return -(i + 1); // Empty space is available.
+            if(other == key) return i; // Same key was found.
+        }
+    }
+
+// IntIntMap.java : public int putMissing(int key, int value) / public int putMissing(int key, int value, int defaultValue)
+    public int putMissing(int key, int value){
+        return putMissing(key, value, value);
+    }
+
+// IntIntMap.java : public void putAll(IntIntMap map)
+    public void putAll(IntIntMap map){
+        ensureCapacity(map.size);
+        if(map.hasZeroValue) put(0, map.zeroValue);
+        int[] keyTable = map.keyTable;
+        int[] valueTable = map.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) put(key, valueTable[i]);
+        }
+    }
+
+// IntIntMap.java : private void putResize(int key, int value)
+    private void putResize(int key, int value){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == 0){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// IntIntMap.java : public int get(int key) / public int get(int key, int defaultValue)
+    public int get(int key){
+        return get(key, 0);
+    }
+
+// IntIntMap.java : public int increment(int key) / public int increment(int key, int increment) / public int increment(int key, int defaultValue, int increment)
+    public int increment(int key){
+        return increment(key, 0, 1);
+    }
+
+// IntIntMap.java : public int remove(int key) / public int remove(int key, int defaultValue)
+    public int remove(int key){
+        return remove(key, 0);
+    }
+
+// IntIntMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// IntIntMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntIntMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// IntIntMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        hasZeroValue = false;
+        resize(tableSize);
+    }
+
+// IntIntMap.java : public boolean containsValue(int value)
+    public boolean containsValue(int value){
+        if(hasZeroValue && zeroValue == value) return true;
+        int[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--)
+            if(keyTable[i] != 0 && valueTable[i] == value) return true;
+        return false;
+    }
+
+// IntIntMap.java : public boolean containsKey(int key)
+    public boolean containsKey(int key){
+        if(key == 0) return hasZeroValue;
+        return locateKey(key) >= 0;
+    }
+
+// IntIntMap.java : public int findKey(int value, int notFound)
+    public int findKey(int value, int notFound){
+        if(hasZeroValue && zeroValue == value) return 0;
+        int[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--){
+            int key = keyTable[i];
+            if(key != 0 && valueTable[i] == value) return key;
+        }
+        return notFound;
+    }
+
+// IntIntMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// IntIntMap.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        if(hasZeroValue) h += zeroValue;
+        int[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) h += key * 31 + valueTable[i];
+        }
+        return h;
+    }
+
+// IntIntMap.java : public Iterator<Entry> iterator()
+    public Iterator<Entry> iterator(){
+        return entries();
+    }
+
+// IntMap.java : public static IntMap<V> of(Object values)
+    public static <V> IntMap<V> of(Object... values){
+        IntMap<V> map = new IntMap<>();
+
+        for(int i = 0; i < values.length / 2; i++){
+            Object key = values[i * 2];
+            int keyInt = (key instanceof Character ? ((Character) key).charValue() : (Integer)key);
+            map.put(keyInt, (V) values[i * 2 + 1]);
+        }
+
+        return map;
+    }
+
+// IntMap.java : protected int place(int item)
+    protected int place(int item){
+        return (int)(item * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// IntMap.java : private int locateKey(int key)
+    private int locateKey(int key){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            int other = keyTable[i];
+            if(other == 0) return -(i + 1); // Empty space is available.
+            if(other == key) return i; // Same key was found.
+        }
+    }
+
+// IntMap.java : public void putAll(IntMap<? extends V> map)
+    public void putAll(IntMap<? extends V> map){
+        ensureCapacity(map.size);
+        if(map.hasZeroValue) put(0, map.zeroValue);
+        int[] keyTable = map.keyTable;
+        V[] valueTable = map.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) put(key, valueTable[i]);
+        }
+    }
+
+// IntMap.java : private void putResize(int key, V value)
+    private void putResize(int key, @Nullable V value){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == 0){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// IntMap.java : public V get(int key) / public V get(int key, V defaultValue) / public V get(int key, Prov<V> defaultValue)
+    public V get(int key){
+        if(key == 0) return hasZeroValue ? zeroValue : null;
+        int i = locateKey(key);
+        return i >= 0 ? valueTable[i] : null;
+    }
+
+// IntMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// IntMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// IntMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        hasZeroValue = false;
+        zeroValue = null;
+        resize(tableSize);
+    }
+
+// IntMap.java : public boolean containsKey(int key)
+    public boolean containsKey(int key){
+        if(key == 0) return hasZeroValue;
+        return locateKey(key) >= 0;
+    }
+
+// IntMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// IntMap.java : public Iterator<Entry<V>> iterator()
+    public Iterator<Entry<V>> iterator(){
+        return entries();
+    }
+
+// IntQueue.java : public int[] shrink()
+    public int[] shrink(){
+        if(values.length != size) resize(size);
+        return values;
+    }
+
+// IntQueue.java : public void ensureCapacity(int additional)
+    public void ensureCapacity(int additional){
+        final int needed = size + additional;
+        if(values.length < needed){
+            resize(needed);
+        }
+    }
+
+// IntQueue.java : public boolean removeValue(int value)
+    public boolean removeValue(int value){
+        int index = indexOf(value);
+        if(index == -1) return false;
+        removeIndex(index);
+        return true;
+    }
+
+// IntQueue.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntQueue.java : public int first()
+    public int first(){
+        if(size == 0){
+            // Underflow
+            throw new NoSuchElementException("Queue is empty.");
+        }
+        return values[head];
+    }
+
+// IntQueue.java : public int get(int index)
+    public int get(int index){
+        if(index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index);
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        final int[] values = this.values;
+
+        int i = head + index;
+        if(i >= values.length){
+            i -= values.length;
+        }
+        return values[i];
+    }
+
+// IntQueue.java : public void set(int index, int value)
+    public void set(int index, int value){
+        if(index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index);
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        final int[] values = this.values;
+
+        int i = head + index;
+        if(i >= values.length){
+            i -= values.length;
+        }
+        values[i] = value;
+    }
+
+// IntQueue.java : public void clear()
+    public void clear(){
+        if(size == 0) return;
+        this.head = 0;
+        this.tail = 0;
+        this.size = 0;
+    }
+
+// IntSeq.java : public static IntSeq range(int min, int max)
+    public static IntSeq range(int min, int max){
+        IntSeq out = new IntSeq();
+        for(int i = min; i < max; i++){
+            out.add(i);
+        }
+        return out;
+    }
+
+// IntSeq.java : public static IntSeq with(int array)
+    public static IntSeq with(int... array){
+        return new IntSeq(array);
+    }
+
+// IntSeq.java : public void each(Intc iterator)
+    public void each(Intc iterator){
+        int size = this.size;
+        int[] items = this.items;
+        for(int i = 0; i < size; i++){
+            iterator.get(items[i]);
+        }
+    }
+
+// IntSeq.java : public int count(int value)
+    public int count(int value){
+        int out = 0;
+        for(int i = 0; i < size; i++){
+            if(items[i] == value){
+                out ++;
+            }
+        }
+        return out;
+    }
+
+// IntSeq.java : public int sum()
+    public int sum(){
+        int sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += items[i];
+        }
+        return sum;
+    }
+
+// IntSeq.java : public void chunked(int chunkSize, Cons<int[]> iterator)
+    public void chunked(int chunkSize, Cons<int[]> iterator){
+        for(int i = 0; i < size; i += chunkSize){
+            int[] slice = Arrays.copyOfRange(items, i, Math.min(i + chunkSize, size));
+            iterator.get(slice);
+        }
+    }
+
+// IntSeq.java : public boolean addUnique(int value)
+    public boolean addUnique(int value){
+        if(!contains(value)){
+            add(value);
+            return true;
+        }
+        return false;
+    }
+
+// IntSeq.java : public void add(int value) / public void add(int value1, int value2) / public void add(int value1, int value2, int value3) / public void add(int value1, int value2, int value3, int value4)
+    public void add(int value){
+        int[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+    }
+
+// IntSeq.java : public void addAll(IntSeq array) / public void addAll(IntSeq array, int offset, int length) / public void addAll(int array) / public void addAll(int[] array, int offset, int length)
+    public void addAll(IntSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// IntSeq.java : public int get(int index)
+    public int get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// IntSeq.java : public void set(int index, int value)
+    public void set(int index, int value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// IntSeq.java : public void incr(int index, int value)
+    public void incr(int index, int value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] += value;
+    }
+
+// IntSeq.java : public void mul(int index, int value)
+    public void mul(int index, int value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] *= value;
+    }
+
+// IntSeq.java : public void insert(int index, int value)
+    public void insert(int index, int value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        int[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// IntSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        int[] items = this.items;
+        int firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// IntSeq.java : public boolean contains(int value)
+    public boolean contains(int value){
+        int i = size - 1;
+        int[] items = this.items;
+        while(i >= 0)
+            if(items[i--] == value) return true;
+        return false;
+    }
+
+// IntSeq.java : public int indexOf(int value)
+    public int indexOf(int value){
+        int[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// IntSeq.java : public int lastIndexOf(int value)
+    public int lastIndexOf(int value){
+        int[] items = this.items;
+        for(int i = size - 1; i >= 0; i--)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// IntSeq.java : public boolean removeValue(int value)
+    public boolean removeValue(int value){
+        int[] items = this.items;
+        for(int i = 0, n = size; i < n; i++){
+            if(items[i] == value){
+                removeIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+// IntSeq.java : public int removeIndex(int index)
+    public int removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        int[] items = this.items;
+        int value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// IntSeq.java : public int pop()
+    public int pop(){
+        return items[--size];
+    }
+
+// IntSeq.java : public int peek()
+    public int peek(){
+        return items[size - 1];
+    }
+
+// IntSeq.java : public int first()
+    public int first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// IntSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// IntSeq.java : public int[] shrink()
+    public int[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// IntSeq.java : public int[] ensureCapacity(int additionalCapacity)
+    public int[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// IntSeq.java : public int[] setSize(int newSize)
+    public int[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// IntSeq.java : protected int[] resize(int newSize)
+    protected int[] resize(int newSize){
+        int[] newItems = new int[newSize];
+        int[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// IntSeq.java : public void sort()
+    public void sort(){
+        Arrays.sort(items, 0, size);
+    }
+
+// IntSeq.java : public void reverse()
+    public void reverse(){
+        int[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            int temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// IntSeq.java : public void shuffle() / public void shuffle(Rand rand)
+    public void shuffle(){
+       shuffle(Mathf.rand);
+    }
+
+// IntSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// IntSeq.java : public int random()
+    public int random(){
+        if(size == 0) return 0;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// IntSeq.java : public int[] toArray()
+    public int[] toArray(){
+        int[] array = new int[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// IntSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        int[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + items[i];
+        return h;
+    }
+
+// IntSet.java : public void each(Intc cons)
+    public void each(Intc cons){
+        IntSetIterator iter = iterator();
+        while(iter.hasNext){
+            cons.get(iter.next());
+        }
+    }
+
+// IntSet.java : protected int place(int item)
+    protected int place(int item){
+        return (int)(item * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// IntSet.java : private int locateKey(int key)
+    private int locateKey(int key){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            int other = keyTable[i];
+            if(other == 0) return -(i + 1); // Empty space is available.
+            if(other == key) return i; // Same key was found.
+        }
+    }
+
+// IntSet.java : public void addAll(IntSeq array) / public void addAll(IntSeq array, int offset, int length) / public void addAll(int array) / public void addAll(int[] array, int offset, int length) / public void addAll(IntSet set)
+    public void addAll(IntSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// IntSet.java : private void addResize(int key)
+    private void addResize(int key){
+        int[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == 0){
+                keyTable[i] = key;
+                return;
+            }
+        }
+    }
+
+// IntSet.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// IntSet.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// IntSet.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// IntSet.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        hasZeroValue = false;
+        resize(tableSize);
+    }
+
+// IntSet.java : public boolean contains(int key)
+    public boolean contains(int key){
+        if(key == 0) return hasZeroValue;
+        return locateKey(key) >= 0;
+    }
+
+// IntSet.java : public int first()
+    public int first(){
+        if(hasZeroValue) return 0;
+        int[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++)
+            if(keyTable[i] != 0) return keyTable[i];
+        throw new IllegalStateException("IntSet is empty.");
+    }
+
+// IntSet.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// IntSet.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        int[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            int key = keyTable[i];
+            if(key != 0) h += key;
+        }
+        return h;
+    }
+
+// IntSet.java : public boolean equals(Object obj)
+    public boolean equals(Object obj){
+        if(!(obj instanceof IntSet)) return false;
+        IntSet other = (IntSet)obj;
+        if(other.size != size) return false;
+        if(other.hasZeroValue != hasZeroValue) return false;
+        int[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++)
+            if(keyTable[i] != 0 && !other.contains(keyTable[i])) return false;
+        return true;
+    }
+
+// IntSet.java : static public IntSet with(int array)
+    static public IntSet with(int... array){
+        IntSet set = new IntSet(array.length);
+        set.addAll(array);
+        return set;
+    }
+
+// LongMap.java : protected int place(long item)
+    protected int place(long item){
+        return (int)((item ^ item >>> 32) * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// LongMap.java : private int locateKey(long key)
+    private int locateKey(long key){
+        long[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            long other = keyTable[i];
+            if(other == 0) return -(i + 1); // Empty space is available.
+            if(other == key) return i; // Same key was found.
+        }
+    }
+
+// LongMap.java : public void putAll(LongMap<? extends V> map)
+    public void putAll(LongMap<? extends V> map){
+        ensureCapacity(map.size);
+        if(map.hasZeroValue) put(0, map.zeroValue);
+        long[] keyTable = map.keyTable;
+        V[] valueTable = map.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            long key = keyTable[i];
+            if(key != 0) put(key, valueTable[i]);
+        }
+    }
+
+// LongMap.java : private void putResize(long key, V value)
+    private void putResize(long key, @Nullable V value){
+        long[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == 0){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// LongMap.java : public V get(long key) / public V get(long key, V defaultValue)
+    public @Nullable V get(long key){
+        if(key == 0) return hasZeroValue ? zeroValue : null;
+        int i = locateKey(key);
+        return i >= 0 ? valueTable[i] : null;
+    }
+
+// LongMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// LongMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// LongMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// LongMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        hasZeroValue = false;
+        zeroValue = null;
+        resize(tableSize);
+    }
+
+// LongMap.java : public void eachValue(Cons<V> iterator)
+    public void eachValue(Cons<V> iterator){
+        V[] valueTable = this.valueTable;
+        if(hasZeroValue) iterator.get(zeroValue);
+
+        for(int i = valueTable.length - 1; i >= 0; i--){
+            V value = valueTable[i];
+            if(value != null) iterator.get(value);
+        }
+    }
+
+// LongMap.java : public boolean containsKey(long key)
+    public boolean containsKey(long key){
+        if(key == 0) return hasZeroValue;
+        return locateKey(key) >= 0;
+    }
+
+// LongMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// LongMap.java : public Iterator<Entry<V>> iterator()
+    public Iterator<Entry<V>> iterator(){
+        return entries();
+    }
+
+// LongQueue.java : public long[] shrink()
+    public long[] shrink(){
+        if(values.length != size) resize(size);
+        return values;
+    }
+
+// LongQueue.java : public void ensureCapacity(int additional)
+    public void ensureCapacity(int additional){
+        final int needed = size + additional;
+        if(values.length < needed){
+            resize(needed);
+        }
+    }
+
+// LongQueue.java : public boolean removeValue(long value, boolean identity)
+    public boolean removeValue(long value, boolean identity){
+        int index = indexOf(value, identity);
+        if(index == -1) return false;
+        removeIndex(index);
+        return true;
+    }
+
+// LongQueue.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// LongQueue.java : public long first()
+    public long first(){
+        if(size == 0){
+            // Underflow
+            throw new NoSuchElementException("Queue is empty.");
+        }
+        return values[head];
+    }
+
+// LongQueue.java : public long get(int index)
+    public long get(int index){
+        if(index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index);
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        final long[] values = this.values;
+
+        int i = head + index;
+        if(i >= values.length){
+            i -= values.length;
+        }
+        return values[i];
+    }
+
+// LongQueue.java : public void set(int index, long value)
+    public void set(int index, long value){
+        if(index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index);
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        final long[] values = this.values;
+
+        int i = head + index;
+        if(i >= values.length){
+            i -= values.length;
+        }
+        values[i] = value;
+    }
+
+// LongQueue.java : public void clear()
+    public void clear(){
+        if(size == 0) return;
+        this.head = 0;
+        this.tail = 0;
+        this.size = 0;
+    }
+
+// LongQueue.java : public long[] toArray()
+    public long[] toArray(){
+        long[] out = new long[size];
+        for(int i = 0; i < size; i++){
+            out[i] = get(i);
+        }
+        return out;
+    }
+
+// LongSeq.java : public static LongSeq with(long array)
+    public static LongSeq with(long... array){
+        return new LongSeq(array);
+    }
+
+// LongSeq.java : public void add(long value) / public void add(long value1, long value2) / public void add(long value1, long value2, long value3) / public void add(long value1, long value2, long value3, long value4)
+    public void add(long value){
+        long[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+    }
+
+// LongSeq.java : public void addAll(LongSeq array) / public void addAll(LongSeq array, int offset, int length) / public void addAll(long array) / public void addAll(long[] array, int offset, int length)
+    public void addAll(LongSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// LongSeq.java : public long get(int index)
+    public long get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// LongSeq.java : public void set(int index, long value)
+    public void set(int index, long value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// LongSeq.java : public void incr(int index, long value)
+    public void incr(int index, long value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] += value;
+    }
+
+// LongSeq.java : public void mul(int index, long value)
+    public void mul(int index, long value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] *= value;
+    }
+
+// LongSeq.java : public void insert(int index, long value)
+    public void insert(int index, long value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        long[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// LongSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        long[] items = this.items;
+        long firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// LongSeq.java : public boolean contains(long value)
+    public boolean contains(long value){
+        int i = size - 1;
+        long[] items = this.items;
+        while(i >= 0)
+            if(items[i--] == value) return true;
+        return false;
+    }
+
+// LongSeq.java : public int indexOf(long value)
+    public int indexOf(long value){
+        long[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// LongSeq.java : public int lastIndexOf(char value)
+    public int lastIndexOf(char value){
+        long[] items = this.items;
+        for(int i = size - 1; i >= 0; i--)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// LongSeq.java : public boolean removeValue(long value)
+    public boolean removeValue(long value){
+        long[] items = this.items;
+        for(int i = 0, n = size; i < n; i++){
+            if(items[i] == value){
+                removeIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+// LongSeq.java : public long removeIndex(int index)
+    public long removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        long[] items = this.items;
+        long value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// LongSeq.java : public long pop()
+    public long pop(){
+        return items[--size];
+    }
+
+// LongSeq.java : public long peek()
+    public long peek(){
+        return items[size - 1];
+    }
+
+// LongSeq.java : public long first()
+    public long first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// LongSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// LongSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// LongSeq.java : public long[] shrink()
+    public long[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// LongSeq.java : public long[] ensureCapacity(int additionalCapacity)
+    public long[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// LongSeq.java : public long[] setSize(int newSize)
+    public long[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// LongSeq.java : protected long[] resize(int newSize)
+    protected long[] resize(int newSize){
+        long[] newItems = new long[newSize];
+        long[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// LongSeq.java : public void sort()
+    public void sort(){
+        Arrays.sort(items, 0, size);
+    }
+
+// LongSeq.java : public void reverse()
+    public void reverse(){
+        long[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            long temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// LongSeq.java : public void shuffle()
+    public void shuffle(){
+        long[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            long temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// LongSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// LongSeq.java : public long random()
+    public long random(){
+        if(size == 0) return 0;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// LongSeq.java : public long[] toArray()
+    public long[] toArray(){
+        long[] array = new long[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// LongSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        long[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + (int)(items[i] ^ (items[i] >>> 32));
+        return h;
+    }
+
+// ObjectFloatMap.java : public ObjectFloatMap<K> putAll(Object values) / public void putAll(ObjectFloatMap<? extends K> map)
+    public ObjectFloatMap<K> putAll(Object... values){
+        for(int i = 0; i < values.length / 2; i++){
+            put((K)values[i * 2], (float)values[i * 2 + 1]);
+        }
+
+        return this;
+    }
+
+// ObjectFloatMap.java : protected int place(K item)
+    protected int place(K item){
+        return (int)(item.hashCode() * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// ObjectFloatMap.java : int locateKey(K key)
+    int locateKey(K key){
+        if(key == null) throw new IllegalArgumentException("key cannot be null.");
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            K other = keyTable[i];
+            if(other == null) return -(i + 1); // Empty space is available.
+            if(other.equals(key)) return i; // Same key was found.
+        }
+    }
+
+// ObjectFloatMap.java : public void put(K key, float value) / public float put(K key, float value, float defaultValue)
+    public void put(K key, float value){
+        int i = locateKey(key);
+        if(i >= 0){ // Existing key was found.
+            valueTable[i] = value;
+            return;
+        }
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        if(++size >= threshold) resize(keyTable.length << 1);
+    }
+
+// ObjectFloatMap.java : public void putMissing(K key, float value) / public float putMissing(K key, float value, float defaultValue)
+    public void putMissing(K key, float value){
+        int i = locateKey(key);
+        if(i >= 0) return; // Existing key was found.
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        if(++size >= threshold) resize(keyTable.length << 1);
+    }
+
+// ObjectFloatMap.java : public ObjectFloatMap<K> copy()
+    public ObjectFloatMap<K> copy(){
+        return new ObjectFloatMap<>(this);
+    }
+
+// ObjectFloatMap.java : public void set(ObjectFloatMap<K> value)
+    public void set(ObjectFloatMap<K> value){
+        clear();
+        putAll(value);
+    }
+
+// ObjectFloatMap.java : public void each(Cons<Entry<K>> cons)
+    public void each(Cons<Entry<K>> cons){
+        for(Entry<K> e : this){
+            cons.get(e);
+        }
+    }
+
+// ObjectFloatMap.java : private void putResize(K key, float value)
+    private void putResize(K key, float value){
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == null){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// ObjectFloatMap.java : public float get(K key, float defaultValue)
+    public float get(K key, float defaultValue){
+        if(key == null) return defaultValue;
+        int i = locateKey(key);
+        return i < 0 ? defaultValue : valueTable[i];
+    }
+
+// ObjectFloatMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// ObjectFloatMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ObjectFloatMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// ObjectFloatMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        resize(tableSize);
+    }
+
+// ObjectFloatMap.java : public boolean containsValue(float value) / public boolean containsValue(float value, float epsilon)
+    public boolean containsValue(float value){
+        K[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--)
+            if(keyTable[i] != null && valueTable[i] == value) return true;
+        return false;
+    }
+
+// ObjectFloatMap.java : public boolean containsKey(K key)
+    public boolean containsKey(K key){
+        return locateKey(key) >= 0;
+    }
+
+// ObjectFloatMap.java : public K findKey(float value) / public K findKey(float value, float epsilon)
+    public @Nullable K findKey(float value){
+        K[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--){
+            K key = keyTable[i];
+            if(key != null && valueTable[i] == value) return key;
+        }
+        return null;
+    }
+
+// ObjectFloatMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// ObjectFloatMap.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        K[] keyTable = this.keyTable;
+        float[] valueTable = this.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            K key = keyTable[i];
+            if(key != null) h += key.hashCode() + Float.floatToRawIntBits(valueTable[i]);
+        }
+        return h;
+    }
+
+// ObjectFloatMap.java : public String toString(String separator) / public String toString() / private String toString(String separator, boolean braces)
+    public String toString(String separator){
+        return toString(separator, false);
+    }
+
+// ObjectFloatMap.java : public Entries<K> iterator()
+    public Entries<K> iterator(){
+        return entries();
+    }
+
+// ObjectIntMap.java : protected int place(K item)
+    protected int place(K item){
+        return (int)(item.hashCode() * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// ObjectIntMap.java : int locateKey(K key)
+    int locateKey(K key){
+        if(key == null) throw new IllegalArgumentException("key cannot be null.");
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            K other = keyTable[i];
+            if(other == null) return -(i + 1); // Empty space is available.
+            if(other.equals(key)) return i; // Same key was found.
+        }
+    }
+
+// ObjectIntMap.java : public void put(K key, int value) / public int put(K key, int value, int defaultValue)
+    public void put(K key, int value){
+        int i = locateKey(key);
+        if(i >= 0){ // Existing key was found.
+            valueTable[i] = value;
+            return;
+        }
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        if(++size >= threshold) resize(keyTable.length << 1);
+    }
+
+// ObjectIntMap.java : public void putMissing(K key, int value) / public int putMissing(K key, int value, int defaultValue)
+    public void putMissing(K key, int value){
+        int i = locateKey(key);
+        if(i >= 0) return; // Existing key was found.
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        if(++size >= threshold) resize(keyTable.length << 1);
+    }
+
+// ObjectIntMap.java : public void putAll(ObjectIntMap<? extends K> map) / public void putAll(Object values)
+    public void putAll(ObjectIntMap<? extends K> map){
+        ensureCapacity(map.size);
+        K[] keyTable = map.keyTable;
+        int[] valueTable = map.valueTable;
+        K key;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            key = keyTable[i];
+            if(key != null) put(key, valueTable[i]);
+        }
+    }
+
+// ObjectIntMap.java : public ObjectIntMap<K> copy()
+    public ObjectIntMap<K> copy(){
+        return new ObjectIntMap<>(this);
+    }
+
+// ObjectIntMap.java : public void set(ObjectIntMap<K> value)
+    public void set(ObjectIntMap<K> value){
+        clear();
+        putAll(value);
+    }
+
+// ObjectIntMap.java : private void putResize(K key, int value)
+    private void putResize(K key, int value){
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == null){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// ObjectIntMap.java : public int get(K key) / public int get(K key, int defaultValue)
+    public int get(K key){
+        return get(key, 0);
+    }
+
+// ObjectIntMap.java : public int increment(K key) / public int increment(K key, int increment) / public int increment(K key, int defaultValue, int increment)
+    public int increment(K key){
+        return increment(key, 0, 1);
+    }
+
+// ObjectIntMap.java : public int remove(K key) / public int remove(K key, int defaultValue)
+    public int remove(K key){
+        return remove(key, 0);
+    }
+
+// ObjectIntMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// ObjectIntMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ObjectIntMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// ObjectIntMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        resize(tableSize);
+    }
+
+// ObjectIntMap.java : public boolean containsValue(int value)
+    public boolean containsValue(int value){
+        K[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--)
+            if(keyTable[i] != null && valueTable[i] == value) return true;
+        return false;
+    }
+
+// ObjectIntMap.java : public boolean containsKey(K key)
+    public boolean containsKey(K key){
+        return locateKey(key) >= 0;
+    }
+
+// ObjectIntMap.java : public K findKey(int value)
+    public @Nullable K findKey(int value){
+        K[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = valueTable.length - 1; i >= 0; i--){
+            K key = keyTable[i];
+            if(key != null && valueTable[i] == value) return key;
+        }
+        return null;
+    }
+
+// ObjectIntMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// ObjectIntMap.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        K[] keyTable = this.keyTable;
+        int[] valueTable = this.valueTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            K key = keyTable[i];
+            if(key != null) h += key.hashCode() + valueTable[i];
+        }
+        return h;
+    }
+
+// ObjectIntMap.java : public String toString(String separator) / public String toString() / private String toString(String separator, boolean braces)
+    public String toString(String separator){
+        return toString(separator, false);
+    }
+
+// ObjectIntMap.java : public Entries<K> iterator()
+    @Override
+    public Entries<K> iterator(){
+        return entries();
+    }
+
+// ObjectMap.java : public static ObjectMap<K,V> of(Object values)
+    public static <K, V> ObjectMap<K, V> of(Object... values){
+        ObjectMap<K, V> map = new ObjectMap<>();
+
+        for(int i = 0; i < values.length / 2; i++){
+            map.put((K)values[i * 2], (V)values[i * 2 + 1]);
+        }
+
+        return map;
+    }
+
+// ObjectMap.java : protected int place(K item)
+    protected int place(K item){
+        return (int)(item.hashCode() * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// ObjectMap.java : int locateKey(K key)
+    int locateKey(K key){
+        if(key == null) throw new IllegalArgumentException("key cannot be null.");
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            K other = keyTable[i];
+            if(other == null) return -(i + 1); // Empty space is available.
+            if(other.equals(key)) return i; // Same key was found.
+        }
+    }
+
+// ObjectMap.java : public V putMissing(K key, V value)
+    public @Nullable V putMissing(K key, @Nullable V value){
+        int i = locateKey(key);
+        if(i >= 0) return valueTable[i]; // Existing key was found.
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        if(++size >= threshold) resize(keyTable.length << 1);
+        return null;
+    }
+
+// ObjectMap.java : public void putAll(Object values) / public void putAll(ObjectMap<? extends K,? extends V> map)
+    public void putAll(Object... values){
+        for(int i = 0; i < values.length / 2; i++){
+            put((K)values[i * 2], (V)values[i * 2 + 1]);
+        }
+    }
+
+// ObjectMap.java : public ObjectMap<K,V> merge(ObjectMap<? extends K,? extends V> map)
+    public ObjectMap<K, V> merge(ObjectMap<? extends K, ? extends V> map){
+        putAll(map);
+        return this;
+    }
+
+// ObjectMap.java : public void each(Cons2<K,V> cons)
+    public void each(Cons2<K, V> cons){
+        for(Entry<K, V> entry : entries()){
+            cons.get(entry.key, entry.value);
+        }
+    }
+
+// ObjectMap.java : public ObjectMap<K,V> copy()
+    public ObjectMap<K, V> copy(){
+        return new ObjectMap<>(this);
+    }
+
+// ObjectMap.java : public void set(ObjectMap<K,V> value)
+    public void set(ObjectMap<K, V> value){
+        clear();
+        putAll(value);
+    }
+
+// ObjectMap.java : private void putResize(K key, V value)
+    private void putResize(K key, @Nullable V value){
+        K[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == null){
+                keyTable[i] = key;
+                valueTable[i] = value;
+                return;
+            }
+        }
+    }
+
+// ObjectMap.java : public V getThrow(K key, Prov<? extends RuntimeException> error)
+    public V getThrow(K key, Prov<? extends RuntimeException> error){
+        if(!containsKey(key)){
+            throw error.get();
+        }
+        return get(key);
+    }
+
+// ObjectMap.java : public V get(K key, Prov<V> supplier) / public V get(T key) / public V get(K key, V defaultValue)
+    public V get(K key, Prov<V> supplier){
+        V val = get(key);
+        if(val == null){
+            put(key, val = supplier.get());
+        }
+        return val;
+    }
+
+// ObjectMap.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// ObjectMap.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ObjectMap.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// ObjectMap.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        resize(tableSize);
+    }
+
+// ObjectMap.java : public boolean containsKey(K key)
+    public boolean containsKey(K key){
+        return locateKey(key) >= 0;
+    }
+
+// ObjectMap.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// ObjectMap.java : public String toString(String separator) / public String toString() / public String toString(String separator, boolean braces)
+    public String toString(String separator){
+        return toString(separator, false);
+    }
+
+// ObjectMap.java : public Entries<K,V> iterator()
+    @Override
+    public Entries<K, V> iterator(){
+        return entries();
+    }
+
+// ObjectSet.java : public static ObjectSet<T> with(T array) / public static ObjectSet<T> with(Seq<T> array)
+    public static <T> ObjectSet<T> with(T... array){
+        ObjectSet<T> set = new ObjectSet<>();
+        set.addAll(array);
+        return set;
+    }
+
+// ObjectSet.java : public ObjectSet<T> copy()
+    public ObjectSet<T> copy(){
+        ObjectSet<T> result = new ObjectSet<>();
+        result.addAll(this);
+        return result;
+    }
+
+// ObjectSet.java : public ObjectSet<T> select(Boolf<T> predicate)
+    public ObjectSet<T> select(Boolf<T> predicate){
+        ObjectSet<T> arr = new ObjectSet<>();
+        for(T t : this){
+            if(predicate.get(t)) arr.add(t);
+        }
+        return arr;
+    }
+
+// ObjectSet.java : public Seq<T> toSeq()
+    public Seq<T> toSeq(){
+        return iterator().toSeq();
+    }
+
+// ObjectSet.java : public void each(Cons<? super T> cons)
+    @Override
+    public void each(Cons<? super T> cons){
+        for(T t : this){
+            cons.get(t);
+        }
+    }
+
+// ObjectSet.java : public T find(Boolf<T> predicate)
+    public T find(Boolf<T> predicate){
+        for(T t : this){
+            if(predicate.get(t)){
+                return t;
+            }
+        }
+        return null;
+    }
+
+// ObjectSet.java : protected int place(T item)
+    protected int place(T item){
+        return (int)(item.hashCode() * 0x9E3779B97F4A7C15L >>> shift);
+    }
+
+// ObjectSet.java : int locateKey(T key)
+    int locateKey(T key){
+        if(key == null) throw new IllegalArgumentException("key cannot be null.");
+        T[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = i + 1 & mask){
+            T other = keyTable[i];
+            if(other == null) return -(i + 1); // Empty space is available.
+            if(other.equals(key)) return i; // Same key was found.
+        }
+    }
+
+// ObjectSet.java : public boolean any()
+    public boolean any(){
+        return size > 0;
+    }
+
+// ObjectSet.java : public boolean add(T key)
+    public boolean add(T key){
+        if(key == null) return false;
+        int i = locateKey(key);
+        if(i >= 0) return false; // Existing key was found.
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        if(++size >= threshold) resize(keyTable.length << 1);
+        return true;
+    }
+
+// ObjectSet.java : public void addAll(Seq<? extends T> array) / public void addAll(Seq<? extends T> array, int offset, int length) / public boolean addAll(T array) / public boolean addAll(T[] array, int offset, int length) / public void addAll(ObjectSet<? extends T> set)
+    public void addAll(Seq<? extends T> array){
+        addAll(array.items, 0, array.size);
+    }
+
+// ObjectSet.java : private void addResize(T key)
+    private void addResize(T key){
+        T[] keyTable = this.keyTable;
+        for(int i = place(key); ; i = (i + 1) & mask){
+            if(keyTable[i] == null){
+                keyTable[i] = key;
+                return;
+            }
+        }
+    }
+
+// ObjectSet.java : public void removeAll(T[] array, int offset, int length) / public void removeAll(T[] array) / public void removeAll(Seq<? extends T> array)
+    public void removeAll(T[] array, int offset, int length){
+        for(int i = offset, n = i + length; i < n; i++)
+            remove(array[i]);
+    }
+
+// ObjectSet.java : public boolean notEmpty()
+    public boolean notEmpty(){
+        return size > 0;
+    }
+
+// ObjectSet.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ObjectSet.java : public void shrink(int maximumCapacity)
+    public void shrink(int maximumCapacity){
+        if(maximumCapacity < 0) throw new IllegalArgumentException("maximumCapacity must be >= 0: " + maximumCapacity);
+        if(size > maximumCapacity) maximumCapacity = size;
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length > tableSize) resize(tableSize);
+    }
+
+// ObjectSet.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        int tableSize = tableSize(maximumCapacity, loadFactor);
+        if(keyTable.length <= tableSize){
+            clear();
+            return;
+        }
+        size = 0;
+        resize(tableSize);
+    }
+
+// ObjectSet.java : public boolean contains(T key)
+    public boolean contains(T key){
+        return locateKey(key) >= 0;
+    }
+
+// ObjectSet.java : public T get(T key)
+    public @Nullable T get(T key){
+        int i = locateKey(key);
+        return i < 0 ? null : keyTable[i];
+    }
+
+// ObjectSet.java : public T first()
+    public T first(){
+        T[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++)
+            if(keyTable[i] != null) return keyTable[i];
+        throw new IllegalStateException("ObjectSet is empty.");
+    }
+
+// ObjectSet.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        int tableSize = tableSize(size + additionalCapacity, loadFactor);
+        if(keyTable.length < tableSize) resize(tableSize);
+    }
+
+// ObjectSet.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        T[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++){
+            T key = keyTable[i];
+            if(key != null) h += key.hashCode();
+        }
+        return h;
+    }
+
+// ObjectSet.java : public boolean equals(Object obj)
+    public boolean equals(Object obj){
+        if(!(obj instanceof ObjectSet)) return false;
+        ObjectSet other = (ObjectSet)obj;
+        if(other.size != size) return false;
+        T[] keyTable = this.keyTable;
+        for(int i = 0, n = keyTable.length; i < n; i++)
+            if(keyTable[i] != null && !other.contains(keyTable[i])) return false;
+        return true;
+    }
+
+// ObjectSet.java : public String toString() / public String toString(String separator)
+    public String toString(){
+        return '{' + toString(", ") + '}';
+    }
+
+// ObjectSet.java : static int tableSize(int capacity, float loadFactor)
+    static int tableSize(int capacity, float loadFactor){
+        if(capacity < 0) throw new IllegalArgumentException("capacity must be >= 0: " + capacity);
+        int tableSize = Mathf.nextPowerOfTwo(Math.max(2, (int)Math.ceil(capacity / loadFactor)));
+        if(tableSize > 1 << 30) throw new IllegalArgumentException("The required capacity is too large: " + capacity);
+        return tableSize;
+    }
+
+// OrderedMap.java : public static OrderedMap<K,V> of(Object values)
+    public static <K, V> OrderedMap<K, V> of(Object... values){
+        OrderedMap<K, V> map = new OrderedMap<>();
+
+        for(int i = 0; i < values.length / 2; i++){
+            map.put((K)values[i * 2], (V)values[i * 2 + 1]);
+        }
+
+        return map;
+    }
+
+// OrderedMap.java : public V putMissing(K key, V value)
+    @Override
+    public @Nullable V putMissing(K key, @Nullable V value){
+        int i = locateKey(key);
+        if(i >= 0) return valueTable[i]; // Existing key was found.
+        i = -(i + 1); // Empty space was found.
+        keyTable[i] = key;
+        valueTable[i] = value;
+        keys.add(key);
+        if(++size >= threshold) resize(keyTable.length << 1);
+        return null;
+    }
+
+// OrderedMap.java : public void putAll(OrderedMap<T,? extends V> map)
+    public <T extends K> void putAll(OrderedMap<T, ? extends V> map){
+        ensureCapacity(map.size);
+        K[] keys = map.keys.items;
+        for(int i = 0, n = map.keys.size; i < n; i++){
+            K key = keys[i];
+            put(key, map.get((T)key));
+        }
+    }
+
+// OrderedMap.java : public V remove(K key)
+    @Override
+    public V remove(K key){
+        keys.remove(key, false);
+        return super.remove(key);
+    }
+
+// OrderedMap.java : public V removeIndex(int index)
+    public V removeIndex(int index){
+        return super.remove(keys.remove(index));
+    }
+
+// OrderedMap.java : public boolean alter(K before, K after)
+    public boolean alter(K before, K after){
+        if(containsKey(after)) return false;
+        int index = keys.indexOf(before, false);
+        if(index == -1) return false;
+        super.put(after, super.remove(before));
+        keys.set(index, after);
+        return true;
+    }
+
+// OrderedMap.java : public boolean alterIndex(int index, K after)
+    public boolean alterIndex(int index, K after){
+        if(index < 0 || index >= size || containsKey(after)) return false;
+        super.put(after, super.remove(keys.get(index)));
+        keys.set(index, after);
+        return true;
+    }
+
+// OrderedMap.java : public void clear(int maximumCapacity) / public void clear()
+    @Override
+    public void clear(int maximumCapacity){
+        keys.clear();
+        super.clear(maximumCapacity);
+    }
+
+// OrderedMap.java : public Seq<K> orderedKeys()
+    public Seq<K> orderedKeys(){
+        return keys;
+    }
+
+// OrderedMap.java : public Entries<K,V> iterator()
+    @Override
+    public Entries<K, V> iterator(){
+        return entries();
+    }
+
+// OrderedSet.java : public boolean add(T key) / public boolean add(T key, int index)
+    public boolean add(T key){
+        if(!super.add(key)) return false;
+        items.add(key);
+        return true;
+    }
+
+// OrderedSet.java : public void addAll(OrderedSet<T> set)
+    public void addAll(OrderedSet<T> set){
+        ensureCapacity(set.size);
+        T[] keys = set.items.items;
+        for(int i = 0, n = set.items.size; i < n; i++)
+            add(keys[i]);
+    }
+
+// OrderedSet.java : public void ensureCapacity(int additionalCapacity)
+    public void ensureCapacity(int additionalCapacity){
+        super.ensureCapacity(additionalCapacity);
+        items.ensureCapacity(additionalCapacity);
+    }
+
+// OrderedSet.java : public boolean remove(T key)
+    public boolean remove(T key){
+        if(!super.remove(key)) return false;
+        items.remove(key, false);
+        return true;
+    }
+
+// OrderedSet.java : public T removeIndex(int index)
+    public T removeIndex(int index){
+        T key = items.remove(index);
+        super.remove(key);
+        return key;
+    }
+
+// OrderedSet.java : public boolean alter(T before, T after)
+    public boolean alter(T before, T after){
+        if(contains(after)) return false;
+        if(!super.remove(before)) return false;
+        super.add(after);
+        items.set(items.indexOf(before, false), after);
+        return true;
+    }
+
+// OrderedSet.java : public boolean alterIndex(int index, T after)
+    public boolean alterIndex(int index, T after){
+        if(index < 0 || index >= size || contains(after)) return false;
+        super.remove(items.get(index));
+        super.add(after);
+        items.set(index, after);
+        return true;
+    }
+
+// OrderedSet.java : public void clear(int maximumCapacity) / public void clear()
+    public void clear(int maximumCapacity){
+        items.clear();
+        super.clear(maximumCapacity);
+    }
+
+// OrderedSet.java : public Seq<T> orderedItems()
+    public Seq<T> orderedItems(){
+        return items;
+    }
+
+// OrderedSet.java : public T first()
+    public T first(){
+        return items.first();
+    }
+
+// OrderedSet.java : public int hashCode()
+    public int hashCode(){
+        int h = size;
+        T[] items = this.items.items;
+        for(int i = 0, n = this.items.size; i < n; i++){
+            T key = items[i];
+            if(key != null) h += key.hashCode();
+        }
+        return h;
+    }
+
+// OrderedSet.java : public boolean equals(Object obj)
+    public boolean equals(Object obj){
+        if(!(obj instanceof ObjectSet)) return false;
+        ObjectSet other = (ObjectSet)obj;
+        if(other.size != size) return false;
+        T[] items = this.items.items;
+        for(int i = 0, n = this.items.size; i < n; i++)
+            if(items[i] != null && !other.contains(items[i])) return false;
+        return true;
+    }
+
+// OrderedSet.java : static public OrderedSet<T> with(T array)
+    static public <T> OrderedSet<T> with(T... array){
+        OrderedSet<T> set = new OrderedSet<T>();
+        set.addAll(array);
+        return set;
+    }
+
+// PQueue.java : public boolean empty()
+    public boolean empty(){
+        return size == 0;
+    }
+
+// PQueue.java : public boolean add(E e)
+    public boolean add(E e){
+        if(e == null) throw new IllegalArgumentException("Element cannot be null.");
+        int i = size;
+        if(i >= queue.length) growToSize(i + 1);
+        size = i + 1;
+        if(i == 0)
+            queue[0] = e;
+        else
+            siftUp(i, e);
+        return true;
+    }
+
+// PQueue.java : public E peek()
+    public E peek(){
+        return size == 0 ? null : (E)queue[0];
+    }
+
+// PQueue.java : public E get(int index)
+    public E get(int index){
+        return index >= size ? null : (E)queue[index];
+    }
+
+// PQueue.java : public int size()
+    public int size(){
+        return size;
+    }
+
+// PQueue.java : public void clear()
+    public void clear(){
+        for(int i = 0; i < size; i++) queue[i] = null;
+        size = 0;
+    }
+
+// PQueue.java : public E poll()
+    public E poll(){
+        if(size == 0) return null;
+        int s = --size;
+        E result = (E)queue[0];
+        E x = (E)queue[s];
+        queue[s] = null;
+        if(s != 0) siftDown(0, x);
+        return result;
+    }
+
+// PQueue.java : private void siftUp(int k, E x)
+    private void siftUp(int k, E x){
+        while(k > 0){
+            int parent = (k - 1) >>> 1;
+            E e = (E)queue[parent];
+            if(compare(x, e) >= 0) break;
+            queue[k] = e;
+            k = parent;
+        }
+        queue[k] = x;
+    }
+
+// PQueue.java : private int compare(E a, E b)
+    private int compare(E a, E b){
+        return comparator == null ? ((Comparable<E>)a).compareTo(b) : comparator.compare(a, b);
+    }
+
+// Queue.java : public T[] toArray(Class<T> type)
+    public T[] toArray(Class<T> type){
+        T[] out = (T[])java.lang.reflect.Array.newInstance(type, size);
+        for(int i = 0; i < size; i++){
+            out[i] = get(i);
+        }
+        return out;
+    }
+
+// Queue.java : public void add(T object)
+    public void add(T object){
+        addLast(object);
+    }
+
+// Queue.java : public T[] shrink()
+    public T[] shrink(){
+        if(values.length != size) resize(size);
+        return values;
+    }
+
+// Queue.java : public void ensureCapacity(int additional)
+    public void ensureCapacity(int additional){
+        final int needed = size + additional;
+        if(values.length < needed){
+            resize(needed);
+        }
+    }
+
+// Queue.java : public boolean contains(T value) / public boolean contains(T value, boolean identity)
+    public boolean contains(T value){
+        return contains(value, true);
+    }
+
+// Queue.java : public boolean remove(Boolf<T> value) / public boolean remove(T value) / public boolean remove(T value, boolean identity)
+    public boolean remove(Boolf<T> value){
+        int i = indexOf(value);
+        if(i != -1){
+            removeIndex(i);
+            return true;
+        }
+        return false;
+    }
+
+// Queue.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// Queue.java : public T first()
+    public T first(){
+        if(size == 0){
+            // Underflow
+            throw new NoSuchElementException("Queue is empty.");
+        }
+        return values[head];
+    }
+
+// Queue.java : public T get(int index)
+    public T get(int index){
+        if(index < 0) throw new IndexOutOfBoundsException("index can't be < 0: " + index);
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        final T[] values = this.values;
+
+        int i = head + index;
+        if(i >= values.length){
+            i -= values.length;
+        }
+        return values[i];
+    }
+
+// Queue.java : public Iterator<T> iterator()
+    @Override
+    public Iterator<T> iterator(){
+        if(iterable == null) iterable = new QueueIterable<>(this);
+        return iterable.iterator();
+    }
+
+// Seq.java : public static Seq<T> withArrays(Object arrays)
+    public static <T> Seq<T> withArrays(Object... arrays){
+        Seq<T> result = new Seq<>();
+        for(Object a : arrays){
+            if(a instanceof Seq){
+                result.addAll((Seq<? extends T>)a);
+            }else{
+                result.add((T)a);
+            }
+        }
+        return result;
+    }
+
+// Seq.java : public static Seq<T> with(T array) / public static Seq<T> with(Iterable<T> array) / public Seq<T> with(Cons<Seq<T>> cons)
+    public static <T> Seq<T> with(T... array){
+        return new Seq<>(array);
+    }
+
+// Seq.java : public static Seq<V> map(T[] array, Func<T,V> mapper) / public Seq<R> map(Func<T,R> mapper)
+    public static <T, V> Seq<V> map(T[] array, Func<T, V> mapper){
+        Seq<V> result = new Seq<>(array.length);
+        for(int i = 0; i < array.length; i++){
+            result.add(mapper.get(array[i]));
+        }
+        return result;
+    }
+
+// Seq.java : public static Seq<T> select(T[] array, Boolf<T> test) / public Seq<T> select(Boolf<T> predicate)
+    public static <T> Seq<T> select(T[] array, Boolf<T> test){
+        Seq<T> out = new Seq<>(array.length);
+        for(T t : array){
+            if(test.get(t)){
+                out.add(t);
+            }
+        }
+        return out;
+    }
+
+// Seq.java : public ObjectMap<K,V> asMap(Func<T,K> keygen, Func<T,V> valgen) / public ObjectMap<K,T> asMap(Func<T,K> keygen)
+    public <K, V> ObjectMap<K, V> asMap(Func<T, K> keygen, Func<T, V> valgen){
+        ObjectMap<K, V> map = new ObjectMap<>();
+        for(int i = 0; i < size; i++){
+            map.put(keygen.get(items[i]), valgen.get(items[i]));
+        }
+        return map;
+    }
+
+// Seq.java : public ObjectMap<K,Seq<T>> groupBy(Func<T,K> keygen)
+    public <K> ObjectMap<K, Seq<T>> groupBy(Func<T, K> keygen){
+        ObjectMap<K, Seq<T>> map = new ObjectMap<>();
+        for(int i = 0; i < size; i++){
+            T item = items[i];
+            map.get(keygen.get(item), Seq::new).add(item);
+        }
+        return map;
+    }
+
+// Seq.java : public ObjectIntMap<K> groupByCount(Func<T,K> keygen)
+    public <K> ObjectIntMap<K> groupByCount(Func<T, K> keygen){
+        ObjectIntMap<K> map = new ObjectIntMap<>();
+        for(int i = 0; i < size; i++){
+            map.increment(keygen.get(items[i]));
+        }
+        return map;
+    }
+
+// Seq.java : public ObjectSet<T> asSet()
+    public ObjectSet<T> asSet(){
+        return ObjectSet.with(this);
+    }
+
+// Seq.java : public Seq<T> copy()
+    public Seq<T> copy(){
+        return new Seq<>(this);
+    }
+
+// Seq.java : public ArrayList<T> list()
+    public ArrayList<T> list(){
+        ArrayList<T> list = new ArrayList<>(size);
+        each(list::add);
+        return list;
+    }
+
+// Seq.java : public float sumf(Floatf<T> summer)
+    public float sumf(Floatf<T> summer){
+        float sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += summer.get(items[i]);
+        }
+        return sum;
+    }
+
+// Seq.java : public int sum(Intf<T> summer)
+    public int sum(Intf<T> summer){
+        int sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += summer.get(items[i]);
+        }
+        return sum;
+    }
+
+// Seq.java : public void each(Boolf<? super T> pred, Cons<E> consumer) / public void each(Cons<? super T> consumer)
+    public <E extends T> void each(Boolf<? super T> pred, Cons<E> consumer){
+        for(int i = 0; i < size; i++){
+            if(pred.get(items[i])) consumer.get((E)items[i]);
+        }
+    }
+
+// Seq.java : public void replace(Func<T,T> mapper) / public boolean replace(T from, T to)
+    public void replace(Func<T, T> mapper){
+        for(int i = 0; i < size; i++){
+            items[i] = mapper.get(items[i]);
+        }
+    }
+
+// Seq.java : public Seq<R> flatten()
+    public <R> Seq<R> flatten(){
+        Seq<R> arr = new Seq<>();
+        for(int i = 0; i < size; i++){
+            arr.addAll((Seq<R>)items[i]);
+        }
+        return arr;
+    }
+
+// Seq.java : public Seq<R> flatMap(Func<T,Iterable<R>> mapper)
+    public <R> Seq<R> flatMap(Func<T, Iterable<R>> mapper){
+        Seq<R> arr = new Seq<>(size);
+        for(int i = 0; i < size; i++){
+            arr.addAll(mapper.get(items[i]));
+        }
+        return arr;
+    }
+
+// Seq.java : public IntSeq mapInt(Intf<T> mapper) / public IntSeq mapInt(Intf<T> mapper, Boolf<T> retain)
+    public IntSeq mapInt(Intf<T> mapper){
+        IntSeq arr = new IntSeq(size);
+        for(int i = 0; i < size; i++){
+            arr.add(mapper.get(items[i]));
+        }
+        return arr;
+    }
+
+// Seq.java : public FloatSeq mapFloat(Floatf<T> mapper)
+    public FloatSeq mapFloat(Floatf<T> mapper){
+        FloatSeq arr = new FloatSeq(size);
+        for(int i = 0; i < size; i++){
+            arr.add(mapper.get(items[i]));
+        }
+        return arr;
+    }
+
+// Seq.java : public R reduce(R initial, Func2<T,R,R> reducer)
+    public <R> R reduce(R initial, Func2<T, R, R> reducer){
+        R result = initial;
+        for(int i = 0; i < size; i++){
+            result = reducer.get(items[i], result);
+        }
+        return result;
+    }
+
+// Seq.java : public boolean allMatch(Boolf<T> predicate)
+    public boolean allMatch(Boolf<T> predicate){
+        for(int i = 0; i < size; i++){
+            if(!predicate.get(items[i])){
+                return false;
+            }
+        }
+        return true;
+    }
+
+// Seq.java : public boolean contains(Boolf<T> predicate) / public boolean contains(T value) / public boolean contains(T value, boolean identity)
+    public boolean contains(Boolf<T> predicate){
+        for(int i = 0; i < size; i++){
+            if(predicate.get(items[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+// Seq.java : public T min(Comparator<T> func) / public T min(Boolf<T> filter, Floatf<T> func) / public T min(Boolf<T> filter, Comparator<T> func) / public T min(Floatf<T> func)
+    public T min(Comparator<T> func){
+        T result = null;
+        for(int i = 0; i < size; i++){
+            T t = items[i];
+            if(result == null || func.compare(result, t) > 0){
+                result = t;
+            }
+        }
+        return result;
+    }
+
+// Seq.java : public T max(Comparator<T> func) / public T max(Floatf<T> func)
+    public T max(Comparator<T> func){
+        T result = null;
+        for(int i = 0; i < size; i++){
+            T t = items[i];
+            if(result == null || func.compare(result, t) < 0){
+                result = t;
+            }
+        }
+        return result;
+    }
+
+// Seq.java : public T find(Boolf<T> predicate)
+    public @Nullable T find(Boolf<T> predicate){
+        for(int i = 0; i < size; i++){
+            if(predicate.get(items[i])){
+                return items[i];
+            }
+        }
+        return null;
+    }
+
+// Seq.java : public boolean addUnique(T value)
+    public boolean addUnique(T value){
+        if(!contains(value)){
+            add(value);
+            return true;
+        }
+        return false;
+    }
+
+// Seq.java : public Seq<T> add(T value) / public Seq<T> add(T value1, T value2) / public Seq<T> add(T value1, T value2, T value3) / public Seq<T> add(T value1, T value2, T value3, T value4) / public Seq<T> add(Seq<? extends T> array) / public Seq<T> add(T[] array)
+    public Seq<T> add(T value){
+        T[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = value;
+        return this;
+    }
+
+// Seq.java : public Seq<T> addAll(Seq<? extends T> array) / public Seq<T> addAll(Seq<? extends T> array, int start, int count) / public Seq<T> addAll(T array) / public Seq<T> addAll(T[] array, int start, int count) / public Seq<T> addAll(Iterable<? extends T> items)
+    public Seq<T> addAll(Seq<? extends T> array){
+        addAll(array.items, 0, array.size);
+        return this;
+    }
+
+// Seq.java : public void set(Seq<? extends T> array) / public void set(T[] array) / public void set(int index, T value)
+    public void set(Seq<? extends T> array){
+        if(array == this) return;
+        clear();
+        addAll(array);
+    }
+
+// Seq.java : public T getFrac(float index)
+    @Nullable
+    public T getFrac(float index){
+        if(isEmpty()) return null;
+        return get(Mathf.clamp((int)(index * size), 0, size - 1));
+    }
+
+// Seq.java : public T get(int index)
+    public T get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// Seq.java : public void insert(int index, T value)
+    public void insert(int index, T value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        T[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// Seq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        T[] items = this.items;
+        T firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// Seq.java : public boolean containsAll(Seq<T> seq) / public boolean containsAll(Seq<T> seq, boolean identity)
+    public boolean containsAll(Seq<T> seq){
+        return containsAll(seq, false);
+    }
+
+// Seq.java : public int indexOf(T value) / public int indexOf(T value, boolean identity) / public int indexOf(Boolf<T> value)
+    public int indexOf(T value){
+        return indexOf(value, false);
+    }
+
+// Seq.java : public int lastIndexOf(T value, boolean identity)
+    public int lastIndexOf(T value, boolean identity){
+        T[] items = this.items;
+        if(identity || value == null){
+            for(int i = size - 1; i >= 0; i--)
+                if(items[i] == value) return i;
+        }else{
+            for(int i = size - 1; i >= 0; i--)
+                if(value.equals(items[i])) return i;
+        }
+        return -1;
+    }
+
+// Seq.java : public boolean remove(T value) / public boolean remove(Boolf<T> value) / public boolean remove(T value, boolean identity) / public T remove(int index)
+    public boolean remove(T value){
+        return remove(value, false);
+    }
+
+// Seq.java : public Seq<T> removeAll(Boolf<T> pred) / public boolean removeAll(Seq<? extends T> array) / public boolean removeAll(Seq<? extends T> array, boolean identity)
+    public Seq<T> removeAll(Boolf<T> pred){
+        Iterator<T> iter = iterator();
+        while(iter.hasNext()){
+            if(pred.get(iter.next())){
+                iter.remove();
+            }
+        }
+        return this;
+    }
+
+// Seq.java : public T pop(Prov<T> constructor) / public T pop()
+    public T pop(Prov<T> constructor){
+        if(size == 0) return constructor.get();
+        return pop();
+    }
+
+// Seq.java : public T peek()
+    public T peek(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[size - 1];
+    }
+
+// Seq.java : public T first()
+    public T first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// Seq.java : public T firstOpt()
+    @Nullable
+    public T firstOpt(){
+        if(size == 0) return null;
+        return items[0];
+    }
+
+// Seq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// Seq.java : public boolean any()
+    public boolean any(){
+        return size > 0;
+    }
+
+// Seq.java : public Seq<T> clear()
+    public Seq<T> clear(){
+        T[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            items[i] = null;
+        size = 0;
+        return this;
+    }
+
+// Seq.java : public T[] shrink()
+    public T[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// Seq.java : public T[] ensureCapacity(int additionalCapacity)
+    public T[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// Seq.java : public T[] setSize(int newSize)
+    public T[] setSize(int newSize){
+        truncate(newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// Seq.java : protected T[] resize(int newSize)
+    protected T[] resize(int newSize){
+        T[] items = this.items;
+        //avoid reflection when possible
+        T[] newItems = (T[])(items.getClass() == Object[].class ? new Object[newSize] : java.lang.reflect.Array.newInstance(items.getClass().getComponentType(), newSize));
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// Seq.java : public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator) / public Seq<T> sort(Floatf<? super T> comparator)
+    public Seq<T> sort(){
+        Sort.instance().sort(items, 0, size);
+        return this;
+    }
+
+// Seq.java : public Seq<T> sortComparing(Func<? super T,? extends U> keyExtractor)
+    public <U extends Comparable<? super U>> Seq<T> sortComparing(Func<? super T, ? extends U> keyExtractor){
+        sort(Structs.comparing(keyExtractor));
+        return this;
+    }
+
+// Seq.java : public Seq<T> selectFrom(Seq<T> base, Boolf<T> predicate)
+    public Seq<T> selectFrom(Seq<T> base, Boolf<T> predicate){
+        clear();
+        base.each(t -> {
+            if(predicate.get(t)){
+                add(t);
+            }
+        });
+        return this;
+    }
+
+// Seq.java : public Seq<T> distinct()
+    public Seq<T> distinct(){
+        ObjectSet<T> set = asSet();
+        clear();
+        addAll(set);
+        return this;
+    }
+
+// Seq.java : public Seq<R> as()
+    public <R> Seq<R> as(){
+        return (Seq<R>)this;
+    }
+
+// Seq.java : public Seq<T> retainAll(Boolf<T> predicate)
+    public Seq<T> retainAll(Boolf<T> predicate){
+        return removeAll(e -> !predicate.get(e));
+    }
+
+// Seq.java : public int count(Boolf<T> predicate)
+    public int count(Boolf<T> predicate){
+        int count = 0;
+        for(int i = 0; i < size; i++){
+            if(predicate.get(items[i])){
+                count ++;
+            }
+        }
+        return count;
+    }
+
+// Seq.java : public T selectRanked(Comparator<T> comparator, int kthLowest)
+    public T selectRanked(Comparator<T> comparator, int kthLowest){
+        if(kthLowest < 1){
+            throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+        }
+        return Select.instance().select(items, comparator, kthLowest, size);
+    }
+
+// Seq.java : public int selectRankedIndex(Comparator<T> comparator, int kthLowest)
+    public int selectRankedIndex(Comparator<T> comparator, int kthLowest){
+        if(kthLowest < 1){
+            throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
+        }
+        return Select.instance().selectIndex(items, comparator, kthLowest, size);
+    }
+
+// Seq.java : public Seq<T> reverse()
+    public Seq<T> reverse(){
+        T[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            T temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+
+        return this;
+    }
+
+// Seq.java : public Seq<T> shuffle()
+    public Seq<T> shuffle(){
+        T[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            T temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+
+        return this;
+    }
+
+// Seq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(size <= newSize) return;
+        for(int i = newSize; i < size; i++)
+            items[i] = null;
+        size = newSize;
+    }
+
+// Seq.java : public T random(Rand rand) / public T random() / public T random(T exclude)
+    public T random(Rand rand){
+        if(size == 0) return null;
+        return items[rand.random(0, size - 1)];
+    }
+
+// Seq.java : public T[] toArray() / public V[] toArray(Class type)
+    public T[] toArray(){
+        return toArray(items.getClass().getComponentType());
+    }
+
+// Seq.java : public Iterator<T> iterator()
+    @Override
+    public Iterator<T> iterator(){
+        if(iterable == null) iterable = new SeqIterable<>(this);
+        return iterable.iterator();
+    }
+
+// ShortSeq.java : public static ShortSeq with(short array)
+    public static ShortSeq with(short... array){
+        return new ShortSeq(array);
+    }
+
+// ShortSeq.java : public void add(int value) / public void add(short value) / public void add(short value1, short value2) / public void add(short value1, short value2, short value3) / public void add(short value1, short value2, short value3, short value4)
+    public void add(int value){
+        short[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        items[size++] = (short)value;
+    }
+
+// ShortSeq.java : public void addAll(ShortSeq array) / public void addAll(ShortSeq array, int offset, int length) / public void addAll(short array) / public void addAll(short[] array, int offset, int length)
+    public void addAll(ShortSeq array){
+        addAll(array.items, 0, array.size);
+    }
+
+// ShortSeq.java : public short get(int index)
+    public short get(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        return items[index];
+    }
+
+// ShortSeq.java : public void set(int index, short value)
+    public void set(int index, short value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] = value;
+    }
+
+// ShortSeq.java : public void incr(int index, short value)
+    public void incr(int index, short value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] += value;
+    }
+
+// ShortSeq.java : public void mul(int index, short value)
+    public void mul(int index, short value){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        items[index] *= value;
+    }
+
+// ShortSeq.java : public void insert(int index, short value)
+    public void insert(int index, short value){
+        if(index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+        short[] items = this.items;
+        if(size == items.length) items = resize(Math.max(8, (int)(size * 1.75f)));
+        if(ordered)
+            System.arraycopy(items, index, items, index + 1, size - index);
+        else
+            items[size] = items[index];
+        size++;
+        items[index] = value;
+    }
+
+// ShortSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        if(first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
+        if(second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
+        short[] items = this.items;
+        short firstValue = items[first];
+        items[first] = items[second];
+        items[second] = firstValue;
+    }
+
+// ShortSeq.java : public boolean contains(short value)
+    public boolean contains(short value){
+        int i = size - 1;
+        short[] items = this.items;
+        while(i >= 0)
+            if(items[i--] == value) return true;
+        return false;
+    }
+
+// ShortSeq.java : public int indexOf(short value)
+    public int indexOf(short value){
+        short[] items = this.items;
+        for(int i = 0, n = size; i < n; i++)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// ShortSeq.java : public int lastIndexOf(char value)
+    public int lastIndexOf(char value){
+        short[] items = this.items;
+        for(int i = size - 1; i >= 0; i--)
+            if(items[i] == value) return i;
+        return -1;
+    }
+
+// ShortSeq.java : public boolean removeValue(short value)
+    public boolean removeValue(short value){
+        short[] items = this.items;
+        for(int i = 0, n = size; i < n; i++){
+            if(items[i] == value){
+                removeIndex(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+// ShortSeq.java : public short removeIndex(int index)
+    public short removeIndex(int index){
+        if(index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+        short[] items = this.items;
+        short value = items[index];
+        size--;
+        if(ordered)
+            System.arraycopy(items, index + 1, items, index, size - index);
+        else
+            items[index] = items[size];
+        return value;
+    }
+
+// ShortSeq.java : public short pop()
+    public short pop(){
+        return items[--size];
+    }
+
+// ShortSeq.java : public short peek()
+    public short peek(){
+        return items[size - 1];
+    }
+
+// ShortSeq.java : public short first()
+    public short first(){
+        if(size == 0) throw new IllegalStateException("Array is empty.");
+        return items[0];
+    }
+
+// ShortSeq.java : public boolean isEmpty()
+    public boolean isEmpty(){
+        return size == 0;
+    }
+
+// ShortSeq.java : public void clear()
+    public void clear(){
+        size = 0;
+    }
+
+// ShortSeq.java : public short[] shrink()
+    public short[] shrink(){
+        if(items.length != size) resize(size);
+        return items;
+    }
+
+// ShortSeq.java : public short[] ensureCapacity(int additionalCapacity)
+    public short[] ensureCapacity(int additionalCapacity){
+        if(additionalCapacity < 0)
+            throw new IllegalArgumentException("additionalCapacity must be >= 0: " + additionalCapacity);
+        int sizeNeeded = size + additionalCapacity;
+        if(sizeNeeded > items.length) resize(Math.max(8, sizeNeeded));
+        return items;
+    }
+
+// ShortSeq.java : public short[] setSize(int newSize)
+    public short[] setSize(int newSize){
+        if(newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
+        if(newSize > items.length) resize(Math.max(8, newSize));
+        size = newSize;
+        return items;
+    }
+
+// ShortSeq.java : protected short[] resize(int newSize)
+    protected short[] resize(int newSize){
+        short[] newItems = new short[newSize];
+        short[] items = this.items;
+        System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
+        this.items = newItems;
+        return newItems;
+    }
+
+// ShortSeq.java : public void sort()
+    public void sort(){
+        Arrays.sort(items, 0, size);
+    }
+
+// ShortSeq.java : public void reverse()
+    public void reverse(){
+        short[] items = this.items;
+        for(int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++){
+            int ii = lastIndex - i;
+            short temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// ShortSeq.java : public void shuffle()
+    public void shuffle(){
+        short[] items = this.items;
+        for(int i = size - 1; i >= 0; i--){
+            int ii = Mathf.random(i);
+            short temp = items[i];
+            items[i] = items[ii];
+            items[ii] = temp;
+        }
+    }
+
+// ShortSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        if(size > newSize) size = newSize;
+    }
+
+// ShortSeq.java : public short random()
+    public short random(){
+        if(size == 0) return 0;
+        return items[Mathf.random(0, size - 1)];
+    }
+
+// ShortSeq.java : public short[] toArray()
+    public short[] toArray(){
+        short[] array = new short[size];
+        System.arraycopy(items, 0, array, 0, size);
+        return array;
+    }
+
+// ShortSeq.java : public int hashCode()
+    public int hashCode(){
+        if(!ordered) return super.hashCode();
+        short[] items = this.items;
+        int h = 1;
+        for(int i = 0, n = size; i < n; i++)
+            h = h * 31 + items[i];
+        return h;
+    }
+
+// SnapshotSeq.java : public static SnapshotSeq<T> with(T array)
+    public static <T> SnapshotSeq<T> with(T... array){
+        return new SnapshotSeq<>(array);
+    }
+
+// SnapshotSeq.java : public T[] begin()
+    public T[] begin(){
+        modified();
+        snapshot = items;
+        snapshots++;
+        return items;
+    }
+
+// SnapshotSeq.java : public void end()
+    public void end(){
+        snapshots = Math.max(0, snapshots - 1);
+        if(snapshot == null) return;
+        if(snapshot != items && snapshots == 0){
+            // The backing array was copied, keep around the old array.
+            recycled = snapshot;
+            for(int i = 0, n = recycled.length; i < n; i++)
+                recycled[i] = null;
+        }
+        snapshot = null;
+    }
+
+// SnapshotSeq.java : private void modified()
+    private void modified(){
+        if(snapshot == null || snapshot != items) return;
+        // Snapshot is in use, copy backing array to recycled array or create new backing array.
+        if(recycled != null && recycled.length >= size){
+            System.arraycopy(items, 0, recycled, 0, size);
+            items = recycled;
+            recycled = null;
+        }else
+            resize(items.length);
+    }
+
+// SnapshotSeq.java : public void set(int index, T value)
+    public void set(int index, T value){
+        modified();
+        super.set(index, value);
+    }
+
+// SnapshotSeq.java : public void insert(int index, T value)
+    public void insert(int index, T value){
+        modified();
+        super.insert(index, value);
+    }
+
+// SnapshotSeq.java : public void swap(int first, int second)
+    public void swap(int first, int second){
+        modified();
+        super.swap(first, second);
+    }
+
+// SnapshotSeq.java : public boolean remove(T value, boolean identity) / public T remove(int index)
+    public boolean remove(T value, boolean identity){
+        modified();
+        return super.remove(value, identity);
+    }
+
+// SnapshotSeq.java : public void removeRange(int start, int end)
+    public void removeRange(int start, int end){
+        modified();
+        super.removeRange(start, end);
+    }
+
+// SnapshotSeq.java : public boolean removeAll(Seq<? extends T> array, boolean identity)
+    public boolean removeAll(Seq<? extends T> array, boolean identity){
+        modified();
+        return super.removeAll(array, identity);
+    }
+
+// SnapshotSeq.java : public T pop()
+    public T pop(){
+        modified();
+        return super.pop();
+    }
+
+// SnapshotSeq.java : public Seq<T> clear()
+    public Seq<T> clear(){
+        modified();
+        super.clear();
+        return this;
+    }
+
+// SnapshotSeq.java : public Seq<T> sort() / public Seq<T> sort(Comparator<? super T> comparator)
+    public Seq<T> sort(){
+        modified();
+        return super.sort();
+    }
+
+// SnapshotSeq.java : public Seq<T> reverse()
+    public Seq<T> reverse(){
+        modified();
+        return super.reverse();
+    }
+
+// SnapshotSeq.java : public Seq<T> shuffle()
+    public Seq<T> shuffle(){
+        modified();
+        return super.shuffle();
+    }
+
+// SnapshotSeq.java : public void truncate(int newSize)
+    public void truncate(int newSize){
+        modified();
+        super.truncate(newSize);
+    }
+
+// SnapshotSeq.java : public T[] setSize(int newSize)
+    public T[] setSize(int newSize){
+        modified();
+        return super.setSize(newSize);
+    }
+
+// Sort.java : public static Sort instance()
+    public static Sort instance(){
+        return instance.get();
+    }
+
+// Sort.java : public void sort(Seq<T> a) / public void sort(T[] a) / public void sort(T[] a, int fromIndex, int toIndex) / public void sort(Seq<T> a, Comparator<? super T> c) / public void sort(T[] a, Comparator<? super T> c) / public void sort(T[] a, Comparator<? super T> c, int fromIndex, int toIndex)
+    public <T> void sort(Seq<T> a){
+        if(comparableTimSort == null) comparableTimSort = new ComparableTimSort();
+        comparableTimSort.doSort(a.items, 0, a.size);
+    }
+
+// StringMap.java : public static StringMap of(Object values)
+    public static StringMap of(Object... values){
+        StringMap map = new StringMap();
+
+        for(int i = 0; i < values.length / 2; i++){
+            map.put((String)values[i * 2], String.valueOf(values[i * 2 + 1]));
+        }
+
+        return map;
+    }
+
+// StringMap.java : public boolean getBool(String name)
+    public boolean getBool(String name){
+        return get(name, "").equals("true");
+    }
+
+// StringMap.java : public int getInt(String name) / public int getInt(String name, int def)
+    public int getInt(String name){
+        return getInt(name, 0);
+    }
+
+// StringMap.java : public float getFloat(String name) / public float getFloat(String name, float def)
+    public float getFloat(String name){
+        return getFloat(name, 0f);
+    }
+
+// StringMap.java : public long getLong(String name) / public long getLong(String name, long def)
+    public long getLong(String name){
+        return getLong(name, 0L);
+    }
+
+// TimSort.java : static void sort(T[] a, Comparator<? super T> c) / static void sort(T[] a, int lo, int hi, Comparator<? super T> c)
+    static <T> void sort(T[] a, Comparator<? super T> c){
+        sort(a, 0, a.length, c);
+    }
+
+// TimSort.java : private static void reverseRange(Object[] a, int lo, int hi)
+    private static void reverseRange(Object[] a, int lo, int hi){
+        hi--;
+        while(lo < hi){
+            Object t = a[lo];
+            a[lo++] = a[hi];
+            a[hi--] = t;
+        }
+    }
+
+// TimSort.java : private static int minRunLength(int n)
+    private static int minRunLength(int n){
+        assert !DEBUG || n >= 0;
+        int r = 0; // Becomes 1 if any 1 bits are shifted off
+        while(n >= MIN_MERGE){
+            r |= (n & 1);
+            n >>= 1;
+        }
+        return n + r;
+    }
+
+// TimSort.java : private static void rangeCheck(int arrayLen, int fromIndex, int toIndex)
+    private static void rangeCheck(int arrayLen, int fromIndex, int toIndex){
+        if(fromIndex > toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
+        if(fromIndex < 0) throw new ArrayIndexOutOfBoundsException(fromIndex);
+        if(toIndex > arrayLen) throw new ArrayIndexOutOfBoundsException(toIndex);
+    }
+
+// TimSort.java : private void pushRun(int runBase, int runLen)
+    private void pushRun(int runBase, int runLen){
+        this.runBase[stackSize] = runBase;
+        this.runLen[stackSize] = runLen;
+        stackSize++;
+    }
+
+// TimSort.java : private void mergeCollapse()
+    private void mergeCollapse(){
+        while(stackSize > 1){
+            int n = stackSize - 2;
+            if((n >= 1 && runLen[n - 1] <= runLen[n] + runLen[n + 1]) || (n >= 2 && runLen[n - 2] <= runLen[n] + runLen[n - 1])){
+                if(runLen[n - 1] < runLen[n + 1]) n--;
+            }else if(runLen[n] > runLen[n + 1]){
+                break; // Invariant is established
+            }
+            mergeAt(n);
+        }
+    }
+
+// TimSort.java : private void mergeForceCollapse()
+    private void mergeForceCollapse(){
+        while(stackSize > 1){
+            int n = stackSize - 2;
+            if(n > 0 && runLen[n - 1] < runLen[n + 1]) n--;
+            mergeAt(n);
+        }
+    }
+

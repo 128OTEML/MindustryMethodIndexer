@@ -1,0 +1,270 @@
+Audio.java
+Java class implements arc.util.Disposable
+// High-level wrapper for the Soloud library.
+fields:
+  public float globalPitch
+  public float falloff  // Falloff when playing audio.
+  public int defaultSoundMaxConcurrent  // Default value for maximum instances of a sound.
+  boolean initialized
+  public float sfxVolume
+  public AudioBus soundBus  // Global bus for all sounds.
+  public AudioBus musicBus  // Global bus for all music.
+ctors:
+  public Audio() / public Audio(boolean enabled)  // Initializes Soloud audio by default.
+methods:
+  public boolean initialized()
+  protected void initialize()  // Intializes Soloud audio.
+  public Sound newSound(Fi file)  // Loads a sound, logging an error and returning a dummy track upon failure.
+  public Music newMusic(Fi file)  // Loads music, logging an error and returning a dummy track upon failure.
+  public boolean isPlaying(int soundId)
+  public void protect(int voice, boolean protect)
+  public int play(AudioSource source, float volume, float pitch, float pan, boolean loop)
+  public void stop(AudioSource source) / public void stop(int soundId)
+  public void setPaused(int soundId, boolean paused)
+  public void setLooping(int soundId, boolean looping)
+  public void setPitch(int soundId, float pitch)
+  public void setVolume(int soundId, float volume)
+  public void set(int soundId, float pan, float volume)
+  public void fadeFilterParam(int voice, int filter, int attribute, float value, float timeSec)
+  public void setFilterParam(int voice, int filter, int attribute, float value)
+  public void setFilter(int index, AudioFilter filter)
+  public int countPlaying(AudioSource source)
+  public int countTotalPlaying()
+  public void dispose()
+
+AudioBus.java
+Java class extends arc.audio.AudioSource
+fields:
+  public int id
+ctors:
+  public AudioBus()
+methods:
+  public void setFilter(int index, AudioFilter filter)
+  AudioBus init()
+  public boolean playing()
+  public void play()
+  public void stop()
+  public float getLength()
+  public void fadeFilterParam(int filter, int attribute, float value, float timeSec)
+  public void setFilterParam(int filter, int attribute, float value)
+  public void setVolume(float volume)
+
+AudioFilter.java
+Java class (abstract)
+fields:
+  protected long handle
+ctors:
+  protected AudioFilter(long handle)
+
+AudioSource.java
+Java class (abstract) implements arc.util.Disposable
+fields:
+  protected long handle
+  protected int maxConcurrent
+  protected float minInterruptAbsolute
+  protected float priority
+methods:
+  public boolean valid()
+  public void setFilter(int index, AudioFilter filter) / public void setFilter(AudioFilter filter)
+  protected void setParamsAfterLoad()
+  public void setPriority(float priority)  // Sets the priority of this source.
+  public void setMaxConcurrent(int max)  // Sets the priority of this source.
+  public void setConcurrentGroup(int group)  // Sets the group ID of this source, for which maxConcurrent will be enforced.
+  public void setMinConcurrentInterrupt(float seconds)  // Sets the minimum playtime (in seconds) that a sound must have in order to be interrupted when its concurrent limit is reached.
+  public void setMinConcurrentInterruptFraction(float min, float fraction)  // Sets the minimum playtime (in seconds) that a sound must have in order to be interrupted when its concurrent limit is reached.
+  public int countPlaying()  // @return number of currently playing instances
+  public void setSingleInstance(boolean singleInstance)
+  public void stop()
+  public abstract float getLength()
+  public boolean isLazy()  // @return true if this is a lazily loaded source (only loaded once played)
+  public void dispose()
+
+Filters.java
+Java class
+fields:
+  public static final int paramWet
+inner-class: BiquadFilter extends arc.audio.AudioFilter
+  ctors:
+    public BiquadFilter()
+  methods:
+    public void set(int type, float frequency, float resonance)
+inner-class: EchoFilter extends arc.audio.AudioFilter
+  ctors:
+    public EchoFilter()
+  methods:
+    public void set(float delay, float decay, float filter)
+inner-class: LofiFilter extends arc.audio.AudioFilter
+  ctors:
+    public LofiFilter()
+  methods:
+    public void set(float sampleRate, float depth)
+inner-class: FlangerFilter extends arc.audio.AudioFilter
+  ctors:
+    public FlangerFilter()
+  methods:
+    public void set(float delay, float frequency)
+inner-class: WaveShaperFilter extends arc.audio.AudioFilter
+  ctors:
+    public WaveShaperFilter()
+  methods:
+    public void set(float amount)
+inner-class: BassBoostFilter extends arc.audio.AudioFilter
+  ctors:
+    public BassBoostFilter()
+  methods:
+    public void set(float amount)
+inner-class: RobotizeFilter extends arc.audio.AudioFilter
+  ctors:
+    public RobotizeFilter()
+  methods:
+    public void set(float freq, int waveform)
+inner-class: FreeverbFilter extends arc.audio.AudioFilter
+  ctors:
+    public FreeverbFilter()
+  methods:
+    public void set(float mode, float roomSize, float damp, float width)
+
+Music.java
+Java class extends arc.audio.AudioSource
+// <p>
+fields:
+  public Fi file
+  int voice
+  boolean looping
+  float volume
+ctors:
+  public Music(Fi file) / public Music()  // Loads music from a file.
+methods:
+  public static Music create(Fi file)  // Creates music from an external file without copying it.
+  public void load(byte[] bytes) throws Exception / public void load(Fi file) throws Exception
+  public void play()
+  public void pause(boolean pause)
+  public void stop()
+  public boolean isPlaying()
+  public boolean isLooping()
+  public void setLooping(boolean isLooping)
+  public float getVolume()
+  public void setVolume(float volume)
+  public void set(float pan, float volume)
+  public float getPosition()
+  public void setPosition(float position)
+  public float getLength()  // @return length in seconds
+  public String toString()
+  protected static Fi[] caches(String name) throws IOException
+
+RandomSound.java
+Java class extends arc.audio.Sound
+// Plays a sound from an array at random.
+fields:
+  public Sound sounds
+ctors:
+  public RandomSound(Sound sounds) / public RandomSound()
+methods:
+  public void load(Fi file)
+  public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus)
+
+Soloud.java
+Java class
+// JNI bindings for the Soloud library.
+methods:
+  static native void init()
+  static native void deinit()
+  static native String backendString()
+  static native int backendId()
+  static native int backendChannels()
+  static native int backendSamplerate()
+  static native int backendBufferSize()
+  static native int version()
+  static native int activeVoiceCount()
+  static native void stopAll()
+  static native void pauseAll(boolean paused)
+  static native void biquadSet(long handle, int type, float frequency, float resonance)
+  static native void echoSet(long handle, float delay, float decay, float filter)
+  static native void lofiSet(long handle, float sampleRate, float bitDepth)
+  static native void flangerSet(long handle, float delay, float frequency)
+  static native void waveShaperSet(long handle, float amount)
+  static native void bassBoostSet(long handle, float amount)
+  static native void robotizeSet(long handle, float freq, int waveform)
+  static native void freeverbSet(long handle, float mode, float roomSize, float damp, float width)
+  static native long filterBiquad()
+  static native long filterEcho()  // return (jlong)(new BiquadResonantFilter());
+  static native long filterLofi()  // return (jlong)(new EchoFilter());
+  static native long filterFlanger()  // return (jlong)(new LofiFilter());
+  static native long filterBassBoost()  // return (jlong)(new FlangerFilter());
+  static native long filterWaveShaper()  // return (jlong)(new BassboostFilter());
+  static native long filterRobotize()  // return (jlong)(new WaveShaperFilter());
+  static native long filterFreeverb()  // return (jlong)(new RobotizeFilter());
+  static native void setGlobalFilter(int index, long handle)
+  static native void filterFade(int voice, int filter, int attribute, float value, float timeSec)
+  static native void filterSet(int voice, int filter, int attribute, float value)
+  static native long busNew()
+  static native void idSeek(int id, float seconds)
+  static native void idVolume(int id, float volume)
+  static native float idGetVolume(int id)
+  static native void idPan(int id, float pan)
+  static native void idPitch(int id, float pitch)
+  static native void idPause(int id, boolean pause)
+  static native boolean idGetPause(int voice)
+  static native void idProtected(int id, boolean protect)
+  static native void idStop(int voice)
+  static native void idLooping(int voice, boolean looping)
+  static native boolean idGetLooping(int voice)
+  static native float idPosition(int voice)
+  static native boolean idValid(int voice)
+  static native long wavLoadBytes(byte[] bytes, int length)
+  static native long wavLoadFile(String path)
+  static native long streamLoadBytes(byte[] bytes, int length)
+  static native long streamLoadFile(String path)
+  static native double streamLength(long handle)
+  static native double wavLength(long handle)
+  static native void sourceDestroy(long handle)
+  static native void sourceInaudible(long handle, boolean tick, boolean play)
+  static native int sourcePlay(long handle) / static native int sourcePlay(long handle, float volume, float pitch, float pan, boolean loop)
+  static native int sourceCount(long handle)
+  static native int sourcePlayBus(long handle, long busHandle, float volume, float pitch, float pan, boolean loop)
+  static native void sourcePriority(long handle, float priority)
+  static native void sourceMinConcurrentInterrupt(long handle, float value)
+  static native void sourceMaxConcurrent(long handle, int maxConcurrent)
+  static native void sourceConcurrentGroup(long handle, int group)
+  static native void sourceLoop(long handle, boolean loop)
+  static native void sourceSingleInstance(long handle, boolean single)
+  static native void sourceStop(long handle)
+  static native void sourceFilter(long handle, int index, long filter)
+  static native int pauseDevice()
+  static native int resumeDevice()
+
+Sound.java
+Java class extends arc.audio.AudioSource
+// <p>
+fields:
+  public AudioBus bus
+  public Fi file
+  float falloffOffset
+  long minInterval
+  long lastTimePlayed
+  int lastVoice
+  float lastVolume
+  boolean stream
+  boolean lazyLoad
+  volatile boolean currentlyLoading
+ctors:
+  public Sound() / public Sound(Fi file)  // Creates an empty sound.
+methods:
+  public static Sound createStream(Fi file)  // Creates music from an external file without copying it.
+  public static Sound createLazy(Fi file)  // Creates a sound that only loads itself once played.
+  public void load(byte[] data, boolean stream) / public void load(Fi file)
+  public void loadLazy(Fi file)
+  public boolean isLazy()
+  public void checkLazyLoad(Runnable complete)
+  public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus) / public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame) / public int play() / public int play(AudioBus bus) / public int play(float volume) / public int play(float volume, float pitch, float pan, boolean loop) / public int play(float volume, float pitch, float pan)  // Plays the sound.
+  public void setBus(AudioBus bus)  // Sets the bus that will be used for the next play of this SFX.
+  public float calcPan(float x, float y)
+  public float calcVolume(float x, float y)
+  public float calcFalloff(float x, float y)
+  public int at(float x, float y, float pitch) / public int at(float x, float y, float pitch, float volume, boolean checkFrame) / public int at(float x, float y, float pitch, float volume, AudioBus bus) / public int at(Position pos, float pitch, float volume) / public int at(float x, float y, float pitch, float volume) / public int at(float x, float y) / public int at(Position pos) / public int at(Position pos, float pitch)  // Plays this sound at a certain position, with correct panning and volume applied.
+  public int loop() / public int loop(float volume) / public int loop(float volume, float pitch, float pan)  // Plays the sound, looping.
+  public float getLength()  // @return length in seconds
+  public void setMinInterval(long interval)  // Sets the minimum interval for playbacks of this sound, in milliseconds.
+  public void setFalloffOffset(float falloffOffset)
+  public String toString()
+

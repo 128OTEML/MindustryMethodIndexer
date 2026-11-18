@@ -1,0 +1,4806 @@
+[ {
+  "file" : "Damage.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : "Utility class for damaging in an area.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final UnitDamageEvent bulletDamageEvent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bulletDamageEvent",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Rect rect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rect",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Rect hitrect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitrect",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec2 vec",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vec",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final IntSet collidedBlocks",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "collidedBlocks",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final IntFloatMap damages",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "damages",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Seq<Collided> collided",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "collided",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Pool<Collided> collidePool",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "collidePool",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Seq<Building> builds",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "builds",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final FloatSeq distances",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "distances",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Tile furthest",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "furthest",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float maxDst",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxDst",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 38,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Building tmpBuilding",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpBuilding",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Unit tmpUnit",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tmpUnit",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 40,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source) / public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source, Color effectColor)",
+    "desc" : null,
+    "overloads" : [ "public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source)", "public static void applySuppression(Team team, float x, float y, float range, float reload, float maxDelay, float applyParticleChance, Position source, Color effectColor)" ],
+    "name" : "applySuppression",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "reload",
+      "type" : "float"
+    }, {
+      "name" : "maxDelay",
+      "type" : "float"
+    }, {
+      "name" : "applyParticleChance",
+      "type" : "float"
+    }, {
+      "name" : "source",
+      "type" : "Position"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ "mindustry.entities.Damage.applySuppression(mindustry.game.Team, float, float, float, float, float, float, arc.math.geom.Position, arc.graphics.Color)", "arc.struct.Seq.clear()", "mindustry.ai.BlockIndexer.eachBlock(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>, arc.func.Cons<mindustry.gen.Building>)", "mindustry.gen.Building.applyHealSuppression(float, arc.graphics.Color)", "mindustry.gen.Building.wasRecentlyHealed(float)", "arc.struct.Seq.add(T)", "arc.math.Mathf.chance(double)", "arc.util.Time.run(float, java.lang.Runnable)", "arc.math.Mathf.random(float)", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color, java.lang.Object)", "arc.math.Mathf.range(float)" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx, float baseShake) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx) / public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx, float baseShake)",
+    "desc" : null,
+    "overloads" : [ "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage)", "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx)", "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, Effect explosionFx, float baseShake)", "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam)", "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx)", "public static void dynamicExplosion(float x, float y, float flammability, float explosiveness, float power, float radius, boolean damage, boolean fire, Team ignoreTeam, Effect explosionFx, float baseShake)" ],
+    "name" : "dynamicExplosion",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "flammability",
+      "type" : "float"
+    }, {
+      "name" : "explosiveness",
+      "type" : "float"
+    }, {
+      "name" : "power",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 73,
+    "calls" : [ "mindustry.entities.Damage.dynamicExplosion(float, float, float, float, float, float, boolean, boolean, mindustry.game.Team, mindustry.entities.Effect)", "mindustry.entities.Damage.dynamicExplosion(float, float, float, float, float, float, boolean, boolean, mindustry.game.Team, mindustry.entities.Effect, float)", "arc.math.Mathf.clamp(float, float, float)", "arc.math.Mathf.clamp(int, int, int)", "arc.math.Mathf.pow(float, float)", "arc.util.Time.run(float, java.lang.Runnable)", "arc.math.Mathf.random(float)", "mindustry.entities.Lightning.create(mindustry.game.Team, arc.graphics.Color, float, float, float, float, int)", "arc.math.Mathf.range(int)", "mindustry.gen.Call.createBullet(mindustry.entities.bullet.BulletType, mindustry.game.Team, float, float, float, float, float, float)", "mindustry.ai.BlockIndexer.getEnemy(mindustry.game.Team, mindustry.world.meta.BlockFlag)", "arc.struct.Seq.isEmpty()", "arc.struct.Seq.contains(arc.func.Boolf<T>)", "mindustry.world.blocks.ExplosionShield.absorbExplosion(float, float, float)", "mindustry.entities.Damage.damage(mindustry.game.Team, float, float, float, float, boolean)", "mindustry.entities.Effect.at(float, float)", "arc.math.Mathf.range(float)", "java.lang.Math.min(float, float)", "mindustry.entities.Effect.shake(float, float, float, float)", "mindustry.entities.Effect.at(float, float, float)" ],
+    "callCount" : 20
+  }, {
+    "kind" : "method",
+    "signature" : "public static void createIncend(float x, float y, float range, int amount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createIncend",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "amount",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 135,
+    "calls" : [ "arc.math.Mathf.range(float)", "mindustry.core.World.tileWorld(float, float)", "mindustry.entities.Fires.create(mindustry.world.Tile)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building findAbsorber(Team team, float x1, float y1, float x2, float y2)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findAbsorber",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x1",
+      "type" : "float"
+    }, {
+      "name" : "y1",
+      "type" : "float"
+    }, {
+      "name" : "x2",
+      "type" : "float"
+    }, {
+      "name" : "y2",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 146,
+    "calls" : [ "mindustry.core.World.raycast(int, int, int, int, arc.math.geom.Geometry.Raycaster)", "mindustry.core.World.toTile(float)", "mindustry.core.World.build(int, int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static float findLength(Bullet b, float length, boolean laser, int pierceCap)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findLength",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "b",
+      "type" : "Bullet"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    }, {
+      "name" : "laser",
+      "type" : "boolean"
+    }, {
+      "name" : "pierceCap",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 155,
+    "calls" : [ "mindustry.entities.Damage.findPierceLength(mindustry.gen.Bullet, int, boolean, float)", "mindustry.entities.Damage.findLaserLength(mindustry.gen.Bullet, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static float findLaserLength(Bullet b, float length)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "findLaserLength",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "b",
+      "type" : "Bullet"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 165,
+    "calls" : [ "arc.math.geom.Vec2.trnsExact(float, float)", "mindustry.gen.Bullet.rotation()", "mindustry.core.World.raycast(int, int, int, int, arc.math.geom.Geometry.Raycaster)", "mindustry.gen.Bullet.tileX()", "mindustry.gen.Bullet.tileY()", "mindustry.core.World.toTile(float)", "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.team()", "mindustry.gen.Building.absorbLasers()", "java.lang.Math.max(float, float)", "arc.math.geom.Position.dst(float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public static float findPierceLength(Bullet b, int pierceCap, float length) / public static float findPierceLength(Bullet b, int pierceCap, boolean laser, float length)",
+    "desc" : null,
+    "overloads" : [ "public static float findPierceLength(Bullet b, int pierceCap, float length)", "public static float findPierceLength(Bullet b, int pierceCap, boolean laser, float length)" ],
+    "name" : "findPierceLength",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "b",
+      "type" : "Bullet"
+    }, {
+      "name" : "pierceCap",
+      "type" : "int"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 176,
+    "calls" : [ "mindustry.entities.Damage.findPierceLength(mindustry.gen.Bullet, int, boolean, float)", "arc.math.geom.Vec2.trnsExact(float, float)", "mindustry.gen.Bullet.rotation()", "arc.math.geom.Rect.grow(float)", "arc.math.geom.Rect.normalize()", "arc.math.geom.Rect.setSize(float, float)", "arc.math.geom.Rect.setPosition(float, float)", "arc.struct.FloatSeq.clear()", "mindustry.core.World.raycast(int, int, int, int, arc.math.geom.Geometry.Raycaster)", "mindustry.gen.Bullet.tileX()", "mindustry.gen.Bullet.tileY()", "mindustry.core.World.toTile(float)", "mindustry.core.World.build(int, int)", "mindustry.gen.Building.collide(mindustry.gen.Bullet)", "mindustry.gen.Bullet.checkUnderBuild(mindustry.gen.Building, float, float)", "arc.struct.FloatSeq.add(float)", "arc.math.geom.Position.dst(arc.math.geom.Position)", "mindustry.gen.Building.absorbLasers()", "java.lang.Math.min(float, float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.hittable()", "arc.math.geom.Intersector.intersectSegmentRectangle(float, float, float, float, arc.math.geom.Rect)", "arc.struct.FloatSeq.sort()", "java.lang.Math.max(float, float)", "arc.struct.FloatSeq.get(int)" ],
+    "callCount" : 27
+  }, {
+    "kind" : "method",
+    "signature" : "public static float collideLaser(Bullet b, float length, boolean large, boolean laser, int pierceCap)",
+    "desc" : "Collides a bullet with blocks in a laser, taking into account absorption blocks.",
+    "overloads" : null,
+    "name" : "collideLaser",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "b",
+      "type" : "Bullet"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    }, {
+      "name" : "large",
+      "type" : "boolean"
+    }, {
+      "name" : "laser",
+      "type" : "boolean"
+    }, {
+      "name" : "pierceCap",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ "mindustry.entities.Damage.findPierceLength(mindustry.gen.Bullet, int, boolean, float)", "mindustry.entities.Damage.collideLine(mindustry.gen.Bullet, mindustry.game.Team, float, float, float, float, boolean, boolean, int)", "mindustry.gen.Bullet.rotation()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser) / public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser, int pierceCap)",
+    "desc" : "Damages entities in a line.",
+    "overloads" : [ "public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length)", "public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large)", "public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser)", "public static void collideLine(Bullet hitter, Team team, float x, float y, float angle, float length, boolean large, boolean laser, int pierceCap)" ],
+    "name" : "collideLine",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "hitter",
+      "type" : "Bullet"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "angle",
+      "type" : "float"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 232,
+    "calls" : [ "mindustry.entities.Damage.collideLine(mindustry.gen.Bullet, mindustry.game.Team, float, float, float, float, boolean)", "mindustry.entities.Damage.collideLine(mindustry.gen.Bullet, mindustry.game.Team, float, float, float, float, boolean, boolean)", "mindustry.entities.Damage.collideLine(mindustry.gen.Bullet, mindustry.game.Team, float, float, float, float, boolean, boolean, int)", "mindustry.entities.Damage.findLength(mindustry.gen.Bullet, float, boolean, int)", "arc.struct.IntSet.clear()", "arc.math.geom.Vec2.trnsExact(float, float)", "arc.math.geom.Vec2.set(float, float)", "arc.math.geom.Vec2.add(arc.math.geom.Vec2)", "arc.math.geom.Vec2.set(arc.math.geom.Vec2)", "mindustry.core.World.raycastEachNoDiagonalWorld(float, float, float, float, arc.math.geom.Geometry.Raycaster)", "mindustry.core.World.build(int, int)", "mindustry.gen.Building.collide(mindustry.gen.Bullet)", "mindustry.gen.Bullet.checkUnderBuild(mindustry.gen.Building, float, float)", "mindustry.entities.bullet.BulletType.testCollision(mindustry.gen.Bullet, mindustry.gen.Building)", "arc.struct.IntSet.add(int)", "mindustry.gen.Building.pos()", "arc.struct.Seq.add(T)", "mindustry.entities.Damage.Collided.set(float, float, mindustry.gen.Teamc)", "arc.util.pooling.Pool.obtain()", "mindustry.core.World.tile(int, int)", "arc.math.geom.Intersector.intersectSegmentRectangle(arc.math.geom.Vec2, arc.math.geom.Vec2, arc.math.geom.Rect)", "mindustry.world.Tile.getBounds(arc.math.geom.Rect)", "arc.math.geom.Rect.grow(float)", "arc.math.geom.Rect.normalize()", "arc.math.geom.Rect.setSize(float, float)", "arc.math.geom.Rect.setPosition(float, float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.hittable()", "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "arc.math.geom.Geometry.raycastRect(float, float, float, float, arc.math.geom.Rect)", "arc.struct.Seq.sort(arc.func.Floatf<? super T>)", "arc.math.geom.Position.dst2(float, float)", "arc.struct.Seq.each(arc.func.Cons<? super T>)", "mindustry.gen.Hitboxc.collision(mindustry.gen.Hitboxc, float, float)", "mindustry.gen.Bullet.collision(mindustry.gen.Hitboxc, float, float)", "mindustry.gen.Building.collision(mindustry.gen.Bullet)", "mindustry.entities.bullet.BulletType.hit(mindustry.gen.Bullet, float, float)", "mindustry.entities.bullet.BulletType.hitTile(mindustry.gen.Bullet, mindustry.gen.Building, float, float, float, boolean)", "arc.util.pooling.Pool.freeAll(arc.struct.Seq<T>)", "arc.struct.Seq.clear()" ],
+    "callCount" : 41
+  }, {
+    "kind" : "method",
+    "signature" : "public static void collidePoint(Bullet hitter, Team team, Effect effect, float x, float y)",
+    "desc" : "Damages entities on a point.",
+    "overloads" : null,
+    "name" : "collidePoint",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "hitter",
+      "type" : "Bullet"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "effect",
+      "type" : "Effect"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 337,
+    "calls" : [ "mindustry.core.World.build(int, int)", "mindustry.core.World.toTile(float)", "mindustry.gen.Building.collide(mindustry.gen.Bullet)", "mindustry.gen.Building.collision(mindustry.gen.Bullet)", "mindustry.entities.bullet.BulletType.hit(mindustry.gen.Bullet, float, float)", "mindustry.entities.bullet.BulletType.testCollision(mindustry.gen.Bullet, mindustry.gen.Building)", "mindustry.entities.bullet.BulletType.hitTile(mindustry.gen.Bullet, mindustry.gen.Building, float, float, float, boolean)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "arc.math.geom.Rect.setCentered(float, float, float)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.hittable()", "mindustry.gen.Hitboxc.collision(mindustry.gen.Hitboxc, float, float)", "mindustry.gen.Bullet.collision(mindustry.gen.Hitboxc, float, float)" ],
+    "callCount" : 13
+  }, {
+    "kind" : "method",
+    "signature" : "public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length)",
+    "desc" : "Casts forward in a line.",
+    "overloads" : null,
+    "name" : "linecast",
+    "returnType" : "Healthc",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "hitter",
+      "type" : "Bullet"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "angle",
+      "type" : "float"
+    }, {
+      "name" : "length",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 369,
+    "calls" : [ "arc.math.geom.Vec2.trns(float, float)", "mindustry.core.World.raycastEachWorld(float, float, float, float, arc.math.geom.Geometry.Raycaster)", "mindustry.core.World.build(int, int)", "arc.math.geom.Rect.setSize(float, float)", "arc.math.geom.Rect.setPosition(float, float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "arc.math.geom.Position.dst2(float, float)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.targetable(mindustry.game.Team)", "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "arc.math.geom.Geometry.raycastRect(float, float, float, float, arc.math.geom.Rect)", "arc.math.Mathf.dst2(float, float, float, float)", "mindustry.gen.Building.getX()", "mindustry.gen.Building.getY()" ],
+    "callCount" : 14
+  }, {
+    "kind" : "method",
+    "signature" : "public static void damageUnits(Team team, float x, float y, float size, float damage, Boolf<Unit> predicate, Cons<Unit> acceptor)",
+    "desc" : "Damages all entities and blocks in a radius that are enemies of the team.",
+    "overloads" : null,
+    "name" : "damageUnits",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "size",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    }, {
+      "name" : "predicate",
+      "type" : "Boolf<Unit>"
+    }, {
+      "name" : "acceptor",
+      "type" : "Cons<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 436,
+    "calls" : [ "arc.func.Boolf.get(T)", "mindustry.gen.Unitc.hittable()", "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "mindustry.gen.Healthc.damage(float)", "arc.func.Cons.get(T)", "arc.math.geom.Rect.setCenter(float, float)", "arc.math.geom.Rect.setSize(float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.entities.Units.nearby(arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static void damage(float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage) / public static void damage(Team team, float x, float y, float radius, float damage, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source) / public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source, float armorMult)",
+    "desc" : "Damages everything in a radius.",
+    "overloads" : [ "public static void damage(float x, float y, float radius, float damage)", "public static void damage(Team team, float x, float y, float radius, float damage)", "public static void damage(Team team, float x, float y, float radius, float damage, boolean air, boolean ground)", "public static void damage(Team team, float x, float y, float radius, float damage, boolean complete)", "public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground)", "public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source)", "public static void damage(Team team, float x, float y, float radius, float damage, boolean complete, boolean air, boolean ground, boolean scaled, Bullet source, float armorMult)" ],
+    "name" : "damage",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 457,
+    "calls" : [ "mindustry.entities.Damage.damage(mindustry.game.Team, float, float, float, float, boolean)", "mindustry.entities.Damage.damage(mindustry.game.Team, float, float, float, float, boolean, boolean, boolean)", "mindustry.entities.Damage.damage(mindustry.game.Team, float, float, float, float, boolean, boolean, boolean, boolean, mindustry.gen.Bullet)", "mindustry.entities.Damage.damage(mindustry.game.Team, float, float, float, float, boolean, boolean, boolean, boolean, mindustry.gen.Bullet, float)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.hittable()", "arc.math.geom.Position.within(float, float, float)", "mindustry.entities.Damage.calculateDamage(float, float, float)", "java.lang.Math.max(float, float)", "arc.math.geom.Position.dst(float, float)", "mindustry.gen.Healthc.damageArmorMult(float, float)", "mindustry.gen.Healthc.damage(float)", "arc.Events.fire(T)", "mindustry.game.EventType.UnitDamageEvent.set(mindustry.gen.Unit, mindustry.gen.Bullet)", "mindustry.entities.units.UnitController.hit(mindustry.gen.Bullet)", "mindustry.gen.Unitc.controller()", "arc.math.geom.Vec2.len()", "arc.math.geom.Vec2.set(float, float)", "arc.math.geom.Vec2.add(arc.math.geom.Vec2)", "arc.math.geom.Vec2.setLength(float)", "mindustry.gen.Physicsc.mass()", "mindustry.gen.Unitc.isPlayer()", "arc.Events.fire(java.lang.Enum<T>)", "arc.math.geom.Rect.setCenter(float, float)", "arc.math.geom.Rect.setSize(float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.entities.Units.nearby(arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.entities.Damage.tileDamage(mindustry.game.Team, int, int, float, float, mindustry.gen.Bullet)", "mindustry.core.World.toTile(float)", "mindustry.entities.Damage.completeDamage(mindustry.game.Team, float, float, float, float)", "mindustry.game.EventType.UnitBulletDestroyEvent.UnitBulletDestroyEvent(mindustry.gen.Unit, mindustry.gen.Bullet)" ],
+    "callCount" : 31
+  }, {
+    "kind" : "method",
+    "signature" : "public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground) / public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground, float chance)",
+    "desc" : null,
+    "overloads" : [ "public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground)", "public static void status(Team team, float x, float y, float radius, StatusEffect effect, float duration, boolean air, boolean ground, float chance)" ],
+    "name" : "status",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "effect",
+      "type" : "StatusEffect"
+    }, {
+      "name" : "duration",
+      "type" : "float"
+    }, {
+      "name" : "air",
+      "type" : "boolean"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 471,
+    "calls" : [ "mindustry.entities.Damage.status(mindustry.game.Team, float, float, float, mindustry.type.StatusEffect, float, boolean, boolean, float)", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "mindustry.gen.Unitc.hittable()", "arc.math.geom.Position.within(float, float, float)", "arc.math.Mathf.chance(double)", "mindustry.gen.Statusc.apply(mindustry.type.StatusEffect, float)", "arc.math.geom.Rect.setCenter(float, float)", "arc.math.geom.Rect.setSize(float)", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.entities.Units.nearby(arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static void tileDamage(Team team, int x, int y, float baseRadius, float damage) / public static void tileDamage(Team team, int tx, int ty, float baseRadius, float damage, Bullet source)",
+    "desc" : null,
+    "overloads" : [ "public static void tileDamage(Team team, int x, int y, float baseRadius, float damage)", "public static void tileDamage(Team team, int tx, int ty, float baseRadius, float damage, Bullet source)" ],
+    "name" : "tileDamage",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    }, {
+      "name" : "baseRadius",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 557,
+    "calls" : [ "mindustry.entities.Damage.tileDamage(mindustry.game.Team, int, int, float, float, mindustry.gen.Bullet)", "arc.util.Time.run(float, java.lang.Runnable)", "arc.math.Mathf.clamp(int, int, int)", "mindustry.core.World.width()", "mindustry.core.World.height()", "mindustry.core.World.build(int, int)", "java.lang.Math.min(float, float)", "mindustry.gen.Building.damage(mindustry.gen.Bullet, mindustry.game.Team, float)", "mindustry.gen.Building.damage(mindustry.game.Team, float)", "arc.math.Mathf.ceil(float)", "arc.struct.IntFloatMap.clear()", "java.lang.Math.cos(double)", "java.lang.Math.sin(double)", "java.lang.Math.abs(int)", "arc.math.Mathf.dst2(float, float, float, float)", "arc.math.geom.Point2.pack(int, int)", "arc.struct.IntFloatMap.put(int, float)", "java.lang.Math.max(float, float)", "arc.struct.IntFloatMap.get(int)", "Point2.x", "Point2.y", "build.damage" ],
+    "callCount" : 22
+  }, {
+    "kind" : "method",
+    "signature" : "private static void completeDamage(Team team, float x, float y, float radius, float damage)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "completeDamage",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 643,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "java.lang.Math.round(float)", "mindustry.world.Tile.team()", "mindustry.gen.Building.damage(mindustry.game.Team, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private static float calculateDamage(float dist, float radius, float damage)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "calculateDamage",
+    "returnType" : "float",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "dist",
+      "type" : "float"
+    }, {
+      "name" : "radius",
+      "type" : "float"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 656,
+    "calls" : [ "arc.math.Mathf.lerp(float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static float applyArmor(float damage, float armor)",
+    "desc" : "@return resulting armor calculated based off of damage",
+    "overloads" : null,
+    "name" : "applyArmor",
+    "returnType" : "float",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "damage",
+      "type" : "float"
+    }, {
+      "name" : "armor",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 663,
+    "calls" : [ "java.lang.Math.max(float, float)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "Collided implements arc.util.pooling.Pool.Poolable",
+    "simpleName" : "Collided",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public float x",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "x",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 668,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Teamc target",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "target",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 669,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public Collided set(float x, float y, Teamc target)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "Collided",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "target",
+        "type" : "Teamc"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 671,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public void reset()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 678,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Effect.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float shakeFalloff",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shakeFalloff",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final EffectContainer container",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "container",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final Seq<Effect> all",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "all",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private transient boolean initialized",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "initialized",
+    "returnType" : null,
+    "modifiers" : [ "private", "transient" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public final int id",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "id",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public Cons<EffectContainer> renderer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "renderer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float lifetime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lifetime",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 31,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float clip",
+    "desc" : "Clip size.",
+    "overloads" : null,
+    "name" : "clip",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float startDelay",
+    "desc" : "Time delay before the effect starts",
+    "overloads" : null,
+    "name" : "startDelay",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 35,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float baseRotation",
+    "desc" : "Amount added to rotation",
+    "overloads" : null,
+    "name" : "baseRotation",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 37,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean followParent",
+    "desc" : "If true, parent unit is data are followed.",
+    "overloads" : null,
+    "name" : "followParent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 39,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean rotWithParent",
+    "desc" : "If this and followParent are true, the effect will offset and rotate with the parent's rotation.",
+    "overloads" : null,
+    "name" : "rotWithParent",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 41,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float layer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layer",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 43,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float layerDuration",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layerDuration",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 44,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Effect(float life, float clipsize, Cons<EffectContainer> renderer) / public Effect(float life, Cons<EffectContainer> renderer) / public Effect()",
+    "desc" : "for custom implementations",
+    "overloads" : [ "public Effect(float life, float clipsize, Cons<EffectContainer> renderer)", "public Effect(float life, Cons<EffectContainer> renderer)", "public Effect()" ],
+    "name" : "Effect",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "life",
+      "type" : "float"
+    }, {
+      "name" : "clipsize",
+      "type" : "float"
+    }, {
+      "name" : "renderer",
+      "type" : "Cons<EffectContainer>"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : [ "arc.struct.Seq.add(T)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Effect startDelay(float d)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startDelay",
+    "returnType" : "Effect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "d",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 64,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 69,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Effect followParent(boolean follow)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "followParent",
+    "returnType" : "Effect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "follow",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Effect rotWithParent(boolean follow)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rotWithParent",
+    "returnType" : "Effect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "follow",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 76,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Effect layer(float l) / public Effect layer(float l, float duration)",
+    "desc" : null,
+    "overloads" : [ "public Effect layer(float l)", "public Effect layer(float l, float duration)" ],
+    "name" : "layer",
+    "returnType" : "Effect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "l",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 81,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Effect baseRotation(float d)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "baseRotation",
+    "returnType" : "Effect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "d",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public WrapEffect wrap(Color color) / public WrapEffect wrap(Color color, float rotation)",
+    "desc" : null,
+    "overloads" : [ "public WrapEffect wrap(Color color)", "public WrapEffect wrap(Color color, float rotation)" ],
+    "name" : "wrap",
+    "returnType" : "WrapEffect",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 97,
+    "calls" : [ "mindustry.entities.effect.WrapEffect.WrapEffect(mindustry.entities.Effect, arc.graphics.Color)", "mindustry.entities.effect.WrapEffect.WrapEffect(mindustry.entities.Effect, arc.graphics.Color, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void at(Position pos) / public void at(Position pos, boolean parentize) / public void at(Position pos, float rotation) / public void at(float x, float y) / public void at(float x, float y, float rotation) / public void at(float x, float y, float rotation, Color color) / public void at(float x, float y, Color color) / public void at(float x, float y, float rotation, Color color, Object data) / public void at(float x, float y, float rotation, Object data)",
+    "desc" : null,
+    "overloads" : [ "public void at(Position pos)", "public void at(Position pos, boolean parentize)", "public void at(Position pos, float rotation)", "public void at(float x, float y)", "public void at(float x, float y, float rotation)", "public void at(float x, float y, float rotation, Color color)", "public void at(float x, float y, Color color)", "public void at(float x, float y, float rotation, Color color, Object data)", "public void at(float x, float y, float rotation, Object data)" ],
+    "name" : "at",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pos",
+      "type" : "Position"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 105,
+    "calls" : [ "mindustry.entities.Effect.create(float, float, float, arc.graphics.Color, java.lang.Object)", "arc.math.geom.Position.getX()", "arc.math.geom.Position.getY()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean shouldCreate()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "shouldCreate",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 141,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void create(float x, float y, float rotation, Color color, Object data)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "create",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "rotation",
+      "type" : "float"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "data",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 145,
+    "calls" : [ "mindustry.entities.Effect.shouldCreate()", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "arc.graphics.Camera.bounds(arc.math.geom.Rect)", "arc.math.geom.Rect.setCentered(float, float, float)", "mindustry.entities.Effect.init()", "mindustry.entities.Effect.add(float, float, float, arc.graphics.Color, java.lang.Object)", "arc.util.Time.run(float, java.lang.Runnable)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "protected void add(float x, float y, float rotation, Color color, Object data)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "add",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "rotation",
+      "type" : "float"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "data",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 162,
+    "calls" : [ "mindustry.gen.EffectState.create()", "mindustry.gen.EffectState.set(float, float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.gen.EffectState.add()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public float render(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data) / public void render(EffectContainer e)",
+    "desc" : null,
+    "overloads" : [ "public float render(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data)", "public void render(EffectContainer e)" ],
+    "name" : "render",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "life",
+      "type" : "float"
+    }, {
+      "name" : "lifetime",
+      "type" : "float"
+    }, {
+      "name" : "rotation",
+      "type" : "float"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "data",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 177,
+    "calls" : [ "mindustry.entities.Effect.EffectContainer.set(int, arc.graphics.Color, float, float, float, float, float, java.lang.Object)", "arc.graphics.g2d.Draw.z(float)", "arc.graphics.g2d.Draw.reset()", "mindustry.entities.Effect.render(mindustry.entities.Effect.EffectContainer)", "arc.func.Cons.get(T)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static Effect get(int id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "get",
+    "returnType" : "Effect",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 191,
+    "calls" : [ "arc.struct.Seq.get(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private static void shake(float intensity, float duration) / public static void shake(float intensity, float duration, float x, float y) / public static void shake(float intensity, float duration, Position loc)",
+    "desc" : null,
+    "overloads" : [ "private static void shake(float intensity, float duration)", "public static void shake(float intensity, float duration, float x, float y)", "public static void shake(float intensity, float duration, Position loc)" ],
+    "name" : "shake",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "intensity",
+      "type" : "float"
+    }, {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 195,
+    "calls" : [ "mindustry.core.Renderer.shake(float, float)", "arc.math.geom.Vec2.dst(float, float)", "mindustry.entities.Effect.shake(float, float)", "arc.math.Mathf.clamp(float)", "mindustry.entities.Effect.shake(float, float, float, float)", "arc.math.geom.Position.getX()", "arc.math.geom.Position.getY()" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public static void floorDust(float x, float y, float size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "floorDust",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "size",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 214,
+    "calls" : [ "mindustry.core.World.tileWorld(float, float)", "mindustry.world.Tile.getFloorColor()", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void floorDustAngle(Effect effect, float x, float y, float angle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "floorDustAngle",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "effect",
+      "type" : "Effect"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "angle",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ "mindustry.core.World.tileWorld(float, float)", "mindustry.world.Tile.getFloorColor()", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void decal(TextureRegion region, float x, float y, float rotation) / public static void decal(TextureRegion region, float x, float y, float rotation, float lifetime, Color color)",
+    "desc" : null,
+    "overloads" : [ "public static void decal(TextureRegion region, float x, float y, float rotation)", "public static void decal(TextureRegion region, float x, float y, float rotation, float lifetime, Color color)" ],
+    "name" : "decal",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "region",
+      "type" : "TextureRegion"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "rotation",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 230,
+    "calls" : [ "mindustry.entities.Effect.decal(arc.graphics.g2d.TextureRegion, float, float, float, float, arc.graphics.Color)", "arc.graphics.g2d.TextureAtlas.isFound(arc.graphics.g2d.TextureRegion)", "mindustry.core.World.tileWorld(float, float)", "mindustry.world.blocks.environment.Floor.hasSurface()", "mindustry.world.Tile.floor()", "mindustry.gen.Decal.create()", "mindustry.gen.Decal.set(float, float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.gen.Decal.add()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public static void scorch(float x, float y, int size)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scorch",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "size",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 249,
+    "calls" : [ "arc.math.Mathf.clamp(int, int, int)", "arc.graphics.g2d.TextureAtlas.find(java.lang.String)", "arc.math.Mathf.random(int)", "mindustry.entities.Effect.decal(arc.graphics.g2d.TextureRegion, float, float, float, float, arc.graphics.Color)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void rubble(float x, float y, int blockSize)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rubble",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "blockSize",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 258,
+    "calls" : [ "Core.atlas.find", "arc.graphics.g2d.TextureAtlas.has(java.lang.String)", "arc.math.Mathf.random(int, int)", "mindustry.entities.Effect.decal(arc.graphics.g2d.TextureRegion, float, float, float, float, arc.graphics.Color)", "arc.math.Mathf.random(int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void shockwaveDust(float x, float y, float rad) / public static void shockwaveDust(float x, float y, float rad, float density)",
+    "desc" : null,
+    "overloads" : [ "public static void shockwaveDust(float x, float y, float rad)", "public static void shockwaveDust(float x, float y, float rad, float density)" ],
+    "name" : "shockwaveDust",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "rad",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 265,
+    "calls" : [ "mindustry.entities.Effect.shockwaveDust(float, float, float, float)", "java.lang.Math.max(int, int)", "arc.math.Mathf.ceil(float)", "arc.util.Time.run(float, java.lang.Runnable)", "arc.math.Mathf.chance(double)", "arc.math.Angles.trnsx(float, float)", "arc.math.Angles.trnsy(float, float)", "mindustry.core.World.tileWorld(float, float)", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "arc.math.Mathf.range(float)", "arc.graphics.Color.mul(float)", "arc.graphics.Color.set(arc.graphics.Color)", "mindustry.world.Tile.getFloorColor()" ],
+    "callCount" : 15
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "EffectContainer implements arc.math.Scaled",
+    "simpleName" : "EffectContainer",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public float x",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "x",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 292,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Color color",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "color",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 293,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public int id",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 294,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public Object data",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "data",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 295,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "private EffectContainer innerContainer",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "innerContainer",
+      "returnType" : null,
+      "modifiers" : [ "private" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 296,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public void set(int id, Color color, float life, float lifetime, float rotation, float x, float y, Object data)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "set",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "int"
+      }, {
+        "name" : "color",
+        "type" : "Color"
+      }, {
+        "name" : "life",
+        "type" : "float"
+      }, {
+        "name" : "lifetime",
+        "type" : "float"
+      }, {
+        "name" : "rotation",
+        "type" : "float"
+      }, {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      }, {
+        "name" : "data",
+        "type" : "Object"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 298,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public T data()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "data",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 309,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public EffectContainer inner()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "inner",
+      "returnType" : "EffectContainer",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 313,
+      "calls" : [ "mindustry.entities.Effect.EffectContainer.EffectContainer()" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public void scaled(float lifetime, Cons<EffectContainer> cons)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scaled",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "lifetime",
+        "type" : "float"
+      }, {
+        "name" : "cons",
+        "type" : "Cons<EffectContainer>"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 317,
+      "calls" : [ "mindustry.entities.Effect.EffectContainer.set(int, arc.graphics.Color, float, float, float, float, float, java.lang.Object)", "arc.func.Cons.get(T)", "mindustry.entities.Effect.EffectContainer.EffectContainer()" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "public float fin()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "fin",
+      "returnType" : "float",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 325,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "EntityCollisions.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float seg",
+    "desc" : "move in 1-unit chunks (can this be made more efficient?)",
+    "overloads" : null,
+    "name" : "seg",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Vec2 vector",
+    "desc" : "tile collisions",
+    "overloads" : null,
+    "name" : "vector",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Rect r1",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "r1",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Seq<Hitboxc> arrOut",
+    "desc" : "entity collisions",
+    "overloads" : null,
+    "name" : "arrOut",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Cons<Hitboxc> hitCons",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitCons",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Cons<QuadTree> treeCons",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "treeCons",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void moveCheck(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "moveCheck",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Hitboxc"
+    }, {
+      "name" : "deltax",
+      "type" : "float"
+    }, {
+      "name" : "deltay",
+      "type" : "float"
+    }, {
+      "name" : "solidCheck",
+      "type" : "SolidPred"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ "mindustry.entities.EntityCollisions.SolidPred.solid(int, int)", "mindustry.gen.Posc.tileX()", "mindustry.gen.Posc.tileY()", "mindustry.entities.EntityCollisions.move(mindustry.gen.Hitboxc, float, float, mindustry.entities.EntityCollisions.SolidPred)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void move(Hitboxc entity, float deltax, float deltay) / public void move(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)",
+    "desc" : null,
+    "overloads" : [ "public void move(Hitboxc entity, float deltax, float deltay)", "public void move(Hitboxc entity, float deltax, float deltay, SolidPred solidCheck)" ],
+    "name" : "move",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Hitboxc"
+    }, {
+      "name" : "deltax",
+      "type" : "float"
+    }, {
+      "name" : "deltay",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ "mindustry.entities.EntityCollisions.move(mindustry.gen.Hitboxc, float, float, mindustry.entities.EntityCollisions.SolidPred)", "java.lang.Math.abs(float)", "arc.math.Mathf.clamp(float, float, float)", "mindustry.gen.Hitboxc.hitboxTile(arc.math.geom.Rect)", "java.lang.Math.max(int, int)", "java.lang.Math.round(float)", "mindustry.entities.EntityCollisions.moveDelta(mindustry.gen.Hitboxc, float, float, int, boolean, mindustry.entities.EntityCollisions.SolidPred)", "java.lang.Math.min(float, float)", "arc.math.Mathf.sign(float)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public void moveDelta(Hitboxc entity, float deltax, float deltay, int r, boolean x, SolidPred solidCheck)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "moveDelta",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "entity",
+      "type" : "Hitboxc"
+    }, {
+      "name" : "deltax",
+      "type" : "float"
+    }, {
+      "name" : "deltay",
+      "type" : "float"
+    }, {
+      "name" : "r",
+      "type" : "int"
+    }, {
+      "name" : "x",
+      "type" : "boolean"
+    }, {
+      "name" : "solidCheck",
+      "type" : "SolidPred"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "mindustry.gen.Hitboxc.hitboxTile(arc.math.geom.Rect)", "java.lang.Math.round(float)", "mindustry.entities.EntityCollisions.SolidPred.solid(int, int)", "arc.math.geom.Rect.setCenter(float, float)", "arc.math.geom.Rect.setSize(float)", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "arc.math.geom.Geometry.overlap(arc.math.geom.Rect, arc.math.geom.Rect, boolean)", "mindustry.gen.Posc.trns(float, float)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean overlapsTile(Rect rect, SolidPred solidChecker)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "overlapsTile",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rect",
+      "type" : "Rect"
+    }, {
+      "name" : "solidChecker",
+      "type" : "SolidPred"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 98,
+    "calls" : [ "arc.math.geom.Rect.getCenter(arc.math.geom.Vec2)", "java.lang.Math.max(int, int)", "java.lang.Math.round(float)", "mindustry.entities.EntityCollisions.SolidPred.solid(int, int)", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "arc.math.geom.Rect.setCentered(float, float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void updatePhysics(EntityGroup<T> group)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updatePhysics",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "group",
+      "type" : "EntityGroup<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "SuppressWarnings" ],
+    "line" : 122,
+    "calls" : [ "arc.math.geom.QuadTree.fill(arc.struct.Seq<T>)", "mindustry.entities.EntityGroup.tree()", "mindustry.entities.EntityGroup.rawSeq()", "mindustry.entities.EntityGroup.each(arc.func.Cons<T>)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean legsSolid(int x, int y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "legsSolid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 129,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.legSolid()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean waterSolid(int x, int y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "waterSolid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 134,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.solid()", "mindustry.world.Tile.floor()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean solid(int x, int y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "solid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 139,
+    "calls" : [ "mindustry.core.World.tile(int, int)", "mindustry.world.Tile.solid()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private void checkCollide(Hitboxc a, Hitboxc b)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "checkCollide",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "Hitboxc"
+    }, {
+      "name" : "b",
+      "type" : "Hitboxc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 144,
+    "calls" : [ "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "mindustry.gen.Hitboxc.lastX()", "arc.math.geom.Position.getX()", "mindustry.gen.Hitboxc.lastY()", "arc.math.geom.Position.getY()", "mindustry.gen.Hitboxc.collides(mindustry.gen.Hitboxc)", "arc.math.geom.Vec2.set(float, float)", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "mindustry.entities.EntityCollisions.collide(float, float, float, float, float, float, float, float, float, float, float, float, arc.math.geom.Vec2)", "mindustry.gen.Hitboxc.collision(mindustry.gen.Hitboxc, float, float)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean collide(float x1, float y1, float w1, float h1, float vx1, float vy1, float x2, float y2, float w2, float h2, float vx2, float vy2, Vec2 out) / public void collide(EntityGroup<T> groupa)",
+    "desc" : null,
+    "overloads" : [ "public static boolean collide(float x1, float y1, float w1, float h1, float vx1, float vy1, float x2, float y2, float w2, float h2, float vx2, float vy2, Vec2 out)", "public void collide(EntityGroup<T> groupa)" ],
+    "name" : "collide",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x1",
+      "type" : "float"
+    }, {
+      "name" : "y1",
+      "type" : "float"
+    }, {
+      "name" : "w1",
+      "type" : "float"
+    }, {
+      "name" : "h1",
+      "type" : "float"
+    }, {
+      "name" : "vx1",
+      "type" : "float"
+    }, {
+      "name" : "vy1",
+      "type" : "float"
+    }, {
+      "name" : "x2",
+      "type" : "float"
+    }, {
+      "name" : "y2",
+      "type" : "float"
+    }, {
+      "name" : "w2",
+      "type" : "float"
+    }, {
+      "name" : "h2",
+      "type" : "float"
+    }, {
+      "name" : "vx2",
+      "type" : "float"
+    }, {
+      "name" : "vy2",
+      "type" : "float"
+    }, {
+      "name" : "out",
+      "type" : "Vec2"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 169,
+    "calls" : [ "java.lang.Math.max(float, float)", "java.lang.Math.min(float, float)", "arc.math.geom.Vec2.set(float, float)", "mindustry.entities.EntityGroup.each(arc.func.Cons<T>)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void updateCollision(Hitboxc solid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateCollision",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "solid",
+      "type" : "Hitboxc"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 220,
+    "calls" : [ "mindustry.gen.Hitboxc.hitbox(arc.math.geom.Rect)", "mindustry.gen.Hitboxc.lastX()", "arc.math.geom.Position.getX()", "mindustry.gen.Hitboxc.lastY()", "arc.math.geom.Position.getY()", "arc.math.geom.Rect.merge(arc.math.geom.Rect)", "arc.struct.Seq.clear()", "mindustry.gen.Hitboxc.getCollisions(arc.func.Cons<arc.math.geom.QuadTree>)", "arc.math.geom.Rect.overlaps(arc.math.geom.Rect)", "mindustry.entities.EntityCollisions.checkCollide(mindustry.gen.Hitboxc, mindustry.gen.Hitboxc)", "mindustry.gen.Entityc.isAdded()" ],
+    "callCount" : 11
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "SolidPred",
+    "simpleName" : "SolidPred",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "boolean solid(int x, int y)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "solid",
+      "returnType" : "boolean",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "x",
+        "type" : "int"
+      }, {
+        "name" : "y",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 248,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "EntityGroup.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class implements java.lang.Iterable",
+  "typeDesc" : "Represents a group of a certain type of entity.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private static int lastId",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastId",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<T> array",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "array",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<T> intersectArray",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "intersectArray",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Rect viewport",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "viewport",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Rect intersectRect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "intersectRect",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final EntityIndexer indexer",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "indexer",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private IntMap<T> map",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "map",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 26,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private QuadTree tree",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tree",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean clearing",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clearing",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int index",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "index",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 30,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private double fixedCounter",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fixedCounter",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 32,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private long lastTimeAccess",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastTimeAccess",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 33,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Seq<DelayRun> timeRuns",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timeRuns",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 34,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public EntityGroup(Class<T> type, boolean spatial, boolean mapping) / public EntityGroup(Class<T> type, boolean spatial, boolean mapping, EntityIndexer indexer)",
+    "desc" : null,
+    "overloads" : [ "public EntityGroup(Class<T> type, boolean spatial, boolean mapping)", "public EntityGroup(Class<T> type, boolean spatial, boolean mapping, EntityIndexer indexer)" ],
+    "name" : "EntityGroup",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "spatial",
+      "type" : "boolean"
+    }, {
+      "name" : "mapping",
+      "type" : "boolean"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 46,
+    "calls" : [ "arc.struct.Seq.Seq(boolean, int, java.lang.Class<?>)", "arc.math.geom.QuadTree.QuadTree(arc.math.geom.Rect)", "arc.math.geom.Rect.Rect(float, float, float, float)", "arc.struct.IntMap.IntMap()" ],
+    "callCount" : 4
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static int nextId()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "nextId",
+    "returnType" : "int",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void checkNextId(int id)",
+    "desc" : "Makes sure the next ID counter is higher than this number, so future entities cannot possibly use this ID.",
+    "overloads" : null,
+    "name" : "checkNextId",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ "java.lang.Math.max(int, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<T> checkIDCollisions()",
+    "desc" : "@return entities with colliding IDs, or an empty array.",
+    "overloads" : null,
+    "name" : "checkIDCollisions",
+    "returnType" : "Seq<T>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 65,
+    "calls" : [ "mindustry.entities.EntityGroup.each(arc.func.Cons<T>)", "arc.struct.IntSet.add(int)", "mindustry.gen.Entityc.id()", "arc.struct.Seq.add(T)", "arc.struct.Seq.Seq()", "arc.struct.IntSet.IntSet()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void sort(Comparator<? super T> comp)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sort",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "comp",
+      "type" : "Comparator<? super T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 76,
+    "calls" : [ "arc.struct.Seq.sort(java.util.Comparator<? super T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void collide()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "collide",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 80,
+    "calls" : [ "mindustry.entities.EntityCollisions.collide(mindustry.entities.EntityGroup<T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void updatePhysics()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updatePhysics",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 84,
+    "calls" : [ "mindustry.entities.EntityCollisions.updatePhysics(mindustry.entities.EntityGroup<T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void update() / public void update(Boolf<T> filter)",
+    "desc" : null,
+    "overloads" : [ "public void update()", "public void update(Boolf<T> filter)" ],
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 88,
+    "calls" : [ "array.items[index].update", "arc.func.Boolf.get(T)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void fixedUpdate(int targetFps) / public void fixedUpdate(int targetUps, int maxUpdatesPerFrame)",
+    "desc" : "Calls {@link #fixedUpdate(int, int)} with a maximum of 10 updates per frame.",
+    "overloads" : [ "public void fixedUpdate(int targetFps)", "public void fixedUpdate(int targetUps, int maxUpdatesPerFrame)" ],
+    "name" : "fixedUpdate",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "targetFps",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ "mindustry.entities.EntityGroup.fixedUpdate(int, int)", "arc.Graphics.getFrameId()", "arc.util.Time.getInternalTime()", "arc.util.Time.getRuns()", "arc.util.Time.setInternalTime(double)", "arc.util.Time.setRuns(arc.struct.Seq<arc.util.Time.DelayRun>)", "arc.Graphics.getDeltaTime()", "arc.util.Time.update()", "mindustry.entities.EntityGroup.update()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<T> copy() / public Seq<T> copy(Seq<T> arr)",
+    "desc" : null,
+    "overloads" : [ "public Seq<T> copy()", "public Seq<T> copy(Seq<T> arr)" ],
+    "name" : "copy",
+    "returnType" : "Seq<T>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 147,
+    "calls" : [ "mindustry.entities.EntityGroup.copy(arc.struct.Seq<T>)", "arc.struct.Seq.Seq()", "arc.struct.Seq.addAll(arc.struct.Seq<? extends T>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void each(Cons<T> cons) / public void each(Boolf<T> filter, Cons<T> cons)",
+    "desc" : null,
+    "overloads" : [ "public void each(Cons<T> cons)", "public void each(Boolf<T> filter, Cons<T> cons)" ],
+    "name" : "each",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "Cons<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 156,
+    "calls" : [ "arc.func.Cons.get(T)", "arc.func.Boolf.get(T)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void draw(Cons<T> cons)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "draw",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "cons",
+      "type" : "Cons<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 168,
+    "calls" : [ "arc.graphics.Camera.bounds(arc.math.geom.Rect)", "mindustry.gen.Drawc.clipSize()", "arc.math.geom.Rect.overlaps(float, float, float, float)", "mindustry.gen.Posc.x()", "mindustry.gen.Posc.y()", "arc.func.Cons.get(T)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean useTree()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "useTree",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 180,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean mappingEnabled()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "mappingEnabled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 184,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public T getByID(int id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getByID",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 188,
+    "calls" : [ "arc.struct.IntMap.get(int)", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void removeByID(int id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removeByID",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 194,
+    "calls" : [ "arc.struct.IntMap.get(int)", "mindustry.gen.Entityc.remove()", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void intersect(float x, float y, float width, float height, Cons<? super T> out) / public boolean intersect(float x, float y, float width, float height, Boolf<? super T> out) / public Seq<T> intersect(float x, float y, float width, float height)",
+    "desc" : null,
+    "overloads" : [ "public void intersect(float x, float y, float width, float height, Cons<? super T> out)", "public boolean intersect(float x, float y, float width, float height, Boolf<? super T> out)", "public Seq<T> intersect(float x, float y, float width, float height)" ],
+    "name" : "intersect",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    }, {
+      "name" : "out",
+      "type" : "Cons<? super T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 202,
+    "calls" : [ "mindustry.entities.EntityGroup.isEmpty()", "arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Cons<T>)", "arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Boolf<T>)", "arc.struct.Seq.clear()", "arc.math.geom.QuadTree.intersect(arc.math.geom.Rect, arc.struct.Seq<T>)", "arc.math.geom.Rect.set(float, float, float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public QuadTree tree()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "tree",
+    "returnType" : "QuadTree",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<T> rawSeq()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rawSeq",
+    "returnType" : "Seq<T>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 227,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void resize(float x, float y, float w, float h)",
+    "desc" : "Resizes the internal quadtree, if it is enabled.",
+    "overloads" : null,
+    "name" : "resize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "w",
+      "type" : "float"
+    }, {
+      "name" : "h",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 232,
+    "calls" : [ "arc.math.geom.QuadTree.QuadTree(arc.math.geom.Rect)", "arc.math.geom.Rect.Rect(float, float, float, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isEmpty()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isEmpty",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 238,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public T index(int i)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "index",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "i",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 242,
+    "calls" : [ "arc.struct.Seq.get(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int size()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "size",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 246,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean contains(Boolf<T> pred)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "contains",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pred",
+      "type" : "Boolf<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 250,
+    "calls" : [ "arc.struct.Seq.contains(arc.func.Boolf<T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int count(Boolf<T> pred)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "count",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pred",
+      "type" : "Boolf<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 254,
+    "calls" : [ "arc.struct.Seq.count(arc.func.Boolf<T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void add(T type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "add",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 258,
+    "calls" : [ "arc.struct.Seq.add(T)", "mindustry.entities.EntityGroup.mappingEnabled()", "arc.struct.IntMap.put(int, V)", "mindustry.gen.Entityc.id()", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public int addIndex(T type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addIndex",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 267,
+    "calls" : [ "mindustry.entities.EntityGroup.add(T)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void remove(T type)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "remove",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 273,
+    "calls" : [ "arc.struct.Seq.indexOf(T, boolean)", "arc.struct.Seq.remove(int)", "indexer.change", "arc.struct.IntMap.remove(int)", "mindustry.gen.Entityc.id()", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public void removeIndex(T type, int position)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removeIndex",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "T"
+    }, {
+      "name" : "position",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 297,
+    "calls" : [ "mindustry.entities.EntityGroup.remove(T)", "indexer.change", "arc.struct.IntMap.remove(int)", "mindustry.gen.Entityc.id()", "java.lang.RuntimeException.RuntimeException(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 329,
+    "calls" : [ "arc.struct.Seq.each(arc.func.Cons<? super T>)", "arc.struct.Seq.clear()", "arc.struct.IntMap.clear()", "arc.util.pooling.Pools.freeAll(arc.struct.Seq, boolean)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public T find(Boolf<T> pred)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "find",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "pred",
+      "type" : "Boolf<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 341,
+    "calls" : [ "arc.struct.Seq.find(arc.func.Boolf<T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public T first()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "first",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 346,
+    "calls" : [ "arc.struct.Seq.first()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Iterator<T> iterator()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "iterator",
+    "returnType" : "Iterator<T>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 351,
+    "calls" : [ "arc.struct.Seq.iterator()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 356,
+    "calls" : [ "arc.struct.Seq.toString()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "EntityIndexer.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java interface",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "void change(Entityc t, int index)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "change",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "t",
+      "type" : "Entityc"
+    }, {
+      "name" : "index",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Fires.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final float baseLifetime",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "baseLifetime",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void create(Tile tile)",
+    "desc" : "Start a fire on the tile.",
+    "overloads" : null,
+    "name" : "create",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 17,
+    "calls" : [ "mindustry.net.Net.client()", "mindustry.game.Rules.hasEnv(int)", "mindustry.entities.Fires.get(mindustry.world.Tile)", "mindustry.gen.Fire.create()", "mindustry.gen.Fire.set(float, float)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.gen.Fire.add()", "mindustry.entities.Fires.set(mindustry.world.Tile, mindustry.gen.Fire)", "arc.Events.fire(java.lang.Enum<T>)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "public static Fire get(Tile tile) / public static Fire get(int x, int y)",
+    "desc" : null,
+    "overloads" : [ "public static Fire get(Tile tile)", "public static Fire get(int x, int y)" ],
+    "name" : "get",
+    "returnType" : "Fire",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 36,
+    "calls" : [ "mindustry.world.Tiles.getFire(int)", "mindustry.world.Tile.array()", "arc.util.Structs.inBounds(int, int, int, int)", "mindustry.core.World.width()", "mindustry.core.World.height()", "mindustry.core.World.packArray(int, int)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "private static void set(Tile tile, Fire fire)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "fire",
+      "type" : "Fire"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ "mindustry.world.Tiles.setFire(int, mindustry.gen.Fire)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean has(int x, int y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "has",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "int"
+    }, {
+      "name" : "y",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ "arc.util.Structs.inBounds(int, int, int, int)", "mindustry.core.World.width()", "mindustry.core.World.height()", "mindustry.entities.Fires.get(int, int)", "mindustry.gen.Fire.isAdded()", "mindustry.gen.Fire.fin()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public static void extinguish(Tile tile, float intensity)",
+    "desc" : "Attempts to extinguish a fire by shortening its life.",
+    "overloads" : null,
+    "name" : "extinguish",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "intensity",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ "mindustry.entities.Fires.get(mindustry.world.Tile)", "mindustry.entities.Effect.at(arc.math.geom.Position)", "arc.Events.fire(java.lang.Enum<T>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void remove(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "remove",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "mindustry.entities.Fires.set(mindustry.world.Tile, mindustry.gen.Fire)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void register(Fire fire)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "register",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "fire",
+      "type" : "Fire"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 78,
+    "calls" : [ "mindustry.entities.Fires.set(mindustry.world.Tile, mindustry.gen.Fire)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "GroupDefs.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "G all",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "all",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G effect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "effect",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G player",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "player",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G bullet",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bullet",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G unit",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unit",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G build",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "build",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G sync",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "sync",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G draw",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "draw",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G weather",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "weather",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "G powerGraph",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "powerGraph",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Leg.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final Vec2 joint",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "joint",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 6,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int group",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "group",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean moving",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "moving",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public float stage",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stage",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "LegDestroyData.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public Vec2 a",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "a",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 7,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public TextureRegion region",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "region",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public LegDestroyData(Vec2 a, Vec2 b, TextureRegion region)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "LegDestroyData",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "Vec2"
+    }, {
+      "name" : "b",
+      "type" : "Vec2"
+    }, {
+      "name" : "region",
+      "type" : "TextureRegion"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "Lightning.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Rand random",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "random",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Rect rect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "rect",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Seq<Unit> entities",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "entities",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final IntSet hit",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hit",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final int maxChain",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxChain",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final float hitRange",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitRange",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static boolean bhit",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "bhit",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static int lastSeed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastSeed",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 25,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void create(BulletType bulletCreated, Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Team team, Color color, float damage, float x, float y, float targetAngle, int length) / public static void create(Bullet bullet, Color color, float damage, float x, float y, float targetAngle, int length)",
+    "desc" : "Create a lighting branch at a location.",
+    "overloads" : [ "public static void create(BulletType bulletCreated, Team team, Color color, float damage, float x, float y, float targetAngle, int length)", "public static void create(Team team, Color color, float damage, float x, float y, float targetAngle, int length)", "public static void create(Bullet bullet, Color color, float damage, float x, float y, float targetAngle, int length)" ],
+    "name" : "create",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "bulletCreated",
+      "type" : "BulletType"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "targetAngle",
+      "type" : "float"
+    }, {
+      "name" : "length",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ "mindustry.entities.Lightning.createLightningInternal(mindustry.gen.Bullet, mindustry.entities.bullet.BulletType, int, mindustry.game.Team, arc.graphics.Color, float, float, float, float, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private static void createLightningInternal(Bullet hitter, BulletType hitCreate, int seed, Team team, Color color, float damage, float x, float y, float rotation, int length)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "createLightningInternal",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "hitter",
+      "type" : "Bullet"
+    }, {
+      "name" : "hitCreate",
+      "type" : "BulletType"
+    }, {
+      "name" : "seed",
+      "type" : "int"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "color",
+      "type" : "Color"
+    }, {
+      "name" : "damage",
+      "type" : "float"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "rotation",
+      "type" : "float"
+    }, {
+      "name" : "length",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ "arc.math.Rand.setSeed(long)", "arc.struct.IntSet.clear()", "mindustry.entities.bullet.BulletType.create(mindustry.gen.Entityc, mindustry.game.Team, float, float, float, float, float, float, java.lang.Object)", "mindustry.gen.Bullet.damageMultiplier()", "arc.struct.Seq.add(T)", "arc.math.Mathf.range(float)", "arc.struct.Seq.get(int)", "mindustry.core.World.raycastEach(int, int, int, int, arc.math.geom.Geometry.Raycaster)", "mindustry.core.World.toTile(float)", "arc.math.geom.Vec2.getX()", "arc.math.geom.Vec2.getY()", "mindustry.core.World.tile(int, int)", "mindustry.gen.Building.isInsulated()", "mindustry.world.Tile.team()", "arc.math.geom.Vec2.set(float, float)", "arc.math.geom.Rect.setCenter(float, float)", "arc.math.geom.Rect.setSize(float)", "arc.struct.Seq.clear()", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, arc.math.geom.Rect, arc.func.Cons<mindustry.gen.Unit>)", "arc.struct.IntSet.contains(int)", "mindustry.gen.Unit.id()", "mindustry.gen.Unitc.checkTarget(boolean, boolean)", "arc.math.geom.Geometry.findFurthest(float, float, java.lang.Iterable<T>)", "arc.math.geom.Position.within(float, float, float)", "arc.struct.IntSet.add(int)", "mindustry.gen.Unit.x()", "mindustry.gen.Unit.y()", "arc.math.Rand.range(float)", "arc.math.Angles.trnsx(float, float)", "arc.math.Angles.trnsy(float, float)", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color, java.lang.Object)", "arc.struct.Seq.Seq()", "arc.math.geom.Vec2.Vec2(float, float)" ],
+    "callCount" : 33
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Mover.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java interface",
+  "typeDesc" : "Applies custom movement to a bullet.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "void move(Bullet bullet)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "move",
+    "returnType" : "void",
+    "modifiers" : [ ],
+    "parameters" : [ {
+      "name" : "bullet",
+      "type" : "Bullet"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 7,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Predict.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : "Class for predicting shoot angles based on velocities of targets.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Vec2 vec",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vec",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Vec2 vresult",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "vresult",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Vec2 intercept(float srcx, float srcy, float dstx, float dsty, float dstvx, float dstvy, float v) / public static Vec2 intercept(Position src, Position dst, float v) / public static Vec2 intercept(Position src, Position dst, BulletType bullet) / public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, float v) / public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, boolean useSrcVelocity, float v) / public static Vec2 intercept(Hitboxc src, Hitboxc dst, float v)",
+    "desc" : "Calculates of intercept of a stationary and moving target.",
+    "overloads" : [ "public static Vec2 intercept(float srcx, float srcy, float dstx, float dsty, float dstvx, float dstvy, float v)", "public static Vec2 intercept(Position src, Position dst, float v)", "public static Vec2 intercept(Position src, Position dst, BulletType bullet)", "public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, float v)", "public static Vec2 intercept(Position src, Position dst, float offsetx, float offsety, boolean useSrcVelocity, float v)", "public static Vec2 intercept(Hitboxc src, Hitboxc dst, float v)" ],
+    "name" : "intercept",
+    "returnType" : "Vec2",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "srcx",
+      "type" : "float"
+    }, {
+      "name" : "srcy",
+      "type" : "float"
+    }, {
+      "name" : "dstx",
+      "type" : "float"
+    }, {
+      "name" : "dsty",
+      "type" : "float"
+    }, {
+      "name" : "dstvx",
+      "type" : "float"
+    }, {
+      "name" : "dstvy",
+      "type" : "float"
+    }, {
+      "name" : "v",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ "mindustry.entities.Predict.quad(float, float, float)", "arc.math.geom.Vec2.set(float, float)", "java.lang.Math.min(float, float)", "java.lang.Math.max(float, float)", "mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, float, float, float)", "mindustry.entities.Predict.intercept(arc.math.geom.Position, arc.math.geom.Position, float, float, boolean, float)", "mindustry.gen.Hitboxc.deltaX()", "mindustry.gen.Hitboxc.deltaY()", "mindustry.entities.Predict.intercept(float, float, float, float, float, float, float)", "arc.math.geom.Position.getX()", "arc.math.geom.Position.getY()" ],
+    "callCount" : 11
+  }, {
+    "kind" : "method",
+    "signature" : "private static Vec2 quad(float a, float b, float c)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "quad",
+    "returnType" : "Vec2",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "float"
+    }, {
+      "name" : "b",
+      "type" : "float"
+    }, {
+      "name" : "c",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 87,
+    "calls" : [ "java.lang.Math.abs(float)", "arc.math.geom.Vec2.set(float, float)", "arc.math.Mathf.sqrt(float)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Puddles.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final float maxLiquid",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "maxLiquid",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void deposit(Tile tile, Tile source, Liquid liquid, float amount) / public static void deposit(Tile tile, Liquid liquid, float amount) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial) / public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial, boolean cap)",
+    "desc" : "Deposits a Puddle between tile and source.",
+    "overloads" : [ "public static void deposit(Tile tile, Tile source, Liquid liquid, float amount)", "public static void deposit(Tile tile, Liquid liquid, float amount)", "public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial)", "public static void deposit(Tile tile, Tile source, Liquid liquid, float amount, boolean initial, boolean cap)" ],
+    "name" : "deposit",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "source",
+      "type" : "Tile"
+    }, {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ "mindustry.entities.Puddles.deposit(mindustry.world.Tile, mindustry.world.Tile, mindustry.type.Liquid, float, boolean)", "mindustry.entities.Puddles.deposit(mindustry.world.Tile, mindustry.world.Tile, mindustry.type.Liquid, float, boolean, boolean)", "mindustry.world.Tile.worldx()", "mindustry.world.Tile.worldy()", "mindustry.type.Liquid.willBoil()", "arc.math.Mathf.chanceDelta(double)", "mindustry.entities.Effect.at(float, float, arc.graphics.Color)", "mindustry.game.Rules.hasEnv(int)", "mindustry.entities.bullet.BulletType.create(mindustry.gen.Entityc, mindustry.game.Team, float, float, float, float, float, float, java.lang.Object)", "mindustry.world.Tile.team()", "arc.math.geom.Position.angleTo(arc.math.geom.Position)", "arc.math.Mathf.range(float)", "arc.math.Mathf.random(float, float)", "mindustry.world.Tile.floor()", "mindustry.entities.Puddles.canStayOn(mindustry.type.Liquid, mindustry.type.Liquid)", "mindustry.entities.Puddles.reactPuddle(mindustry.type.Liquid, mindustry.type.Liquid, float, mindustry.world.Tile, float, float)", "mindustry.entities.Puddles.get(mindustry.world.Tile)", "mindustry.entities.Effect.at(float, float, float, arc.graphics.Color)", "mindustry.net.Net.client()", "mindustry.gen.Puddle.create()", "java.lang.Math.min(float, float)", "mindustry.gen.Puddle.set(float, float)", "mindustry.entities.Puddles.register(mindustry.gen.Puddle)", "mindustry.gen.Puddle.add()", "java.lang.Math.max(float, float)", "arc.math.Mathf.clamp(float, float, float)" ],
+    "callCount" : 26
+  }, {
+    "kind" : "method",
+    "signature" : "public static Puddle get(Tile tile)",
+    "desc" : "Returns the Puddle on the specified tile.",
+    "overloads" : null,
+    "name" : "get",
+    "returnType" : "Puddle",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 29,
+    "calls" : [ "mindustry.world.Tiles.getPuddle(int)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean hasLiquid(Tile tile, Liquid liquid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hasLiquid",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "liquid",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 100,
+    "calls" : [ "mindustry.entities.Puddles.get(mindustry.world.Tile)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void remove(Tile tile)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "remove",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 106,
+    "calls" : [ "mindustry.world.Tiles.setPuddle(int, mindustry.gen.Puddle)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void register(Puddle puddle)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "register",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "puddle",
+      "type" : "Puddle"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 112,
+    "calls" : [ "mindustry.world.Tiles.setPuddle(int, mindustry.gen.Puddle)", "mindustry.world.Tile.array()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private static float reactPuddle(Liquid dest, Liquid liquid, float amount, Tile tile, float x, float y)",
+    "desc" : "Reacts two liquids together at a location.",
+    "overloads" : null,
+    "name" : "reactPuddle",
+    "returnType" : "float",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "dest",
+      "type" : "Liquid"
+    }, {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "amount",
+      "type" : "float"
+    }, {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 117,
+    "calls" : [ "mindustry.entities.Fires.create(mindustry.world.Tile)", "arc.math.Mathf.chance(double)", "mindustry.entities.bullet.BulletType.createNet(mindustry.game.Team, float, float, float, float, float, float)", "arc.math.Mathf.random(float)", "mindustry.entities.Effect.at(float, float)", "mindustry.type.Liquid.react(mindustry.type.Liquid, float, mindustry.world.Tile, float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean canStayOn(Liquid liquid, Liquid other)",
+    "desc" : "Returns whether the first liquid can 'stay' on the second one.",
+    "overloads" : null,
+    "name" : "canStayOn",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "liquid",
+      "type" : "Liquid"
+    }, {
+      "name" : "other",
+      "type" : "Liquid"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 143,
+    "calls" : [ "arc.struct.ObjectSet.contains(T)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Sized.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java interface extends arc.math.geom.Position",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "float hitSize()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitSize",
+    "returnType" : "float",
+    "modifiers" : [ ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 6,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TargetPriority.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : "Higher priority blocks will always get targeted over those of lower priority, regardless of distance.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final float wall",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "wall",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 5,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "UnitSorts.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public static Sortf closest",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "closest",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public static BuildingPriorityf buildingDefault",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildingDefault",
+    "returnType" : null,
+    "modifiers" : [ "public", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Sortf grouped(float dstWeight)",
+    "desc" : "@param dstWeight higher values make distance more important.",
+    "overloads" : null,
+    "name" : "grouped",
+    "returnType" : "Sortf",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "dstWeight",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ "mindustry.game.Teams.TeamData.getClustered(float, float)", "mindustry.game.Team.data()", "arc.math.Mathf.dst(float, float, float, float)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "Units.java",
+  "pkg" : "mindustry.entities",
+  "type" : "Java class",
+  "typeDesc" : "Utility class for unit and team interactions.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final Rect hitrect",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hitrect",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Unit result",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "result",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float cdist",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "cdist",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static int intResult",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "intResult",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 23,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static Building buildResult",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildResult",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static boolean anyEntityGround",
+    "desc" : "prevents allocations in anyEntities",
+    "overloads" : null,
+    "name" : "anyEntityGround",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 27,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private static float aeX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "aeX",
+    "returnType" : null,
+    "modifiers" : [ "private", "static" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 28,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "private static final Boolf<Unit> anyEntityLambda",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "anyEntityLambda",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 29,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void notifyUnitSpawn(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "notifyUnitSpawn",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ "mindustry.net.Net.server()", "mindustry.gen.Call.unitSpawn(mindustry.entities.Units.UnitSyncContainer)", "mindustry.entities.Units.UnitSyncContainer.UnitSyncContainer(mindustry.gen.Unit)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitSpawn(UnitSyncContainer container)",
+    "desc" : "syncs a unit spawn so that it appears immediately without waiting for a snapshot",
+    "overloads" : null,
+    "name" : "unitSpawn",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "container",
+      "type" : "UnitSyncContainer"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitCapDeath(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unitCapDeath",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 49,
+    "calls" : [ "mindustry.entities.Effect.at(arc.math.geom.Position)", "arc.Application.post(java.lang.Runnable)", "mindustry.gen.Call.unitDestroy(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitEnvDeath(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unitEnvDeath",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 58,
+    "calls" : [ "mindustry.entities.Effect.at(arc.math.geom.Position)", "arc.Application.post(java.lang.Runnable)", "mindustry.gen.Call.unitDestroy(int)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitDeath(int uid)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unitDeath",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "uid",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 67,
+    "calls" : [ "mindustry.entities.EntityGroup.getByID(int)", "mindustry.core.NetClient.addRemovedEntity(int)", "mindustry.gen.Healthc.killed()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitDestroy(int uid)",
+    "desc" : "destroys immediately",
+    "overloads" : null,
+    "name" : "unitDestroy",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "uid",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 82,
+    "calls" : [ "mindustry.entities.EntityGroup.getByID(int)", "mindustry.core.NetClient.addRemovedEntity(int)", "mindustry.gen.Unitc.destroy()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitDespawn(Unit unit)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "unitDespawn",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 96,
+    "calls" : [ "mindustry.entities.Effect.at(float, float, float, java.lang.Object)", "mindustry.gen.Entityc.remove()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static void unitSafeDeath(Unit unit)",
+    "desc" : "Removes a unit after spawning the death effects.",
+    "overloads" : null,
+    "name" : "unitSafeDeath",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "unit",
+      "type" : "Unit"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Remote" ],
+    "line" : 104,
+    "calls" : [ "mindustry.entities.Effect.at(float, float, float)", "mindustry.entities.Effect.shake(float, float, arc.math.geom.Position)", "arc.audio.Sound.at(arc.math.geom.Position, float, float)", "mindustry.gen.Entityc.remove()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean canCreate(Team team, UnitType type)",
+    "desc" : "@return whether a new instance of a unit of this team can be created.",
+    "overloads" : null,
+    "name" : "canCreate",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "type",
+      "type" : "UnitType"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ "mindustry.game.Teams.TeamData.countType(mindustry.type.UnitType)", "mindustry.game.Team.data()", "mindustry.entities.Units.getCap(mindustry.game.Team)", "mindustry.type.UnitType.isBanned()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static int getCap(Team team)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCap",
+    "returnType" : "int",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ "mindustry.core.GameState.isCampaign()", "java.lang.Math.max(int, int)", "mindustry.game.Team.data()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static String getStringCap(Team team)",
+    "desc" : "@return unit cap as a string, substituting the infinity symbol instead of MAX_VALUE",
+    "overloads" : null,
+    "name" : "getStringCap",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 128,
+    "calls" : [ "mindustry.entities.Units.getCap(mindustry.game.Team)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean canInteract(Player player, Building tile)",
+    "desc" : "@return whether this player can interact with a specific tile.",
+    "overloads" : null,
+    "name" : "canInteract",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "player",
+      "type" : "Player"
+    }, {
+      "name" : "tile",
+      "type" : "Building"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 134,
+    "calls" : [ "mindustry.gen.Building.interactable(mindustry.game.Team)", "mindustry.gen.Player.team()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean isHittable(Posc target, boolean air, boolean ground)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isHittable",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Posc"
+    }, {
+      "name" : "air",
+      "type" : "boolean"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 138,
+    "calls" : [ "mindustry.gen.Unitc.checkTarget(boolean, boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean invalidateTarget(Posc target, Team team, float x, float y, float range) / public static boolean invalidateTarget(Posc target, Team team, float x, float y) / public static boolean invalidateTarget(Teamc target, Unit targeter, float range)",
+    "desc" : "Validates a target.",
+    "overloads" : [ "public static boolean invalidateTarget(Posc target, Team team, float x, float y, float range)", "public static boolean invalidateTarget(Posc target, Team team, float x, float y)", "public static boolean invalidateTarget(Teamc target, Unit targeter, float range)" ],
+    "name" : "invalidateTarget",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Posc"
+    }, {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 151,
+    "calls" : [ "arc.math.geom.Position.within(float, float, float)", "mindustry.entities.Sized.hitSize()", "mindustry.gen.Teamc.team()", "mindustry.gen.Healthc.isValid()", "mindustry.gen.Unitc.targetable(mindustry.game.Team)", "mindustry.entities.Units.invalidateTarget(mindustry.gen.Posc, mindustry.game.Team, float, float, float)", "mindustry.gen.Unit.team()", "mindustry.gen.Unit.x()", "mindustry.gen.Unit.y()" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean anyEntities(Tile tile, boolean ground) / public static boolean anyEntities(Tile tile) / public static boolean anyEntities(float x, float y, float size) / public static boolean anyEntities(float x, float y, float width, float height) / public static boolean anyEntities(float x, float y, float width, float height, boolean ground) / public static boolean anyEntities(float x, float y, float width, float height, Boolf<Unit> check)",
+    "desc" : "Returns whether there are any entities on this tile.",
+    "overloads" : [ "public static boolean anyEntities(Tile tile, boolean ground)", "public static boolean anyEntities(Tile tile)", "public static boolean anyEntities(float x, float y, float size)", "public static boolean anyEntities(float x, float y, float width, float height)", "public static boolean anyEntities(float x, float y, float width, float height, boolean ground)", "public static boolean anyEntities(float x, float y, float width, float height, Boolf<Unit> check)" ],
+    "name" : "anyEntities",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "tile",
+      "type" : "Tile"
+    }, {
+      "name" : "ground",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 170,
+    "calls" : [ "mindustry.world.Tile.block()", "mindustry.entities.Units.anyEntities(float, float, float, float, boolean)", "mindustry.world.Tile.drawx()", "mindustry.world.Tile.drawy()", "mindustry.entities.Units.anyEntities(mindustry.world.Tile, boolean)", "mindustry.entities.Units.nearbyCheck(float, float, float, float, arc.func.Boolf<mindustry.gen.Unit>)", "arc.func.Boolf.get(T)", "mindustry.gen.Hitboxc.hitboxTile(arc.math.geom.Rect)", "arc.math.geom.Rect.overlaps(float, float, float, float)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building findDamagedTile(Team team, float x, float y)",
+    "desc" : "Returns the nearest damaged tile.",
+    "overloads" : null,
+    "name" : "findDamagedTile",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 212,
+    "calls" : [ "arc.struct.Seq.min(arc.func.Floatf<T>)", "mindustry.ai.BlockIndexer.getDamaged(mindustry.game.Team)", "arc.math.geom.Position.dst2(float, float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building findAllyTile(Team team, float x, float y, float range, Boolf<Building> pred)",
+    "desc" : "Returns the nearest ally tile in a range.",
+    "overloads" : null,
+    "name" : "findAllyTile",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "pred",
+      "type" : "Boolf<Building>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 217,
+    "calls" : [ "mindustry.ai.BlockIndexer.findTile(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building findEnemyTile(Team team, float x, float y, float range, Boolf<Building> pred)",
+    "desc" : "Returns the nearest enemy tile in a range.",
+    "overloads" : null,
+    "name" : "findEnemyTile",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "pred",
+      "type" : "Boolf<Building>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 222,
+    "calls" : [ "mindustry.ai.BlockIndexer.findEnemyTile(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Building closestBuilding(Team team, float wx, float wy, float range, Boolf<Building> pred)",
+    "desc" : "@return the closest building of the provided team that matches the predicate.",
+    "overloads" : null,
+    "name" : "closestBuilding",
+    "returnType" : "Building",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "wx",
+      "type" : "float"
+    }, {
+      "name" : "wy",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "pred",
+      "type" : "Boolf<Building>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 229,
+    "calls" : [ "mindustry.game.Team.data()", "arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Cons<T>)", "arc.func.Boolf.get(T)", "arc.math.geom.Position.dst(float, float)", "mindustry.gen.Building.hitSize()" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void nearbyBuildings(float x, float y, float range, Cons<Building> cons)",
+    "desc" : "Iterates through all buildings in a range.",
+    "overloads" : null,
+    "name" : "nearbyBuildings",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "cons",
+      "type" : "Cons<Building>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 252,
+    "calls" : [ "mindustry.ai.BlockIndexer.allBuildings(float, float, float, arc.func.Cons<mindustry.gen.Building>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static Teamc closestTarget(Team team, float x, float y, float range) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred) / public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred) / public static Teamc closestTarget(Team team, float x, float y, float range, Team sourceTeam, Boolf<Unit> unitPred, Boolf<Building> tilePred)",
+    "desc" : "Returns the closest target enemy.",
+    "overloads" : [ "public static Teamc closestTarget(Team team, float x, float y, float range)", "public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred)", "public static Teamc closestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred)", "public static Teamc closestTarget(Team team, float x, float y, float range, Team sourceTeam, Boolf<Unit> unitPred, Boolf<Building> tilePred)" ],
+    "name" : "closestTarget",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 257,
+    "calls" : [ "mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>)", "mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)", "mindustry.entities.Units.closestTarget(mindustry.game.Team, float, float, float, mindustry.game.Team, arc.func.Boolf<mindustry.gen.Unit>, arc.func.Boolf<mindustry.gen.Building>)", "mindustry.entities.Units.closestEnemy(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>)", "mindustry.ai.BlockIndexer.findEnemyTile(mindustry.game.Team, float, float, float, mindustry.entities.Units.BuildingPriorityf, arc.func.Boolf<mindustry.gen.Building>, mindustry.game.Team)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static Teamc bestTarget(Team team, float x, float y, float range, Boolf<Unit> unitPred, Boolf<Building> tilePred, Sortf sort)",
+    "desc" : "Returns the closest target enemy.",
+    "overloads" : null,
+    "name" : "bestTarget",
+    "returnType" : "Teamc",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "unitPred",
+      "type" : "Boolf<Unit>"
+    }, {
+      "name" : "tilePred",
+      "type" : "Boolf<Building>"
+    }, {
+      "name" : "sort",
+      "type" : "Sortf"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 284,
+    "calls" : [ "mindustry.entities.Units.bestEnemy(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Unit>, mindustry.entities.Units.Sortf)", "mindustry.entities.Units.findEnemyTile(mindustry.game.Team, float, float, float, arc.func.Boolf<mindustry.gen.Building>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static Unit closestEnemy(Team team, float x, float y, float range, Boolf<Unit> predicate)",
+    "desc" : "Returns the closest enemy of this team.",
+    "overloads" : null,
+    "name" : "closestEnemy",
+    "returnType" : "Unit",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "predicate",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 296,
+    "calls" : [ "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Unit.dead()", "arc.func.Boolf.get(T)", "mindustry.gen.Unitc.targetable(mindustry.game.Team)", "mindustry.gen.Teamc.inFogTo(mindustry.game.Team)", "arc.math.geom.Position.dst2(float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public static Unit bestEnemy(Team team, float x, float y, float range, Boolf<Unit> predicate, Sortf sort)",
+    "desc" : "Returns the closest enemy of this team using a custom comparison function.",
+    "overloads" : null,
+    "name" : "bestEnemy",
+    "returnType" : "Unit",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "predicate",
+      "type" : "Boolf<Unit>"
+    }, {
+      "name" : "sort",
+      "type" : "Sortf"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 318,
+    "calls" : [ "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Unit.dead()", "arc.func.Boolf.get(T)", "arc.math.geom.Position.within(float, float, float)", "mindustry.gen.Unitc.targetable(mindustry.game.Team)", "mindustry.gen.Teamc.inFogTo(mindustry.game.Team)", "mindustry.entities.Units.Sortf.cost(mindustry.gen.Unit, float, float)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "public static Unit closest(Team team, float x, float y, Boolf<Unit> predicate) / public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate) / public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate, Sortf sort)",
+    "desc" : "Returns the closest ally of this team.",
+    "overloads" : [ "public static Unit closest(Team team, float x, float y, Boolf<Unit> predicate)", "public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate)", "public static Unit closest(Team team, float x, float y, float range, Boolf<Unit> predicate, Sortf sort)" ],
+    "name" : "closest",
+    "returnType" : "Unit",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "predicate",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 340,
+    "calls" : [ "arc.func.Boolf.get(T)", "mindustry.gen.Unit.team()", "arc.math.geom.Position.dst2(float, float)", "mindustry.entities.Units.nearby(mindustry.game.Team, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Healthc.isValid()", "mindustry.entities.Units.Sortf.cost(mindustry.gen.Unit, float, float)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "public static Unit closestOverlap(Team team, float x, float y, float range, Boolf<Unit> predicate)",
+    "desc" : "Returns the closest ally of this team.",
+    "overloads" : null,
+    "name" : "closestOverlap",
+    "returnType" : "Unit",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "range",
+      "type" : "float"
+    }, {
+      "name" : "predicate",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 395,
+    "calls" : [ "mindustry.entities.Units.nearby(mindustry.game.Team, float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "mindustry.gen.Healthc.isValid()", "arc.func.Boolf.get(T)", "arc.math.geom.Position.dst2(float, float)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static int count(float x, float y, float size, Boolf<Unit> filter) / public static int count(float x, float y, float width, float height, Boolf<Unit> filter)",
+    "desc" : "@return whether any units exist in this square (centered)",
+    "overloads" : [ "public static int count(float x, float y, float size, Boolf<Unit> filter)", "public static int count(float x, float y, float width, float height, Boolf<Unit> filter)" ],
+    "name" : "count",
+    "returnType" : "int",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "size",
+      "type" : "float"
+    }, {
+      "name" : "filter",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 413,
+    "calls" : [ "mindustry.entities.Units.count(float, float, float, float, arc.func.Boolf<mindustry.gen.Unit>)", "mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Cons<? super T>)", "arc.func.Boolf.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean any(float x, float y, float width, float height, Boolf<Unit> filter)",
+    "desc" : "@return whether any units exist in this rectangle",
+    "overloads" : null,
+    "name" : "any",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    }, {
+      "name" : "filter",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 429,
+    "calls" : [ "mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Boolf<? super T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void nearby(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearby(float x, float y, float width, float height, Cons<Unit> cons) / public static void nearby(Rect rect, Cons<Unit> cons)",
+    "desc" : "Iterates over all units in a rectangle.",
+    "overloads" : [ "public static void nearby(Team team, float x, float y, float width, float height, Cons<Unit> cons)", "public static void nearby(Team team, float x, float y, float radius, Cons<Unit> cons)", "public static void nearby(float x, float y, float width, float height, Cons<Unit> cons)", "public static void nearby(Rect rect, Cons<Unit> cons)" ],
+    "name" : "nearby",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    }, {
+      "name" : "cons",
+      "type" : "Cons<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 434,
+    "calls" : [ "arc.math.geom.QuadTree.intersect(float, float, float, float, arc.func.Cons<T>)", "mindustry.game.Teams.TeamData.tree()", "mindustry.game.Team.data()", "mindustry.entities.Units.nearby(mindustry.game.Team, float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "arc.math.geom.Position.within(float, float, float)", "arc.func.Cons.get(T)", "mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Cons<? super T>)", "mindustry.entities.Units.nearby(float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean nearbyCheck(float x, float y, float width, float height, Boolf<Unit> cons)",
+    "desc" : "Iterates over all units in a rectangle.",
+    "overloads" : null,
+    "name" : "nearbyCheck",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    }, {
+      "name" : "cons",
+      "type" : "Boolf<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 462,
+    "calls" : [ "mindustry.entities.EntityGroup.intersect(float, float, float, float, arc.func.Boolf<? super T>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static void nearbyEnemies(Team team, float x, float y, float width, float height, Cons<Unit> cons) / public static void nearbyEnemies(Team team, float x, float y, float radius, Cons<Unit> cons) / public static void nearbyEnemies(Team team, Rect rect, Cons<Unit> cons)",
+    "desc" : "Iterates over all units that are enemies of this team.",
+    "overloads" : [ "public static void nearbyEnemies(Team team, float x, float y, float width, float height, Cons<Unit> cons)", "public static void nearbyEnemies(Team team, float x, float y, float radius, Cons<Unit> cons)", "public static void nearbyEnemies(Team team, Rect rect, Cons<Unit> cons)" ],
+    "name" : "nearbyEnemies",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    }, {
+      "name" : "cons",
+      "type" : "Cons<Unit>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 472,
+    "calls" : [ "nearby", "mindustry.entities.Units.nearbyEnemies(mindustry.game.Team, float, float, float, float, arc.func.Cons<mindustry.gen.Unit>)", "arc.math.geom.Position.within(float, float, float)", "arc.func.Cons.get(T)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static boolean nearEnemy(Team team, float x, float y, float width, float height)",
+    "desc" : "@return whether there is an enemy in this rectangle.",
+    "overloads" : null,
+    "name" : "nearEnemy",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "team",
+      "type" : "Team"
+    }, {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 496,
+    "calls" : [ "other.tree().any", "other.tree", "other.turretTree.any" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "Sortf",
+    "simpleName" : "Sortf",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "float cost(Unit unit, float x, float y)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "cost",
+      "returnType" : "float",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "unit",
+        "type" : "Unit"
+      }, {
+        "name" : "x",
+        "type" : "float"
+      }, {
+        "name" : "y",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 513,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-interface",
+    "signature" : "BuildingPriorityf",
+    "simpleName" : "BuildingPriorityf",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "float priority(Building build)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "priority",
+      "returnType" : "float",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "build",
+        "type" : "Building"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 517,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "UnitSyncContainer",
+    "simpleName" : "UnitSyncContainer",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public Unit unit",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "unit",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 521,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "public UnitSyncContainer() / public UnitSyncContainer(Unit unit)",
+      "desc" : null,
+      "overloads" : [ "public UnitSyncContainer()", "public UnitSyncContainer(Unit unit)" ],
+      "name" : "UnitSyncContainer",
+      "returnType" : null,
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 523,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+} ]

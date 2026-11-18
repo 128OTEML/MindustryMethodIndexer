@@ -1,0 +1,3693 @@
+[ {
+  "file" : "MenuBuilder.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Builder for presenting a complex menu to the player.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public String title",
+    "desc" : "Title string; if null, no title is shown at all (the orange bar is removed too)",
+    "overloads" : null,
+    "name" : "title",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean hideOnClick",
+    "desc" : "If false, the dialog will not immediately be hidden when a button with a click listener is clicked.",
+    "overloads" : null,
+    "name" : "hideOnClick",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean hideExisting",
+    "desc" : "If true (default), existing menus with this ID are hidden.",
+    "overloads" : null,
+    "name" : "hideExisting",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public boolean fillScreen",
+    "desc" : "If true (default), the dialog fills the screen.",
+    "overloads" : null,
+    "name" : "fillScreen",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public long token",
+    "desc" : "Unique value that is passed to the result after menu is closed.",
+    "overloads" : null,
+    "name" : "token",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int id",
+    "desc" : "ID for menu callback; you can reuse this as long as you have unique keys for button results.",
+    "overloads" : null,
+    "name" : "id",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public NodeBuilder<?> ui",
+    "desc" : "contents of the dialog, must not be null",
+    "overloads" : null,
+    "name" : "ui",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 22,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static MenuBuilder of(NodeBuilder<?> ui) / public static MenuBuilder of(String dslString)",
+    "desc" : "@return a menu constructed from a builder.",
+    "overloads" : [ "public static MenuBuilder of(NodeBuilder<?> ui)", "public static MenuBuilder of(String dslString)" ],
+    "name" : "of",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "ui",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "mindustry.ui.builder.MenuBuilder.MenuBuilder()", "mindustry.ui.builder.UiDslParser.parse(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void show(Player player)",
+    "desc" : "Submits this menu to the relevant player.",
+    "overloads" : null,
+    "name" : "show",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "player",
+      "type" : "Player"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "mindustry.gen.Call.menuBuilder(mindustry.net.NetConnection, int, long, java.lang.String, boolean, boolean, boolean, mindustry.ui.builder.UiBuilder.NodeBuilder<?>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void showAll()",
+    "desc" : "Submits this menu to all players.",
+    "overloads" : null,
+    "name" : "showAll",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ "mindustry.gen.Call.menuBuilder(int, long, java.lang.String, boolean, boolean, boolean, mindustry.ui.builder.UiBuilder.NodeBuilder<?>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void update(Player player, String elementId)",
+    "desc" : "Rebuilds a specific Table with the specified elementId.",
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "player",
+      "type" : "Player"
+    }, {
+      "name" : "elementId",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ "mindustry.gen.Call.menuBuilderUpdate(mindustry.net.NetConnection, int, java.lang.String, mindustry.ui.builder.UiBuilder.NodeBuilder<?>)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder hideExisting(boolean hideExisting)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hideExisting",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "hideExisting",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder token(long token)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "token",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "token",
+      "type" : "long"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder title(String title)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "title",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "title",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 63,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder hideOnClick(boolean hideOnClick)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hideOnClick",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "hideOnClick",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 68,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder fillScreen(boolean fillScreen)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fillScreen",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "fillScreen",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 73,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public MenuBuilder id(int id)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "id",
+    "returnType" : "MenuBuilder",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 78,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MenuResult.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : null,
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int maxResultLen",
+    "desc" : "Maximum length of result string",
+    "overloads" : null,
+    "name" : "maxResultLen",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int maxValueLen",
+    "desc" : "Maximum length of a single value in chars.",
+    "overloads" : null,
+    "name" : "maxValueLen",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int maxTotalStringLen",
+    "desc" : "Maximum total length of all string values in chars.",
+    "overloads" : null,
+    "name" : "maxTotalStringLen",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "constant",
+    "signature" : "public static final int maxTotalValues",
+    "desc" : "Maximum values count of any type that can be sent.",
+    "overloads" : null,
+    "name" : "maxTotalValues",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public long token",
+    "desc" : "Token passed to MenuBuilder.",
+    "overloads" : null,
+    "name" : "token",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 17,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public String result",
+    "desc" : "Button that was actually clicked, or null if the dialog was closed (back button).",
+    "overloads" : null,
+    "name" : "result",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 19,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public ObjectMap<String,Object> values",
+    "desc" : "Maps ID to element value (slider: value, text field: text, checkbox: checked)",
+    "overloads" : null,
+    "name" : "values",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 21,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public MenuResult() / public MenuResult(String result)",
+    "desc" : "Implies cancelled results.",
+    "overloads" : [ "public MenuResult()", "public MenuResult(String result)" ],
+    "name" : "MenuResult",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean wasCancelled()",
+    "desc" : "@return if the dialog was closed with no choice being made.",
+    "overloads" : null,
+    "name" : "wasCancelled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean is(String text)",
+    "desc" : "@return whether the result ID matches the specified parameter.",
+    "overloads" : null,
+    "name" : "is",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ "arc.util.Structs.eq(java.lang.Object, java.lang.Object)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String getString(String id, String defaultValue) / public String getString(String id)",
+    "desc" : null,
+    "overloads" : [ "public String getString(String id, String defaultValue)", "public String getString(String id)" ],
+    "name" : "getString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "String"
+    }, {
+      "name" : "defaultValue",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ "arc.struct.ObjectMap.get(T)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getFloat(String id, float def) / public float getFloat(String id)",
+    "desc" : null,
+    "overloads" : [ "public float getFloat(String id, float def)", "public float getFloat(String id)" ],
+    "name" : "getFloat",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "String"
+    }, {
+      "name" : "def",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ "arc.struct.ObjectMap.get(T)", "mindustry.ui.builder.MenuResult.getFloat(java.lang.String, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean getBool(String id, boolean def) / public boolean getBool(String id)",
+    "desc" : null,
+    "overloads" : [ "public boolean getBool(String id, boolean def)", "public boolean getBool(String id)" ],
+    "name" : "getBool",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "id",
+      "type" : "String"
+    }, {
+      "name" : "def",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ "arc.struct.ObjectMap.get(T)", "mindustry.ui.builder.MenuResult.getBool(java.lang.String, boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 65,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UiBuilder.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Builder-style API for building dialogs on servers.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static TableBuilder parse(String source)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parse",
+    "returnType" : "TableBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 11,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.parse(java.lang.String)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static TableBuilder table()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "table",
+    "returnType" : "TableBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 12,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.TableBuilder.TableBuilder()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static StackBuilder stack()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "stack",
+    "returnType" : "StackBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 13,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.StackBuilder.StackBuilder()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static PaneBuilder pane()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pane",
+    "returnType" : "PaneBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.PaneBuilder.PaneBuilder()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static LabelBuilder label(String text)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "label",
+    "returnType" : "LabelBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.LabelBuilder.text(java.lang.String)", "mindustry.ui.builder.UiBuilder.LabelBuilder.LabelBuilder()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ImageBuilder image() / public static ImageBuilder image(String region)",
+    "desc" : null,
+    "overloads" : [ "public static ImageBuilder image()", "public static ImageBuilder image(String region)" ],
+    "name" : "image",
+    "returnType" : "ImageBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 16,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.ImageBuilder.ImageBuilder()", "mindustry.ui.builder.UiBuilder.ImageBuilder.region(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ButtonBuilder button(String text)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "button",
+    "returnType" : "ButtonBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.ButtonBuilder.text(java.lang.String)", "mindustry.ui.builder.UiBuilder.ButtonBuilder.ButtonBuilder()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ImageButtonBuilder imageButton(String icon)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "imageButton",
+    "returnType" : "ImageButtonBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "icon",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.ImageButtonBuilder.icon(java.lang.String)", "mindustry.ui.builder.UiBuilder.ImageButtonBuilder.ImageButtonBuilder()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static FieldBuilder field(String text)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "field",
+    "returnType" : "FieldBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "text",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.FieldBuilder.text(java.lang.String)", "mindustry.ui.builder.UiBuilder.FieldBuilder.FieldBuilder()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static CheckBuilder check() / public static CheckBuilder check(String text)",
+    "desc" : null,
+    "overloads" : [ "public static CheckBuilder check()", "public static CheckBuilder check(String text)" ],
+    "name" : "check",
+    "returnType" : "CheckBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.CheckBuilder.CheckBuilder()", "mindustry.ui.builder.UiBuilder.CheckBuilder.text(java.lang.String)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static SliderBuilder slider(float min, float max, float step)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "slider",
+    "returnType" : "SliderBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "min",
+      "type" : "float"
+    }, {
+      "name" : "max",
+      "type" : "float"
+    }, {
+      "name" : "step",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.SliderBuilder.step(float)", "mindustry.ui.builder.UiBuilder.SliderBuilder.max(float)", "mindustry.ui.builder.UiBuilder.SliderBuilder.min(float)", "mindustry.ui.builder.UiBuilder.SliderBuilder.SliderBuilder()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static SpaceBuilder space()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "space",
+    "returnType" : "SpaceBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.SpaceBuilder.SpaceBuilder()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static DefaultsBuilder defaults()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "defaults",
+    "returnType" : "DefaultsBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.DefaultsBuilder.DefaultsBuilder()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static ButtonTableBuilder buttonTable()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buttonTable",
+    "returnType" : "ButtonTableBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.ButtonTableBuilder.ButtonTableBuilder()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "NodeBuilder",
+    "simpleName" : "NodeBuilder",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final UiKey type",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "type",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 29,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final Seq<Entry> entries",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "entries",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 30,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "NodeBuilder(UiKey type)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "NodeBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "type",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 32,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "private T self()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "self",
+      "returnType" : "T",
+      "modifiers" : [ "private" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "SuppressWarnings" ],
+      "line" : 36,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "protected T prop(UiKey key, String value) / protected T prop(UiKey key, float value) / protected T prop(UiKey key, boolean value)",
+      "desc" : null,
+      "overloads" : [ "protected T prop(UiKey key, String value)", "protected T prop(UiKey key, float value)", "protected T prop(UiKey key, boolean value)" ],
+      "name" : "prop",
+      "returnType" : "T",
+      "modifiers" : [ "protected" ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "UiKey"
+      }, {
+        "name" : "value",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 41,
+      "calls" : [ "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiBuilder.NodeBuilder.self()", "mindustry.ui.builder.UiBuilder.Entry.Entry(mindustry.ui.builder.UiKey, java.lang.Object)" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "public T id(String id)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "id",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "id",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 45,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T condition(String cond)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "condition",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "cond",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 46,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T grow()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "grow",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 47,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T growX()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "growX",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 48,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T growY()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "growY",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 49,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T fill()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "fill",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 50,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T fillX()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "fillX",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 51,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T fillY()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "fillY",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 52,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T expand()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "expand",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 53,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T expandX()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "expandX",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 54,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T expandY()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "expandY",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 55,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T width(float w)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "width",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "w",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 56,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T height(float h)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "height",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "h",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 57,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T size(float s)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "size",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "s",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 58,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T minWidth(float w)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "minWidth",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "w",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 59,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T maxWidth(float w)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "maxWidth",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "w",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 60,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T minHeight(float h)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "minHeight",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "h",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 61,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T maxHeight(float h)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "maxHeight",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "h",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 62,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T pad(float p)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "pad",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 63,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T padTop(float p)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "padTop",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 64,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T padLeft(float p)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "padLeft",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 65,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T padBottom(float p)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "padBottom",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 66,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T padRight(float p)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "padRight",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "p",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 67,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T align(String align)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "align",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "align",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 68,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T colspan(int c)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "colspan",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "c",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 69,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T uniform()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "uniform",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 70,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T uniformX()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "uniformX",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 71,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T uniformY()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "uniformY",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 72,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public T color(Color color) / public T color(String colorHex)",
+      "desc" : null,
+      "overloads" : [ "public T color(Color color)", "public T color(String colorHex)" ],
+      "name" : "color",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "color",
+        "type" : "Color"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 73,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)", "arc.graphics.Color.toString()" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "public void write(Writes out)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "write",
+      "returnType" : "void",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "out",
+        "type" : "Writes"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 76,
+      "calls" : [ "arc.util.io.Writes.b(int)", "java.lang.Enum.ordinal()", "mindustry.ui.builder.UiBuilder.NodeBuilder.writeEntries(arc.util.io.Writes, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>)" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "static void writeEntries(Writes out, Seq<Entry> entries)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "writeEntries",
+      "returnType" : "void",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "out",
+        "type" : "Writes"
+      }, {
+        "name" : "entries",
+        "type" : "Seq<Entry>"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 81,
+      "calls" : [ "arc.util.io.Writes.s(int)", "mindustry.ui.builder.UiBuilder.NodeBuilder.writeEntry(arc.util.io.Writes, mindustry.ui.builder.UiBuilder.Entry)" ],
+      "callCount" : 2
+    }, {
+      "kind" : "method",
+      "signature" : "public static NodeBuilder<?> read(Reads in)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "read",
+      "returnType" : "NodeBuilder<?>",
+      "modifiers" : [ "public", "static" ],
+      "parameters" : [ {
+        "name" : "in",
+        "type" : "Reads"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 86,
+      "calls" : [ "arc.util.io.Reads.ub()", "mindustry.ui.builder.UiBuilder.NodeBuilder.create(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiBuilder.NodeBuilder.readEntries(arc.util.io.Reads, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>)" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "static void readEntries(Reads in, Seq<Entry> entries)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "readEntries",
+      "returnType" : "void",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "in",
+        "type" : "Reads"
+      }, {
+        "name" : "entries",
+        "type" : "Seq<Entry>"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 93,
+      "calls" : [ "arc.util.io.Reads.us()", "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiBuilder.NodeBuilder.readEntry(arc.util.io.Reads)" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "static NodeBuilder<?> create(UiKey type)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "create",
+      "returnType" : "NodeBuilder<?>",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "type",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 98,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.TableBuilder.TableBuilder()", "mindustry.ui.builder.UiBuilder.PaneBuilder.PaneBuilder()", "mindustry.ui.builder.UiBuilder.StackBuilder.StackBuilder()", "mindustry.ui.builder.UiBuilder.LabelBuilder.LabelBuilder()", "mindustry.ui.builder.UiBuilder.ImageBuilder.ImageBuilder()", "mindustry.ui.builder.UiBuilder.ButtonBuilder.ButtonBuilder()", "mindustry.ui.builder.UiBuilder.ImageButtonBuilder.ImageButtonBuilder()", "mindustry.ui.builder.UiBuilder.FieldBuilder.FieldBuilder()", "mindustry.ui.builder.UiBuilder.CheckBuilder.CheckBuilder()", "mindustry.ui.builder.UiBuilder.SliderBuilder.SliderBuilder()", "mindustry.ui.builder.UiBuilder.SpaceBuilder.SpaceBuilder()", "mindustry.ui.builder.UiBuilder.DefaultsBuilder.DefaultsBuilder()", "mindustry.ui.builder.UiBuilder.ButtonTableBuilder.ButtonTableBuilder()", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+      "callCount" : 14
+    }, {
+      "kind" : "method",
+      "signature" : "static void writeEntry(Writes out, Entry e)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "writeEntry",
+      "returnType" : "void",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "out",
+        "type" : "Writes"
+      }, {
+        "name" : "e",
+        "type" : "Entry"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 117,
+      "calls" : [ "arc.util.io.Writes.s(int)", "java.lang.Enum.ordinal()", "arc.util.io.Writes.b(int)", "arc.util.io.Writes.str(java.lang.String)", "arc.util.io.Writes.f(float)", "arc.util.io.Writes.bool(boolean)", "mindustry.ui.builder.UiBuilder.NodeBuilder.write(arc.util.io.Writes)", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)" ],
+      "callCount" : 8
+    }, {
+      "kind" : "method",
+      "signature" : "static Entry readEntry(Reads in)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "readEntry",
+      "returnType" : "Entry",
+      "modifiers" : [ "static" ],
+      "parameters" : [ {
+        "name" : "in",
+        "type" : "Reads"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 136,
+      "calls" : [ "arc.util.io.Reads.us()", "arc.util.io.Reads.ub()", "arc.util.io.Reads.str()", "arc.util.io.Reads.f()", "arc.util.io.Reads.bool()", "mindustry.ui.builder.UiBuilder.NodeBuilder.read(arc.util.io.Reads)", "arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)", "mindustry.ui.builder.UiBuilder.Entry.Entry(mindustry.ui.builder.UiKey, java.lang.Object)" ],
+      "callCount" : 8
+    }, {
+      "kind" : "method",
+      "signature" : "String str(UiKey key) / String str(UiKey key, String def)",
+      "desc" : null,
+      "overloads" : [ "String str(UiKey key)", "String str(UiKey key, String def)" ],
+      "name" : "str",
+      "returnType" : "String",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 149,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "Float num(UiKey key) / float num(UiKey key, float def)",
+      "desc" : null,
+      "overloads" : [ "Float num(UiKey key)", "float num(UiKey key, float def)" ],
+      "name" : "num",
+      "returnType" : "Float",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 159,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.num(mindustry.ui.builder.UiKey)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "boolean bool(UiKey key) / boolean bool(UiKey key, boolean def)",
+      "desc" : null,
+      "overloads" : [ "boolean bool(UiKey key)", "boolean bool(UiKey key, boolean def)" ],
+      "name" : "bool",
+      "returnType" : "boolean",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 169,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.bool(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 178,
+      "calls" : [ "mindustry.ui.builder.UiDslWriter.write(mindustry.ui.builder.UiBuilder.NodeBuilder<?>)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "Entry",
+    "simpleName" : "Entry",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final UiKey key",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "key",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 185,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final Object value",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "value",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 186,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "Entry(UiKey key, Object value)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "Entry",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "key",
+        "type" : "UiKey"
+      }, {
+        "name" : "value",
+        "type" : "Object"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 188,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public String toString()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "toString",
+      "returnType" : "String",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "Override" ],
+      "line" : 193,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "ContainerBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "ContainerBuilder",
+    "desc" : "Shared behavior for node types that can contain children (table, pane).",
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "ContainerBuilder(UiKey type)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ContainerBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "type",
+        "type" : "UiKey"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 204,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "private T self()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "self",
+      "returnType" : "T",
+      "modifiers" : [ "private" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ "SuppressWarnings" ],
+      "line" : 208,
+      "calls" : [ ],
+      "callCount" : 0
+    }, {
+      "kind" : "method",
+      "signature" : "public T row()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "row",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 213,
+      "calls" : [ "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiBuilder.ContainerBuilder.self()", "mindustry.ui.builder.UiBuilder.Entry.Entry(mindustry.ui.builder.UiKey, java.lang.Object)" ],
+      "callCount" : 3
+    }, {
+      "kind" : "method",
+      "signature" : "public T add(NodeBuilder<?> child)",
+      "desc" : "Generic nesting point - append any already-configured node as a child.",
+      "overloads" : null,
+      "name" : "add",
+      "returnType" : "T",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "child",
+        "type" : "NodeBuilder<?>"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 219,
+      "calls" : [ "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiBuilder.ContainerBuilder.self()", "mindustry.ui.builder.UiBuilder.Entry.Entry(mindustry.ui.builder.UiKey, java.lang.Object)" ],
+      "callCount" : 3
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "StackBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder",
+    "simpleName" : "StackBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "StackBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "StackBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 226,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "TableBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder",
+    "simpleName" : "TableBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "TableBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "TableBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 230,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public TableBuilder background(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "background",
+      "returnType" : "TableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 232,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public TableBuilder margin(float m)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "margin",
+      "returnType" : "TableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "m",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 233,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public TableBuilder wrap(boolean wrap)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrap",
+      "returnType" : "TableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "wrap",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 234,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "PaneBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder",
+    "simpleName" : "PaneBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "PaneBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "PaneBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 238,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public PaneBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "PaneBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 240,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "LabelBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "LabelBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "LabelBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "LabelBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 244,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public LabelBuilder text(String text)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "text",
+      "returnType" : "LabelBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "text",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 246,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public LabelBuilder wrap()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "wrap",
+      "returnType" : "LabelBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 247,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public LabelBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "LabelBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 248,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public LabelBuilder labelAlign(String align)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "labelAlign",
+      "returnType" : "LabelBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "align",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 249,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "ImageBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "ImageBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "ImageBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ImageBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 253,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public ImageBuilder region(String region)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "region",
+      "returnType" : "ImageBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "region",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 255,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageBuilder placeholder(String placeholder)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "placeholder",
+      "returnType" : "ImageBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "placeholder",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 256,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageBuilder scaling(Scaling scaling)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "scaling",
+      "returnType" : "ImageBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "scaling",
+        "type" : "Scaling"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 257,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)", "java.lang.Enum.name()" ],
+      "callCount" : 2
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "ButtonBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "ButtonBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "ButtonBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ButtonBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 261,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder text(String text)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "text",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "text",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 263,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder icon(String icon)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "icon",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "icon",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 264,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder placeholder(String placeholder)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "placeholder",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "placeholder",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 265,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 266,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder clicked(String result)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "clicked",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 267,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 268,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder group(String group)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "group",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "group",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 269,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonBuilder checked(boolean checked)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "checked",
+      "returnType" : "ButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "checked",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 270,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "ImageButtonBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "ImageButtonBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "ImageButtonBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ImageButtonBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 274,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder icon(String icon)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "icon",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "icon",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 276,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder placeholder(String placeholder)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "placeholder",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "placeholder",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 277,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 278,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder clicked(String result)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "clicked",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 279,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 280,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder group(String group)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "group",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "group",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 281,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ImageButtonBuilder checked(boolean checked)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "checked",
+      "returnType" : "ImageButtonBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "checked",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 282,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "FieldBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "FieldBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "FieldBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "FieldBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 286,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public FieldBuilder text(String text)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "text",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "text",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 288,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public FieldBuilder hint(String hint)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "hint",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "hint",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 289,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public FieldBuilder maxLength(int length)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "maxLength",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "length",
+        "type" : "int"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 290,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public FieldBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 291,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public FieldBuilder enter(String result)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "enter",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 292,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public FieldBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "FieldBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 293,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "CheckBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "CheckBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "CheckBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "CheckBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 297,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public CheckBuilder text(String text)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "text",
+      "returnType" : "CheckBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "text",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 299,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public CheckBuilder checked(boolean checked)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "checked",
+      "returnType" : "CheckBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "checked",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 300,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public CheckBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "CheckBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 301,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public CheckBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "CheckBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 302,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public CheckBuilder group(String group)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "group",
+      "returnType" : "CheckBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "group",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 303,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "SliderBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "SliderBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "SliderBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "SliderBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 307,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public SliderBuilder min(float min)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "min",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "min",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 309,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public SliderBuilder max(float max)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "max",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "max",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 310,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public SliderBuilder step(float step)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "step",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "step",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 311,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public SliderBuilder defaultValue(float value)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "defaultValue",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "value",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 312,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public SliderBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 313,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public SliderBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "SliderBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 314,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "SpaceBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "SpaceBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "SpaceBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "SpaceBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 318,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "DefaultsBuilder extends mindustry.ui.builder.UiBuilder.NodeBuilder",
+    "simpleName" : "DefaultsBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "DefaultsBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "DefaultsBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 322,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "ButtonTableBuilder extends mindustry.ui.builder.UiBuilder.ContainerBuilder",
+    "simpleName" : "ButtonTableBuilder",
+    "desc" : null,
+    "fields" : [ ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "ButtonTableBuilder()",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "ButtonTableBuilder",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 326,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder style(String style)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "style",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "style",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 328,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder clicked(String result)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "clicked",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "result",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 329,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder margin(float m)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "margin",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "m",
+        "type" : "float"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 330,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, float)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder disabled(boolean disabled)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "disabled",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "disabled",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 331,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder group(String group)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "group",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "group",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 332,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, java.lang.String)" ],
+      "callCount" : 1
+    }, {
+      "kind" : "method",
+      "signature" : "public ButtonTableBuilder checked(boolean checked)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "checked",
+      "returnType" : "ButtonTableBuilder",
+      "modifiers" : [ "public" ],
+      "parameters" : [ {
+        "name" : "checked",
+        "type" : "boolean"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 333,
+      "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.prop(mindustry.ui.builder.UiKey, boolean)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "UiDslParser.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Parses String -> UiBuilders.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final String src",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "src",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int pos",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "pos",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean lastQuoted",
+    "desc" : "whether the most recently parsed value was a quoted string",
+    "overloads" : null,
+    "name" : "lastQuoted",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "private UiDslParser(String src)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "UiDslParser",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "src",
+      "type" : "String"
+    } ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static TableBuilder parse(String source)",
+    "desc" : "Parses source text into a root TableBuilder (the implicit root table's body).",
+    "overloads" : null,
+    "name" : "parse",
+    "returnType" : "TableBuilder",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "source",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.parseStatementsInto(mindustry.ui.builder.UiBuilder.NodeBuilder<?>)", "mindustry.ui.builder.UiDslParser.skipWs()", "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "mindustry.ui.builder.UiDslParser.line(int)", "mindustry.ui.builder.UiBuilder.TableBuilder.TableBuilder()", "mindustry.ui.builder.UiDslParser.UiDslParser(java.lang.String)", "arc.util.serialization.SerializationException.SerializationException(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "private void parseStatementsInto(NodeBuilder<?> node)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parseStatementsInto",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.skipWs()", "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "mindustry.ui.builder.UiDslParser.parseStatement(mindustry.ui.builder.UiBuilder.NodeBuilder<?>)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void parseStatement(NodeBuilder<?> node)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parseStatement",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.skipWs()", "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "mindustry.ui.builder.UiDslParser.line(int)", "mindustry.ui.builder.UiDslParser.readBareToken()", "java.lang.String.isEmpty()", "java.lang.String.equals(java.lang.Object)", "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiKey.valueOf(java.lang.String)", "java.lang.Enum.ordinal()", "mindustry.ui.builder.UiDslParser.parseValue()", "mindustry.ui.builder.UiBuilder.NodeBuilder.create(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiDslParser.getShorthandType(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiDslParser.parseStatementsInto(mindustry.ui.builder.UiBuilder.NodeBuilder<?>)", "mindustry.ui.builder.UiDslParser.expect(char)", "mindustry.ui.builder.UiDslParser.coerce(java.lang.String)", "arc.util.serialization.SerializationException.SerializationException(java.lang.String)", "mindustry.ui.builder.UiBuilder.Entry.Entry(mindustry.ui.builder.UiKey, java.lang.Object)" ],
+    "callCount" : 18
+  }, {
+    "kind" : "method",
+    "signature" : "private static UiKey getShorthandType(UiKey key)",
+    "desc" : "for statements such as image: \"cat\", the key type is region, not text.",
+    "overloads" : null,
+    "name" : "getShorthandType",
+    "returnType" : "UiKey",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "UiKey"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private Object coerce(String raw)",
+    "desc" : "Converts a parsed bare token into the most specific type it looks like; quoted strings stay strings.",
+    "overloads" : null,
+    "name" : "coerce",
+    "returnType" : "Object",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "raw",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 103,
+    "calls" : [ "java.lang.String.equals(java.lang.Object)", "arc.util.Strings.parseFloat(java.lang.String, float)", "java.lang.Float.isNaN(float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private String parseValue()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parseValue",
+    "returnType" : "String",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 116,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.skipWs()", "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "mindustry.ui.builder.UiDslParser.parseString()", "mindustry.ui.builder.UiDslParser.readBareToken()", "java.lang.String.isEmpty()", "mindustry.ui.builder.UiDslParser.line(int)", "arc.util.serialization.SerializationException.SerializationException(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "private String parseString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parseString",
+    "returnType" : "String",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 128,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "java.lang.String.charAt(int)", "java.lang.String.length()", "java.lang.StringBuilder.append(char)", "mindustry.ui.builder.UiDslParser.line(int)", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder()", "arc.util.serialization.SerializationException.SerializationException(java.lang.String)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "private String readBareToken()",
+    "desc" : "reads until whitespace/brace/colon; covers identifiers, numbers, and bare-word values alike",
+    "overloads" : null,
+    "name" : "readBareToken",
+    "returnType" : "String",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 148,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.atEnd()", "java.lang.String.charAt(int)", "java.lang.Character.isWhitespace(char)", "java.lang.String.substring(int, int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void skipWs()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "skipWs",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 158,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.atEnd()", "java.lang.String.charAt(int)", "java.lang.Character.isWhitespace(char)", "java.lang.String.length()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private void expect(char c)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "expect",
+    "returnType" : "void",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "c",
+      "type" : "char"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 170,
+    "calls" : [ "mindustry.ui.builder.UiDslParser.atEnd()", "mindustry.ui.builder.UiDslParser.peek()", "mindustry.ui.builder.UiDslParser.line(int)", "SerializationException.<init>" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private boolean atEnd()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "atEnd",
+    "returnType" : "boolean",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 175,
+    "calls" : [ "java.lang.String.length()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private char peek()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "peek",
+    "returnType" : "char",
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 179,
+    "calls" : [ "java.lang.String.charAt(int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "private int line(int index)",
+    "desc" : "counts newlines up to (not including) the given index to determine the 1-based line number",
+    "overloads" : null,
+    "name" : "line",
+    "returnType" : "int",
+    "modifiers" : [ "private" ],
+    "parameters" : [ {
+      "name" : "index",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 184,
+    "calls" : [ "java.lang.Math.min(int, int)", "java.lang.String.length()", "java.lang.String.charAt(int)" ],
+    "callCount" : 3
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UiDslWriter.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Converts a parsed NodeBuilder tree back into UI DSL source text.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static String write(NodeBuilder<?> root)",
+    "desc" : "Writes the root node's entries (no wrapping block, since root is an implicit table body).",
+    "overloads" : null,
+    "name" : "write",
+    "returnType" : "String",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 11,
+    "calls" : [ "mindustry.ui.builder.UiDslWriter.writeEntries(java.lang.StringBuilder, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>, int)", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private static void writeEntries(StringBuilder sb, Seq<Entry> entries, int depth)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeEntries",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "sb",
+      "type" : "StringBuilder"
+    }, {
+      "name" : "entries",
+      "type" : "Seq<Entry>"
+    }, {
+      "name" : "depth",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 17,
+    "calls" : [ "mindustry.ui.builder.UiDslWriter.indent(java.lang.StringBuilder, int)", "java.lang.StringBuilder.append(java.lang.String)", "mindustry.ui.builder.UiDslWriter.writeChildNode(java.lang.StringBuilder, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, int)", "java.lang.StringBuilder.append(char)", "java.lang.Enum.name()", "mindustry.ui.builder.UiDslWriter.formatValue(java.lang.Object)" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "private static void writeChildNode(StringBuilder sb, NodeBuilder<?> child, int depth)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "writeChildNode",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "sb",
+      "type" : "StringBuilder"
+    }, {
+      "name" : "child",
+      "type" : "NodeBuilder<?>"
+    }, {
+      "name" : "depth",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 38,
+    "calls" : [ "mindustry.ui.builder.UiDslWriter.indent(java.lang.StringBuilder, int)", "java.lang.StringBuilder.append(java.lang.String)", "java.lang.Enum.name()", "mindustry.ui.builder.UiDslWriter.shorthandType(mindustry.ui.builder.UiKey)", "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiDslWriter.formatValue(java.lang.Object)", "arc.struct.Seq.isEmpty()", "java.lang.StringBuilder.append(char)", "mindustry.ui.builder.UiDslWriter.writeEntries(java.lang.StringBuilder, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>, int)", "arc.struct.Seq.Seq()" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "private static UiKey shorthandType(UiKey key)",
+    "desc" : "Mirrors UiDslParser's getShorthandType: image uses region, everything else uses text.",
+    "overloads" : null,
+    "name" : "shorthandType",
+    "returnType" : "UiKey",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "key",
+      "type" : "UiKey"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "private static String formatValue(Object value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "formatValue",
+    "returnType" : "String",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 79,
+    "calls" : [ "mindustry.ui.builder.UiDslWriter.formatFloat(float)", "mindustry.ui.builder.UiDslWriter.needsQuotes(java.lang.String)", "mindustry.ui.builder.UiDslWriter.quote(java.lang.String)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private static String formatFloat(float f)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "formatFloat",
+    "returnType" : "String",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "f",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ "java.lang.Long.toString(long)", "java.lang.Float.toString(float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean needsQuotes(String s)",
+    "desc" : "A bare token round-trips correctly only if the parser wouldn't reinterpret it as a bool/number/keyword.",
+    "overloads" : null,
+    "name" : "needsQuotes",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "s",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 92,
+    "calls" : [ "java.lang.String.isEmpty()", "java.lang.String.equals(java.lang.Object)", "java.lang.Float.isNaN(float)", "arc.util.Strings.parseFloat(java.lang.String, float)", "java.lang.String.length()", "java.lang.String.charAt(int)", "java.lang.Character.isWhitespace(char)", "java.lang.String.startsWith(java.lang.String)" ],
+    "callCount" : 8
+  }, {
+    "kind" : "method",
+    "signature" : "private static String quote(String s)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "quote",
+    "returnType" : "String",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "s",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 107,
+    "calls" : [ "java.lang.StringBuilder.append(char)", "java.lang.String.length()", "java.lang.String.charAt(int)", "java.lang.StringBuilder.append(java.lang.String)", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "private static void indent(StringBuilder sb, int depth)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "indent",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "sb",
+      "type" : "StringBuilder"
+    }, {
+      "name" : "depth",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 124,
+    "calls" : [ "java.lang.StringBuilder.append(java.lang.String)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UiHotReload.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Utility class for showing a MSUI dialog box that automatically reloads changes for a certain file.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static void show()",
+    "desc" : "Shows a file picker for the dialog box.",
+    "overloads" : null,
+    "name" : "show",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ "mindustry.ui.FileChooser.FileChooserParams.submit(arc.func.Cons<arc.files.Fi>)", "mindustry.ui.FileChooser.open(java.lang.String...)", "arc.files.Fi.lastModified()", "arc.scene.Element.update(java.lang.Runnable)", "arc.util.Time.millis()", "arc.util.Time.timeSinceMillis(long)", "mindustry.ui.builder.UiHotReload.reload(arc.files.Fi, mindustry.ui.dialogs.BaseDialog)", "mindustry.ui.dialogs.BaseDialog.addCloseButton()", "arc.scene.ui.Dialog.show()", "mindustry.ui.dialogs.BaseDialog.BaseDialog(java.lang.String)" ],
+    "callCount" : 10
+  }, {
+    "kind" : "method",
+    "signature" : "static void reload(Fi file, BaseDialog dialog)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reload",
+    "returnType" : "void",
+    "modifiers" : [ "static" ],
+    "parameters" : [ {
+      "name" : "file",
+      "type" : "Fi"
+    }, {
+      "name" : "dialog",
+      "type" : "BaseDialog"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "arc.scene.Group.clear()", "arc.scene.ui.layout.Table.background(arc.scene.style.Drawable)", "mindustry.ui.builder.UiTreeBuilder.build(arc.scene.ui.layout.Table, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, arc.func.Cons<mindustry.ui.builder.MenuResult>)", "mindustry.ui.builder.UiBuilder.parse(java.lang.String)", "arc.files.Fi.readString()", "mindustry.core.UI.showInfo(java.lang.String)", "mindustry.ui.builder.MenuResult.toString()", "arc.scene.ui.layout.Table.clearChildren()", "java.lang.Throwable.getMessage()", "java.lang.String.contains(java.lang.CharSequence)", "arc.util.Strings.parseInt(java.lang.String)", "java.lang.String.substring(int)", "java.lang.String.indexOf(java.lang.String)", "java.lang.String.split(java.lang.String)", "arc.scene.ui.layout.Table.add(java.lang.CharSequence)", "java.lang.String.trim()", "arc.struct.Seq.isEmpty()", "arc.scene.Group.getChildren()", "arc.scene.ui.layout.Cell.labelAlign(int)", "arc.scene.ui.layout.Cell.center()", "arc.util.Strings.getStackTrace(java.lang.Throwable)" ],
+    "callCount" : 21
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UiKey.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : null,
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ ],
+  "inner" : [ ]
+}, {
+  "file" : "UiStyleLookup.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Grabs style fields by name from {@link Styles}.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final ObjectMap<Class<?>,ObjectMap<String,Object>> styles",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "styles",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static T get(Class<T> type, String name)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "get",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Nullable" ],
+    "line" : 11,
+    "calls" : [ "arc.struct.ObjectMap.isEmpty()", "mindustry.ui.builder.UiStyleLookup.init()", "arc.struct.ObjectMap.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private static void init()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "init",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 16,
+    "calls" : [ "java.lang.Class.getFields()", "arc.struct.ObjectMap.put(K, V)", "arc.struct.ObjectMap.get(K, arc.func.Prov<V>)", "java.lang.reflect.Field.getType()", "java.lang.reflect.Field.getName()", "arc.util.Log.err(java.lang.Throwable)" ],
+    "callCount" : 6
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "UiTreeBuilder.java",
+  "pkg" : "mindustry.ui.builder",
+  "type" : "Java class",
+  "typeDesc" : "Builds a UI into an existing Table from a NodeBuilder tree.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static BuildResult build(Table root, NodeBuilder<?> builder) / public static BuildResult build(Table root, NodeBuilder<?> builder, Cons<MenuResult> resultListener)",
+    "desc" : null,
+    "overloads" : [ "public static BuildResult build(Table root, NodeBuilder<?> builder)", "public static BuildResult build(Table root, NodeBuilder<?> builder, Cons<MenuResult> resultListener)" ],
+    "name" : "build",
+    "returnType" : "BuildResult",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "root",
+      "type" : "Table"
+    }, {
+      "name" : "builder",
+      "type" : "NodeBuilder<?>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 30,
+    "calls" : [ "mindustry.ui.builder.UiTreeBuilder.build(arc.scene.ui.layout.Table, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, arc.func.Cons<mindustry.ui.builder.MenuResult>)", "mindustry.ui.builder.UiTreeBuilder.buildInto(arc.scene.ui.layout.Table, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>, mindustry.ui.builder.UiTreeBuilder.BuildContext)", "mindustry.ui.builder.UiTreeBuilder.BuildContext.BuildContext(arc.func.Cons<mindustry.ui.builder.MenuResult>)", "mindustry.ui.builder.UiTreeBuilder.BuildResult.BuildResult(arc.struct.ObjectMap<java.lang.String, arc.scene.Element>, arc.struct.ObjectMap<java.lang.String, arc.struct.Seq<arc.scene.ui.Image>>)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private static void buildInto(Table table, Seq<Entry> entries, BuildContext ctx)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "buildInto",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    }, {
+      "name" : "entries",
+      "type" : "Seq<Entry>"
+    }, {
+      "name" : "ctx",
+      "type" : "BuildContext"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ "arc.scene.ui.layout.Table.row()", "arc.struct.Seq.add(T)", "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiTreeBuilder.evalCondition(java.lang.String)", "arc.scene.ui.layout.Table.add()", "mindustry.ui.builder.UiTreeBuilder.addNode(mindustry.ui.builder.UiKey, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, mindustry.ui.builder.UiTreeBuilder.BuildContext)", "mindustry.ui.builder.UiTreeBuilder.applyCellProp(arc.scene.ui.layout.Cell<?>, mindustry.ui.builder.UiKey, java.lang.Object)", "arc.scene.ui.layout.Cell.name(java.lang.String)", "arc.struct.ObjectMap.put(K, V)", "arc.scene.ui.layout.Cell.get()", "mindustry.ui.builder.UiTreeBuilder.applyTableProp(arc.scene.ui.layout.Table, mindustry.ui.builder.UiKey, java.lang.Object)", "arc.struct.Seq.Seq()" ],
+    "callCount" : 12
+  }, {
+    "kind" : "method",
+    "signature" : "private static Element addNode(UiKey type, NodeBuilder<?> node, BuildContext ctx)",
+    "desc" : "Constructs the element for one node, adds it to the parent table, and returns its cell.",
+    "overloads" : null,
+    "name" : "addNode",
+    "returnType" : "Element",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "UiKey"
+    }, {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    }, {
+      "name" : "ctx",
+      "type" : "BuildContext"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 78,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiBuilder.NodeBuilder.bool(mindustry.ui.builder.UiKey)", "arc.scene.ui.layout.Table.background(arc.scene.style.Drawable)", "mindustry.ui.builder.UiTreeBuilder.findDrawable(java.lang.String)", "mindustry.ui.builder.UiBuilder.NodeBuilder.num(mindustry.ui.builder.UiKey)", "arc.scene.ui.layout.Table.margin(float)", "mindustry.ui.builder.UiTreeBuilder.buildInto(arc.scene.ui.layout.Table, arc.struct.Seq<mindustry.ui.builder.UiBuilder.Entry>, mindustry.ui.builder.UiTreeBuilder.BuildContext)", "mindustry.ui.builder.UiTreeBuilder.evalCondition(java.lang.String)", "mindustry.ui.builder.UiTreeBuilder.addNode(mindustry.ui.builder.UiKey, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, mindustry.ui.builder.UiTreeBuilder.BuildContext)", "arc.struct.ObjectMap.put(K, V)", "arc.scene.Element.setColor(arc.graphics.Color)", "arc.util.Strings.parseColor(java.lang.String, arc.graphics.Color)", "arc.scene.ui.layout.Stack.add(arc.scene.Element)", "mindustry.ui.builder.UiTreeBuilder.applyStyle(mindustry.ui.builder.UiBuilder.NodeBuilder<?>, java.lang.Class<S>, arc.func.Cons<S>)", "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey, java.lang.String)", "arc.scene.ui.Label.setWrap(boolean)", "arc.scene.ui.Label.setAlignment(int)", "mindustry.ui.builder.UiTreeBuilder.parseAlign(java.lang.String)", "mindustry.ui.builder.UiTreeBuilder.findDrawable(java.lang.String, java.lang.String)", "java.lang.String.startsWith(java.lang.String)", "arc.struct.Seq.add(T)", "arc.struct.ObjectMap.get(K, arc.func.Prov<V>)", "arc.util.Scaling.valueOf(java.lang.String)", "arc.scene.ui.Image.setScaling(arc.util.Scaling)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Table.add(T)", "arc.struct.Seq.reverse()", "arc.scene.ui.layout.Table.getCells()", "mindustry.ui.builder.UiTreeBuilder.wireButton(arc.scene.ui.Button, mindustry.ui.builder.UiBuilder.NodeBuilder<?>, mindustry.ui.builder.UiTreeBuilder.BuildContext)", "arc.scene.ui.ImageButton.getImage()", "arc.scene.ui.TextField.setMessageText(java.lang.String)", "arc.scene.ui.TextField.setMaxLength(int)", "java.lang.Math.min(int, int)", "java.lang.Float.intValue()", "arc.scene.Element.keyDown(arc.input.KeyCode, java.lang.Runnable)", "mindustry.ui.builder.UiTreeBuilder.fireResult(mindustry.ui.builder.UiTreeBuilder.BuildContext, java.lang.String)", "arc.scene.ui.Button.setChecked(boolean)", "arc.scene.ui.ButtonGroup.add(T)", "mindustry.ui.builder.UiTreeBuilder.BuildContext.group(java.lang.String)", "mindustry.ui.builder.UiBuilder.NodeBuilder.num(mindustry.ui.builder.UiKey, float)", "arc.scene.ui.ProgressBar.setValue(float)", "java.lang.String.length()", "java.lang.String.charAt(int)", "java.lang.String.substring(int)", "arc.util.Strings.autoFixed(float, int)", "arc.scene.ui.ProgressBar.getValue()", "arc.util.I18NBundle.format(java.lang.String, java.lang.Object...)", "arc.scene.ui.Label.setStyle(arc.scene.ui.Label.LabelStyle)", "arc.scene.ui.layout.WrapTable.WrapTable()", "arc.scene.ui.layout.Table.Table()", "arc.scene.ui.layout.Stack.Stack()", "arc.scene.ui.ScrollPane.ScrollPane(arc.scene.Element)", "arc.scene.ui.Label.Label(java.lang.CharSequence)", "arc.scene.ui.Image.Image(arc.scene.style.Drawable)", "arc.scene.ui.TextButton.TextButton(java.lang.String)", "arc.scene.ui.ImageButton.ImageButton(arc.scene.style.Drawable)", "arc.scene.ui.TextField.TextField(java.lang.String)", "arc.scene.ui.CheckBox.CheckBox(java.lang.String)", "arc.scene.ui.Slider.Slider(float, float, float, boolean)", "arc.scene.ui.Label.Label(arc.func.Prov<java.lang.CharSequence>)", "arc.scene.ui.layout.Stack.Stack(arc.scene.Element...)", "arc.scene.ui.Button.Button()" ],
+    "callCount" : 62
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean applyStyle(NodeBuilder<?> node, Class<S> styleType, Cons<S> setter)",
+    "desc" : "Looks up a style by the node's \"style\" value (if set) and applies it via the given setter; no-op if absent/unknown.",
+    "overloads" : null,
+    "name" : "applyStyle",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    }, {
+      "name" : "styleType",
+      "type" : "Class<S>"
+    }, {
+      "name" : "setter",
+      "type" : "Cons<S>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 228,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey)", "mindustry.ui.builder.UiStyleLookup.get(java.lang.Class<T>, java.lang.String)", "arc.func.Cons.get(T)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "private static void wireButton(Button element, NodeBuilder<?> node, BuildContext ctx)",
+    "desc" : "Sets up the click callback and button group, if present.",
+    "overloads" : null,
+    "name" : "wireButton",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "element",
+      "type" : "Button"
+    }, {
+      "name" : "node",
+      "type" : "NodeBuilder<?>"
+    }, {
+      "name" : "ctx",
+      "type" : "BuildContext"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 240,
+    "calls" : [ "mindustry.ui.builder.UiBuilder.NodeBuilder.str(mindustry.ui.builder.UiKey)", "arc.scene.ui.ButtonGroup.add(T)", "mindustry.ui.builder.UiTreeBuilder.BuildContext.group(java.lang.String)", "arc.scene.ui.Button.setChecked(boolean)", "mindustry.ui.builder.UiBuilder.NodeBuilder.bool(mindustry.ui.builder.UiKey)", "arc.scene.Element.clicked(java.lang.Runnable)", "mindustry.ui.builder.UiTreeBuilder.fireResult(mindustry.ui.builder.UiTreeBuilder.BuildContext, java.lang.String)" ],
+    "callCount" : 7
+  }, {
+    "kind" : "method",
+    "signature" : "private static void fireResult(BuildContext ctx, String result)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "fireResult",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "ctx",
+      "type" : "BuildContext"
+    }, {
+      "name" : "result",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 255,
+    "calls" : [ "res.values.put", "arc.scene.ui.ProgressBar.getValue()", "arc.scene.Group.getChildren()", "arc.struct.Seq.get(int)", "arc.scene.ui.TextField.getText()", "arc.scene.ui.Button.isChecked()", "arc.scene.ui.Button.getStyle()", "arc.func.Cons.get(T)", "mindustry.ui.builder.MenuResult.MenuResult(java.lang.String)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "private static void applyTableProp(Table table, UiKey key, Object value)",
+    "desc" : "Properties that apply to the table itself rather than to a cell (found loose in a table's body).",
+    "overloads" : null,
+    "name" : "applyTableProp",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "table",
+      "type" : "Table"
+    }, {
+      "name" : "key",
+      "type" : "UiKey"
+    }, {
+      "name" : "value",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 270,
+    "calls" : [ "table.setBackground", "mindustry.ui.builder.UiTreeBuilder.findDrawable(java.lang.String)", "table.margin", "table.align", "mindustry.ui.builder.UiTreeBuilder.parseAlign(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "private static void applyCellProp(Cell<?> cell, UiKey key, Object value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "applyCellProp",
+    "returnType" : "void",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "cell",
+      "type" : "Cell<?>"
+    }, {
+      "name" : "key",
+      "type" : "UiKey"
+    }, {
+      "name" : "value",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 279,
+    "calls" : [ "arc.scene.ui.layout.Cell.grow()", "arc.scene.ui.layout.Cell.growX()", "arc.scene.ui.layout.Cell.growY()", "arc.scene.ui.layout.Cell.fill()", "arc.scene.ui.layout.Cell.fillX()", "arc.scene.ui.layout.Cell.fillY()", "arc.scene.ui.layout.Cell.expand()", "arc.scene.ui.layout.Cell.expandX()", "arc.scene.ui.layout.Cell.expandY()", "arc.scene.ui.layout.Cell.uniform()", "arc.scene.ui.layout.Cell.uniformX()", "arc.scene.ui.layout.Cell.uniformY()", "arc.scene.ui.layout.Cell.get()", "arc.scene.utils.Disableable.setDisabled(boolean)", "arc.scene.ui.layout.Cell.width(float)", "arc.scene.ui.layout.Cell.height(float)", "arc.scene.ui.layout.Cell.size(float)", "arc.scene.ui.layout.Cell.minWidth(float)", "arc.scene.ui.layout.Cell.maxWidth(float)", "arc.scene.ui.layout.Cell.minHeight(float)", "arc.scene.ui.layout.Cell.maxHeight(float)", "arc.scene.ui.layout.Cell.pad(float)", "arc.scene.ui.layout.Cell.padTop(float)", "arc.scene.ui.layout.Cell.padLeft(float)", "arc.scene.ui.layout.Cell.padBottom(float)", "arc.scene.ui.layout.Cell.padRight(float)", "arc.scene.ui.layout.Cell.align(int)", "mindustry.ui.builder.UiTreeBuilder.parseAlign(java.lang.String)", "arc.scene.ui.layout.Cell.colspan(int)", "java.lang.Float.intValue()", "arc.scene.ui.layout.Cell.color(arc.graphics.Color)", "arc.util.Strings.parseColor(java.lang.String, arc.graphics.Color)" ],
+    "callCount" : 32
+  }, {
+    "kind" : "method",
+    "signature" : "private static Drawable findDrawable(String name) / private static Drawable findDrawable(String name, String placeholder)",
+    "desc" : "@param placeholder shown instead of the error sprite if {@code name} isn't streamed from the server yet",
+    "overloads" : [ "private static Drawable findDrawable(String name)", "private static Drawable findDrawable(String name, String placeholder)" ],
+    "name" : "findDrawable",
+    "returnType" : "Drawable",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "name",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 322,
+    "calls" : [ "mindustry.ui.builder.UiTreeBuilder.findDrawable(java.lang.String, java.lang.String)", "arc.graphics.g2d.TextureAtlas.has(java.lang.String)", "arc.graphics.g2d.TextureAtlas.drawable(java.lang.String)", "arc.struct.ObjectMap.get(T)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "private static boolean evalCondition(String cond)",
+    "desc" : "Evaluates a condition string: \"portrait\", \"landscape\", or \"width|height >=|>|<|<= number\".",
+    "overloads" : null,
+    "name" : "evalCondition",
+    "returnType" : "boolean",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "cond",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 340,
+    "calls" : [ "java.lang.String.trim()", "java.lang.String.equals(java.lang.Object)", "arc.Graphics.isPortrait()", "java.lang.String.split(java.lang.String)", "arc.scene.Scene.getWidth()", "arc.scene.ui.layout.Scl.scl(float)", "arc.scene.Scene.getHeight()", "arc.util.Strings.parseFloat(java.lang.String, float)", "java.lang.Float.isNaN(float)" ],
+    "callCount" : 9
+  }, {
+    "kind" : "method",
+    "signature" : "private static int parseAlign(String value)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "parseAlign",
+    "returnType" : "int",
+    "modifiers" : [ "private", "static" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "String"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 366,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-class",
+    "signature" : "BuildContext",
+    "simpleName" : "BuildContext",
+    "desc" : null,
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "final Cons<MenuResult> resultListener",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "resultListener",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 382,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final ObjectMap<String,Element> idElements",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "idElements",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 383,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final ObjectMap<String,ButtonGroup<Button>> buttonGroups",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "buttonGroups",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 384,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "final ObjectMap<String,Seq<Image>> images",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "images",
+      "returnType" : null,
+      "modifiers" : [ "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 385,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "BuildContext(Cons<MenuResult> resultListener)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BuildContext",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "resultListener",
+        "type" : "Cons<MenuResult>"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 387,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "ButtonGroup<Button> group(String name)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "group",
+      "returnType" : "ButtonGroup<Button>",
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "name",
+        "type" : "String"
+      } ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 391,
+      "calls" : [ "arc.struct.ObjectMap.get(K, arc.func.Prov<V>)" ],
+      "callCount" : 1
+    } ],
+    "inner" : [ ]
+  }, {
+    "kind" : "inner-class",
+    "signature" : "BuildResult",
+    "simpleName" : "BuildResult",
+    "desc" : "Result of building a NodeBuilder: named elements (those with an explicit id), plus any server-streamed images, keyed by region name",
+    "fields" : [ {
+      "kind" : "field",
+      "signature" : "public final ObjectMap<String,Element> idElements",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "idElements",
+      "returnType" : null,
+      "modifiers" : [ "public", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 398,
+      "calls" : null,
+      "callCount" : 0
+    }, {
+      "kind" : "field",
+      "signature" : "public final ObjectMap<String,Seq<Image>> images",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "images",
+      "returnType" : null,
+      "modifiers" : [ "public", "final" ],
+      "parameters" : null,
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 399,
+      "calls" : null,
+      "callCount" : 0
+    } ],
+    "constructors" : [ {
+      "kind" : "ctor",
+      "signature" : "BuildResult(ObjectMap<String,Element> idElements, ObjectMap<String,Seq<Image>> images)",
+      "desc" : null,
+      "overloads" : null,
+      "name" : "BuildResult",
+      "returnType" : null,
+      "modifiers" : [ ],
+      "parameters" : [ {
+        "name" : "idElements",
+        "type" : "ObjectMap<String,Element>"
+      }, {
+        "name" : "images",
+        "type" : "ObjectMap<String,Seq<Image>>"
+      } ],
+      "throwsList" : null,
+      "annotations" : null,
+      "line" : 401,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "methods" : [ ],
+    "inner" : [ ]
+  } ]
+} ]

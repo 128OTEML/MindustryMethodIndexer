@@ -1,0 +1,710 @@
+// Administration.java : public synchronized void blacklistDos(String address)
+    public synchronized void blacklistDos(String address){
+        dosBlacklist.add(address);
+    }
+
+// Administration.java : public synchronized void unBlacklistDos(String address)
+    public synchronized void unBlacklistDos(String address){
+        dosBlacklist.remove(address);
+    }
+
+// Administration.java : public synchronized boolean isDosBlacklisted(String address)
+    public synchronized boolean isDosBlacklisted(String address){
+        return dosBlacklist.contains(address);
+    }
+
+// Administration.java : public long getKickTime(String uuid, String ip)
+    public long getKickTime(String uuid, String ip){
+        return Math.max(getInfo(uuid).lastKicked, kickedIPs.get(ip, 0L));
+    }
+
+// Administration.java : public void handleKicked(String uuid, String ip, long duration)
+    public void handleKicked(String uuid, String ip, long duration){
+        kickedIPs.put(ip, Math.max(kickedIPs.get(ip, 0L), Time.millis() + duration));
+
+        PlayerInfo info = getInfo(uuid);
+        info.timesKicked++;
+        info.lastKicked = Math.max(Time.millis() + duration, info.lastKicked);
+    }
+
+// Administration.java : public Seq<String> getSubnetBans()
+    public Seq<String> getSubnetBans(){
+        return subnetBans;
+    }
+
+// Administration.java : public void removeSubnetBan(String ip)
+    public void removeSubnetBan(String ip){
+        subnetBans.remove(ip);
+        save();
+    }
+
+// Administration.java : public void addSubnetBan(String ip)
+    public void addSubnetBan(String ip){
+        subnetBans.add(ip);
+        save();
+    }
+
+// Administration.java : public boolean isSubnetBanned(String ip)
+    public boolean isSubnetBanned(String ip){
+        return subnetBans.contains(ip::startsWith);
+    }
+
+// Administration.java : public void addNameBan(String regex) throws PatternSyntaxException
+    public void addNameBan(String regex) throws PatternSyntaxException{
+        bannedNames.add(Pattern.compile(regex, Pattern.CASE_INSENSITIVE));
+        save();
+    }
+
+// Administration.java : public void addChatFilter(ChatFilter filter)
+    public void addChatFilter(ChatFilter filter){
+        chatFilters.add(filter);
+    }
+
+// Administration.java : public String filterMessage(Player player, String message)
+    public @Nullable String filterMessage(Player player, String message){
+        String current = message;
+        for(ChatFilter f : chatFilters){
+            current = f.filter(player, current);
+            if(current == null) return null;
+        }
+        return current;
+    }
+
+// Administration.java : public void addActionFilter(ActionFilter filter)
+    public void addActionFilter(ActionFilter filter){
+        actionFilters.add(filter);
+    }
+
+// Administration.java : public boolean allowAction(Player player, ActionType type, Tile tile, Cons<PlayerAction> setter) / public boolean allowAction(Player player, ActionType type, Cons<PlayerAction> setter)
+    public boolean allowAction(Player player, ActionType type, Tile tile, Cons<PlayerAction> setter){
+        return allowAction(player, type, action -> setter.get(action.set(player, type, tile)));
+    }
+
+// Administration.java : public int getPlayerLimit()
+    public int getPlayerLimit(){
+        return Core.settings.getInt("playerlimit", headless ? 30 : 0);
+    }
+
+// Administration.java : public void setPlayerLimit(int limit)
+    public void setPlayerLimit(int limit){
+        Core.settings.put("playerlimit", limit);
+    }
+
+// Administration.java : public boolean isStrict()
+    public boolean isStrict(){
+        return Config.strict.bool();
+    }
+
+// Administration.java : public boolean allowsCustomClients()
+    public boolean allowsCustomClients(){
+        return Config.allowCustomClients.bool();
+    }
+
+// Administration.java : public void updatePlayerJoined(String id, String ip, String name)
+    public void updatePlayerJoined(String id, String ip, String name){
+        PlayerInfo info = getCreateInfo(id);
+        info.lastName = name;
+        info.lastIP = ip;
+        info.timesJoined++;
+        if(!info.names.contains(name, false)) info.names.add(name);
+        if(!info.ips.contains(ip, false)) info.ips.add(ip);
+    }
+
+// Administration.java : public boolean banPlayer(String uuid)
+    public boolean banPlayer(String uuid){
+        return banPlayerID(uuid) || banPlayerIP(getInfo(uuid).lastIP);
+    }
+
+// Administration.java : public boolean banPlayerID(String id)
+    public boolean banPlayerID(String id){
+        if(playerInfo.containsKey(id) && playerInfo.get(id).banned)
+            return false;
+
+        getCreateInfo(id).banned = true;
+
+        save();
+        Events.fire(new PlayerBanEvent(Groups.player.find(p -> id.equals(p.uuid())), id));
+        return true;
+    }
+
+// Administration.java : public boolean unbanPlayerID(String id)
+    public boolean unbanPlayerID(String id){
+        PlayerInfo info = getCreateInfo(id);
+
+        if(!info.banned) return false;
+
+        info.banned = false;
+        bannedIPs.removeAll(info.ips, false);
+        save();
+        Events.fire(new PlayerUnbanEvent(Groups.player.find(p -> id.equals(p.uuid())), id));
+        return true;
+    }
+
+// Administration.java : public Seq<PlayerInfo> getAdmins()
+    public Seq<PlayerInfo> getAdmins(){
+        Seq<PlayerInfo> result = new Seq<>();
+        for(PlayerInfo info : playerInfo.values()){
+            if(info.admin){
+                result.add(info);
+            }
+        }
+        return result;
+    }
+
+// Administration.java : public Seq<PlayerInfo> getBanned()
+    public Seq<PlayerInfo> getBanned(){
+        Seq<PlayerInfo> result = new Seq<>();
+        for(PlayerInfo info : playerInfo.values()){
+            if(info.banned){
+                result.add(info);
+            }
+        }
+        return result;
+    }
+
+// Administration.java : public Seq<String> getBannedIPs()
+    public Seq<String> getBannedIPs(){
+        return bannedIPs;
+    }
+
+// Administration.java : public boolean adminPlayer(String id, String usid)
+    public boolean adminPlayer(String id, String usid){
+        PlayerInfo info = getCreateInfo(id);
+
+        var wasAdmin = info.admin;
+
+        info.adminUsid = usid;
+        info.admin = true;
+        save();
+
+        return wasAdmin;
+    }
+
+// Administration.java : public boolean unAdminPlayer(String id)
+    public boolean unAdminPlayer(String id){
+        PlayerInfo info = getCreateInfo(id);
+
+        if(!info.admin) return false;
+
+        info.admin = false;
+        save();
+
+        return true;
+    }
+
+// Administration.java : public boolean isWhitelistEnabled()
+    public boolean isWhitelistEnabled(){
+        return Config.whitelist.bool();
+    }
+
+// Administration.java : public boolean isWhitelisted(String id, String usid)
+    public boolean isWhitelisted(String id, String usid){
+        return !isWhitelistEnabled() || whitelist.contains(usid + id);
+    }
+
+// Administration.java : public boolean whitelist(String id)
+    public boolean whitelist(String id){
+        PlayerInfo info = getCreateInfo(id);
+        if(whitelist.contains(info.adminUsid + id)) return false;
+        whitelist.add(info.adminUsid + id);
+        save();
+        return true;
+    }
+
+// Administration.java : public boolean unwhitelist(String id)
+    public boolean unwhitelist(String id){
+        PlayerInfo info = getCreateInfo(id);
+        if(whitelist.contains(info.adminUsid + id)){
+            whitelist.remove(info.adminUsid + id);
+            save();
+            return true;
+        }
+        return false;
+    }
+
+// Administration.java : public boolean isIPBanned(String ip)
+    public boolean isIPBanned(String ip){
+        return bannedIPs.contains(ip, false) || (findByIP(ip) != null && findByIP(ip).banned) || (steam && ip.startsWith("steam") && SteamAdmin.isBanned(ip));
+    }
+
+// Administration.java : public boolean isIDBanned(String uuid)
+    public boolean isIDBanned(String uuid){
+        return getCreateInfo(uuid).banned;
+    }
+
+// Administration.java : public boolean isNameBanned(String name)
+    public boolean isNameBanned(String name){
+        return bannedNames.size > 0 && bannedNames.contains(p -> p.matcher(name).find());
+    }
+
+// Administration.java : public boolean isAdmin(String id, String usid)
+    public boolean isAdmin(String id, String usid){
+        PlayerInfo info = getCreateInfo(id);
+        return info.admin && usid.equals(info.adminUsid);
+    }
+
+// Administration.java : public ObjectSet<PlayerInfo> searchNames(String name)
+    public ObjectSet<PlayerInfo> searchNames(String name){
+        ObjectSet<PlayerInfo> result = new ObjectSet<>();
+
+        for(PlayerInfo info : playerInfo.values()){
+            if(info.names.contains(n -> n.toLowerCase().contains(name.toLowerCase()) || Strings.stripColors(n).trim().toLowerCase().contains(name))){
+                result.add(info);
+            }
+        }
+
+        return result;
+    }
+
+// Administration.java : public Seq<PlayerInfo> findByIPs(String ip)
+    public Seq<PlayerInfo> findByIPs(String ip){
+        Seq<PlayerInfo> result = new Seq<>();
+
+        for(PlayerInfo info : playerInfo.values()){
+            if(info.ips.contains(ip, false)){
+                result.add(info);
+            }
+        }
+
+        return result;
+    }
+
+// Administration.java : public PlayerInfo getInfo(String id)
+    public PlayerInfo getInfo(String id){
+        return getCreateInfo(id);
+    }
+
+// Administration.java : public PlayerInfo getInfoOptional(String id)
+    public PlayerInfo getInfoOptional(String id){
+        return playerInfo.get(id);
+    }
+
+// Administration.java : public PlayerInfo findByIP(String ip)
+    public PlayerInfo findByIP(String ip){
+        for(PlayerInfo info : playerInfo.values()){
+            if(info.ips.contains(ip, false)){
+                return info;
+            }
+        }
+        return null;
+    }
+
+// Administration.java : public Seq<PlayerInfo> getWhitelisted()
+    public Seq<PlayerInfo> getWhitelisted(){
+        return playerInfo.values().toSeq().select(p -> isWhitelisted(p.id, p.adminUsid));
+    }
+
+// Administration.java : private PlayerInfo getCreateInfo(String id)
+    private PlayerInfo getCreateInfo(String id){
+        if(playerInfo.containsKey(id)){
+            return playerInfo.get(id);
+        }else{
+            PlayerInfo info = new PlayerInfo(id);
+            playerInfo.put(id, info);
+            save();
+            return info;
+        }
+    }
+
+// Administration.java : public void save()
+    public void save(){
+        modified = true;
+    }
+
+// Administration.java : public void forceSave()
+    public void forceSave(){
+        if(modified && loaded){
+            Core.settings.putJson("player-data", playerInfo);
+            Core.settings.putJson("ip-kicks", kickedIPs);
+            Core.settings.putJson("ip-bans", String.class, bannedIPs);
+            Core.settings.putJson("whitelist-ids", String.class, whitelist);
+            Core.settings.putJson("banned-subnets", String.class, subnetBans);
+            Core.settings.putJson("banned-names", String.class, bannedNames.map(Pattern::pattern));
+            modified = false;
+        }
+    }
+
+// ArcNetProvider.java : public void setConnectFilter(Server.ServerConnectFilter connectFilter)
+    @Override
+    public void setConnectFilter(Server.ServerConnectFilter connectFilter){
+        server.setConnectFilter(connectFilter);
+    }
+
+// ArcNetProvider.java : public ServerConnectFilter getConnectFilter()
+    @Override
+    public @Nullable ServerConnectFilter getConnectFilter(){
+        return server.getConnectFilter();
+    }
+
+// ArcNetProvider.java : private static boolean isLocal(InetAddress addr)
+    private static boolean isLocal(InetAddress addr){
+        if(addr.isAnyLocalAddress() || addr.isLoopbackAddress()) return true;
+
+        try{
+            return NetworkInterface.getByInetAddress(addr) != null;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+// ArcNetProvider.java : public void disconnectClient()
+    @Override
+    public void disconnectClient(){
+        clientUdpErrorRate.reset();
+        client.close();
+    }
+
+// ArcNetProvider.java : public void dispose()
+    @Override
+    public void dispose(){
+        disconnectClient();
+        closeServer();
+        try{
+            client.dispose();
+        }catch(IOException ignored){
+        }
+    }
+
+// ArcNetProvider.java : public Iterable<ArcConnection> getConnections()
+    @Override
+    public Iterable<ArcConnection> getConnections(){
+        return connections;
+    }
+
+// ArcNetProvider.java : public void closeServer()
+    @Override
+    public void closeServer(){
+        connections.clear();
+        mainExecutor.submit(server::stop);
+    }
+
+// BeControl.java : public boolean active()
+    public boolean active(){
+        return Version.type.equals("bleeding-edge") && !steam;
+    }
+
+// BeControl.java : public boolean isUpdateAvailable()
+    public boolean isUpdateAvailable(){
+        return updateAvailable;
+    }
+
+// CrashHandler.java : public static void log(Throwable exception)
+    public static void log(Throwable exception){
+        try{
+            Core.settings.getDataDirectory().child("crashes").child("crash_" + System.currentTimeMillis() + ".txt")
+            .writeString(createReport(exception));
+        }catch(Throwable ignored){
+        }
+    }
+
+// CrashHandler.java : private static String writeException(Throwable e)
+    private static String writeException(Throwable e){
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
+    }
+
+// Net.java : public static int registerPacket(Prov<T> cons)
+    public static <T extends Packet> int registerPacket(Prov<T> cons){
+        int id = packetProvs.size;
+        packetProvs.add(cons);
+        var t = cons.get();
+        packetClasses.add(t.getClass());
+        packetToId.put(t.getClass(), id);
+        return id;
+    }
+
+// Net.java : public static byte getPacketClassId(Class<?> c)
+    public static byte getPacketClassId(Class<?> c){
+        return (byte)packetToId.get(c, -1);
+    }
+
+// Net.java : public static byte getPacketId(Packet packet)
+    public static byte getPacketId(Packet packet){
+        int id = packetToId.get(packet.getClass(), -1);
+        if(id == -1) throw new ArcRuntimeException("Unknown packet type: " + packet.getClass());
+        return (byte)id;
+    }
+
+// Net.java : public static T newPacket(byte id)
+    public static <T extends Packet> T newPacket(byte id){
+        return ((Prov<T>)packetProvs.get(id & 0xff)).get();
+    }
+
+// Net.java : public void handleException(Throwable e)
+    public void handleException(Throwable e){
+        if(e instanceof ArcNetException){
+            Core.app.post(() -> showError(new IOException("mismatch", e)));
+        }else if(e instanceof ClosedChannelException){
+            Core.app.post(() -> showError(new IOException("alreadyconnected", e)));
+        }else{
+            Core.app.post(() -> showError(e));
+        }
+    }
+
+// Net.java : public void setClientConnected()
+    public void setClientConnected(){
+        active = true;
+        server = false;
+    }
+
+// Net.java : public void host(int port) throws IOException
+    public void host(int port) throws IOException{
+        provider.hostServer(port);
+        active = true;
+        server = true;
+
+        Time.runTask(60f, platform::updateRPC);
+    }
+
+// Net.java : public void closeServer()
+    public void closeServer(){
+        for(NetConnection con : getConnections()){
+            Call.kick(con, KickReason.serverClose);
+        }
+
+        provider.closeServer();
+        server = false;
+        active = false;
+    }
+
+// Net.java : public void reset()
+    public void reset(){
+        closeServer();
+        netClient.disconnectNoReset();
+    }
+
+// Net.java : public void discoverServers(Cons<Host> cons, Runnable done)
+    public void discoverServers(Cons<Host> cons, Runnable done){
+        provider.discoverServers(cons, done);
+    }
+
+// Net.java : public Iterable<NetConnection> getConnections()
+    public Iterable<NetConnection> getConnections(){
+        return (Iterable<NetConnection>)provider.getConnections();
+    }
+
+// Net.java : public void send(Object object, boolean reliable) / public void send(Object object, Iterable<NetConnection> connections, boolean reliable)
+    public void send(Object object, boolean reliable){
+        if(server){
+            provider.sendAllServer(object, reliable);
+        }else{
+            provider.sendClient(object, reliable);
+        }
+    }
+
+// Net.java : public void sendExcept(NetConnection except, Object object, boolean reliable)
+    public void sendExcept(NetConnection except, Object object, boolean reliable){
+        provider.sendExceptServer(except, object, reliable);
+    }
+
+// Net.java : public StreamBuilder getCurrentStream()
+    public @Nullable StreamBuilder getCurrentStream(){
+        return currentStream;
+    }
+
+// Net.java : public void handleClient(Class<T> type, Cons<T> listener)
+    public <T> void handleClient(Class<T> type, Cons<T> listener){
+        clientListeners.put(type, listener);
+    }
+
+// Net.java : public void handleServer(Class<T> type, Cons2<NetConnection,T> listener)
+    public <T> void handleServer(Class<T> type, Cons2<NetConnection, T> listener){
+        serverListeners.put(type, (Cons2<NetConnection, Object>)listener);
+    }
+
+// Net.java : public void setConnectFilter(ServerConnectFilter filter)
+    public void setConnectFilter(@Nullable ServerConnectFilter filter){
+        provider.setConnectFilter(filter);
+    }
+
+// Net.java : public ServerConnectFilter getConnectFilter()
+    public @Nullable ServerConnectFilter getConnectFilter(){
+        return provider.getConnectFilter();
+    }
+
+// Net.java : public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed)
+    public void pingHost(String address, int port, Cons<Host> valid, Cons<Exception> failed){
+        pingExecutor.submit(() -> provider.pingHost(address, port, valid, failed));
+    }
+
+// Net.java : public boolean active()
+    public boolean active(){
+        return active;
+    }
+
+// Net.java : public boolean server()
+    public boolean server(){
+        return server && active;
+    }
+
+// Net.java : public boolean client()
+    public boolean client(){
+        return !server && active;
+    }
+
+// Net.java : public void dispose()
+    public void dispose(){
+        provider.dispose();
+        server = false;
+        active = false;
+    }
+
+// NetConnection.java : public void kick() / public void kick(KickReason reason) / public void kick(KickReason reason, long kickDuration) / public void kick(String reason) / public void kick(String reason, long duration) / private void kick(String reason, KickReason kickType, long kickDuration)
+    public void kick(){
+        kick(KickReason.kick);
+    }
+
+// NetConnection.java : protected void kickDisconnect()
+    protected void kickDisconnect(){
+        close();
+    }
+
+// NetConnection.java : public boolean isConnected()
+    public boolean isConnected(){
+        return true;
+    }
+
+// NetConnection.java : public void sendStreamAsync(Streamable stream, ByteArrayOutputStream data)
+    public void sendStreamAsync(Streamable stream, ByteArrayOutputStream data){
+        //default implementation assumes async stream sending is allowed
+        sendStream(stream, data);
+    }
+
+// NetConnection.java : public void sendStream(Streamable stream, ByteArrayOutputStream data) / public void sendStream(Streamable stream)
+    public void sendStream(Streamable stream, ByteArrayOutputStream data){
+        stream.stream = new ByteArrayInputStream(data.toByteArray());
+        sendStream(stream);
+    }
+
+// NetConnection.java : public void blacklist()
+    public void blacklist(){
+        netServer.admins.blacklistDos(address);
+    }
+
+// NetworkIO.java : public static void packTexture(OutputStream os, String name, byte[] pngData)
+    public static void packTexture(OutputStream os, String name, byte[] pngData){
+        try(DataOutputStream stream = new DataOutputStream(os)){
+            stream.writeUTF(name);
+            stream.writeInt(pngData.length);
+            stream.write(pngData);
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// NetworkIO.java : private static void writeString(ByteBuffer buffer, String string, int maxlen) / private static void writeString(ByteBuffer buffer, String string)
+    private static void writeString(ByteBuffer buffer, String string, int maxlen){
+        byte[] bytes = string.getBytes(charset);
+        //todo truncating this way may lead to wierd encoding errors at the ends of strings...
+        if(bytes.length > maxlen){
+            bytes = Arrays.copyOfRange(bytes, 0, maxlen);
+        }
+
+        buffer.put((byte)bytes.length);
+        buffer.put(bytes);
+    }
+
+// NetworkIO.java : private static String readString(ByteBuffer buffer)
+    private static String readString(ByteBuffer buffer){
+        short length = (short)(buffer.get() & 0xff);
+        byte[] bytes = new byte[length];
+        buffer.get(bytes);
+        return new String(bytes, charset);
+    }
+
+// Packet.java : public void read(Reads read) / public void read(Reads read, int length)
+    public void read(Reads read){}
+
+// Packet.java : public void write(Writes write)
+    public void write(Writes write){}
+
+// Packet.java : public boolean allow(boolean server)
+    public boolean allow(boolean server){
+        return true;
+    }
+
+// Packet.java : public void handled()
+    public void handled(){}
+
+// Packet.java : public int getPriority()
+    public int getPriority(){
+        return priorityNormal;
+    }
+
+// Packet.java : public void handleClient()
+    public void handleClient(){}
+
+// Packet.java : public void handleServer(NetConnection con)
+    public void handleServer(NetConnection con){}
+
+// ServerGroup.java : public boolean hidden()
+    public boolean hidden(){
+        return Core.settings.getBool(key() + "-hidden", false);
+    }
+
+// ServerGroup.java : public boolean favorite()
+    public boolean favorite(){
+        return Core.settings.getBool(key() + "-favorite", false);
+    }
+
+// ServerGroup.java : public void setHidden(boolean hidden)
+    public void setHidden(boolean hidden){
+        Core.settings.put(key() + "-hidden", hidden);
+    }
+
+// ServerGroup.java : public void setFavorite(boolean favorite)
+    public void setFavorite(boolean favorite){
+        Core.settings.put(key() + "-favorite", favorite);
+    }
+
+// ServerGroup.java : String key()
+    String key(){
+        return "server-" + (name.isEmpty() ? addresses.length == 0 ? "" : addresses[0] : name);
+    }
+
+// SteamAdmin.java : public static void fetch() / public static void fetch(boolean cacheBust) / private static void fetch(String url, Runnable fail)
+    public static void fetch(){
+        fetch(false);
+    }
+
+// SteamAdmin.java : private static void fetchImpl(String githubURL)
+    private static void fetchImpl(String githubURL){
+        fetch(githubURL, () -> fetch(Vars.steamBansURLs[1], () -> {}));
+        if(!scheduled){
+            scheduled = true;
+            Timer.schedule(SteamAdmin::fetch, checkInterval, checkInterval);
+        }
+    }
+
+// SteamAdmin.java : public static boolean isBanned(String id)
+    public static boolean isBanned(String id){
+        //bans are ignored with private lobbies
+        if(!id.startsWith("steam:") || !Core.settings.getBool("steampublichost2")) return false;
+        return data.bans.contains(id.substring("steam:".length()));
+    }
+
+// SteamAdmin.java : public static boolean isAdmin(String id)
+    public static boolean isAdmin(String id){
+        if(!id.startsWith("steam:")) return false;
+        return data.admins.contains(id.substring("steam:".length()));
+    }
+
+// Streamable.java : public int getPriority()
+    @Override
+    public int getPriority(){
+        return priorityHigh;
+    }
+
+// Streamable.java : public boolean allow(boolean server)
+    @Override
+    public boolean allow(boolean server){
+        return !server;
+    }
+
+// Streamable.java : public boolean incremental()
+    public boolean incremental(){
+        return false;
+    }
+

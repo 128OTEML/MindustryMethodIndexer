@@ -1,0 +1,4553 @@
+[ {
+  "file" : "Actions.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class",
+  "typeDesc" : "Static convenience methods for using pooled actions, intended for static import.",
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static T action(Class<T> type, Prov<T> sup)",
+    "desc" : "Returns a new or pooled action of the specified type.",
+    "overloads" : null,
+    "name" : "action",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "sup",
+      "type" : "Prov<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ "arc.util.pooling.Pools.obtain(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "arc.util.pooling.Pools.get(java.lang.Class<T>, arc.func.Prov<T>)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static AddAction addAction(Action action) / public static AddAction addAction(Action action, Element targetActor)",
+    "desc" : null,
+    "overloads" : [ "public static AddAction addAction(Action action)", "public static AddAction addAction(Action action, Element targetActor)" ],
+    "name" : "addAction",
+    "returnType" : "AddAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.AddAction.setAction(arc.scene.Action)", "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static RemoveAction removeAction(Action action) / public static RemoveAction removeAction(Action action, Element targetActor)",
+    "desc" : null,
+    "overloads" : [ "public static RemoveAction removeAction(Action action)", "public static RemoveAction removeAction(Action action, Element targetActor)" ],
+    "name" : "removeAction",
+    "returnType" : "RemoveAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RemoveAction.setAction(arc.scene.Action)", "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static Action originCenter()",
+    "desc" : "Sets the origin to the center.",
+    "overloads" : null,
+    "name" : "originCenter",
+    "returnType" : "Action",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 51,
+    "calls" : [ "arc.scene.actions.OriginAction.OriginAction()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static MoveToAction moveTo(float x, float y) / public static MoveToAction moveTo(float x, float y, float duration) / public static MoveToAction moveTo(float x, float y, float duration, Interp interpolation)",
+    "desc" : "Moves the actor instantly.",
+    "overloads" : [ "public static MoveToAction moveTo(float x, float y)", "public static MoveToAction moveTo(float x, float y, float duration)", "public static MoveToAction moveTo(float x, float y, float duration, Interp interpolation)" ],
+    "name" : "moveTo",
+    "returnType" : "MoveToAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 56,
+    "calls" : [ "arc.scene.actions.Actions.moveTo(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.MoveToAction.setPosition(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static MoveToAction moveToAligned(float x, float y, int alignment) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration, Interp interpolation)",
+    "desc" : null,
+    "overloads" : [ "public static MoveToAction moveToAligned(float x, float y, int alignment)", "public static MoveToAction moveToAligned(float x, float y, int alignment, float duration)", "public static MoveToAction moveToAligned(float x, float y, int alignment, float duration, Interp interpolation)" ],
+    "name" : "moveToAligned",
+    "returnType" : "MoveToAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    }, {
+      "name" : "alignment",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "arc.scene.actions.Actions.moveToAligned(float, float, int, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.MoveToAction.setPosition(float, float, int)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static MoveByAction moveBy(float amountX, float amountY) / public static MoveByAction moveBy(float amountX, float amountY, float duration) / public static MoveByAction moveBy(float amountX, float amountY, float duration, Interp interpolation)",
+    "desc" : "Moves the actor instantly.",
+    "overloads" : [ "public static MoveByAction moveBy(float amountX, float amountY)", "public static MoveByAction moveBy(float amountX, float amountY, float duration)", "public static MoveByAction moveBy(float amountX, float amountY, float duration, Interp interpolation)" ],
+    "name" : "moveBy",
+    "returnType" : "MoveByAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 89,
+    "calls" : [ "arc.scene.actions.Actions.moveBy(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.MoveByAction.setAmount(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static RunnableAction translateTo(float amountX, float amountY)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "translateTo",
+    "returnType" : "RunnableAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 97,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RunnableAction.setRunnable(java.lang.Runnable)", "arc.scene.Element.setTranslation(float, float)", "arc.scene.Action.getActor()" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static TranslateByAction translateBy(float amountX, float amountY, float duration, Interp interpolation) / public static TranslateByAction translateBy(float amountX, float amountY) / public static TranslateByAction translateBy(float amountX, float amountY, float duration)",
+    "desc" : null,
+    "overloads" : [ "public static TranslateByAction translateBy(float amountX, float amountY, float duration, Interp interpolation)", "public static TranslateByAction translateBy(float amountX, float amountY)", "public static TranslateByAction translateBy(float amountX, float amountY, float duration)" ],
+    "name" : "translateBy",
+    "returnType" : "TranslateByAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    }, {
+      "name" : "duration",
+      "type" : "float"
+    }, {
+      "name" : "interpolation",
+      "type" : "Interp"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 103,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.TranslateByAction.setAmount(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)", "arc.scene.actions.Actions.translateBy(float, float, float, arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static SizeToAction sizeTo(float x, float y) / public static SizeToAction sizeTo(float x, float y, float duration) / public static SizeToAction sizeTo(float x, float y, float duration, Interp interpolation)",
+    "desc" : "Sizes the actor instantly.",
+    "overloads" : [ "public static SizeToAction sizeTo(float x, float y)", "public static SizeToAction sizeTo(float x, float y, float duration)", "public static SizeToAction sizeTo(float x, float y, float duration, Interp interpolation)" ],
+    "name" : "sizeTo",
+    "returnType" : "SizeToAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 128,
+    "calls" : [ "arc.scene.actions.Actions.sizeTo(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.SizeToAction.setSize(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static SizeByAction sizeBy(float amountX, float amountY) / public static SizeByAction sizeBy(float amountX, float amountY, float duration) / public static SizeByAction sizeBy(float amountX, float amountY, float duration, Interp interpolation)",
+    "desc" : "Sizes the actor instantly.",
+    "overloads" : [ "public static SizeByAction sizeBy(float amountX, float amountY)", "public static SizeByAction sizeBy(float amountX, float amountY, float duration)", "public static SizeByAction sizeBy(float amountX, float amountY, float duration, Interp interpolation)" ],
+    "name" : "sizeBy",
+    "returnType" : "SizeByAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 145,
+    "calls" : [ "arc.scene.actions.Actions.sizeBy(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.SizeByAction.setAmount(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static ScaleToAction scaleTo(float x, float y) / public static ScaleToAction scaleTo(float x, float y, float duration) / public static ScaleToAction scaleTo(float x, float y, float duration, Interp interpolation)",
+    "desc" : "Scales the actor instantly.",
+    "overloads" : [ "public static ScaleToAction scaleTo(float x, float y)", "public static ScaleToAction scaleTo(float x, float y, float duration)", "public static ScaleToAction scaleTo(float x, float y, float duration, Interp interpolation)" ],
+    "name" : "scaleTo",
+    "returnType" : "ScaleToAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 162,
+    "calls" : [ "arc.scene.actions.Actions.scaleTo(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.ScaleToAction.setScale(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static ScaleByAction scaleBy(float amountX, float amountY) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration, Interp interpolation)",
+    "desc" : "Scales the actor instantly.",
+    "overloads" : [ "public static ScaleByAction scaleBy(float amountX, float amountY)", "public static ScaleByAction scaleBy(float amountX, float amountY, float duration)", "public static ScaleByAction scaleBy(float amountX, float amountY, float duration, Interp interpolation)" ],
+    "name" : "scaleBy",
+    "returnType" : "ScaleByAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "amountX",
+      "type" : "float"
+    }, {
+      "name" : "amountY",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 179,
+    "calls" : [ "arc.scene.actions.Actions.scaleBy(float, float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.ScaleByAction.setAmount(float, float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static RotateToAction rotateTo(float rotation) / public static RotateToAction rotateTo(float rotation, float duration) / public static RotateToAction rotateTo(float rotation, float duration, Interp interpolation)",
+    "desc" : "Rotates the actor instantly.",
+    "overloads" : [ "public static RotateToAction rotateTo(float rotation)", "public static RotateToAction rotateTo(float rotation, float duration)", "public static RotateToAction rotateTo(float rotation, float duration, Interp interpolation)" ],
+    "name" : "rotateTo",
+    "returnType" : "RotateToAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "rotation",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 196,
+    "calls" : [ "arc.scene.actions.Actions.rotateTo(float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RotateToAction.setRotation(float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static RotateByAction rotateBy(float rotationAmount) / public static RotateByAction rotateBy(float rotationAmount, float duration) / public static RotateByAction rotateBy(float rotationAmount, float duration, Interp interpolation)",
+    "desc" : "Rotates the actor instantly.",
+    "overloads" : [ "public static RotateByAction rotateBy(float rotationAmount)", "public static RotateByAction rotateBy(float rotationAmount, float duration)", "public static RotateByAction rotateBy(float rotationAmount, float duration, Interp interpolation)" ],
+    "name" : "rotateBy",
+    "returnType" : "RotateByAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "rotationAmount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 213,
+    "calls" : [ "arc.scene.actions.Actions.rotateBy(float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RotateByAction.setAmount(float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static ColorAction color(Color color) / public static ColorAction color(Color color, float duration) / public static ColorAction color(Color color, float duration, Interp interpolation)",
+    "desc" : "Sets the actor's color instantly.",
+    "overloads" : [ "public static ColorAction color(Color color)", "public static ColorAction color(Color color, float duration)", "public static ColorAction color(Color color, float duration, Interp interpolation)" ],
+    "name" : "color",
+    "returnType" : "ColorAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 230,
+    "calls" : [ "arc.scene.actions.Actions.color(arc.graphics.Color, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.ColorAction.setEndColor(arc.graphics.Color)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static AlphaAction alpha(float a) / public static AlphaAction alpha(float a, float duration) / public static AlphaAction alpha(float a, float duration, Interp interpolation)",
+    "desc" : "Sets the actor's alpha instantly.",
+    "overloads" : [ "public static AlphaAction alpha(float a)", "public static AlphaAction alpha(float a, float duration)", "public static AlphaAction alpha(float a, float duration, Interp interpolation)" ],
+    "name" : "alpha",
+    "returnType" : "AlphaAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "a",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 249,
+    "calls" : [ "arc.scene.actions.Actions.alpha(float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.AlphaAction.setAlpha(float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static AlphaAction fadeOut(float duration) / public static AlphaAction fadeOut(float duration, Interp interpolation)",
+    "desc" : "Transitions from the alpha at the time this action starts to an alpha of 0.",
+    "overloads" : [ "public static AlphaAction fadeOut(float duration)", "public static AlphaAction fadeOut(float duration, Interp interpolation)" ],
+    "name" : "fadeOut",
+    "returnType" : "AlphaAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 268,
+    "calls" : [ "arc.scene.actions.Actions.alpha(float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.AlphaAction.setAlpha(float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static AlphaAction fadeIn(float duration) / public static AlphaAction fadeIn(float duration, Interp interpolation)",
+    "desc" : "Transitions from the alpha at the time this action starts to an alpha of 1.",
+    "overloads" : [ "public static AlphaAction fadeIn(float duration)", "public static AlphaAction fadeIn(float duration, Interp interpolation)" ],
+    "name" : "fadeIn",
+    "returnType" : "AlphaAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 282,
+    "calls" : [ "arc.scene.actions.Actions.alpha(float, float, arc.math.Interp)", "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.AlphaAction.setAlpha(float)", "arc.scene.actions.TemporalAction.setDuration(float)", "arc.scene.actions.TemporalAction.setInterpolation(arc.math.Interp)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static VisibleAction show()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "show",
+    "returnType" : "VisibleAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 295,
+    "calls" : [ "arc.scene.actions.Actions.visible(boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static VisibleAction hide()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "hide",
+    "returnType" : "VisibleAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 299,
+    "calls" : [ "arc.scene.actions.Actions.visible(boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static VisibleAction visible(boolean visible)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visible",
+    "returnType" : "VisibleAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "visible",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 303,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.VisibleAction.setVisible(boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static TouchableAction touchable(Touchable touchable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchable",
+    "returnType" : "TouchableAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "touchable",
+      "type" : "Touchable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 309,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.TouchableAction.touchable(arc.scene.event.Touchable)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static RemoveActorAction remove() / public static RemoveActorAction remove(Element removeActor)",
+    "desc" : null,
+    "overloads" : [ "public static RemoveActorAction remove()", "public static RemoveActorAction remove(Element removeActor)" ],
+    "name" : "remove",
+    "returnType" : "RemoveActorAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 315,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static DelayAction delay(float duration) / public static DelayAction delay(float duration, Action delayedAction)",
+    "desc" : null,
+    "overloads" : [ "public static DelayAction delay(float duration)", "public static DelayAction delay(float duration, Action delayedAction)" ],
+    "name" : "delay",
+    "returnType" : "DelayAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 325,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.DelayAction.setDuration(float)", "arc.scene.actions.DelegateAction.setAction(arc.scene.Action)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static TimeScaleAction timeScale(float scale, Action scaledAction)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "timeScale",
+    "returnType" : "TimeScaleAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "float"
+    }, {
+      "name" : "scaledAction",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 338,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.TimeScaleAction.setScale(float)", "arc.scene.actions.DelegateAction.setAction(arc.scene.Action)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static SequenceAction sequence(Action action1) / public static SequenceAction sequence(Action action1, Action action2) / public static SequenceAction sequence(Action action1, Action action2, Action action3) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4, Action action5) / public static SequenceAction sequence(Action actions) / public static SequenceAction sequence()",
+    "desc" : null,
+    "overloads" : [ "public static SequenceAction sequence(Action action1)", "public static SequenceAction sequence(Action action1, Action action2)", "public static SequenceAction sequence(Action action1, Action action2, Action action3)", "public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4)", "public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4, Action action5)", "public static SequenceAction sequence(Action actions)", "public static SequenceAction sequence()" ],
+    "name" : "sequence",
+    "returnType" : "SequenceAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "action1",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 345,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.ParallelAction.addAction(arc.scene.Action)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static ParallelAction parallel(Action action1) / public static ParallelAction parallel(Action action1, Action action2) / public static ParallelAction parallel(Action action1, Action action2, Action action3) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4, Action action5) / public static ParallelAction parallel(Action actions) / public static ParallelAction parallel()",
+    "desc" : null,
+    "overloads" : [ "public static ParallelAction parallel(Action action1)", "public static ParallelAction parallel(Action action1, Action action2)", "public static ParallelAction parallel(Action action1, Action action2, Action action3)", "public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4)", "public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4, Action action5)", "public static ParallelAction parallel(Action actions)", "public static ParallelAction parallel()" ],
+    "name" : "parallel",
+    "returnType" : "ParallelAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "action1",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 396,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.ParallelAction.addAction(arc.scene.Action)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static RepeatAction repeat(int count, Action repeatedAction)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "repeat",
+    "returnType" : "RepeatAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "count",
+      "type" : "int"
+    }, {
+      "name" : "repeatedAction",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 447,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RepeatAction.setCount(int)", "arc.scene.actions.DelegateAction.setAction(arc.scene.Action)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static RepeatAction forever(Action repeatedAction)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "forever",
+    "returnType" : "RepeatAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "repeatedAction",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 454,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RepeatAction.setCount(int)", "arc.scene.actions.DelegateAction.setAction(arc.scene.Action)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public static RunnableAction run(Runnable runnable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "run",
+    "returnType" : "RunnableAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "runnable",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 461,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RunnableAction.setRunnable(java.lang.Runnable)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static LayoutAction layout(boolean enabled)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "layout",
+    "returnType" : "LayoutAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "enabled",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 467,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.LayoutAction.setLayoutEnabled(boolean)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static AfterAction after(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "after",
+    "returnType" : "AfterAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 473,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.DelegateAction.setAction(arc.scene.Action)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static AddListenerAction addListener(EventListener listener, boolean capture) / public static AddListenerAction addListener(EventListener listener, boolean capture, Element targetActor)",
+    "desc" : null,
+    "overloads" : [ "public static AddListenerAction addListener(EventListener listener, boolean capture)", "public static AddListenerAction addListener(EventListener listener, boolean capture, Element targetActor)" ],
+    "name" : "addListener",
+    "returnType" : "AddListenerAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    }, {
+      "name" : "capture",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 479,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.AddListenerAction.setListener(arc.scene.event.EventListener)", "arc.scene.actions.AddListenerAction.setCapture(boolean)", "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static RemoveListenerAction removeListener(EventListener listener, boolean capture) / public static RemoveListenerAction removeListener(EventListener listener, boolean capture, Element targetActor)",
+    "desc" : null,
+    "overloads" : [ "public static RemoveListenerAction removeListener(EventListener listener, boolean capture)", "public static RemoveListenerAction removeListener(EventListener listener, boolean capture, Element targetActor)" ],
+    "name" : "removeListener",
+    "returnType" : "RemoveListenerAction",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    }, {
+      "name" : "capture",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 494,
+    "calls" : [ "arc.scene.actions.Actions.action(java.lang.Class<T>, arc.func.Prov<T>)", "arc.scene.actions.RemoveListenerAction.setListener(arc.scene.event.EventListener)", "arc.scene.actions.RemoveListenerAction.setCapture(boolean)", "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 4
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AddAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Adds an action to an actor.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Action action",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "action",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ "arc.scene.Element.addAction(arc.scene.Action)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Action getAction()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAction",
+    "returnType" : "Action",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAction(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "arc.scene.Action.restart()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 31,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AddListenerAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Adds a listener to an actor.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private EventListener listener",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listener",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean capture",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "capture",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.scene.Element.addCaptureListener(arc.scene.event.EventListener)", "arc.scene.Element.addListener(arc.scene.event.EventListener)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public EventListener getListener()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getListener",
+    "returnType" : "EventListener",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setListener(EventListener listener)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setListener",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean getCapture()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCapture",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setCapture(boolean capture)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setCapture",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "capture",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AfterAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.DelegateAction",
+  "typeDesc" : "Executes an action only after all other actions on the actor at the time this action's target was set have finished.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Seq<Action> waitForActions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "waitForActions",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public void setTarget(Element target)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTarget",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.struct.Seq.addAll(arc.struct.Seq<? extends T>)", "arc.scene.Element.getActions()", "arc.scene.actions.DelegateAction.setTarget(arc.scene.Element)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "arc.scene.actions.DelegateAction.restart()", "arc.struct.Seq.clear()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "protected boolean delegate(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "delegate",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "arc.scene.Element.getActions()", "arc.struct.Seq.clear()", "arc.struct.Seq.get(int)", "arc.struct.Seq.indexOf(T, boolean)", "arc.struct.Seq.remove(int)", "arc.scene.Action.act(float)" ],
+    "callCount" : 6
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "AlphaAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Sets the alpha for an actor's color (or a specified color), from the current alpha to the new alpha.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float start",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "start",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Color color",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "color",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "arc.scene.actions.TemporalAction.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Color getColor()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getColor",
+    "returnType" : "Color",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setColor(Color color)",
+    "desc" : "Sets the color to modify.",
+    "overloads" : null,
+    "name" : "setColor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAlpha()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAlpha",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAlpha(float alpha)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAlpha",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "alpha",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ColorAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Sets the actor's color (or a specified color), from the current to the new color.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private final Color end",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "end",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float startR",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startR",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Color color",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "color",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.graphics.Color.set(float, float, float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 34,
+    "calls" : [ "arc.scene.actions.TemporalAction.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Color getColor()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getColor",
+    "returnType" : "Color",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setColor(Color color)",
+    "desc" : "Sets the color to modify.",
+    "overloads" : null,
+    "name" : "setColor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Color getEndColor()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getEndColor",
+    "returnType" : "Color",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setEndColor(Color color)",
+    "desc" : "Sets the color to transition to.",
+    "overloads" : null,
+    "name" : "setEndColor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "color",
+      "type" : "Color"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ "arc.graphics.Color.set(arc.graphics.Color)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "DelayAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.DelegateAction",
+  "typeDesc" : "Delays execution of an action or inserts a pause in a {@link SequenceAction}.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float duration",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "duration",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public DelayAction() / public DelayAction(float duration)",
+    "desc" : null,
+    "overloads" : [ "public DelayAction()", "public DelayAction(float duration)" ],
+    "name" : "DelayAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected boolean delegate(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "delegate",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.scene.Action.act(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void finish()",
+    "desc" : "Causes the delay to be complete.",
+    "overloads" : null,
+    "name" : "finish",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 32,
+    "calls" : [ "arc.scene.actions.DelegateAction.restart()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTime()",
+    "desc" : "Gets the time spent waiting for the delay.",
+    "overloads" : null,
+    "name" : "getTime",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTime(float time)",
+    "desc" : "Sets the time spent waiting for the delay.",
+    "overloads" : null,
+    "name" : "setTime",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "time",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getDuration()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDuration",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setDuration(float duration)",
+    "desc" : "Sets the length of the delay in seconds.",
+    "overloads" : null,
+    "name" : "setDuration",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "DelegateAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class (abstract) extends arc.scene.Action",
+  "typeDesc" : "Base class for an action that wraps another action.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "protected Action action",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "action",
+    "returnType" : null,
+    "modifiers" : [ "protected" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public Action getAction()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAction",
+    "returnType" : "Action",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 14,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAction(Action action)",
+    "desc" : "Sets the wrapped action.",
+    "overloads" : null,
+    "name" : "setAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "abstract protected boolean delegate(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "delegate",
+    "returnType" : "boolean",
+    "modifiers" : [ "abstract", "protected" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public final boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public", "final" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.scene.Action.getPool()", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "arc.scene.actions.DelegateAction.delegate(float)" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 36,
+    "calls" : [ "arc.scene.Action.restart()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 41,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setActor(Element actor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setActor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 47,
+    "calls" : [ "arc.scene.Action.setActor(arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTarget(Element target)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setTarget",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "target",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 53,
+    "calls" : [ "arc.scene.Action.setTarget(arc.scene.Element)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ "arc.scene.Action.toString()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "FloatAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "An action that has a float, whose value is transitioned over time.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float start",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "start",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float value",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "value",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public FloatAction() / public FloatAction(float start, float end)",
+    "desc" : "Creates a FloatAction that transitions from 0 to 1.",
+    "overloads" : [ "public FloatAction()", "public FloatAction(float start, float end)" ],
+    "name" : "FloatAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getValue()",
+    "desc" : "Gets the current float value.",
+    "overloads" : null,
+    "name" : "getValue",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setValue(float value)",
+    "desc" : "Sets the current float value.",
+    "overloads" : null,
+    "name" : "setValue",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getStart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStart",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setStart(float start)",
+    "desc" : "Sets the value to transition from.",
+    "overloads" : null,
+    "name" : "setStart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "start",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getEnd()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getEnd",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setEnd(float end)",
+    "desc" : "Sets the value to transition to.",
+    "overloads" : null,
+    "name" : "setEnd",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "end",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "IntAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "An action that has an int, whose value is transitioned over time.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private int start",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "start",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int value",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "value",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public IntAction() / public IntAction(int start, int end)",
+    "desc" : "Creates an IntAction that transitions from 0 to 1.",
+    "overloads" : [ "public IntAction()", "public IntAction(int start, int end)" ],
+    "name" : "IntAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getValue()",
+    "desc" : "Gets the current int value.",
+    "overloads" : null,
+    "name" : "getValue",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 34,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setValue(int value)",
+    "desc" : "Sets the current int value.",
+    "overloads" : null,
+    "name" : "setValue",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "value",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getStart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getStart",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 43,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setStart(int start)",
+    "desc" : "Sets the value to transition from.",
+    "overloads" : null,
+    "name" : "setStart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "start",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 48,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getEnd()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getEnd",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 52,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setEnd(int end)",
+    "desc" : "Sets the value to transition to.",
+    "overloads" : null,
+    "name" : "setEnd",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "end",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 57,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "LayoutAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Sets an actor's {@link Layout#setLayoutEnabled(boolean) layout} to enabled or disabled.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private boolean enabled",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "enabled",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 13,
+    "calls" : [ "arc.scene.Element.setLayoutEnabled(boolean)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isEnabled()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isEnabled",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setLayoutEnabled(boolean enabled)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setLayoutEnabled",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "enabled",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MoveByAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.RelativeTemporalAction",
+  "typeDesc" : "Moves an actor to a relative position.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float amountX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "amountX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.Element.moveBy(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmount(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountX(float x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountX",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountY(float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountY",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "MoveToAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Moves an actor from its current position to a specific position.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float startX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float endX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "endX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int alignment",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "alignment",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.scene.Element.getX(int)", "arc.scene.Element.getY(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 20,
+    "calls" : [ "arc.scene.Element.setPosition(float, float, int)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 25,
+    "calls" : [ "arc.scene.actions.TemporalAction.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)",
+    "desc" : null,
+    "overloads" : [ "public void setPosition(float x, float y)", "public void setPosition(float x, float y, int alignment)" ],
+    "name" : "setPosition",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setX(float x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setX",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setY(float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setY",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 54,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public int getAlignment()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAlignment",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 58,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAlignment(int alignment)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAlignment",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "alignment",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "OriginAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : null,
+  "fields" : [ ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 8,
+    "calls" : [ "arc.scene.Element.setOrigin(int)" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ParallelAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Executes a number of actions at the same time.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "Seq<Action> actions",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "actions",
+    "returnType" : null,
+    "modifiers" : [ ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean complete",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "complete",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ParallelAction() / public ParallelAction(Action action1) / public ParallelAction(Action action1, Action action2) / public ParallelAction(Action action1, Action action2, Action action3) / public ParallelAction(Action action1, Action action2, Action action3, Action action4) / public ParallelAction(Action action1, Action action2, Action action3, Action action4, Action action5)",
+    "desc" : null,
+    "overloads" : [ "public ParallelAction()", "public ParallelAction(Action action1)", "public ParallelAction(Action action1, Action action2)", "public ParallelAction(Action action1, Action action2, Action action3)", "public ParallelAction(Action action1, Action action2, Action action3, Action action4)", "public ParallelAction(Action action1, Action action2, Action action3, Action action4, Action action5)" ],
+    "name" : "ParallelAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ "arc.scene.actions.ParallelAction.addAction(arc.scene.Action)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 49,
+    "calls" : [ "arc.scene.Action.getPool()", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "arc.struct.Seq.get(int)", "arc.scene.Action.getActor()", "arc.scene.Action.act(float)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 68,
+    "calls" : [ "arc.scene.Action.restart()", "arc.struct.Seq.get(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 76,
+    "calls" : [ "arc.scene.Action.reset()", "arc.struct.Seq.clear()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void addAction(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "addAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 82,
+    "calls" : [ "arc.struct.Seq.add(T)", "arc.scene.Action.setActor(arc.scene.Element)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void setActor(Element actor)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setActor",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "actor",
+      "type" : "Element"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 87,
+    "calls" : [ "arc.scene.Action.setActor(arc.scene.Element)", "arc.struct.Seq.get(int)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public Seq<Action> getActions()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getActions",
+    "returnType" : "Seq<Action>",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 95,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public String toString()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "toString",
+    "returnType" : "String",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 99,
+    "calls" : [ "java.lang.StringBuilder.append(java.lang.String)", "arc.scene.Action.toString()", "java.lang.StringBuilder.append(char)", "java.lang.StringBuilder.append(java.lang.Object)", "arc.struct.Seq.get(int)", "java.lang.StringBuilder.toString()", "java.lang.StringBuilder.StringBuilder(int)" ],
+    "callCount" : 7
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RelativeTemporalAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class (abstract) extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Base class for actions that transition over time using the percent complete since the last frame.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float lastPercent",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "lastPercent",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "arc.scene.actions.RelativeTemporalAction.updateRelative(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "abstract protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "abstract", "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoveAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Removes an action from an actor.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Action action",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "action",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ "arc.scene.Element.removeAction(arc.scene.Action)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Action getAction()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAction",
+    "returnType" : "Action",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAction(Action action)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAction",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "action",
+      "type" : "Action"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 26,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoveActorAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Removes an actor from the stage.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private boolean removed",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "removed",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ "arc.scene.Element.remove()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 21,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RemoveListenerAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Removes a listener from an actor.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private EventListener listener",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "listener",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean capture",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "capture",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 14,
+    "calls" : [ "arc.scene.Element.removeCaptureListener(arc.scene.event.EventListener)", "arc.scene.Element.removeListener(arc.scene.event.EventListener)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public EventListener getListener()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getListener",
+    "returnType" : "EventListener",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setListener(EventListener listener)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setListener",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "listener",
+      "type" : "EventListener"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean getCapture()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCapture",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setCapture(boolean capture)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setCapture",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "capture",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 39,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RepeatAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.DelegateAction",
+  "typeDesc" : "Repeats an action a number of times or forever.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "public static final int FOREVER",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "FOREVER",
+    "returnType" : null,
+    "modifiers" : [ "public", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private int repeatCount",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "repeatCount",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean finished",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "finished",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected boolean delegate(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "delegate",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 13,
+    "calls" : [ "arc.scene.Action.act(float)", "arc.scene.Action.restart()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void finish()",
+    "desc" : "Causes the action to not repeat again.",
+    "overloads" : null,
+    "name" : "finish",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 26,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 30,
+    "calls" : [ "arc.scene.actions.DelegateAction.restart()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int getCount()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getCount",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 37,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setCount(int count)",
+    "desc" : "Sets the number of times to repeat.",
+    "overloads" : null,
+    "name" : "setCount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "count",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 42,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RotateByAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.RelativeTemporalAction",
+  "typeDesc" : "Sets the actor's rotation from its current value to a relative value.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float amount",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "amount",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.Element.rotateBy(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmount()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmount",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmount(float rotationAmount)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rotationAmount",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RotateToAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Sets the actor's rotation from its current value to a specific value.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float start",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "start",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean useShortestDirection",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "useShortestDirection",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public RotateToAction() / public RotateToAction(boolean useShortestDirection)",
+    "desc" : "@param useShortestDirection Set to true to move directly to the closest angle",
+    "overloads" : [ "public RotateToAction()", "public RotateToAction(boolean useShortestDirection)" ],
+    "name" : "RotateToAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ "arc.scene.Element.getRotation()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 33,
+    "calls" : [ "arc.scene.Element.setRotation(float)", "arc.math.Mathf.slerp(float, float, float)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public float getRotation()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getRotation",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 41,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setRotation(float rotation)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setRotation",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "rotation",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isUseShortestDirection()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isUseShortestDirection",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setUseShortestDirection(boolean useShortestDirection)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setUseShortestDirection",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "useShortestDirection",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 53,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "RunnableAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "An action that runs a {@link Runnable}.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Runnable runnable",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "runnable",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean ran",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "ran",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 15,
+    "calls" : [ "arc.scene.actions.RunnableAction.run()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void run()",
+    "desc" : "Called to run the runnable.",
+    "overloads" : null,
+    "name" : "run",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 25,
+    "calls" : [ "arc.scene.Action.getPool()", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "java.lang.Runnable.run()" ],
+    "callCount" : 3
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 40,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public Runnable getRunnable()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getRunnable",
+    "returnType" : "Runnable",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 46,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setRunnable(Runnable runnable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setRunnable",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "runnable",
+      "type" : "Runnable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ScaleByAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.RelativeTemporalAction",
+  "typeDesc" : "Scales an actor's scale to a relative size.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float amountX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "amountX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public ScaleByAction() / public ScaleByAction(float amount)",
+    "desc" : null,
+    "overloads" : [ "public ScaleByAction()", "public ScaleByAction(float amount)" ],
+    "name" : "ScaleByAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : [ "arc.scene.actions.ScaleByAction.setAmount(float)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.scene.Element.scaleBy(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmount(float x, float y) / public void setAmount(float scale)",
+    "desc" : null,
+    "overloads" : [ "public void setAmount(float x, float y)", "public void setAmount(float scale)" ],
+    "name" : "setAmount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountX(float x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountX",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountY(float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountY",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "ScaleToAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Sets the actor's scale from its current value to a specific value.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float startX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float endX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "endX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 11,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.scene.Element.setScale(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setScale(float x, float y) / public void setScale(float scale)",
+    "desc" : null,
+    "overloads" : [ "public void setScale(float x, float y)", "public void setScale(float scale)" ],
+    "name" : "setScale",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setX(float x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setX",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 36,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 40,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setY(float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setY",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 44,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SequenceAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.ParallelAction",
+  "typeDesc" : "Executes a number of actions one at a time.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private int index",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "index",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public SequenceAction() / public SequenceAction(Action action1) / public SequenceAction(Action action1, Action action2) / public SequenceAction(Action action1, Action action2, Action action3) / public SequenceAction(Action action1, Action action2, Action action3, Action action4) / public SequenceAction(Action action1, Action action2, Action action3, Action action4, Action action5)",
+    "desc" : null,
+    "overloads" : [ "public SequenceAction()", "public SequenceAction(Action action1)", "public SequenceAction(Action action1, Action action2)", "public SequenceAction(Action action1, Action action2, Action action3)", "public SequenceAction(Action action1, Action action2, Action action3, Action action4)", "public SequenceAction(Action action1, Action action2, Action action3, Action action4, Action action5)" ],
+    "name" : "SequenceAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : [ "arc.scene.actions.ParallelAction.addAction(arc.scene.Action)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 46,
+    "calls" : [ "arc.scene.Action.getPool()", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "arc.scene.Action.act(float)", "arc.struct.Seq.get(int)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 63,
+    "calls" : [ "arc.scene.actions.ParallelAction.restart()" ],
+    "callCount" : 1
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SizeByAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.RelativeTemporalAction",
+  "typeDesc" : "Moves an actor from its current size to a relative size.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float amountWidth",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "amountWidth",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.Element.sizeBy(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmount(float width, float height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountWidth(float width)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountWidth",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountHeight(float height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountHeight",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "SizeToAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.TemporalAction",
+  "typeDesc" : "Moves an actor from its current size to a specific size.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float startWidth",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "startWidth",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private float endWidth",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "endWidth",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 9,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 11,
+    "calls" : [ "arc.scene.Element.getWidth()", "arc.scene.Element.getHeight()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "protected void update(float percent)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 17,
+    "calls" : [ "arc.scene.Element.setSize(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setSize(float width, float height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setSize",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "float"
+    }, {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getWidth()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getWidth",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 27,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setWidth(float width)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setWidth",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "width",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 31,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getHeight()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getHeight",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 35,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setHeight(float height)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setHeight",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "height",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TemporalAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class (abstract) extends arc.scene.Action",
+  "typeDesc" : "Base class for actions that transition over time using the percent complete.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float duration",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "duration",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private Interp interpolation",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "interpolation",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private boolean reverse",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reverse",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 14,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public TemporalAction() / public TemporalAction(float duration) / public TemporalAction(float duration, Interp interpolation)",
+    "desc" : null,
+    "overloads" : [ "public TemporalAction()", "public TemporalAction(float duration)", "public TemporalAction(float duration, Interp interpolation)" ],
+    "name" : "TemporalAction",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 16,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 28,
+    "calls" : [ "arc.scene.Action.getPool()", "arc.scene.Action.setPool(arc.util.pooling.Pool)", "arc.scene.actions.TemporalAction.begin()", "arc.math.Interp.apply(float)", "arc.scene.actions.TemporalAction.update(float)", "arc.scene.actions.TemporalAction.end()" ],
+    "callCount" : 6
+  }, {
+    "kind" : "method",
+    "signature" : "protected void begin()",
+    "desc" : "Called the first time {@link #act(float)} is called.",
+    "overloads" : null,
+    "name" : "begin",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 59,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "protected void end()",
+    "desc" : "Called the last time {@link #act(float)} is called.",
+    "overloads" : null,
+    "name" : "end",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 63,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "abstract protected void update(float percent)",
+    "desc" : "Called each frame.",
+    "overloads" : null,
+    "name" : "update",
+    "returnType" : "void",
+    "modifiers" : [ "abstract", "protected" ],
+    "parameters" : [ {
+      "name" : "percent",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 71,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void finish()",
+    "desc" : "Skips to the end of the transition.",
+    "overloads" : null,
+    "name" : "finish",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 74,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void restart()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "restart",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 78,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void reset()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 85,
+    "calls" : [ "arc.scene.Action.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getTime()",
+    "desc" : "Gets the transition time so far.",
+    "overloads" : null,
+    "name" : "getTime",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 93,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setTime(float time)",
+    "desc" : "Sets the transition time so far.",
+    "overloads" : null,
+    "name" : "setTime",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "time",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 98,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getDuration()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getDuration",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 102,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setDuration(float duration)",
+    "desc" : "Sets the length of the transition in seconds.",
+    "overloads" : null,
+    "name" : "setDuration",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "duration",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 107,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Interp getInterpolation()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getInterpolation",
+    "returnType" : "Interp",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 111,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setInterpolation(Interp interpolation)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setInterpolation",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "interpolation",
+      "type" : "Interp"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 115,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isReverse()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isReverse",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 119,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setReverse(boolean reverse)",
+    "desc" : "When true, the action's progress will go from 100% to 0%.",
+    "overloads" : null,
+    "name" : "setReverse",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "reverse",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 124,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TimeScaleAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.DelegateAction",
+  "typeDesc" : "Multiplies the delta of an action.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float scale",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "scale",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected boolean delegate(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "delegate",
+    "returnType" : "boolean",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.scene.Action.act(float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public float getScale()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getScale",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setScale(float scale)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setScale",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "scale",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TouchableAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Sets the actor's {@link Element#touchable(Touchable) touchability}.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private Touchable touchable",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchable",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 11,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 13,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public Touchable getTouchable()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getTouchable",
+    "returnType" : "Touchable",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 19,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void touchable(Touchable touchable)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "touchable",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "touchable",
+      "type" : "Touchable"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 23,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "TranslateByAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.actions.RelativeTemporalAction",
+  "typeDesc" : "Moves an actor to a relative position.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private float amountX",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "amountX",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 8,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "protected void updateRelative(float percentDelta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "updateRelative",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "percentDelta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 10,
+    "calls" : [ "arc.math.geom.Vec2.add(float, float)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmount(float x, float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmount",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    }, {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountX()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountX",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 20,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountX(float x)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountX",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "x",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 24,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public float getAmountY()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "getAmountY",
+    "returnType" : "float",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 28,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setAmountY(float y)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setAmountY",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "y",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 32,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+}, {
+  "file" : "VisibleAction.java",
+  "pkg" : "arc.scene.actions",
+  "type" : "Java class extends arc.scene.Action",
+  "typeDesc" : "Sets the actor's {@link Element#visible(boolean) visibility}.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "private boolean visible",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "visible",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 10,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public boolean act(float delta)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "act",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "delta",
+      "type" : "float"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ "Override" ],
+    "line" : 12,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public boolean isVisible()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "isVisible",
+    "returnType" : "boolean",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 18,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public void setVisible(boolean visible)",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "setVisible",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "visible",
+      "type" : "boolean"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ ]
+} ]

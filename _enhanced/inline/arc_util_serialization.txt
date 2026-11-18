@@ -1,0 +1,1061 @@
+// Base64Coder.java : public static String encodeString(String s) / public static String encodeString(String s, boolean useUrlsafeEncoding)
+    public static String encodeString(String s){
+        return encodeString(s, false);
+    }
+
+// Base64Coder.java : public static String encodeLines(byte[] in) / public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator, CharMap charMap) / public static String encodeLines(byte[] in, int iOff, int iLen, int lineLen, String lineSeparator, char[] charMap)
+    public static String encodeLines(byte[] in){
+        return encodeLines(in, 0, in.length, 76, systemLineSeparator, regularMap.encodingMap);
+    }
+
+// Base64Coder.java : public static char[] encode(byte[] in) / public static char[] encode(byte[] in, boolean urlSafe) / public static char[] encode(byte[] in, CharMap charMap) / public static char[] encode(byte[] in, char[] charMap) / public static char[] encode(byte[] in, int iLen) / public static char[] encode(byte[] in, int iOff, int iLen, CharMap charMap) / public static char[] encode(byte[] in, int iOff, int iLen, char[] charMap)
+    public static char[] encode(byte[] in){
+        return encode(in, regularMap.encodingMap);
+    }
+
+// Base64Coder.java : public static String decodeString(String s) / public static String decodeString(String s, boolean useUrlSafeEncoding)
+    public static String decodeString(String s){
+        return decodeString(s, false);
+    }
+
+// Base64Coder.java : public static byte[] decodeLines(String s) / public static byte[] decodeLines(String s, CharMap inverseCharMap) / public static byte[] decodeLines(String s, byte[] inverseCharMap)
+    public static byte[] decodeLines(String s){
+        return decodeLines(s, regularMap.decodingMap);
+    }
+
+// Base64Coder.java : public static byte[] decode(String s) / public static byte[] decode(String s, CharMap inverseCharMap) / public static byte[] decode(char[] in, byte[] inverseCharMap) / public static byte[] decode(char[] in, CharMap inverseCharMap) / public static byte[] decode(char[] in) / public static byte[] decode(char[] in, int iOff, int iLen, CharMap inverseCharMap) / public static byte[] decode(char[] in, int iOff, int iLen, byte[] inverseCharMap)
+    public static byte[] decode(String s){
+        return decode(s.toCharArray());
+    }
+
+// Json.java : public boolean getIgnoreUnknownFields()
+    public boolean getIgnoreUnknownFields(){
+        return ignoreUnknownFields;
+    }
+
+// Json.java : public void setIgnoreUnknownFields(boolean ignoreUnknownFields)
+    public void setIgnoreUnknownFields(boolean ignoreUnknownFields){
+        this.ignoreUnknownFields = ignoreUnknownFields;
+    }
+
+// Json.java : public void setIgnoreDeprecated(boolean ignoreDeprecated)
+    public void setIgnoreDeprecated(boolean ignoreDeprecated){
+        this.ignoreDeprecated = ignoreDeprecated;
+    }
+
+// Json.java : public void setReadDeprecated(boolean readDeprecated)
+    public void setReadDeprecated(boolean readDeprecated){
+        this.readDeprecated = readDeprecated;
+    }
+
+// Json.java : public void setOutputType(OutputType outputType)
+    public void setOutputType(OutputType outputType){
+        this.outputType = outputType;
+    }
+
+// Json.java : public void setQuoteLongValues(boolean quoteLongValues)
+    public void setQuoteLongValues(boolean quoteLongValues){
+        this.quoteLongValues = quoteLongValues;
+    }
+
+// Json.java : public void setEnumNames(boolean enumNames)
+    public void setEnumNames(boolean enumNames){
+        this.enumNames = enumNames;
+    }
+
+// Json.java : public void addClassTag(String tag, Class type)
+    public void addClassTag(String tag, Class type){
+        tagToClass.put(tag, type);
+        classToTag.put(type, tag);
+    }
+
+// Json.java : public Class getClass(String tag)
+    public Class getClass(String tag){
+        return tagToClass.get(tag);
+    }
+
+// Json.java : public String getTag(Class type)
+    public String getTag(Class type){
+        return classToTag.get(type);
+    }
+
+// Json.java : public void setTypeName(String typeName)
+    public void setTypeName(String typeName){
+        this.typeName = typeName;
+    }
+
+// Json.java : public void setDefaultSerializer(Serializer defaultSerializer)
+    public void setDefaultSerializer(Serializer defaultSerializer){
+        this.defaultSerializer = defaultSerializer;
+    }
+
+// Json.java : public void setSerializer(Class<T> type, Serializer<T> serializer)
+    public <T> void setSerializer(Class<T> type, Serializer<T> serializer){
+        classToSerializer.put(type, serializer);
+    }
+
+// Json.java : public Serializer<T> getSerializer(Class<T> type)
+    public <T> Serializer<T> getSerializer(Class<T> type){
+        return classToSerializer.get(type);
+    }
+
+// Json.java : public void setUsePrototypes(boolean usePrototypes)
+    public void setUsePrototypes(boolean usePrototypes){
+        this.usePrototypes = usePrototypes;
+    }
+
+// Json.java : public void setElementType(Class type, String fieldName, Class elementType)
+    public void setElementType(Class type, String fieldName, Class elementType){
+        ObjectMap<String, FieldMetadata> fields = getFields(type);
+        FieldMetadata metadata = fields.get(fieldName);
+        if(metadata == null)
+            throw new SerializationException("Field not found: " + fieldName + " (" + type.getName() + ")");
+        metadata.elementType = elementType;
+    }
+
+// Json.java : public String toJson(Object object) / public String toJson(Object object, Class knownType) / public String toJson(Object object, Class knownType, Class elementType) / public void toJson(Object object, Fi file) / public void toJson(Object object, Class knownType, Fi file) / public void toJson(Object object, Class knownType, Class elementType, Fi file) / public void toJson(Object object, Writer writer) / public void toJson(Object object, Class knownType, Writer writer) / public void toJson(Object object, Class knownType, Class elementType, Writer writer)
+    public String toJson(Object object){
+        return toJson(object, object == null ? null : object.getClass(), (Class)null);
+    }
+
+// Json.java : public void toUBJson(Object object, Class knownType, OutputStream stream)
+    public void toUBJson(Object object, Class knownType, OutputStream stream){
+        this.writer = new UBJsonWriter(stream);
+        toJson(object, knownType, (Class)null);
+    }
+
+// Json.java : public BaseJsonWriter getWriter()
+    public BaseJsonWriter getWriter(){
+        return writer;
+    }
+
+// Json.java : public void setWriter(BaseJsonWriter writer)
+    public void setWriter(BaseJsonWriter writer){
+        //if(!(writer instanceof BaseJsonWriter)) writer = new JsonWriter(writer);
+        this.writer = writer;
+        this.writer.setOutputType(outputType);
+        this.writer.setQuoteLongValues(quoteLongValues);
+    }
+
+// Json.java : public void writeField(Object object, String name) / public void writeField(Object object, String name, Class elementType) / public void writeField(Object object, String fieldName, String jsonName) / public void writeField(Object object, String fieldName, String jsonName, Class elementType)
+    public void writeField(Object object, String name){
+        writeField(object, name, name, null);
+    }
+
+// Json.java : public void writeValue(String name, Object value) / public void writeValue(String name, Object value, Class knownType) / public void writeValue(String name, Object value, Class knownType, Class elementType) / public void writeValue(Object value) / public void writeValue(Object value, Class knownType) / public void writeValue(Object value, Class knownType, Class elementType)
+    public void writeValue(String name, Object value){
+        try{
+            writer.name(name);
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+        if(value == null)
+            writeValue(value, null, null);
+        else
+            writeValue(value, value.getClass(), null);
+    }
+
+// Json.java : public void writeObjectStart(String name) / public void writeObjectStart(String name, Class actualType, Class knownType) / public void writeObjectStart() / public void writeObjectStart(Class actualType, Class knownType)
+    public void writeObjectStart(String name){
+        try{
+            writer.name(name);
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+        writeObjectStart();
+    }
+
+// Json.java : public void writeObjectEnd()
+    public void writeObjectEnd(){
+        try{
+            writer.pop();
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+    }
+
+// Json.java : public void writeArrayStart(String name) / public void writeArrayStart()
+    public void writeArrayStart(String name){
+        try{
+            writer.name(name);
+            writer.array();
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+    }
+
+// Json.java : public void writeArrayEnd()
+    public void writeArrayEnd(){
+        try{
+            writer.pop();
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+    }
+
+// Json.java : public void writeType(Class type)
+    public void writeType(Class type){
+        if(typeName == null) return;
+        String className = getTag(type);
+        if(className == null) className = type.getName();
+        try{
+            writer.set(typeName, className);
+        }catch(IOException ex){
+            throw new SerializationException(ex);
+        }
+        if(debug) System.out.println("Writing type: " + type.getName());
+    }
+
+// Json.java : public T fromJson(Class<T> type, Reader reader) / public T fromJson(Class<T> type, Class elementType, Reader reader) / public T fromJson(Class<T> type, InputStream input) / public T fromJson(Class<T> type, Class elementType, InputStream input) / public T fromJson(Class<T> type, Fi file) / public T fromJson(Class<T> type, Class elementType, Fi file) / public T fromJson(Class<T> type, char[] data, int offset, int length) / public T fromJson(Class<T> type, Class elementType, char[] data, int offset, int length) / public T fromJson(Class<T> type, String json) / public T fromJson(Class<T> type, Class elementType, String json)
+    public <T> T fromJson(Class<T> type, Reader reader){
+        return readValue(type, null, new JsonReader().parse(reader));
+    }
+
+// Json.java : public void readField(Object object, String name, JsonValue jsonData) / public void readField(Object object, String name, Class elementType, JsonValue jsonData) / public void readField(Object object, String fieldName, String jsonName, JsonValue jsonData) / public void readField(Object object, String fieldName, String jsonName, Class elementType, JsonValue jsonMap) / public void readField(Object object, Field field, String jsonName, Class elementType, JsonValue jsonMap)
+    public void readField(Object object, String name, JsonValue jsonData){
+        readField(object, name, name, null, jsonData);
+    }
+
+// Json.java : protected boolean ignoreUnknownField(Class type, String fieldName)
+    protected boolean ignoreUnknownField(Class type, String fieldName){
+        return false;
+    }
+
+// Json.java : public T readValue(String name, Class<T> type, JsonValue jsonMap) / public T readValue(String name, Class<T> type, T defaultValue, JsonValue jsonMap) / public T readValue(String name, Class<T> type, Class elementType, JsonValue jsonMap) / public T readValue(String name, Class<T> type, Class elementType, T defaultValue, JsonValue jsonMap) / public T readValue(Class<T> type, Class elementType, T defaultValue, JsonValue jsonData) / public T readValue(Class<T> type, JsonValue jsonData) / public T readValue(Class<T> type, Class elementType, JsonValue jsonData) / public T readValue(Class<T> type, Class elementType, JsonValue jsonData, Class keytype)
+    public <T> T readValue(String name, Class<T> type, JsonValue jsonMap){
+        return readValue(type, null, jsonMap.get(name));
+    }
+
+// Json.java : public void copyFields(Object from, Object to) / public void copyFields(Object from, Object to, boolean setFinals)
+    public void copyFields(Object from, Object to){
+        copyFields(from, to, false);
+    }
+
+// Json.java : private String convertToString(Enum e) / protected String convertToString(Object object)
+    private String convertToString(Enum e){
+        return enumNames ? e.name() : e.toString();
+    }
+
+// Json.java : public String prettyPrint(Object object) / public String prettyPrint(String json) / public String prettyPrint(Object object, int singleLineColumns) / public String prettyPrint(String json, int singleLineColumns) / public String prettyPrint(Object object, PrettyPrintSettings settings) / public String prettyPrint(String json, PrettyPrintSettings settings)
+    public String prettyPrint(Object object){
+        return prettyPrint(object, 0);
+    }
+
+// JsonReader.java : private static byte[] init__json_actions_0()
+    private static byte[] init__json_actions_0(){
+        return new byte[]{0, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 2, 0, 7, 2, 0, 8, 2, 1, 3, 2, 1, 5};
+    }
+
+// JsonReader.java : private static short[] init__json_key_offsets_0()
+    private static short[] init__json_key_offsets_0(){
+        return new short[]{0, 0, 11, 13, 14, 16, 25, 31, 37, 39, 50, 57, 64, 73, 74, 83, 85, 87, 96, 98, 100, 101, 103, 105, 116,
+        123, 130, 141, 142, 153, 155, 157, 168, 170, 172, 174, 179, 184, 184};
+    }
+
+// JsonReader.java : private static char[] init__json_trans_keys_0()
+    private static char[] init__json_trans_keys_0(){
+        return new char[]{13, 32, 34, 44, 47, 58, 91, 93, 123, 9, 10, 42, 47, 34, 42, 47, 13, 32, 34, 44, 47, 58, 125, 9, 10, 13,
+        32, 47, 58, 9, 10, 13, 32, 47, 58, 9, 10, 42, 47, 13, 32, 34, 44, 47, 58, 91, 93, 123, 9, 10, 9, 10, 13, 32, 44, 47, 125,
+        9, 10, 13, 32, 44, 47, 125, 13, 32, 34, 44, 47, 58, 125, 9, 10, 34, 13, 32, 34, 44, 47, 58, 125, 9, 10, 42, 47, 42, 47,
+        13, 32, 34, 44, 47, 58, 125, 9, 10, 42, 47, 42, 47, 34, 42, 47, 42, 47, 13, 32, 34, 44, 47, 58, 91, 93, 123, 9, 10, 9,
+        10, 13, 32, 44, 47, 93, 9, 10, 13, 32, 44, 47, 93, 13, 32, 34, 44, 47, 58, 91, 93, 123, 9, 10, 34, 13, 32, 34, 44, 47,
+        58, 91, 93, 123, 9, 10, 42, 47, 42, 47, 13, 32, 34, 44, 47, 58, 91, 93, 123, 9, 10, 42, 47, 42, 47, 42, 47, 13, 32, 47,
+        9, 10, 13, 32, 47, 9, 10, 0};
+    }
+
+// JsonReader.java : private static byte[] init__json_single_lengths_0()
+    private static byte[] init__json_single_lengths_0(){
+        return new byte[]{0, 9, 2, 1, 2, 7, 4, 4, 2, 9, 7, 7, 7, 1, 7, 2, 2, 7, 2, 2, 1, 2, 2, 9, 7, 7, 9, 1, 9, 2, 2, 9, 2, 2, 2,
+        3, 3, 0, 0};
+    }
+
+// JsonReader.java : private static byte[] init__json_range_lengths_0()
+    private static byte[] init__json_range_lengths_0(){
+        return new byte[]{0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0,
+        1, 1, 0, 0};
+    }
+
+// JsonReader.java : private static short[] init__json_index_offsets_0()
+    private static short[] init__json_index_offsets_0(){
+        return new short[]{0, 0, 11, 14, 16, 19, 28, 34, 40, 43, 54, 62, 70, 79, 81, 90, 93, 96, 105, 108, 111, 113, 116, 119, 130,
+        138, 146, 157, 159, 170, 173, 176, 187, 190, 193, 196, 201, 206, 207};
+    }
+
+// JsonReader.java : private static byte[] init__json_indicies_0()
+    private static byte[] init__json_indicies_0(){
+        return new byte[]{1, 1, 2, 3, 4, 3, 5, 3, 6, 1, 0, 7, 7, 3, 8, 3, 9, 9, 3, 11, 11, 12, 13, 14, 3, 15, 11, 10, 16, 16, 17,
+        18, 16, 3, 19, 19, 20, 21, 19, 3, 22, 22, 3, 21, 21, 24, 3, 25, 3, 26, 3, 27, 21, 23, 28, 29, 29, 28, 30, 31, 32, 3, 33,
+        34, 34, 33, 13, 35, 15, 3, 34, 34, 12, 36, 37, 3, 15, 34, 10, 16, 3, 36, 36, 12, 3, 38, 3, 3, 36, 10, 39, 39, 3, 40, 40,
+        3, 13, 13, 12, 3, 41, 3, 15, 13, 10, 42, 42, 3, 43, 43, 3, 28, 3, 44, 44, 3, 45, 45, 3, 47, 47, 48, 49, 50, 3, 51, 52,
+        53, 47, 46, 54, 55, 55, 54, 56, 57, 58, 3, 59, 60, 60, 59, 49, 61, 52, 3, 60, 60, 48, 62, 63, 3, 51, 52, 53, 60, 46, 54,
+        3, 62, 62, 48, 3, 64, 3, 51, 3, 53, 62, 46, 65, 65, 3, 66, 66, 3, 49, 49, 48, 3, 67, 3, 51, 52, 53, 49, 46, 68, 68, 3,
+        69, 69, 3, 70, 70, 3, 8, 8, 71, 8, 3, 72, 72, 73, 72, 3, 3, 3, 0};
+    }
+
+// JsonReader.java : private static byte[] init__json_trans_targs_0()
+    private static byte[] init__json_trans_targs_0(){
+        return new byte[]{35, 1, 3, 0, 4, 36, 36, 36, 36, 1, 6, 5, 13, 17, 22, 37, 7, 8, 9, 7, 8, 9, 7, 10, 20, 21, 11, 11, 11, 12,
+        17, 19, 37, 11, 12, 19, 14, 16, 15, 14, 12, 18, 17, 11, 9, 5, 24, 23, 27, 31, 34, 25, 38, 25, 25, 26, 31, 33, 38, 25, 26,
+        33, 28, 30, 29, 28, 26, 32, 31, 25, 23, 2, 36, 2};
+    }
+
+// JsonReader.java : private static byte[] init__json_trans_actions_0()
+    private static byte[] init__json_trans_actions_0(){
+        return new byte[]{13, 0, 15, 0, 0, 7, 3, 11, 1, 11, 17, 0, 20, 0, 0, 5, 1, 1, 1, 0, 0, 0, 11, 13, 15, 0, 7, 3, 1, 1, 1, 1,
+        23, 0, 0, 0, 0, 0, 0, 11, 11, 0, 11, 11, 11, 11, 13, 0, 15, 0, 0, 7, 9, 3, 1, 1, 1, 1, 26, 0, 0, 0, 0, 0, 0, 11, 11, 0,
+        11, 11, 11, 1, 0, 0};
+    }
+
+// JsonReader.java : private static byte[] init__json_eof_actions_0()
+    private static byte[] init__json_eof_actions_0(){
+        return new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0};
+    }
+
+// JsonReader.java : public JsonValue parse(String json) / public JsonValue parse(Reader reader) / public JsonValue parse(InputStream input) / public JsonValue parse(Fi file) / public JsonValue parse(char[] data, int offset, int length)
+    public JsonValue parse(String json){
+        char[] data = json.toCharArray();
+        return parse(data, 0, data.length);
+    }
+
+// JsonReader.java : protected void startObject(String name)
+    protected void startObject(String name){
+        JsonValue value = new JsonValue(ValueType.object);
+        if(current != null) addChild(name, value);
+        elements.add(value);
+        current = value;
+    }
+
+// JsonReader.java : protected void startArray(String name)
+    protected void startArray(String name){
+        JsonValue value = new JsonValue(ValueType.array);
+        if(current != null) addChild(name, value);
+        elements.add(value);
+        current = value;
+    }
+
+// JsonReader.java : protected void pop()
+    protected void pop(){
+        root = elements.pop();
+        if(current.size > 0) lastChild.pop();
+        current = elements.size > 0 ? elements.peek() : null;
+    }
+
+// JsonReader.java : protected void string(String name, String value)
+    protected void string(String name, String value){
+        addChild(name, new JsonValue(value));
+    }
+
+// JsonReader.java : protected void number(String name, double value, String stringValue) / protected void number(String name, long value, String stringValue)
+    protected void number(String name, double value, String stringValue){
+        addChild(name, new JsonValue(value, stringValue));
+    }
+
+// JsonReader.java : protected void bool(String name, boolean value)
+    protected void bool(String name, boolean value){
+        addChild(name, new JsonValue(value));
+    }
+
+// JsonValue.java : private static boolean isFlat(JsonValue object)
+    private static boolean isFlat(JsonValue object){
+        for(JsonValue child = object.child; child != null; child = child.next)
+            if(child.isObject() || child.isArray()) return false;
+        return true;
+    }
+
+// JsonValue.java : private static boolean isNumeric(JsonValue object)
+    private static boolean isNumeric(JsonValue object){
+        for(JsonValue child = object.child; child != null; child = child.next)
+            if(!child.isNumber()) return false;
+        return true;
+    }
+
+// JsonValue.java : private static void indent(int count, StringBuilder buffer) / private static void indent(int count, Writer buffer) throws IOException
+    private static void indent(int count, StringBuilder buffer){
+        for(int i = 0; i < count; i++)
+            buffer.append('\t');
+    }
+
+// JsonValue.java : public JsonValue get(int index) / public JsonValue get(String name)
+    public JsonValue get(int index){
+        JsonValue current = child;
+        while(current != null && index > 0){
+            index--;
+            current = current.next;
+        }
+        return current;
+    }
+
+// JsonValue.java : public boolean has(String name)
+    public boolean has(String name){
+        return get(name) != null;
+    }
+
+// JsonValue.java : public JsonValue require(int index) / public JsonValue require(String name)
+    public JsonValue require(int index){
+        JsonValue current = child;
+        while(current != null && index > 0){
+            index--;
+            current = current.next;
+        }
+        if(current == null) throw new IllegalArgumentException("Child not found with index: " + index);
+        return current;
+    }
+
+// JsonValue.java : private void mismatch(String type)
+    private void mismatch(String type){
+        throw typeMismatch(type);
+    }
+
+// JsonValue.java : private RuntimeException typeMismatch(String type)
+    private RuntimeException typeMismatch(String type){
+        return new IllegalStateException("\"" + (name == null ? "value" : name) + "\" should be a " + type + ", but it is a " + this.type + ".");
+    }
+
+// JsonValue.java : public boolean hasChild(String name)
+    public boolean hasChild(String name){
+        return getChild(name) != null;
+    }
+
+// JsonValue.java : public JsonValue getChild(String name)
+    public JsonValue getChild(String name){
+        JsonValue child = get(name);
+        return child == null ? null : child.child;
+    }
+
+// JsonValue.java : public String getString(String name, String defaultValue) / public String getString(String name) / public String getString(int index)
+    public String getString(String name, String defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asString();
+    }
+
+// JsonValue.java : public float getFloat(String name, float defaultValue) / public float getFloat(String name) / public float getFloat(int index)
+    public float getFloat(String name, float defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asFloat();
+    }
+
+// JsonValue.java : public double getDouble(String name, double defaultValue) / public double getDouble(String name) / public double getDouble(int index)
+    public double getDouble(String name, double defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asDouble();
+    }
+
+// JsonValue.java : public long getLong(String name, long defaultValue) / public long getLong(String name) / public long getLong(int index)
+    public long getLong(String name, long defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asLong();
+    }
+
+// JsonValue.java : public int getInt(String name, int defaultValue) / public int getInt(String name) / public int getInt(int index)
+    public int getInt(String name, int defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asInt();
+    }
+
+// JsonValue.java : public boolean getBoolean(String name, boolean defaultValue) / public boolean getBoolean(String name) / public boolean getBoolean(int index)
+    public boolean getBoolean(String name, boolean defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asBoolean();
+    }
+
+// JsonValue.java : public byte getByte(String name, byte defaultValue) / public byte getByte(String name) / public byte getByte(int index)
+    public byte getByte(String name, byte defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asByte();
+    }
+
+// JsonValue.java : public short getShort(String name, short defaultValue) / public short getShort(String name) / public short getShort(int index)
+    public short getShort(String name, short defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asShort();
+    }
+
+// JsonValue.java : public char getChar(String name, char defaultValue) / public char getChar(String name) / public char getChar(int index)
+    public char getChar(String name, char defaultValue){
+        JsonValue child = get(name);
+        return (child == null || !child.isValue() || child.isNull()) ? defaultValue : child.asChar();
+    }
+
+// JsonValue.java : public ValueType type()
+    public ValueType type(){
+        return type;
+    }
+
+// JsonValue.java : public void setType(ValueType type)
+    public void setType(ValueType type){
+        if(type == null) throw new IllegalArgumentException("type cannot be null.");
+        this.type = type;
+    }
+
+// JsonValue.java : public boolean isArray()
+    public boolean isArray(){
+        return type == ValueType.array;
+    }
+
+// JsonValue.java : public boolean isObject()
+    public boolean isObject(){
+        return type == ValueType.object;
+    }
+
+// JsonValue.java : public boolean isString()
+    public boolean isString(){
+        return type == ValueType.stringValue;
+    }
+
+// JsonValue.java : public boolean isNumber()
+    public boolean isNumber(){
+        return type == ValueType.doubleValue || type == ValueType.longValue;
+    }
+
+// JsonValue.java : public boolean isDouble()
+    public boolean isDouble(){
+        return type == ValueType.doubleValue;
+    }
+
+// JsonValue.java : public boolean isLong()
+    public boolean isLong(){
+        return type == ValueType.longValue;
+    }
+
+// JsonValue.java : public boolean isBoolean()
+    public boolean isBoolean(){
+        return type == ValueType.booleanValue;
+    }
+
+// JsonValue.java : public boolean isNull()
+    public boolean isNull(){
+        return type == ValueType.nullValue;
+    }
+
+// JsonValue.java : public boolean isValue()
+    public boolean isValue(){
+        switch(type){
+            case stringValue:
+            case doubleValue:
+            case longValue:
+            case booleanValue:
+            case nullValue:
+                return true;
+        }
+        return false;
+    }
+
+// JsonValue.java : public String name()
+    public String name(){
+        return name;
+    }
+
+// JsonValue.java : public void setName(String name)
+    public void setName(String name){
+        this.name = name;
+    }
+
+// JsonValue.java : public JsonValue parent()
+    public JsonValue parent(){
+        return parent;
+    }
+
+// JsonValue.java : public JsonValue child()
+    public JsonValue child(){
+        return child;
+    }
+
+// JsonValue.java : public void addChild(String name, JsonValue value) / public void addChild(JsonValue value)
+    public void addChild(String name, JsonValue value){
+        value.name = name;
+        addChild(value);
+    }
+
+// JsonValue.java : public JsonValue next()
+    public JsonValue next(){
+        return next;
+    }
+
+// JsonValue.java : public void setNext(JsonValue next)
+    public void setNext(JsonValue next){
+        this.next = next;
+    }
+
+// JsonValue.java : public JsonValue prev()
+    public JsonValue prev(){
+        return prev;
+    }
+
+// JsonValue.java : public void setPrev(JsonValue prev)
+    public void setPrev(JsonValue prev){
+        this.prev = prev;
+    }
+
+// JsonValue.java : public void set(String value) / public void set(double value, String stringValue) / public void set(long value, String stringValue) / public void set(boolean value)
+    public void set(String value){
+        stringValue = value;
+        type = value == null ? ValueType.nullValue : ValueType.stringValue;
+    }
+
+// JsonValue.java : public String toJson(OutputType outputType)
+    public String toJson(OutputType outputType){
+        if(isValue()) return asString();
+        StringBuilder buffer = new StringBuilder(512);
+        json(this, buffer, outputType);
+        return buffer.toString();
+    }
+
+// JsonValue.java : public String toString()
+    public String toString(){
+        if(isValue()) return name == null ? asString() : name + ": " + asString();
+        return (name == null ? "" : name + ": ") + prettyPrint(OutputType.minimal, 0);
+    }
+
+// JsonValue.java : public String prettyPrint(OutputType outputType, int singleLineColumns) / public String prettyPrint(PrettyPrintSettings settings) / private void prettyPrint(JsonValue object, StringBuilder buffer, int indent, PrettyPrintSettings settings) / public void prettyPrint(OutputType outputType, Writer writer) throws IOException / private void prettyPrint(JsonValue object, Writer writer, int indent, PrettyPrintSettings settings) throws IOException
+    public String prettyPrint(OutputType outputType, int singleLineColumns){
+        PrettyPrintSettings settings = new PrettyPrintSettings();
+        settings.outputType = outputType;
+        settings.singleLineColumns = singleLineColumns;
+        return prettyPrint(settings);
+    }
+
+// JsonValue.java : public JsonIterator iterator()
+    public JsonIterator iterator(){
+        return new JsonIterator();
+    }
+
+// JsonWriter.java : public Writer getWriter()
+    public Writer getWriter(){
+        return writer;
+    }
+
+// JsonWriter.java : public void setOutputType(OutputType outputType)
+    @Override
+    public void setOutputType(OutputType outputType){
+        this.outputType = outputType;
+    }
+
+// JsonWriter.java : public void setQuoteLongValues(boolean quoteLongValues)
+    @Override
+    public void setQuoteLongValues(boolean quoteLongValues){
+        this.quoteLongValues = quoteLongValues;
+    }
+
+// JsonWriter.java : public BaseJsonWriter object() throws IOException / public BaseJsonWriter object(String name) throws IOException
+    @Override
+    public BaseJsonWriter object() throws IOException{
+        requireCommaOrName();
+        stack.add(current = new JsonObject(false));
+        return this;
+    }
+
+// JsonWriter.java : public BaseJsonWriter array() throws IOException / public BaseJsonWriter array(String name) throws IOException
+    @Override
+    public BaseJsonWriter array() throws IOException{
+        requireCommaOrName();
+        stack.add(current = new JsonObject(true));
+        return this;
+    }
+
+// JsonWriter.java : public BaseJsonWriter set(String name, Object value) throws IOException
+    @Override
+    public BaseJsonWriter set(String name, Object value) throws IOException{
+        return name(name).value(value);
+    }
+
+// JsonWriter.java : public BaseJsonWriter pop() throws IOException
+    @Override
+    public BaseJsonWriter pop() throws IOException{
+        if(named) throw new IllegalStateException("Expected an object, array, or value since a name was set.");
+        stack.pop().close();
+        current = stack.size == 0 ? null : stack.peek();
+        return this;
+    }
+
+// JsonWriter.java : public void write(char[] cbuf, int off, int len) throws IOException
+    @Override
+    public void write(char[] cbuf, int off, int len) throws IOException{
+        writer.write(cbuf, off, len);
+    }
+
+// JsonWriter.java : public void flush() throws IOException
+    @Override
+    public void flush() throws IOException{
+        writer.flush();
+    }
+
+// JsonWriter.java : public void close() throws IOException
+    @Override
+    public void close() throws IOException{
+        while(stack.size > 0)
+            pop();
+        writer.close();
+    }
+
+// Jval.java : public static Jval newObject()
+    public static Jval newObject(){
+        return new Jval(new JsonMap());
+    }
+
+// Jval.java : public static Jval newArray()
+    public static Jval newArray(){
+        return new Jval(new JsonArray());
+    }
+
+// Jval.java : public static Jval read(Reader reader) / public static Jval read(byte[] bytes) / public static Jval read(String text)
+    public static Jval read(Reader reader){
+        try{
+            return new Hparser(reader).parse();
+        }catch(IOException e){
+            throw new ArcRuntimeException(e);
+        }
+    }
+
+// Jval.java : public Jtype getType()
+    public Jtype getType(){
+        return value == null ? Jtype.nil :
+                value instanceof Number ? Jtype.number :
+                value instanceof String ? Jtype.string :
+                value instanceof Boolean ? Jtype.bool :
+                value instanceof JsonMap ? Jtype.object :
+                value instanceof JsonArray ? Jtype.array : null;
+    }
+
+// Jval.java : public static Jval valueOf(int value) / public static Jval valueOf(long value) / public static Jval valueOf(float value) / public static Jval valueOf(double value) / public static Jval valueOf(String string) / public static Jval valueOf(boolean value)
+    public static Jval valueOf(int value){ return new Jval(value); }
+
+// Jval.java : public boolean isObject()
+    public boolean isObject(){ return value instanceof JsonMap; }
+
+// Jval.java : public boolean isArray()
+    public boolean isArray(){ return value instanceof JsonArray; }
+
+// Jval.java : public boolean isNumber()
+    public boolean isNumber(){ return value instanceof Number; }
+
+// Jval.java : public boolean isString()
+    public boolean isString(){ return value instanceof String; }
+
+// Jval.java : public boolean isBoolean()
+    public boolean isBoolean(){ return value instanceof Boolean; }
+
+// Jval.java : public boolean isTrue()
+    public boolean isTrue(){ return value == Boolean.TRUE; }
+
+// Jval.java : public boolean isFalse()
+    public boolean isFalse(){ return value == Boolean.FALSE; }
+
+// Jval.java : public boolean isNull()
+    public boolean isNull(){ return value == null; }
+
+// Jval.java : public JsonMap asObject()
+    public JsonMap asObject(){ if(!(value instanceof JsonMap)) throw new UnsupportedOperationException("Not an object: " + this); return (JsonMap)value; }
+
+// Jval.java : public JsonArray asArray()
+    public JsonArray asArray(){ if(!(value instanceof JsonArray)) throw new UnsupportedOperationException("Not an array: " + this); return (JsonArray)value; }
+
+// Jval.java : public byte asByte()
+    public byte asByte(){
+        if(value instanceof Number){
+            return ((Number)value).byteValue();
+        }else if(value instanceof String){
+            return Byte.parseByte((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public short asShort()
+    public short asShort(){
+        if(value instanceof Number){
+            return ((Number)value).shortValue();
+        }else if(value instanceof String){
+            return Short.parseShort((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public int asInt()
+    public int asInt(){
+        if(value instanceof Number){
+            return ((Number)value).intValue();
+        }else if(value instanceof String){
+            return Integer.parseInt((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public long asLong()
+    public long asLong(){
+        if(value instanceof Number){
+            return ((Number)value).longValue();
+        }else if(value instanceof String){
+            return Long.parseLong((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public float asFloat()
+    public float asFloat(){
+        if(value instanceof Number){
+            return ((Number)value).floatValue();
+        }else if(value instanceof String){
+            return Float.parseFloat((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public double asDouble()
+    public double asDouble(){
+        if(value instanceof Number){
+            return ((Number)value).doubleValue();
+        }else if(value instanceof String){
+            return Double.parseDouble((String)value);
+        }else{
+            throw new UnsupportedOperationException("Not a number: " + this);
+        }
+    }
+
+// Jval.java : public String asString()
+    public String asString(){
+        if(!(value instanceof String) && !(value instanceof Number)) throw new UnsupportedOperationException("Not a string: " + this);
+        return String.valueOf(value);
+    }
+
+// Jval.java : public boolean asBool()
+    public boolean asBool(){
+        if(value instanceof Boolean){
+            return (Boolean)value;
+        }else if(value instanceof String){
+            return Boolean.parseBoolean((String)value);
+        }
+        throw new UnsupportedOperationException("Not a bool: " + this);
+    }
+
+// Jval.java : public Jval get(String name)
+    public Jval get(String name){
+        if(name == null) throw new NullPointerException("name is null");
+        return asObject().get(name);
+    }
+
+// Jval.java : public void add(String name, Jval val) / public void add(String name, String val) / public Jval add(Jval value) / public Jval add(String value) / public Jval add(Number value) / public Jval add(boolean value)
+    public void add(String name, Jval val){
+        if(name == null) throw new NullPointerException("name is null");
+        asObject().put(name, val == null ? NULL : val);
+    }
+
+// Jval.java : public Jval put(String name, Jval val) / public Jval put(String name, String val) / public Jval put(String name, Number val) / public Jval put(String name, boolean val)
+    public Jval put(String name, Jval val){
+        if(val != null) add(name, val);
+        return this;
+    }
+
+// Jval.java : public Jval remove(String name)
+    public Jval remove(String name){
+        if(name == null) throw new NullPointerException("name is null");
+        return asObject().removeKey(name);
+    }
+
+// Jval.java : public boolean has(String name)
+    public boolean has(String name){
+        if(name == null) throw new NullPointerException("name is null");
+        return asObject().containsKey(name);
+    }
+
+// Jval.java : public int getInt(String name, int defaultValue)
+    public int getInt(String name, int defaultValue){
+        Jval value = get(name);
+        return value != null ? value.asInt() : defaultValue;
+    }
+
+// Jval.java : public long getLong(String name, long defaultValue)
+    public long getLong(String name, long defaultValue){
+        Jval value = get(name);
+        return value != null ? value.asLong() : defaultValue;
+    }
+
+// Jval.java : public float getFloat(String name, float defaultValue)
+    public float getFloat(String name, float defaultValue){
+        Jval value = get(name);
+        return value != null ? value.asFloat() : defaultValue;
+    }
+
+// Jval.java : public double getDouble(String name, double defaultValue)
+    public double getDouble(String name, double defaultValue){
+        Jval value = get(name);
+        return value != null ? value.asDouble() : defaultValue;
+    }
+
+// Jval.java : public boolean getBool(String name, boolean defaultValue)
+    public boolean getBool(String name, boolean defaultValue){
+        Jval value = get(name);
+        return value != null ? value.asBool() : defaultValue;
+    }
+
+// Jval.java : public String getString(String name) / public String getString(String name, String defaultValue)
+    public @Nullable String getString(String name){
+        return getString(name, "");
+    }
+
+// Jval.java : public void writeTo(Writer writer) throws IOException / public void writeTo(Writer writer, Jformat format) throws IOException
+    public void writeTo(Writer writer) throws IOException{
+        writeTo(writer, Jformat.plain);
+    }
+
+// Jval.java : public boolean equals(Object object)
+    @Override
+    public boolean equals(Object object){
+        return object != null && object.getClass() == getClass() &&
+            ((value == null && ((Jval)object).value == null)
+            || (((Jval)object).value != null && value != null && value.equals(((Jval)object).value)));
+    }
+
+// SerializationException.java : public boolean causedBy(Class type) / private boolean causedBy(Throwable ex, Class<?> type)
+    public boolean causedBy(Class type){
+        return causedBy(this, type);
+    }
+
+// SerializationException.java : public String getMessage()
+    public String getMessage(){
+        if(trace == null) return super.getMessage();
+        StringBuilder sb = new StringBuilder(512);
+        sb.append(super.getMessage());
+        if(sb.length() > 0) sb.append('\n');
+        sb.append("Serialization trace:");
+        sb.append(trace);
+        return sb.toString();
+    }
+
+// SerializationException.java : public void addTrace(String info)
+    public void addTrace(String info){
+        if(info == null) throw new IllegalArgumentException("info cannot be null.");
+        if(trace == null) trace = new StringBuilder(512);
+        trace.append('\n');
+        trace.append(info);
+    }
+
+// UBJsonReader.java : public JsonValue parseWihoutClosing(DataInputStream din) throws IOException
+    public JsonValue parseWihoutClosing(final DataInputStream din) throws IOException{
+        return parse(din, din.readByte());
+    }
+
+// UBJsonReader.java : protected String parseString(DataInputStream din, byte type) throws IOException / protected String parseString(DataInputStream din, boolean sOptional, byte type) throws IOException
+    protected String parseString(final DataInputStream din, final byte type) throws IOException{
+        return parseString(din, false, type);
+    }
+
+// UBJsonReader.java : protected long parseSize(DataInputStream din, boolean useIntOnError, long defaultValue) throws IOException / protected long parseSize(DataInputStream din, byte type, boolean useIntOnError, long defaultValue) throws IOException
+    protected long parseSize(final DataInputStream din, final boolean useIntOnError, final long defaultValue) throws IOException{
+        return parseSize(din, din.readByte(), useIntOnError, defaultValue);
+    }
+
+// UBJsonReader.java : protected short readUChar(DataInputStream din) throws IOException
+    protected short readUChar(final DataInputStream din) throws IOException{
+        return (short)((short)din.readByte() & 0xFF);
+    }
+
+// UBJsonReader.java : protected int readUShort(DataInputStream din) throws IOException
+    protected int readUShort(final DataInputStream din) throws IOException{
+        return ((int)din.readShort() & 0xFFFF);
+    }
+
+// UBJsonReader.java : protected long readUInt(DataInputStream din) throws IOException
+    protected long readUInt(final DataInputStream din) throws IOException{
+        return ((long)din.readInt());
+    }
+
+// UBJsonReader.java : protected String readString(DataInputStream din, long size) throws IOException
+    protected String readString(final DataInputStream din, final long size) throws IOException{
+        final byte[] data = new byte[(int)size];
+        din.readFully(data);
+        return new String(data, Strings.utf8);
+    }
+
+// UBJsonWriter.java : public void reset()
+    public void reset(){
+        stack.clear();
+        current = null;
+        named = false;
+    }
+
+// UBJsonWriter.java : public UBJsonWriter object() throws IOException / public UBJsonWriter object(String name) throws IOException
+    @Override
+    public UBJsonWriter object() throws IOException{
+        if(current != null){
+            if(!current.array){
+                if(!named) throw new IllegalStateException("Name must be set.");
+                named = false;
+            }
+        }
+        stack.add(current = new JsonObject(false));
+        return this;
+    }
+
+// UBJsonWriter.java : public UBJsonWriter array() throws IOException / public UBJsonWriter array(String name) throws IOException
+    @Override
+    public UBJsonWriter array() throws IOException{
+        if(current != null){
+            if(!current.array){
+                if(!named) throw new IllegalStateException("Name must be set.");
+                named = false;
+            }
+        }
+        stack.add(current = new JsonObject(true));
+        return this;
+    }
+
+// UBJsonWriter.java : public UBJsonWriter value(byte value) throws IOException / public UBJsonWriter value(short value) throws IOException / public UBJsonWriter value(int value) throws IOException / public UBJsonWriter value(long value) throws IOException / public UBJsonWriter value(float value) throws IOException / public UBJsonWriter value(double value) throws IOException / public UBJsonWriter value(boolean value) throws IOException / public UBJsonWriter value(char value) throws IOException / public UBJsonWriter value(String value) throws IOException / public UBJsonWriter value(byte[] values) throws IOException / public UBJsonWriter value(short[] values) throws IOException / public UBJsonWriter value(int[] values) throws IOException / public UBJsonWriter value(long[] values) throws IOException / public UBJsonWriter value(float[] values) throws IOException / public UBJsonWriter value(double[] values) throws IOException / public UBJsonWriter value(boolean[] values) throws IOException / public UBJsonWriter value(char[] values) throws IOException / public UBJsonWriter value(String[] values) throws IOException / public UBJsonWriter value(JsonValue value) throws IOException / public UBJsonWriter value(Object object) throws IOException / public UBJsonWriter value() throws IOException
+    public UBJsonWriter value(byte value) throws IOException{
+        checkName();
+        out.writeByte('i');
+        out.writeByte(value);
+        return this;
+    }
+
+// UBJsonWriter.java : public void setOutputType(OutputType outputType)
+    @Override
+    public void setOutputType(OutputType outputType){
+        //irrelevant
+    }
+
+// UBJsonWriter.java : public void setQuoteLongValues(boolean quoteLongValues)
+    @Override
+    public void setQuoteLongValues(boolean quoteLongValues){
+        //irrelevant
+    }
+
+// UBJsonWriter.java : public UBJsonWriter set(String name, Object value) throws IOException / public UBJsonWriter set(String name, byte value) throws IOException / public UBJsonWriter set(String name, short value) throws IOException / public UBJsonWriter set(String name, int value) throws IOException / public UBJsonWriter set(String name, long value) throws IOException / public UBJsonWriter set(String name, float value) throws IOException / public UBJsonWriter set(String name, double value) throws IOException / public UBJsonWriter set(String name, boolean value) throws IOException / public UBJsonWriter set(String name, char value) throws IOException / public UBJsonWriter set(String name, String value) throws IOException / public UBJsonWriter set(String name, byte[] value) throws IOException / public UBJsonWriter set(String name, short[] value) throws IOException / public UBJsonWriter set(String name, int[] value) throws IOException / public UBJsonWriter set(String name, long[] value) throws IOException / public UBJsonWriter set(String name, float[] value) throws IOException / public UBJsonWriter set(String name, double[] value) throws IOException / public UBJsonWriter set(String name, boolean[] value) throws IOException / public UBJsonWriter set(String name, char[] value) throws IOException / public UBJsonWriter set(String name, String[] value) throws IOException / public UBJsonWriter set(String name) throws IOException
+    @Override
+    public UBJsonWriter set(String name, Object value) throws IOException{
+        return name(name).value(value);
+    }
+
+// UBJsonWriter.java : private void checkName()
+    private void checkName(){
+        if(current != null){
+            if(!current.array){
+                if(!named) throw new IllegalStateException("Name must be set.");
+                named = false;
+            }
+        }
+    }
+
+// UBJsonWriter.java : public UBJsonWriter pop() throws IOException / protected UBJsonWriter pop(boolean silent) throws IOException
+    @Override
+    public UBJsonWriter pop() throws IOException{
+        return pop(false);
+    }
+
+// UBJsonWriter.java : public void flush() throws IOException
+    public void flush() throws IOException{
+        out.flush();
+    }
+
+// UBJsonWriter.java : public void close() throws IOException
+    @Override
+    public void close() throws IOException{
+        while(stack.size > 0)
+            pop();
+        out.close();
+    }
+

@@ -1,0 +1,374 @@
+// AttributeCrafter.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        //make sure there's enough efficiency at this location
+        return baseEfficiency + tile.getLinkedTilesAs(this, tempTiles).sumf(other -> other.floor().attributes.get(attribute)) >= minEfficiency;
+    }
+
+// AttributeCrafter.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        if(outputScale > 0f){
+            stats.add(baseEfficiency <= 0.0001f ? Stat.tiles : 
+                Stat.affinities, attribute, floating, boostScale * size * size, outputScale * size * size, Seq.with(outputItems), craftTime, !displayEfficiency);
+        }else{
+            stats.add(baseEfficiency <= 0.0001f ? Stat.tiles : Stat.affinities, attribute, floating, boostScale * size * size, !displayEfficiency);
+        }
+    }
+
+// BeamDrill.java : public void init()
+    @Override
+    public void init(){
+        updateClipRadius((range + 2) * tilesize);
+        super.init();
+        if(blockedItems == null && blockedItem != null){
+            blockedItems = Seq.with(blockedItem);
+        }
+    }
+
+// BeamDrill.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("drillspeed", (BeamDrillBuild e) ->
+            new Bar(() -> Core.bundle.format("bar.drillspeed", Strings.fixed(e.lastDrillSpeed * 60, 2)), () -> Pal.ammo, () -> e.warmup));
+    }
+
+// BeamDrill.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return true;
+    }
+
+// BeamDrill.java : public boolean rotatedOutput(int x, int y)
+    @Override
+    public boolean rotatedOutput(int x, int y){
+        return false;
+    }
+
+// BeamDrill.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// BeamDrill.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+    }
+
+// BeamDrill.java : public float getDrillTime(Item item)
+    public float getDrillTime(Item item){
+        return drillTime / drillMultipliers.get(item, 1f);
+    }
+
+// BurstDrill.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// BurstDrill.java : public float getDrillTime(Item item)
+    @Override
+    public float getDrillTime(Item item){
+        return drillTime / drillMultipliers.get(item, 1f);
+    }
+
+// Drill.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        if(blockedItems == null && blockedItem != null){
+            blockedItems = Seq.with(blockedItem);
+        }
+        if(drillEffectRnd < 0) drillEffectRnd = size;
+    }
+
+// Drill.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("drillspeed", (DrillBuild e) ->
+             new Bar(() -> Core.bundle.format("bar.drillspeed", Strings.fixed(e.lastDrillSpeed * 60 * e.timeScale(), 2)), () -> Pal.ammo, () -> e.warmup));
+    }
+
+// Drill.java : public Item getDrop(Tile tile)
+    public Item getDrop(Tile tile){
+        return tile.drop();
+    }
+
+// Drill.java : public float getDrillTime(Item item)
+    public float getDrillTime(Item item){
+        return (drillTime + hardnessDrillMultiplier * item.hardness) / drillMultipliers.get(item, 1f);
+    }
+
+// Drill.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, rotatorRegion, topRegion};
+    }
+
+// Drill.java : public boolean canMine(Tile tile)
+    public boolean canMine(Tile tile){
+        if(tile == null || tile.block().isStatic()) return false;
+        Item drops = tile.drop();
+        return drops != null && drops.hardness <= tier && (blockedItems == null || !blockedItems.contains(drops));
+    }
+
+// Fracker.java : public void setStats()
+    @Override
+    public void setStats(){
+        stats.timePeriod = itemUseTime;
+        super.setStats();
+
+        stats.add(Stat.productionTime, itemUseTime / 60f, StatUnit.seconds);
+    }
+
+// GenericCrafter.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        drawer.load(this);
+    }
+
+// GenericCrafter.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        super.afterPatch();
+
+        if(outputItems != null) hasItems = true;
+        outputsLiquid = outputLiquids != null;
+        if(outputLiquids != null) hasLiquids = true;
+    }
+
+// GenericCrafter.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawer.drawPlan(this, plan, list);
+    }
+
+// GenericCrafter.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// GenericCrafter.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return outputItems != null;
+    }
+
+// GenericCrafter.java : public void getRegionsToOutline(Seq<TextureRegion> out)
+    @Override
+    public void getRegionsToOutline(Seq<TextureRegion> out){
+        drawer.getRegionsToOutline(this, out);
+    }
+
+// HeatCrafter.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("heat", (HeatCrafterBuild entity) ->
+            new Bar(() ->
+            Core.bundle.format("bar.heatpercent", (int)(entity.heat + 0.01f), (int)(entity.efficiencyScale() * 100 + 0.01f)),
+            () -> Pal.lightOrange,
+            () -> entity.heat / heatRequirement));
+    }
+
+// HeatCrafter.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.input, heatRequirement, StatUnit.heatUnits);
+        stats.add(Stat.maxEfficiency, (int)(maxEfficiency * 100f), StatUnit.percent);
+    }
+
+// ItemIncinerator.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// Pump.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.add(Stat.output, 60f * pumpAmount * size * size, StatUnit.liquidSecond);
+    }
+
+// Pump.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+        drawer.load(this);
+    }
+
+// Pump.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// Pump.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        //replace dynamic output bar with own custom bar
+        addLiquidBar((PumpBuild build) -> build.liquidDrop);
+    }
+
+// Pump.java : protected boolean canPump(Tile tile)
+    protected boolean canPump(Tile tile){
+        return tile != null && tile.floor().liquidDrop != null;
+    }
+
+// Separator.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+        consItems = findConsumer(c -> c instanceof ConsumeItems);
+    }
+
+// Separator.java : public void load()
+    @Override
+    public void load(){
+        super.load();
+
+        drawer.load(this);
+    }
+
+// Separator.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        drawer.drawPlan(this, plan, list);
+    }
+
+// Separator.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return drawer.finalIcons(this);
+    }
+
+// SolidPump.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        drawPotentialLinks(x, y);
+
+        if(attribute != null){
+            drawPlaceText(Core.bundle.format("bar.efficiency", Math.round(Math.max((sumAttribute(attribute, x, y)) / size / size + percentSolid(x, y) * baseEfficiency, 0f) * 100)), x, y, valid);
+        }
+    }
+
+// SolidPump.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+        addBar("efficiency", (SolidPumpBuild entity) -> new Bar(() -> Core.bundle.formatFloat("bar.pumpspeed",
+        entity.lastPump * 60, 1),
+        () -> Pal.ammo,
+        () -> entity.warmup * entity.efficiency));
+    }
+
+// SolidPump.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.output);
+        stats.add(Stat.output, result, 60f * pumpAmount, true);
+        if(attribute != null){
+            stats.add(baseEfficiency > 0.0001f ? Stat.affinities : Stat.tiles, attribute, floating, 1f, baseEfficiency <= 0.001f);
+        }
+    }
+
+// SolidPump.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        float sum = tile.getLinkedTilesAs(this, tempTiles).sumf(t -> canPump(t) ? baseEfficiency + (attribute != null ? t.floor().attributes.get(attribute) : 0f) : 0f);
+        return sum > 0.00001f;
+    }
+
+// SolidPump.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// SolidPump.java : protected boolean canPump(Tile tile)
+    @Override
+    protected boolean canPump(Tile tile){
+        return tile != null && !tile.floor().isLiquid;
+    }
+
+// SolidPump.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, rotatorRegion, topRegion};
+    }
+
+// WallCrafter.java : public void setBars()
+    @Override
+    public void setBars(){
+        super.setBars();
+
+        addBar("drillspeed", (WallCrafterBuild e) ->
+            new Bar(() -> Core.bundle.format("bar.drillspeed", Strings.fixed(e.lastEfficiency * 60 / drillTime, 2)), () -> Pal.ammo, () -> e.warmup));
+    }
+
+// WallCrafter.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        hasLiquidBooster = findConsumer(f -> f instanceof ConsumeLiquidBase && f.booster) != null;
+    }
+
+// WallCrafter.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return true;
+    }
+
+// WallCrafter.java : public boolean rotatedOutput(int x, int y)
+    @Override
+    public boolean rotatedOutput(int x, int y){
+        return false;
+    }
+
+// WallCrafter.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// WallCrafter.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(topRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+    }
+
+// WallCrafter.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        float eff = getEfficiency(x, y, rotation, null, null);
+
+        drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60f / drillTime * eff, 2), x, y, valid);
+    }
+
+// WallCrafter.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return getEfficiency(tile.x, tile.y, rotation, null, null) > 0;
+    }
+

@@ -1,0 +1,143 @@
+// CanvasBlock.java : public void setPaletteFromString(String value)
+    public void setPaletteFromString(String value){
+        String[] split = value.split("\n");
+        palette = new int[split.length];
+        for(int i = 0; i < split.length; i++){
+            palette[i] = (Integer.parseInt(split[i], 16) << 8) | 0xff;
+        }
+    }
+
+// CanvasBlock.java : public Pixmap makePixmap(byte[] data, Pixmap target)
+    public Pixmap makePixmap(byte[] data, Pixmap target){
+        int bpp = bitsPerPixel;
+        int pixels = canvasSize * canvasSize;
+        for(int i = 0; i < pixels; i++){
+            int bitOffset = i * bpp;
+            int pal = getByte(data, bitOffset);
+            target.set(i % canvasSize, i / canvasSize, palette[Math.min(pal, palette.length)]);
+        }
+        return target;
+    }
+
+// CanvasBlock.java : protected int getByte(byte[] data, int bitOffset)
+    protected int getByte(byte[] data, int bitOffset){
+        int result = 0, bpp = bitsPerPixel;
+        for(int i = 0; i < bpp; i++){
+            int word = i + bitOffset >>> 3;
+            result |= (((data[word] & (1 << (i + bitOffset & 7))) == 0 ? 0 : 1) << i);
+        }
+        return result;
+    }
+
+// LogicBlock.java : public boolean checkForceDark(Tile tile)
+    @Override
+    public boolean checkForceDark(Tile tile){
+        return !accessible();
+    }
+
+// LogicBlock.java : public boolean accessible()
+    public boolean accessible(){
+        return !privileged || state.rules.editor || state.playtestingMap != null || state.rules.allowEditWorldProcessors;
+    }
+
+// LogicBlock.java : public boolean canBreak(Tile tile)
+    @Override
+    public boolean canBreak(Tile tile){
+        return accessible();
+    }
+
+// LogicBlock.java : public static byte[] compress(String code, Seq<LogicLink> links) / public static byte[] compress(byte[] bytes, Seq<LogicLink> links)
+    public static byte[] compress(String code, Seq<LogicLink> links){
+        return compress(code.getBytes(charset), links);
+    }
+
+// LogicBlock.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        if(!privileged){
+            stats.add(Stat.linkRange, range / 8, StatUnit.blocks);
+            stats.add(Stat.instructions, instructionsPerTick * 60, StatUnit.perSecond);
+        }
+    }
+
+// LogicBlock.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        if(privileged) return;
+
+        Drawf.circles(x*tilesize + offset, y*tilesize + offset, range);
+    }
+
+// LogicDisplay.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.displaySize, "@x@", displaySize, displaySize);
+    }
+
+// LogicDisplay.java : public void init()
+    @Override
+    public void init(){
+        super.init();
+
+        clipSize = Math.max(clipSize, scaleFactor * Draw.scl * displaySize);
+    }
+
+// LogicDisplay.java : static int unpackSign(int value)
+    static int unpackSign(int value){
+        return (value & 0b0111111111) * ((value & (0b1000000000)) != 0 ? -1 : 1);
+    }
+
+// MemoryBlock.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.memoryCapacity, memoryCapacity, StatUnit.none);
+    }
+
+// MemoryBlock.java : public boolean accessible()
+    public boolean accessible(){
+        return !privileged || state.rules.editor || state.rules.allowEditWorldProcessors;
+    }
+
+// MemoryBlock.java : public double sense(LAccess sensor)
+    @Override
+    public double sense(LAccess sensor){
+        return switch(sensor){
+            case memoryCapacity -> memoryCapacity;
+            default -> super.sense(sensor);
+        };
+    }
+
+// MemoryBlock.java : public boolean canBreak(Tile tile)
+    @Override
+    public boolean canBreak(Tile tile){
+        return accessible();
+    }
+
+// MessageBlock.java : public boolean accessible()
+    public boolean accessible(){
+        return !privileged || state.rules.editor || state.rules.allowEditWorldProcessors;
+    }
+
+// MessageBlock.java : public boolean canBreak(Tile tile)
+    @Override
+    public boolean canBreak(Tile tile){
+        return accessible();
+    }
+
+// SwitchBlock.java : public boolean accessible()
+    public boolean accessible(){
+        return !privileged || state.rules.editor || state.rules.allowEditWorldProcessors;
+    }
+
+// SwitchBlock.java : public boolean canBreak(Tile tile)
+    @Override
+    public boolean canBreak(Tile tile){
+        return accessible();
+    }
+

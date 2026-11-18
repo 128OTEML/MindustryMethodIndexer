@@ -1,0 +1,12 @@
+// LegacyBlock.java : public void removeSelf(Tile tile)
+    public void removeSelf(Tile tile){
+        tile.remove();
+    }
+
+// LegacyUnitFactory.java : public void removeSelf(Tile tile)
+    @Override
+    public void removeSelf(Tile tile){
+        int rot = tile.build == null ? 0 : tile.build.rotation;
+        tile.setBlock(replacement, tile.team(), rot);
+    }
+

@@ -1,0 +1,1327 @@
+ConditionOp.java
+(unknown)
+inner-interface: CondObjOpLambda
+  methods:
+    boolean get(Object a, Object b)
+inner-interface: CondOpLambda
+  methods:
+    boolean get(double a, double b)
+
+Controllable.java
+Java interface
+// An object that can be controlled with logic.
+methods:
+  void control(LAccess type, double p1, double p2, double p3, double p4) / void control(LAccess type, Object p1, double p2, double p3, double p4)
+  Team team()
+
+CutsceneAction.java
+(unknown)
+
+FetchType.java
+(unknown)
+
+GlobalVars.java
+Java class
+// Stores global logic variables for logic processors.
+fields:
+  public static final int ctrlProcessor
+  public static final ContentType lookableContent
+  public static final ContentType writableLookableContent
+  public static final Rand rand  // Global random state.
+  private static LVar varTime  // non-constants that depend on state
+  private ObjectMap<String,LVar> vars
+  private Seq<VarEntry> varEntries
+  private ObjectSet<String> privilegedNames
+  private UnlockableContent logicIdToContent
+  private int contentIdToLogicId
+methods:
+  public void init()
+  public void update()  // Updates global time and other state variables.
+  public LVar waitVar()
+  public Seq<VarEntry> getEntries()
+  public Object lookupContent(ContentType type, int id)  // @return a piece of content based on its logic ID.
+  public int lookupLogicId(UnlockableContent content)  // @return the integer logic ID of content, or -1 if invalid.
+  public LVar get(String name) / public LVar get(String name, boolean privileged)  // @return a constant variable if there is a constant with this name, or null.
+  public void set(String name, double value)  // Sets a global variable by name.
+  public LVar put(String name, Object value, boolean privileged) / public LVar put(String name, Object value, boolean privileged, boolean hidden) / public LVar put(String name, Object value)  // Adds a constant value by name.
+  public void remove(LVar lvar) / public void remove(String name)  // Removes a global variable - used for data patch reset.
+  public LVar putEntry(String name, Object value) / public LVar putEntry(String name, Object value, boolean privileged)
+  public void putEntryOnly(String name)
+inner-class: VarEntry
+// An entry that describes a variable for documentation purposes.
+  fields:
+    public String name
+    public boolean privileged
+  ctors:
+    public VarEntry(String name, String description, String icon, boolean privileged) / public VarEntry()
+
+GlobalVarsDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+ctors:
+  public GlobalVarsDialog()
+methods:
+  void setup()
+
+LAccess.java
+(unknown)
+
+LAssembler.java
+Java class
+// "Compiles" a sequence of statements into instructions.
+fields:
+  public static ObjectMap<String,Func<String[],LStatement>> customParsers
+  public boolean privileged
+  public OrderedMap<String,LVar> vars  // Maps names to variable.
+  public LInstruction instructions  // All instructions to be executed.
+ctors:
+  public LAssembler()
+methods:
+  public static LAssembler assemble(String data, boolean privileged)
+  public static String write(Seq<LStatement> statements)
+  public static Seq<LStatement> read(String text, boolean privileged)  // Parses a sequence of statements from a string.
+  public LVar var(String symbol)  // @return a variable by name.
+  static String unescape(String s)  // Decodes \n, \", \\ and uXXXX escape sequences in a string literal's contents (quotes already stripped).
+  double parseDouble(String symbol)
+  boolean isNumStart(char c)
+  double parseHexOrBin(boolean negative, String s, boolean binary, int offset)  // detects overflow by input length and uses bit manipulation to avoid signed arithmetics
+  double parseColor(String symbol)
+  double parseNamedColor(String symbol)
+  public LVar putConst(String name, Object value)  // Adds a constant value by name.
+  public LVar putVar(String name)  // Registers a variable name mapping.
+  public LVar getVar(String name)
+
+LCanvas.java
+Java class extends arc.scene.ui.layout.Table
+fields:
+  private static final Seq<JumpCurve> tmpOccupiers1
+  private static final Seq<JumpCurve> tmpOccupiers2
+  private static final Bits tmpBits1
+  private static final Bits tmpBits2
+  private static final int invalidJump  // terrible hack
+  static LCanvas canvas  // ew static variables
+  private static final boolean dynamicJumpHeights
+  public DragLayout statements
+  public ScrollPane pane
+  StatementElem dragging
+  StatementElem hovered
+  float targetWidth
+  boolean privileged
+  Seq<Tooltip> tooltips
+ctors:
+  public LCanvas()
+methods:
+  public static boolean isCompact()  // @return if statement elements should have rows.
+  public static float getTargetWidth()
+  public static void tooltip(Cell<?> cell, String key) / public static void tooltip(Cell<?> cell, Enum<?> key)
+  public void rebuild()
+  public void add(LStatement statement)
+  public void addAt(int at, LStatement statement)
+  public String save()
+  public void load(String asm)
+  public void clearStatements()
+  StatementElem checkHovered()
+  public void act(float delta)
+inner-class: DragLayout extends arc.scene.ui.layout.WidgetGroup
+  fields:
+    float space
+    Seq<Element> seq
+    int insertPosition
+    boolean invalidated
+    public Group jumps
+    private Seq<JumpCurve> processedJumps
+    private IntMap<JumpCurve> reprBefore
+    private IntMap<JumpCurve> reprAfter
+    public boolean updateJumpHeights
+  methods:
+    public void layout()
+    private void setJumpHeights()
+    private int getJumpHeight(int index, Seq<JumpCurve> occupiers, Bits occupied)
+    public float getPrefWidth()
+    public float getPrefHeight()
+    public void draw()
+    void finishLayout()
+inner-class: StatementElem extends arc.scene.ui.layout.Table
+  fields:
+    public LStatement st
+    public int index
+    Label addressLabel
+  ctors:
+    public StatementElem(LStatement st)
+  methods:
+    public void updateAddress(int index)
+    public void copy()
+    public void draw()
+inner-class: JumpButton extends arc.scene.ui.ImageButton
+  fields:
+    Color hoverColor
+    Prov<StatementElem> to
+    boolean selecting
+    float mx
+    ClickListener listener
+    public JumpCurve curve
+    public StatementElem elem
+  ctors:
+    public JumpButton(Prov<StatementElem> getter, Cons<StatementElem> setter, StatementElem elem)
+  methods:
+    protected void setScene(Scene stage)
+inner-class: JumpCurve extends arc.scene.Element
+  fields:
+    public JumpButton button
+    private boolean invertedHeight
+    public int predHeight  // for jump prediction; see DragLayout
+    public boolean markedDone
+    public int jumpUIBegin
+    public boolean flipped
+    private float uiHeight
+  ctors:
+    public JumpCurve(JumpButton button)
+  methods:
+    public void setSize(float width, float height)
+    public void act(float delta)
+    public void draw()
+    public void drawCurve(float x, float y, float x2, float y2)
+    public void prepareHeight()
+
+LCategory.java
+Java class implements java.lang.Comparable
+fields:
+  public static final Seq<LCategory> all
+  public static final LCategory unknown
+  public final String name
+  public final int id
+  public final Color color
+  public final Drawable icon
+ctors:
+  public LCategory(String name, Color color) / public LCategory(String name, Color color, Drawable icon)
+methods:
+  public String localized()
+  public String description()
+  public int compareTo(LCategory o)
+
+LDrawable.java
+Java interface
+methods:
+  boolean drawable(LExecutor exec)
+  void draw(LongSeq buffer)
+
+LExecutor.java
+Java class
+fields:
+  public static int maxInstructions
+  public static final int maxGraphicsBuffer
+  public LInstruction instructions
+  public LVar vars  // Non-constant variables used for network sync
+  public LVar counter
+  public int binds
+  public boolean yield
+  public LongSeq graphicsBuffer
+  public StringBuilder textBuffer
+  public Building links
+  public LogicBuild build
+  public IntSet linkIds
+  public Team team
+  public boolean privileged
+  protected ObjectIntMap<String> nameMap  // maps variable name to index in vars; lazily initialized
+  protected static IntFloatMap unitTimeouts  // yes, this is a minor memory leak, but it's probably not significant enough to matter
+methods:
+  public static void runLogicScript(String code) / public static void runLogicScript(String code, int maxInstructions, boolean loop)
+  boolean timeoutDone(Unit unit, float delay)
+  void updateTimeout(Unit unit)
+  public boolean initialized()
+  public void runOnce()  // Runs a single instruction.
+  public void load(LAssembler builder)  // Loads with a specified assembler.
+  public LVar optionalVar(String name) / public LVar optionalVar(int index)  // @return a Var from this processor.
+  static boolean checkMapArea(int x, int y, int w, int h, boolean set)  // @return whether the map area is already set to this value.
+  public static void setMapArea(int x, int y, int w, int h)
+  public static void logicExplosion(Team team, float x, float y, float radius, float damage, boolean air, boolean ground, boolean pierce, boolean effect)
+  public static void syncVariable(Building building, int variable, Object value)
+  public static void setFlag(String flag, boolean add)
+  public static void createMarker(int id, ObjectiveMarker marker)
+  public static void removeMarker(int id)
+  public static void updateMarker(int id, LMarkerControl control, double p1, double p2, double p3)
+  public static void updateMarkerText(int id, LMarkerControl type, boolean fetch, String text)
+  public static void updateMarkerTexture(int id, Object texture)
+inner-interface: LInstruction
+  methods:
+    void run(LExecutor exec)
+inner-class: UnitBindI implements mindustry.logic.LExecutor.LInstruction
+// Binds the processor to a unit based on some filters.
+  fields:
+    public LVar type
+  ctors:
+    public UnitBindI(LVar type) / public UnitBindI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: UnitLocateI implements mindustry.logic.LExecutor.LInstruction
+// Uses a unit to find something that may not be in its range.
+  fields:
+    public LLocate locate
+    public BlockFlag flag
+    public LVar enemy
+    public LVar outX
+  ctors:
+    public UnitLocateI(LLocate locate, BlockFlag flag, LVar enemy, LVar ore, LVar outX, LVar outY, LVar outFound, LVar outBuild) / public UnitLocateI()
+  methods:
+    public void run(LExecutor exec)
+  inner-class: Cache
+    fields:
+      float x
+      boolean found
+      Building build
+inner-class: Cache
+  fields:
+    float x
+    boolean found
+    Building build
+inner-class: UnitControlI implements mindustry.logic.LExecutor.LInstruction
+// Controls the unit based on some parameters.
+  fields:
+    public LUnitControl type
+    public LVar p1
+  ctors:
+    public UnitControlI(LUnitControl type, LVar p1, LVar p2, LVar p3, LVar p4, LVar p5) / public UnitControlI()
+  methods:
+    public static LogicAI checkLogicAI(LExecutor exec, Object unitObj, boolean control)  // Checks is a unit is valid for logic AI control, and returns the controller.
+    public void run(LExecutor exec)
+inner-class: ControlI implements mindustry.logic.LExecutor.LInstruction
+// Controls a building's state.
+  fields:
+    public LVar target
+    public LAccess type
+    public LVar p1
+  ctors:
+    public ControlI(LAccess type, LVar target, LVar p1, LVar p2, LVar p3, LVar p4) / ControlI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: GetLinkI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar output
+  ctors:
+    public GetLinkI(LVar output, LVar index) / public GetLinkI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: ReadI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar target
+  ctors:
+    public ReadI(LVar target, LVar position, LVar output) / public ReadI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: WriteI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar target
+  ctors:
+    public WriteI(LVar target, LVar position, LVar value) / public WriteI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SenseI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar from
+  ctors:
+    public SenseI(LVar from, LVar to, LVar type) / public SenseI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: RadarI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public RadarTarget target1
+    public RadarSort sort
+    public LVar radar
+    public Healthc lastTarget  // this prevents lag from spam of radar instructions
+    public Object lastSourceBuild
+    public Interval timer
+    static float bestValue
+    static Unit best
+  ctors:
+    public RadarI(RadarTarget target1, RadarTarget target2, RadarTarget target3, RadarSort sort, LVar radar, LVar sortOrder, LVar output) / public RadarI()
+  methods:
+    public void run(LExecutor exec)
+    void find(Ranged b, float range, int sortDir, Team team)
+inner-class: SetI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar from
+  ctors:
+    public SetI(LVar from, LVar to) / SetI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: OpI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LogicOp op
+    public LVar a
+  ctors:
+    public OpI(LogicOp op, LVar a, LVar b, LVar dest) / OpI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SelectI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public ConditionOp op
+    public LVar result
+  ctors:
+    public SelectI(ConditionOp op, LVar result, LVar comp0, LVar comp1, LVar a, LVar b) / public SelectI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: EndI implements mindustry.logic.LExecutor.LInstruction
+  methods:
+    public void run(LExecutor exec)
+inner-class: NoopI implements mindustry.logic.LExecutor.LInstruction
+  methods:
+    public void run(LExecutor exec)
+inner-class: DrawI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public byte type
+    public LVar x
+  ctors:
+    public DrawI(byte type, LVar x, LVar y, LVar p1, LVar p2, LVar p3, LVar p4) / public DrawI()
+  methods:
+    public void run(LExecutor exec)
+    static int pack(int value)
+    static int packSign(int value)
+inner-class: DrawFlushI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar target
+  ctors:
+    public DrawFlushI(LVar target) / public DrawFlushI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: PrintI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar value
+  ctors:
+    public PrintI(LVar value) / PrintI()
+  methods:
+    public void run(LExecutor exec)
+    public static String toString(Object obj)
+inner-class: PrintCharI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar value
+  ctors:
+    public PrintCharI(LVar value) / PrintCharI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: FormatI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar value
+  ctors:
+    public FormatI(LVar value) / FormatI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: PrintFlushI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar target
+  ctors:
+    public PrintFlushI(LVar target) / public PrintFlushI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: JumpI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public ConditionOp op
+    public LVar value
+    public int address
+  ctors:
+    public JumpI(ConditionOp op, LVar value, LVar compare, int address) / public JumpI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetRateI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar amount
+  ctors:
+    public SetRateI(LVar amount) / public SetRateI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: WaitI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar value
+    public float curTime
+  ctors:
+    public WaitI(LVar value) / public WaitI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: StopI implements mindustry.logic.LExecutor.LInstruction
+  methods:
+    public void run(LExecutor exec)
+inner-class: LookupI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar dest
+    public LVar from
+    public ContentType type
+  ctors:
+    public LookupI(LVar dest, LVar from, ContentType type) / public LookupI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: PackColorI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar result
+  ctors:
+    public PackColorI(LVar result, LVar r, LVar g, LVar b, LVar a) / public PackColorI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: UnpackColorI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar r
+  ctors:
+    public UnpackColorI(LVar r, LVar g, LVar b, LVar a, LVar value) / public UnpackColorI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: CutsceneI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public CutsceneAction action
+    public LVar p1
+  ctors:
+    public CutsceneI(CutsceneAction action, LVar p1, LVar p2, LVar p3, LVar p4) / public CutsceneI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: FetchI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public FetchType type
+    public LVar result
+  ctors:
+    public FetchI(FetchType type, LVar result, LVar team, LVar extra, LVar index) / public FetchI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: QueryI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    private static Seq<Object> paramSeq
+    private static Team paramTeam
+    private static final Cons<Bullet> bulletCons
+    public QueryShape shape
+    public QueryType type
+    public LVar team
+  ctors:
+    public QueryI(QueryShape shape, QueryType type, LVar team, LVar x, LVar y, LVar width, LVar height) / public QueryI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: GetBlockI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar x
+    public LVar dest
+    public TileLayer layer
+  ctors:
+    public GetBlockI(LVar x, LVar y, LVar dest, TileLayer layer) / public GetBlockI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetBlockI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar x
+    public LVar block
+    public LVar team
+    public TileLayer layer
+  ctors:
+    public SetBlockI(LVar x, LVar y, LVar block, LVar team, LVar rotation, TileLayer layer) / public SetBlockI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SpawnUnitI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar type
+  ctors:
+    public SpawnUnitI(LVar type, LVar x, LVar y, LVar rotation, LVar team, LVar result, LVar effect) / public SpawnUnitI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SpawnBulletI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar result
+  ctors:
+    public SpawnBulletI(LVar result, LVar from, LVar index, LVar x, LVar y, LVar rotation, LVar team, LVar owner, LVar damage, LVar velocityScl, LVar lifeScl, LVar aimX, LVar aimY) / public SpawnBulletI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SenseWeatherI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar type
+  ctors:
+    public SenseWeatherI(LVar type, LVar to)
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetWeatherI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar type
+  ctors:
+    public SetWeatherI(LVar type, LVar state)
+  methods:
+    public void run(LExecutor exec)
+inner-class: ApplyEffectI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public boolean clear
+    public LVar effect
+  ctors:
+    public ApplyEffectI(boolean clear, LVar effect, LVar unit, LVar duration) / public ApplyEffectI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetRuleI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LogicRule rule
+    public LVar value
+  ctors:
+    public SetRuleI(LogicRule rule, LVar value, LVar p1, LVar p2, LVar p3, LVar p4) / public SetRuleI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: FlushMessageI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public MessageType type
+    public LVar duration
+  ctors:
+    public FlushMessageI(MessageType type, LVar duration, LVar outSuccess) / public FlushMessageI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: EffectI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public EffectEntry type
+    public LVar x
+  ctors:
+    public EffectI(EffectEntry type, LVar x, LVar y, LVar rotation, LVar color, LVar data) / public EffectI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: ExplosionI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar team
+  ctors:
+    public ExplosionI(LVar team, LVar x, LVar y, LVar radius, LVar damage, LVar air, LVar ground, LVar pierce, LVar effect) / public ExplosionI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SyncI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public static long syncInterval  // 20 syncs per second
+    public LVar variable
+  ctors:
+    public SyncI(LVar variable) / public SyncI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: ClientDataI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar channel
+  ctors:
+    public ClientDataI(LVar channel, LVar value, LVar reliable) / public ClientDataI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: GetFlagI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar result
+  ctors:
+    public GetFlagI(LVar result, LVar flag) / public GetFlagI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetFlagI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar flag
+  ctors:
+    public SetFlagI(LVar flag, LVar value) / public SetFlagI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: SpawnWaveI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar natural
+    public LVar x
+  ctors:
+    public SpawnWaveI() / public SpawnWaveI(LVar natural, LVar x, LVar y)
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetPropI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar type
+  ctors:
+    public SetPropI(LVar type, LVar of, LVar value) / public SetPropI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: PlaySoundI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public boolean positional
+    public LVar id
+  ctors:
+    public PlaySoundI() / public PlaySoundI(boolean positional, LVar id, LVar volume, LVar pitch, LVar pan, LVar x, LVar y, LVar limit)
+  methods:
+    public void run(LExecutor exec)
+inner-class: PlayMusicI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar name
+  ctors:
+    public PlayMusicI() / public PlayMusicI(LVar name, LVar interrupt)
+  methods:
+    public void run(LExecutor exec)
+inner-class: SetMarkerI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LMarkerControl type
+    public LVar id
+  ctors:
+    public SetMarkerI(LMarkerControl type, LVar id, LVar p1, LVar p2, LVar p3) / public SetMarkerI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: MakeMarkerI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public static final int maxMarkers  // TODO arbitrary number
+    public String type
+    public LVar id
+  ctors:
+    public MakeMarkerI(String type, LVar id, LVar x, LVar y, LVar replace) / public MakeMarkerI()
+  methods:
+    public void run(LExecutor exec)
+inner-class: LocalePrintI implements mindustry.logic.LExecutor.LInstruction
+  fields:
+    public LVar name
+  ctors:
+    public LocalePrintI(LVar name) / public LocalePrintI()
+  methods:
+    public void run(LExecutor exec)
+
+LLocate.java
+(unknown)
+
+LMarkerControl.java
+(unknown)
+
+LParser.java
+Java class
+fields:
+  private static final String tokens
+  private static final int maxJumps
+  private static final StringMap opNameChanges
+  private static final Seq<JumpIndex> jumps
+  private static final ObjectIntMap<String> jumpLocations
+  Seq<LStatement> statements
+  char chars
+  int pos
+  boolean privileged
+ctors:
+  LParser(String text, boolean privileged)
+methods:
+  void comment()
+  void error(String message)
+  String string()
+  static int utf16size(int c)
+  String token()
+  void checkRead()  // Apply changes after reading a list of tokens.
+  void statement()  // Reads the next statement until EOL/EOF.
+  Seq<LStatement> parse()
+inner-class: JumpIndex
+  fields:
+    JumpStatement jump
+    String location
+  ctors:
+    public JumpIndex(JumpStatement jump, String location)
+
+LPrintable.java
+Java interface
+methods:
+  boolean printable(LExecutor exec)
+  void print(StringBuilder text)
+
+LReadable.java
+Java interface
+methods:
+  boolean readable(LExecutor exec)
+  void read(LVar position, LVar output)
+
+LStatement.java
+Java class (abstract)
+// A statement is an intermediate representation of an instruction, to be used mostly in UI.
+fields:
+  private static final String aligns
+  public static final ObjectMap<String,Integer> nameToAlign
+  public static final IntMap<String> alignToName
+  public transient StatementElem elem
+methods:
+  public abstract void build(Table table) / public abstract LInstruction build(LAssembler builder)
+  public LCategory category()
+  public LStatement copy()
+  public boolean useWrapping()
+  public boolean hidden()
+  public boolean privileged()  // Privileged instructions are only allowed in world processors.
+  public boolean nonPrivileged()  // If true, this statement is considered useless with privileged processors and is not allowed in them.
+  protected void param(Cell<Label> label)
+  public static String sanitize(String value)  // Sanitizes variable input strings from text fields into values that will not break logic parsing.
+  private static boolean isHex(String value, int from)  // True if the 4 characters at value[from..from+3] are all hex digits.
+  protected static boolean logicLocalization()
+  public static String bundle(String key) / protected static String bundle(Enum<?> value)
+  protected static String selectTranslate(String text)
+  protected Cell<TextField> field(Table table, String value, Cons<String> setter)
+  protected Cell<TextField> fields(Table table, String desc, String value, Cons<String> setter) / protected Cell<TextField> fields(Table table, String value, Cons<String> setter) / protected Cell<TextField> fields(Table table, String desc, boolean nameAfterField, String value, Cons<String> setter)
+  protected Cell<Button> col(Table table, String value, Cons<Color> setter)  // Adds color edit button
+  protected void showSelect(Button b, T[] values, T current, Cons<T> getter, int cols, Cons<Cell> sizer) / protected void showSelect(Button b, T[] values, T current, Cons<T> getter)
+  protected void fieldAlignSelect(Table t, Prov<String> get, Cons<String> set, boolean hor, boolean ver)
+  public static void showAlignSelect(Button b, int current, Intc setter, boolean hor, boolean ver)
+  protected static void showSelectTable(Button b, Cons2<Table,Runnable> hideCons) / protected static void showSelectTable(Button b, Cons2<Table,Runnable> hideCons, Runnable hideCallback)
+  public void afterRead()
+  public void write(StringBuilder builder)
+  public void setupUI()
+  public void saveUI()
+  public String typeName()
+  public String statementKey()
+  public String localizedName()
+  public String name()
+
+LStatements.java
+Java class
+inner-class: CommentStatement extends mindustry.logic.LStatement
+// @RegisterStatement("#")
+  fields:
+    public String comment
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+inner-class: InvalidStatement extends mindustry.logic.LStatement
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+inner-class: ReadStatement extends mindustry.logic.LStatement
+  fields:
+    public String output
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: WriteStatement extends mindustry.logic.LStatement
+  fields:
+    public String input
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: DrawStatement extends mindustry.logic.LStatement
+  fields:
+    public GraphicsType type
+    public String x
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public void afterRead()
+    public LCategory category()
+inner-class: PrintStatement extends mindustry.logic.LStatement
+  fields:
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: PrintCharStatement extends mindustry.logic.LStatement
+  fields:
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: FormatStatement extends mindustry.logic.LStatement
+  fields:
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: DrawFlushStatement extends mindustry.logic.LStatement
+  fields:
+    public String target
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: PrintFlushStatement extends mindustry.logic.LStatement
+  fields:
+    public String target
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: GetLinkStatement extends mindustry.logic.LStatement
+  fields:
+    public String output
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: ControlStatement extends mindustry.logic.LStatement
+  fields:
+    public LAccess type
+    public String target
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public LCategory category()
+inner-class: RadarStatement extends mindustry.logic.LStatement
+  fields:
+    public RadarTarget target1
+    public RadarSort sort
+    public String radar
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean buildFrom()
+    public LCategory category()
+inner-class: SensorStatement extends mindustry.logic.LStatement
+  fields:
+    public String to
+    public String from
+    private transient int selected
+    private transient TextField tfield
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    private void stype(String text)
+    public LCategory category()
+inner-class: SetStatement extends mindustry.logic.LStatement
+  fields:
+    public String to
+    public String from
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: OperationStatement extends mindustry.logic.LStatement
+  fields:
+    public LogicOp op
+    public String dest
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    void funcs(Table table, Table parent)
+    void opButton(Table table, Table parent)
+    public LCategory category()
+inner-class: SelectStatement extends mindustry.logic.LStatement
+  fields:
+    public String result
+    public ConditionOp op
+    public String comp0
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    private void rebuild(Table table)
+    public LCategory category()
+inner-class: WaitStatement extends mindustry.logic.LStatement
+  fields:
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: StopStatement extends mindustry.logic.LStatement
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: LookupStatement extends mindustry.logic.LStatement
+  fields:
+    public ContentType type
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: PackColorStatement extends mindustry.logic.LStatement
+  fields:
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: UnpackColorStatement extends mindustry.logic.LStatement
+  fields:
+    public String r
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: EndStatement extends mindustry.logic.LStatement
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: JumpStatement extends mindustry.logic.LStatement
+  fields:
+    private static Color last
+    public transient StatementElem dest
+    public int destIndex
+    public ConditionOp op
+    public String value
+  methods:
+    public boolean useWrapping()
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public static void addOp(LStatement st, Table t, ConditionOp op, Cons<ConditionOp> getter, String comp0, Cons<String> set0, String comp1, Cons<String> set2)
+    public void setupUI()  // elements need separate conversion logic
+    public void saveUI()
+    public LCategory category()
+inner-class: UnitBindStatement extends mindustry.logic.LStatement
+  fields:
+    public String type
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: UnitControlStatement extends mindustry.logic.LStatement
+  fields:
+    public LUnitControl type
+    public String p1
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: UnitRadarStatement extends mindustry.logic.LStatements.RadarStatement
+  ctors:
+    public UnitRadarStatement()
+  methods:
+    public boolean buildFrom()
+    public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: UnitLocateStatement extends mindustry.logic.LStatement
+  fields:
+    public LLocate locate
+    public BlockFlag flag
+    public String enemy
+    public String outX
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: QueryStatement extends mindustry.logic.LStatement
+  fields:
+    public QueryShape shape
+    public QueryType type
+    public String team
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: GetBlockStatement extends mindustry.logic.LStatement
+  fields:
+    public TileLayer layer
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetBlockStatement extends mindustry.logic.LStatement
+  fields:
+    public TileLayer layer
+    public String block
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SpawnUnitStatement extends mindustry.logic.LStatement
+  fields:
+    public String type
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SpawnBulletStatement extends mindustry.logic.LStatement
+  fields:
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: ApplyStatusStatement extends mindustry.logic.LStatement
+  fields:
+    public boolean clear
+    public String effect
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    private boolean isPermanent()
+    public boolean privileged()
+    public LCategory category()
+inner-class: WeatherSenseStatement extends mindustry.logic.LStatement
+  fields:
+    public String to
+    public String weather
+    private transient TextField tfield
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: WeatherSetStatement extends mindustry.logic.LStatement
+  fields:
+    public String weather
+    private transient TextField tfield
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SpawnWaveStatement extends mindustry.logic.LStatement
+  fields:
+    public String x
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetRuleStatement extends mindustry.logic.LStatement
+  fields:
+    public LogicRule rule
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: FlushMessageStatement extends mindustry.logic.LStatement
+  fields:
+    public MessageType type
+    public String duration
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: CutsceneStatement extends mindustry.logic.LStatement
+  fields:
+    public CutsceneAction action
+    public String p1
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: EffectStatement extends mindustry.logic.LStatement
+  fields:
+    public String type
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler b)
+    void colpick(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: ExplosionStatement extends mindustry.logic.LStatement
+  fields:
+    public String team
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler b)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetRateStatement extends mindustry.logic.LStatement
+  fields:
+    public String amount
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public LCategory category()
+inner-class: FetchStatement extends mindustry.logic.LStatement
+  fields:
+    public FetchType type
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SyncStatement extends mindustry.logic.LStatement
+// TODO: test this first
+  fields:
+    public String variable
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: ClientDataStatement extends mindustry.logic.LStatement
+  fields:
+    public String channel
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean hidden()
+    public boolean privileged()
+    public LCategory category()
+inner-class: GetFlagStatement extends mindustry.logic.LStatement
+  fields:
+    public String result
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetFlagStatement extends mindustry.logic.LStatement
+  fields:
+    public String flag
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetPropStatement extends mindustry.logic.LStatement
+  fields:
+    public String type
+    private transient int selected
+    private transient TextField tfield
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    private void stype(String text)
+    public boolean privileged()
+    public LCategory category()
+inner-class: PlaySoundStatement extends mindustry.logic.LStatement
+  fields:
+    public boolean positional
+    public String id
+    private static Sound lastPreview
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+    protected void showSoundSelect(Button button, Table table)
+    private static String soundCategory(String entryName)
+    private static void previewSound(Sound sound)
+  inner-class: SoundChoice
+    fields:
+      final String category
+      final String name
+      final Sound sound
+    ctors:
+      SoundChoice(String category, String name, Sound sound)
+inner-class: SoundChoice
+  fields:
+    final String category
+    final String name
+    final Sound sound
+  ctors:
+    SoundChoice(String category, String name, Sound sound)
+inner-class: PlayMusicStatement extends mindustry.logic.LStatement
+  fields:
+    public String name
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: SetMarkerStatement extends mindustry.logic.LStatement
+  fields:
+    public LMarkerControl type
+    public String id
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    void rebuild(Table table)
+    public boolean privileged()
+    public LCategory category()
+inner-class: MakeMarkerStatement extends mindustry.logic.LStatement
+  fields:
+    public String type
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+inner-class: LocalePrintStatement extends mindustry.logic.LStatement
+  fields:
+    public String value
+  methods:
+    public void build(Table table) / public LInstruction build(LAssembler builder)
+    public boolean privileged()
+    public LCategory category()
+
+LUnitControl.java
+(unknown)
+
+LVar.java
+Java class
+fields:
+  public final String name
+  public int id
+  public boolean isobj
+  public Object objval
+  public double numval
+  public long syncTime  // ms timestamp for when this was last synced; used in the sync instruction
+ctors:
+  public LVar(String name) / public LVar(String name, int id) / public LVar(String name, int id, boolean constant)
+methods:
+  public Building building()
+  public Object obj()
+  public Team team()
+  public boolean bool()
+  public double num()
+  public double numOrNan()  // Get num value from variable, convert null to NaN to handle it differently in some instructions
+  public float numf()
+  public float numfWorld()  // @return float number converted from tile (logic) to world coordinates
+  public float numfOrNan()  // Get float value from variable, convert null to NaN to handle it differently in some instructions
+  public int numi()
+  public void setbool(boolean value)
+  public void setnum(double value)
+  public void setobj(Object value)
+  public void setconst(Object value)
+  public void setlink(Object value)
+  public void set(LVar other)
+  public static boolean invalid(double d)
+  public String toString()
+
+LWritable.java
+Java interface
+methods:
+  boolean writable(LExecutor exec)
+  void write(LVar position, LVar value)
+
+LogicDialog.java
+Java class extends mindustry.ui.dialogs.BaseDialog
+fields:
+  public LCanvas canvas
+  Cons<String> consumer
+  boolean privileged
+  LExecutor executor
+  GlobalVarsDialog globalsDialog
+  boolean wasRows
+ctors:
+  public LogicDialog()
+methods:
+  public static Color typeColor(LVar s, Color color)
+  public static String typeName(LVar s)
+  private void setup()
+  public boolean shouldShowVariables()
+  public void showAddDialog() / public void showAddDialog(int position)
+  public void show(String code, LExecutor executor, boolean privileged, Cons<String> modified)
+
+LogicFx.java
+Java class
+fields:
+  private static OrderedMap<String,EffectEntry> map
+methods:
+  public static Iterable<EffectEntry> entries()
+  public static EffectEntry get(String name)
+  public static void add(String name, EffectEntry entry)  // Adds an effect entry to the map.
+  public static String[] all()
+inner-class: EffectEntry
+  fields:
+    public String name
+    public Effect effect
+    public boolean size
+    public Class<?> data
+    public float bounds  // cached bounds for this effect, negative if unset
+  ctors:
+    public EffectEntry(Effect effect)
+  methods:
+    public EffectEntry bounds(float bounds)
+    public EffectEntry name(String name)
+    public EffectEntry size()
+    public EffectEntry rotate()
+    public EffectEntry color()
+    public EffectEntry data(Class<?> data)
+
+LogicOp.java
+(unknown)
+inner-interface: OpObjLambda2
+  methods:
+    double get(Object a, Object b)
+inner-interface: OpLambda2
+  methods:
+    double get(double a, double b)
+inner-interface: OpLambda1
+  methods:
+    double get(double a)
+
+LogicRule.java
+(unknown)
+
+LogicScript.java
+Java class
+// TODO: this isn't used in the game yet
+fields:
+  public static final int defaultTimeoutMs
+  int timeout  // Timeout in milliseconds.
+  LExecutor executor
+  boolean resetVars
+  String script
+ctors:
+  public LogicScript(String script) / LogicScript()
+methods:
+  public void run()  // Runs the script once.
+
+MessageType.java
+(unknown)
+
+QueryShape.java
+(unknown)
+
+QueryType.java
+(unknown)
+
+RadarSort.java
+(unknown)
+inner-interface: RadarSortFunc
+  methods:
+    float get(Position pos, Unit other)
+
+RadarTarget.java
+(unknown)
+inner-interface: RadarTargetFunc
+  methods:
+    boolean get(Team team, Unit other)
+
+Ranged.java
+Java interface extends mindustry.gen.Posc extends mindustry.gen.Teamc
+methods:
+  float range()
+
+Senseable.java
+Java interface
+fields:
+  Object noSensed
+methods:
+  double sense(LAccess sensor) / default double sense(Content content)
+  default Object senseObject(LAccess sensor)
+
+Settable.java
+Java interface
+methods:
+  void setProp(LAccess prop, double value) / void setProp(LAccess prop, Object value) / void setProp(UnlockableContent content, double value)
+
+TileLayer.java
+(unknown)
+

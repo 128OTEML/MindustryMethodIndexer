@@ -1,0 +1,71 @@
+// GameService.java : public void init()
+    public void init(){
+        if(clientLoaded){
+            registerEvents();
+        }else{
+            Events.on(ClientLoadEvent.class, e -> registerEvents());
+        }
+    }
+
+// GameService.java : public boolean enabled()
+    public boolean enabled(){
+        return false;
+    }
+
+// GameService.java : public void completeAchievement(String name)
+    public void completeAchievement(String name){
+
+    }
+
+// GameService.java : public void clearAchievement(String name)
+    public void clearAchievement(String name){
+
+    }
+
+// GameService.java : public boolean isAchieved(String name)
+    public boolean isAchieved(String name){
+        return false;
+    }
+
+// GameService.java : public int getStat(String name, int def)
+    public int getStat(String name, int def){
+        return def;
+    }
+
+// GameService.java : public void setStat(String name, int amount)
+    public void setStat(String name, int amount){
+
+    }
+
+// GameService.java : public void storeStats()
+    public void storeStats(){
+
+    }
+
+// GameService.java : private void checkAllBlocks(Achievement ach, Block[] blocks)
+    private void checkAllBlocks(Achievement ach, Block[] blocks){
+        if(!Structs.contains(blocks, t -> !blocksBuilt.contains(t.name))){
+            ach.complete();
+        }
+    }
+
+// GameService.java : private void save()
+    private void save(){
+        Core.settings.putJson("units-built" , String.class, unitsBuilt);
+        Core.settings.putJson("blocks-built" , String.class, blocksBuilt);
+    }
+
+// GameService.java : private void trigger(Trigger trigger, Achievement ach)
+    private void trigger(Trigger trigger, Achievement ach){
+        Events.run(trigger, () -> {
+            if(campaign()){
+                ach.complete();
+            }
+        });
+    }
+
+// GameService.java : private boolean campaign()
+    private boolean campaign(){
+        return Vars.state.isCampaign();
+    }
+

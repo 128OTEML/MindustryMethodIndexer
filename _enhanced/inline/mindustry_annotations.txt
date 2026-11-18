@@ -1,0 +1,81 @@
+// BaseProcessor.java : public static String getMethodName(Element element)
+    public static String getMethodName(Element element){
+        return ((TypeElement)element.getEnclosingElement()).getQualifiedName().toString() + "." + element.getSimpleName();
+    }
+
+// BaseProcessor.java : public static boolean isPrimitive(String type)
+    public static boolean isPrimitive(String type){
+        return type.equals("boolean") || type.equals("byte") || type.equals("short") || type.equals("int")
+        || type.equals("long") || type.equals("float") || type.equals("double") || type.equals("char");
+    }
+
+// BaseProcessor.java : public static boolean instanceOf(String type, String other)
+    public static boolean instanceOf(String type, String other){
+        TypeElement a = elementu.getTypeElement(type);
+        TypeElement b = elementu.getTypeElement(other);
+        return a != null && b != null && typeu.isSubtype(a.asType(), b.asType());
+    }
+
+// BaseProcessor.java : public static String simpleName(String str)
+    public static String simpleName(String str){
+        return str.contains(".") ? str.substring(str.lastIndexOf('.') + 1) : str;
+    }
+
+// BaseProcessor.java : public static TypeName tname(String pack, String simple) / public static TypeName tname(String name) / public static TypeName tname(Class<?> c)
+    public static TypeName tname(String pack, String simple){
+        return ClassName.get(pack, simple);
+    }
+
+// BaseProcessor.java : public static TypeVariableName getTVN(TypeParameterElement element)
+    public static TypeVariableName getTVN(TypeParameterElement element){
+        String name = element.getSimpleName().toString();
+        List<? extends TypeMirror> boundsMirrors = element.getBounds();
+
+        List<TypeName> boundsTypeNames = new ArrayList<>();
+        for(TypeMirror typeMirror : boundsMirrors){
+            boundsTypeNames.add(TypeName.get(typeMirror));
+        }
+
+        return TypeVariableName.get(name, boundsTypeNames.toArray(new TypeName[0]));
+    }
+
+// BaseProcessor.java : public static void write(TypeSpec.Builder builder) throws Exception / public static void write(TypeSpec.Builder builder, Seq<String> imports) throws Exception
+    public static void write(TypeSpec.Builder builder) throws Exception{
+        write(builder, null);
+    }
+
+// BaseProcessor.java : public Seq<Selement> elements(Class<? extends Annotation> type)
+    public Seq<Selement> elements(Class<? extends Annotation> type){
+        return Seq.with(env.getElementsAnnotatedWith(type)).map(Selement::new);
+    }
+
+// BaseProcessor.java : public Seq<Stype> types(Class<? extends Annotation> type)
+    public Seq<Stype> types(Class<? extends Annotation> type){
+        return Seq.with(env.getElementsAnnotatedWith(type)).select(e -> e instanceof TypeElement)
+            .map(e -> new Stype((TypeElement)e));
+    }
+
+// BaseProcessor.java : public Seq<Svar> fields(Class<? extends Annotation> type)
+    public Seq<Svar> fields(Class<? extends Annotation> type){
+        return Seq.with(env.getElementsAnnotatedWith(type)).select(e -> e instanceof VariableElement)
+        .map(e -> new Svar((VariableElement)e));
+    }
+
+// BaseProcessor.java : public Seq<Smethod> methods(Class<? extends Annotation> type)
+    public Seq<Smethod> methods(Class<? extends Annotation> type){
+        return Seq.with(env.getElementsAnnotatedWith(type)).select(e -> e instanceof ExecutableElement)
+        .map(e -> new Smethod((ExecutableElement)e));
+    }
+
+// BaseProcessor.java : public static void err(String message) / public static void err(String message, Element elem) / public static void err(String message, Selement elem)
+    public static void err(String message){
+        messager.printMessage(Kind.ERROR, message);
+        Log.err("[CODEGEN ERROR] " +message);
+    }
+
+// BaseProcessor.java : public SourceVersion getSupportedSourceVersion()
+    @Override
+    public SourceVersion getSupportedSourceVersion(){
+        return SourceVersion.RELEASE_17;
+    }
+

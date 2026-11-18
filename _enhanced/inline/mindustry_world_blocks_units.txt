@@ -1,0 +1,295 @@
+// Reconstructor.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(inRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// Reconstructor.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, inRegion, outRegion, topRegion};
+    }
+
+// Reconstructor.java : public void init()
+    @Override
+    public void init(){
+        initCapacities();
+        super.init();
+    }
+
+// Reconstructor.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        initCapacities();
+        super.afterPatch();
+    }
+
+// Reconstructor.java : public void checkContentArrayCapacity(int items, int liquids)
+    @Override
+    public void checkContentArrayCapacity(int items, int liquids){
+        super.checkContentArrayCapacity(items, liquids);
+        if(capacities.length != items) capacities = Arrays.copyOf(capacities, items);
+    }
+
+// Reconstructor.java : public void addUpgrade(UnitType from, UnitType to)
+    public void addUpgrade(UnitType from, UnitType to){
+        upgrades.add(new UnitType[]{from, to});
+    }
+
+// RepairTower.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.range, range / tilesize, StatUnit.blocks);
+        stats.add(Stat.repairSpeed, healAmount * 60f, StatUnit.perSecond);
+    }
+
+// RepairTower.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.placing);
+    }
+
+// RepairTurret.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+        stats.add(Stat.range, repairRadius / tilesize, StatUnit.blocks);
+        stats.add(Stat.repairSpeed, repairSpeed * 60f, StatUnit.perSecond);
+
+        if(acceptCoolant){
+            stats.remove(Stat.booster);
+            stats.add(Stat.booster, StatValues.speedBoosters(Core.bundle.get("bar.strength"), coolantUse, coolantMultiplier, true, this::consumesLiquid));
+        }
+    }
+
+// RepairTurret.java : public void init()
+    @Override
+    public void init(){
+        if(acceptCoolant){
+            hasLiquids = true;
+            consume(new ConsumeCoolant(coolantUse)).optional(true, true);
+        }
+
+        consumePowerCond(powerUse, (RepairPointBuild entity) -> entity.target != null);
+        updateClipRadius(repairRadius + tilesize);
+        super.init();
+    }
+
+// RepairTurret.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, repairRadius, Pal.accent);
+    }
+
+// RepairTurret.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
+    }
+
+// UnitAssembler.java : public Rect getRect(Rect rect, float x, float y, int rotation)
+    public Rect getRect(Rect rect, float x, float y, int rotation){
+        rect.setCentered(x, y, areaSize * tilesize);
+        float len = tilesize * (areaSize + size)/2f;
+
+        rect.x += Geometry.d4x(rotation) * len;
+        rect.y += Geometry.d4y(rotation) * len;
+
+        return rect;
+    }
+
+// UnitAssembler.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        //overlapping construction areas not allowed unless it s being replaced; grow by a tiny amount so edges can't overlap either.
+        Rect rect = getRect(Tmp.r1, tile.worldx() + offset, tile.worldy() + offset, rotation).grow(0.1f);
+        return
+            !indexer.getFlagged(team, BlockFlag.unitAssembler).contains(b -> b != tile.build && b.block instanceof UnitAssembler assembler && assembler.getRect(Tmp.r2, b.x, b.y, b.rotation).overlaps(rect)) &&
+            !team.data().getBuildings(ConstructBlock.get(size)).contains(b -> b != tile.build && ((ConstructBuild)b).current instanceof UnitAssembler assembler && assembler.getRect(Tmp.r2, b.x, b.y, b.rotation).overlaps(rect));
+    }
+
+// UnitAssembler.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(plan.rotation >= 2 ? sideRegion2 : sideRegion1, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// UnitAssembler.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, sideRegion1, topRegion};
+    }
+
+// UnitAssembler.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        super.afterPatch();
+
+        initCapacities();
+    }
+
+// UnitAssembler.java : public void checkContentArrayCapacity(int items, int liquids)
+    @Override
+    public void checkContentArrayCapacity(int items, int liquids){
+        super.checkContentArrayCapacity(items, liquids);
+        if(capacities.length != items) capacities = Arrays.copyOf(capacities, items);
+    }
+
+// UnitAssembler.java : public static void assemblerUnitSpawned(Tile tile)
+    @Remote(called = Loc.server)
+    public static void assemblerUnitSpawned(Tile tile){
+        if(tile == null || !(tile.build instanceof UnitAssemblerBuild build)) return;
+        build.spawned();
+    }
+
+// UnitAssembler.java : public static void assemblerDroneSpawned(Tile tile, int id)
+    @Remote(called = Loc.server)
+    public static void assemblerDroneSpawned(Tile tile, int id){
+        if(tile == null || !(tile.build instanceof UnitAssemblerBuild build)) return;
+        build.droneSpawned(id);
+    }
+
+// UnitAssemblerModule.java : public void setStats()
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.moduleTier, tier);
+    }
+
+// UnitAssemblerModule.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        var link = getLink(player.team(), x, y, rotation);
+        if(link != null){
+            link.block.drawPlace(link.tile.x, link.tile.y, link.rotation, true);
+        }
+    }
+
+// UnitAssemblerModule.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return getLink(team, tile.x, tile.y, rotation) != null;
+    }
+
+// UnitAssemblerModule.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        drawSideRegion(plan.rotation >= 2 ? sideRegion2 : sideRegion1, plan.drawx(), plan.drawy(), plan.rotation);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// UnitAssemblerModule.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, topRegion};
+    }
+
+// UnitAssemblerModule.java : public UnitAssemblerBuild getLink(Team team, int x, int y, int rotation)
+    public @Nullable UnitAssemblerBuild getLink(Team team, int x, int y, int rotation){
+        var results = Vars.indexer.getFlagged(team, BlockFlag.unitAssembler).<UnitAssemblerBuild>as();
+
+        return results.find(b -> b.moduleFits(this, x * tilesize + offset, y * tilesize + offset, rotation));
+    }
+
+// UnitBlock.java : public static void unitBlockSpawn(Tile tile)
+    @Remote(called = Loc.server)
+    public static void unitBlockSpawn(Tile tile){
+        if(tile == null || !(tile.build instanceof UnitBuild build)) return;
+        build.spawned();
+    }
+
+// UnitCargoLoader.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// UnitCargoLoader.java : public boolean canPlaceOn(Tile tile, Team team, int rotation)
+    @Override
+    public boolean canPlaceOn(Tile tile, Team team, int rotation){
+        return super.canPlaceOn(tile, team, rotation) && Units.canCreate(team, unitType);
+    }
+
+// UnitCargoLoader.java : public void drawPlace(int x, int y, int rotation, boolean valid)
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        if(!Units.canCreate(Vars.player.team(), unitType)){
+            drawPlaceText(Core.bundle.get("bar.cargounitcap"), x, y, valid);
+        }
+    }
+
+// UnitCargoLoader.java : public static void unitTetherBlockSpawned(Tile tile, int id)
+    @Remote(called = Loc.server)
+    public static void unitTetherBlockSpawned(Tile tile, int id){
+        if(tile == null || !(tile.build instanceof UnitTetherBlock build)) return;
+        build.spawned(id);
+    }
+
+// UnitFactory.java : public void init()
+    @Override
+    public void init(){
+        initCapacities();
+        super.init();
+    }
+
+// UnitFactory.java : public void afterPatch()
+    @Override
+    public void afterPatch(){
+        initCapacities();
+        super.afterPatch();
+    }
+
+// UnitFactory.java : public void checkContentArrayCapacity(int items, int liquids)
+    @Override
+    public void checkContentArrayCapacity(int items, int liquids){
+        super.checkContentArrayCapacity(items, liquids);
+        if(capacities.length != items) capacities = Arrays.copyOf(capacities, items);
+    }
+
+// UnitFactory.java : public boolean outputsItems()
+    @Override
+    public boolean outputsItems(){
+        return false;
+    }
+
+// UnitFactory.java : public TextureRegion[] icons()
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{region, outRegion, topRegion};
+    }
+
+// UnitFactory.java : public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list){
+        Draw.rect(region, plan.drawx(), plan.drawy());
+        Draw.rect(outRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+    }
+
+// UnitFactory.java : public void getPlanConfigs(Seq<UnlockableContent> options)
+    @Override
+    public void getPlanConfigs(Seq<UnlockableContent> options){
+        for(var plan : plans){
+            if(!plan.unit.isBanned()){
+                options.add(plan.unit);
+            }
+        }
+    }
+

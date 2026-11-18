@@ -1,0 +1,420 @@
+// AssemblerAI.java : public void updateMovement()
+    @Override
+    public void updateMovement(){
+        if(!targetPos.isZero()){
+            moveTo(targetPos, 1f, 3f);
+        }
+
+        if(unit.within(targetPos, 5f)){
+            unit.lookAt(targetAngle);
+        }
+    }
+
+// AssemblerAI.java : public boolean inPosition()
+    public boolean inPosition(){
+        return unit.within(targetPos, 10f) && Angles.within(unit.rotation, targetAngle, 15f);
+    }
+
+// BuilderAI.java : public void init()
+    @Override
+    public void init(){
+        //rebuild much faster with buildAI; there are usually few builder units so this is fine
+        if(rebuildPeriod == defaultRebuildPeriod && unit.team.rules().buildAi){
+            rebuildPeriod = 10f;
+        }
+    }
+
+// BuilderAI.java : protected boolean nearEnemy(int x, int y)
+    protected boolean nearEnemy(int x, int y){
+        return Units.nearEnemy(unit.team, x * tilesize - fleeRange/2f, y * tilesize - fleeRange/2f, fleeRange, fleeRange);
+    }
+
+// BuilderAI.java : public AIController fallback()
+    @Override
+    public AIController fallback(){
+        if(unit.team.isAI() && unit.team.rules().prebuildAi){
+            return new PrebuildAI();
+        }
+        return unit.type.flying ? new FlyingAI() : new GroundAI();
+    }
+
+// BuilderAI.java : public boolean useFallback()
+    @Override
+    public boolean useFallback(){
+        if(unit.team.isAI() && unit.team.rules().prebuildAi){
+            return true;
+        }
+        return state.rules.waves && unit.team == state.rules.waveTeam && !unit.team.rules().rtsAi;
+    }
+
+// BuilderAI.java : public boolean shouldFire()
+    @Override
+    public boolean shouldFire(){
+        return !(unit.controller() instanceof CommandAI ai) || ai.shouldFire();
+    }
+
+// BuilderAI.java : public boolean shouldShoot()
+    @Override
+    public boolean shouldShoot(){
+        return !unit.isBuilding() && unit.type.canAttack;
+    }
+
+// CargoAI.java : void sortTargets(Seq<UnitCargoUnloadPointBuild> targets)
+    void sortTargets(Seq<UnitCargoUnloadPointBuild> targets){
+        //find sort by "most desirable" first
+        targets.sort(Structs.comps(Structs.comparingInt(b -> b.items.total()), Structs.comparingFloat(b -> b.dst2(unit))));
+    }
+
+// CommandAI.java : public UnitCommand currentCommand()
+    public UnitCommand currentCommand(){
+        return command == null ? UnitCommand.moveCommand : command;
+    }
+
+// CommandAI.java : public void command(UnitCommand command)
+    public void command(UnitCommand command){
+        if(unit.type.commands.contains(command)){
+            //clear old state.
+            unit.mineTile = null;
+            unit.clearBuilding();
+            this.command = command;
+        }
+    }
+
+// CommandAI.java : public boolean hasStance(UnitStance stance)
+    @Override
+    public boolean hasStance(@Nullable UnitStance stance){
+        return stance != null && stances.get(stance.id);
+    }
+
+// CommandAI.java : public void setStance(UnitStance stance, boolean enabled) / public void setStance(UnitStance stance)
+    public void setStance(UnitStance stance, boolean enabled){
+         if(enabled){
+             setStance(stance);
+         }else{
+             disableStance(stance);
+         }
+    }
+
+// CommandAI.java : public void disableStance(UnitStance stance)
+    public void disableStance(UnitStance stance){
+        stances.clear(stance.id);
+        stanceChanged();
+    }
+
+// CommandAI.java : public void stanceChanged()
+    public void stanceChanged(){
+        if(commandController != null && !(commandController instanceof CommandAI)){
+            commandController.stanceChanged();
+        }
+    }
+
+// CommandAI.java : public void init()
+    @Override
+    public void init(){
+        if(command == null){
+            command = unit.type.defaultCommand == null && unit.type.commands.size > 0 ? unit.type.commands.first() : unit.type.defaultCommand;
+            if(command == null) command = UnitCommand.moveCommand;
+        }
+    }
+
+// CommandAI.java : public boolean isLogicControllable()
+    @Override
+    public boolean isLogicControllable(){
+        return !hasCommand();
+    }
+
+// CommandAI.java : public boolean isAttacking()
+    public boolean isAttacking(){
+        return target != null && unit.within(target, unit.range() + 10f);
+    }
+
+// CommandAI.java : protected boolean shouldBoost()
+    protected boolean shouldBoost(){
+        return hasStance(UnitStance.boost) || command == UnitCommand.enterPayloadCommand;
+    }
+
+// CommandAI.java : public void clearCommands()
+    public void clearCommands(){
+        commandQueue.clear();
+        targetPos = null;
+        attackTarget = null;
+    }
+
+// CommandAI.java : void tryPickupUnit(Payloadc pay)
+    void tryPickupUnit(Payloadc pay){
+        Unit target = Units.closest(unit.team, unit.x, unit.y, unit.type.hitSize * 2f, u -> u.isAI() && u != unit && u.isGrounded() && pay.canPickup(u) && u.within(unit, u.hitSize + unit.hitSize));
+        if(target != null){
+            Call.pickedUnitPayload(unit, target);
+        }
+    }
+
+// CommandAI.java : public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc findMainTarget(float x, float y, float range, boolean air, boolean ground){
+        if(!unit.type.autoFindTarget && !hasStance(UnitStance.patrol) && !(targetPos == null || nearAttackTarget(unit.x, unit.y, unit.range()))){
+            return null;
+        }
+        return super.findMainTarget(x, y, range, air, ground);
+    }
+
+// CommandAI.java : public void removed(Unit unit)
+    @Override
+    public void removed(Unit unit){
+        clearCommands();
+    }
+
+// CommandAI.java : public void commandQueue(Position location)
+    public void commandQueue(Position location){
+        if(targetPos == null && attackTarget == null){
+            if(location instanceof Teamc t){
+                commandTarget(t, this.stopAtTarget);
+            }else if(location instanceof Vec2 position){
+                commandPosition(position);
+            }
+        }else if(commandQueue.size < maxCommandQueueSize && !commandQueue.contains(location)){
+            commandQueue.add(location);
+        }
+    }
+
+// CommandAI.java : public void afterRead(Unit unit)
+    @Override
+    public void afterRead(Unit unit){
+        if(readAttackTarget != -1){
+            attackTarget = Groups.unit.getByID(readAttackTarget);
+            readAttackTarget = -1;
+        }
+    }
+
+// CommandAI.java : public boolean shouldFire()
+    @Override
+    public boolean shouldFire(){
+        return !hasStance(UnitStance.holdFire);
+    }
+
+// CommandAI.java : public void hit(Bullet bullet)
+    @Override
+    public void hit(Bullet bullet){
+        if(unit.team.isAI() &&
+           //excluding bullets
+           (!(bullet.owner instanceof Bullet) && bullet.owner instanceof Teamc teamc) && teamc.team() != unit.team && attackTarget == null &&
+            //can only counter-attack every few seconds to prevent rapidly changing targets
+            !(teamc instanceof Unit u && !u.checkTarget(unit.type.targetAir, unit.type.targetGround)) && timer.get(timerTarget4, 60f * 10f)){
+            commandTarget(teamc, true);
+        }
+    }
+
+// CommandAI.java : public boolean keepState()
+    @Override
+    public boolean keepState(){
+        return true;
+    }
+
+// CommandAI.java : public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc findTarget(float x, float y, float range, boolean air, boolean ground){
+        return !nearAttackTarget(x, y, range) ? super.findTarget(x, y, range, air, ground) : Units.isHittable(attackTarget, air, ground) ? attackTarget : null;
+    }
+
+// CommandAI.java : public boolean nearAttackTarget(float x, float y, float range)
+    public boolean nearAttackTarget(float x, float y, float range){
+        return attackTarget != null && attackTarget.within(x, y, range + 3f + (attackTarget instanceof Sized s ? s.hitSize()/2f : 0f));
+    }
+
+// CommandAI.java : public boolean retarget()
+    @Override
+    public boolean retarget(){
+        //retarget faster when there is an explicit target
+        return timer.get(timerTarget, attackTarget != null ? 10f : 20f);
+    }
+
+// CommandAI.java : public boolean hasCommand()
+    public boolean hasCommand(){
+        return targetPos != null;
+    }
+
+// CommandAI.java : public void setupLastPos()
+    public void setupLastPos(){
+        lastTargetPos = targetPos;
+    }
+
+// CommandAI.java : public void commandPosition(Vec2 pos) / public void commandPosition(Vec2 pos, boolean stopWhenInRange)
+    @Override
+    public void commandPosition(Vec2 pos){
+        if(pos == null) return;
+
+        commandPosition(pos, false);
+        if(commandController != null){
+            commandController.commandPosition(pos);
+        }
+    }
+
+// CommandAI.java : public void commandTarget(Teamc moveTo) / public void commandTarget(Teamc moveTo, boolean stopAtTarget)
+    @Override
+    public void commandTarget(Teamc moveTo){
+        commandTarget(moveTo, false);
+        if(commandController != null){
+            commandController.commandTarget(moveTo);
+        }
+    }
+
+// DefenderAI.java : public void updateMovement()
+    @Override
+    public void updateMovement(){
+        unloadPayloads();
+
+        if(target != null){
+            moveTo(target, (target instanceof Sized s ? s.hitSize()/2f * 1.1f : 0f) + unit.hitSize/2f + 15f, 50f);
+            unit.lookAt(target);
+        }
+    }
+
+// DefenderAI.java : public void updateTargeting()
+    @Override
+    public void updateTargeting(){
+        if(retarget()) target = findTarget(unit.x, unit.y, unit.range(), true, true);
+    }
+
+// FlyingAI.java : public Teamc findTarget(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc findTarget(float x, float y, float range, boolean air, boolean ground){
+        var result = findMainTarget(x, y, range, air, ground);
+
+        //if the main target is in range, use it, otherwise target whatever is closest
+        return checkTarget(result, x, y, range) ? target(x, y, range, air, ground) : result;
+    }
+
+// FlyingFollowAI.java : public boolean shouldFaceTarget()
+    public boolean shouldFaceTarget(){
+        return target != null && (following == null || unit.within(target, unit.range()));
+    }
+
+// FlyingFollowAI.java : public void updateVisuals()
+    @Override
+    public void updateVisuals(){
+        if(unit.isFlying()){
+            if(unit.type.wobble) unit.wobble();
+
+            if(!shouldFaceTarget()){
+                unit.lookAt(unit.prefRotation());
+            }
+        }
+    }
+
+// FlyingFollowAI.java : public AIController fallback()
+    @Override
+    public AIController fallback(){
+        return new FlyingAI();
+    }
+
+// FlyingFollowAI.java : public boolean useFallback()
+    @Override
+    public boolean useFallback(){
+        //only AI teams use this controller
+        return Vars.state.rules.pvp || Vars.state.rules.waveTeam != unit.team;
+    }
+
+// LogicAI.java : public boolean keepState()
+    @Override
+    public boolean keepState(){
+        return true;
+    }
+
+// LogicAI.java : public boolean checkTargetTimer(Object radar)
+    public boolean checkTargetTimer(Object radar){
+        return radars.add(radar);
+    }
+
+// LogicAI.java : public boolean checkTarget(Teamc target, float x, float y, float range)
+    @Override
+    public boolean checkTarget(Teamc target, float x, float y, float range){
+        return false;
+    }
+
+// LogicAI.java : public boolean retarget()
+    @Override
+    public boolean retarget(){
+        return true;
+    }
+
+// LogicAI.java : public boolean invalid(Teamc target)
+    @Override
+    public boolean invalid(Teamc target){
+        return false;
+    }
+
+// LogicAI.java : public boolean shouldShoot()
+    @Override
+    public boolean shouldShoot(){
+        return shoot && !(unit.type.canBoost && boost);
+    }
+
+// LogicAI.java : public Teamc target(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc target(float x, float y, float range, boolean air, boolean ground){
+        return switch(aimControl){
+            case target -> posTarget;
+            case targetp -> mainTarget;
+            default -> null;
+        };
+    }
+
+// MinerAI.java : public void stanceChanged()
+    @Override
+    public void stanceChanged(){
+        if(targetItem != null && unit.controller() instanceof CommandAI ai && !ai.hasStance(UnitStance.mineAuto) && !ai.hasStance(ItemUnitStance.getByItem(targetItem))){
+            mining = false;
+            targetItem = null;
+        }
+    }
+
+// MissileAI.java : protected void resetTimers()
+    @Override
+    protected void resetTimers(){
+        timer.reset(timerTarget, 5f);
+    }
+
+// MissileAI.java : public Teamc target(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc target(float x, float y, float range, boolean air, boolean ground){
+        return Units.closestTarget(unit.team, x, y, range, u -> u.checkTarget(air, ground) && !u.isMissile(), t -> ground && (!t.block.underBullets || (shooter != null && t == Vars.world.buildWorld(shooter.aimX, shooter.aimY))));
+    }
+
+// MissileAI.java : public boolean retarget()
+    @Override
+    public boolean retarget(){
+        //more frequent retarget due to high speed. TODO won't this lag?
+        return timer.get(timerTarget, 4f);
+    }
+
+// NoAI.java : public Unit unit() / public void unit(Unit unit)
+    @Override
+    public Unit unit(){
+        return unit;
+    }
+
+// NoAI.java : public boolean isValidController()
+    @Override
+    public boolean isValidController(){
+        return true;
+    }
+
+// NoAI.java : public void updateUnit()
+    @Override
+    public void updateUnit(){}
+
+// NoAI.java : public void removed(Unit unit)
+    @Override
+    public void removed(Unit unit){}
+
+// PrebuildAI.java : private boolean canBuild(CoreBuild core, Block block)
+    private boolean canBuild(CoreBuild core, Block block){
+        return state.rules.infiniteResources || unit.team.rules().infiniteResources || core.items.has(block.requirements, state.rules.buildCostMultiplier);
+    }
+
+// SuicideAI.java : public Teamc target(float x, float y, float range, boolean air, boolean ground)
+    @Override
+    public Teamc target(float x, float y, float range, boolean air, boolean ground){
+        return Units.closestTarget(unit.team, x, y, range, u -> u.checkTarget(air, ground), t -> ground &&
+            !(t.block instanceof Conveyor || t.block instanceof Conduit)); //do not target conveyors/conduits
+    }
+

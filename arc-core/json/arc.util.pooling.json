@@ -1,0 +1,330 @@
+[ {
+  "file" : "Pool.java",
+  "pkg" : "arc.util.pooling",
+  "type" : "Java class (abstract)",
+  "typeDesc" : "A pool of objects that can be reused to avoid allocation.",
+  "fields" : [ {
+    "kind" : "field",
+    "signature" : "public final int max",
+    "desc" : "The maximum number of objects that will be pooled.",
+    "overloads" : null,
+    "name" : "max",
+    "returnType" : null,
+    "modifiers" : [ "public", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 12,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "private final Seq<T> freeObjects",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "freeObjects",
+    "returnType" : null,
+    "modifiers" : [ "private", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  }, {
+    "kind" : "field",
+    "signature" : "public int peak",
+    "desc" : "The highest number of free objects.",
+    "overloads" : null,
+    "name" : "peak",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "public Pool() / public Pool(int initialCapacity) / public Pool(int initialCapacity, int max)",
+    "desc" : "Creates a pool with an initial capacity of 16 and no maximum.",
+    "overloads" : [ "public Pool()", "public Pool(int initialCapacity)", "public Pool(int initialCapacity, int max)" ],
+    "name" : "Pool",
+    "returnType" : null,
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 18,
+    "calls" : [ "arc.struct.Seq.Seq(boolean, int)" ],
+    "callCount" : 1
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "abstract protected T newObject()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "newObject",
+    "returnType" : "T",
+    "modifiers" : [ "abstract", "protected" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 33,
+    "calls" : [ ],
+    "callCount" : 0
+  }, {
+    "kind" : "method",
+    "signature" : "public T obtain()",
+    "desc" : "Returns an object from this pool.",
+    "overloads" : null,
+    "name" : "obtain",
+    "returnType" : "T",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 39,
+    "calls" : [ "arc.util.pooling.Pool.newObject()", "arc.struct.Seq.pop()" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public void free(T object)",
+    "desc" : "Puts the specified object in the pool, making it eligible to be returned by {@link #obtain()}.",
+    "overloads" : null,
+    "name" : "free",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 49,
+    "calls" : [ "arc.struct.Seq.add(T)", "java.lang.Math.max(int, int)", "arc.util.pooling.Pool.reset(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "protected void reset(T object)",
+    "desc" : "Called when an object is freed to clear the state of the object for possible later reuse.",
+    "overloads" : null,
+    "name" : "reset",
+    "returnType" : "void",
+    "modifiers" : [ "protected" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "T"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 62,
+    "calls" : [ "arc.util.pooling.Pool.Poolable.reset()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public void freeAll(Seq<T> objects)",
+    "desc" : "Puts the specified objects in the pool.",
+    "overloads" : null,
+    "name" : "freeAll",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ {
+      "name" : "objects",
+      "type" : "Seq<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 72,
+    "calls" : [ "arc.struct.Seq.get(int)", "arc.struct.Seq.add(T)", "arc.util.pooling.Pool.reset(T)", "java.lang.Math.max(int, int)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public void clear()",
+    "desc" : "Removes all free objects from this pool.",
+    "overloads" : null,
+    "name" : "clear",
+    "returnType" : "void",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 86,
+    "calls" : [ "arc.struct.Seq.clear()" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public int getFree()",
+    "desc" : "The number of objects available to be obtained.",
+    "overloads" : null,
+    "name" : "getFree",
+    "returnType" : "int",
+    "modifiers" : [ "public" ],
+    "parameters" : [ ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 91,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "inner" : [ {
+    "kind" : "inner-interface",
+    "signature" : "Poolable",
+    "simpleName" : "Poolable",
+    "desc" : "Objects implementing this interface will have {@link #reset()} called when passed to {@link Pool#free(Object)}.",
+    "fields" : [ ],
+    "constructors" : [ ],
+    "methods" : [ {
+      "kind" : "method",
+      "signature" : "void reset()",
+      "desc" : "Resets the object for reuse.",
+      "overloads" : null,
+      "name" : "reset",
+      "returnType" : "void",
+      "modifiers" : [ ],
+      "parameters" : [ ],
+      "throwsList" : [ ],
+      "annotations" : [ ],
+      "line" : 98,
+      "calls" : [ ],
+      "callCount" : 0
+    } ],
+    "inner" : [ ]
+  } ]
+}, {
+  "file" : "Pools.java",
+  "pkg" : "arc.util.pooling",
+  "type" : "Java class",
+  "typeDesc" : "Stores a map of {@link Pool}s by type for convenient static access.",
+  "fields" : [ {
+    "kind" : "constant",
+    "signature" : "private static final ObjectMap<Class,Pool> typePools",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "typePools",
+    "returnType" : null,
+    "modifiers" : [ "private", "static", "final" ],
+    "parameters" : null,
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 13,
+    "calls" : null,
+    "callCount" : 0
+  } ],
+  "constructors" : [ {
+    "kind" : "ctor",
+    "signature" : "private Pools()",
+    "desc" : null,
+    "overloads" : null,
+    "name" : "Pools",
+    "returnType" : null,
+    "modifiers" : [ "private" ],
+    "parameters" : [ ],
+    "throwsList" : null,
+    "annotations" : null,
+    "line" : 15,
+    "calls" : [ ],
+    "callCount" : 0
+  } ],
+  "methods" : [ {
+    "kind" : "method",
+    "signature" : "public static Pool<T> get(Class<T> type, Prov<T> supplier, int max) / public static Pool<T> get(Class<T> type, Prov<T> supplier)",
+    "desc" : "Returns a new or existing pool for the specified type, stored in a Class to {@link Pool} map.",
+    "overloads" : [ "public static Pool<T> get(Class<T> type, Prov<T> supplier, int max)", "public static Pool<T> get(Class<T> type, Prov<T> supplier)" ],
+    "name" : "get",
+    "returnType" : "Pool<T>",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "supplier",
+      "type" : "Prov<T>"
+    }, {
+      "name" : "max",
+      "type" : "int"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 22,
+    "calls" : [ "arc.struct.ObjectMap.get(T)", "arc.func.Prov.get()", "arc.struct.ObjectMap.put(K, V)", "arc.util.pooling.Pool.Pool(int, int)", "arc.util.pooling.Pools.get(java.lang.Class<T>, arc.func.Prov<T>, int)" ],
+    "callCount" : 5
+  }, {
+    "kind" : "method",
+    "signature" : "public static void set(Class<T> type, Pool<T> pool)",
+    "desc" : "Sets an existing pool for the specified type, stored in a Class to {@link Pool} map.",
+    "overloads" : null,
+    "name" : "set",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "pool",
+      "type" : "Pool<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 45,
+    "calls" : [ "arc.struct.ObjectMap.put(K, V)" ],
+    "callCount" : 1
+  }, {
+    "kind" : "method",
+    "signature" : "public static synchronized T obtain(Class<T> type, Prov<T> supplier)",
+    "desc" : "Obtains an object from the {@link #get(Class, Prov) pool}.",
+    "overloads" : null,
+    "name" : "obtain",
+    "returnType" : "T",
+    "modifiers" : [ "public", "static", "synchronized" ],
+    "parameters" : [ {
+      "name" : "type",
+      "type" : "Class<T>"
+    }, {
+      "name" : "supplier",
+      "type" : "Prov<T>"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 50,
+    "calls" : [ "arc.util.pooling.Pool.obtain()", "arc.util.pooling.Pools.get(java.lang.Class<T>, arc.func.Prov<T>)" ],
+    "callCount" : 2
+  }, {
+    "kind" : "method",
+    "signature" : "public static synchronized void free(Object object)",
+    "desc" : "Frees an object from the {@link #get(Class, Prov) pool}.",
+    "overloads" : null,
+    "name" : "free",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static", "synchronized" ],
+    "parameters" : [ {
+      "name" : "object",
+      "type" : "Object"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 55,
+    "calls" : [ "arc.struct.ObjectMap.get(T)", "java.lang.Object.getClass()", "arc.util.pooling.Pool.free(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 4
+  }, {
+    "kind" : "method",
+    "signature" : "public static void freeAll(Seq objects) / public static void freeAll(Seq objects, boolean samePool)",
+    "desc" : "Frees the specified objects from the {@link #get(Class, Prov) pool}.",
+    "overloads" : [ "public static void freeAll(Seq objects)", "public static void freeAll(Seq objects, boolean samePool)" ],
+    "name" : "freeAll",
+    "returnType" : "void",
+    "modifiers" : [ "public", "static" ],
+    "parameters" : [ {
+      "name" : "objects",
+      "type" : "Seq"
+    } ],
+    "throwsList" : [ ],
+    "annotations" : [ ],
+    "line" : 66,
+    "calls" : [ "arc.util.pooling.Pools.freeAll(arc.struct.Seq, boolean)", "arc.struct.Seq.get(int)", "arc.struct.ObjectMap.get(T)", "java.lang.Object.getClass()", "arc.util.pooling.Pool.free(T)", "java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)" ],
+    "callCount" : 6
+  } ],
+  "inner" : [ ]
+} ]

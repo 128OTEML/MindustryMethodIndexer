@@ -1,0 +1,475 @@
+Actions.java
+Java class
+// Static convenience methods for using pooled actions, intended for static import.
+methods:
+  public static T action(Class<T> type, Prov<T> sup)  // Returns a new or pooled action of the specified type.
+  public static AddAction addAction(Action action) / public static AddAction addAction(Action action, Element targetActor)
+  public static RemoveAction removeAction(Action action) / public static RemoveAction removeAction(Action action, Element targetActor)
+  public static Action originCenter()  // Sets the origin to the center.
+  public static MoveToAction moveTo(float x, float y) / public static MoveToAction moveTo(float x, float y, float duration) / public static MoveToAction moveTo(float x, float y, float duration, Interp interpolation)  // Moves the actor instantly.
+  public static MoveToAction moveToAligned(float x, float y, int alignment) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration) / public static MoveToAction moveToAligned(float x, float y, int alignment, float duration, Interp interpolation)
+  public static MoveByAction moveBy(float amountX, float amountY) / public static MoveByAction moveBy(float amountX, float amountY, float duration) / public static MoveByAction moveBy(float amountX, float amountY, float duration, Interp interpolation)  // Moves the actor instantly.
+  public static RunnableAction translateTo(float amountX, float amountY)
+  public static TranslateByAction translateBy(float amountX, float amountY, float duration, Interp interpolation) / public static TranslateByAction translateBy(float amountX, float amountY) / public static TranslateByAction translateBy(float amountX, float amountY, float duration)
+  public static SizeToAction sizeTo(float x, float y) / public static SizeToAction sizeTo(float x, float y, float duration) / public static SizeToAction sizeTo(float x, float y, float duration, Interp interpolation)  // Sizes the actor instantly.
+  public static SizeByAction sizeBy(float amountX, float amountY) / public static SizeByAction sizeBy(float amountX, float amountY, float duration) / public static SizeByAction sizeBy(float amountX, float amountY, float duration, Interp interpolation)  // Sizes the actor instantly.
+  public static ScaleToAction scaleTo(float x, float y) / public static ScaleToAction scaleTo(float x, float y, float duration) / public static ScaleToAction scaleTo(float x, float y, float duration, Interp interpolation)  // Scales the actor instantly.
+  public static ScaleByAction scaleBy(float amountX, float amountY) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration) / public static ScaleByAction scaleBy(float amountX, float amountY, float duration, Interp interpolation)  // Scales the actor instantly.
+  public static RotateToAction rotateTo(float rotation) / public static RotateToAction rotateTo(float rotation, float duration) / public static RotateToAction rotateTo(float rotation, float duration, Interp interpolation)  // Rotates the actor instantly.
+  public static RotateByAction rotateBy(float rotationAmount) / public static RotateByAction rotateBy(float rotationAmount, float duration) / public static RotateByAction rotateBy(float rotationAmount, float duration, Interp interpolation)  // Rotates the actor instantly.
+  public static ColorAction color(Color color) / public static ColorAction color(Color color, float duration) / public static ColorAction color(Color color, float duration, Interp interpolation)  // Sets the actor's color instantly.
+  public static AlphaAction alpha(float a) / public static AlphaAction alpha(float a, float duration) / public static AlphaAction alpha(float a, float duration, Interp interpolation)  // Sets the actor's alpha instantly.
+  public static AlphaAction fadeOut(float duration) / public static AlphaAction fadeOut(float duration, Interp interpolation)  // Transitions from the alpha at the time this action starts to an alpha of 0.
+  public static AlphaAction fadeIn(float duration) / public static AlphaAction fadeIn(float duration, Interp interpolation)  // Transitions from the alpha at the time this action starts to an alpha of 1.
+  public static VisibleAction show()
+  public static VisibleAction hide()
+  public static VisibleAction visible(boolean visible)
+  public static TouchableAction touchable(Touchable touchable)
+  public static RemoveActorAction remove() / public static RemoveActorAction remove(Element removeActor)
+  public static DelayAction delay(float duration) / public static DelayAction delay(float duration, Action delayedAction)
+  public static TimeScaleAction timeScale(float scale, Action scaledAction)
+  public static SequenceAction sequence(Action action1) / public static SequenceAction sequence(Action action1, Action action2) / public static SequenceAction sequence(Action action1, Action action2, Action action3) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4) / public static SequenceAction sequence(Action action1, Action action2, Action action3, Action action4, Action action5) / public static SequenceAction sequence(Action actions) / public static SequenceAction sequence()
+  public static ParallelAction parallel(Action action1) / public static ParallelAction parallel(Action action1, Action action2) / public static ParallelAction parallel(Action action1, Action action2, Action action3) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4) / public static ParallelAction parallel(Action action1, Action action2, Action action3, Action action4, Action action5) / public static ParallelAction parallel(Action actions) / public static ParallelAction parallel()
+  public static RepeatAction repeat(int count, Action repeatedAction)
+  public static RepeatAction forever(Action repeatedAction)
+  public static RunnableAction run(Runnable runnable)
+  public static LayoutAction layout(boolean enabled)
+  public static AfterAction after(Action action)
+  public static AddListenerAction addListener(EventListener listener, boolean capture) / public static AddListenerAction addListener(EventListener listener, boolean capture, Element targetActor)
+  public static RemoveListenerAction removeListener(EventListener listener, boolean capture) / public static RemoveListenerAction removeListener(EventListener listener, boolean capture, Element targetActor)
+
+AddAction.java
+Java class extends arc.scene.Action
+// Adds an action to an actor.
+fields:
+  private Action action
+methods:
+  public boolean act(float delta)
+  public Action getAction()
+  public void setAction(Action action)
+  public void restart()
+  public void reset()
+
+AddListenerAction.java
+Java class extends arc.scene.Action
+// Adds a listener to an actor.
+fields:
+  private EventListener listener
+  private boolean capture
+methods:
+  public boolean act(float delta)
+  public EventListener getListener()
+  public void setListener(EventListener listener)
+  public boolean getCapture()
+  public void setCapture(boolean capture)
+  public void reset()
+
+AfterAction.java
+Java class extends arc.scene.actions.DelegateAction
+// Executes an action only after all other actions on the actor at the time this action's target was set have finished.
+fields:
+  private Seq<Action> waitForActions
+methods:
+  public void setTarget(Element target)
+  public void restart()
+  protected boolean delegate(float delta)
+
+AlphaAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Sets the alpha for an actor's color (or a specified color), from the current alpha to the new alpha.
+fields:
+  private float start
+  private Color color
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public void reset()
+  public Color getColor()
+  public void setColor(Color color)  // Sets the color to modify.
+  public float getAlpha()
+  public void setAlpha(float alpha)
+
+ColorAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Sets the actor's color (or a specified color), from the current to the new color.
+fields:
+  private final Color end
+  private float startR
+  private Color color
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public void reset()
+  public Color getColor()
+  public void setColor(Color color)  // Sets the color to modify.
+  public Color getEndColor()
+  public void setEndColor(Color color)  // Sets the color to transition to.
+
+DelayAction.java
+Java class extends arc.scene.actions.DelegateAction
+// Delays execution of an action or inserts a pause in a {@link SequenceAction}.
+fields:
+  private float duration
+ctors:
+  public DelayAction() / public DelayAction(float duration)
+methods:
+  protected boolean delegate(float delta)
+  public void finish()  // Causes the delay to be complete.
+  public void restart()
+  public float getTime()  // Gets the time spent waiting for the delay.
+  public void setTime(float time)  // Sets the time spent waiting for the delay.
+  public float getDuration()
+  public void setDuration(float duration)  // Sets the length of the delay in seconds.
+
+DelegateAction.java
+Java class (abstract) extends arc.scene.Action
+// Base class for an action that wraps another action.
+fields:
+  protected Action action
+methods:
+  public Action getAction()
+  public void setAction(Action action)  // Sets the wrapped action.
+  abstract protected boolean delegate(float delta)
+  public final boolean act(float delta)
+  public void restart()
+  public void reset()
+  public void setActor(Element actor)
+  public void setTarget(Element target)
+  public String toString()
+
+FloatAction.java
+Java class extends arc.scene.actions.TemporalAction
+// An action that has a float, whose value is transitioned over time.
+fields:
+  private float start
+  private float value
+ctors:
+  public FloatAction() / public FloatAction(float start, float end)  // Creates a FloatAction that transitions from 0 to 1.
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public float getValue()  // Gets the current float value.
+  public void setValue(float value)  // Sets the current float value.
+  public float getStart()
+  public void setStart(float start)  // Sets the value to transition from.
+  public float getEnd()
+  public void setEnd(float end)  // Sets the value to transition to.
+
+IntAction.java
+Java class extends arc.scene.actions.TemporalAction
+// An action that has an int, whose value is transitioned over time.
+fields:
+  private int start
+  private int value
+ctors:
+  public IntAction() / public IntAction(int start, int end)  // Creates an IntAction that transitions from 0 to 1.
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public int getValue()  // Gets the current int value.
+  public void setValue(int value)  // Sets the current int value.
+  public int getStart()
+  public void setStart(int start)  // Sets the value to transition from.
+  public int getEnd()
+  public void setEnd(int end)  // Sets the value to transition to.
+
+LayoutAction.java
+Java class extends arc.scene.Action
+// Sets an actor's {@link Layout#setLayoutEnabled(boolean) layout} to enabled or disabled.
+fields:
+  private boolean enabled
+methods:
+  public boolean act(float delta)
+  public boolean isEnabled()
+  public void setLayoutEnabled(boolean enabled)
+
+MoveByAction.java
+Java class extends arc.scene.actions.RelativeTemporalAction
+// Moves an actor to a relative position.
+fields:
+  private float amountX
+methods:
+  protected void updateRelative(float percentDelta)
+  public void setAmount(float x, float y)
+  public float getAmountX()
+  public void setAmountX(float x)
+  public float getAmountY()
+  public void setAmountY(float y)
+
+MoveToAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Moves an actor from its current position to a specific position.
+fields:
+  private float startX
+  private float endX
+  private int alignment
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public void reset()
+  public void setPosition(float x, float y) / public void setPosition(float x, float y, int alignment)
+  public float getX()
+  public void setX(float x)
+  public float getY()
+  public void setY(float y)
+  public int getAlignment()
+  public void setAlignment(int alignment)
+
+OriginAction.java
+Java class extends arc.scene.Action
+methods:
+  public boolean act(float delta)
+
+ParallelAction.java
+Java class extends arc.scene.Action
+// Executes a number of actions at the same time.
+fields:
+  Seq<Action> actions
+  private boolean complete
+ctors:
+  public ParallelAction() / public ParallelAction(Action action1) / public ParallelAction(Action action1, Action action2) / public ParallelAction(Action action1, Action action2, Action action3) / public ParallelAction(Action action1, Action action2, Action action3, Action action4) / public ParallelAction(Action action1, Action action2, Action action3, Action action4, Action action5)
+methods:
+  public boolean act(float delta)
+  public void restart()
+  public void reset()
+  public void addAction(Action action)
+  public void setActor(Element actor)
+  public Seq<Action> getActions()
+  public String toString()
+
+RelativeTemporalAction.java
+Java class (abstract) extends arc.scene.actions.TemporalAction
+// Base class for actions that transition over time using the percent complete since the last frame.
+fields:
+  private float lastPercent
+methods:
+  protected void begin()
+  protected void update(float percent)
+  abstract protected void updateRelative(float percentDelta)
+
+RemoveAction.java
+Java class extends arc.scene.Action
+// Removes an action from an actor.
+fields:
+  private Action action
+methods:
+  public boolean act(float delta)
+  public Action getAction()
+  public void setAction(Action action)
+  public void reset()
+
+RemoveActorAction.java
+Java class extends arc.scene.Action
+// Removes an actor from the stage.
+fields:
+  private boolean removed
+methods:
+  public boolean act(float delta)
+  public void restart()
+
+RemoveListenerAction.java
+Java class extends arc.scene.Action
+// Removes a listener from an actor.
+fields:
+  private EventListener listener
+  private boolean capture
+methods:
+  public boolean act(float delta)
+  public EventListener getListener()
+  public void setListener(EventListener listener)
+  public boolean getCapture()
+  public void setCapture(boolean capture)
+  public void reset()
+
+RepeatAction.java
+Java class extends arc.scene.actions.DelegateAction
+// Repeats an action a number of times or forever.
+fields:
+  public static final int FOREVER
+  private int repeatCount
+  private boolean finished
+methods:
+  protected boolean delegate(float delta)
+  public void finish()  // Causes the action to not repeat again.
+  public void restart()
+  public int getCount()
+  public void setCount(int count)  // Sets the number of times to repeat.
+
+RotateByAction.java
+Java class extends arc.scene.actions.RelativeTemporalAction
+// Sets the actor's rotation from its current value to a relative value.
+fields:
+  private float amount
+methods:
+  protected void updateRelative(float percentDelta)
+  public float getAmount()
+  public void setAmount(float rotationAmount)
+
+RotateToAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Sets the actor's rotation from its current value to a specific value.
+fields:
+  private float start
+  private boolean useShortestDirection
+ctors:
+  public RotateToAction() / public RotateToAction(boolean useShortestDirection)  // @param useShortestDirection Set to true to move directly to the closest angle
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public float getRotation()
+  public void setRotation(float rotation)
+  public boolean isUseShortestDirection()
+  public void setUseShortestDirection(boolean useShortestDirection)
+
+RunnableAction.java
+Java class extends arc.scene.Action
+// An action that runs a {@link Runnable}.
+fields:
+  private Runnable runnable
+  private boolean ran
+methods:
+  public boolean act(float delta)
+  public void run()  // Called to run the runnable.
+  public void restart()
+  public void reset()
+  public Runnable getRunnable()
+  public void setRunnable(Runnable runnable)
+
+ScaleByAction.java
+Java class extends arc.scene.actions.RelativeTemporalAction
+// Scales an actor's scale to a relative size.
+fields:
+  private float amountX
+ctors:
+  public ScaleByAction() / public ScaleByAction(float amount)
+methods:
+  protected void updateRelative(float percentDelta)
+  public void setAmount(float x, float y) / public void setAmount(float scale)
+  public float getAmountX()
+  public void setAmountX(float x)
+  public float getAmountY()
+  public void setAmountY(float y)
+
+ScaleToAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Sets the actor's scale from its current value to a specific value.
+fields:
+  private float startX
+  private float endX
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public void setScale(float x, float y) / public void setScale(float scale)
+  public float getX()
+  public void setX(float x)
+  public float getY()
+  public void setY(float y)
+
+SequenceAction.java
+Java class extends arc.scene.actions.ParallelAction
+// Executes a number of actions one at a time.
+fields:
+  private int index
+ctors:
+  public SequenceAction() / public SequenceAction(Action action1) / public SequenceAction(Action action1, Action action2) / public SequenceAction(Action action1, Action action2, Action action3) / public SequenceAction(Action action1, Action action2, Action action3, Action action4) / public SequenceAction(Action action1, Action action2, Action action3, Action action4, Action action5)
+methods:
+  public boolean act(float delta)
+  public void restart()
+
+SizeByAction.java
+Java class extends arc.scene.actions.RelativeTemporalAction
+// Moves an actor from its current size to a relative size.
+fields:
+  private float amountWidth
+methods:
+  protected void updateRelative(float percentDelta)
+  public void setAmount(float width, float height)
+  public float getAmountWidth()
+  public void setAmountWidth(float width)
+  public float getAmountHeight()
+  public void setAmountHeight(float height)
+
+SizeToAction.java
+Java class extends arc.scene.actions.TemporalAction
+// Moves an actor from its current size to a specific size.
+fields:
+  private float startWidth
+  private float endWidth
+methods:
+  protected void begin()
+  protected void update(float percent)
+  public void setSize(float width, float height)
+  public float getWidth()
+  public void setWidth(float width)
+  public float getHeight()
+  public void setHeight(float height)
+
+TemporalAction.java
+Java class (abstract) extends arc.scene.Action
+// Base class for actions that transition over time using the percent complete.
+fields:
+  private float duration
+  private Interp interpolation
+  private boolean reverse
+ctors:
+  public TemporalAction() / public TemporalAction(float duration) / public TemporalAction(float duration, Interp interpolation)
+methods:
+  public boolean act(float delta)
+  protected void begin()  // Called the first time {@link #act(float)} is called.
+  protected void end()  // Called the last time {@link #act(float)} is called.
+  abstract protected void update(float percent)  // Called each frame.
+  public void finish()  // Skips to the end of the transition.
+  public void restart()
+  public void reset()
+  public float getTime()  // Gets the transition time so far.
+  public void setTime(float time)  // Sets the transition time so far.
+  public float getDuration()
+  public void setDuration(float duration)  // Sets the length of the transition in seconds.
+  public Interp getInterpolation()
+  public void setInterpolation(Interp interpolation)
+  public boolean isReverse()
+  public void setReverse(boolean reverse)  // When true, the action's progress will go from 100% to 0%.
+
+TimeScaleAction.java
+Java class extends arc.scene.actions.DelegateAction
+// Multiplies the delta of an action.
+fields:
+  private float scale
+methods:
+  protected boolean delegate(float delta)
+  public float getScale()
+  public void setScale(float scale)
+
+TouchableAction.java
+Java class extends arc.scene.Action
+// Sets the actor's {@link Element#touchable(Touchable) touchability}.
+fields:
+  private Touchable touchable
+methods:
+  public boolean act(float delta)
+  public Touchable getTouchable()
+  public void touchable(Touchable touchable)
+
+TranslateByAction.java
+Java class extends arc.scene.actions.RelativeTemporalAction
+// Moves an actor to a relative position.
+fields:
+  private float amountX
+methods:
+  protected void updateRelative(float percentDelta)
+  public void setAmount(float x, float y)
+  public float getAmountX()
+  public void setAmountX(float x)
+  public float getAmountY()
+  public void setAmountY(float y)
+
+VisibleAction.java
+Java class extends arc.scene.Action
+// Sets the actor's {@link Element#visible(boolean) visibility}.
+fields:
+  private boolean visible
+methods:
+  public boolean act(float delta)
+  public boolean isVisible()
+  public void setVisible(boolean visible)
+

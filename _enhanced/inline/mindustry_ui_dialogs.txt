@@ -1,0 +1,747 @@
+// BaseDialog.java : public void setTitleColor(Color color)
+    public void setTitleColor(Color color){
+        titleImage.setColor(color);
+        title.setColor(color);
+    }
+
+// BaseDialog.java : protected void makeButtonOverlay()
+    protected void makeButtonOverlay(){
+        clearChildren();
+        add(titleTable).growX().row();
+        stack(cont, buttons).grow();
+        buttons.bottom();
+    }
+
+// BaseDialog.java : protected void onResize(Runnable run)
+    protected void onResize(Runnable run){
+        Events.on(ResizeEvent.class, event -> {
+            //ignore resize events while the Android text input dialog is shown - this does lead to buggy layout when rotated, but it's better than clearing the text. I don't know of a better solution to the problem
+            if(isShown() && Core.scene.getDialog() == this && !Core.input.isShowingTextInput()){
+                run.run();
+                updateScrollFocus();
+            }
+        });
+    }
+
+// BaseDialog.java : public void addCloseListener()
+    public void addCloseListener(){
+       closeOnBack();
+    }
+
+// BaseDialog.java : public void addCloseButton(float width) / public void addCloseButton()
+    public void addCloseButton(float width){
+        buttons.defaults().size(width, 64f);
+        buttons.button("@back", Icon.left, this::hide).size(width, 64f);
+
+        addCloseListener();
+    }
+
+// CampaignRulesDialog.java : public void show(Planet planet)
+    public void show(Planet planet){
+        this.planet = planet;
+
+        rebuild();
+        show();
+    }
+
+// CampaignRulesDialog.java : void check(String text, Boolc cons, Boolp prov) / void check(String text, Boolc cons, Boolp prov, Boolp condition)
+    void check(String text, Boolc cons, Boolp prov){
+        check(text, cons, prov, () -> true);
+    }
+
+// CanvasEditDialog.java : void exportTo(Fi file)
+    void exportTo(Fi file){
+        try{
+            file.writePng(pix);
+        }catch(Exception e){
+            ui.showException(e);
+        }
+    }
+
+// CanvasEditDialog.java : void save()
+    void save(){
+        if(modified && canvas.isValid()){
+            canvas.configure(canvas.packPixmap(pix));
+            modified = false;
+        }
+    }
+
+// ColorPicker.java : public void show(Color color, Cons<Color> consumer) / public void show(Color color, boolean alpha, Cons<Color> consumer)
+    public void show(Color color, Cons<Color> consumer){
+        show(color, true, consumer);
+    }
+
+// ColorPicker.java : void updateColor() / void updateColor(boolean updateField)
+    void updateColor(){
+        updateColor(true);
+    }
+
+// CustomGameDialog.java : void showMap(Map map)
+    @Override
+    void showMap(Map map){
+        dialog.show(map);
+    }
+
+// CustomRulesDialog.java : void refresh()
+    void refresh(){
+        setup();
+        requestKeyboard();
+        requestScroll();
+    }
+
+// CustomRulesDialog.java : public void show(Rules rules, Prov<Rules> resetter)
+    public void show(Rules rules, Prov<Rules> resetter){
+        this.rules = rules;
+        this.resetter = resetter;
+        show();
+    }
+
+// CustomRulesDialog.java : public void category(String name)
+    public void category(String name){
+        current = new Table();
+        current.left().defaults().fillX().expandX().left().pad(5);
+        currentName = name;
+        categories.add(current);
+        categoryNames.add(currentName);
+    }
+
+// CustomRulesDialog.java : void addToMain(Table category, String title)
+    void addToMain(Table category, String title){
+        if(category.hasChildren()){
+            main.add(title).color(Pal.accent).padTop(20).padRight(100f).padBottom(-3).fillX().left().pad(5).row();
+            main.image().color(Pal.accent).height(3f).padRight(100f).padBottom(20).fillX().left().pad(5).row();
+            main.add(category).row();
+        }
+    }
+
+// CustomRulesDialog.java : public void number(String text, Floatc cons, Floatp prov) / public void number(String text, Floatc cons, Floatp prov, float min, float max) / public void number(String text, boolean integer, Floatc cons, Floatp prov, Boolp condition) / public void number(String text, Floatc cons, Floatp prov, Boolp condition) / public void number(String text, boolean integer, Floatc cons, Floatp prov, Boolp condition, float min, float max)
+    public void number(String text, Floatc cons, Floatp prov){
+        number(text, false, cons, prov, () -> true, 0, Float.MAX_VALUE);
+    }
+
+// CustomRulesDialog.java : public void numberi(String text, Intc cons, Intp prov, int min, int max) / public void numberi(String text, Intc cons, Intp prov, Boolp condition, int min, int max)
+    public void numberi(String text, Intc cons, Intp prov, int min, int max){
+        numberi(text, cons, prov, () -> true, min, max);
+    }
+
+// CustomRulesDialog.java : public void check(String text, Boolc cons, Boolp prov) / public void check(String text, Boolc cons, Boolp prov, Boolp condition)
+    public void check(String text, Boolc cons, Boolp prov){
+        check(text, cons, prov, () -> true);
+    }
+
+// CustomRulesDialog.java : Cell<TextField> field(Table table, float value, Floatc setter)
+    Cell<TextField> field(Table table, float value, Floatc setter){
+        return table.field(Strings.autoFixed(value, 2), v -> setter.get(Strings.parseFloat(v)))
+            .valid(Strings::canParsePositiveFloat)
+            .size(90f, 40f).pad(2f);
+    }
+
+// DatabaseDialog.java : boolean unlocked(UnlockableContent content)
+    boolean unlocked(UnlockableContent content){
+        return (!Vars.state.isCampaign() && !Vars.state.isMenu()) || content.unlocked();
+    }
+
+// EffectsDialog.java : public static EffectsDialog withAllEffects()
+    public static EffectsDialog withAllEffects(){
+        return new EffectsDialog(Seq.select(Fx.class.getFields(), f -> f.getType() == Effect.class).map(f -> new EffectEntry(Reflect.get(f)).name(f.getName())));
+    }
+
+// EffectsDialog.java : public Dialog show(Cons<EffectEntry> listener) / public Dialog show()
+    public Dialog show(Cons<EffectEntry> listener){
+        this.listener = listener;
+        return super.show();
+    }
+
+// EffectsDialog.java : static Object getData(Class<?> type)
+    static Object getData(Class<?> type){
+        if(type == Block.class) return Blocks.router;
+        return null;
+    }
+
+// FileChooserDialog.java : private void updateFileFieldStatus()
+    private void updateFileFieldStatus(){
+        if(!open){
+            ok.setDisabled(filefield.getText().replace(" ", "").isEmpty());
+        }else{
+            ok.setDisabled(!directory.child(filefield.getText()).exists() || directory.child(filefield.getText()).isDirectory());
+        }
+    }
+
+// FileChooserDialog.java : private Fi[] getFileNames()
+    private Fi[] getFileNames(){
+        Fi[] handles = directory.list(file -> !file.getName().startsWith("."));
+
+        Arrays.sort(handles, (a, b) -> {
+            if(a.isDirectory() && !b.isDirectory()) return -1;
+            if(!a.isDirectory() && b.isDirectory()) return 1;
+            return String.CASE_INSENSITIVE_ORDER.compare(a.name(), b.name());
+        });
+        return handles;
+    }
+
+// FileChooserDialog.java : public static synchronized void setLastDirectory(Fi directory)
+    public static synchronized void setLastDirectory(Fi directory){
+        lastDirectory = directory;
+        Core.settings.put("lastDirectory", directory.absolutePath());
+    }
+
+// FileChooserDialog.java : public static synchronized Fi getLastDirectory()
+    public static synchronized Fi getLastDirectory(){
+        if(!lastDirectory.exists()){
+            lastDirectory = homeDirectory;
+        }
+        return lastDirectory;
+    }
+
+// FullTextDialog.java : public void show(String titleText, String text)
+    public void show(String titleText, String text){
+        title.setText(titleText);
+        cont.clear();
+        cont.add(text).grow().wrap().labelAlign(Align.center);
+
+        super.show();
+    }
+
+// GameOverDialog.java : public void show(Team winner)
+    public void show(Team winner){
+        this.winner = winner;
+        state.afterGameOver = true;
+        show();
+        if(winner == player.team()){
+            Events.fire(new WinEvent());
+        }else{
+            Events.fire(new LoseEvent());
+        }
+    }
+
+// GameOverDialog.java : private void addStat(Table parent, String stat, int value, float delay)
+    private void addStat(Table parent, String stat, int value, float delay){
+        parent.add(new StatLabel(stat, value, delay)).top().pad(5).growX().height(50).row();
+    }
+
+// IconSelectDialog.java : public void show(Intc listener)
+    public void show(Intc listener){
+        consumer = listener;
+        super.show();
+    }
+
+// JoinDialog.java : void refreshAll()
+    void refreshAll(){
+        refreshes ++;
+
+        refreshLocal();
+        refreshRemote();
+        if(Core.settings.getBool("communityservers", true)){
+            refreshCommunity();
+        }
+    }
+
+// JoinDialog.java : void refreshRemote()
+    void refreshRemote(){
+        for(Server server : servers){
+            refreshServer(server);
+        }
+    }
+
+// JoinDialog.java : void setupServer(Server server, Host host)
+    void setupServer(Server server, Host host){
+        server.lastHost = host;
+        server.content.clear();
+        buildServer(host, server.content, false, true);
+    }
+
+// JoinDialog.java : void refreshLocal()
+    void refreshLocal(){
+        totalHosts = 0;
+
+        local.clear();
+        local.background(null);
+        local.table(Tex.button, t -> t.label(() -> "[accent]" + Core.bundle.get("hosts.discovering.any") + Strings.animated(Time.time, 4, 10f, ".")).pad(10f)).growX();
+        net.discoverServers(this::addLocalHost, this::finishLocalHosts);
+    }
+
+// JoinDialog.java : int columns()
+    int columns(){
+        return Mathf.clamp((int)((Core.graphics.getWidth() / Scl.scl() * 0.9f) / targetWidth()), 1, 4);
+    }
+
+// JoinDialog.java : void finishLocalHosts()
+    void finishLocalHosts(){
+        if(totalHosts == 0){
+            local.clear();
+            local.background(Tex.button);
+            local.add("@hosts.none").pad(10f);
+            local.add().growX();
+            local.button(Icon.refresh, this::refreshLocal).pad(-12f).padLeft(0).size(70f);
+        }else{
+            local.background(null);
+        }
+    }
+
+// JoinDialog.java : void safeConnect(String ip, int port, int version)
+    void safeConnect(String ip, int port, int version){
+        if(version != Version.build && Version.build != -1 && version != -1){
+            ui.showInfo("[scarlet]" + (version > Version.build ? KickReason.clientOutdated : KickReason.serverOutdated) + "\n[]" +
+                Core.bundle.format("server.versions", Version.build, version));
+        }else{
+            connect(ip, port);
+        }
+    }
+
+// JoinDialog.java : float targetWidth()
+    float targetWidth(){
+        return Math.min(Core.graphics.getWidth() / Scl.scl() * 0.9f, 550f);
+    }
+
+// JoinDialog.java : private void saveServers()
+    private void saveServers(){
+        Core.settings.putJson("servers", Server.class, servers);
+    }
+
+// KeybindDialog.java : public void addCloseButton()
+    @Override
+    public void addCloseButton(){
+        buttons.button("@back", Icon.left, this::hide).size(210f, 64f);
+
+        keyDown(key -> {
+            if(key == KeyCode.escape || key == KeyCode.back) hide();
+        });
+    }
+
+// LanguageDialog.java : public static String getDisplayName(Locale locale)
+    public static String getDisplayName(Locale locale){
+        String str = locale.toString().replace("in_ID", "id_ID");
+        return displayNames.get(str, str);
+    }
+
+// LaunchLoadoutDialog.java : void setMax(boolean max)
+    void setMax(boolean max){
+        Core.settings.put("maxresources", max);
+    }
+
+// LaunchLoadoutDialog.java : boolean getMax()
+    boolean getMax(){
+        return Core.settings.getBool("maxresources", true);
+    }
+
+// LoadDialog.java : public void modifyButton(TextButton button, SaveSlot slot)
+    public void modifyButton(TextButton button, SaveSlot slot){
+        button.clicked(() -> {
+            if(!button.childrenPressed()){
+                runLoadSave(slot);
+            }
+        });
+    }
+
+// LoadDialog.java : public Dialog show()
+    @Override
+    public Dialog show(){
+        super.show();
+
+        if(Core.app.isDesktop() && searchField != null){
+            Core.scene.setKeyboardFocus(searchField);
+        }
+
+        return this;
+    }
+
+// LoadoutDialog.java : public void maxItems()
+    public void maxItems(){
+        for(ItemStack stack : stacks){
+            stack.amount = total == null ? capacity : Math.max(Math.min(capacity, total.get(stack.item)), 0);
+        }
+    }
+
+// LoadoutDialog.java : public void show(int capacity, Seq<ItemStack> stacks, Boolf<Item> validator, Runnable reseter, Runnable updater, Runnable hider) / public void show(int capacity, ItemSeq total, Seq<ItemStack> stacks, Boolf<Item> validator, Runnable reseter, Runnable updater, Runnable hider)
+    public void show(int capacity, Seq<ItemStack> stacks, Boolf<Item> validator, Runnable reseter, Runnable updater, Runnable hider){
+        show(capacity, null, stacks, validator, reseter, updater, hider);
+    }
+
+// LoadoutDialog.java : private void reseed()
+    private void reseed(){
+        this.stacks = originalStacks.map(ItemStack::copy);
+        this.stacks.addAll(content.items().select(i -> validator.get(i) && !i.isHidden() && !stacks.contains(stack -> stack.item == i)).map(i -> new ItemStack(i, 0)));
+        this.stacks.sort(Structs.comparingInt(s -> s.item.id));
+    }
+
+// LoadoutDialog.java : private int step(int amount)
+    private int step(int amount){
+        if(amount < 1000){
+            return 100;
+        }else if(amount < 2000){
+            return 200;
+        }else if(amount < 5000){
+            return 500;
+        }else{
+            return 1000;
+        }
+    }
+
+// MapListDialog.java : void buildButtons()
+    void buildButtons(){}
+
+// MapListDialog.java : public Dialog show()
+    @Override
+    public Dialog show(){
+        super.show();
+
+        if(Core.app.isDesktop() && searchField != null){
+            Core.scene.setKeyboardFocus(searchField);
+        }
+
+        return this;
+    }
+
+// MapPlayDialog.java : public void show(Map map) / public void show(Map map, boolean playtesting)
+    public void show(Map map){
+        show(map, false);
+    }
+
+// ModBrowserDialog.java : public ModListing getCachedMod(String repo)
+    public @Nullable ModListing getCachedMod(String repo){
+        if(modList == null) return null;
+        return modList.find(m -> m.repo.equalsIgnoreCase(repo));
+    }
+
+// ModsDialog.java : public boolean hasUpdate(LoadedMod mod)
+    public boolean hasUpdate(LoadedMod mod){
+        return withUpdates.contains(mod);
+    }
+
+// ModsDialog.java : protected void importFail(Throwable t)
+    protected void importFail(Throwable t){
+        Core.app.post(() -> showModError(t));
+    }
+
+// ModsDialog.java : public void githubImportMod(ModListing mod) / public void githubImportMod(String repo, boolean isJava, boolean forceEnable) / public void githubImportMod(String repo, boolean isJava, String release, boolean forceEnable)
+    public void githubImportMod(ModListing mod){
+        var matchingRelease = mod.getMatchingRelease();
+        githubImportMod(mod.repo, mod.hasJava, matchingRelease == null ? null : matchingRelease.id, true);
+    }
+
+// ModsDialog.java : public static boolean matchesGameVersion(String releaseTitle) / public static boolean matchesGameVersion(int[] tag)
+    public static boolean matchesGameVersion(String releaseTitle){
+        return matchesGameVersion(parseVersionTag(releaseTitle));
+    }
+
+// PaletteDialog.java : public void show(Cons<Color> cons)
+    public void show(Cons<Color> cons){
+        this.cons = cons;
+        show();
+    }
+
+// PausedDialog.java : public boolean checkPlaytest()
+    public boolean checkPlaytest(){
+        if(state.playtestingMap != null){
+            //no exit save here
+            var testing = state.playtestingMap;
+            logic.reset();
+            ui.editor.resumeAfterPlaytest(testing);
+            return true;
+        }
+        return false;
+    }
+
+// PausedDialog.java : public void runExitSave() / public void runExitSave(boolean save)
+    public void runExitSave(){
+        runExitSave(true);
+    }
+
+// PlanetDialog.java : void addBack()
+    void addBack(){
+        buttons.button("@back", Icon.left, this::hide).size(200f, 54f).pad(2).bottom();
+    }
+
+// PlanetDialog.java : void addTech()
+    void addTech(){
+        buttons.button("@techtree", Icon.tree, () -> ui.research.show()).size(200f, 54f).visible(() -> mode == look).pad(2).bottom();
+    }
+
+// PlanetDialog.java : public void lookAt(Sector sector) / public void lookAt(Sector sector, float alpha)
+    public void lookAt(Sector sector){
+        if(sector.tile == Ptile.empty) return;
+
+        //TODO should this even set `state.planet`? the other lookAt() doesn't, so...
+        state.planet = sector.planet;
+        sector.planet.lookAt(sector, state.camPos);
+
+        clampZoom();
+    }
+
+// PlanetDialog.java : void clampZoom()
+    void clampZoom(){
+        zoom = Mathf.clamp(zoom, state.planet.minZoom, state.planet.maxZoom);
+    }
+
+// PlanetDialog.java : Sector findLauncher(Sector to)
+    @Nullable Sector findLauncher(Sector to){
+        if(mode == planetLaunch || to.planet.generator == null) return launchSector;
+
+        Sector actualLaunchSector = (launchSector != null && launchSector.planet == to.planet ? launchSector : null);
+
+        Sector candidate = to.planet.generator.findLaunchCandidate(to, actualLaunchSector);
+        return candidate == null && actualLaunchSector != null && (mode == planetLaunch || !actualLaunchSector.isAttacked()) ? actualLaunchSector : candidate;
+    }
+
+// PlanetDialog.java : boolean showing()
+    boolean showing(){
+        return newPresets.any();
+    }
+
+// PlanetDialog.java : boolean selectable(Planet planet)
+    boolean selectable(Planet planet){
+        if(planet.removed) return false;
+        if(mode == select) return planet == state.planet;
+        if(mode == planetLaunch) return launchSector != null && (launchCandidates.contains(planet) || (planet == launchSector.planet && planet.allowSelfSectorLaunch));
+        return (planet.alwaysUnlocked && planet.isLandable()) || planet.sectors.contains(Sector::hasBase) || debugSelect;
+    }
+
+// PlanetDialog.java : void displayItems(Table c, ObjectMap<Item,ExportStat> stats, String name) / void displayItems(Table c, ObjectMap<Item,ExportStat> stats, String name, Cons<Table> builder)
+    void displayItems(Table c, ObjectMap<Item, ExportStat> stats, String name){
+        displayItems(c, stats, name, t -> {});
+    }
+
+// PlanetDialog.java : void addSurvivedInfo(Sector sector, Table table, boolean wrap)
+    void addSurvivedInfo(Sector sector, Table table, boolean wrap){
+        if(!wrap){
+            table.add("@sectors.underattack").wrapLabel(wrap).row();
+        }
+    }
+
+// PlanetDialog.java : public void selectSector(Sector sector)
+    public void selectSector(Sector sector){
+        selected = sector;
+        updateSelected();
+    }
+
+// PlanetDialog.java : boolean hasNoCandidate(Sector sector)
+    boolean hasNoCandidate(Sector sector){
+        return sector != sector.planet.getStartSector() && !sector.hasBase() && findLauncher(sector) == null;
+    }
+
+// PlanetDialog.java : boolean isLocked(Sector sector)
+    boolean isLocked(Sector sector){
+        return sector.preset != null && sector.preset.locked() && !sector.hasBase() && sector.preset.techNode != null;
+    }
+
+// PlanetDialog.java : boolean canPlaySector(Sector sector)
+    boolean canPlaySector(Sector sector){
+        return !isLocked(sector) && !hasNoCandidate(sector);
+    }
+
+// ResearchDialog.java : void checkMargin()
+    void checkMargin(){
+        if(Core.graphics.isPortrait() && showTechSelect){
+            itemDisplay.marginTop(60f);
+        }else{
+            itemDisplay.marginTop(0f);
+        }
+        itemDisplay.invalidate();
+        itemDisplay.layout();
+    }
+
+// ResearchDialog.java : public TechNode getPrefRoot()
+    public @Nullable TechNode getPrefRoot(){
+        Planet currPlanet = ui.planet.isShown() ?
+            ui.planet.state.planet :
+            state.isCampaign() ? state.rules.sector.planet : null;
+        return currPlanet == null ? null : currPlanet.techTree;
+    }
+
+// ResearchDialog.java : public void switchTree(TechNode node)
+    public void switchTree(TechNode node){
+        if(lastNode == node || node == null) return;
+        nodes.clear();
+        root = new TechTreeNode(node, null);
+        lastNode = node;
+        view.rebuildAll();
+
+        rebuildItems();
+    }
+
+// ResearchDialog.java : void shift(LayoutNode[] children, float amount)
+    void shift(LayoutNode[] children, float amount){
+        for(LayoutNode node : children){
+            node.y += amount;
+            if(node.children != null && node.children.length > 0) shift(node.children, amount);
+        }
+    }
+
+// ResearchDialog.java : void copyInfo(LayoutNode node)
+    void copyInfo(LayoutNode node){
+        node.node.x = node.x;
+        node.node.y = node.y;
+        if(node.children != null){
+            for(LayoutNode child : node.children){
+                copyInfo(child);
+            }
+        }
+    }
+
+// ResearchDialog.java : void checkNodes(TechTreeNode node)
+    void checkNodes(TechTreeNode node){
+        boolean locked = locked(node.node);
+        if(!locked && (node.parent == null || node.parent.visible)) node.visible = true;
+        node.selectable = selectable(node.node);
+        for(TechTreeNode l : node.children){
+            l.visible = !locked && l.parent.visible;
+            checkNodes(l);
+        }
+
+        itemDisplay.rebuild(items);
+    }
+
+// ResearchDialog.java : boolean selectable(TechNode node)
+    boolean selectable(TechNode node){
+        //there's a desync here as far as sectors go, since the client doesn't know about that, but I'm not too concerned
+        return node.content.unlockedHost() || !node.objectives.contains(i -> !i.complete());
+    }
+
+// ResearchDialog.java : boolean locked(TechNode node)
+    boolean locked(TechNode node){
+        return !node.content.unlockedHost();
+    }
+
+// SaveDialog.java : public void addSetup()
+    @Override
+    public void addSetup(){
+
+        buttons.button("@save.new", Icon.add, () ->
+            ui.showTextInput("@save", "@save.newslot", 30, "",
+            text -> ui.loadAnd("@saving", () -> {
+            control.saves.addSave(text);
+            Core.app.post(() -> Core.app.post(this::setup));
+        }))).fillX().margin(10f);
+    }
+
+// SaveDialog.java : public void modifyButton(TextButton button, SaveSlot slot)
+    @Override
+    public void modifyButton(TextButton button, SaveSlot slot){
+        button.clicked(() -> {
+            if(button.childrenPressed()) return;
+
+            ui.showConfirm("@overwrite", "@save.overwrite", () -> save(slot));
+        });
+    }
+
+// SchematicsDialog.java : public void showInfo(Schematic schematic)
+    public void showInfo(Schematic schematic){
+        info.show(schematic);
+    }
+
+// SchematicsDialog.java : void checkTags() / void checkTags(Schematic s)
+    void checkTags(){
+        ObjectSet<String> encountered = new ObjectSet<>();
+        encountered.addAll(tags);
+        for(Schematic s : schematics.all()){
+            for(var tag : s.labels){
+                if(encountered.add(tag)){
+                    tags.add(tag);
+                }
+            }
+        }
+    }
+
+// SchematicsDialog.java : void tagsChanged()
+    void tagsChanged(){
+        rebuildTags.run();
+        if(selectedTags.any()){
+            rebuildPane.run();
+        }
+
+        Core.settings.putJson("schematic-tags", String.class, tags);
+    }
+
+// SchematicsDialog.java : void addTag(Schematic s, String tag)
+    void addTag(Schematic s, String tag){
+        s.labels.add(tag);
+        s.save();
+        tagsChanged();
+    }
+
+// SchematicsDialog.java : void removeTag(Schematic s, String tag)
+    void removeTag(Schematic s, String tag){
+        s.labels.remove(tag);
+        s.save();
+        tagsChanged();
+    }
+
+// SchematicsDialog.java : void showNewTag(Cons<String> result)
+    void showNewTag(Cons<String> result){
+        ui.showTextInput("@schematic.addtag", "", "", out -> {
+            if(tags.contains(out)){
+                ui.showInfo("@schematic.tagexists");
+            }else{
+                tags.add(out);
+                tagsChanged();
+                result.get(out);
+            }
+        });
+    }
+
+// SchematicsDialog.java : void buildTags(Schematic schem, Table t) / void buildTags(Schematic schem, Table t, boolean name)
+    void buildTags(Schematic schem, Table t){
+        buildTags(schem, t, true);
+    }
+
+// SchematicsDialog.java : public Dialog show()
+    @Override
+    public Dialog show(){
+        super.show();
+
+        if(Core.app.isDesktop() && searchField != null){
+            Core.scene.setKeyboardFocus(searchField);
+        }
+
+        return this;
+    }
+
+// SectorSelectDialog.java : public void show(Planet planet, Cons<SectorPreset> cons)
+    public void show(Planet planet, Cons<SectorPreset> cons){
+        this.planet = planet;
+        this.cons = cons;
+
+        show();
+    }
+
+// SectorSelectDialog.java : boolean matches(SectorPreset sector, String text)
+    boolean matches(SectorPreset sector, String text){
+        return sector.planet == planet && sector.requireUnlock && (text.isEmpty() || sector.name.toLowerCase(Locale.ROOT).contains(text) || sector.localizedName.toLowerCase(Locale.ROOT).contains(text));
+    }
+
+// SettingsMenuDialog.java : public void addCategory(String name, String region, Cons<SettingsTable> builder) / public void addCategory(String name, Drawable icon, Cons<SettingsTable> builder) / public void addCategory(String name, Cons<SettingsTable> builder)
+    public void addCategory(String name, @Nullable String region, Cons<SettingsTable> builder){
+        categories.add(new SettingsCategory(name, region == null ? null : new TextureRegionDrawable(atlas.find(region)), builder));
+    }
+
+// SettingsMenuDialog.java : public Seq<SettingsCategory> getCategories()
+    public Seq<SettingsCategory> getCategories(){
+        return categories;
+    }
+
+// SettingsMenuDialog.java : private void back()
+    private void back(){
+        rebuildMenu();
+        prefs.clearChildren();
+        prefs.add(menu);
+    }
+
+// SettingsMenuDialog.java : private void visible(int index)
+    private void visible(int index){
+        prefs.clearChildren();
+
+        Seq<Table> tables = new Seq<>();
+        tables.addAll(game, graphics, sound, dev);
+        for(var custom : categories){
+            tables.add(custom.table);
+        }
+
+        prefs.add(tables.get(index));
+    }
+
+// TraceDialog.java : private void copy(String content)
+    private void copy(String content){
+        Core.app.setClipboardText(content);
+        ui.showInfoFade("@copied");
+    }
+

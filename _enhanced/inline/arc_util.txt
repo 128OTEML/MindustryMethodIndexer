@@ -1,0 +1,1614 @@
+// Align.java : public static boolean isLeft(int align)
+    public static boolean isLeft(int align){
+        return (align & left) != 0;
+    }
+
+// Align.java : public static boolean isRight(int align)
+    public static boolean isRight(int align){
+        return (align & right) != 0;
+    }
+
+// Align.java : public static boolean isTop(int align)
+    public static boolean isTop(int align){
+        return (align & top) != 0;
+    }
+
+// Align.java : public static boolean isBottom(int align)
+    public static boolean isBottom(int align){
+        return (align & bottom) != 0;
+    }
+
+// Align.java : public static boolean isCenterVertical(int align)
+    public static boolean isCenterVertical(int align){
+        return (align & top) == 0 && (align & bottom) == 0;
+    }
+
+// Align.java : public static boolean isCenterHorizontal(int align)
+    public static boolean isCenterHorizontal(int align){
+        return (align & left) == 0 && (align & right) == 0;
+    }
+
+// ArcNativesLoader.java : public static synchronized void load()
+    public static synchronized void load(){
+        if(loaded) return;
+        loaded = true;
+
+        if(disableNativesLoading) return;
+
+        new SharedLibraryLoader().load("arc");
+    }
+
+// Bench.java : public static void begin(String name)
+    public static void begin(String name){
+        if(lastName != null){
+            endi();
+        }else{
+            totalStart = Time.millis();
+        }
+        last = Time.millis();
+        lastName = name;
+    }
+
+// Bench.java : public static void end()
+    public static void end(){
+        endi();
+        long total = Time.timeSinceMillis(totalStart);
+
+        times.each((name, time) -> {
+            Log.info("[PERF] @: @ms (@%)", name, time, (int)((float)time / total * 100));
+        });
+        Log.info("[PERF] TOTAL: @ms", total);
+    }
+
+// Bench.java : private static void endi()
+    private static void endi(){
+        times.put(lastName, Time.timeSinceMillis(last));
+        lastName = null;
+    }
+
+// Buffers.java : public static void copy(float[] src, Buffer dst, int numFloats, int offset) / public static void copy(byte[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(short[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(float[] src, int srcOffset, int numElements, Buffer dst) / public static void copy(int[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(float[] src, int srcOffset, Buffer dst, int numElements) / public static void copy(Buffer src, Buffer dst, int numElements)
+    public static void copy(float[] src, Buffer dst, int numFloats, int offset){
+        if(dst instanceof ByteBuffer)
+            dst.limit(numFloats << 2);
+        else if(dst instanceof FloatBuffer) dst.limit(numFloats);
+
+        copyJni(src, dst, numFloats, offset);
+        dst.position(0);
+    }
+
+// Buffers.java : private static int positionInBytes(Buffer dst)
+    private static int positionInBytes(Buffer dst){
+        return dst.position() << elementShift(dst);
+    }
+
+// Buffers.java : private static int bytesToElements(Buffer dst, int bytes)
+    private static int bytesToElements(Buffer dst, int bytes){
+        return bytes >>> elementShift(dst);
+    }
+
+// Buffers.java : private static int elementsToBytes(Buffer dst, int elements)
+    private static int elementsToBytes(Buffer dst, int elements){
+        return elements << elementShift(dst);
+    }
+
+// Buffers.java : public static FloatBuffer newFloatBuffer(int numFloats)
+    public static FloatBuffer newFloatBuffer(int numFloats){
+        ByteBuffer buffer = ByteBuffer.allocateDirect(numFloats * 4);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asFloatBuffer();
+    }
+
+// Buffers.java : public static ShortBuffer newShortBuffer(int numShorts)
+    public static ShortBuffer newShortBuffer(int numShorts){
+        ByteBuffer buffer = ByteBuffer.allocateDirect(numShorts * 2);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asShortBuffer();
+    }
+
+// Buffers.java : public static ByteBuffer newByteBuffer(int numBytes)
+    public static ByteBuffer newByteBuffer(int numBytes){
+        ByteBuffer buffer = ByteBuffer.allocateDirect(numBytes);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer;
+    }
+
+// Buffers.java : public static IntBuffer newIntBuffer(int numInts)
+    public static IntBuffer newIntBuffer(int numInts){
+        ByteBuffer buffer = ByteBuffer.allocateDirect(numInts * 4);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer.asIntBuffer();
+    }
+
+// Buffers.java : public static void disposeUnsafeByteBuffer(ByteBuffer buffer)
+    public static void disposeUnsafeByteBuffer(ByteBuffer buffer){
+        int size = buffer.capacity();
+        synchronized(unsafeBuffers){
+            if(!unsafeBuffers.remove(buffer, true))
+                throw new IllegalArgumentException("buffer not allocated with newUnsafeByteBuffer or already disposed");
+        }
+        allocatedUnsafe -= size;
+        freeMemory(buffer);
+    }
+
+// Buffers.java : public static boolean isUnsafeByteBuffer(ByteBuffer buffer)
+    public static boolean isUnsafeByteBuffer(ByteBuffer buffer){
+        synchronized(unsafeBuffers){
+            return unsafeBuffers.contains(buffer, true);
+        }
+    }
+
+// Buffers.java : public static ByteBuffer newUnsafeByteBuffer(int numBytes) / public static ByteBuffer newUnsafeByteBuffer(ByteBuffer buffer)
+    public static ByteBuffer newUnsafeByteBuffer(int numBytes){
+        ByteBuffer buffer = newDisposableByteBuffer(numBytes);
+        buffer.order(ByteOrder.nativeOrder());
+        allocatedUnsafe += numBytes;
+        synchronized(unsafeBuffers){
+            unsafeBuffers.add(buffer);
+        }
+        return buffer;
+    }
+
+// Buffers.java : public static long getUnsafeBufferAddress(Buffer buffer)
+    public static long getUnsafeBufferAddress(Buffer buffer){
+        return getBufferAddress(buffer) + buffer.position();
+    }
+
+// Buffers.java : public static int getAllocatedBytesUnsafe()
+    public static int getAllocatedBytesUnsafe(){
+        return allocatedUnsafe;
+    }
+
+// CommandHandler.java : public void setPrefix(String prefix)
+    public void setPrefix(String prefix){
+        this.prefix = prefix;
+    }
+
+// CommandHandler.java : public String getPrefix()
+    public String getPrefix(){
+        return prefix;   
+    }
+
+// CommandHandler.java : public CommandResponse handleMessage(String message) / public CommandResponse handleMessage(String message, Object params)
+    public CommandResponse handleMessage(String message){
+        return handleMessage(message, null);
+    }
+
+// CommandHandler.java : public void removeCommand(String text)
+    public void removeCommand(String text){
+        Command c = commands.get(text);
+        if(c == null) return;
+        commands.remove(text);
+        orderedCommands.remove(c);
+    }
+
+// CommandHandler.java : public Command register(String text, String description, CommandRunner<T> runner) / public Command register(String text, String params, String description, CommandRunner<T> runner) / public Command register(String text, String description, Cons<String[]> runner) / public Command register(String text, String params, String description, Cons<String[]> runner)
+    public <T> Command register(String text, String description, CommandRunner<T> runner){
+        return register(text, "", description, runner);
+    }
+
+// CommandHandler.java : public Seq<Command> getCommandList()
+    public Seq<Command> getCommandList(){
+        return orderedCommands;
+    }
+
+// Disposable.java : default boolean isDisposed()
+    default boolean isDisposed(){
+        return false;
+    }
+
+// Http.java : public static HttpRequest request(HttpMethod method, String url)
+    public static HttpRequest request(HttpMethod method, String url){
+        if(url == null) throw new NullPointerException("url cannot be null.");
+        return new HttpRequest(method).url(url);
+    }
+
+// Http.java : public static HttpRequest get(String url) / public static void get(String url, ConsT<HttpResponse,Exception> callback) / public static void get(String url, ConsT<HttpResponse,Exception> callback, Cons<Throwable> error)
+    public static HttpRequest get(String url){
+        if(url == null) throw new NullPointerException("url cannot be null.");
+        return new HttpRequest(HttpMethod.GET).url(url);
+    }
+
+// Http.java : public static HttpRequest post(String url) / public static void post(String url, ConsT<HttpResponse,Exception> callback) / public static HttpRequest post(String url, String content)
+    public static HttpRequest post(String url){
+        return post(url, (String)null);
+    }
+
+// I18NBundle.java : public static boolean getSimpleFormatter()
+    public static boolean getSimpleFormatter(){
+        return simpleFormatter;
+    }
+
+// I18NBundle.java : public static void setSimpleFormatter(boolean enabled)
+    public static void setSimpleFormatter(boolean enabled){
+        simpleFormatter = enabled;
+    }
+
+// I18NBundle.java : public static I18NBundle createEmptyBundle()
+    public static I18NBundle createEmptyBundle(){
+        I18NBundle bundle = new I18NBundle();
+        bundle.locale = ROOT_LOCALE;
+        bundle.formatter = new TextFormatter(Locale.ROOT, false);
+        bundle.properties = new ObjectMap<>();
+        return bundle;
+    }
+
+// I18NBundle.java : public static I18NBundle createBundle(Fi baseFileHandle) / public static I18NBundle createBundle(Fi baseFileHandle, Locale locale) / public static I18NBundle createBundle(Fi baseFileHandle, String encoding) / public static I18NBundle createBundle(Fi baseFileHandle, Locale locale, String encoding)
+    public static I18NBundle createBundle(Fi baseFileHandle){
+        return createBundleImpl(baseFileHandle, Locale.getDefault(), DEFAULT_ENCODING);
+    }
+
+// I18NBundle.java : private static Locale getFallbackLocale(Locale locale)
+    private static Locale getFallbackLocale(Locale locale){
+        Locale defaultLocale = Locale.getDefault();
+        return locale.equals(defaultLocale) ? null : defaultLocale;
+    }
+
+// I18NBundle.java : private static boolean checkFileExistence(Fi fh)
+    private static boolean checkFileExistence(Fi fh){
+        try{
+            fh.read().close();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+// I18NBundle.java : private void load(Reader reader)
+    private void load(Reader reader){
+        properties = new ObjectMap<>();
+        PropertiesUtils.load(properties, reader);
+    }
+
+// I18NBundle.java : public Locale getLocale()
+    public Locale getLocale(){
+        return locale;
+    }
+
+// I18NBundle.java : private void setLocale(Locale locale)
+    private void setLocale(Locale locale){
+        this.locale = locale;
+        this.formatter = new TextFormatter(locale, !simpleFormatter);
+    }
+
+// I18NBundle.java : public final String get(String key) / public String get(String key, String def)
+    public final String get(String key){
+        String result = properties.get(key);
+        if(result == null){
+            if(parent != null) result = parent.get(key);
+            if(result == null){
+                return "???" + key + "???";
+            }
+        }
+        return result;
+    }
+
+// I18NBundle.java : public String getOrNull(String key)
+    public String getOrNull(String key){
+        return has(key) ? get(key) : null;
+    }
+
+// I18NBundle.java : public String getNotNull(String key)
+    public String getNotNull(String key){
+        String s = getOrNull(key);
+        if(s == null){
+            throw new MissingResourceException("No key with name \"" + key + "\" found!", this.getClass().getName(), key);
+        }
+        return s;
+    }
+
+// I18NBundle.java : public Iterable<String> getKeys()
+    public Iterable<String> getKeys(){
+        return properties.keys();
+    }
+
+// I18NBundle.java : public ObjectMap<String,String> getProperties()
+    public ObjectMap<String, String> getProperties(){
+        return properties;
+    }
+
+// I18NBundle.java : public void setProperties(ObjectMap<String,String> properties)
+    public void setProperties(ObjectMap<String, String> properties){
+        this.properties = properties;
+    }
+
+// I18NBundle.java : public boolean has(String key)
+    public boolean has(String key){
+        if(properties.containsKey(key)){
+            return true;
+        }
+
+        if(parent != null){
+            return parent.has(key);
+        }
+        return false;
+    }
+
+// I18NBundle.java : public String format(String key, Object args)
+    public String format(String key, Object... args){
+        return formatter.format(get(key), args);
+    }
+
+// I18NBundle.java : public String formatString(String string, Object args)
+    public String formatString(String string, Object... args){
+        return formatter.format(string, args);
+    }
+
+// I18NBundle.java : public String formatFloat(String key, float value, int places)
+    public String formatFloat(String key, float value, int places){
+        return formatter.format(get(key), Strings.fixed(value, places));
+    }
+
+// I18NBundle.java : public void debug(String placeholder)
+    public void debug(String placeholder){
+        ObjectMap.Keys<String> keys = properties.keys();
+        if(keys == null) return;
+
+        for(String s : keys){
+            properties.put(s, placeholder);
+        }
+    }
+
+// I18NBundle.java : public I18NBundle getParent()
+    public I18NBundle getParent(){
+        return parent;
+    }
+
+// Interval.java : public boolean get(float time) / public boolean get(int id, float time)
+    public boolean get(float time){
+        return get(0, time);
+    }
+
+// Interval.java : public boolean check(int id, float time)
+    public boolean check(int id, float time){
+        return Time.time - times[id] >= time || Time.time < times[id];
+    }
+
+// Interval.java : public void reset(int id, float time)
+    public void reset(int id, float time){
+        times[id] = Time.time - time;
+    }
+
+// Interval.java : public void clear()
+    public void clear(){
+        Arrays.fill(times, 0);
+    }
+
+// Interval.java : public float getTime(int id)
+    public float getTime(int id){
+        return Time.time - times[id];
+    }
+
+// Interval.java : public float[] getTimes()
+    public float[] getTimes(){
+        return times;
+    }
+
+// Log.java : public static void log(LogLevel level, String text, Object args)
+    public static void log(LogLevel level, String text, Object... args){
+        if(Log.level.ordinal() > level.ordinal()) return;
+        logger.log(level, format(text, args));
+    }
+
+// Log.java : public static void debug(String text, Object args) / public static void debug(Object object)
+    public static void debug(String text, Object... args){
+        log(LogLevel.debug, text, args);
+    }
+
+// Log.java : public static void infoList(Object args)
+    public static void infoList(Object... args){
+        if(level.ordinal() > LogLevel.info.ordinal()) return;
+        StringBuilder build = new StringBuilder();
+        for(Object o : args){
+            build.append(o);
+            build.append(" ");
+        }
+        info(build.toString());
+    }
+
+// Log.java : public static void infoTag(String tag, String text)
+    public static void infoTag(String tag, String text){
+        log(LogLevel.info, "[" + tag + "] " + text);
+    }
+
+// Log.java : public static void info(String text, Object args) / public static void info(Object object)
+    public static void info(String text, Object... args){
+        log(LogLevel.info, text, args);
+    }
+
+// Log.java : public static void warn(String text, Object args)
+    public static void warn(String text, Object... args){
+        log(LogLevel.warn, text, args);
+    }
+
+// Log.java : public static void errTag(String tag, String text)
+    public static void errTag(String tag, String text){
+        log(LogLevel.err, "[" + tag + "] " + text);
+    }
+
+// Log.java : public static void err(String text, Object args) / public static void err(Throwable th) / public static void err(String text, Throwable th)
+    public static void err(String text, Object... args){
+        log(LogLevel.err, text, args);
+    }
+
+// Log.java : public static String format(String text, Object args)
+    public static String format(String text, Object... args){
+        return formatColors(text, useColors, args);
+    }
+
+// Log.java : public static String formatColors(String text, boolean useColors, Object args)
+    public static String formatColors(String text, boolean useColors, Object... args){
+        return formatter.format(text, useColors, args);
+    }
+
+// Log.java : public static String removeColors(String text)
+    public static String removeColors(String text){
+        for(String color : ColorCodes.codes){
+            text = text.replace("&" + color, "");
+        }
+        return text;
+    }
+
+// Log.java : public static String addColors(String text)
+    public static String addColors(String text){
+        for(int i = 0; i < ColorCodes.codes.length; i++){
+            text = text.replace("&" + ColorCodes.codes[i], ColorCodes.values[i]);
+        }
+        return text;
+    }
+
+// NativeUtils.java : public static void forceUtf8Locale()
+    public static void forceUtf8Locale(){
+        if(!OS.isLinux) return;
+        setEnv("LC_ALL", "en_US.UTF-8", true);
+        setEnv("LANG", "en_US.UTF-8", true);
+    }
+
+// OS.java : public static String getWindowsTmpDir()
+    public static String getWindowsTmpDir(){
+        String temp = env("TEMP");
+        if(temp != null) return temp;
+        String tmp = env("TMP");
+        if(tmp != null) return tmp;
+        return "C:\\Windows\\TEMP";
+    }
+
+// OS.java : public static Fi getAppDataDirectory(String appname)
+    public static Fi getAppDataDirectory(String appname){
+        return Core.files.absolute(getAppDataDirectoryString(appname));
+    }
+
+// OS.java : public static boolean hasProp(String name)
+    public static boolean hasProp(String name){
+        return System.getProperty(name) != null;
+    }
+
+// OS.java : public static String prop(String name)
+    public static String prop(String name){
+        return System.getProperty(name);
+    }
+
+// OS.java : public static boolean hasEnvFlag(String name)
+    public static boolean hasEnvFlag(String name){
+        return "1".equals(System.getenv(name));
+    }
+
+// OS.java : public static boolean hasEnv(String name)
+    public static boolean hasEnv(String name){
+        return System.getenv(name) != null;
+    }
+
+// OS.java : public static String env(String name)
+    public static String env(String name){
+        return System.getenv(name);
+    }
+
+// OS.java : public static String propNoNull(String name)
+    public static String propNoNull(String name){
+        String s = prop(name);
+        return s == null ? "" : s;
+    }
+
+// Pack.java : public static float packUv(float x, float y)
+    public static float packUv(float x, float y){
+        return Float.intBitsToFloat(((int)(Mathf.clamp(x) * 65535)) | (((int)(Mathf.clamp(y) * 65535)) << 16));
+    }
+
+// Pack.java : public static int u(byte b) / public static int u(short b) / public static long u(int b)
+    public static int u(byte b){
+        return b & 0xff;
+    }
+
+// Pack.java : public static byte byteValue(boolean b)
+    public static byte byteValue(boolean b){
+        return b ? (byte)1 : 0;
+    }
+
+// Pack.java : public static int shortInt(short left, short right)
+    public static int shortInt(short left, short right){
+        return (left << 16) | (right & 0xFFFF);
+    }
+
+// Pack.java : public static long longInt(int x, int y)
+    public static long longInt(int x, int y){
+        return (((long)x) << 32) | (y & 0xffffffffL);
+    }
+
+// Pack.java : public static byte byteByte(byte left, byte right)
+    public static byte byteByte(byte left, byte right){
+        return (byte)((left << 4) | right);
+    }
+
+// Pack.java : public static byte leftByte(byte value) / public static byte leftByte(short field)
+    public static byte leftByte(byte value){
+        return (byte)((value >> 4) & (byte)0x0F);
+    }
+
+// Pack.java : public static byte rightByte(byte value) / public static byte rightByte(short field)
+    public static byte rightByte(byte value){
+        return (byte)(value & 0x0F);
+    }
+
+// Pack.java : public static short leftShort(int field)
+    public static short leftShort(int field){
+        return (short)(field >>> 16);
+    }
+
+// Pack.java : public static short rightShort(int field)
+    public static short rightShort(int field){
+        return (short)(field & 0xFFFF);
+    }
+
+// Pack.java : public static int leftInt(long field)
+    public static int leftInt(long field){
+        return (int)(field >> 32);
+    }
+
+// Pack.java : public static int rightInt(long field)
+    public static int rightInt(long field){
+        return (int)(field);
+    }
+
+// Pack.java : public static short shortByte(byte left, byte right)
+    public static short shortByte(byte left, byte right){
+        return (short)((left << 8) | (right & 0xFF));
+    }
+
+// Pack.java : public static byte[] bytes(int i, byte[] result)
+    public static byte[] bytes(int i, byte[] result){
+        result[0] = (byte)(i >> 24);
+        result[1] = (byte)(i >> 16);
+        result[2] = (byte)(i >> 8);
+        result[3] = (byte)(i /*>> 0*/);
+
+        return result;
+    }
+
+// Pack.java : public static short[] shorts(long i, short[] resultShort)
+    public static short[] shorts(long i, short[] resultShort){
+        resultShort[0] = (short)(i >> 48);
+        resultShort[1] = (short)(i >> 32);
+        resultShort[2] = (short)(i >> 16);
+        resultShort[3] = (short)(i /*>> 0*/);
+
+        return resultShort;
+    }
+
+// Pack.java : public static long longShorts(short[] s)
+    public static long longShorts(short[] s){
+        return ((long)(0xFFFF & s[0]) << 48) | ((long)(0xFFFF & s[1]) << 32) | ((long)(0xFFFF & s[2]) << 16) | (long)(0xFFFF & s[3]);
+    }
+
+// Pack.java : public static int intBytes(byte b1, byte b2, byte b3, byte b4) / public static int intBytes(byte[] array)
+    public static int intBytes(byte b1, byte b2, byte b3, byte b4){
+        return ((0xFF & b1) << 24) | ((0xFF & b2) << 16) | ((0xFF & b3) << 8) | (0xFF & b4);
+    }
+
+// Pack.java : public static int bitmask(int bits, int mask, boolean b)
+    public static int bitmask(int bits, int mask, boolean b){
+        return b ? bits | mask : bits & ~mask;
+    }
+
+// PerformanceCounter.java : public void tick() / public void tick(float delta)
+    public void tick(){
+        final long t = Time.nanos();
+        if(lastTick > 0L) tick((t - lastTick) * nano2seconds);
+        lastTick = t;
+    }
+
+// PerformanceCounter.java : public void start()
+    public void start(){
+        startTime = Time.nanos();
+        valid = false;
+    }
+
+// PerformanceCounter.java : public void stop()
+    public void stop(){
+        if(startTime > 0L){
+            current += (Time.nanos() - startTime) * nano2seconds;
+            startTime = 0L;
+            valid = true;
+        }
+    }
+
+// PerformanceCounter.java : public void reset()
+    public void reset(){
+        time.reset();
+        load.reset();
+        startTime = 0L;
+        lastTick = 0L;
+        current = 0f;
+        valid = false;
+    }
+
+// PerformanceCounter.java : public String toString() / public StringBuilder toString(StringBuilder sb)
+    @Override
+    public String toString(){
+        final StringBuilder sb = new StringBuilder();
+        return toString(sb).toString();
+    }
+
+// PerformanceCounters.java : public PerformanceCounter add(String name, int windowSize) / public PerformanceCounter add(String name)
+    public PerformanceCounter add(final String name, final int windowSize){
+        PerformanceCounter result = new PerformanceCounter(name, windowSize);
+        counters.add(result);
+        return result;
+    }
+
+// PerformanceCounters.java : public void tick() / public void tick(float deltaTime)
+    public void tick(){
+        final long t = Time.nanos();
+        if(lastTick > 0L) tick((t - lastTick) * nano2seconds);
+        lastTick = t;
+    }
+
+// PerformanceCounters.java : public String toString()
+    @Override
+    public String toString(){
+        counters.sort((a, b) -> -Float.compare(a.load.value, b.load.value));
+        StringBuilder sb = new StringBuilder();
+        sb.setLength(0);
+        for(int i = 0; i < counters.size; i++){
+            counters.get(i).toString(sb);
+            if(i != counters.size - 1) sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+// QuickSelect.java : public int select(T[] items, Comparator<T> comp, int n, int size)
+    public int select(T[] items, Comparator<T> comp, int n, int size){
+        this.array = items;
+        this.comp = comp;
+        return recursiveSelect(0, size - 1, n);
+    }
+
+// QuickSelect.java : private void swap(int left, int right)
+    private void swap(int left, int right){
+        T tmp = array[left];
+        array[left] = array[right];
+        array[right] = tmp;
+    }
+
+// Ratekeeper.java : public boolean allow(long spacing, int cap)
+    public boolean allow(long spacing, int cap){
+        if(Time.timeSinceMillis(lastTime) > spacing){
+            occurences = 0;
+            lastTime = Time.millis();
+        }
+
+        occurences ++;
+        return occurences <= cap;
+    }
+
+// Ratekeeper.java : public void reset()
+    public void reset(){
+        occurences = 0;
+        lastTime = 0;
+    }
+
+// Reflect.java : public static T[] newArray(Class<T> type, int length) / public static T[] newArray(T[] oldType, int length)
+    public static <T> T[] newArray(Class<T> type, int length){
+        return (T[])java.lang.reflect.Array.newInstance(type, length);
+    }
+
+// Reflect.java : public static boolean isWrapper(Class<?> type)
+    public static boolean isWrapper(Class<?> type){
+        return type == Byte.class || type == Short.class || type == Integer.class || type == Long.class || type == Character.class || type == Boolean.class || type == Float.class || type == Double.class;
+    }
+
+// Reflect.java : public static T get(Field field) / public static T get(Object object, Field field) / public static T get(Class<?> type, Object object, String name) / public static T get(Object object, String name) / public static T get(Class<?> type, String name)
+    public static <T> T get(Field field){
+        return get(null, field);
+    }
+
+// Reflect.java : public static void set(Class<?> type, Object object, String name, Object value) / public static void set(Object object, Field field, Object value) / public static void set(Object object, String name, Object value) / public static void set(Class<?> type, String name, Object value)
+    public static void set(Class<?> type, Object object, String name, Object value){
+        try{
+            Field field = type.getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(object, value);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reflect.java : public static T invoke(Class<?> type, Object object, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Class<?> type, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Class<?> type, String name) / public static T invoke(Object object, String name, Object[] args, Class<?> parameterTypes) / public static T invoke(Object object, String name)
+    public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>... parameterTypes){
+        try{
+            Method method = type.getDeclaredMethod(name, parameterTypes);
+            method.setAccessible(true);
+            return (T)method.invoke(object, args);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Reflect.java : public static T make(String type)
+    public static <T> T make(String type){
+        try{
+            Class<T> c = (Class<T>)Class.forName(type);
+            return c.getDeclaredConstructor().newInstance();
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// ScreenRecorder.java : public static void record()
+    public static void record(){
+        if(record == null) return;
+        record.run();
+    }
+
+// ScreenUtils.java : public static void saveScreenshot(Fi file) / public static void saveScreenshot(Fi file, int x, int y, int width, int height)
+    public static void saveScreenshot(Fi file){
+        saveScreenshot(file, 0, 0, Core.graphics.getWidth(), Core.graphics.getHeight());
+    }
+
+// ScreenUtils.java : public static TextureRegion getFrameBufferTexture() / public static TextureRegion getFrameBufferTexture(int x, int y, int w, int h)
+    public static TextureRegion getFrameBufferTexture(){
+        final int w = Core.graphics.getBackBufferWidth();
+        final int h = Core.graphics.getBackBufferHeight();
+        return getFrameBufferTexture(0, 0, w, h);
+    }
+
+// ScreenUtils.java : public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h) / public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h, boolean flip)
+    public static Pixmap getFrameBufferPixmap(int x, int y, int w, int h){
+        Gl.pixelStorei(Gl.packAlignment, 1);
+
+        final Pixmap pixmap = new Pixmap(w, h);
+        ByteBuffer pixels = pixmap.pixels;
+        Gl.readPixels(x, y, w, h, Gl.rgba, Gl.unsignedByte, pixels);
+
+        return pixmap;
+    }
+
+// ScreenUtils.java : public static byte[] getFrameBufferPixels(boolean flipY) / public static byte[] getFrameBufferPixels(int x, int y, int w, int h, boolean flipY)
+    public static byte[] getFrameBufferPixels(boolean flipY){
+        final int w = Core.graphics.getBackBufferWidth();
+        final int h = Core.graphics.getBackBufferHeight();
+        return getFrameBufferPixels(0, 0, w, h, flipY);
+    }
+
+// Select.java : public static Select instance()
+    public static Select instance(){
+        if(instance == null) instance = new Select();
+        return instance;
+    }
+
+// Select.java : public T select(T[] items, Comparator<T> comp, int kthLowest, int size)
+    public <T> T select(T[] items, Comparator<T> comp, int kthLowest, int size){
+        int idx = selectIndex(items, comp, kthLowest, size);
+        return items[idx];
+    }
+
+// Select.java : private int fastMin(T[] items, Comparator<T> comp, int size)
+    private <T> int fastMin(T[] items, Comparator<T> comp, int size){
+        int lowestIdx = 0;
+        for(int i = 1; i < size; i++){
+            int comparison = comp.compare(items[i], items[lowestIdx]);
+            if(comparison < 0){
+                lowestIdx = i;
+            }
+        }
+        return lowestIdx;
+    }
+
+// Select.java : private int fastMax(T[] items, Comparator<T> comp, int size)
+    private <T> int fastMax(T[] items, Comparator<T> comp, int size){
+        int highestIdx = 0;
+        for(int i = 1; i < size; i++){
+            int comparison = comp.compare(items[i], items[highestIdx]);
+            if(comparison > 0){
+                highestIdx = i;
+            }
+        }
+        return highestIdx;
+    }
+
+// SharedLibraryLoader.java : public static synchronized void setLoaded(String libraryName)
+    public static synchronized void setLoaded(String libraryName){
+        loadedLibraries.add(libraryName);
+    }
+
+// SharedLibraryLoader.java : public static synchronized boolean isLoaded(String libraryName)
+    public static synchronized boolean isLoaded(String libraryName){
+        return loadedLibraries.contains(libraryName);
+    }
+
+// SharedLibraryLoader.java : public String mapLibraryName(String libraryName)
+    public String mapLibraryName(String libraryName){
+        if(isWindows) return libraryName + (is64Bit ? "64.dll" : ".dll");
+        if(isLinux) return "lib" + libraryName + (isARM ? "arm" : "") + (is64Bit ? "64.so" : ".so");
+        if(isMac) return "lib" + libraryName + (isARM ? "arm" : "") + (is64Bit ? "64.dylib" : ".dylib");
+        return libraryName;
+    }
+
+// SharedLibraryLoader.java : public void extractFileTo(String sourcePath, File dir) throws IOException
+    public void extractFileTo(String sourcePath, File dir) throws IOException{
+        extractFile(sourcePath, crc(readFile(sourcePath)), new File(dir, new File(sourcePath).getName()));
+    }
+
+// SharedLibraryLoader.java : private boolean canExecute(File file)
+    private boolean canExecute(File file){
+        try{
+            if(file.canExecute()) return true;
+            file.setExecutable(true, false);
+            return file.canExecute();
+        }catch(Throwable ignored){
+        }
+        return false;
+    }
+
+// Strings.java : public static byte[] sha256(String str)
+    public static byte[] sha256(String str){
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return digest.digest(str.getBytes(utf8));
+        }catch(NoSuchAlgorithmException e){
+            throw new ArcRuntimeException(e);
+        }
+    }
+
+// Strings.java : public static String formatByteCount(long bytes)
+    public static String formatByteCount(long bytes){
+        if(-1000 < bytes && bytes < 1000) return bytes + " B";
+
+        CharacterIterator ci = new StringCharacterIterator("kMGTPE");
+        while(bytes <= -999_950 || bytes >= 999_950){
+            bytes /= 1000;
+            ci.next();
+        }
+        return String.format("%.1f %cB", bytes / 1000.0, ci.current());
+    }
+
+// Strings.java : public static String bytesToHex(byte[] bytes)
+    public static String bytesToHex(byte[] bytes){
+        byte[] hexChars = new byte[bytes.length * 2];
+        for(int j = 0; j < bytes.length; j++){
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars, utf8);
+    }
+
+// Strings.java : public static String getFileExtension(String path)
+    public static String getFileExtension(String path){
+        int dotIndex = path.lastIndexOf('.');
+        return dotIndex == -1 ? "" : path.substring(dotIndex + 1);
+    }
+
+// Strings.java : public static String getFileName(String path)
+    public static String getFileName(String path){
+        int index = path.lastIndexOf('/');
+        return index < 0 ? path : path.substring(index + 1);
+    }
+
+// Strings.java : public static String getFileNameWithoutExtension(String path)
+    public static String getFileNameWithoutExtension(String path){
+        String name = getFileName(path);
+        int dotIndex = name.lastIndexOf('.');
+        return dotIndex == -1 ? name : name.substring(0, dotIndex);
+    }
+
+// Strings.java : public static boolean matches(String query, String name)
+    public static boolean matches(String query, String name){
+        return query == null || query.isEmpty() || (name != null && name.toLowerCase().contains(query.toLowerCase()));
+    }
+
+// Strings.java : public static int count(CharSequence s, char c) / public static int count(String str, String substring)
+    public static int count(CharSequence s, char c){
+        int total = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == c) total ++;
+        }
+        return total;
+    }
+
+// Strings.java : public static String truncate(String s, int length) / public static String truncate(String s, int length, String ellipsis)
+    public static String truncate(String s, int length){
+        return s.length() <= length ? s : s.substring(0, length);
+    }
+
+// Strings.java : public static Seq<Throwable> getCauses(Throwable e)
+    public static Seq<Throwable> getCauses(Throwable e){
+        Seq<Throwable> arr = new Seq<>();
+        while(e != null){
+            arr.add(e);
+            e = e.getCause();
+        }
+        return arr;
+    }
+
+// Strings.java : public static String getSimpleMessage(Throwable e)
+    public static String getSimpleMessage(Throwable e){
+        Throwable fcause = getFinalCause(e);
+        return fcause.getMessage() == null ? fcause.getClass().getSimpleName() : fcause.getClass().getSimpleName() + ": " + fcause.getMessage();
+    }
+
+// Strings.java : public static String getFinalMessage(Throwable e)
+    public static String getFinalMessage(Throwable e){
+        String message = e.getMessage();
+        while(e.getCause() != null){
+            e = e.getCause();
+            if(e.getMessage() != null){
+                message = e.getMessage();
+            }
+        }
+        return message;
+    }
+
+// Strings.java : public static Throwable getFinalCause(Throwable e)
+    public static Throwable getFinalCause(Throwable e){
+        while(e.getCause() != null){
+            e = e.getCause();
+        }
+        return e;
+    }
+
+// Strings.java : public static String getStackTrace(Throwable e)
+    public static String getStackTrace(Throwable e){
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
+    }
+
+// Strings.java : public static String neatError(Throwable e) / public static String neatError(Throwable e, boolean stacktrace)
+    public static String neatError(Throwable e){
+        return neatError(e, true);
+    }
+
+// Strings.java : public static String stripGlyphs(CharSequence str)
+    public static String stripGlyphs(CharSequence str){
+        StringBuilder out = new StringBuilder(str.length());
+
+        for(int i = 0; i < str.length(); i++){
+            int c = str.charAt(i);
+            if(c >= 0xE000 && c <= 0xF8FF) continue;
+            out.append((char)c);
+        }
+
+        return out.toString();
+    }
+
+// Strings.java : public static String sanitizeFilename(String str)
+    public static String sanitizeFilename(String str){
+        if(str.equals(".")){
+            return "_";
+        }else if(str.equals("..")){
+            return "__";
+        }else if(reservedFilenamePattern.matcher(str).matches()){
+            //turn things like con.msch -> _con.msch, which is no longer reserved
+            str = "_" + str;
+        }
+        return filenamePattern.matcher(str).replaceAll("_");
+    }
+
+// Strings.java : public static boolean isSafeFilename(String name)
+    public static boolean isSafeFilename(String name){
+        return !name.equals(".") && !name.equals("..") && !reservedFilenamePattern.matcher(name).matches() && !unsafeFilenamePattern.matcher(name).find();
+    }
+
+// Strings.java : public static String encode(String str)
+    public static String encode(String str){
+        try{
+            return URLEncoder.encode(str, "UTF-8");
+        }catch(UnsupportedEncodingException why){
+            //why the HECK does this even throw an exception
+            throw new RuntimeException(why);
+        }
+    }
+
+// Strings.java : public static String join(String separator, String strings) / public static String join(String separator, Iterable<String> strings)
+    public static String join(String separator, String... strings){
+        StringBuilder builder = new StringBuilder();
+        for(String s : strings){
+            builder.append(s);
+            builder.append(separator);
+        }
+        builder.setLength(builder.length() - separator.length());
+        return builder.toString();
+    }
+
+// Strings.java : public static String animated(float time, int length, float scale, String replacement)
+    public static String animated(float time, int length, float scale, String replacement){
+        return new String(new char[Math.abs((int)(time / scale) % length)]).replace("\0", replacement);
+    }
+
+// Strings.java : public static boolean canParseInt(String s)
+    public static boolean canParseInt(String s){
+        return parseInt(s) != Integer.MIN_VALUE;
+    }
+
+// Strings.java : public static boolean canParsePositiveInt(String s)
+    public static boolean canParsePositiveInt(String s){
+        int p = parseInt(s);
+        return p >= 0;
+    }
+
+// Strings.java : public static int parseInt(String s, int defaultValue) / public static int parseInt(String s, int radix, int defaultValue) / public static int parseInt(String s, int radix, int defaultValue, int start, int end) / public static int parseInt(String s)
+    public static int parseInt(String s, int defaultValue){
+        return parseInt(s, 10, defaultValue);
+    }
+
+// Strings.java : public static long parseLong(String s, long defaultValue) / public static long parseLong(String s, int radix, long defaultValue) / public static long parseLong(String s, int radix, int start, int end, long defaultValue)
+    public static long parseLong(String s, long defaultValue){
+        return parseLong(s, 10, defaultValue);
+    }
+
+// Strings.java : public static boolean canParseFloat(String s)
+    public static boolean canParseFloat(String s){
+        return parseFloat(s, Float.NEGATIVE_INFINITY) != Float.NEGATIVE_INFINITY;
+    }
+
+// Strings.java : public static boolean canParsePositiveFloat(String s)
+    public static boolean canParsePositiveFloat(String s){
+        return parseFloat(s) >= 0f;
+    }
+
+// Strings.java : public static float parseFloat(String s) / public static float parseFloat(String value, float defaultValue)
+    public static float parseFloat(String s){
+        return parseFloat(s, Float.NEGATIVE_INFINITY);
+    }
+
+// Strings.java : public static Color parseColor(String s) / public static Color parseColor(String s, Color defaultValue)
+    public static Color parseColor(String s){
+        return parseColor(s, new Color());
+    }
+
+// Strings.java : private static int parseHex(String string, int from, int to)
+    private static int parseHex(String string, int from, int to){
+        int total = 0;
+        for(int i = from; i < to; i++){
+            char c = string.charAt(i);
+            int digit = Character.digit(c, 16);
+            if(digit < 0) return -1;
+            total += digit * (i == from ? 16 : 1);
+        }
+        return total;
+    }
+
+// Strings.java : public static String fixed(float d, int decimalPlaces)
+    public static String fixed(float d, int decimalPlaces){
+        return fixedBuilder(d, decimalPlaces).toString();
+    }
+
+// Strings.java : private static void append(StringBuilder tgt, String pfx, int dgt, long val)
+    private static void append(StringBuilder tgt, String pfx, int dgt, long val){
+        tgt.append(pfx);
+        if(dgt > 1){
+            int pad = (dgt - 1);
+            for(long xa = val; xa > 9 && pad > 0; xa /= 10) pad--;
+            for(int xa = 0; xa < pad; xa++) tgt.append('0');
+        }
+        tgt.append(val);
+    }
+
+// Strings.java : public static StringBuilder replace(StringBuilder builder, String find, String replace) / public static StringBuilder replace(StringBuilder builder, char find, String replace)
+    public static StringBuilder replace(StringBuilder builder, String find, String replace){
+        int findLength = find.length(), replaceLength = replace.length();
+        int index = 0;
+        while(true){
+            index = builder.indexOf(find, index);
+            if(index == -1) break;
+            builder.replace(index, index + findLength, replace);
+            index += replaceLength;
+        }
+        return builder;
+    }
+
+// Strings.java : private static boolean isDigitsOnly(String part)
+    private static boolean isDigitsOnly(String part){
+        for(int i = 0; i < part.length(); i++){
+            if(!Character.isDigit(part.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+// Structs.java : public static boolean eq(Object a, Object b)
+    public static boolean eq(Object a, Object b){
+        return (a == b) || (a != null && a.equals(b));
+    }
+
+// Structs.java : public static T[] arr(T array)
+    public static <T> T[] arr(T... array){
+        return array;
+    }
+
+// Structs.java : public static void filter(Iterable<T> iterable, Boolf<T> removal) / public static void filter(Iterator<T> it, Boolf<T> removal) / public static T[] filter(Class<T> type, T[] array, Boolf<T> value)
+    public static <T> void filter(Iterable<T> iterable, Boolf<T> removal){
+        filter(iterable.iterator(), removal);
+    }
+
+// Structs.java : public static T random(T array) / public static T random(Rand rand, T array)
+    public static <T> T random(T... array){
+        if(array.length == 0) return null;
+        return array[Mathf.random(array.length - 1)];
+    }
+
+// Structs.java : public static int count(T[] array, Boolf<T> value)
+    public static <T> int count(T[] array, Boolf<T> value){
+        int total = 0;
+        for(T t : array){
+            if(value.get(t)) total ++;
+        }
+        return total;
+    }
+
+// Structs.java : public static boolean contains(T[] array, T value) / public static boolean contains(T[] array, Boolf<T> value)
+    public static <T> boolean contains(T[] array, T value){
+        for(T t : array){
+            if(t == value || (value != null && value.equals(t))) return true;
+        }
+        return false;
+    }
+
+// Structs.java : public static T find(T[] array, Boolf<T> value)
+    public static <T> T find(T[] array, Boolf<T> value){
+        for(T t : array){
+            if(value.get(t)) return t;
+        }
+        return null;
+    }
+
+// Structs.java : public static int indexOf(Iterable<T> array, Boolf<T> value) / public static int indexOf(T[] array, T value) / public static int indexOf(T[] array, Boolf<T> value)
+    public static <T> int indexOf(Iterable<T> array, Boolf<T> value){
+        int i = 0;
+        for(T t : array){
+            if(value.get(t)){
+                return i;
+            }
+            i ++;
+        }
+        return -1;
+    }
+
+// Structs.java : public static T[] remove(T[] array, T value) / public static T[] remove(T[] array, int index)
+    public static <T> T[] remove(T[] array, T value){
+        return remove(array, indexOf(array, value));
+    }
+
+// Structs.java : public static T[] add(T[] array, T item)
+    public static <T> T[] add(T[] array, T item){
+        T[] next = Reflect.newArray(array, array.length + 1);
+        next[array.length] = item;
+        System.arraycopy(array, 0, next, 0, array.length);
+        return next;
+    }
+
+// Structs.java : public static void swap(T[] array, int a, int b)
+    public static <T> void swap(T[] array, int a, int b){
+        T temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
+    }
+
+// Structs.java : public static Comparator<T> comps(Comparator<T> first, Comparator<T> second)
+    public static <T> Comparator<T> comps(Comparator<T> first, Comparator<T> second){
+        return (a, b) -> {
+            int value = first.compare(a, b);
+            return value != 0 ? value : second.compare(a, b);
+        };
+    }
+
+// Structs.java : public static Comparator<T> comparing(Func<? super T,? extends U> keyExtractor, Comparator<? super U> keyComparator) / public static Comparator<T> comparing(Func<? super T,? extends U> keyExtractor)
+    public static <T, U> Comparator<T> comparing(Func<? super T, ? extends U> keyExtractor, Comparator<? super U> keyComparator){
+        return (c1, c2) -> keyComparator.compare(keyExtractor.get(c1), keyExtractor.get(c2));
+    }
+
+// Structs.java : public static Comparator<T> comparingFloat(Floatf<? super T> keyExtractor)
+    public static <T> Comparator<T> comparingFloat(Floatf<? super T> keyExtractor){
+        return (c1, c2) -> Float.compare(keyExtractor.get(c1), keyExtractor.get(c2));
+    }
+
+// Structs.java : public static Comparator<T> comparingInt(Intf<? super T> keyExtractor)
+    public static <T> Comparator<T> comparingInt(Intf<? super T> keyExtractor){
+        return (c1, c2) -> Integer.compare(keyExtractor.get(c1), keyExtractor.get(c2));
+    }
+
+// Structs.java : public static Comparator<T> comparingLong(Longf<? super T> keyExtractor)
+    public static <T> Comparator<T> comparingLong(Longf<? super T> keyExtractor){
+        return (c1, c2) -> Long.compare(keyExtractor.get(c1), keyExtractor.get(c2));
+    }
+
+// Structs.java : public static Comparator<T> comparingBool(Boolf<? super T> keyExtractor)
+    public static <T> Comparator<T> comparingBool(Boolf<? super T> keyExtractor){
+        return (c1, c2) -> Boolean.compare(keyExtractor.get(c1), keyExtractor.get(c2));
+    }
+
+// Structs.java : public static void each(Cons<T> cons, T objects)
+    public static <T> void each(Cons<T> cons, T... objects){
+        for(T t : objects){
+            cons.get(t);
+        }
+    }
+
+// Structs.java : public static void forEach(Iterable<T> i, Cons<T> cons)
+    public static <T> void forEach(Iterable<T> i, Cons<T> cons){
+        for(T t : i){
+            cons.get(t);
+        }
+    }
+
+// Structs.java : public static T findMin(T[] arr, Comparator<T> comp) / public static T findMin(T[] arr, Floatf<T> proc) / public static T findMin(Iterable<T> arr, Comparator<T> comp) / public static T findMin(Iterable<T> arr, Boolf<T> allow, Comparator<T> comp)
+    public static <T> T findMin(T[] arr, Comparator<T> comp){
+        T result = null;
+        for(T t : arr){
+            if(result == null || comp.compare(result, t) < 0){
+                result = t;
+            }
+        }
+        return result;
+    }
+
+// Structs.java : public static boolean inBounds(int x, int y, T[][] array) / public static boolean inBounds(int x, int y, int[][] array) / public static boolean inBounds(int x, int y, float[][] array) / public static boolean inBounds(int x, int y, boolean[][] array) / public static boolean inBounds(int x, int y, int z, T[][][] array) / public static boolean inBounds(int x, int y, int z, int[][][] array) / public static boolean inBounds(int x, int y, int z, int size, int padding) / public static boolean inBounds(int x, int y, int width, int height)
+    public static <T> boolean inBounds(int x, int y, T[][] array){
+        return x >= 0 && y >= 0 && x < array.length && y < array[0].length;
+    }
+
+// TaskQueue.java : public void run()
+    public void run(){
+        synchronized(runnables){
+            executedRunnables.clear();
+            executedRunnables.addAll(runnables);
+            runnables.clear();
+        }
+
+        for(Runnable runnable : executedRunnables){
+            runnable.run();
+        }
+    }
+
+// TaskQueue.java : public int size()
+    public int size(){
+        return runnables.size;
+    }
+
+// TaskQueue.java : public void clear()
+    public void clear(){
+        synchronized(runnables){
+            runnables.clear();
+        }
+    }
+
+// TaskQueue.java : public void post(Runnable runnable)
+    public void post(Runnable runnable){
+        synchronized(runnables){
+            runnables.add(runnable);
+        }
+    }
+
+// TextFormatter.java : public String format(String pattern, Object args)
+    public String format(String pattern, Object... args){
+        if(messageFormat != null){
+            messageFormat.applyPattern(replaceEscapeChars(pattern));
+            return messageFormat.format(args);
+        }
+        return simpleFormat(pattern, args);
+    }
+
+// Threads.java : public static ThreadLocal<T> local(Prov<T> prov)
+    public static <T> ThreadLocal<T> local(Prov<T> prov){
+        return new ThreadLocal<T>(){
+            @Override
+            protected T initialValue(){
+                return prov.get();
+            }
+        };
+    }
+
+// Threads.java : public static T await(Future<T> future) / public static void await(ExecutorService exec)
+    public static <T> T await(Future<T> future){
+        try{
+            return future.get();
+        }catch(ExecutionException | InterruptedException ex){
+            throw new ArcRuntimeException(ex.getCause());
+        }
+    }
+
+// Threads.java : public static void awaitAll(Seq<? extends Future<?>> futures)
+    public static void awaitAll(Seq<? extends Future<?>> futures){
+        try{
+            for(Future<?> f : futures){
+                f.get();
+            }
+        }catch(ExecutionException | InterruptedException ex){
+            throw new ArcRuntimeException(ex.getCause());
+        }
+    }
+
+// Threads.java : public static ExecutorService executor(String name, int threads) / public static ExecutorService executor(int threads) / public static ExecutorService executor(String name) / public static ExecutorService executor()
+    public static ExecutorService executor(@Nullable String name, int threads){
+        return Executors.newFixedThreadPool(threads, r -> newThread(r, name, true));
+    }
+
+// Threads.java : public static ExecutorService unboundedExecutor(String name, int min) / public static ExecutorService unboundedExecutor(String name) / public static ExecutorService unboundedExecutor()
+    public static ExecutorService unboundedExecutor(@Nullable String name, int min){
+        return new ThreadPoolExecutor(min, Integer.MAX_VALUE, 1, TimeUnit.MINUTES, new SynchronousQueue<>(), r -> newThread(r, name, true));
+    }
+
+// Threads.java : public static ExecutorService boundedExecutor(String name, int max)
+    public static ExecutorService boundedExecutor(@Nullable String name, int max){
+        ThreadPoolExecutor exec = new ThreadPoolExecutor(max, max, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(), r -> newThread(r, name, true));
+        exec.allowCoreThreadTimeOut(true);
+        return exec;
+    }
+
+// Threads.java : public static void sleep(long ms) / public static void sleep(long ms, int ns)
+    public static void sleep(long ms){
+        try{
+            Thread.sleep(ms);
+        }catch(InterruptedException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+// Threads.java : public static void throwAppException(Throwable t)
+    public static void throwAppException(Throwable t){
+        Core.app.post(() -> {
+            if(t instanceof RuntimeException){
+                throw ((RuntimeException)t);
+            }else{
+                throw new RuntimeException(t);
+            }
+        });
+    }
+
+// Threads.java : public static Thread thread(Runnable runnable) / public static Thread thread(String name, Runnable runnable)
+    public static Thread thread(Runnable runnable){
+        return thread(null, runnable);
+    }
+
+// Threads.java : public static Thread daemon(Runnable runnable) / public static Thread daemon(String name, Runnable runnable)
+    public static Thread daemon(Runnable runnable){
+        return daemon(null, runnable);
+    }
+
+// Threads.java : private static Thread newThread(Runnable r, String name, boolean daemon)
+    private static Thread newThread(Runnable r, @Nullable String name, boolean daemon){
+        Thread thread = name == null ? new Thread(r) : new Thread(r, name);
+        thread.setDaemon(daemon);
+        thread.setUncaughtExceptionHandler((t, e) -> Log.err(e));
+        return thread;
+    }
+
+// Time.java : public static Seq<DelayRun> getRuns()
+    public static Seq<DelayRun> getRuns(){
+        return runs;
+    }
+
+// Time.java : public static void setRuns(Seq<DelayRun> runs)
+    public static void setRuns(Seq<DelayRun> runs){
+        Time.runs = runs;
+    }
+
+// Time.java : public static void run(float delay, Runnable r)
+    public static void run(float delay, Runnable r){
+        DelayRun run = Pools.obtain(DelayRun.class, DelayRun::new);
+        run.finish = r;
+        run.delay = delay;
+        runs.add(run);
+    }
+
+// Time.java : public static Task runTask(float delay, Runnable r)
+    public static Task runTask(float delay, Runnable r){
+        return Timer.schedule(r, delay / 60f);
+    }
+
+// Time.java : public static void mark()
+    public static void mark(){
+        marks.add(nanos());
+    }
+
+// Time.java : public static float elapsed()
+    public static float elapsed(){
+        if(marks.size == 0){
+            return -1;
+        }else{
+            return timeSinceNanos(marks.pop()) / 1000000f;
+        }
+    }
+
+// Time.java : public static void updateGlobal()
+    public static void updateGlobal(){
+        globalTimeRaw += Core.graphics.getDeltaTime()*60f;
+        delta = deltaimpl.get();
+
+        if(Double.isInfinite(timeRaw) || Double.isNaN(timeRaw)){
+            timeRaw = 0;
+        }
+
+        time = (float)timeRaw;
+        globalTime = (float)globalTimeRaw;
+    }
+
+// Time.java : public static double getInternalTime()
+    public static double getInternalTime(){
+        return timeRaw;
+    }
+
+// Time.java : public static void setInternalTime(double timeInternal)
+    public static void setInternalTime(double timeInternal){
+        timeRaw = timeInternal;
+        time = (float)timeInternal;
+    }
+
+// Time.java : public static void clear()
+    public static void clear(){
+        runs.clear();
+    }
+
+// Time.java : public static void setDeltaProvider(Floatp impl)
+    public static void setDeltaProvider(Floatp impl){
+        deltaimpl = impl;
+        delta = impl.get();
+    }
+
+// Time.java : public static long nanos()
+    public static long nanos(){
+        return System.nanoTime();
+    }
+
+// Time.java : public static long millis()
+    public static long millis(){
+        return System.currentTimeMillis();
+    }
+
+// Time.java : public static long nanosToMillis(long nanos)
+    public static long nanosToMillis(long nanos){
+        return nanos / nanosPerMilli;
+    }
+
+// Time.java : public static long millisToNanos(long millis)
+    public static long millisToNanos(long millis){
+        return millis * nanosPerMilli;
+    }
+
+// Time.java : public static long timeSinceNanos(long prevTime)
+    public static long timeSinceNanos(long prevTime){
+        return nanos() - prevTime;
+    }
+
+// Time.java : public static long timeSinceMillis(long prevTime)
+    public static long timeSinceMillis(long prevTime){
+        return millis() - prevTime;
+    }
+
+// Timekeeper.java : public static Timekeeper ofMillis(long ms)
+    public static Timekeeper ofMillis(long ms){
+        return new Timekeeper(ms);
+    }
+
+// Timekeeper.java : public static Timekeeper ofTicks(float ticks)
+    public static Timekeeper ofTicks(float ticks){
+        return ofSeconds(ticks / 60f);
+    }
+
+// Timekeeper.java : public static Timekeeper ofSeconds(float seconds)
+    public static Timekeeper ofSeconds(float seconds){
+        return new Timekeeper((long)(seconds * 1000));
+    }
+
+// Timekeeper.java : public boolean poll()
+    public boolean poll(){
+        boolean result = get();
+        if(result) reset();
+        return result;
+    }
+
+// Timekeeper.java : public boolean get()
+    public boolean get(){
+        return Time.timeSinceMillis(lastTime) > intervalMs;
+    }
+
+// Timekeeper.java : public void reset()
+    public void reset(){
+        lastTime = Time.millis();
+    }
+
+// Timer.java : public static Timer instance()
+    public static Timer instance(){
+        synchronized(threadLock){
+            TimerThread thread = thread();
+            if(thread.instance == null) thread.instance = new Timer();
+            return thread.instance;
+        }
+    }
+
+// Timer.java : private static TimerThread thread()
+    private static TimerThread thread(){
+        synchronized(threadLock){
+            if(thread == null || thread.files != Core.files){
+                if(thread != null) thread.dispose();
+                thread = new TimerThread();
+            }
+            return thread;
+        }
+    }
+
+// Timer.java : public static Task post(Task task)
+    public static Task post(Task task){
+        return instance().postTask(task);
+    }
+
+// Timer.java : public static Task schedule(Task task, float delaySeconds) / public static Task schedule(Task task, float delaySeconds, float intervalSeconds) / public static Task schedule(Task task, float delaySeconds, float intervalSeconds, int repeatCount) / public static Task schedule(Runnable task, float delaySeconds) / public static Task schedule(Runnable task, float delaySeconds, float intervalSeconds) / public static Task schedule(Runnable task, float delaySeconds, float intervalSeconds, int repeatCount)
+    public static Task schedule(Task task, float delaySeconds){
+        return instance().scheduleTask(task, delaySeconds);
+    }
+
+// Timer.java : public Task postTask(Task task)
+    public Task postTask(Task task){
+        return scheduleTask(task, 0, 0, 0);
+    }
+
+// Timer.java : public Task scheduleTask(Task task, float delaySeconds) / public Task scheduleTask(Task task, float delaySeconds, float intervalSeconds) / public Task scheduleTask(Task task, float delaySeconds, float intervalSeconds, int repeatCount)
+    public Task scheduleTask(Task task, float delaySeconds){
+        return scheduleTask(task, delaySeconds, 0, 0);
+    }
+
+// Timer.java : public void stop()
+    public void stop(){
+        synchronized(threadLock){
+            thread().instances.remove(this, true);
+        }
+    }
+
+// Timer.java : public void start()
+    public void start(){
+        synchronized(threadLock){
+            TimerThread thread = thread();
+            Seq<Timer> instances = thread.instances;
+            if(instances.contains(this, true)) return;
+            instances.add(this);
+            threadLock.notifyAll();
+        }
+    }
+
+// Timer.java : public synchronized void clear()
+    public synchronized void clear(){
+        for(int i = 0, n = tasks.size; i < n; i++){
+            Task task = tasks.get(i);
+            synchronized(task){
+                task.executeTimeMillis = 0;
+                task.timer = null;
+            }
+        }
+        tasks.clear();
+    }
+
+// Timer.java : public synchronized boolean isEmpty()
+    public synchronized boolean isEmpty(){
+        return tasks.size == 0;
+    }
+
+// Timer.java : public synchronized void delay(long delayMillis)
+    public synchronized void delay(long delayMillis){
+        for(int i = 0, n = tasks.size; i < n; i++){
+            Task task = tasks.get(i);
+            synchronized(task){
+                task.executeTimeMillis += delayMillis;
+            }
+        }
+    }
+

@@ -1,0 +1,414 @@
+AirBlock.java
+Java class extends mindustry.world.blocks.environment.Floor
+ctors:
+  public AirBlock(String name)
+methods:
+  public void drawBase(Tile tile)
+  public void load()
+  public void init()
+  public boolean isHidden()
+  public TextureRegion[] variantRegions()
+
+CharacterOverlay.java
+Java class extends mindustry.world.blocks.environment.OverlayFloor
+fields:
+  public static final String chars  // This is a special reduced character set that fits in 6 bits! It is not ASCII!
+  public TextureRegion letterRegions
+  public Color color
+ctors:
+  public CharacterOverlay(String name)
+methods:
+  public void drawBase(Tile tile)
+  public Object getConfig(Tile tile)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void onPicked(Tile tile)
+  public void buildEditorConfig(Table table)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+  public void editorPicked(Tile tile)
+  public static byte charToData(char c)
+inner-class: CharOverlayDataStruct
+  fields:
+    byte character
+    byte rotation
+
+Cliff.java
+Java class extends mindustry.world.Block
+fields:
+  public float size
+  public TextureRegion cliffs
+ctors:
+  public Cliff(String name)
+methods:
+  public void drawBase(Tile tile)
+  public int minimapColor(Tile tile)
+
+ColoredFloor.java
+Java class extends mindustry.world.blocks.environment.Floor
+fields:
+  public static final int flagIgnoreDifferentColor  // If the alpha value of the color is set to this value, different colors are ignored and no border is drawn.
+  public static final int flagSmoothBlend  // If the alpha value of the color is set to this value, colors are interpolated across corners.
+  private static final float verts  // 4x (pos2 color uv2)
+  public Color defaultColor
+  protected int defaultColorRgba
+ctors:
+  public ColoredFloor(String name)
+methods:
+  public void init()
+  public void buildEditorConfig(Table table)
+  public static void showColorEdit(Table t, Block block)
+  public Object getConfig(Tile tile)
+  public void drawBase(Tile tile)
+  static float sample(Block target, int tx1, int ty1, int tx2, int ty2, int tx3, int ty3, int tx4, int ty4)
+  public void drawOverlay(Tile tile)
+  public void floorChanged(Tile tile)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+  public void editorPicked(Tile tile)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean checkAutotileSame(Tile tile, Tile other)
+  public int minimapColor(Tile tile)
+
+ColoredWall.java
+Java class extends mindustry.world.blocks.environment.StaticWall
+fields:
+  public static final int flagIgnoreDifferentColor  // If the alpha value of the color is set to this value, different colors are ignored and no border is drawn.
+  public static final int flagApplyDarkness  // If the alpha value of the color is set to this value, the wall will have darkness applied, as other walls do.
+  public Color defaultColor
+  protected int defaultColorRgba
+ctors:
+  public ColoredWall(String name)
+methods:
+  public void init()
+  public Object getConfig(Tile tile)
+  public void buildEditorConfig(Table table)
+  public void drawBase(Tile tile)
+  public void blockChanged(Tile tile)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+  public void editorPicked(Tile tile)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public boolean checkAutotileSame(Tile tile, Tile other)
+  public boolean isDarkened(Tile tile)
+  public int minimapColor(Tile tile)
+
+EmptyFloor.java
+Java class extends mindustry.world.blocks.environment.Floor
+// Empty floor is *not* equivalent to air.
+ctors:
+  public EmptyFloor(String name)
+methods:
+  public void drawBase(Tile tile)
+
+Floor.java
+Java class extends mindustry.world.Block
+fields:
+  public String edge  // edge fallback, used mainly for ores
+  public float speedMultiplier  // Multiplies unit velocity by this when walked on.
+  public float dragMultiplier  // Multiplies unit drag by this when walked on.
+  public float damageTaken  // Damage taken per tick on this tile.
+  public float drownTime  // How many ticks it takes to drown on this.
+  public Effect walkEffect  // Effect when walking on this floor.
+  public Sound walkSound  // Sound made when walking.
+  public float walkSoundVolume  // Volume of sound made when walking.
+  public Effect drownUpdateEffect  // Effect displayed when drowning on this floor.
+  public StatusEffect status  // Status effect applied when walking on.
+  public float statusDuration  // Intensity of applied status effect.
+  public Liquid liquidDrop  // liquids that drop from this block, used for pumps.
+  public float liquidMultiplier  // Multiplier for pumped liquids, used for deep water.
+  public boolean isLiquid  // whether this block is liquid.
+  public float overlayAlpha  // for liquid floors, this is the opacity of the overlay drawn on top.
+  public boolean supportsOverlay  // whether this floor supports an overlay floor
+  public boolean supportsBeingOverlaid  // if false, this floor can't be used as an overlay (liquid underlay), even if the floor it's placed on supports it
+  public boolean shallow  // shallow water flag used for generation
+  public Block blendGroup  // Group of blocks that this block does not draw edges on.
+  public boolean oreDefault  // Whether this ore generates in maps by default.
+  public float oreScale  // Ore generation params.
+  public Block wall  // Wall variant of this block.
+  public Block decoration  // Decoration block.
+  public boolean canShadow  // Whether units can draw shadows over this.
+  public boolean forceDrawLight  // If true, this floor ignores the obstructsLight flag of overlays.
+  public boolean needsSurface  // Whether this overlay needs a surface to be on.
+  public boolean allowCorePlacement  // If true, cores can be placed on this floor.
+  public boolean wallOre  // If true, this ore is allowed on walls.
+  public int blendId  // Actual ID used for blend groups.
+  public int tilingVariants  // If >0, this floor is drawn as parts of a large texture.
+  public boolean autotile  // If true, this floor uses autotiling; variants are not supported.
+  public int autotileMidVariants  // If >1, the middle region of the autotile has random variants.
+  public int autotileVariants  // Variants of the main autotile sprite.
+  public boolean drawEdgeIn  // If true (default), this floor will draw edges of other floors on itself.
+  public boolean drawEdgeOut  // If true (default), this floor will draw its edges onto other floors.
+  protected TextureRegion tilingRegions
+  protected TextureRegion autotileRegions
+  protected TextureRegion autotileVariantRegions
+  protected int tilingSize
+  protected TextureRegion edges
+  protected Seq<Floor> blenders
+  protected Bits blended
+  protected int dirs
+  protected TextureRegion edgeRegion
+ctors:
+  public Floor(String name) / public Floor(String name, int variants)
+methods:
+  public void load()
+  public void init()
+  public TextureRegion getDisplayIcon(Tile tile)
+  public String getDisplayName(Tile tile)
+  public void createIcons(MultiPacker packer)
+  public void drawBase(Tile tile)
+  public void drawMain(Tile tile)
+  public boolean checkAutotileSame(Tile tile, Tile other)
+  public int variant(int x, int y) / public int variant(int x, int y, int max)
+  public void drawOverlay(Tile tile)
+  public TextureRegion[] icons()
+  public void floorChanged(Tile tile)  // Called when this floor is set on the specified tile.
+  public boolean shouldIndex(Tile tile)  // @return whether to index this floor by flag
+  public boolean updateRender(Tile tile)  // @return true if this floor should be updated in the render loop, e.g.
+  public void renderUpdate(UpdateRenderState tile)
+  public boolean hasSurface()  // @return whether this floor has a valid surface on which to place things, e.g.
+  public boolean isDeep()
+  public void drawNonLayer(Tile tile, CacheLayer layer)
+  protected void drawEdges(Tile tile)
+  protected void drawBlended(Tile tile, boolean checkId)
+  public int realBlendId(Tile tile)
+  protected TextureRegion[][] edges(int x, int y)  // Returns the edge array that should be used to draw at the specified tile position.
+  protected TextureRegion edge(int x, int y, int rx, int ry)
+  protected boolean doEdge(Tile tile, Tile otherTile, Floor other)  // @return whether the edges from {@param other} should be drawn onto this tile *
+  public boolean damages()  // @return whether being on this floor can damage a unit
+inner-class: UpdateRenderState
+  fields:
+    public Tile tile
+    public Floor floor
+    public float data
+  ctors:
+    public UpdateRenderState(Tile tile, Floor floor)
+
+OreBlock.java
+Java class extends mindustry.world.blocks.environment.OverlayFloor
+// An overlay ore for a specific item type.
+ctors:
+  public OreBlock(String name, Item ore) / public OreBlock(Item ore) / public OreBlock(String name)  // For mod use only!
+methods:
+  public void setup(Item ore)
+  public void createIcons(MultiPacker packer)
+  public void init()
+  public String getDisplayName(Tile tile)
+
+OverlayFloor.java
+Java class extends mindustry.world.blocks.environment.Floor
+// A type of floor that is overlaid on top of other floors.
+ctors:
+  public OverlayFloor(String name)
+methods:
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public void drawBase(Tile tile)
+
+Prop.java
+Java class extends mindustry.world.Block
+fields:
+  public float layer
+ctors:
+  public Prop(String name)
+methods:
+  public void drawBase(Tile tile)
+  public TextureRegion[] icons()
+
+RemoveOre.java
+Java class extends mindustry.world.blocks.environment.OverlayFloor
+ctors:
+  public RemoveOre(String name)
+methods:
+  public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public boolean canReplace(Block other)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+
+RemoveWall.java
+Java class extends mindustry.world.Block
+ctors:
+  public RemoveWall(String name)
+methods:
+  public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha)
+  public boolean canPlaceOn(Tile tile, Team team, int rotation)
+  public boolean canReplace(Block other)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+
+RuneOverlay.java
+Java class extends mindustry.world.blocks.environment.OverlayFloor
+fields:
+  public static final int characters
+  public static final int unicodeOffset
+  public TextureRegion letterRegions
+  public Color color
+ctors:
+  public RuneOverlay(String name)
+methods:
+  public static String bytesToString(byte[] data)  // Encodes rune data bytes into a string that can be displayed in the font.
+  public static byte[] stringToBytes(String s)  // Converts a displayable string into rune data bytes.
+  public void drawBase(Tile tile)
+  public Object getConfig(Tile tile)
+  public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list)
+  public void onPicked(Tile tile)
+  public void buildEditorConfig(Table table)
+  public void placeEnded(Tile tile, Unit builder, int rotation, Object config)
+  public void editorPicked(Tile tile)
+
+SeaBush.java
+Java class extends mindustry.world.blocks.environment.Prop
+fields:
+  public TextureRegion botRegion
+  public TextureRegion centerRegion
+  public int lobesMin
+  public float botAngle
+  public float sclMin
+  static Rand rand
+ctors:
+  public SeaBush(String name)
+methods:
+  public void drawBase(Tile tile)
+
+Seaweed.java
+Java class extends mindustry.world.blocks.environment.Prop
+ctors:
+  public Seaweed(String name)
+methods:
+  public void drawBase(Tile tile)
+
+ShallowLiquid.java
+Java class extends mindustry.world.blocks.environment.Floor
+// Blends water together with a standard floor.
+fields:
+  public Floor liquidBase
+  public float liquidOpacity
+ctors:
+  public ShallowLiquid(String name)
+methods:
+  public void set(Block liquid, Block floor)
+  public void createIcons(MultiPacker packer)
+
+SpawnBlock.java
+Java class extends mindustry.world.blocks.environment.OverlayFloor
+ctors:
+  public SpawnBlock(String name)
+methods:
+  public void drawBase(Tile tile)
+
+StaticProp.java
+Java class extends mindustry.world.blocks.environment.Prop
+ctors:
+  public StaticProp(String name)
+
+StaticTree.java
+Java class extends mindustry.world.blocks.environment.StaticWall
+ctors:
+  public StaticTree(String name)
+methods:
+  public void drawBase(Tile tile)
+
+StaticWall.java
+Java class extends mindustry.world.blocks.environment.Prop
+fields:
+  public TextureRegion large
+  public TextureRegion split
+  public boolean autotile  // If true, this wall uses autotiling; variants are not supported.
+  public int autotileMidVariants  // If >1, the middle region of the autotile has random variants.
+  protected TextureRegion autotileRegions
+ctors:
+  public StaticWall(String name)
+methods:
+  public void drawBase(Tile tile)
+  public int variant(int x, int y, int max)
+  public boolean checkAutotileSame(Tile tile, Tile other)
+  public void load()
+  public boolean canReplace(Block other)
+  boolean eq(int rx, int ry)
+
+SteamVent.java
+Java class extends mindustry.world.blocks.environment.Floor
+// can't use an overlay for this because it spans multiple tiles
+fields:
+  public static final Point2 offsets
+  public Block parent
+  public Effect effect
+  public Color effectColor
+  public float effectSpacing
+ctors:
+  public SteamVent(String name)
+methods:
+  public void drawMain(Tile tile)
+  public boolean updateRender(Tile tile)
+  public boolean shouldIndex(Tile tile)
+  public boolean isCenterVent(Tile tile)
+  public void renderUpdate(UpdateRenderState state)
+  public boolean checkAdjacent(Tile tile)  // note that only the top right tile works for this; render order reasons.
+
+TallBlock.java
+Java class extends mindustry.world.Block
+// I don't know what else to call this.
+fields:
+  public float shadowOffset
+  public float layer
+  public float shadowLayer
+  public float rotationRand
+  public float shadowAlpha
+ctors:
+  public TallBlock(String name)
+methods:
+  public void init()
+  public void drawBase(Tile tile)
+  public void drawShadow(Tile tile)
+  public TextureRegion[] icons()
+
+TiledFloor.java
+Java class extends mindustry.world.blocks.environment.Floor
+// Renders floors in packed square tiles, sized to be as large as possible given the provided size constraints.
+fields:
+  public TextureRegion sizedRegions
+  public int maxSize
+ctors:
+  public TiledFloor(String name) / public TiledFloor(String name, int variants, int maxSize)
+methods:
+  public void load()
+  long state(Tile tile)
+  public void floorChanged(Tile tile)
+  void scan(Tile tile)
+  public void drawMain(Tile tile)
+inner-class: TiledStateStruct
+  fields:
+    int x
+    int y
+    int size
+    int changes
+
+TiledWall.java
+Java class extends mindustry.world.blocks.environment.StaticWall
+// Renders walls in packed square tiles, sized to be as large as possible given the provided size constraints.
+fields:
+  public TextureRegion sizedRegions
+  public int maxSize
+ctors:
+  public TiledWall(String name) / public TiledWall(String name, int variants, int maxSize)
+methods:
+  public void load()
+  long state(Tile tile)
+  public void blockChanged(Tile tile)
+  void scan(Tile tile)
+  public void drawBase(Tile tile)
+
+TreeBlock.java
+Java class extends mindustry.world.Block
+fields:
+  public float shadowOffset
+  public TextureRegion shadow
+ctors:
+  public TreeBlock(String name)
+methods:
+  public void drawBase(Tile tile)
+  public void drawShadow(Tile tile)
+
+WobbleProp.java
+Java class extends mindustry.world.blocks.environment.Prop
+fields:
+  public float wscl
+ctors:
+  public WobbleProp(String name)
+methods:
+  public void drawBase(Tile tile)
+

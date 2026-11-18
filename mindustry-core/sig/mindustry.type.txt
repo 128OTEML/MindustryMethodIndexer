@@ -1,0 +1,851 @@
+Category.java
+(unknown)
+
+CellLiquid.java
+Java class extends mindustry.type.Liquid
+// Liquid that draws cells in its puddle.
+fields:
+  public Color colorFrom
+  public int cells
+  public Liquid spreadTarget
+  public float maxSpread
+ctors:
+  public CellLiquid(String name, Color color) / public CellLiquid(String name)
+methods:
+  public void update(Puddle puddle)
+  public float react(Liquid other, float amount, Tile tile, float x, float y)
+  public void drawPuddle(Puddle puddle)
+
+ErrorContent.java
+Java class extends mindustry.ctype.Content
+// Represents a blank type of content that has an error.
+methods:
+  public ContentType getContentType()
+
+Item.java
+Java class extends mindustry.ctype.UnlockableContent implements mindustry.logic.Senseable
+fields:
+  public Color color
+  public float explosiveness  // how explosive this item is.
+  public float flammability  // flammability above 0.3 makes this eligible for item burners.
+  public float radioactivity  // how radioactive this item is.
+  public float charge  // how electrically potent this item is.
+  public int hardness  // drill hardness of the item
+  public float cost  // base material cost of this item, used for calculating place times
+  public float healthScaling  // When this item is present in the build cost, a block's <b>default</b> health is multiplied by 1 + scaling, where 'scaling' is summed together for all item requirement types.
+  public boolean lowPriority  // if true, this item is of the lowest priority to drills.
+  public int frames  // If >0, this item is animated.
+  public int transitionFrames  // Number of generated transition frames between each frame
+  public float frameTime  // Ticks in-between animation frames.
+  public boolean buildable  // If true, this material is used by buildings.
+  public boolean hidden
+ctors:
+  public Item(String name, Color color) / public Item(String name)
+methods:
+  public boolean isOnPlanet(Planet planet)
+  public boolean isHidden()
+  public void loadIcon()
+  public void setStats()
+  public String toString()
+  public ContentType getContentType()
+  public void createIcons(MultiPacker packer)
+  public double sense(LAccess sensor)
+  public Object senseObject(LAccess sensor)
+  public static Seq<Item> getAllOres()  // Allocates a new array containing all items that generate ores.
+
+ItemSeq.java
+Java class implements java.lang.Iterable, arc.util.serialization.Json.JsonSerializable
+fields:
+  protected final int values
+  public int total
+ctors:
+  public ItemSeq() / public ItemSeq(Seq<ItemStack> stacks)
+methods:
+  public void checkNegative()
+  public ItemSeq copy()
+  public void each(ItemConsumer cons)
+  public void clear()
+  public Seq<ItemStack> toSeq()
+  public ItemStack[] toArray()
+  public void min(int number)
+  public boolean has(Item item) / public boolean has(ItemSeq seq) / public boolean has(Item item, int amount)
+  public int get(Item item)
+  public void set(Item item, int amount)
+  public void add(ItemModule itemModule) / public void add(ItemStack[] stacks) / public void add(ItemSeq seq) / public void add(ItemStack stack) / public void add(Item item) / public void add(Item item, int amount)
+  public void remove(ItemStack stack) / public void remove(Item item) / public void remove(Item item, int amount)
+  public void write(Json json)
+  public void read(Json json, JsonValue jsonData)
+  public String toString()
+  public Iterator<ItemStack> iterator()
+
+ItemStack.java
+Java class implements java.lang.Comparable
+fields:
+  public static final ItemStack empty
+  public Item item
+  public int amount
+ctors:
+  public ItemStack(Item item, int amount) / public ItemStack()  // serialization only
+methods:
+  public ItemStack set(Item item, int amount)
+  public ItemStack copy() / public static ItemStack[] copy(ItemStack[] stacks)
+  public boolean equals(ItemStack other) / public boolean equals(Object o)
+  public static ItemStack[] mult(ItemStack[] stacks, float amount)
+  public static ItemStack[] with(Object items)
+  public static Seq<ItemStack> list(Object items)
+  public int compareTo(ItemStack itemStack)
+  public String toString()
+
+Liquid.java
+Java class extends mindustry.ctype.UnlockableContent implements mindustry.logic.Senseable
+// A better name for this class would be "fluid", but it's too late for that.
+fields:
+  public static final int animationFrames  // must be static and global so conduits don't conflict - DO NOT INTERACT WITH THESE IN MODS OR I WILL PERSONALLY YELL AT YOU
+  public static float animationScaleGas
+  protected static final Rand rand
+  public boolean gas  // If true, this fluid is treated as a gas (and does not create puddles)
+  public Color color  // Color used in pipes and on the ground.
+  public Color gasColor  // Color of this liquid in gas form.
+  public Color barColor  // Color used in bars.
+  public Color lightColor  // Color used to draw lights.
+  public float flammability  // 0-1, 0 is completely not flammable, anything above that may catch fire when exposed to heat, 0.5+ is very flammable.
+  public float temperature  // temperature: 0.5 is 'room' temperature, 0 is very cold, 1 is molten hot
+  public float heatCapacity  // how much heat this liquid can store.
+  public float viscosity  // how thick this liquid is.
+  public float explosiveness  // how prone to exploding this liquid is, when heated.
+  public boolean blockReactive  // whether this fluid reacts in blocks at all (e.g.
+  public boolean coolant  // if false, this liquid cannot be a coolant
+  public boolean moveThroughBlocks  // if true, this liquid can move through blocks as a puddle.
+  public boolean incinerable  // if true, this liquid can be incinerated in the incinerator block.
+  public StatusEffect effect  // The associated status effect.
+  public Effect particleEffect  // Effect shown in puddles.
+  public float particleSpacing  // Particle effect rate spacing in ticks.
+  public float boilPoint  // Temperature at which this liquid vaporizes.
+  public boolean capPuddles  // If true, puddle size is capped.
+  public Effect vaporEffect  // Effect when this liquid vaporizes.
+  public boolean hidden  // If true, this liquid is hidden in most UI.
+  public ObjectSet<Liquid> canStayOn  // Liquids this puddle can stay on, e.g.
+ctors:
+  public Liquid(String name, Color color) / public Liquid(String name)  // For modding only.
+methods:
+  public void init()
+  public boolean isHidden()
+  public int getAnimationFrame()
+  public boolean willBoil()  // @return true if this liquid will boil in this global environment.
+  public boolean canExtinguish()
+  public Color barColor()
+  public void drawPuddle(Puddle puddle)  // Draws a puddle of this liquid on the floor.
+  public void update(Puddle puddle)  // Runs when puddles update.
+  public float react(Liquid other, float amount, Tile tile, float x, float y)  // TODO proper API for this (do not use yet!)
+  public void setStats()
+  public double sense(LAccess sensor)
+  public Object senseObject(LAccess sensor)
+  public String toString()
+  public ContentType getContentType()
+
+LiquidStack.java
+Java class implements java.lang.Comparable
+fields:
+  public static final LiquidStack empty
+  public Liquid liquid
+  public float amount
+ctors:
+  public LiquidStack(Liquid liquid, float amount) / protected LiquidStack()  // serialization only
+methods:
+  public LiquidStack set(Liquid liquid, float amount)
+  public LiquidStack copy()
+  public boolean equals(LiquidStack other) / public boolean equals(Object o)
+  public static LiquidStack[] mult(LiquidStack[] stacks, float amount)
+  public static LiquidStack[] with(Object items)
+  public static Seq<LiquidStack> list(Object items)
+  public int compareTo(LiquidStack liquidStack)
+  public String toString()
+
+MapLocales.java
+Java class extends arc.struct.ObjectMap implements arc.util.serialization.Json.JsonSerializable
+// Class for storing map-specific locale bundles
+methods:
+  public void write(Json json)
+  public void read(Json json, JsonValue jsonData)
+  public MapLocales copy()
+  public String getProperty(String key) / private String getProperty(String locale, String key)
+  public boolean containsProperty(String key) / private boolean containsProperty(String locale, String key)
+  public String getFormatted(String key, Object args)
+  public static String currentLocale()  // To handle default locale properly
+
+PayloadSeq.java
+Java class
+fields:
+  private ObjectIntMap<UnlockableContent> payloads
+  private int total
+methods:
+  public boolean isEmpty()
+  public boolean any()
+  public int total()
+  public void add(UnlockableContent block) / public void add(UnlockableContent block, int amount)
+  public void remove(UnlockableContent block) / public void remove(UnlockableContent block, int amount) / public void remove(Seq<PayloadStack> stacks)
+  public PayloadSeq removeAll(Boolf<UnlockableContent> pred)  // @return this object
+  public void clear()
+  public int get(UnlockableContent block)
+  public boolean contains(Seq<PayloadStack> stacks) / public boolean contains(UnlockableContent block, int amount) / public boolean contains(UnlockableContent block) / public boolean contains(PayloadStack stack)
+  public void write(Writes write)
+  public void read(Reads read)
+
+PayloadStack.java
+Java class implements java.lang.Comparable
+fields:
+  public UnlockableContent item
+  public int amount
+ctors:
+  public PayloadStack(UnlockableContent item, int amount) / public PayloadStack(UnlockableContent item) / public PayloadStack()
+methods:
+  public static PayloadStack[] with(Object items)
+  public static Seq<PayloadStack> list(Object items)
+  public int compareTo(PayloadStack stack)
+  public boolean equals(Object o)
+  public String toString()
+
+Planet.java
+Java class extends mindustry.ctype.UnlockableContent
+fields:
+  private static final Vec3 intersectResult  // intersect() temp var.
+  private static final Mat3D mat  // drawSectors() temp matrix.
+  private static final Seq<Vec3> points  // drawArc() temp curve points.
+  private static final Vec3 tmpNormal
+  public GenericMesh mesh  // Mesh used for rendering.
+  public GenericMesh cloudMesh  // Mesh used for rendering planet clouds.
+  public Mesh gridMesh  // Mesh used for rendering planet grid outlines.
+  public Vec3 position  // Position in global coordinates.
+  public PlanetGrid grid  // Grid used for the sectors on the planet.
+  public PlanetGenerator generator  // Generator that will make the planet.
+  public Seq<Sector> sectors  // Array of sectors; directly maps to tiles in the grid.
+  public float orbitSpacing  // Default spacing between planet orbits in world units.
+  public float radius  // Radius of this planet's sphere.
+  public float camRadius  // Camera radius offset.
+  public float minZoom  // Minimum camera zoom value.
+  public float maxZoom  // Maximum camera zoom value.
+  public boolean drawOrbit  // Whether to draw the orbital circle.
+  public float atmosphereRadIn  // Atmosphere radius adjustment parameters.
+  public float clipRadius  // Frustum sphere clip radius.
+  public float orbitRadius  // Orbital radius around the sun.
+  public float totalRadius  // Total radius of this planet and all its children.
+  public float orbitTime  // Time for the planet to orbit around the sun once, in seconds.
+  public float rotateTime  // Time for the planet to perform a full revolution, in seconds.
+  public float orbitOffset  // Random orbit angle offset to prevent planets from starting out in a line.
+  public float sectorApproxRadius  // Approx.
+  public boolean tidalLock  // Whether this planet is tidally locked relative to its parent - see https://en.wikipedia.org/wiki/Tidal_locking
+  public boolean accessible  // Whether this planet is listed in the planet access UI.
+  public int defaultEnv  // Environment flags for sectors on this planet.
+  public Attributes defaultAttributes  // Environment attributes.
+  public boolean updateLighting  // If true, a day/night cycle is simulated.
+  public float lightSrcFrom  // Day/night cycle parameters.
+  public int startSector  // The default starting sector displayed to the map dialog.
+  public int sectorSeed  // Seed for sector base generation on this planet.
+  public float launchCapacityMultiplier  // multiplier for core item capacity when launching
+  public boolean bloom  // Whether the bloom render effect is enabled.
+  public boolean visible  // Whether this planet is displayed.
+  public Color landCloudColor  // Tint of clouds displayed when landing.
+  public Color lightColor  // For suns, this is the color that shines on other planets.
+  public Color atmosphereColor  // Atmosphere tint for landable planets.
+  public Color iconColor  // Icon for appearance in planet list.
+  public boolean hasAtmosphere  // Whether this planet has an atmosphere.
+  public boolean allowLaunchSchematics  // Whether to allow users to specify a custom launch schematic for this map.
+  public boolean allowLaunchLoadout  // Whether to allow users to specify the resources they take to this map.
+  public boolean allowSectorInvasion  // Whether to simulate sector invasions from enemy bases.
+  public boolean allowLegacyLaunchPads  // If true, legacy launch pads can be enabled.
+  public boolean clearSectorOnLose  // If true, sectors saves are cleared when lost.
+  public float enemyBuildSpeedMultiplier  // Multiplier for enemy rebuild speeds; only applied in campaign (not standard rules)
+  public float enemyFactoryActivationDelay  // Default activation delay for enemy factories, if not set in the campaign.
+  public boolean enemyInfiniteItems  // If true, the enemy team always has infinite items.
+  public boolean enemyCoreSpawnReplace  // If true, enemy cores are replaced with spawnpoints on this planet (for invasions)
+  public boolean prebuildBase  // If true, blocks in the radius of the core will be removed and "built up" in a shockwave upon landing.
+  public boolean allowWaves  // If true, waves are created on sector loss.
+  public boolean allowLaunchToNumbered  // If false, players are unable to land on this planet's numbered sectors.
+  public boolean allowCampaignRules  // If true, the player is allowed to change the difficulty/rules in the planet UI.
+  public String icon  // Icon as displayed in the planet selection dialog.
+  public Music launchMusic  // Plays in the planet dialog when this planet is selected.
+  public Seq<Music> ambientMusic  // Overrides random ambient music to be played.
+  public Seq<Music> darkMusic  // Overrides music that is played in certain situations, like during boss waves or low core health.
+  public boolean alwaysPlayMusic  // If true, this overrides the game setting to always play ambient music.
+  public Block defaultCore  // Default core block for launching.
+  public Planet parent  // Parent body that this planet orbits around.
+  public Planet solarSystem  // The root parent of the whole solar system this planet is in.
+  public Seq<Planet> children  // All planets orbiting this one, in ascending order of radius.
+  public TechNode techTree  // Default root node shown when the tech tree is opened here.
+  public Seq<Planet> launchCandidates  // Planets that can be launched to from this one.
+  public boolean allowSelfSectorLaunch  // Whether interplanetary accelerators can launch to 'any' procedural sector on this planet's surface.
+  public boolean autoAssignPlanet  // If true, all content in this planet's tech tree will be assigned this planet in their shownPlanets.
+  public Seq<UnlockableContent> unlockedOnLand  // Content (usually planet-specific) that is unlocked upon landing here.
+  public Prov<GenericMesh> meshLoader  // Loads the mesh.
+  public Prov<Mesh> gridMeshLoader  // Loads the planet grid outline mesh.
+  public Planet statParent  // If set, this planet will have the same stats as its parent.
+  public ObjectSet<Planet> updateGroup  // Planets that are allowed to update at the same time as this one for background calculations.
+  public CampaignRules campaignRules  // Global difficulty/modifier settings for this planet's campaign.
+  public CampaignRules campaignRuleDefaults  // Defaults applied to the rules.
+  public Cons<Rules> ruleSetter  // Sets up rules on game load for any sector on this planet.
+  public ObjectMap<Block,Block> sectorCaptureReplacements  // Replaces specific blocks on the map upon sector capture.
+  public boolean showRtsAIRule  // If true, RTS AI can be customized.
+  public boolean loadPlanetData  // If true, planet data is loaded as 'planets/{name}.json'.
+  public PlanetData data  // Data indicating attack sector positions and sector mappings.
+  private CampaignStats campaignStats  // Statistics of this planet campaign.
+ctors:
+  public Planet(String name, Planet parent, float radius) / public Planet(String name, Planet parent, float radius, int sectorSize)
+methods:
+  public void removeContent()
+  public void saveRules()
+  public void loadRules()
+  public CampaignStats stats()
+  public void loadStats()
+  public void saveStats()
+  public void clearStats()
+  public Sector getStartSector()
+  public void applyRules(Rules rules) / public void applyRules(Rules rules, boolean customGame)
+  public void applyDefaultRules(CampaignRules rules)
+  public Sector getLastSector()
+  public void setLastSector(Sector sector)
+  public void preset(int index, SectorPreset preset)
+  public boolean hasGrid()  // @return whether this planet has a sector grid to select.
+  public boolean isLandable()  // @return whether this planet has any sectors to land on.
+  public void updateTotalRadius()
+  public Vec3 getLightNormal()
+  public float getOrbitAngle()  // Calculates orbital rotation based on universe time.
+  public float getRotation()  // Calculates rotation on own axis based on universe time.
+  public Vec3 addParentOffset(Vec3 in)  // Adds this planet's offset relative to its parent to the vector.
+  public Vec3 getWorldPosition(Vec3 in)  // Gets the absolute world position of this planet, taking into account all parents.
+  public void updateBaseCoverage()  // Updates wave coverage of bases.
+  public Mat3D getTransform(Mat3D mat)  // @return the supplied matrix with transformation applied.
+  public void reloadMesh()  // Regenerates the planet mesh.
+  public void reloadMeshAsync()
+  public void load()
+  public void init()
+  public PlanetData getData()
+  public Sector getSector(Ptile tile) / public Sector getSector(Ray ray) / public Sector getSector(Ray ray, float radius)  // Gets a sector a tile position.
+  public Vec3 intersect(Ray ray, float radius)  // @return the sector that is hit by this ray, or null if nothing intersects it.
+  public boolean isHidden()  // Planets cannot be viewed in the database dialog.
+  public ContentType getContentType()
+  public boolean visible()
+  public void draw(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void drawAtmosphere(Mesh atmosphere, Camera3D cam)
+  public void drawClouds(PlanetParams params, Mat3D projection, Mat3D transform)
+  public void drawBorders(VertexBatch3D batch, Sector sector, Color base, float alpha)  // Draws sector borders.
+  public void fill(VertexBatch3D batch, Sector sector, Color color, float offset)  // Draws sector plane.
+  public void drawSelection(VertexBatch3D batch, Sector sector, Color color, float stroke, float length)  // Draws sector when selected.
+  public void renderSectors(VertexBatch3D batch, Camera3D cam, PlanetParams params)  // Renders sector outlines.
+  public void drawArc(VertexBatch3D batch, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount)  // Draws an arc from one point to another on the planet.
+  public void drawArcLine(VertexBatch3D batch, Vec3 a, Vec3 b, Color from, Color to, float length, float timeScale, int pointCount, float stroke)  // Draws an arc from one point to another on the planet.
+  public Vec3 lookAt(Sector sector, Vec3 out)
+  public Vec3 project(Sector sector, Camera3D cam, Vec3 out)
+  public void setPlane(Sector sector, PlaneBatch3D projector)
+inner-class: PlanetData
+  fields:
+    public ObjectIntMap<String> presets
+    public int attackSectors
+
+Publishable.java
+Java interface
+// Defines a piece of content that can be published on the Workshop.
+methods:
+  String getSteamID()  // @return workshop item ID, or null if this isn't on the workshop.
+  void addSteamID(String id)  // adds a steam ID to this item once it's published.
+  void removeSteamID()  // removes the item ID; called when the item isn't found.
+  String steamTitle()  // @return default title of the listing.
+  String steamDescription()  // @return standard steam listing description, may be null.
+  String steamTag()  // @return the tag that this content has.
+  Fi createSteamFolder(String id)  // @return a folder with everything needed for this piece of content in it; does not need to be a copy.
+  Fi createSteamPreview(String id)  // @return a preview file PNG.
+  default Seq<String> extraTags()  // @return any extra tags to add to this item.
+  default boolean hasSteamID()  // @return whether this item is or was once on the workshop.
+  default boolean prePublish()  // called before this item is published.
+
+Sector.java
+Java class
+// A small section of a planet.
+fields:
+  static final String threats
+  private static final Seq<Sector> tmpSeq1
+  public final SectorRect rect
+  public final Plane plane
+  public final Planet planet
+  public final Ptile tile
+  public final int id
+  public SaveSlot save
+  public SectorPreset preset
+  public Sector shieldTarget
+  public SectorInfo info
+  public float threat  // Number 0-1 indicating the difficulty based on nearby bases.
+  public boolean generateEnemyBase
+ctors:
+  public Sector(Planet planet, Ptile tile)
+methods:
+  public Seq<Sector> near() / public void near(Cons<Sector> cons)
+  public boolean isNear(Sector other)
+  public String displayThreat()  // Displays threat as a formatted string.
+  public boolean unlocked()  // @return whether this sector can be landed on at all.
+  public boolean allowLaunchSchematics()
+  public boolean allowLaunchLoadout()
+  public void saveInfo()
+  public void loadInfo()
+  public void clearInfo()  // Removes any sector info.
+  public boolean isShielded()
+  public boolean isAttacked()
+  public boolean hasBase()  // @return whether the player has a base (active save with a core) here.
+  public boolean isFrozen()
+  public boolean hasEnemyBase()  // @return whether the enemy has a generated base here.
+  public boolean isBeingPlayed()
+  public String name()
+  public void setName(String name)
+  public TextureRegion icon()
+  public String iconChar()
+  public boolean isCaptured()
+  public boolean hasSave()
+  public boolean locked()
+  public float getLight()  // @return light dot product in the range [0, 1].
+  public int getSize()  // @return the sector size, in tiles
+  public void removeItems(ItemSeq items)
+  public void removeItem(Item item, int amount)
+  public void addItems(ItemSeq items)
+  public ItemSeq items()  // @return items currently in this sector, taking into account playing state.
+  public String toString()
+  protected SectorRect makeRect()  // Projects this sector onto a 4-corner square for use in map gen.
+inner-class: SectorRect
+  fields:
+    public final Vec3 center
+    public final Vec3 result
+    public final float radius
+  ctors:
+    public SectorRect(float radius, Vec3 center, Vec3 top, Vec3 right, float rotation)
+  methods:
+    public Vec3 project(float x, float y)  // Project a coordinate into 3D space.
+
+SectorDifficulty.java
+Java class
+// Note: Don't use this class; difficulty will be reworked in v9 to use specific discrete values instead of arbitrary numbers.
+fields:
+  public static final int low  // Note that these values represent the minimum integer value.
+
+SectorPreset.java
+Java class extends mindustry.ctype.UnlockableContent
+fields:
+  public FileMapGenerator generator
+  public Planet planet
+  public Sector sector
+  public int captureWave
+  public Cons<Rules> rules
+  public float difficulty  // Difficulty, 0-10.
+  public float startWaveTimeMultiplier
+  public boolean addStartingItems
+  public boolean noLighting
+  public boolean isLastSector  // If true, this is the last sector in its planetary campaign.
+  public boolean requireUnlock  // If true, this sector must be unlocked before landing is permitted.
+  public boolean showHidden  // If true, the icon and name is shown, even when it's a 'hidden' always-unlocked sector.
+  public boolean showSectorLandInfo
+  public boolean overrideLaunchDefaults  // If true, uses this sector's launch fields instead
+  public boolean allowLaunchSchematics  // Whether to allow users to specify a custom launch schematic for this map.
+  public boolean allowLaunchLoadout  // Whether to allow users to specify the resources they take to this map.
+  public boolean attackAfterWaves  // If true, switches to attack mode after waves end.
+  public int originalPosition  // The original position of this sector; used for migration.
+  public Seq<Sector> shieldSectors  // Sectors that prevent this sector from being landed on until they are completed.
+  public boolean outline  // Set to false to disable outline generation.
+  public int outlineRadius
+  public Color outlineColor
+  private String fileName
+ctors:
+  public SectorPreset(String name, Planet planet, int sector) / public SectorPreset(String name, String fileName, Planet planet, int sector) / public SectorPreset(String name, LoadedMod mod) / public SectorPreset(String name, String fileName, LoadedMod mod)  // Internal use only!
+methods:
+  public void initialize(Planet planet, int sector) / public void initialize(Planet planet, int sector, boolean override)
+  public void removeContent()
+  public void init()
+  public void createIcons(MultiPacker packer)
+  public void loadIcon()
+  public boolean isHidden()
+  public ContentType getContentType()
+
+StatusEffect.java
+Java class extends mindustry.ctype.UnlockableContent
+fields:
+  public float damageMultiplier  // Damage dealt by the unit with the effect.
+  public float healthMultiplier  // Unit health multiplier.
+  public float speedMultiplier  // Unit speed multiplier.
+  public float reloadMultiplier  // Unit reload multiplier.
+  public float buildSpeedMultiplier  // Unit build speed multiplier.
+  public float dragMultiplier  // Unit drag multiplier.
+  public float transitionDamage  // Damage dealt upon transition to an affinity.
+  public boolean disarm  // Unit weapon(s) disabled.
+  public float damage  // Damage per frame.
+  public float intervalDamageTime  // Spacing (in ticks) between interval damage.
+  public float intervalDamage  // Damage dealt by interval damage.
+  public boolean intervalDamagePierce  // If true, interval damage is armor piercing.
+  public float effectChance  // Chance of visual effect(s) appearing.
+  public boolean parentizeEffect  // Should the effect be given a parent.
+  public boolean permanent  // If true, the effect never disappears.
+  public boolean reactive  // If true, this effect will only react with other effects and cannot be applied.
+  public boolean dynamic  // Special flag for the dynamic effect type with custom stats - do not use.
+  public boolean show  // Whether to show this effect in the database.
+  public Color color  // Tint color of effect.
+  public Effect effect  // Effect that happens randomly on top of the affected unit.
+  public Effect applyEffect  // Effect that is displayed once when applied to a unit.
+  public boolean applyExtend  // Whether the apply effect should display even if effect is already on the unit.
+  public Color applyColor  // Tint color of apply effect.
+  public boolean parentizeApplyEffect  // Should the apply effect be given a parent.
+  public ObjectSet<StatusEffect> affinities  // Affinity & opposite values for stat displays.
+  public boolean outline  // Set to false to disable outline generation.
+  protected ObjectMap<StatusEffect,TransitionHandler> transitions  // Transition handler map.
+  protected Runnable initblock  // Called on init.
+ctors:
+  public StatusEffect(String name)
+methods:
+  public void init() / public void init(Runnable run)
+  public boolean isHidden()
+  public void setStats()
+  public boolean showUnlock()
+  public void update(Unit unit, StatusEntry entry)  // Runs every tick on the affected unit while time is greater than 0.
+  public void onRemoved(Unit unit)  // Called when status effect is removed.
+  public void trans(StatusEffect effect, TransitionHandler handler)
+  public void affinity(StatusEffect effect, TransitionHandler handler)
+  public void opposite(StatusEffect effect)
+  protected void handleOpposite(StatusEffect other)
+  public void draw(Unit unit, float time) / public void draw(Unit unit)
+  public boolean reactsWith(StatusEffect effect)
+  public boolean applyTransition(Unit unit, StatusEffect to, StatusEntry entry, float time)  // Called when transitioning between two status effects.
+  public void applied(Unit unit, float time, boolean extend)
+  public void createIcons(MultiPacker packer)
+  public String toString()
+  public ContentType getContentType()
+inner-interface: TransitionHandler
+  methods:
+    void handle(Unit unit, StatusEntry current, float time)
+
+TeamEntry.java
+Java class extends mindustry.ctype.UnlockableContent
+// TODO more stuff, make unlockable, don't display in campaign at all
+fields:
+  public final Team team
+ctors:
+  public TeamEntry(String name, Team team) / public TeamEntry(Team team)
+methods:
+  public void displayExtra(Table table)
+  public ContentType getContentType()
+
+UnitType.java
+Java class extends mindustry.ctype.UnlockableContent implements mindustry.logic.Senseable
+fields:
+  public static final float shadowTX
+  private static final Vec2 legOffset
+  private static final Seq<UnitStance> tmpStances
+  public int envRequired  // Environmental flags that are *all* required for this unit to function.
+  public int envEnabled  // The environment flags that this unit can function in.
+  public int envDisabled  // The environment flags that this unit *cannot* function in.
+  public float speed  // movement speed (world units/t)
+  public boolean isEnemy  // if true, this unit counts as an enemy in the wave counter (usually false for support-only units)
+  public Prov<? extends UnitController> aiController  // The default AI controller to assign on creation.
+  public Func<Unit,? extends UnitController> controller  // Function that chooses AI controller based on unit entity.
+  public Prov<? extends Unit> constructor  // Creates a new instance of this unit class.
+  public Seq<Ability> abilities  // list of "abilities", which are various behaviors that update each frame
+  public Seq<Weapon> weapons  // All weapons that this unit will shoot with.
+  public ObjectSet<StatusEffect> immunities  // None of the status effects in this set can be applied to this unit.
+  public Color healColor  // color that this unit flashes when getting healed (if healFlash is true)
+  public Color lightColor  // Color of light that this unit produces when lighting is enabled in the map.
+  public Color shieldColor  // override for unit shield colour.
+  public Sound deathSound  // sound played when this unit explodes (*not* when it is shot down)
+  public float deathSoundVolume  // volume of death sound
+  public Sound wreckSound  // sound played when the unit wreck is shot down
+  public float wreckSoundVolume  // volume of wreck falling sound
+  public Sound loopSound  // sound played on loop when this unit is around.
+  public float loopSoundVolume  // volume of loop sound
+  public Sound stepSound  // sound played when this mech/insect unit does a step
+  public float stepSoundVolume  // volume of step sound
+  public float stepSoundPitch  // base pitch of step sound
+  public Sound tankMoveSound  // sound looped when tank moves
+  public Sound moveSound  // sound looped when the unit moves; volume depends on velocity
+  public float moveSoundVolume  // volume of movement sound
+  public float moveSoundPitchMin  // pitch of movement sound based on velocity
+  public float tankMoveVolume  // volume of tank move sfx
+  public Effect fallEffect  // effect that this unit emits when falling
+  public Effect fallEngineEffect  // effect created at engine when unit falls.
+  public Effect deathExplosionEffect  // effect created when this unit dies
+  public Effect treadEffect  // optional effect created when this tank moves
+  public Seq<DrawPart> parts  // extra (usually animated) visual parts
+  public Seq<UnitEngine> engines  // list of engines, or "thrusters"
+  public boolean useEngineElevation  // if false, the thruster is always displayed at its normal size regardless of elevation
+  public Color engineColor  // override for all engine colors
+  public Color engineColorInner  // color for inner portions of engines
+  public int trailLength  // length of engine trail (if flying) or wave trail (if naval)
+  public Color trailColor  // override for engine trail color
+  public int flowfieldPathType  // Cost type ID for flow field/enemy AI pathfinding.
+  public PathCost pathCost  // Function used for calculating cost of moving with ControlPathfinder.
+  public int pathCostId  // ID for path cost, to be used in the control path finder.
+  public Unit sample  // A sample of the unit that this type creates.
+  public BlockFlag targetFlags  // Flags to target based on priority.
+  public boolean allowChangeCommands  // A value of false is used to hide command changing UI in unit factories.
+  public Seq<UnitCommand> commands  // Commands available to this unit through RTS controls.
+  public UnitCommand defaultCommand  // Command to assign to this unit upon creation.
+  public Seq<UnitStance> stances  // Stances this unit can have.
+  public Color outlineColor  // color for outline generated around sprites
+  public int outlineRadius  // thickness for sprite outline
+  public boolean outlines  // if false, no sprite outlines are generated
+  public int itemCapacity  // amount of items this unit can carry; <0 to determine based on hitSize.
+  public int ammoCapacity  // @deprecated only kept for compatibility with some turrets that query this field! Remove this from your code immediately!
+  public int mineTier  // max hardness of ore that this unit can mine (<0 to disable)
+  public float mineSpeed  // mining speed in weird arbitrary units
+  public boolean mineWalls  // whether this unit can mine ores from floors/walls, respectively
+  public boolean mineHardnessScaling  // if true, harder materials will take longer to mine
+  public Sound mineSound  // continuous sound emitted when mining.
+  public float mineSoundVolume  // volume of mining sound.
+  public Seq<Item> mineItems  // Target items to mine.
+  public int legCount  // number of legs this unit has (must have the correct type to function!)
+  public int legGroupSize  // size of groups in which legs move.
+  public float legLength  // total length of a leg (both segments)
+  public boolean legBaseUnder  // If true, the base (further away) leg region is drawn under instead of over.
+  public boolean lockLegBase  // If true, legs are locked to the base of the unit instead of being on an implicit rotating "mount".
+  public boolean legContinuousMove  // If true, legs always try to move around even when the unit is not moving (leads to more natural behavior)
+  public boolean flipBackLegs  // TODO neither of these appear to do much
+  public boolean emitWalkSound  // Whether to emit a splashing noise in water.
+  public boolean emitWalkEffect  // Whether to emit a splashing effect in water (fasle implies emitWalkSound false).
+  public float mechLandShake  // screen shake amount for when this mech lands after boosting
+  public float mechSideSway  // parameters for mech swaying animation
+  public boolean mechStepParticles  // whether particles are created when this mech takes a step
+  public Color mechLegColor  // color that legs change to when moving, to simulate depth
+  public Rect treadRects  // list of treads as rectangles in IMAGE COORDINATES, relative to the center.
+  public int treadFrames  // number of frames of movement in a tread
+  public int treadPullOffset  // how much of a top part of a tread sprite is "cut off" relative to the pattern; this is corrected for
+  public boolean crushFragile  // if true, 'fragile' blocks will instantly be crushed in a 1x1 area around the tank
+  public int segments  // number of independent segments
+  public int segmentUnits  // TODO wave support - for multi-unit segmented units, this is the number of independent units that are spawned
+  public UnitType segmentUnit  // unit spawned in segments; if null, the same unit is used
+  public UnitType segmentEndUnit  // unit spawned at the end; if null, the segment unit is used
+  public boolean segmentLayerOrder  // true - parent segments are on higher layers; false - parent segments are on lower layers than head
+  public float segmentMag  // magnitude of sine offset between segments
+  public float lifetime  // lifetime of this missile.
+  public float homingDelay  // ticks that must pass before this missile starts homing.
+  public TextureRegion baseRegion  // (undocumented, you shouldn't need to use these, and if you do just check how they're drawn and copy that)
+  public TextureRegion wreckRegions
+  public TextureRegion treadRegions
+  protected float buildTime
+  protected ItemStack totalRequirements
+ctors:
+  public UnitType(String name)
+methods:
+  public void postInit()
+  public UnitController createController(Unit unit)
+  public Unit create(Team team)
+  public Unit spawn(Team team, float x, float y, float rotation, Cons<Unit> cons) / public Unit spawn(Team team, float x, float y, float rotation) / public Unit spawn(Team team, float x, float y) / public Unit spawn(float x, float y) / public Unit spawn(Team team, Position pos) / public Unit spawn(Position pos) / public Unit spawn(Position pos, Team team)  // @param cons Callback that gets called with every unit that is spawned.
+  public boolean hasWeapons()
+  public boolean targetable(Unit unit, Team targeter)
+  public boolean killable(Unit unit)
+  public boolean hittable(Unit unit)
+  public void getUnitStances(Unit unit, Seq<UnitStance> out)  // Adds all available unit stances based on the unit's current state.
+  public boolean allowStance(Unit unit, UnitStance stance)
+  public boolean allowCommand(Unit unit, UnitCommand command)
+  public void update(Unit unit)
+  public void updatePayload(Unit unit, Unit unitHolder, Building buildingHolder)
+  public void killed(Unit unit)
+  public void landed(Unit unit)
+  public void display(Unit unit, Table table)
+  public boolean supportsEnv(int env)  // @return whether this block supports a specific environment.
+  public boolean isBanned()
+  public void getDependencies(Cons<UnlockableContent> cons)
+  public boolean isHidden()
+  public void setStats()
+  protected void checkEntityMapping(Unit example)
+  void initPathType()
+  public void init()
+  public float estimateDps()
+  public void load()
+  public void getRegionsToOutline(Seq<TextureRegion> out)
+  public boolean needsBodyOutline()
+  public void createIcons(MultiPacker packer)
+  public void afterPatch()
+  public void beforeParse()
+  public float getBuildTime()  // @return the time required to build this unit, as a value that takes into account reconstructors
+  public ItemStack[] getTotalRequirements()  // @return all items needed to build this unit, including reconstructor steps.
+  public ItemStack[] getRequirements(UnitType[] prevReturn, float[] timeReturn)  // @return item requirements based on reconstructors or factories found; returns previous unit in array if provided
+  public ItemStack[] getFirstRequirements()
+  public ItemStack[] researchRequirements()
+  public double sense(LAccess sensor)
+  public Object senseObject(LAccess sensor)
+  public ContentType getContentType()
+  public void setEnginesMirror(UnitEngine array)  // Sets up engines, mirroring the contents of the specified array.
+  public void draw(Unit unit)
+  public Color shieldColor(Unit unit)  // ...where do I put this
+  public void drawMining(Unit unit)
+  public void drawMiningBeam(Unit unit, float px, float py)
+  public void drawPayload(T unit)
+  public void drawShield(Unit unit)
+  public void drawShadow(Unit unit)
+  public void drawSoftShadow(Unit unit) / public void drawSoftShadow(Unit unit, float alpha) / public void drawSoftShadow(float x, float y, float rotation, float alpha)
+  public void drawItems(Unit unit)
+  public void drawTrail(Unit unit)
+  public void drawEngines(Unit unit)
+  public void drawWeapons(Unit unit)
+  public void drawWeaponOutlines(Unit unit)
+  public void drawOutline(Unit unit)
+  public void drawBody(Unit unit)
+  public void drawCell(Unit unit)
+  public Color cellColor(Unit unit)
+  public void drawLight(Unit unit)
+  public void drawTank(T unit)
+  public void drawLegs(T unit)
+  public void drawCrawl(Crawlc crawl)
+  public void drawMech(Mechc mech)
+  public void applyOutlineColor(Unit unit)
+  public void applyColor(Unit unit)
+inner-class: UnitEngine implements java.lang.Cloneable
+  fields:
+    public float x
+    public Color color
+  ctors:
+    public UnitEngine(float x, float y, float radius, float rotation) / public UnitEngine()
+  methods:
+    public void draw(Unit unit)
+    public UnitEngine copy()
+
+Weapon.java
+Java class implements java.lang.Cloneable
+fields:
+  public String name  // displayed weapon region
+  public BulletType bullet  // bullet shot
+  public Effect ejectEffect  // shell ejection effect
+  public boolean display  // whether weapon should appear in the stats of a unit with this weapon
+  public boolean mirror  // whether to create a flipped copy of this weapon upon initialization.
+  public boolean flipSprite  // whether to flip the weapon's sprite when rendering.
+  public boolean alternate  // whether to shoot the weapons in different arms one after another, rather than all at once; only valid when mirror = true
+  public boolean rotate  // whether to rotate toward the target independently of unit
+  public boolean showStatSprite  // Whether to show the sprite of the weapon in the database.
+  public float baseRotation  // rotation at which this weapon starts at.
+  public boolean top  // whether to draw the outline on top.
+  public boolean continuous  // whether to hold the bullet in place while firing; it will still require reload.
+  public boolean alwaysContinuous  // whether this weapon uses continuous fire without reloading; implies continuous = true
+  public float aimChangeSpeed  // Speed at which the turret can change its bullet "aim" distance.
+  public boolean controllable  // whether this weapon can be aimed manually by players
+  public boolean aiControllable  // whether this weapon can be automatically aimed by the unit
+  public boolean alwaysShooting  // whether this weapon is always shooting, regardless of targets ore cone
+  public boolean autoTarget  // whether to automatically target relevant units in update(); only works when controllable = false.
+  public boolean predictTarget  // whether to perform target trajectory prediction
+  public boolean useAttackRange  // if true, this weapon is used for attack range calculations
+  public float targetInterval  // ticks to wait in-between targets
+  public float rotateSpeed  // rotation speed of weapon when rotation is enabled, in degrees/t
+  public float reload  // weapon reload in frames
+  public float inaccuracy  // inaccuracy of degrees of each shot
+  public float shake  // intensity and duration of each shot's screen shake
+  public float recoil  // visual weapon knockback.
+  public int recoils  // Number of additional counters for recoil.
+  public float recoilTime  // time taken for weapon to return to starting position in ticks.
+  public float recoilPow  // power curve applied to visual recoil
+  public float cooldownTime  // ticks to cool down the heat region
+  public float shootX  // projectile/effect offsets from center of weapon
+  public float x  // offsets of weapon position on unit
+  public float xRand  // Random spread on the X/Y axis.
+  public ShootPattern shoot  // pattern used for bullets
+  public float shadow  // radius of shadow drawn under the weapon; <0 to disable
+  public float velocityRnd  // fraction of velocity that is random
+  public float extraVelocity  // extra velocity that is added as a fraction
+  public float lifeRnd  // fraction of lifetime that is random
+  public float extraLife  // extra lifetime that is added as a fraction
+  public float shootCone  // The half-radius of the cone in which shooting will start.
+  public float rotationLimit  // Cone in which the weapon can rotate relative to its mount.
+  public float minWarmup  // minimum weapon warmup before firing (this is not linear, do NOT use 1!)
+  public float shootWarmupSpeed  // lerp speed for shoot warmup, only used for parts
+  public boolean linearWarmup  // If true, shoot warmup is linear instead of a curve.
+  public float soundPitchMin  // random sound pitch range
+  public boolean ignoreRotation  // whether shooter rotation is ignored when shooting.
+  public boolean noAttack  // If true, this weapon cannot be used to attack targets.
+  public float minShootVelocity  // min velocity required for this weapon to shoot.
+  public float maxShootVelocity  // max velocity at which this weapon to shoot.
+  public boolean parentizeEffects  // should the shoot effects follow the unit (effects need followParent set to true for this to work)
+  public int otherSide  // internal value used for alternation - do not change!
+  public float layerOffset  // draw Z offset relative to the default value
+  public Sound activeSound  // sound looped when shooting
+  public float activeSoundVolume  // volume of active sound
+  public Sound shootSound  // sound used for shooting
+  public float shootSoundVolume  // volume of the shoot sound
+  public Sound initialShootSound  // sound used when this weapon first fires; for continuous weapons only
+  public Sound chargeSound  // sound used for weapons that have a delay
+  public TextureRegion region  // displayed region (autoloaded)
+  public TextureRegion heatRegion  // heat region, must be same size as region (optional)
+  public TextureRegion cellRegion  // cell region, must be same size as region (optional)
+  public TextureRegion outlineRegion  // outline region to display if top is false
+  public Color heatColor  // heat region tint
+  public StatusEffect shootStatus  // status effect applied when shooting
+  public Func<Weapon,WeaponMount> mountType  // type of weapon mount to be used
+  public float shootStatusDuration  // status effect duration when shot
+  public boolean shootOnDeath  // whether this weapon should fire when its owner dies
+  public Effect shootOnDeathEffect  // If not null and shootOnDeath == true, overrides the weapon's shoot effect only when its owner dies.
+  public Seq<DrawPart> parts  // extra animated parts
+ctors:
+  public Weapon(String name) / public Weapon()
+methods:
+  public boolean hasStats(UnitType u)
+  public void addStats(UnitType u, Table t)
+  public float dps()
+  public float shotsPerSec()
+  public void drawOutline(Unit unit, WeaponMount mount)  // TODO copy-pasted code
+  public void draw(Unit unit, WeaponMount mount)
+  public float range()
+  public void update(Unit unit, WeaponMount mount)
+  protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground)
+  protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range)
+  protected float bulletRotation(Unit unit, WeaponMount mount, float bulletX, float bulletY)
+  protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation)
+  protected void bullet(Unit unit, WeaponMount mount, float xOffset, float yOffset, float angleOffset, Mover mover)
+  protected void handleBullet(Unit unit, WeaponMount mount, Bullet bullet)  // override to do special things to a bullet after spawning
+  public void flip()
+  public Weapon copy()
+  public void init()
+  public void load()
+  public String toString()
+
+Weather.java
+Java class extends mindustry.ctype.UnlockableContent
+fields:
+  public static final Rand rand  // Global random variable used for rendering.
+  private static final float boundMax
+  public float duration  // Default duration of this weather event in ticks.
+  public float opacityMultiplier
+  public Attributes attrs
+  public Sound sound
+  public float soundVol
+  public float soundVolOscMag
+  public boolean hidden
+  public Prov<WeatherState> type  // internals
+  public StatusEffect status
+  public float statusDuration
+  public boolean statusAir
+ctors:
+  public Weather(String name, Prov<WeatherState> type) / public Weather(String name)
+methods:
+  public WeatherState create() / public WeatherState create(float intensity) / public WeatherState create(float intensity, float duration)
+  public WeatherState instance()
+  public boolean isActive()
+  public void remove()
+  public void update(WeatherState state)
+  public void updateEffect(WeatherState state)
+  public void drawOver(WeatherState state)
+  public void drawUnder(WeatherState state)
+  public static void drawParticles(TextureRegion region, Color color, float sizeMin, float sizeMax, float density, float intensity, float opacity, float windx, float windy, float minAlpha, float maxAlpha, float sinSclMin, float sinSclMax, float sinMagMin, float sinMagMax, boolean randomParticleRotation)
+  public static void drawRain(float sizeMin, float sizeMax, float xspeed, float yspeed, float density, float intensity, float stroke, Color color)
+  public static void drawSplashes(TextureRegion[] splashes, float padding, float density, float intensity, float opacity, float timeScale, float stroke, Color color, Liquid splasher)
+  public static void drawNoiseLayers(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, int layers, float layerSpeedM, float layerAlphaM, float layerSclM, float layerColorM)
+  public static void drawNoise(Texture noise, Color color, float noisescl, float opacity, float baseSpeed, float intensity, float vwindx, float vwindy, float offset)
+  public boolean isHidden()
+  public ContentType getContentType()
+  public static void createWeather(Weather weather, float intensity, float duration, float windX, float windY)
+inner-class: WeatherEntry
+  fields:
+    public Weather weather  // The type of weather used.
+    public float minFrequency  // Minimum and maximum spacing between weather events.
+    public float cooldown  // Cooldown time before the next weather event takes place This is *state*, not configuration.
+    public float intensity  // Intensity of the weather produced.
+    public boolean always  // If true, this weather is always active.
+  ctors:
+    public WeatherEntry(Weather weather) / public WeatherEntry(Weather weather, float minFrequency, float maxFrequency, float minDuration, float maxDuration) / public WeatherEntry()  // Creates a weather entry with some approximate weather values.
+inner-class: WeatherStateComp implements mindustry.gen.Drawc, mindustry.gen.Syncc
+  fields:
+    public static final float fadeTime
+    Weather weather
+    float intensity
+    Vec2 windVector
+  methods:
+    void init(Weather weather)
+    public void update()
+    public void draw()
+

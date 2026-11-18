@@ -1,0 +1,243 @@
+AssetDescriptor
+  -> java.lang.Class.getSimpleName()
+  -> java.lang.String.replaceAll(java.lang.String, java.lang.String)
+  -> arc.files.Fi.path()
+toString
+  -> java.lang.Class.getName()
+AssetLoadingTask
+  -> arc.util.Time.nanos()
+call
+  -> arc.assets.loaders.AssetLoader.getDependencies(java.lang.String, arc.files.Fi, P)
+  -> arc.assets.AssetLoadingTask.resolve(arc.assets.loaders.AssetLoader, arc.assets.AssetDescriptor)
+  -> arc.assets.AssetLoadingTask.removeDuplicates(arc.struct.Seq<arc.assets.AssetDescriptor>)
+  -> arc.assets.AssetManager.injectDependencies(java.lang.String, arc.struct.Seq<arc.assets.AssetDescriptor>)
+  -> arc.assets.loaders.AsynchronousAssetLoader.loadAsync(arc.assets.AssetManager, java.lang.String, arc.files.Fi, P)
+update
+  -> arc.assets.AssetLoadingTask.handleSyncLoader()
+  -> arc.assets.AssetLoadingTask.handleAsyncLoader()
+handleSyncLoader
+  -> arc.assets.loaders.AssetLoader.getDependencies(java.lang.String, arc.files.Fi, P)
+  -> arc.assets.AssetLoadingTask.resolve(arc.assets.loaders.AssetLoader, arc.assets.AssetDescriptor)
+  -> arc.assets.loaders.SynchronousAssetLoader.load(arc.assets.AssetManager, java.lang.String, arc.files.Fi, P)
+  -> arc.assets.AssetLoadingTask.removeDuplicates(arc.struct.Seq<arc.assets.AssetDescriptor>)
+  -> arc.assets.AssetManager.injectDependencies(java.lang.String, arc.struct.Seq<arc.assets.AssetDescriptor>)
+handleAsyncLoader
+  -> java.util.concurrent.ExecutorService.submit(java.util.concurrent.Callable<T>)
+  -> java.util.concurrent.Future.isDone()
+  -> java.util.concurrent.Future.get()
+  -> arc.assets.loaders.AsynchronousAssetLoader.loadSync(arc.assets.AssetManager, java.lang.String, arc.files.Fi, P)
+  -> arc.assets.AssetLoadingTask.resolve(arc.assets.loaders.AssetLoader, arc.assets.AssetDescriptor)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String, java.lang.Throwable)
+resolve
+  -> arc.assets.loaders.AssetLoader.resolve(java.lang.String)
+removeDuplicates
+  -> arc.struct.Seq.get(int)
+  -> java.lang.String.equals(java.lang.Object)
+  -> arc.struct.Seq.remove(int)
+AssetManager
+  -> arc.assets.AssetManager.setLoader(java.lang.Class<T>, arc.assets.loaders.AssetLoader<T, P>)
+  -> arc.util.Threads.executor(java.lang.String, int)
+  -> arc.assets.loaders.FontLoader.FontLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.MusicLoader.MusicLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.PixmapLoader.PixmapLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.SoundLoader.SoundLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.TextureAtlasLoader.TextureAtlasLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.TextureLoader.TextureLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.I18NBundleLoader.I18NBundleLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.ShaderProgramLoader.ShaderProgramLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.loaders.CubemapLoader.CubemapLoader(arc.assets.loaders.FileHandleResolver)
+get
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+  -> arc.assets.AssetManager.get(java.lang.String, java.lang.Class<T>)
+getOrNull
+  -> arc.struct.ObjectMap.get(T)
+getAll
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.entries()
+  -> arc.struct.Seq.add(T)
+getAllEntries
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.entries()
+  -> arc.struct.Seq.add(T)
+  -> arc.struct.ObjectMap.Entry.Entry()
+contains
+  -> java.lang.String.equals(java.lang.Object)
+  -> arc.struct.Seq.first()
+  -> arc.struct.Seq.get(int)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String, java.lang.Class)
+unload
+  -> arc.struct.Seq.first()
+  -> java.lang.String.equals(java.lang.Object)
+  -> arc.struct.Seq.get(int)
+  -> arc.struct.Seq.remove(int)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.util.Disposable.dispose()
+  -> arc.struct.ObjectMap.remove(K)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.assets.AssetManager.unload(java.lang.String)
+containsAsset
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Object.getClass()
+  -> arc.struct.ObjectMap.keys()
+  -> java.lang.Object.equals(java.lang.Object)
+getAssetFileName
+  -> arc.struct.ObjectMap.keys()
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Object.equals(java.lang.Object)
+isLoaded
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.struct.ObjectMap.containsKey(K)
+  -> arc.struct.ObjectMap.get(T)
+getLoader
+  -> arc.assets.AssetManager.getLoader(java.lang.Class<T>, java.lang.String)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.entries()
+  -> entry.key.length
+  -> fileName.endsWith
+load
+  -> arc.assets.AssetManager.load(java.lang.String, java.lang.Class<T>, arc.assets.AssetLoaderParameters<T>)
+  -> arc.assets.AssetManager.getLoader(java.lang.Class<T>)
+  -> java.lang.Object.getClass()
+  -> arc.assets.AssetManager.setLoader(java.lang.Class<T>, arc.assets.loaders.AssetLoader<T, P>)
+  -> arc.assets.Loadable.loadAsync()
+  -> arc.assets.Loadable.loadSync()
+  -> arc.assets.Loadable.getDependencies()
+  -> arc.assets.Loadable.getName()
+  -> arc.assets.loaders.AsynchronousAssetLoader.AsynchronousAssetLoader(arc.assets.loaders.FileHandleResolver)
+  -> arc.assets.AssetManager.getLoader(java.lang.Class<T>, java.lang.String)
+  -> java.lang.Class.getSimpleName()
+  -> arc.struct.Seq.get(int)
+  -> java.lang.String.equals(java.lang.Object)
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Object.equals(java.lang.Object)
+  -> arc.struct.Seq.add(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+  -> arc.assets.AssetDescriptor.AssetDescriptor(java.lang.String, java.lang.Class<T>, arc.assets.AssetLoaderParameters<T>)
+loadRun
+  -> arc.assets.AssetManager.loadRun(java.lang.String, java.lang.Class<?>, java.lang.Runnable, java.lang.Runnable)
+  -> arc.assets.AssetManager.getLoader(java.lang.Class<T>)
+  -> arc.assets.AssetManager.setLoader(java.lang.Class<T>, arc.assets.loaders.AssetLoader<T, P>)
+  -> java.lang.Runnable.run()
+  -> arc.assets.loaders.CustomLoader.loadSync(arc.assets.AssetManager, java.lang.String, arc.files.Fi, arc.assets.AssetLoaderParameters)
+  -> arc.assets.AssetManager.load(java.lang.String, java.lang.Class<T>, arc.assets.AssetLoaderParameters<T>)
+  -> arc.assets.loaders.CustomLoader.CustomLoader()
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+update
+  -> arc.assets.AssetManager.nextTask()
+  -> arc.assets.AssetManager.updateTask()
+  -> arc.assets.AssetManager.handleTaskError(java.lang.Throwable)
+  -> arc.util.Time.millis()
+  -> arc.assets.AssetManager.update()
+  -> java.lang.Thread.yield()
+getCurrentLoading
+  -> arc.struct.Seq.first()
+finishLoading
+  -> arc.assets.AssetManager.update()
+  -> java.lang.Thread.yield()
+finishLoadingAsset
+  -> arc.assets.AssetManager.finishLoadingAsset(java.lang.String)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.assets.AssetManager.update()
+  -> java.lang.Thread.yield()
+injectDependencies
+  -> arc.struct.ObjectSet.contains(T)
+  -> arc.struct.ObjectSet.add(T)
+  -> arc.assets.AssetManager.injectDependency(java.lang.String, arc.assets.AssetDescriptor)
+  -> arc.struct.ObjectSet.clear()
+injectDependency
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.put(K, V)
+  -> arc.struct.Seq.add(T)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.assets.AssetManager.incrementRefCountedDependencies(java.lang.String)
+  -> arc.assets.AssetManager.addTask(arc.assets.AssetDescriptor)
+  -> arc.struct.Seq.Seq()
+nextTask
+  -> arc.struct.Seq.remove(int)
+  -> arc.assets.AssetManager.isLoaded(java.lang.String)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.assets.AssetManager.incrementRefCountedDependencies(java.lang.String)
+  -> arc.assets.AssetLoaderParameters.LoadedCallback.finishedLoading(arc.assets.AssetManager, java.lang.String, java.lang.Class)
+  -> arc.assets.AssetManager.addTask(arc.assets.AssetDescriptor)
+addTask
+  -> arc.assets.AssetManager.getLoader(java.lang.Class<T>, java.lang.String)
+  -> java.lang.Class.getSimpleName()
+  -> arc.struct.Seq.add(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+  -> arc.assets.AssetLoadingTask.AssetLoadingTask(arc.assets.AssetManager, arc.assets.AssetDescriptor, arc.assets.loaders.AssetLoader, java.util.concurrent.ExecutorService)
+addAsset
+  -> arc.struct.ObjectMap.put(K, V)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.ObjectMap()
+  -> arc.assets.AssetManager.RefCountedContainer.RefCountedContainer(java.lang.Object)
+updateTask
+  -> arc.struct.Seq.peek()
+  -> arc.assets.AssetLoadingTask.update()
+  -> arc.assets.AssetManager.taskFailed(arc.assets.AssetDescriptor, java.lang.RuntimeException)
+  -> arc.struct.Seq.pop()
+  -> arc.assets.AssetManager.addAsset(java.lang.String, java.lang.Class<T>, T)
+  -> arc.assets.AssetLoadingTask.getAsset()
+  -> arc.assets.AssetLoaderParameters.LoadedCallback.finishedLoading(arc.assets.AssetManager, java.lang.String, java.lang.Class)
+  -> arc.func.Cons.get(T)
+incrementRefCountedDependencies
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.assets.AssetManager.incrementRefCountedDependencies(java.lang.String)
+handleTaskError
+  -> arc.struct.Seq.isEmpty()
+  -> arc.struct.Seq.pop()
+  -> arc.assets.AssetManager.unload(java.lang.String)
+  -> arc.struct.Seq.clear()
+  -> arc.assets.AssetErrorListener.error(arc.assets.AssetDescriptor, java.lang.Throwable)
+  -> arc.func.Cons.get(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.Throwable)
+setLoader
+  -> arc.assets.AssetManager.setLoader(java.lang.Class<T>, java.lang.String, arc.assets.loaders.AssetLoader<T, P>)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectMap.put(K, V)
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+  -> arc.struct.ObjectMap.ObjectMap()
+getProgress
+  -> java.lang.Math.min(float, float)
+dispose
+  -> arc.assets.AssetManager.clear()
+  -> arc.util.Threads.await(java.util.concurrent.ExecutorService)
+clear
+  -> arc.struct.Seq.clear()
+  -> arc.assets.AssetManager.update()
+  -> arc.struct.ObjectIntMap.clear()
+  -> arc.struct.ObjectMap.Keys.toSeq()
+  -> arc.struct.ObjectMap.keys()
+  -> arc.struct.ObjectIntMap.put(K, int)
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.struct.ObjectIntMap.get(K, int)
+  -> arc.assets.AssetManager.unload(java.lang.String)
+  -> arc.struct.ObjectMap.clear()
+  -> arc.struct.ObjectIntMap.ObjectIntMap()
+getReferenceCount
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+setReferenceCount
+  -> arc.struct.ObjectMap.get(T)
+  -> arc.util.ArcRuntimeException.ArcRuntimeException(java.lang.String)
+getDiagnostics
+  -> arc.struct.ObjectMap.keys()
+  -> java.lang.StringBuilder.append(java.lang.String)
+  -> arc.struct.ObjectMap.get(T)
+  -> java.lang.Class.getSimpleName()
+  -> java.lang.StringBuilder.append(int)
+  -> java.lang.StringBuilder.toString()
+  -> java.lang.StringBuilder.StringBuilder()
+getAssetNames
+  -> arc.struct.ObjectMap.Keys.toSeq()
+  -> arc.struct.ObjectMap.keys()
+getDependencies
+  -> arc.struct.ObjectMap.get(T)
+getAssetType
+  -> arc.struct.ObjectMap.get(T)
+RefCountedContainer::RefCountedContainer
+  -> java.lang.IllegalArgumentException.IllegalArgumentException(java.lang.String)
+getName
+  -> java.lang.Class.getSimpleName()
+  -> java.lang.Object.getClass()

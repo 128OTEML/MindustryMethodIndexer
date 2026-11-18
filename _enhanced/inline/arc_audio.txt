@@ -1,0 +1,493 @@
+// Audio.java : public boolean initialized()
+    public boolean initialized(){
+        return initialized;
+    }
+
+// Audio.java : public Sound newSound(Fi file)
+    public Sound newSound(Fi file){
+        if(!initialized) return new Sound();
+        try{
+            return new Sound(file);
+        }catch(Throwable t){
+            Log.err("Error loading sound: " + file, t);
+            return new Sound();
+        }
+    }
+
+// Audio.java : public Music newMusic(Fi file)
+    public Music newMusic(Fi file){
+        if(!initialized) return new Music();
+        try{
+            return new Music(file);
+        }catch(Throwable t){
+            Log.err("Error loading music: " + file, t);
+            return new Music();
+        }
+    }
+
+// Audio.java : public boolean isPlaying(int soundId)
+    public boolean isPlaying(int soundId){
+        if(!initialized) return false;
+        return soundId > 0 && idValid(soundId);
+    }
+
+// Audio.java : public void protect(int voice, boolean protect)
+    public void protect(int voice, boolean protect){
+        if(!initialized) return;
+        idProtected(voice, protect);
+    }
+
+// Audio.java : public int play(AudioSource source, float volume, float pitch, float pan, boolean loop)
+    public int play(AudioSource source, float volume, float pitch, float pan, boolean loop){
+        if(!initialized || source.handle == 0) return -1;
+        return sourcePlay(source.handle, volume, pitch, pan, loop);
+    }
+
+// Audio.java : public void stop(AudioSource source) / public void stop(int soundId)
+    public void stop(AudioSource source){
+        if(!initialized || source.handle == 0) return;
+        sourceStop(source.handle);
+    }
+
+// Audio.java : public void setPaused(int soundId, boolean paused)
+    public void setPaused(int soundId, boolean paused){
+        if(!initialized) return;
+        idPause(soundId, paused);
+    }
+
+// Audio.java : public void setLooping(int soundId, boolean looping)
+    public void setLooping(int soundId, boolean looping){
+        if(!initialized) return;
+        idLooping(soundId, looping);
+    }
+
+// Audio.java : public void setPitch(int soundId, float pitch)
+    public void setPitch(int soundId, float pitch){
+        if(!initialized) return;
+        if(!Float.isInfinite(pitch) && !Float.isNaN(pitch)) idPitch(soundId, Math.max(pitch, 0.001f));
+    }
+
+// Audio.java : public void setVolume(int soundId, float volume)
+    public void setVolume(int soundId, float volume){
+        if(!initialized) return;
+        if(!Float.isInfinite(volume) && !Float.isNaN(volume)) idVolume(soundId, volume);
+    }
+
+// Audio.java : public void set(int soundId, float pan, float volume)
+    public void set(int soundId, float pan, float volume){
+        if(!initialized) return;
+        if(!Float.isInfinite(volume) && !Float.isNaN(volume)) idVolume(soundId, volume);
+        if(!Float.isInfinite(pan) && !Float.isNaN(pan)) idPan(soundId, pan);
+    }
+
+// Audio.java : public void fadeFilterParam(int voice, int filter, int attribute, float value, float timeSec)
+    public void fadeFilterParam(int voice, int filter, int attribute, float value, float timeSec){
+        if(!initialized) return;
+        filterFade(voice, filter, attribute, value, timeSec);
+    }
+
+// Audio.java : public void setFilterParam(int voice, int filter, int attribute, float value)
+    public void setFilterParam(int voice, int filter, int attribute, float value){
+        if(!initialized) return;
+        filterSet(voice, filter, attribute, value);
+    }
+
+// Audio.java : public void setFilter(int index, AudioFilter filter)
+    public void setFilter(int index, @Nullable AudioFilter filter){
+        if(!initialized) return;
+        setGlobalFilter(index, filter == null ? 0 : filter.handle);
+    }
+
+// Audio.java : public int countPlaying(AudioSource source)
+    public int countPlaying(AudioSource source){
+        if(!initialized || source.handle <= 0) return 0;
+        return sourceCount(source.handle);
+    }
+
+// Audio.java : public int countTotalPlaying()
+    public int countTotalPlaying(){
+        if(!initialized) return 0;
+        return activeVoiceCount();
+    }
+
+// Audio.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(!initialized) return;
+        stopAll();
+        deinit();
+        initialized = false;
+    }
+
+// AudioBus.java : public void setFilter(int index, AudioFilter filter)
+    @Override
+    public void setFilter(int index, @Nullable AudioFilter filter){
+        if(handle == 0) return;
+        sourceFilter(handle, index, filter == null ? 0 : filter.handle);
+    }
+
+// AudioBus.java : AudioBus init()
+    AudioBus init(){
+        if(handle != 0) return this;
+        this.handle = busNew();
+        this.id = sourcePlay(handle);
+        return this;
+    }
+
+// AudioBus.java : public boolean playing()
+    public boolean playing(){
+        return handle != 0 && Core.audio.isPlaying(id);
+    }
+
+// AudioBus.java : public void play()
+    public void play(){
+        if(handle == 0 || idValid(id)) return;
+        id = sourcePlay(handle);
+    }
+
+// AudioBus.java : public void stop()
+    @Override
+    public void stop(){
+        Core.audio.stop(id);
+        id = 0;
+    }
+
+// AudioBus.java : public float getLength()
+    @Override
+    public float getLength(){
+        return 0;
+    }
+
+// AudioBus.java : public void fadeFilterParam(int filter, int attribute, float value, float timeSec)
+    public void fadeFilterParam(int filter, int attribute, float value, float timeSec){
+        Core.audio.fadeFilterParam(id, filter, attribute, value, timeSec);
+    }
+
+// AudioBus.java : public void setFilterParam(int filter, int attribute, float value)
+    public void setFilterParam(int filter, int attribute, float value){
+        Core.audio.setFilterParam(id, filter, attribute, value);
+    }
+
+// AudioBus.java : public void setVolume(float volume)
+    public void setVolume(float volume){
+        Core.audio.setVolume(id, volume);
+    }
+
+// AudioSource.java : public boolean valid()
+    public boolean valid(){
+        return handle != 0;
+    }
+
+// AudioSource.java : public void setFilter(int index, AudioFilter filter) / public void setFilter(AudioFilter filter)
+    public void setFilter(int index, @Nullable AudioFilter filter){
+        if(handle == 0) return;
+        sourceFilter(handle, index, filter == null ? 0 : filter.handle);
+    }
+
+// AudioSource.java : protected void setParamsAfterLoad()
+    protected void setParamsAfterLoad(){
+        if(priority != 0f) setPriority(priority);
+        if(maxConcurrent != 0) setMaxConcurrent(maxConcurrent);
+        if(concurrentGroup != 0) setConcurrentGroup(concurrentGroup);
+        if(minInterruptFraction != 0f){
+            setMinConcurrentInterruptFraction(minInterruptAbsolute, minInterruptFraction);
+        }else if(minInterruptAbsolute != 0f){
+            setMinConcurrentInterrupt(minInterruptAbsolute);
+        }
+    }
+
+// AudioSource.java : public void setPriority(float priority)
+    public void setPriority(float priority){
+        this.priority = priority;
+        if(handle == 0) return;
+        sourcePriority(handle, priority);
+    }
+
+// AudioSource.java : public void setMaxConcurrent(int max)
+    public void setMaxConcurrent(int max){
+        this.maxConcurrent = max;
+        if(handle == 0) return;
+        sourceMaxConcurrent(handle, max);
+    }
+
+// AudioSource.java : public void setConcurrentGroup(int group)
+    public void setConcurrentGroup(int group){
+        this.concurrentGroup = group;
+        if(handle == 0) return;
+        sourceConcurrentGroup(handle, group);
+    }
+
+// AudioSource.java : public void setMinConcurrentInterrupt(float seconds)
+    public void setMinConcurrentInterrupt(float seconds){
+        minInterruptAbsolute = seconds;
+        minInterruptFraction = 0f;
+        if(handle == 0) return;
+        sourceMinConcurrentInterrupt(handle, seconds);
+    }
+
+// AudioSource.java : public void setMinConcurrentInterruptFraction(float min, float fraction)
+    public void setMinConcurrentInterruptFraction(float min, float fraction){
+        minInterruptFraction = fraction;
+        minInterruptAbsolute = min;
+        if(handle == 0) return;
+        sourceMinConcurrentInterrupt(handle, Math.min(min, getLength() * fraction));
+    }
+
+// AudioSource.java : public int countPlaying()
+    public int countPlaying(){
+        if(handle == 0) return  0;
+        return Core.audio.countPlaying(this);
+    }
+
+// AudioSource.java : public void setSingleInstance(boolean singleInstance)
+    public void setSingleInstance(boolean singleInstance){
+        if(handle == 0 || !Core.audio.initialized) return;
+        sourceSingleInstance(handle, singleInstance);
+    }
+
+// AudioSource.java : public void stop()
+    public void stop(){
+        if(handle == 0) return;
+        sourceStop(handle);
+    }
+
+// AudioSource.java : public boolean isLazy()
+    public boolean isLazy(){
+        return false;
+    }
+
+// AudioSource.java : public void dispose()
+    @Override
+    public void dispose(){
+        if(handle != 0) sourceDestroy(handle);
+        handle = 0;
+    }
+
+// Music.java : public static Music create(Fi file)
+    public static Music create(Fi file){
+        Music music = new Music();
+        try{
+            music.file = file;
+            music.handle = streamLoadFile(file.path());
+        }catch(Throwable e){
+            Log.err("Failed loading music from " + file, e);
+        }
+        return music;
+    }
+
+// Music.java : public void load(byte[] bytes) throws Exception / public void load(Fi file) throws Exception
+    public void load(byte[] bytes) throws Exception{
+        handle = streamLoadBytes(bytes, bytes.length);
+    }
+
+// Music.java : public void play()
+    public void play(){
+        if(handle == 0 || !Core.audio.initialized) return;
+
+        if(idValid(voice) && idGetPause(voice)){
+            pause(false);
+        }else{
+            voice = sourcePlayBus(handle, Core.audio.musicBus.handle, volume, pitch, pan, looping);
+
+            idProtected(voice, true);
+        }
+    }
+
+// Music.java : public void pause(boolean pause)
+    public void pause(boolean pause){
+        if(handle == 0 || voice <= 0) return;
+
+        idPause(voice, pause);
+    }
+
+// Music.java : public void stop()
+    @Override
+    public void stop(){
+        super.stop();
+        voice = 0;
+    }
+
+// Music.java : public boolean isPlaying()
+    public boolean isPlaying(){
+        if(handle == 0 || voice <= 0) return false;
+
+        return idValid(voice) && !idGetPause(voice);
+    }
+
+// Music.java : public boolean isLooping()
+    public boolean isLooping(){
+        return looping;
+    }
+
+// Music.java : public void setLooping(boolean isLooping)
+    public void setLooping(boolean isLooping){
+        this.looping = isLooping;
+        if(handle == 0 || voice <= 0) return;
+
+        idLooping(voice, isLooping);
+    }
+
+// Music.java : public float getVolume()
+    public float getVolume(){
+        return volume;
+    }
+
+// Music.java : public void setVolume(float volume)
+    public void setVolume(float volume){
+        this.volume = volume;
+        if(handle == 0 || voice <= 0) return;
+
+        idVolume(voice, volume);
+    }
+
+// Music.java : public void set(float pan, float volume)
+    public void set(float pan, float volume){
+        this.volume = volume;
+        this.pan = pan;
+
+        if(handle == 0 || voice <= 0) return;
+
+        idVolume(voice, volume);
+        idPan(voice, pan);
+    }
+
+// Music.java : public float getPosition()
+    public float getPosition(){
+        if(handle == 0) return 0;
+
+        return idPosition(voice);
+    }
+
+// Music.java : public void setPosition(float position)
+    public void setPosition(float position){
+        if(handle == 0 || voice <= 0) return;
+
+        idSeek(voice, position);
+    }
+
+// Music.java : public float getLength()
+    @Override
+    public float getLength(){
+        if(handle == 0 || !Core.audio.initialized) return 0f;
+        return (float)Soloud.streamLength(handle);
+    }
+
+// Music.java : public String toString()
+    @Override
+    public String toString(){
+        return "SoloudMusic: " + file;
+    }
+
+// RandomSound.java : public void load(Fi file)
+    @Override
+    public void load(Fi file){}
+
+// RandomSound.java : public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus)
+    @Override
+    public int play(float volume, float pitch, float pan, boolean loop, boolean checkFrame, AudioBus bus){
+        if(sounds.length > 0){
+            return Structs.random(sounds).play(volume, pitch, pan, loop, checkFrame, bus);
+        }
+        return -1;
+    }
+
+// Sound.java : public static Sound createStream(Fi file)
+    public static Sound createStream(Fi file){
+        Sound sound = new Sound();
+        try{
+            sound.file = file;
+            sound.stream = true;
+            sound.handle = streamLoadFile(file.path());
+        }catch(Throwable e){
+            Log.err("Failed loading sound from " + file, e);
+        }
+        return sound;
+    }
+
+// Sound.java : public static Sound createLazy(Fi file)
+    public static Sound createLazy(Fi file){
+        Sound sound = new Sound();
+        sound.loadLazy(file);
+        return sound;
+    }
+
+// Sound.java : public void load(byte[] data, boolean stream) / public void load(Fi file)
+    public void load(byte[] data, boolean stream){
+        this.stream = stream;
+        handle = stream ? streamLoadBytes(data, data.length) : wavLoadBytes(data, data.length);
+
+        if(Core.audio != null && Core.audio.defaultSoundMaxConcurrent > 0){
+            setMaxConcurrent(Core.audio.defaultSoundMaxConcurrent);
+        }
+    }
+
+// Sound.java : public void loadLazy(Fi file)
+    public void loadLazy(Fi file){
+        this.file = file;
+        this.lazyLoad = true;
+    }
+
+// Sound.java : public boolean isLazy()
+    @Override
+    public boolean isLazy(){
+        return lazyLoad || currentlyLoading;
+    }
+
+// Sound.java : public void setBus(AudioBus bus)
+    public void setBus(AudioBus bus){
+        this.bus = bus;
+    }
+
+// Sound.java : public float calcPan(float x, float y)
+    public float calcPan(float x, float y){
+        if(Core.app.isHeadless()) return 0f;
+
+        return Mathf.clamp((x - Core.camera.position.x) / (Core.camera.width / 2f), -0.9f, 0.9f);
+    }
+
+// Sound.java : public float calcVolume(float x, float y)
+    public float calcVolume(float x, float y){
+        return calcFalloff(x, y) * Core.audio.sfxVolume;
+    }
+
+// Sound.java : public float calcFalloff(float x, float y)
+    public float calcFalloff(float x, float y){
+        if(Core.app.isHeadless()) return 1f;
+
+        float dst2 = Math.max(Mathf.dst2(x, y, Core.camera.position.x, Core.camera.position.y) - falloffOffset*falloffOffset, 0f);
+        return Mathf.clamp(1f / (dst2 / Core.audio.falloff));
+    }
+
+// Sound.java : public int at(float x, float y, float pitch) / public int at(float x, float y, float pitch, float volume, boolean checkFrame) / public int at(float x, float y, float pitch, float volume, AudioBus bus) / public int at(Position pos, float pitch, float volume) / public int at(float x, float y, float pitch, float volume) / public int at(float x, float y) / public int at(Position pos) / public int at(Position pos, float pitch)
+    public int at(float x, float y, float pitch){
+        return at(x, y, pitch, 1f);
+    }
+
+// Sound.java : public int loop() / public int loop(float volume) / public int loop(float volume, float pitch, float pan)
+    public int loop(){
+        return loop(1f);
+    }
+
+// Sound.java : public float getLength()
+    @Override
+    public float getLength(){
+        if(handle == 0 || !Core.audio.initialized) return 0f;
+        return stream ? (float)Soloud.streamLength(handle) : (float)Soloud.wavLength(handle);
+    }
+
+// Sound.java : public void setMinInterval(long interval)
+    public void setMinInterval(long interval){
+        minInterval = interval;
+    }
+
+// Sound.java : public void setFalloffOffset(float falloffOffset)
+    public void setFalloffOffset(float falloffOffset){
+        this.falloffOffset = falloffOffset;
+    }
+
+// Sound.java : public String toString()
+    @Override
+    public String toString(){
+        return "Sound: " + (file == null ? "(uninitialized)" : file);
+    }
+

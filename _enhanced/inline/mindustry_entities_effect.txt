@@ -1,0 +1,99 @@
+// MultiEffect.java : public void create(float x, float y, float rotation, Color color, Object data)
+    @Override
+    public void create(float x, float y, float rotation, Color color, Object data){
+        if(!shouldCreate()) return;
+
+        for(var effect : effects){
+            effect.create(x, y, rotation, color, data);
+        }
+    }
+
+// NoiseEffect.java : public void render(EffectContainer e)
+    @Override
+    public void render(EffectContainer e){
+        if(tex == null){
+            tex = Core.assets.getOrNull(noisePath, Texture.class);
+        }
+        if(tex == null) return;
+
+        Color col = Tmp.c2.set(color != null ? color : e.color).mul(1f, 1f, 1f, e.fout());
+        drawNoiseLayers(tex, col, noiseScl, opacity, baseSpeed, intensity, windX, windY, layers, layerSpeedMul, layerAlphaMul, layerSclMul, layerColorMul);
+        Draw.reset();
+    }
+
+// ParticleEffect.java : public void init()
+    @Override
+    public void init(){
+        clip = Math.max(clip, length + Math.max(sizeFrom, sizeTo));
+        sizeChangeStart = Mathf.clamp(sizeChangeStart, 0f, lifetime);
+        if(sizeInterp == null) sizeInterp = interp;
+        if(widthInterp == null) widthInterp = sizeInterp;
+        if(heightInterp == null) heightInterp = sizeInterp;
+        if(colorInterp == null) colorInterp = interp;
+    }
+
+// RadialEffect.java : public void create(float x, float y, float rotation, Color color, Object data)
+    @Override
+    public void create(float x, float y, float rotation, Color color, Object data){
+        if(!shouldCreate()) return;
+
+        rotation += rotationOffset;
+
+        for(int i = 0; i < amount; i++){
+            effect.create(x + Angles.trnsx(rotation, lengthOffset), y + Angles.trnsy(rotation, lengthOffset), rotation + effectRotationOffset, color, data);
+            rotation += rotationSpacing;
+        }
+    }
+
+// SeqEffect.java : public void init()
+    @Override
+    public void init(){
+        lifetime = 0f;
+        for(Effect f : effects){
+            f.init();
+            clip = Math.max(clip, f.clip);
+            lifetime += f.lifetime;
+        }
+    }
+
+// SoundEffect.java : public void init()
+    @Override
+    public void init(){
+        if(startDelay < 0){
+            startDelay = effect.startDelay;
+        }
+    }
+
+// TriangleEffect.java : public void init()
+    @Override
+    public void init(){
+        if(widthInterp == null) widthInterp = interp;
+        if(heightInterp == null) heightInterp = interp;
+        if(colorInterp == null) colorInterp = interp;
+    }
+
+// WaveEffect.java : public void init()
+    @Override
+    public void init(){
+        clip = Math.max(clip, Math.max(sizeFrom, sizeTo) + Math.max(strokeFrom, strokeTo));
+    }
+
+// WrapEffect.java : public void init()
+    @Override
+    public void init(){
+        effect.init();
+        clip = effect.clip;
+        lifetime = effect.lifetime;
+    }
+
+// WrapEffect.java : public void render(EffectContainer e)
+    @Override
+    public void render(EffectContainer e){
+    }
+
+// WrapEffect.java : public void create(float x, float y, float rotation, Color color, Object data)
+    @Override
+    public void create(float x, float y, float rotation, Color color, Object data){
+        effect.create(x, y, this.rotation, this.color, data);
+    }
+
